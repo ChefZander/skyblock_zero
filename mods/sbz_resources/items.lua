@@ -20,14 +20,14 @@ minetest.register_craft({
     recipe = {"sbz_resources:charged_particle", "sbz_resources:antimatter_dust", "sbz_resources:simple_circuit"}
 })
 
-minetest.register_craftitem("sbz_resources:emittirum_circuit", {
+minetest.register_craftitem("sbz_resources:emittrium_circuit", {
     description = "Emittrium Circuit",
     inventory_image = "emittrium_circuit.png",
     stack_max = 256,
 })
 minetest.register_craft({
     type = "shapeless",
-    output = "sbz_resources:emittirum_circuit",
+    output = "sbz_resources:emittrium_circuit",
     recipe = {"sbz_resources:charged_particle", "sbz_resources:retaining_circuit", "sbz_resources:raw_emittrium", "sbz_resources:matter_plate"}
 })
 
