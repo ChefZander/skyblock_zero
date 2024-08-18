@@ -147,7 +147,7 @@ sbz_api.register_machine("sbz_resources:advanced_matter_extractor", {
         end
     end,
     power_needed = 5,
-    action_interval = 1,
+    action_interval = 5,
 })
 
 
