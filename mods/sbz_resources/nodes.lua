@@ -35,7 +35,7 @@ sbz_api.register_generator("sbz_resources:simple_charged_field", {
             max_hear_distance = 32,
             pos = pos,
         })
-        minetest.dig_node(pos)
+        minetest.node_dig(pos, node, digger)
     end,
 })
 minetest.register_craft({
