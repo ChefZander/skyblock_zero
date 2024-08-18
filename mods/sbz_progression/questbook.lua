@@ -40,7 +40,7 @@ quests = {
                                                 "Do you also want to increase production? Sure you do. " .. 
                                                 "For Advanced Extractors you'll obviously need a Simple Matter Extractor, " .. 
                                                 "then four 'Matter Annihilator' and four 'Matter Blob'. That's a lot of resouces, " .. 
-                                                "but this Extractor will also occasionally generate 'Core Dust'!", requires = {"Automation"}},
+                                                "but this Extractor will also occasionally generate 'Core Dust'!", requires = {"Automation", "Power Pipes"}},
 
     {type = "quest", title = "Circuitry", text = "Circuits are important crafting components for future recipes. " .. 
                                     "You'll need them for lots of recipes, and many of them too. " .. 
@@ -55,7 +55,7 @@ quests = {
                                     "To solve that, you can use a generator, it consumes 'Core Dust' as fuel over time " .. 
                                     "and provides you with more power than 'Simple Charged Field' nodes do. " .. 
                                     "However, Generators are very expensive. Here is the list of materials required: " .. 
-                                    "Four 'Simple Charged Field', one 'Antimatter Dust', three 'Matter Blob' and one 'Matter Annihilator'.", requires = {"Charged Field"}},
+                                    "Four 'Simple Charged Field', one 'Antimatter Dust', three 'Matter Blob' and one 'Matter Annihilator'.", requires = {"Charged Field", "Power Pipes"}},
 
     {type = "quest", title = "Matter Plates", text = "Matter Plates are often used for machinery. They are simple to craft, yet important." .. 
                                     "You can get four 'Matter Plate' by placing one 'Matter Blob' into the crafting grid.", requires = {"A bigger platform"}},
@@ -90,6 +90,8 @@ quests = {
 
     {type = "quest", title = "Counting Joules", text = "No machine will show how much energy it's storing. For that, you'll need a Joulecounter. Clicking on a machine using the Joulecounter will show how much energy it's currently storing, as well as what the maximum amount it can store is. Crafting one is quite simple: a Emittrium Circuit in the middle, Antimatter Dust in the corners and the rest of the spaces need Matter Plates. Joulecounters won't break, and are pretty much necessary in progressing with machinery.\nTIP: Joulecounters also work on Cables, etc.", requires = {"Emittrium Circuits"}},
 
+    {type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.", requires = {"Obtain Emittrium"}},
+
     -- ======================================================================================
     {type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren islend. So dont just ignore this Questline, okay? :P"},
 
@@ -108,6 +110,7 @@ quests = {
 
     {type = "secret", title = "Emptiness", text = "Damn. You fell off."},
     {type = "secret", title = "Desolate", text = "You talked to yourself."},
+    {type = "secret", title = "Fragile", text = "You broke an Angel's Wing."},
 }
 
 local function getquestbyname(questname)

@@ -21,26 +21,20 @@ minetest.register_craft({
     }
 })
 
-minetest.register_node("sbz_resources:simple_charged_field", {
+sbz_api.register_generator("sbz_resources:simple_charged_field", {
     description = "Simple Charged Field\n\nGenerates: 3 Global Power.\nDecaying: 10% chance every 100s. (when placed)",
     drawtype = "glasslike",
-    tiles = {"simple_charged_field.png"},
-    groups = {matter=1, cracky=3},
+    tiles = { "simple_charged_field.png" },
+    groups = { matter = 1, cracky = 3, sbz_machine = 1 },
     sunlight_propagates = true,
     walkable = false,
-    on_construct = function(pos)
-        power_add(3)
-    end,
+    power_generated = 3,
     on_dig = function(pos, node, digger)
         minetest.sound_play("charged_field_shutdown", {
             gain = 5.0,
             max_hear_distance = 32,
             pos = pos,
         })
-
-        power_remove(3)
-
-        minetest.node_dig(pos, node, digger)
     end,
 })
 minetest.register_craft({
@@ -86,10 +80,7 @@ minetest.register_abm({
         minetest.after(1, function()
             -- field decayed
             minetest.set_node(pos, {name = "sbz_resources:charged_field_residue"})
-
-            -- remove power
-            power_remove(3)
-
+            
             -- plop
             minetest.sound_play("decay", {pos = pos, gain = 1.0})
 

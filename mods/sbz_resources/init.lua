@@ -100,7 +100,7 @@ minetest.register_craft({
 })
 
 -- dofiles
-dofile(modpath.."/cosmicjoules.lua")
+dofile(modpath .. "/power.lua")
 dofile(modpath.."/emitters.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/tools.lua")

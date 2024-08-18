@@ -90,6 +90,7 @@ minetest.register_tool("sbz_resources:angels_wing", {
         
         if wear >= 65535 then
             itemstack:clear()  -- Remove the item if it's worn out
+            unlock_achievement(user:get_player_name(), "Fragile")
         else
             itemstack:set_wear(wear)  -- Update the wear value
         end
