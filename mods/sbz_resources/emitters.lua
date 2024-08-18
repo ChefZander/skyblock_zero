@@ -19,7 +19,24 @@ minetest.register_node("sbz_resources:emitter", {
                     gain = 1.0,
                     max_hear_distance = 32,
                 })
-                displayDialougeLine(puncher:get_player_name(), "You have obtained Raw Emittrium!")
+                minetest.add_particlespawner({
+                    amount = 50,
+                    time = 1,
+                    minpos = {x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5},
+                    maxpos = {x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5},
+                    minvel = {x = -1, y = -1, z = -1},
+                    maxvel = {x = 1, y = 1, z = 1},
+                    minacc = {x = 0, y = 0, z = 0},
+                    maxacc = {x = 0, y = 0, z = 0},
+                    minexptime = 3,
+                    maxexptime = 5,
+                    minsize = 0.5,
+                    maxsize = 1.0,
+                    collisiondetection = false,
+                    vertical = false,
+                    texture = "raw_emittrium.png",
+                    glow = 10
+                })
                 unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
             else
                 minetest.sound_play("punch_core", {
