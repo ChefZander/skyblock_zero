@@ -7,11 +7,11 @@ minetest.register_node("sbz_decor:photonlamp", {
     light_source = 14,
     selection_box = {
         type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+        fixed = { -0.2, -0.2, -0.2, 0.2, 0.2, 0.2 },
     },
     collision_box = {
         type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+        fixed = { -0.2, -0.2, -0.2, 0.2, 0.2, 0.2 },
     },
 })
 minetest.register_craft({
