@@ -180,6 +180,13 @@ quests = {
 
     {
         type = "quest",
+        title = "Reinforced Matter",
+        text = "Normal matter isnt sturdy enough? Try this one. This one won't break, unless you break it, then it breaks. Wait a minute...",
+        requires = { "A bigger platform", "Matter Plates" }
+    },
+
+    {
+        type = "quest",
         title = "Emitter Immitators",
         text = "Emitter Immitators are decorational nodes providing light. " ..
             "You can get one, by surrounding a 'Matter Blob' with 'Antimatter Dust'. It doesn't glow as much as The Core though. " ..

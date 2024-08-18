@@ -189,6 +189,23 @@ minetest.register_craft({
     }
 })
 
+
+minetest.register_node("sbz_resources:reinforced_matter", {
+    description = "Reinforced Matter",
+    tiles = {"reinforced_matter.png"},
+    groups = {matter=1},
+    sunlight_propagates = true,
+    walkable = true,
+})
+minetest.register_craft({
+    output = "sbz_resources:reinforced_matter",
+    recipe = {
+        {"", "sbz_resources:matter_plate", ""},
+        {"sbz_resources:matter_plate", "sbz_resources:matter_blob", "sbz_resources:matter_plate"},
+        {"", "sbz_resources:matter_plate", ""}
+    }
+})
+
 -- Starlight Collector
 sbz_api.register_generator("sbz_resources:starlight_collector", {
     description = "Starlight Collector",
