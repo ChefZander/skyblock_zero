@@ -1,0 +1,72 @@
+Release 10
+- Completely recode energy system to use "Cosmic Joules" instead of "Global Power"
+- Added the Joulecounter item
+- Removed quest "Global Power"
+- Added questline "Emittrium"
+- New quests: "Obtain Emittrium", "Emittrium Circuits" and "Counting Joules"
+- One new secret quest
+
+Release 9
+- New questline "Decorator"
+- Moved "Emitter Immitators" to the Decorator questline
+- New quest: "Photon Lamps" in Decorator Questline
+- Added Photon Lamps
+- Fixed a bug reported by @theidealist (ty)
+- Secret quests now show up in the questbook as ???
+
+Release 8
+- Questbook now has questlines
+- Primitive Questbook API documentation added (see docs folder)
+- Questbook has new types of quests
+- Quests may now require other quests to be completed to be viewable
+- Added secret quest "Emptiness"
+- Improved indicators on quests
+
+Release 7
+- fix the questbook reminders
+- player is now invisible, replaced by a white particle trail
+- removed players hand
+- Add 3 new quests "Global Power", "Pretty Pebbles" and "Concrete Plan"
+- Rightclicking the core will now also give materials
+- Bumped 'Advanced Extractor' chance to extract 'Core Dust' from 1/50 to 1/25
+- Add Dirt, Soil and Stone Nodes
+- Add 'Raw Emittrium' and 'Pebble' Items
+
+Release 6
+- 'Emitter Immitator' now gives off twice as much light
+- Introduced the Quest Book instead of the Guide (which has been removed)
+- Ported 7 Quests over from the old quest system
+- Added 6 new quests covering most of the current gameplay
+- Particles when completing a quest
+- use /qb to get the questbook on old worlds
+- Custom hotbar textures
+
+Release 5
+- Fixed an issue with infinite negative energy reported by @fgaz
+
+Release 4
+- Fixed sneaking being insanely fast for no reason
+- Fixed bugs with Generator where it would give infinite energy / take infinite energy
+- Added conversion chamber craftitem
+- Added Organic Converter (not usable so far)
+
+Release 3
+- Fixed power not getting removed when removing a running generator
+- Added space-like physics
+- Added a sound when placing a machine
+- Added a sound when opening a machine's formspec
+- Added a sound when Simple Charged Field or Charged Field Residue decays
+- Added Storinators
+- Added Simple Circuit and Retaining Circuit
+- Added Matter Plate
+
+Release 2
+- Added Advanced Matter Extractor
+- Made Emitters display a message when clicked
+- Added "Advanced Extractors" Optional Quest / Achievement
+- Fixed Infite Energy, see: https://content.minetest.net/threads/8584/
+- Added Simple Charge Generator
+- Added Emitter Immitator
+
+Release 1
+- First release
