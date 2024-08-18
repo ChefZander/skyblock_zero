@@ -31,10 +31,15 @@ function sbz_api.require_power(start_pos, amount)
                     if power >= amount then
                         power_obtained = amount -- stops iterating after
                         meta:set_int("power", power - amount)
-                    elseif power ~= 0 then
+                    elseif power ~= 0 then      -- not quite fills it up
                         power_obtained = power_obtained + power
+                        local overcharge = 0
+                        if power_obtained > amount then
+                            overcharge = power_obtained - amount
+                            power_obtained = amount
+                        end
                         delayed_functions[#delayed_functions + 1] = function()
-                            meta:set_int("power", 0)
+                            meta:set_int("power", overcharge)
                         end
                     end
                 end
@@ -78,9 +83,8 @@ minetest.register_node("sbz_resources:power_pipe", {
     description = "Emittrium power pipe",
     connects_to = { "sbz_resources:power_pipe", "group:sbz_machine" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
-    sunlight_propagates = true,
 
-    tiles = {"emitter.png"},
+    tiles = { "emitter.png" },
 
     drawtype = "nodebox",
     light_source = 3,
@@ -101,7 +105,7 @@ minetest.register_node("sbz_resources:power_pipe", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:power_pipe",
-    recipe = {"sbz_resources:raw_emittrium", "sbz_resources:matter_plate"}
+    recipe = { "sbz_resources:raw_emittrium", "sbz_resources:matter_plate" }
 })
 
 -- an api to register very simple machines, if you are reading this, don't restrict yourself to what this api can do
