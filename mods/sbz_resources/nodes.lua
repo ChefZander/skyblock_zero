@@ -233,13 +233,13 @@ minetest.register_abm({
     label = "Starlight Collector Particles",
     nodenames = {"sbz_resources:starlight_collector"},
     interval = 1,
-    chance = 1, 
+    chance = 0.5, 
     action = function(pos, node, active_object_count, active_object_count_wider)
         minetest.add_particlespawner({
             amount = 2,
             time = 1,
-            minpos = {x = pos.x - 0.5, y = pos.y + 1, z = pos.z - 0.5},
-            maxpos = {x = pos.x + 0.5, y = pos.y + 3, z = pos.z + 0.5},
+            minpos = {x = pos.x - 0.5, y = pos.y + 0.5, z = pos.z - 0.5},
+            maxpos = {x = pos.x + 0.5, y = pos.y + 1, z = pos.z + 0.5},
             minvel = {x = 0, y = -2, z = 0},
             maxvel = {x = 0, y = -1, z = 0},
             minacc = {x = 0, y = 0, z = 0},
