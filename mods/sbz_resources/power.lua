@@ -1,3 +1,73 @@
+--[[
+    The section below is licensed under the lgplv3 license, it was taken from mesecons
+
+This program is free software; you can redistribute the Mesecons Mod and/or
+modify it under the terms of the GNU Lesser General Public License version 3
+published by the Free Software Foundation.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+Boston, MA  02110-1301, USA.
+
+]]
+
+
+-- Block position "hashing" (convert to integer) functions for voxelmanip cache
+local BLOCKSIZE = 16
+
+-- convert node position --> block hash
+local function hash_blockpos(pos)
+    return minetest.hash_node_position({
+        x = math.floor(pos.x / BLOCKSIZE),
+        y = math.floor(pos.y / BLOCKSIZE),
+        z = math.floor(pos.z / BLOCKSIZE)
+    })
+end
+
+local vm_cache = nil
+local vm_node_cache = nil
+
+
+function sbz_api.vm_begin()
+    vm_cache = {}
+    vm_node_cache = {}
+end
+
+function sbz_api.vm_abort()
+    vm_cache = nil
+    vm_node_cache = nil
+end
+
+local function vm_get_or_create_entry(pos)
+    local hash = hash_blockpos(pos)
+    local tbl = vm_cache[hash]
+    if not tbl then
+        tbl = minetest.get_voxel_manip(pos, pos)
+        vm_cache[hash] = tbl
+    end
+    return tbl
+end
+
+function sbz_api.vm_get_node(pos)
+    local hash = minetest.hash_node_position(pos)
+    local node = vm_node_cache[hash]
+    if not node then
+        node = vm_get_or_create_entry(pos):get_node_at(pos)
+        vm_node_cache[hash] = node
+    end
+    return node.name ~= "ignore" and { name = node.name, param1 = node.param1, param2 = node.param2 } or nil
+end
+
+--[[
+    Now the code below is licensed normally
+]]
+
 local function iterate_around_pos(pos, func)
     func({ x = pos.x - 1, y = pos.y, z = pos.z })
     func({ x = pos.x + 1, y = pos.y, z = pos.z })
@@ -16,21 +86,23 @@ function sbz_api.require_power(start_pos, amount)
     local power_obtained = 0
     local delayed_functions = {}
 
+    sbz_api.vm_begin()
+
     local function internal(pos)
         if power_obtained < amount and not seen[hash(pos)] then
             seen[hash(pos)] = true
             iterate_around_pos(pos, function(ipos)
-                local node = minetest.get_node(ipos).name
+                local node = sbz_api.vm_get_node(ipos).name
                 local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
                 local is_wire = node == "sbz_resources:power_pipe"
                 if is_wire then
                     internal(ipos)
-                elseif is_generator and power_obtained < amount then
+                elseif is_generator and power_obtained < amount and hash(ipos) ~= hash(start_pos) then
                     local meta = minetest.get_meta(ipos)
                     local power = meta:get_int("power")
                     if power >= amount then
                         power_obtained = amount -- stops iterating after
-                        meta:set_int("power", power - amount)
+                        meta:set_int("power", (power - amount))
                     elseif power ~= 0 then      -- not quite fills it up
                         power_obtained = power_obtained + power
                         local overcharge = 0
@@ -48,6 +120,7 @@ function sbz_api.require_power(start_pos, amount)
     end
     internal(table.copy(start_pos))
 
+    sbz_api.vm_abort()
     if power_obtained == amount then
         for i = 1, #delayed_functions do
             delayed_functions[i]()
@@ -122,10 +195,10 @@ function sbz_api.register_machine(name, def)
             local meta = minetest.get_meta(pos)
             local count = meta:get_int("count")
             if sbz_api.require_power(pos, def.power_needed) then
+                meta:set_string("infotext", "Running")
                 count = count + 1
                 meta:set_int("count", count)
                 if count == def.action_interval then
-                    meta:set_string("infotext", "Running")
                     def.action(pos, node, meta)
                     meta:set_int("count", 0)
                 end
@@ -177,3 +250,31 @@ function sbz_api.register_generator(name, def)
         end
     })
 end
+
+local BATTERY_MAX_POWER = 300
+local BATTERY_DRAW_PER_TICK = 10
+
+minetest.register_node("sbz_resources:battery", {
+    description = "battery",
+    groups = { sbz_generator = 1, sbz_machine = 1 },
+})
+
+minetest.register_abm({
+    nodenames = { "sbz_resources:battery" },
+    interval = 1,
+    chance = 1,
+    action = function(pos, node)
+        local meta = minetest.get_meta(pos)
+        local power = meta:get_int("power")
+        if power < BATTERY_MAX_POWER then
+            if sbz_api.require_power(pos, BATTERY_DRAW_PER_TICK) then
+                local new_power = power + BATTERY_DRAW_PER_TICK
+                if new_power > BATTERY_MAX_POWER then new_power = BATTERY_MAX_POWER end
+                meta:set_int("power", new_power)
+            end
+        end
+        meta:set_string("infotext",
+            string.format("Battery: %s/%s\nDraws %s power per second", meta:get_int("power"), BATTERY_MAX_POWER,
+                BATTERY_DRAW_PER_TICK))
+    end
+})
