@@ -188,3 +188,27 @@ minetest.register_craft({
         {"sbz_resources:pebble", "sbz_resources:pebble", "sbz_resources:pebble"}
     }
 })
+
+-- Starlight Collector
+sbz_api.register_generator("sbz_resources:starlight_collector", {
+    description = "Starlight Collector",
+    drawtype = "nodebox",
+    tiles = {"starlight_collector.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png"},
+    groups = {matter=1},
+    sunlight_propagates = true,
+    walkable = true,
+    node_box = {
+        type = "fixed",
+        fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
+    },
+
+    power_generated = 1,
+})
+minetest.register_craft({
+    output = "sbz_resources:starlight_collector 2",
+    recipe = {
+        {"", "", ""},
+        {"sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium"},
+        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"}
+    }
+})
