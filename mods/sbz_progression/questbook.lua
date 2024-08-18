@@ -107,7 +107,7 @@ quests = {
     -- ======================================================================================
     {type = "text", title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it."},
 
-    {type = "quest", title = "Angel's Wing", text = "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.", requires = {"Emittrium Circuits", "Stone"}},
+    {type = "quest", title = "Angel's Wing", text = "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.", requires = {"Emittrium Circuits", "Concrete Plan"}},
 
     {type = "secret", title = "Emptiness", text = "Damn. You fell off."},
     {type = "secret", title = "Desolate", text = "You talked to yourself."},
