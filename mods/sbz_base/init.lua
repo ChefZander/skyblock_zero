@@ -14,7 +14,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
         local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
         local data = vm:get_data()
 
-        local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
+        local area = VoxelArea:new { MinEdge = emin, MaxEdge = emax }
         local c_air = minetest.get_content_id("air")
         local c_stone = minetest.get_content_id("sbz_resources:the_core")
 
@@ -41,7 +41,7 @@ end)
 -- new players always spawn on the core
 minetest.log("action", "sbz base: register new player")
 minetest.register_on_newplayer(function(player)
-    player:set_pos({x = 0, y = 1, z = 0})
+    player:set_pos({ x = 0, y = 1, z = 0 })
 
     local inv = player:get_inventory()
     local name = player:get_player_name()
@@ -53,7 +53,8 @@ minetest.register_on_newplayer(function(player)
                 inv:add_item("main", "sbz_progression:questbook")
                 -- displayDialougeLine(name, "You have been given a Quest Book.")
             else
-                displayDialougeLine(name, "How tf did you manage to fill your inventory before spawning as a new player??")
+                displayDialougeLine(name,
+                    "How tf did you manage to fill your inventory before spawning as a new player??")
             end
         end
     end
@@ -64,7 +65,7 @@ minetest.register_chatcommand("core", {
     description = "Go back to the core, if you fell off.",
     privs = {},
     func = function(name, param)
-        minetest.get_player_by_name(name):set_pos({x = 0, y = 1, z = 0})
+        minetest.get_player_by_name(name):set_pos({ x = 0, y = 1, z = 0 })
         displayDialougeLine(name, "Beamed you back to the Core.")
     end,
 })
@@ -110,16 +111,17 @@ end
 
 minetest.log("action", "sbz base: register join player")
 minetest.register_on_joinplayer(function(player)
-
     -- send welcome messages
     minetest.chat_send_player(player:get_player_name(), "SkyBlock: Zero")
     minetest.chat_send_player(player:get_player_name(), "          by Zander (@zanderdev)")
-    
+
     local num_nodes = table_length(minetest.registered_nodes)
     local num_items = table_length(minetest.registered_craftitems)
-    minetest.chat_send_player(player:get_player_name(), "✔ Loaded "..num_nodes.." Nodes, "..num_items.." Items and " .. #quests .. " Quests.")
-    
-    minetest.chat_send_player(player:get_player_name(), "‼ reminder: If you fall off, use /core to teleport back to the core.")
+    minetest.chat_send_player(player:get_player_name(),
+        "✔ Loaded " .. num_nodes .. " Nodes, " .. num_items .. " Items and " .. #quests .. " Quests.")
+
+    minetest.chat_send_player(player:get_player_name(),
+        "‼ reminder: If you fall off, use /core to teleport back to the core.")
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
 
     -- play bgm
@@ -162,8 +164,8 @@ minetest.register_on_joinplayer(function(player)
     -- make player invisible
     player:set_properties({
         visual = "sprite",
-        visual_size = {x=1, y=2},
-        textures = {"transparent16.png", "transparent16.png"},
+        visual_size = { x = 1, y = 2 },
+        textures = { "transparent16.png", "transparent16.png" },
 
         zoom_fov = 15, -- allow zooming
     })
@@ -177,6 +179,12 @@ minetest.register_on_joinplayer(function(player)
     player:set_physics_override({
         gravity = 0.5,
     })
+
+    player:set_formspec_prepend([[
+        bgcolor[#080808BB;true]
+        background9[5,5;1,1;theme_background.png^\[colorize:purple:50;true;10]
+        listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
+]])
 end)
 
 -- for the immersion
@@ -200,12 +208,12 @@ minetest.register_globalstep(function(dtime)
         minetest.add_particlespawner({
             amount = 1,
             time = 1,
-            minpos = {x = pos.x - 0, y = pos.y - 0, z = pos.z - 0},
-            maxpos = {x = pos.x + 0, y = pos.y + 0, z = pos.z + 0},
-            minvel = {x = 0, y = 0, z = 0},
-            maxvel = {x = 0, y = 0, z = 0},
-            minacc = {x = 0, y = 0, z = 0},
-            maxacc = {x = 0, y = 0, z = 0},
+            minpos = { x = pos.x - 0, y = pos.y - 0, z = pos.z - 0 },
+            maxpos = { x = pos.x + 0, y = pos.y + 0, z = pos.z + 0 },
+            minvel = { x = 0, y = 0, z = 0 },
+            maxvel = { x = 0, y = 0, z = 0 },
+            minacc = { x = 0, y = 0, z = 0 },
+            maxacc = { x = 0, y = 0, z = 0 },
             minexptime = 1,
             maxexptime = 1,
             minsize = 1.0,
@@ -237,6 +245,7 @@ function is_node_within_radius(pos, itemstring, radius)
     end
     return false
 end
+
 function count_nodes_within_radius(pos, itemstring, radius)
     local count = 0
     for dx = -radius, radius do

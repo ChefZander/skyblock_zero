@@ -1,5 +1,7 @@
 --[[
     The section below is licensed under the lgplv3 license, it was taken from mesecons
+    This license text only applies to the section below, a comment will be placed indicating when that section ends
+
 
 This program is free software; you can redistribute the Mesecons Mod and/or
 modify it under the terms of the GNU Lesser General Public License version 3
@@ -198,7 +200,7 @@ function sbz_api.register_machine(name, def)
                 meta:set_string("infotext", "Running")
                 count = count + 1
                 meta:set_int("count", count)
-                if count == def.action_interval then
+                if count >= def.action_interval then
                     def.action(pos, node, meta)
                     meta:set_int("count", 0)
                 end
