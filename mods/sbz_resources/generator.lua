@@ -8,10 +8,10 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
         local player_name = player:get_player_name()
         minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
             "formspec_version[7]" ..
-            "size[8,9]" ..
+            "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
             "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;3.5,2;1,1;]" ..
-            "list[current_player;main;0,5;8,4;]" ..
+            "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
         minetest.sound_play("machine_open", {

@@ -1,5 +1,3 @@
-
-
 local function update_node_texture(pos)
     local meta = minetest.get_meta(pos)
     local inv = meta:get_inventory()
@@ -22,10 +20,12 @@ local function update_node_texture(pos)
         new_texture = "storinator_full_3"
     end
     local node = minetest.get_node(pos)
-    node.name = "sbz_resources:"..new_texture
+    node.name = "sbz_resources:" .. new_texture
 
     minetest.swap_node(pos, node)
 end
+
+
 
 minetest.register_node("sbz_resources:storinator", {
     description = "Storinator\n\nInventory Slots: 30.",
@@ -37,7 +37,7 @@ minetest.register_node("sbz_resources:storinator", {
         "storinator_side.png",
         "storinator_empty.png",
     },
-    groups = {matter=1},
+    groups = { matter = 1 },
     paramtype2 = "facedir",
     sunlight_propagates = true,
     walkable = true,
@@ -45,10 +45,10 @@ minetest.register_node("sbz_resources:storinator", {
         local player_name = player:get_player_name()
         minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
             "formspec_version[7]" ..
-            "size[8,9]" ..
+            "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" ..pos.x .."," ..pos.y .."," ..pos.z .. ";main;0,0;8,4;]" ..
-            "list[current_player;main;0,5;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
         minetest.sound_play("machine_open", {
@@ -88,7 +88,7 @@ minetest.register_node("sbz_resources:storinator_full_1", {
         "storinator_side.png",
         "storinator_full_1.png",
     },
-    groups = {matter=1},
+    groups = { matter = 1 },
     paramtype2 = "facedir",
     sunlight_propagates = true,
     walkable = true,
@@ -96,10 +96,10 @@ minetest.register_node("sbz_resources:storinator_full_1", {
         local player_name = player:get_player_name()
         minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
             "formspec_version[7]" ..
-            "size[8,9]" ..
+            "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" ..pos.x .."," ..pos.y .."," ..pos.z .. ";main;0,0;8,4;]" ..
-            "list[current_player;main;0,5;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
         minetest.sound_play("machine_open", {
@@ -139,7 +139,7 @@ minetest.register_node("sbz_resources:storinator_full_2", {
         "storinator_side.png",
         "storinator_full_2.png",
     },
-    groups = {matter=1},
+    groups = { matter = 1 },
     paramtype2 = "facedir",
     sunlight_propagates = true,
     walkable = true,
@@ -147,10 +147,10 @@ minetest.register_node("sbz_resources:storinator_full_2", {
         local player_name = player:get_player_name()
         minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
             "formspec_version[7]" ..
-            "size[8,9]" ..
+            "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" ..pos.x .."," ..pos.y .."," ..pos.z .. ";main;0,0;8,4;]" ..
-            "list[current_player;main;0,5;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
         minetest.sound_play("machine_open", {
@@ -190,7 +190,7 @@ minetest.register_node("sbz_resources:storinator_full_3", {
         "storinator_side.png",
         "storinator_full_3.png",
     },
-    groups = {matter=1},
+    groups = { matter = 1 },
     paramtype2 = "facedir",
     sunlight_propagates = true,
     walkable = true,
@@ -198,10 +198,10 @@ minetest.register_node("sbz_resources:storinator_full_3", {
         local player_name = player:get_player_name()
         minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
             "formspec_version[7]" ..
-            "size[8,9]" ..
+            "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" ..pos.x .."," ..pos.y .."," ..pos.z .. ";main;0,0;8,4;]" ..
-            "list[current_player;main;0,5;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
         minetest.sound_play("machine_open", {
@@ -234,8 +234,8 @@ minetest.register_node("sbz_resources:storinator_full_3", {
 minetest.register_craft({
     output = "sbz_resources:storinator",
     recipe = {
-        {"sbz_resources:simple_charged_field", "sbz_resources:matter_plate", "sbz_resources:retaining_circuit"},
-        {"sbz_resources:matter_plate", "sbz_resources:simple_circuit", "sbz_resources:matter_plate"},
-        {"sbz_resources:retaining_circuit", "sbz_resources:matter_plate", "sbz_resources:retaining_circuit"}
+        { "sbz_resources:simple_charged_field", "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" },
+        { "sbz_resources:matter_plate",         "sbz_resources:simple_circuit", "sbz_resources:matter_plate" },
+        { "sbz_resources:retaining_circuit",    "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" }
     }
 })
