@@ -98,3 +98,11 @@ minetest.register_tool("sbz_resources:angels_wing", {
         return itemstack
     end,
 })
+minetest.register_craft({
+    output = "sbz_resources:angels_wing",
+    recipe = {
+        {"sbz_resources:stone", "sbz_resources:stone", "sbz_resources:stone"},
+        {"sbz_resources:stone", "sbz_resources:emittrium_circuit", "sbz_resources:stone"},
+        {"sbz_resources:stone", "sbz_resources:stone", "sbz_resources:stone"}
+    }
+})

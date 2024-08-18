@@ -86,11 +86,10 @@ quests = {
                                     "I would recommend to choose the closest one to you, but any Emitter works. Next, you'll need a Matter Annihilator. You can't destory the Emitters, but you can " .. 
                                     "chip away at them. Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine the Emittrium later, but for now we just need it in it's raw state.", requires = {"Annihilator"}},
 
-    {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a Matter Plate.", requires = {"Obtain Emittrium", "Retaining Circuits"}},
-
-    {type = "quest", title = "Counting Joules", text = "No machine will show how much energy it's storing. For that, you'll need a Joulecounter. Clicking on a machine using the Joulecounter will show how much energy it's currently storing, as well as what the maximum amount it can store is. Crafting one is quite simple: a Emittrium Circuit in the middle, Antimatter Dust in the corners and the rest of the spaces need Matter Plates. Joulecounters won't break, and are pretty much necessary in progressing with machinery.\nTIP: Joulecounters also work on Cables, etc.", requires = {"Emittrium Circuits"}},
-
     {type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.", requires = {"Obtain Emittrium"}},
+
+    {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a Matter Plate.", requires = {"Obtain Emittrium", "Retaining Circuits"}},
+    
 
     -- ======================================================================================
     {type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren islend. So dont just ignore this Questline, okay? :P"},
@@ -107,6 +106,8 @@ quests = {
 
     -- ======================================================================================
     {type = "text", title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it."},
+
+    {type = "quest", title = "Angel's Wing", text = "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.", requires = {"Emittrium Circuits", "Stone"}},
 
     {type = "secret", title = "Emptiness", text = "Damn. You fell off."},
     {type = "secret", title = "Desolate", text = "You talked to yourself."},
