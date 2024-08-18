@@ -78,6 +78,7 @@ minetest.register_node("sbz_resources:power_pipe", {
     description = "Emittrium power pipe",
     connects_to = { "sbz_resources:power_pipe", "group:sbz_machine" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
+    sunlight_propagates = true,
 
     tiles = {"emitter.png"},
 
