@@ -47,7 +47,7 @@ minetest.register_node("sbz_resources:storinator", {
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.2,0.2;8,4;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
@@ -98,7 +98,7 @@ minetest.register_node("sbz_resources:storinator_full_1", {
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.2,0.2;8,4;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
@@ -149,7 +149,7 @@ minetest.register_node("sbz_resources:storinator_full_2", {
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.2,0.2;8,4;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
@@ -200,7 +200,7 @@ minetest.register_node("sbz_resources:storinator_full_3", {
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0,0;8,4;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.2,0.2;8,4;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
