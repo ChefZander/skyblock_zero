@@ -61,7 +61,7 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
             })
             return false
         end
-        if count == 0 then
+        if count <= 0 then
             meta:set_int("count", 10)
             local stack = inv:get_stack("main", 1)
             if stack:is_empty() then
