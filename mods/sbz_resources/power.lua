@@ -25,7 +25,7 @@ function sbz_api.require_power(start_pos, amount)
                 local is_wire = node == "sbz_resources:power_pipe"
                 if is_wire then
                     internal(ipos)
-                elseif is_generator and power_obtained > amount then
+                elseif is_generator and power_obtained < amount then
                     local meta = minetest.get_meta(ipos)
                     local power = meta:get_int("power")
                     if power >= amount then
