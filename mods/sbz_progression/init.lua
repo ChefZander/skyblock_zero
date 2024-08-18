@@ -99,6 +99,10 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
     elseif itemstack:get_name() == "sbz_resources:battery" then
         unlock_achievement(player:get_player_name(), "Batteries")
+
+
+    elseif itemstack:get_name() == "sbz_resources:power_pipe" then
+        unlock_achievement(player:get_player_name(), "Power Pipes")
     end
 end)
 
