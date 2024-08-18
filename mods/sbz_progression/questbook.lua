@@ -90,6 +90,8 @@ quests = {
 
     {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a Matter Plate.", requires = {"Obtain Emittrium", "Retaining Circuits"}},
     
+    {type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with Matter Blobs.", requires = {"Emittrium Circuits"}},
+    
 
     -- ======================================================================================
     {type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren islend. So dont just ignore this Questline, okay? :P"},
