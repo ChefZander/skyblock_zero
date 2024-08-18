@@ -256,7 +256,16 @@ local BATTERY_DRAW_PER_TICK = 10
 
 minetest.register_node("sbz_resources:battery", {
     description = "battery",
-    groups = { sbz_generator = 1, sbz_machine = 1 },
+    groups = { sbz_generator = 1, sbz_machine = 1, matter = 1 },
+})
+
+minetest.register_craft({
+    output = "sbz_resources:battery",
+    recipe = {
+        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"},
+        {"sbz_resources:matter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob"},
+        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"}
+    }
 })
 
 minetest.register_abm({
