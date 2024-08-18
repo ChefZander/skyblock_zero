@@ -1,5 +1,5 @@
 sbz_api.register_generator("sbz_resources:simple_charge_generator", {
-    description = "Simple Charge Generator\n\nGenerates: 10 power.\nRequires 1 Core Dust per 10 Seconds to run.",
+    description = "Simple Charge Generator\n\nGenerates: 30 power.\nRequires 1 Core Dust per 10 Seconds to run.",
     tiles = { "simple_charge_generator.png" },
     groups = { matter = 1, sbz_machine = 1 },
     sunlight_propagates = true,
@@ -29,9 +29,14 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
             to_player = player_name,
             gain = 1.0,
         })
+
+        meta:set_int("count", 10)
     end,
 
     generation_condition = function(pos, node, meta)
+        local count = meta:get_int("count")
+        count = count - 1
+        meta:set_int("count", count)
         local inv = meta:get_inventory()
 
         -- check if fuel is there
@@ -56,36 +61,38 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
             })
             return false
         end
+        if count <= 0 then
+            meta:set_int("count", 10)
+            local stack = inv:get_stack("main", 1)
+            if stack:is_empty() then
+                return false
+            end
 
-        local stack = inv:get_stack("main", 1)
-        if stack:is_empty() then
-            return false
+            stack:take_item(1)
+            inv:set_stack("main", 1, stack)
+
+            minetest.add_particlespawner({
+                amount = 25,
+                time = 1,
+                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+                minvel = { x = 0, y = 5, z = 0 },
+                maxvel = { x = 0, y = 5, z = 0 },
+                minacc = { x = 0, y = 0, z = 0 },
+                maxacc = { x = 0, y = 0, z = 0 },
+                minexptime = 1,
+                maxexptime = 3,
+                minsize = 0.5,
+                maxsize = 1.0,
+                collisiondetection = false,
+                vertical = false,
+                texture = "charged_particle.png",
+                glow = 10
+            })
         end
-
-        stack:take_item(1)
-        inv:set_stack("main", 1, stack)
-
-        minetest.add_particlespawner({
-            amount = 25,
-            time = 1,
-            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-            minvel = { x = 0, y = 5, z = 0 },
-            maxvel = { x = 0, y = 5, z = 0 },
-            minacc = { x = 0, y = 0, z = 0 },
-            maxacc = { x = 0, y = 0, z = 0 },
-            minexptime = 1,
-            maxexptime = 3,
-            minsize = 0.5,
-            maxsize = 1.0,
-            collisiondetection = false,
-            vertical = false,
-            texture = "charged_particle.png",
-            glow = 10
-        })
         return true
     end,
-    power_generated = 10,
+    power_generated = 30,
 })
 
 
