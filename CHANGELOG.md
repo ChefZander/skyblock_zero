@@ -1,10 +1,12 @@
 Release 10
 - Completely recode energy system to use "Cosmic Joules" instead of "Global Power"
-- Added the Joulecounter item
+- Pipe-based energy system
 - Removed quest "Global Power"
 - Added questline "Emittrium"
-- New quests: "Obtain Emittrium", "Emittrium Circuits" and "Counting Joules"
-- One new secret quest
+- New quests: "Obtain Emittrium", "Emittrium Circuits", "Power Pipes", "Batteries", "Reinforced Matter" and "Angel's Wing"
+- new secret quests
+- several ui fixes and a craft guide system
+- added Starlight Collectors
 
 Release 9
 - New questline "Decorator"
