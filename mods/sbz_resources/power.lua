@@ -388,7 +388,7 @@ minetest.register_craft({
 })
 
 minetest.register_node("sbz_resources:creative_battery", {
-    description = "Advanced Battery",
+    description = "Creative Battery",
     tiles = { "creative_battery.png" },
     groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
     battery_max = 10000000, -- 10 mil
