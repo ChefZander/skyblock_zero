@@ -262,10 +262,10 @@ sbz_api.register_generator("sbz_resources:starlight_collector", {
 })
 
 minetest.register_craft({
-    output = "sbz_resources:starlight_collector 2",
+    output = "sbz_resources:starlight_collector",
     recipe = {
-        { "",                            "",                            "" },
-        { "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium" },
+        { "sbz_resources:raw_emittrium",      "sbz_resources:raw_emittrium",   "sbz_resources:raw_emittrium" },
+        { "sbz_resources:power_pipe", "sbz_resources:power_pipe", "sbz_resources:power_pipe" },
         { "sbz_resources:matter_blob",   "sbz_resources:matter_blob",   "sbz_resources:matter_blob" }
     }
 })
