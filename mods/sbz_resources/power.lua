@@ -202,7 +202,7 @@ function sbz_api.switching_station_tick(start_pos)
         local max = v[3]
         local current = v[4]
         local meta = v[5]
-
+    
         if excess > 0 then -- charging
             local power_add = max - current
             if power_add > excess then
@@ -211,14 +211,14 @@ function sbz_api.switching_station_tick(start_pos)
             excess = excess - power_add
             meta:set_int("power", current + power_add)
         elseif excess < 0 then -- discharging
-            local power_remove = -current
-            if power_remove > excess then
-                power_remove = excess
+            local power_remove = current
+            if power_remove > -excess then
+                power_remove = -excess
             end
             excess = excess + power_remove
             meta:set_int("power", current - power_remove)
         end
-    end
+    end    
 
     for k, v in ipairs(batteries) do
         local position = v[1]
