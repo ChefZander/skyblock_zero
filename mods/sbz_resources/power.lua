@@ -532,6 +532,7 @@ minetest.register_node("sbz_resources:connector_on", {
             {-0.25, -0.5, -0.25, 0.25, 0.5, 0.25}
         }
     },
+    drop = "sbz_resources:connector_off",
     tiles = {
         "switch_end.png",
         "switch_end.png",
