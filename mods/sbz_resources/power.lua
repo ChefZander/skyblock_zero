@@ -148,7 +148,7 @@ function sbz_api.switching_station_tick(start_pos)
         minetest.add_particlespawner({
             amount = 500,
             time = 0.3,
-            texture = "error.png",
+            texture = "error_particle.png",
             glow = 14,
             pos = pos,
             radius = 0.1,
