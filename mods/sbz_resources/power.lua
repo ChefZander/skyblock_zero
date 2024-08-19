@@ -163,6 +163,8 @@ minetest.register_node("sbz_resources:power_pipe", {
 
     drawtype = "nodebox",
     light_source = 3,
+    paramtype = "light",
+    sunlight_propagates = true,
 
     groups = { matter = 1, cracky = 3 },
 
