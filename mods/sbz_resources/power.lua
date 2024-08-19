@@ -290,3 +290,61 @@ minetest.register_abm({
                 BATTERY_DRAW_PER_TICK))
     end
 })
+
+minetest.register_node("sbz_resources:switch_off", {
+    description = "Switch",
+    drawtype = "nodebox",
+    paramtype = "light",
+    paramtype2 = "wallmounted",
+    sunlight_propagates = true,
+    light_source = 3,
+    groups = {sbz_machine=1, matter=1, cracky=3},
+    node_box = {
+        type = "fixed",
+        fixed = {
+            {-0.25, -0.5, -0.25, 0.25, 0.5, 0.25}
+        }
+    },
+    tiles = {
+        "switch_end.png",
+        "switch_end.png",
+        "switch_off.png",
+        "switch_off.png",
+        "switch_off.png",
+        "switch_off.png"
+    },
+    connects_to = {"sbz_resources:power_pipe", "group:sbz_machine"},
+    on_rightclick = function (pos, node)
+        node.name = "sbz_resources:switch_on"
+        minetest.swap_node(pos, node)
+    end
+})
+
+minetest.register_node("sbz_resources:switch_on", {
+    description = "Switch",
+    drawtype = "nodebox",
+    paramtype = "light",
+    paramtype2 = "wallmounted",
+    sunlight_propagates = true,
+    light_source = 5,
+    groups = {sbz_machine=1, matter=1, cracky=3, not_in_creative_inventory=1},
+    node_box = {
+        type = "fixed",
+        fixed = {
+            {-0.25, -0.5, -0.25, 0.25, 0.5, 0.25}
+        }
+    },
+    tiles = {
+        "switch_end.png",
+        "switch_end.png",
+        "switch_on.png",
+        "switch_on.png",
+        "switch_on.png",
+        "switch_on.png"
+    },
+    connects_to = {"sbz_resources:power_pipe", "group:sbz_machine"},
+    on_rightclick = function (pos, node)
+        node.name = "sbz_resources:switch_off"
+        minetest.swap_node(pos, node)
+    end
+})
