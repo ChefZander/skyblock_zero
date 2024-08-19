@@ -358,6 +358,46 @@ minetest.register_node("sbz_resources:battery", {
     end
 })
 
+minetest.register_craft({
+    output = "sbz_resources:battery",
+    recipe = {
+        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"},
+        {"sbz_resources:power_pipe", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob"},
+        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"}
+    }
+})
+
+minetest.register_node("sbz_resources:advanced_battery", {
+    description = "Advanced Battery",
+    tiles = { "advanced_battery.png" },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
+    battery_max = BATTERY_MAX_POWER * 2,
+    action = function(pos, node, meta, supply, demand)
+        local current_power = meta:get_int("power")
+        meta:set_string("infotext", string.format("Advanced Battery: %s/%s power", current_power, BATTERY_MAX_POWER * 2))
+    end
+})
+
+minetest.register_craft({
+    output = "sbz_resources:advanced_battery",
+    recipe = {
+        {"sbz_resources:matter_blob", "sbz_resources:battery", "sbz_resources:matter_blob"},
+        {"sbz_resources:battery", "sbz_resources:emittrium_circuit", "sbz_resources:battery"},
+        {"sbz_resources:matter_blob", "sbz_resources:battery", "sbz_resources:matter_blob"}
+    }
+})
+
+minetest.register_node("sbz_resources:creative_battery", {
+    description = "Advanced Battery",
+    tiles = { "creative_battery.png" },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
+    battery_max = 10000000, -- 10 mil
+    action = function(pos, node, meta, supply, demand)
+        local current_power = meta:get_int("power")
+        meta:set_int("power", 10000000)
+        meta:set_string("infotext", string.format("Creative Battery: Infite power"))
+    end
+})
 
 minetest.register_abm({
     label = "Machine timeout check",

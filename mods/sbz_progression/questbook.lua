@@ -174,6 +174,8 @@ quests = {
     {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a Matter Plate.", requires = {"Obtain Emittrium", "Retaining Circuits"}},
     
     {type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with Matter Blobs.", requires = {"Emittrium Circuits"}},
+    
+    {type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Emittrium Circuits", "Batteries" }},
 
 
 
