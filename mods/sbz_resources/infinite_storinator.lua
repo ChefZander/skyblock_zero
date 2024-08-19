@@ -70,25 +70,22 @@ sbz_api.register_machine("sbz_resources:infinite_storinator", {
         local max_width = 8
 
         local list_inv_w = max_width
-        local list_inv_h = slots / max_width
+        local list_inv_h = math.floor(slots / max_width)
 
-        if list_inv_w < 8 then
-            list_inv_w = slots
-            list_inv_h = 1
-        end
+
 
         meta:set_string("formspec", string.format([[
             formspec_version[7]
             size[10.6,15.2]
             %s
             scrollbar[10,0.2;0.4,8.6;vertical;scrollbar;0]
-            scroll_container[0.2,0.2;9.8,9;scrollbar;vertical;1]
+            scroll_container[0.2,0.2;9.8,8.6;scrollbar;vertical;1]
             list[context;inv;0,0;%s,%s]
             scroll_container_end[]
             list[current_player;main;0.2,9;8,4;]
-            field[0.2,14.4;3,0.5;set_slots;Amount of collumns (needs power);%s]
+            field[0.2,14.4;3,0.5;set_slots;Amount of rows;%s]
             listring[]
-    ]], make_scrollbaroptions_for_scroll_container(9, math.max(10, list_inv_w), 1), list_inv_w, list_inv_h,
+    ]], make_scrollbaroptions_for_scroll_container(8.6, math.max(9, list_inv_h), 1), list_inv_w, list_inv_h,
             slots_set / 8))
         return power_consumed
     end,
