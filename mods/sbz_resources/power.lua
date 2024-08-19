@@ -249,6 +249,15 @@ minetest.register_node("sbz_resources:switching_station", {
     end,
 })
 
+minetest.register_craft({
+    output = "sbz_resources:switching_station",
+    recipe = {
+        {"", "", ""},
+        {"sbz_resources:power_pipe", "sbz_resources:matter_blob", "sbz_resources:power_pipe"},
+        {"", "", ""}
+    }
+})
+
 local function wire(len, stretch_to)
     local full = 0.5
     local base_box = { -len, -len, -len, len, len, len }
