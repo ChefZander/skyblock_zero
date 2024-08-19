@@ -75,17 +75,14 @@ local touched_nodes = {}
 
 
 local function iterate_around_pos(pos, func)
-    func({ x = pos.x - 1, y = pos.y, z = pos.z })
-    func({ x = pos.x + 1, y = pos.y, z = pos.z })
-
-    func({ x = pos.x, y = pos.y - 1, z = pos.z })
-    func({ x = pos.x, y = pos.y + 1, z = pos.z })
-
-    func({ x = pos.x, y = pos.y, z = pos.z - 1 })
-    func({ x = pos.x, y = pos.y, z = pos.z + 1 })
+    for i = 0, 5 do
+        local dir = minetest.wallmounted_to_dir(i)
+        func(pos+dir, dir)
+    end
 end
 
 local hash = minetest.hash_node_position
+local node_defs = minetest.registered_nodes
 
 function sbz_api.switching_station_tick(start_pos)
     local t0 = minetest.get_us_time()
@@ -93,30 +90,33 @@ function sbz_api.switching_station_tick(start_pos)
         generators = {},
         machines = {},
         switching_stations = {},
-        batteries = {}
+        batteries = {},
+        connectors = {}
     }
 
     local generators = network.generators
     local machines = network.machines
     local switching_stations = network.switching_stations
     local batteries = network.batteries
+    local connectors = network.connectors
 
     local pipes_counter = 0
 
     sbz_api.vm_begin()
 
-    local function internal(pos)
+    local function internal(pos, by_connector)
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
-            iterate_around_pos(pos, function(ipos)
+            iterate_around_pos(pos, function(ipos, dir)
                 if not seen[hash(ipos)] then
                     local node = sbz_api.vm_get_node(ipos).name
                     local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
                     local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
                     local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
+                    local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
 
                     if node == "sbz_resources:switching_station" then
-                        switching_stations[#switching_stations + 1] = ipos
+                        if not by_connector then switching_stations[#switching_stations + 1] = ipos end
                     elseif node == "sbz_resources:power_pipe" then
                         pipes_counter = pipes_counter + 1
                         internal(ipos)
@@ -126,6 +126,8 @@ function sbz_api.switching_station_tick(start_pos)
                         generators[#generators + 1] = { ipos, node }
                     elseif is_machine then
                         machines[#machines + 1] = { ipos, node }
+                    elseif is_connector then
+                        internal(ipos+dir, true)
                     end
                     seen[hash(ipos)] = true
                 end
@@ -138,9 +140,6 @@ function sbz_api.switching_station_tick(start_pos)
     local supply = 0
     local demand = 0
     local battery_max = 0
-
-    local node_defs = minetest.registered_nodes
-
 
     if #switching_stations > 0 then
         local pos = vector.copy(start_pos)
@@ -418,7 +417,7 @@ minetest.register_node("sbz_resources:switch_on", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 5,
-    groups = {pipe_connects=1, matter=1, cracky=3, not_in_creative_inventory=1},
+    groups = {pipe_connects=1, sbz_connector=1, matter=1, cracky=3, not_in_creative_inventory=1},
     node_box = {
         type = "fixed",
         fixed = {
