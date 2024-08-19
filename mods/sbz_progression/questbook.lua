@@ -167,6 +167,8 @@ quests = {
 
     { type = "quest", title = "Power Pipes",          text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.", requires = { "Obtain Emittrium" } },
 
+    { type = "quest", title = "Switching Station",          text = "To build an actual functioning network, you'll need a switching station connected to your network to manage the flow of power.\nIMPORTANT: If you connect more than one Switching Station to a network, they will explode until there is only one left!", requires = { "Power Pipes" } },
+
     { type = "quest", title = "Starlight Collectors",          text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
     {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a Matter Plate.", requires = {"Obtain Emittrium", "Retaining Circuits"}},

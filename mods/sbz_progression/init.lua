@@ -111,6 +111,10 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
     elseif itemstack:get_name() == "sbz_resources:reinforced_matter" then
         unlock_achievement(player:get_player_name(), "Reinforced Matter")
+
+
+    elseif itemstack:get_name() == "sbz_resources:switching_station" then
+        unlock_achievement(player:get_player_name(), "Switching Station")
     end
 end)
 
