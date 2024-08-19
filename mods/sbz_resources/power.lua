@@ -237,6 +237,7 @@ end
 
 minetest.register_node("sbz_resources:switching_station", {
     description = "Switching Station",
+    tiles = {"switching_station.png"},
     groups = { matter = 1, cracky = 1 },
     light_source = 3,
 
