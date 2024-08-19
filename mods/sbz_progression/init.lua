@@ -33,6 +33,10 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "A bigger platform")
 
 
+    elseif itemstack:get_name() == "sbz_resources:matter_stair" then
+        unlock_achievement(player:get_player_name(), "Matter Stairs")
+
+
     elseif itemstack:get_name() == "sbz_resources:antimatter_dust" then
         unlock_achievement(player:get_player_name(), "Antimatter")
 
