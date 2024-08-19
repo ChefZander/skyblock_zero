@@ -348,7 +348,7 @@ end
 local BATTERY_MAX_POWER = 300
 
 minetest.register_node("sbz_resources:battery", {
-    description = "battery",
+    description = "Battery",
     tiles = { "battery.png" },
     groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
     battery_max = BATTERY_MAX_POWER,
