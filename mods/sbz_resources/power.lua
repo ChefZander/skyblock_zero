@@ -77,6 +77,27 @@ local touched_nodes = {}
 
 local hey_this_is_sus_limit = 501 -- miliseconds
 
+local function check_for_sus_action(pos, meta)
+    if math.abs(meta:get_int("last_activated") - minetest.get_us_time() / 1000) < hey_this_is_sus_limit then
+        local range = vector.new(5, 5, 5)
+        minetest.add_particlespawner({
+            amount = 500,
+            time = 0.3,
+            texture = "error_particle.png",
+            glow = 14,
+            pos = pos,
+            radius = 0.1,
+            acc = { min = -range, max = range },
+            vel = { min = -range, max = range },
+            drag = { x = .5, y = .5, z = .5 }
+        })
+        minetest.remove_node(pos)
+        return true
+    end
+    meta:set_int("last_activated", minetest.get_us_time() / 1000)
+    return false
+end
+
 local function iterate_around_pos(pos, func)
     func({ x = pos.x - 1, y = pos.y, z = pos.z })
     func({ x = pos.x + 1, y = pos.y, z = pos.z })
@@ -322,24 +343,9 @@ function sbz_api.register_machine(name, def)
                 meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
                 return def.power_needed
             else
-                if math.abs(meta:get_int("last_activated") - minetest.get_us_time() / 1000) < hey_this_is_sus_limit then
-                    local range = vector.new(5, 5, 5)
-                    minetest.add_particlespawner({
-                        amount = 500,
-                        time = 0.3,
-                        texture = "error_particle.png",
-                        glow = 14,
-                        pos = pos,
-                        radius = 0.1,
-                        acc = { min = -range, max = range },
-                        vel = { min = -range, max = range },
-                        drag = { x = .5, y = .5, z = .5 }
-                    })
-                    minetest.remove_node(pos)
+                if check_for_sus_action(pos, meta) then
                     return 0
                 end
-                meta:set_int("last_activated", math.floor(minetest.get_us_time() / 1000))
-
                 meta:set_string("infotext", "Running")
                 local count = meta:get_int("count")
                 if count >= def.action_interval then
@@ -351,6 +357,14 @@ function sbz_api.register_machine(name, def)
                 return def.power_needed
             end
         end
+    else
+        local old_action = def.action
+        function def.action(pos, node, meta, supply, demand)
+            if check_for_sus_action(pos, meta) then
+                return 0
+            end
+            return old_action(pos, node, meta, supply, demand)
+        end
     end
     minetest.register_node(name, def)
 end
@@ -360,8 +374,19 @@ function sbz_api.register_generator(name, def)
     def.groups.sbz_generator = 1
     if def.power_generated then
         def.action = function(pos, node, meta, ...)
+            if check_for_sus_action(pos, meta) then
+                return 0
+            end
             meta:set_string("infotext", "Running")
             return def.power_generated
+        end
+    else
+        local old_action = def.action
+        def.action = function(pos, node, meta, ...)
+            if check_for_sus_action(pos, meta) then
+                return 0
+            end
+            return old_action(pos, node, meta, ...)
         end
     end
     minetest.register_node(name, def)
