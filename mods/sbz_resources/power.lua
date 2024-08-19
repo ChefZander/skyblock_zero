@@ -271,7 +271,7 @@ local function wire(len, stretch_to)
     return base_box
 end
 
-local wire_size = 1 / 5
+local wire_size = 1 / 8
 
 minetest.register_node("sbz_resources:power_pipe", {
     description = "Emittrium power pipe",
