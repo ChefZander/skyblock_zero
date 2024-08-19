@@ -21,6 +21,45 @@ minetest.register_craft({
     }
 })
 
+minetest.register_node("sbz_resources:matter_stair", {
+    description = "Matter Stair",
+    tiles = { "matter_blob.png" },
+    drawtype = "nodebox",
+    paramtype2 = "facedir",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, 0, 0.5},
+			{-0.5, 0, 0, 0.5, 0.5, 0.5},
+		}
+	},
+    groups = { matter = 1, cracky = 3 },
+    sunlight_propagates = true,
+    walkable = true,
+    sounds = {
+        footstep = { name = "step", gain = 1.0 },
+    },
+    on_punch = function(pos, node, puncher)
+        minetest.sound_play("step", { pos = pos, gain = 1.0 })
+    end,
+})
+minetest.register_craft({
+    output = "sbz_resources:matter_stair 3",
+    recipe = {
+        { "sbz_resources:matter_blob", "", "" },
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "" },
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
+    }
+})
+minetest.register_craft({
+    output = "sbz_resources:matter_stair 3",
+    recipe = {
+        { "", "", "sbz_resources:matter_blob" },
+        { "", "sbz_resources:matter_blob", "sbz_resources:matter_blob" },
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
+    }
+})
+
 sbz_api.register_generator("sbz_resources:simple_charged_field", {
     description = "Simple Charged Field\n\nGenerates: 3 power.\nDecaying: 10% chance every 100s. (when placed)",
     drawtype = "glasslike",
@@ -223,10 +262,10 @@ sbz_api.register_generator("sbz_resources:starlight_collector", {
 })
 
 minetest.register_craft({
-    output = "sbz_resources:starlight_collector 2",
+    output = "sbz_resources:starlight_collector",
     recipe = {
-        { "",                            "",                            "" },
-        { "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium" },
+        { "sbz_resources:raw_emittrium",      "sbz_resources:raw_emittrium",   "sbz_resources:raw_emittrium" },
+        { "sbz_resources:power_pipe", "sbz_resources:power_pipe", "sbz_resources:power_pipe" },
         { "sbz_resources:matter_blob",   "sbz_resources:matter_blob",   "sbz_resources:matter_blob" }
     }
 })
