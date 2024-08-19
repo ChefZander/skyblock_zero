@@ -211,15 +211,12 @@ function sbz_api.switching_station_tick(start_pos)
             excess = excess - power_add
             meta:set_int("power", current + power_add)
         elseif excess < 0 then -- discharging
-            local power_remove = max - current
+            local power_remove = -current
             if power_remove > excess then
                 power_remove = excess
             end
-            if power_remove > current then
-                power_remove = 0
-            end
             excess = excess + power_remove
-            meta:set_int("power", current + power_remove)
+            meta:set_int("power", current - power_remove)
         end
     end
 
