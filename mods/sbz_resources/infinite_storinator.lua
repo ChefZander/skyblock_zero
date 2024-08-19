@@ -95,7 +95,11 @@ sbz_api.register_machine("sbz_resources:infinite_storinator", {
     on_receive_fields = function(pos, _, fields)
         local meta = minetest.get_meta(pos)
         if fields.set_slots then
-            meta:set_int("slots_set", math.max(max_slots, tonumber(math.abs(math.floor(fields.set_slots))) * 8 or 8))
+            local n_slots = tonumber(math.abs(math.floor(fields.set_slots))) * 8 or 8
+            if n_slots > max_slots then
+                n_slots = max_slots
+            end
+            meta:set_int("slots_set", n_slots)
         end
     end,
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
