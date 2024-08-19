@@ -476,8 +476,8 @@ minetest.register_abm({
 
 })
 
-minetest.register_node("sbz_resources:switch_off", {
-    description = "Switch",
+minetest.register_node("sbz_resources:connector_off", {
+    description = "Connector",
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "wallmounted",
@@ -505,8 +505,8 @@ minetest.register_node("sbz_resources:switch_off", {
     end
 })
 
-minetest.register_node("sbz_resources:switch_on", {
-    description = "Switch",
+minetest.register_node("sbz_resources:connector_on", {
+    description = "Connector",
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "wallmounted",
