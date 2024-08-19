@@ -565,3 +565,34 @@ minetest.register_craft({
         {"sbz_resources:power_pipe", "sbz_resources:reinforced_matter", "sbz_resources:power_pipe"}
     }
 })
+
+minetest.register_node("sbz_resources:phosphor_off", {
+    description = "Phosphor",
+    tiles = {"matter_blob.png^phosphor_overlay.png"},
+    groups = {matter=1, cracky=3, pipe_connects=1, sbz_machine=1},
+    action = function (pos, node, meta, supply, demand)
+        if demand+1 <= supply then
+            minetest.set_node(pos, {name="sbz_resources:phosphor_on"})
+            return check_for_sus_action(pos, meta) and 0 or 1
+        end
+        return 0
+    end
+})
+
+minetest.register_node("sbz_resources:phosphor_on", {
+    description = "Phosphor",
+    tiles = {"emitter_imitator.png^phosphor_overlay.png"},
+    paramtype = "light",
+    sunlight_propagates = true,
+    light_source = 2,
+    groups = {matter=1, cracky=3, pipe_connects=1, sbz_machine=1, not_in_creative_inventory=1},
+    drop = "sbz_resources:phosphor_off",
+    action = function (pos, node, meta, supply, demand)
+        if demand+1 <= supply then
+            return check_for_sus_action(pos, meta) and 0 or 1
+        else
+            minetest.set_node(pos, {name="sbz_resources:phosphor_off"})
+            return 0
+        end
+    end
+})
