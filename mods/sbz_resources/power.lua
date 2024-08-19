@@ -395,7 +395,7 @@ minetest.register_node("sbz_resources:creative_battery", {
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
         meta:set_int("power", 10000000)
-        meta:set_string("infotext", string.format("Creative Battery: Infite power"))
+        meta:set_string("infotext", string.format("Creative Battery: Infinite power"))
     end
 })
 
