@@ -101,6 +101,8 @@ function sbz_api.switching_station_tick(start_pos)
     local switching_stations = network.switching_stations
     local batteries = network.batteries
 
+    local pipes_counter = 0
+
     sbz_api.vm_begin()
 
     local function internal(pos)
@@ -116,6 +118,7 @@ function sbz_api.switching_station_tick(start_pos)
                     if node == "sbz_resources:switching_station" then
                         switching_stations[#switching_stations + 1] = ipos
                     elseif node == "sbz_resources:power_pipe" then
+                        pipes_counter = pipes_counter + 1
                         internal(ipos)
                     elseif is_battery then
                         batteries[#batteries + 1] = { ipos, node }
@@ -227,11 +230,13 @@ function sbz_api.switching_station_tick(start_pos)
         node_defs[node].action(position, node, meta, supply, demand)
     end
 
+    local network_size = #generators + #machines + #batteries + pipes_counter
+
     local t1 = minetest.get_us_time()
 
     minetest.get_meta(start_pos):set_string("infotext",
-        string.format("Supply: %s\nDemand: %s\nBattery supply: %s/%s\nLag: %sus", supply - battery_supply_only,
-            demand, battery_supply_only, battery_max, t1 - t0))
+        string.format("Supply: %s\nDemand: %s\nBattery supply: %s/%s\nLag: %sus\nNetwork Size: %s", supply - battery_supply_only,
+            demand, battery_supply_only, battery_max, t1 - t0, network_size))
     return true
 end
 
