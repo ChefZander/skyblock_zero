@@ -1,3 +1,4 @@
+local generator_power_production = 30
 sbz_api.register_generator("sbz_resources:simple_charge_generator", {
     description = "Simple Charge Generator\n\nGenerates: 30 power.\nRequires 1 Core Dust per 10 Seconds to run.",
     tiles = { "simple_charge_generator.png" },
@@ -33,7 +34,7 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
         meta:set_int("count", 10)
     end,
 
-    generation_condition = function(pos, node, meta)
+    action = function(pos, node, meta)
         local count = meta:get_int("count")
         count = count - 1
         meta:set_int("count", count)
@@ -59,13 +60,15 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
                 texture = "error_particle.png",
                 glow = 10
             })
-            return false
+            meta:set_string("infotext", "Stopped")
+            return 0
         end
         if count <= 0 then
             meta:set_int("count", 10)
             local stack = inv:get_stack("main", 1)
             if stack:is_empty() then
-                return false
+                meta:set_string("infotext", "Stopped")
+                return 0
             end
 
             stack:take_item(1)
@@ -90,9 +93,9 @@ sbz_api.register_generator("sbz_resources:simple_charge_generator", {
                 glow = 10
             })
         end
-        return true
+        meta:set_string("infotext", "Running")
+        return generator_power_production
     end,
-    power_generated = 30,
 })
 
 

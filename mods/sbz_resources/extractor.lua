@@ -32,7 +32,7 @@ sbz_api.register_machine("sbz_resources:simple_matter_extractor", {
             gain = 1.0,
         })
     end,
-    action = function(pos, node, meta)
+    action = function(pos, node, meta, supply, demand)
         local inv = meta:get_inventory()
 
         local itemstack = ItemStack("sbz_resources:matter_dust")
