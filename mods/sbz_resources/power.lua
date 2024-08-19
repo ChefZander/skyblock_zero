@@ -189,19 +189,40 @@ function sbz_api.switching_station_tick(start_pos)
         demand = demand + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
     end
 
+    local excess = (supply - battery_supply_only) - demand
+
     for k, v in ipairs(batteries) do
+        if excess == 0 then break end
         local position = v[1]
         local node = v[2]
         local max = v[3]
         local current = v[4]
         local meta = v[5]
-        local power_add = max - current
-        if supply - power_add <= demand then
-            local max_we_can_afford = supply - demand
-            power_add = max_we_can_afford - current
+
+        if excess > 0 then -- charging
+            local power_add = max - current
+            if power_add > excess then
+                power_add = excess
+            end
+            excess = excess - power_add
+            meta:set_int("power", current + power_add)
+        elseif excess < 0 then -- discharging
+            local power_remove = max - current
+            if power_remove > excess then
+                power_remove = excess
+            end
+            if power_remove > current then
+                power_remove = 0
+            end
+            excess = excess + power_remove
+            meta:set_int("power", current + power_remove)
         end
-        meta:set_int("power", math.abs(current + power_add))
-        supply = supply - power_add
+    end
+
+    for k, v in ipairs(batteries) do
+        local position = v[1]
+        local node = v[2]
+        local meta = v[5]
         node_defs[node].action(position, node, meta, supply, demand)
     end
 
