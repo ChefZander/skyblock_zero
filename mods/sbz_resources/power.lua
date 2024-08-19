@@ -70,6 +70,10 @@ end
     Now the code below is licensed normally
 ]]
 
+local timeout_limit = 3 -- seconds
+local touched_nodes = {}
+
+
 local function iterate_around_pos(pos, func)
     func({ x = pos.x - 1, y = pos.y, z = pos.z })
     func({ x = pos.x + 1, y = pos.y, z = pos.z })
@@ -83,55 +87,140 @@ end
 
 local hash = minetest.hash_node_position
 
-function sbz_api.require_power(start_pos, amount)
-    local seen = {}
-    local power_obtained = 0
-    local delayed_functions = {}
+function sbz_api.switching_station_tick(start_pos)
+    local seen, network = {}, {
+        generators = {},
+        machines = {},
+        switching_stations = {},
+        batteries = {}
+    }
+
+    local generators = network.generators
+    local machines = network.machines
+    local switching_stations = network.switching_stations
+    local batteries = network.batteries
 
     sbz_api.vm_begin()
 
     local function internal(pos)
-        if power_obtained < amount and not seen[hash(pos)] then
+        if not seen[hash(pos)] then
             seen[hash(pos)] = true
             iterate_around_pos(pos, function(ipos)
-                local node = sbz_api.vm_get_node(ipos).name
-                local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
-                local is_wire = node == "sbz_resources:power_pipe"
-                if is_wire then
-                    internal(ipos)
-                elseif is_generator and power_obtained < amount and hash(ipos) ~= hash(start_pos) then
-                    local meta = minetest.get_meta(ipos)
-                    local power = meta:get_int("power")
-                    if power >= amount then
-                        power_obtained = amount -- stops iterating after
-                        meta:set_int("power", (power - amount))
-                    elseif power ~= 0 then      -- not quite fills it up
-                        power_obtained = power_obtained + power
-                        local overcharge = 0
-                        if power_obtained > amount then
-                            overcharge = power_obtained - amount
-                            power_obtained = amount
-                        end
-                        delayed_functions[#delayed_functions + 1] = function()
-                            meta:set_int("power", overcharge)
-                        end
+                if not seen[hash(ipos)] then
+                    local node = sbz_api.vm_get_node(ipos).name
+                    local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
+                    local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
+                    local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
+
+                    if node == "sbz_resources:switching_station" then
+                        switching_stations[#switching_stations + 1] = ipos
+                    elseif node == "sbz_resources:power_pipe" then
+                        internal(ipos)
+                    elseif is_battery then
+                        batteries[#batteries + 1] = { ipos, node }
+                    elseif is_generator then
+                        generators[#generators + 1] = { ipos, node }
+                    elseif is_machine then
+                        machines[#machines + 1] = { ipos, node }
                     end
+                    seen[hash(ipos)] = true
                 end
             end)
         end
     end
     internal(table.copy(start_pos))
-
     sbz_api.vm_abort()
-    if power_obtained == amount then
-        for i = 1, #delayed_functions do
-            delayed_functions[i]()
-        end
-        return true
-    else
+
+    local supply = 0
+    local demand = 0
+    local battery_max = 0
+
+    local node_defs = minetest.registered_nodes
+
+
+    if #switching_stations > 0 then
+        local pos = vector.copy(start_pos)
+        local range = vector.new(5, 5, 5)
+        minetest.add_particlespawner({
+            amount = 500,
+            time = 0.3,
+            texture = "error.png",
+            glow = 14,
+            pos = pos,
+            radius = 0.1,
+            acc = { min = -range, max = range },
+            vel = { min = -range, max = range },
+            drag = { x = .5, y = .5, z = .5 }
+        })
+        minetest.remove_node(start_pos)
         return false
     end
+
+    for k, v in ipairs(batteries) do
+        local position = v[1]
+        local node = v[2]
+        local meta = minetest.get_meta(position)
+
+        touched_nodes[hash(position)] = os.time()
+
+        v[3] = node_defs[node].battery_max
+        v[4] = meta:get_int("power")
+        v[5] = meta
+
+        battery_max = battery_max + v[3]
+        supply = supply + v[4]
+    end
+
+    local battery_supply_only = supply -- copy
+
+    for k, v in ipairs(generators) do
+        local position = v[1]
+        local node = v[2]
+
+        touched_nodes[hash(position)] = os.time()
+        supply = supply + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+    end
+
+    for k, v in ipairs(machines) do
+        local position = v[1]
+        local node = v[2]
+
+        touched_nodes[hash(position)] = os.time()
+        demand = demand + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+    end
+
+    for k, v in ipairs(batteries) do
+        local position = v[1]
+        local node = v[2]
+        local max = v[3]
+        local current = v[4]
+        local meta = v[5]
+        local power_add = max - current
+        if supply - power_add <= demand then
+            local max_we_can_afford = supply - demand
+            power_add = max_we_can_afford - current
+        end
+        meta:set_int("power", math.abs(current + power_add))
+        supply = supply - power_add
+        node_defs[node].action(position, node, meta, supply, demand)
+    end
+
+    minetest.get_meta(start_pos):set_string("infotext",
+        string.format("Supply: %s\nDemand: %s\nBattery supply: %s\nBattery max: %s", supply - battery_supply_only,
+            demand, battery_supply_only, battery_max))
+    return true
 end
+
+minetest.register_node("sbz_resources:switching_station", {
+    description = "Switching Station",
+    groups = { matter = 1, cracky = 1 },
+    light_source = 3,
+
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        meta:set_string("infotext", "Loading....")
+    end,
+})
 
 local function wire(len, stretch_to)
     local full = 0.5
@@ -156,7 +245,7 @@ local wire_size = 1 / 5
 
 minetest.register_node("sbz_resources:power_pipe", {
     description = "Emittrium power pipe",
-    connects_to = { "sbz_resources:power_pipe", "group:sbz_machine" },
+    connects_to = { "sbz_resources:power_pipe", "group:sbz_machine", "sbz_resources:switching_station" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
 
     tiles = { "emitter.png" },
@@ -183,110 +272,74 @@ minetest.register_craft({
     recipe = { "sbz_resources:raw_emittrium", "sbz_resources:matter_plate" }
 })
 
--- an api to register very simple machines, if you are reading this, don't restrict yourself to what this api can do
-
 function sbz_api.register_machine(name, def)
     def.groups.sbz_machine = 1
-    def.power_needed = def.power_needed
-    minetest.register_node(name, def)
-    minetest.register_abm({
-        nodenames = { name },
-        interval = 1,
-        chance = def.action_chance or 1,
-        action = function(pos, node, active_object_count, active_object_count_wider)
-            local meta = minetest.get_meta(pos)
-            local count = meta:get_int("count")
-            if sbz_api.require_power(pos, def.power_needed) then
-                meta:set_string("infotext", "Running")
-                count = count + 1
-                meta:set_int("count", count)
-                if count >= def.action_interval then
-                    def.action(pos, node, meta)
-                    meta:set_int("count", 0)
-                end
-            else
-                meta:set_int("count", 0)
+    if not def.control_action_raw then
+        local old_action = def.action
+
+        function def.action(pos, node, meta, supply, demand)
+            if (demand + def.power_needed) > supply then
                 meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
-                minetest.add_particlespawner({
-                    amount = 10,
-                    time = 1,
-                    minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                    maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                    minvel = { x = -0.5, y = -0.5, z = -0.5 },
-                    maxvel = { x = 0.5, y = 0.5, z = 0.5 },
-                    minacc = { x = 0, y = 0, z = 0 },
-                    maxacc = { x = 0, y = 0, z = 0 },
-                    minexptime = 5,
-                    maxexptime = 10,
-                    minsize = 0.5,
-                    maxsize = 1.0,
-                    collisiondetection = false,
-                    vertical = false,
-                    texture = "error_particle.png",
-                    glow = 10
-                })
+                return def.power_needed
+            else
+                meta:set_string("infotext", "Running")
+                local count = meta:get_int("count")
+                if count >= def.action_interval then
+                    old_action(pos, node, meta, supply, demand)
+                    meta:set_int("count", 0)
+                else
+                    meta:set_int("count", count + 1)
+                end
+                return def.power_needed
             end
         end
-    })
+    end
+    minetest.register_node(name, def)
 end
 
 function sbz_api.register_generator(name, def)
-    def.groups.sbz_generator = 1
     def.groups.sbz_machine = 1
-    if def.generation_condition == nil then
-        def.generation_condition = function(...) return true end
+    def.groups.sbz_generator = 1
+    if def.power_generated then
+        def.action = function(pos, node, meta, ...)
+            meta:set_string("infotext", "Running")
+            return def.power_generated
+        end
     end
     minetest.register_node(name, def)
-    minetest.register_abm({
-        nodenames = { name },
-        interval = def.generation_interval or 1,
-        chance = def.generation_chance or 1,
-        action = function(pos, node, active_object_count, active_object_count_wider)
-            local meta = minetest.get_meta(pos)
-            if def.generation_condition(pos, node, meta) then
-                meta:set_int("power", def.power_generated)
-                meta:set_string("infotext", "Generating power: " .. def.power_generated)
-            else
-                meta:set_string("infotext", "Off")
-            end
-        end
-    })
 end
 
 local BATTERY_MAX_POWER = 300
-local BATTERY_DRAW_PER_TICK = 10
 
 minetest.register_node("sbz_resources:battery", {
     description = "battery",
-    tiles = {"battery.png"},
-    groups = { sbz_generator = 1, sbz_machine = 1, matter = 1 },
+    tiles = { "battery.png" },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
+    battery_max = BATTERY_MAX_POWER,
+    action = function(pos, node, meta, supply, demand)
+        local current_power = meta:get_int("power")
+        meta:set_string("infotext", string.format("Battery: %s/%s power", current_power, BATTERY_MAX_POWER))
+    end
 })
 
-minetest.register_craft({
-    output = "sbz_resources:battery",
-    recipe = {
-        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"},
-        {"sbz_resources:matter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob"},
-        {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"}
-    }
+
+minetest.register_abm({
+    label = "Machine timeout check",
+    nodenames = { "group:sbz_machine" },
+    interval = timeout_limit,
+    chance = 1,
+    action = function(pos, node)
+        if not touched_nodes[hash(pos)] or (os.time() - touched_nodes[hash(pos)] >= timeout_limit) then
+            minetest.get_meta(pos):set_string("infotext", "No network found")
+        end
+    end
 })
 
 minetest.register_abm({
-    nodenames = { "sbz_resources:battery" },
+    label = "Machine activation - switching stations",
+    nodenames = { "sbz_resources:switching_station" },
     interval = 1,
     chance = 1,
-    action = function(pos, node)
-        local meta = minetest.get_meta(pos)
-        local power = meta:get_int("power")
-        if power < BATTERY_MAX_POWER then
-            if sbz_api.require_power(pos, BATTERY_DRAW_PER_TICK) then
-                local new_power = power + BATTERY_DRAW_PER_TICK
-                if new_power > BATTERY_MAX_POWER then new_power = BATTERY_MAX_POWER end
-                meta:set_int("power", new_power)
-            end
-        end
-        meta:set_string("infotext",
-            string.format("Battery: %s/%s\nDraws %s power per second", meta:get_int("power"), BATTERY_MAX_POWER,
-                BATTERY_DRAW_PER_TICK))
-    end
+    action = sbz_api.switching_station_tick
+
 })
