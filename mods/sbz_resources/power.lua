@@ -107,13 +107,7 @@ end
 local hash = minetest.hash_node_position
 local node_defs = minetest.registered_nodes
 
-function sbz_api.switching_station_tick(start_pos)
-    if touched_nodes[hash(start_pos)] and os.time()-touched_nodes[hash(start_pos)] < 1 then
-        minetest.get_meta(start_pos):set_string("infotext", "Inactive (connected to another network)")
-        return
-    end
-
-    local t0 = minetest.get_us_time()
+function sbz_api.assemble_network(start_pos)
     local seen, network = {}, {
         generators = {},
         machines = {},
@@ -159,6 +153,7 @@ function sbz_api.switching_station_tick(start_pos)
                         machines[#machines + 1] = { ipos, node }
                     elseif is_connector then
                         local dir = ipos-pos
+                        pipes_counter = pipes_counter+1
                         internal(ipos+dir, true)
                     end
                     seen[hash(ipos)] = true
@@ -168,6 +163,22 @@ function sbz_api.switching_station_tick(start_pos)
     end
     internal(table.copy(start_pos))
     sbz_api.vm_abort()
+    return network, pipes_counter
+end
+
+function sbz_api.switching_station_tick(start_pos)
+    if touched_nodes[hash(start_pos)] and os.time()-touched_nodes[hash(start_pos)] < 1 then
+        minetest.get_meta(start_pos):set_string("infotext", "Inactive (connected to another network)")
+        return
+    end
+
+    local t0 = minetest.get_us_time()
+    
+    local network, pipes_counter = sbz_api.assemble_network(start_pos)
+    local generators = network.generators
+    local machines = network.machines
+    local switching_stations = network.switching_stations
+    local batteries = network.batteries
 
     local supply = 0
     local demand = 0
@@ -500,7 +511,7 @@ minetest.register_node("sbz_resources:connector_off", {
     },
     connects_to = {"sbz_resources:power_pipe", "group:sbz_machine"},
     on_rightclick = function (pos, node)
-        node.name = "sbz_resources:switch_on"
+        node.name = "sbz_resources:connector_on"
         minetest.swap_node(pos, node)
     end
 })
@@ -529,7 +540,7 @@ minetest.register_node("sbz_resources:connector_on", {
     },
     connects_to = {"sbz_resources:power_pipe", "group:sbz_machine"},
     on_rightclick = function (pos, node)
-        node.name = "sbz_resources:switch_off"
+        node.name = "sbz_resources:connector_off"
         minetest.swap_node(pos, node)
     end
 })
