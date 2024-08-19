@@ -596,3 +596,9 @@ minetest.register_node("sbz_resources:phosphor_on", {
         end
     end
 })
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_resources:phosphor_on",
+    recipe = {"sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit"}
+})

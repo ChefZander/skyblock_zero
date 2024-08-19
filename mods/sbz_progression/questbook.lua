@@ -216,6 +216,8 @@ quests = {
         requires = { "Emitter Immitators", "Matter Plates" }
     },
 
+    {type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires={"Emitter Immitators", "Emittrium Circuits"}},
+
     -- ======================================================================================
     { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
