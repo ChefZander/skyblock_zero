@@ -240,7 +240,7 @@ end
 minetest.register_node("sbz_resources:switching_station", {
     description = "Switching Station",
     tiles = {"switching_station.png"},
-    groups = { matter = 1, cracky = 1 },
+    groups = { matter = 1, cracky = 1, pipe_connects = 1 },
     light_source = 3,
 
     on_construct = function(pos)
@@ -281,7 +281,7 @@ local wire_size = 1 / 8
 
 minetest.register_node("sbz_resources:power_pipe", {
     description = "Emittrium power pipe",
-    connects_to = { "sbz_resources:power_pipe", "group:sbz_machine", "sbz_resources:switching_station" },
+    connects_to = {"group:pipe_connects"},
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
 
     tiles = { "emitter.png" },
@@ -291,7 +291,7 @@ minetest.register_node("sbz_resources:power_pipe", {
     paramtype = "light",
     sunlight_propagates = true,
 
-    groups = { matter = 1, cracky = 3 },
+    groups = { matter = 1, cracky = 3, pipe_connects = 1 },
 
     node_box = {
         type = "connected",
@@ -352,7 +352,7 @@ local BATTERY_MAX_POWER = 300
 minetest.register_node("sbz_resources:battery", {
     description = "battery",
     tiles = { "battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1 },
     battery_max = BATTERY_MAX_POWER,
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -389,7 +389,7 @@ minetest.register_node("sbz_resources:switch_off", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 3,
-    groups = {sbz_machine=1, matter=1, cracky=3},
+    groups = {pipe_connects=1, matter=1, cracky=3},
     node_box = {
         type = "fixed",
         fixed = {
@@ -418,7 +418,7 @@ minetest.register_node("sbz_resources:switch_on", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 5,
-    groups = {sbz_machine=1, matter=1, cracky=3, not_in_creative_inventory=1},
+    groups = {pipe_connects=1, matter=1, cracky=3, not_in_creative_inventory=1},
     node_box = {
         type = "fixed",
         fixed = {
