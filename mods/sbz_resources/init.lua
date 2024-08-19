@@ -9,15 +9,13 @@ local function core_interact(pos, node, puncher, pointed_thing)
         gain = 1.0,
         max_hear_distance = 32,
     })
-    
-    local items = {"sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle"}
+
+    local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
     local item = items[math.random(#items)]
-    
+
     if puncher and puncher:is_player() then
-        
         local inv = puncher:get_inventory()
         if inv then
-            
             local leftover = inv:add_item("main", item)
             if not leftover:is_empty() then
                 minetest.add_item(pos, leftover)
@@ -31,8 +29,8 @@ end
 minetest.log("action", "sbz resources: adding the_core")
 minetest.register_node("sbz_resources:the_core", {
     description = "The Core",
-    tiles = {"the_core.png"},
-    groups = {unbreakable=1},
+    tiles = { "the_core.png" },
+    groups = { unbreakable = 1 },
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",
@@ -45,19 +43,19 @@ minetest.register_node("sbz_resources:the_core", {
 -- Core Particles
 minetest.register_abm({
     label = "Core Particles",
-    nodenames = {"sbz_resources:the_core"},
+    nodenames = { "sbz_resources:the_core" },
     interval = 1,
-    chance = 1, 
+    chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
         minetest.add_particlespawner({
             amount = 1,
             time = 1,
-            minpos = {x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5},
-            maxpos = {x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5},
-            minvel = {x = -0.5, y = -0.5, z = -0.5},
-            maxvel = {x = 0.5, y = 0.5, z = 0.5},
-            minacc = {x = 0, y = 0, z = 0},
-            maxacc = {x = 0, y = 0, z = 0},
+            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+            minvel = { x = -0.5, y = -0.5, z = -0.5 },
+            maxvel = { x = 0.5, y = 0.5, z = 0.5 },
+            minacc = { x = 0, y = 0, z = 0 },
+            maxacc = { x = 0, y = 0, z = 0 },
             minexptime = 10,
             maxexptime = 20,
             minsize = 0.5,
@@ -96,16 +94,17 @@ minetest.register_craftitem("sbz_resources:antimatter_dust", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:antimatter_dust",
-    recipe = {"sbz_resources:core_dust", "sbz_resources:matter_dust"}
+    recipe = { "sbz_resources:core_dust", "sbz_resources:matter_dust" }
 })
 
 -- dofiles
 dofile(modpath .. "/power.lua")
-dofile(modpath.."/emitters.lua")
-dofile(modpath.."/nodes.lua")
-dofile(modpath.."/tools.lua")
-dofile(modpath.."/extractor.lua")
-dofile(modpath.."/generator.lua")
-dofile(modpath.."/storinators.lua")
-dofile(modpath.."/items.lua")
-dofile(modpath.."/organics.lua")
+dofile(modpath .. "/emitters.lua")
+dofile(modpath .. "/nodes.lua")
+dofile(modpath .. "/tools.lua")
+dofile(modpath .. "/extractor.lua")
+dofile(modpath .. "/generator.lua")
+dofile(modpath .. "/storinators.lua")
+dofile(modpath .. "/items.lua")
+dofile(modpath .. "/organics.lua")
+dofile(modpath .. "/infinite_storinator.lua")
