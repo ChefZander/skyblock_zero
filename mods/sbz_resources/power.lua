@@ -76,8 +76,7 @@ local touched_nodes = {}
 
 local function iterate_around_pos(pos, func)
     for i = 0, 5 do
-        local dir = minetest.wallmounted_to_dir(i)
-        func(pos+dir, dir)
+        func(pos+minetest.wallmounted_to_dir(i))
     end
 end
 
@@ -85,6 +84,11 @@ local hash = minetest.hash_node_position
 local node_defs = minetest.registered_nodes
 
 function sbz_api.switching_station_tick(start_pos)
+    if touched_nodes[hash(start_pos)] and os.time()-touched_nodes[hash(start_pos)] < 1 then
+        minetest.get_meta(start_pos):set_string("infotext", "Inactive (connected to another network)")
+        return
+    end
+
     local t0 = minetest.get_us_time()
     local seen, network = {}, {
         generators = {},
@@ -98,7 +102,6 @@ function sbz_api.switching_station_tick(start_pos)
     local machines = network.machines
     local switching_stations = network.switching_stations
     local batteries = network.batteries
-    local connectors = network.connectors
 
     local pipes_counter = 0
 
@@ -107,7 +110,7 @@ function sbz_api.switching_station_tick(start_pos)
     local function internal(pos, by_connector)
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
-            iterate_around_pos(pos, function(ipos, dir)
+            iterate_around_pos(pos, function(ipos)
                 if not seen[hash(ipos)] then
                     local node = sbz_api.vm_get_node(ipos).name
                     local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
@@ -116,7 +119,11 @@ function sbz_api.switching_station_tick(start_pos)
                     local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
 
                     if node == "sbz_resources:switching_station" then
-                        if not by_connector then switching_stations[#switching_stations + 1] = ipos end
+                        if by_connector then
+                            touched_nodes[hash(ipos)] = os.time()
+                        else
+                            switching_stations[#switching_stations + 1] = ipos
+                        end
                     elseif node == "sbz_resources:power_pipe" then
                         pipes_counter = pipes_counter + 1
                         internal(ipos)
@@ -127,6 +134,7 @@ function sbz_api.switching_station_tick(start_pos)
                     elseif is_machine then
                         machines[#machines + 1] = { ipos, node }
                     elseif is_connector then
+                        local dir = ipos-pos
                         internal(ipos+dir, true)
                     end
                     seen[hash(ipos)] = true
