@@ -557,3 +557,11 @@ minetest.register_node("sbz_resources:connector_on", {
         end
     end
 })
+
+minetest.register_craft({
+    output = "sbz_resources:connector_off",
+    recipe = {
+        {"", "sbz_resources:emittrium_circuit", ""},
+        {"sbz_resources:power_pipe", "sbz_resources:reinforced_matter", "sbz_resources:power_pipe"}
+    }
+})

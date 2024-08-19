@@ -177,7 +177,7 @@ quests = {
     
     {type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Emittrium Circuits", "Batteries" }},
 
-
+    {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
 
     -- ======================================================================================
     { type = "text",  title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren islend. So dont just ignore this Questline, okay? :P" },
