@@ -88,6 +88,7 @@ end
 local hash = minetest.hash_node_position
 
 function sbz_api.switching_station_tick(start_pos)
+    local t0 = minetest.get_us_time()
     local seen, network = {}, {
         generators = {},
         machines = {},
@@ -226,9 +227,11 @@ function sbz_api.switching_station_tick(start_pos)
         node_defs[node].action(position, node, meta, supply, demand)
     end
 
+    local t1 = minetest.get_us_time()
+
     minetest.get_meta(start_pos):set_string("infotext",
-        string.format("Supply: %s\nDemand: %s\nBattery supply: %s/%s", supply - battery_supply_only,
-            demand, battery_supply_only, battery_max))
+        string.format("Supply: %s\nDemand: %s\nBattery supply: %s/%s\nLag: %sus", supply - battery_supply_only,
+            demand, battery_supply_only, battery_max, t1 - t0))
     return true
 end
 
