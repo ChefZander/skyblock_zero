@@ -107,8 +107,10 @@ end
 local hash = minetest.hash_node_position
 local node_defs = minetest.registered_nodes
 
-function sbz_api.assemble_network(start_pos)
-    local seen, network = {}, {
+function sbz_api.assemble_network(start_pos, seen)
+    local by_connector = not not seen
+    seen = seen or {}
+    local network = {
         generators = {},
         machines = {},
         switching_stations = {},
@@ -125,7 +127,7 @@ function sbz_api.assemble_network(start_pos)
 
     sbz_api.vm_begin()
 
-    local function internal(pos, by_connector)
+    local function internal(pos)
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
             iterate_around_pos(pos, function(ipos)
@@ -153,8 +155,8 @@ function sbz_api.assemble_network(start_pos)
                         machines[#machines + 1] = { ipos, node }
                     elseif is_connector then
                         local dir = ipos-pos
-                        pipes_counter = pipes_counter+1
-                        internal(ipos+dir, true)
+                        pipes_counter = pipes_counter+2
+                        node_defs[node].assemble(ipos, sbz_api.vm_get_node(ipos), dir, network, seen)
                     end
                     seen[hash(ipos)] = true
                 end
@@ -162,7 +164,7 @@ function sbz_api.assemble_network(start_pos)
         end
     end
     internal(table.copy(start_pos))
-    sbz_api.vm_abort()
+    --sbz_api.vm_abort()
     return network, pipes_counter
 end
 
@@ -542,5 +544,15 @@ minetest.register_node("sbz_resources:connector_on", {
     on_rightclick = function (pos, node)
         node.name = "sbz_resources:connector_off"
         minetest.swap_node(pos, node)
+    end,
+    assemble = function (pos, node, dir, network, seen)
+        seen[hash(pos)] = true
+        local self_dir = minetest.wallmounted_to_dir(node.param2)
+        if self_dir+dir == vector.zero() or self_dir-dir == vector.zero() then
+            local new_network = sbz_api.assemble_network(pos+dir, seen)
+            for k, val in pairs(new_network) do
+                table.insert_all(network[k], val)
+            end
+        end
     end
 })
