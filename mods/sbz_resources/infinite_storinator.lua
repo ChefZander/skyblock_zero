@@ -46,7 +46,7 @@ sbz_api.register_machine("sbz_resources:infinite_storinator", {
         local inv = meta:get_inventory()
         inv:set_size("inv", max_slots)
         meta:set_int("visible_slots", 0)
-        meta:set_int("slots_set", 1)
+        meta:set_int("slots_set", 7)
     end,
     groups = { matter = 1 },
     action = function(pos, node, meta, supply, demand)
@@ -54,8 +54,8 @@ sbz_api.register_machine("sbz_resources:infinite_storinator", {
         if supply <= demand then return 0 end
 
         local slots = 0
-        local max_slots_allowed = (supply - demand) * slots_per_1_power
-        local slots_set = meta:get_int("slots_set")
+        local max_slots_allowed = math.floor((supply - demand) * slots_per_1_power)
+        local slots_set = math.floor(meta:get_int("slots_set"))
         if max_slots_allowed < slots_set then
             slots = max_slots_allowed
         else
