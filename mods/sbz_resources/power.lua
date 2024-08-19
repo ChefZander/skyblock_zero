@@ -206,7 +206,7 @@ function sbz_api.switching_station_tick(start_pos)
     end
 
     minetest.get_meta(start_pos):set_string("infotext",
-        string.format("Supply: %s\nDemand: %s\nBattery supply: %s\nBattery max: %s", supply - battery_supply_only,
+        string.format("Supply: %s\nDemand: %s\nBattery supply: %s/%s", supply - battery_supply_only,
             demand, battery_supply_only, battery_max))
     return true
 end
