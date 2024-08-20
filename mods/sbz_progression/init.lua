@@ -23,6 +23,12 @@ minetest.register_chatcommand("cheat_hacker", {
     privs = {},
     func = function(name, param)
         if not name == "zander" then return end -- if youre a modder, change this to your name to allow for easier testing
+        if param == "all" then
+            for _, q in ipairs(quests) do
+                unlock_achievement(name, q.title)
+            end
+            return
+        end
         unlock_achievement(name, param)
         displayDialougeLine(name, "Cheat haguh")
     end,
