@@ -1,5 +1,5 @@
 -- Simple Extractor Node
-sbz_api.register_machine("sbz_resources:simple_matter_extractor", {
+sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     description = "Simple Matter Extractor\n\nConsumes: 3 power.\nMatter per Second: 0.2",
     tiles = { "simple_matter_extractor.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
@@ -7,7 +7,7 @@ sbz_api.register_machine("sbz_resources:simple_matter_extractor", {
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:simple_matter_extractor_formspec",
+        minetest.show_formspec(player_name, "sbz_power:simple_matter_extractor_formspec",
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
@@ -66,7 +66,7 @@ sbz_api.register_machine("sbz_resources:simple_matter_extractor", {
 })
 
 minetest.register_craft({
-    output = "sbz_resources:simple_matter_extractor",
+    output = "sbz_power:simple_matter_extractor",
     recipe = {
         { "sbz_resources:core_dust",   "sbz_resources:matter_blob",        "sbz_resources:core_dust" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_annihilator", "sbz_resources:matter_blob" },
@@ -75,7 +75,7 @@ minetest.register_craft({
 })
 
 -- Advanced Extractor Node
-sbz_api.register_machine("sbz_resources:advanced_matter_extractor", {
+sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     description =
     "Advanced Matter Extractor\n\nConsumes: 5 power.\nMatter per Second: 0.6\nHas a 1/25 Chance to Extract 1x 'Core Dust'.",
     tiles = { "advanced_matter_extractor.png" },
@@ -84,7 +84,7 @@ sbz_api.register_machine("sbz_resources:advanced_matter_extractor", {
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:advanced_matter_extractor_formspec",
+        minetest.show_formspec(player_name, "sbz_power:advanced_matter_extractor_formspec",
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
@@ -154,10 +154,10 @@ sbz_api.register_machine("sbz_resources:advanced_matter_extractor", {
 
 
 minetest.register_craft({
-    output = "sbz_resources:advanced_matter_extractor",
+    output = "sbz_power:advanced_matter_extractor",
     recipe = {
         { "sbz_resources:matter_annihilator", "sbz_resources:matter_blob",             "sbz_resources:matter_annihilator" },
-        { "sbz_resources:matter_blob",        "sbz_resources:simple_matter_extractor", "sbz_resources:matter_blob" },
+        { "sbz_resources:matter_blob",        "sbz_power:simple_matter_extractor", "sbz_resources:matter_blob" },
         { "sbz_resources:matter_annihilator", "sbz_resources:matter_blob",             "sbz_resources:matter_annihilator" }
     }
 })
