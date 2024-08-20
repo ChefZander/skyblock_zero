@@ -34,7 +34,7 @@ minetest.register_node("sbz_resources:the_core", {
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",
-    light_source = 15,
+    light_source = 14,
     walkable = true,
     on_punch = core_interact,
     on_rightclick = core_interact,

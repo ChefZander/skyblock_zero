@@ -78,6 +78,7 @@ sbz_api.register_machine("sbz_resources:infinite_storinator", {
             formspec_version[7]
             size[10.6,15.2]
             %s
+            style_type[list;noclip=false;size=1,1;spacing=0.25,0.25]
             scrollbar[10,0.2;0.4,8.6;vertical;scrollbar;0]
             scroll_container[0.2,0.2;9.8,8.6;scrollbar;vertical;1]
             list[context;inv;0,0;%s,%s]
@@ -85,14 +86,15 @@ sbz_api.register_machine("sbz_resources:infinite_storinator", {
             list[current_player;main;0.2,9;8,4;]
             field[0.2,14.4;3,0.5;set_slots;Amount of rows;%s]
             listring[]
-    ]], make_scrollbaroptions_for_scroll_container(8.6, math.max(9, list_inv_h), 1), list_inv_w, list_inv_h,
+    ]], make_scrollbaroptions_for_scroll_container(7.6, math.max(8, list_inv_h + list_inv_h / 4), 1), list_inv_w,
+            list_inv_h,
             slots_set / 8))
         return power_consumed
     end,
     on_receive_fields = function(pos, _, fields)
         local meta = minetest.get_meta(pos)
         if fields.set_slots then
-            local n_slots = tonumber(math.abs(math.floor(fields.set_slots))) * 8 or 8
+            local n_slots = math.abs(math.floor(tonumber(fields.set_slots) or 8)) * 8
             if n_slots > max_slots then
                 n_slots = max_slots
             end
