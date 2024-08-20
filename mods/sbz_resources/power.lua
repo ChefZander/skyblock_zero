@@ -405,7 +405,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:advanced_battery", {
     description = "Advanced Battery",
     tiles = { "advanced_battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_conducts = 0 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 0 },
     battery_max = BATTERY_MAX_POWER * 2,
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
