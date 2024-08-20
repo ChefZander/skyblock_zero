@@ -193,7 +193,6 @@ minetest.register_on_chat_message(function(name, message)
     if #players == 1 then
         displayDialougeLine(name, "You talk. But there is no one to listen.")
         unlock_achievement(name, "Desolate")
-        return true
     end
     return false
 end)
