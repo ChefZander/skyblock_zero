@@ -39,7 +39,7 @@ local M = minetest.get_meta
 
 local slots_per_1_power = 8
 
-sbz_api.register_machine("sbz_resources:infinite_storinator", {
+sbz_api.register_machine("sbz_power:infinite_storinator", {
     description = "Infinite storinator",
     tiles = {
         "infinite_storinator_side.png",
