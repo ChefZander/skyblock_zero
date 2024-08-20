@@ -1,5 +1,9 @@
 local simple_alloy_furnace_recipes = {
-    {recipe = {"sbz_chem:copper_powder", "sbz_chem:tin_powder"}, output = {"sbz_chem:bronze_powder"}}
+    {recipe = {"sbz_chem:copper_powder", "sbz_chem:tin_powder"}, output = {"sbz_chem:bronze_powder"}},
+    {recipe = {"sbz_chem:copper_powder", "sbz_chem:zinc_powder"}, output = {"sbz_chem:brass_powder"}},
+    {recipe = {"sbz_chem:iron_powder", "sbz_chem:nickel_powder"}, output = {"sbz_chem:invar_powder"}},
+    {recipe = {"sbz_chem:titanium_powder", "sbz_chem:aluminum_powder"}, output = {"sbz_chem:titanium_alloy_powder"}},
+    {recipe = {"sbz_chem:gold_powder", "sbz_chem:nickel_powder"}, output = {"sbz_chem:white_gold_powder"}},
 }
 
 sbz_api.register_machine("sbz_chem:simple_alloy_furnace",{
@@ -56,10 +60,9 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace",{
 
         local selected_item = is_valid_recipe(input_1, input_2)
         if selected_item == nil then
-            meta:set_string("infotext", "Invalid recipe")
+            meta:set_string("infotext", "Inactive")
             return 0
         end
-        minetest.chat_send_all(selected_item)
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")

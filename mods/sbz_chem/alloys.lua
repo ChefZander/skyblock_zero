@@ -10,18 +10,6 @@ minetest.register_craftitem("sbz_chem:brass_powder", {
     inventory_image = "powder.png^[colorize:#B5A642:100",  -- Brass color
 })
 
--- Steel (FeC)
-minetest.register_craftitem("sbz_chem:steel_powder", {
-    description = "Steel Powder (FeC)",
-    inventory_image = "powder.png^[colorize:#43464B:100",  -- Dark gray color
-})
-
--- Stainless Steel (FeCrNi)
-minetest.register_craftitem("sbz_chem:stainless_steel_powder", {
-    description = "Stainless Steel Powder (FeCrNi)",
-    inventory_image = "powder.png^[colorize:#D3D3D3:100",  -- Light silver color
-})
-
 -- Invar (FeNi)
 minetest.register_craftitem("sbz_chem:invar_powder", {
     description = "Invar Powder (FeNi)",
