@@ -43,7 +43,7 @@ minetest.register_node("sbz_resources:storinator", {
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
+        minetest.show_formspec(player_name, "sbz_power:simple_charge_generator_formspec",
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
@@ -94,7 +94,7 @@ minetest.register_node("sbz_resources:storinator_full_1", {
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
+        minetest.show_formspec(player_name, "sbz_power:simple_charge_generator_formspec",
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
@@ -145,7 +145,7 @@ minetest.register_node("sbz_resources:storinator_full_2", {
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
+        minetest.show_formspec(player_name, "sbz_power:simple_charge_generator_formspec",
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
@@ -196,7 +196,7 @@ minetest.register_node("sbz_resources:storinator_full_3", {
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:simple_charge_generator_formspec",
+        minetest.show_formspec(player_name, "sbz_power:simple_charge_generator_formspec",
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
@@ -234,7 +234,7 @@ minetest.register_node("sbz_resources:storinator_full_3", {
 minetest.register_craft({
     output = "sbz_resources:storinator",
     recipe = {
-        { "sbz_resources:simple_charged_field", "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" },
+        { "sbz_power:simple_charged_field", "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" },
         { "sbz_resources:matter_plate",         "sbz_resources:simple_circuit", "sbz_resources:matter_plate" },
         { "sbz_resources:retaining_circuit",    "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" }
     }

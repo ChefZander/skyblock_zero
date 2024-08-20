@@ -98,13 +98,9 @@ minetest.register_craft({
 })
 
 -- dofiles
-dofile(modpath .. "/power.lua")
 dofile(modpath .. "/emitters.lua")
 dofile(modpath .. "/nodes.lua")
 dofile(modpath .. "/tools.lua")
-dofile(modpath .. "/extractor.lua")
-dofile(modpath .. "/generator.lua")
 dofile(modpath .. "/storinators.lua")
 dofile(modpath .. "/items.lua")
 dofile(modpath .. "/organics.lua")
-dofile(modpath .. "/infinite_storinator.lua")

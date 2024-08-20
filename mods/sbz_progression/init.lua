@@ -51,15 +51,15 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "Annihilator")
 
 
-    elseif itemstack:get_name() == "sbz_resources:simple_charged_field" then
+    elseif itemstack:get_name() == "sbz_power:simple_charged_field" then
         unlock_achievement(player:get_player_name(), "Charged Field")
 
 
-    elseif itemstack:get_name() == "sbz_resources:simple_matter_extractor" then
+    elseif itemstack:get_name() == "sbz_power:simple_matter_extractor" then
         unlock_achievement(player:get_player_name(), "Automation")
 
 
-    elseif itemstack:get_name() == "sbz_resources:advanced_matter_extractor" then
+    elseif itemstack:get_name() == "sbz_power:advanced_matter_extractor" then
         unlock_achievement(player:get_player_name(), "Advanced Extractors")
 
 
@@ -67,7 +67,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "Circuitry")
 
 
-    elseif itemstack:get_name() == "sbz_resources:simple_charge_generator" then
+    elseif itemstack:get_name() == "sbz_power:simple_charge_generator" then
         unlock_achievement(player:get_player_name(), "Generators")
 
 
@@ -107,19 +107,24 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "Angel's Wing")
 
 
-    elseif itemstack:get_name() == "sbz_resources:battery" then
+    elseif itemstack:get_name() == "sbz_power:battery" then
         unlock_achievement(player:get_player_name(), "Batteries")
 
 
     elseif itemstack:get_name() == "sbz_resources:advanced_battery" then
         unlock_achievement(player:get_player_name(), "Advanced Batteries")
 
+    elseif itemstack:get_name() == "sbz_power:connector_off" then
+        unlock_achievement(player:get_player_name(), "Connectors")
 
-    elseif itemstack:get_name() == "sbz_resources:power_pipe" then
+    elseif itemstack:get_name() == "sbz_power:phosphor_off" then
+        unlock_achievement(player:get_player_name(), "Phosphor")
+
+    elseif itemstack:get_name() == "sbz_power:power_pipe" then
         unlock_achievement(player:get_player_name(), "Power Pipes")
 
 
-    elseif itemstack:get_name() == "sbz_resources:starlight_collector" then
+    elseif itemstack:get_name() == "sbz_power:starlight_collector" then
         unlock_achievement(player:get_player_name(), "Starlight Collectors")
 
 
@@ -127,7 +132,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "Reinforced Matter")
 
 
-    elseif itemstack:get_name() == "sbz_resources:switching_station" then
+    elseif itemstack:get_name() == "sbz_power:switching_station" then
         unlock_achievement(player:get_player_name(), "Switching Station")
     end
 end)
