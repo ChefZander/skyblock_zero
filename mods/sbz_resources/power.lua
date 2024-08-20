@@ -75,28 +75,6 @@ local timeout_limit = 3 -- seconds
 local touched_nodes = {}
 
 
-local hey_this_is_sus_limit = 200 -- miliseconds
-
-local function check_for_sus_action(pos, meta)
-    if math.abs(meta:get_int("last_activated") - minetest.get_us_time() / 1000) < hey_this_is_sus_limit then
-        local range = vector.new(5, 5, 5)
-        minetest.add_particlespawner({
-            amount = 500,
-            time = 0.3,
-            texture = "error_particle.png",
-            glow = 14,
-            pos = pos,
-            radius = 0.1,
-            acc = { min = -range, max = range },
-            vel = { min = -range, max = range },
-            drag = { x = .5, y = .5, z = .5 }
-        })
-        minetest.remove_node(pos)
-        return true
-    end
-    meta:set_int("last_activated", minetest.get_us_time() / 1000)
-    return false
-end
 
 local function iterate_around_pos(pos, func)
     for i = 0, 5 do
@@ -138,6 +116,8 @@ function sbz_api.assemble_network(start_pos, seen)
                     local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
                     local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
 
+                    local is_conducting = minetest.get_item_group(node, "pipe_conducts") == 1
+
                     if node == "sbz_resources:switching_station" then
                         if by_connector then
                             touched_nodes[hash(ipos)] = os.time()
@@ -146,7 +126,6 @@ function sbz_api.assemble_network(start_pos, seen)
                         end
                     elseif node == "sbz_resources:power_pipe" then
                         pipes_counter = pipes_counter + 1
-                        internal(ipos)
                     elseif is_battery then
                         batteries[#batteries + 1] = { ipos, node }
                     elseif is_generator then
@@ -157,6 +136,10 @@ function sbz_api.assemble_network(start_pos, seen)
                         local dir = ipos - pos
                         pipes_counter = pipes_counter + 2
                         node_defs[node].assemble(ipos, sbz_api.vm_get_node(ipos), dir, network, seen)
+                    end
+
+                    if is_conducting then
+                        internal(ipos)
                     end
                     seen[hash(ipos)] = true
                 end
@@ -285,7 +268,7 @@ end
 minetest.register_node("sbz_resources:switching_station", {
     description = "Switching Station",
     tiles = { "switching_station.png" },
-    groups = { matter = 1, cracky = 1, pipe_connects = 1 },
+    groups = { matter = 1, cracky = 1, pipe_connects = 1, pipe_conducts = 1 },
     light_source = 3,
 
     on_construct = function(pos)
@@ -336,7 +319,7 @@ minetest.register_node("sbz_resources:power_pipe", {
     paramtype = "light",
     sunlight_propagates = true,
 
-    groups = { matter = 1, cracky = 3, pipe_connects = 1 },
+    groups = { matter = 1, cracky = 3, pipe_connects = 1, pipe_conducts = 1 },
 
     node_box = {
         type = "connected",
@@ -357,6 +340,8 @@ minetest.register_craft({
 
 function sbz_api.register_machine(name, def)
     def.groups.sbz_machine = 1
+    def.groups.pipe_conducts = 1
+    def.groups.pipe_connects = 1
     if not def.control_action_raw then
         local old_action = def.action
 
@@ -365,9 +350,6 @@ function sbz_api.register_machine(name, def)
                 meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
                 return def.power_needed
             else
-                if check_for_sus_action(pos, meta) then
-                    return 0
-                end
                 meta:set_string("infotext", "Running")
                 local count = meta:get_int("count")
                 if count >= def.action_interval then
@@ -379,14 +361,6 @@ function sbz_api.register_machine(name, def)
                 return def.power_needed
             end
         end
-    else
-        local old_action = def.action
-        function def.action(pos, node, meta, supply, demand)
-            if check_for_sus_action(pos, meta) then
-                return 0
-            end
-            return old_action(pos, node, meta, supply, demand)
-        end
     end
     minetest.register_node(name, def)
 end
@@ -394,21 +368,12 @@ end
 function sbz_api.register_generator(name, def)
     def.groups.sbz_machine = 1
     def.groups.sbz_generator = 1
+    def.groups.pipe_conducts = 1
+    def.groups.pipe_connects = 1
     if def.power_generated then
         def.action = function(pos, node, meta, ...)
-            if check_for_sus_action(pos, meta) then
-                return 0
-            end
             meta:set_string("infotext", "Running")
             return def.power_generated
-        end
-    else
-        local old_action = def.action
-        def.action = function(pos, node, meta, ...)
-            if check_for_sus_action(pos, meta) then
-                return 0
-            end
-            return old_action(pos, node, meta, ...)
         end
     end
     minetest.register_node(name, def)
@@ -419,7 +384,7 @@ local BATTERY_MAX_POWER = 300
 minetest.register_node("sbz_resources:battery", {
     description = "Battery",
     tiles = { "battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 0 },
     battery_max = BATTERY_MAX_POWER,
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -439,7 +404,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:advanced_battery", {
     description = "Advanced Battery",
     tiles = { "advanced_battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_conducts = 0 },
     battery_max = BATTERY_MAX_POWER * 2,
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -459,7 +424,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:creative_battery", {
     description = "Creative Battery",
     tiles = { "creative_battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_conducts = 1 },
     battery_max = 10000000, -- 10 mil
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -496,7 +461,7 @@ minetest.register_node("sbz_resources:connector_off", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 3,
-    groups = { pipe_connects = 1, matter = 1, cracky = 3 },
+    groups = { pipe_connects = 1, matter = 1, cracky = 3, pipe_conducts = 0 },
     node_box = {
         type = "fixed",
         fixed = {
@@ -525,7 +490,7 @@ minetest.register_node("sbz_resources:connector_on", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 5,
-    groups = { pipe_connects = 1, sbz_connector = 1, matter = 1, cracky = 3, not_in_creative_inventory = 1 },
+    groups = { pipe_connects = 1, sbz_connector = 1, matter = 1, cracky = 3, not_in_creative_inventory = 1, pipe_conducts = 0 },
     node_box = {
         type = "fixed",
         fixed = {
@@ -566,35 +531,39 @@ minetest.register_craft({
     }
 })
 
-minetest.register_node("sbz_resources:phosphor_off", {
+sbz_api.register_machine("sbz_resources:phosphor_off", {
     description = "Phosphor",
     tiles = { "matter_blob.png^phosphor_overlay.png" },
-    groups = { matter = 1, cracky = 3, pipe_connects = 1, sbz_machine = 1 },
+    groups = { matter = 1, cracky = 3 },
     action = function(pos, node, meta, supply, demand)
+        meta:set_string("infotext", "")
         if demand + 1 <= supply then
             minetest.set_node(pos, { name = "sbz_resources:phosphor_on" })
-            return check_for_sus_action(pos, meta) and 0 or 1
+            return 1
         end
         return 0
-    end
+    end,
+    control_action_raw = true
 })
 
-minetest.register_node("sbz_resources:phosphor_on", {
+sbz_api.register_machine("sbz_resources:phosphor_on", {
     description = "Phosphor",
     tiles = { "emitter_imitator.png^phosphor_overlay.png" },
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 2,
-    groups = { matter = 1, cracky = 3, pipe_connects = 1, sbz_machine = 1, not_in_creative_inventory = 1 },
+    groups = { matter = 1, cracky = 3, pipe_connects = 1, sbz_machine = 1, not_in_creative_inventory = 1, pipe_conducts = 1 },
     drop = "sbz_resources:phosphor_off",
     action = function(pos, node, meta, supply, demand)
+        meta:set_string("infotext", "")
         if demand + 1 <= supply then
-            return check_for_sus_action(pos, meta) and 0 or 1
+            return 1
         else
             minetest.set_node(pos, { name = "sbz_resources:phosphor_off" })
             return 0
         end
-    end
+    end,
+    control_action_raw = true
 })
 
 minetest.register_craft({
