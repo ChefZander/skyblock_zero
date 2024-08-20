@@ -108,6 +108,11 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
     elseif itemstack:get_name() == "sbz_resources:advanced_battery" then
         unlock_achievement(player:get_player_name(), "Advanced Batteries")
 
+    elseif itemstack:get_name() == "sbz_resources:connector_off" then
+        unlock_achievement(player:get_player_name(), "Connectors")
+
+    elseif itemstack:get_name() == "sbz_resources:phosphor_off" then
+        unlock_achievement(player:get_player_name(), "Phosphor")
 
     elseif itemstack:get_name() == "sbz_resources:power_pipe" then
         unlock_achievement(player:get_player_name(), "Power Pipes")
