@@ -1,25 +1,27 @@
 quests = {
-    { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the Game. Your adventure will start here." },
+    { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
 
     {
         type = "quest",
         title = "Introduction",
-        text = "Welcome, player. This is the Quest Book, " ..
-            "here you can check out what tasks you have to do and the materials you will need for each quest. " ..
-            "You can also just ignore the Quest Book if you are an experienced player. " ..
-            "Now, to get started look down at the core. Punching it will give you your first resources. " ..
-            "These Quests are in no particular order, but you might need items from one Quest for another. " ..
-            "\nTIP: If you lose your Quest Book, you can use /qb to get it back.",
+        text = [[Welcome, player. This is the Quest Book. Here, you can check out what tasks you have to do, and the materials you will need for each quest.
+		
+You can also just ignore the Quest Book if you are an experienced player.
+			
+Now, to get started: look down at the core. Punching it will give you some of your first resources.
+
+These quests are in no particular order, but you might need items from one quest for another.
+
+TIP: If you lose your Quest Book, you can use /qb to get it back.]],
         requires = {}
     },
 
     {
         type = "quest",
         title = "A bigger platform",
-        text = "Isn't this one node a little too crammed? " ..
-            "Let's do something about that. " ..
-            "Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. " ..
-            "Check the Quest Book again when you've done that.",
+        text = [[Isn't this one node a little too crammed? Let's do something about that.
+
+Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. Place it down, and then check the Quest Book again when you've done that.]],
         requires = { "Introduction" }
     },
 
@@ -27,86 +29,92 @@ quests = {
     {
         type = "quest",
         title = "Antimatter",
-        text = "Unfortunately, you dont seem to be strong enough to destroy that node once you place it. " ..
-            "That kind of sucks, so let's craft something that can. " ..
-            "Craft some 'Antimatter Dust', we'll need it for later. " ..
-            "It's made by mixing 'Matter Dust' and 'Core Dust'. Let's see you figure this out, smart one.",
+        text = [[Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can.
+
+Craft some 'Antimatter Dust', we'll need it for later. It's made by mixing 'Matter Dust' and 'Core Dust'. Let's see you figure this out, smart one.]],
         requires = { "Introduction" }
     },
 
     {
         type = "quest",
         title = "Annihilator",
-        text = "Does it feel weird to be holding antimatter? " ..
-            "Now, to craft a 'Matter Annihilator' you'll need a couple things: " ..
-            "One 'Antimatter Dust', one 'Charged Particle' and three 'Matter Blob'. " ..
-            "Make sure the 'Charged Particle' is properly enclosed in matter, or it'll escape.",
-        requires = { "A bigger platform" }
+        text = [[Doesn't it feel weird to be holding antimatter?
+
+Now, to craft a Matter Annihilator you'll need a couple things:
+
+* one Antimatter Dust
+* one Charged Particle 
+* three Matter Blobs.
+
+Make sure the Charged Particle is properly encased in matter, or it'll escape.]],
+        requires = { "A bigger platform", "Antimatter" }
     },
 
     {
         type = "quest",
         title = "Charged Field",
-        text = "Now, then. We have one more thing to do before we can start automating. Can you guess what it is? " ..
-            "That's right! We need power generation. " ..
-            "Using nine 'Charged Particle', you can craft yourself a 'Simple Charged Field' " ..
-            "But listen up! Charged Fields decay over time. Since you are using a 'Simple Charged Field', it should last you a couple of minutes of power generation. " ..
-            "Yeah, it uses energy even when there's nothing connected to it. Since resources are infinite here, time is your resource. " ..
-            "Anyways, I talked a lot, didn't I? Maybe too much. Let's get automating.",
+        text = [[Now, then. We have one more thing to do before we can start automating. Can you guess what it is?
+
+That's right! We need power generation.
+
+Using nine Charged Particles, you can craft yourself a Simple Charged Field.
+But listen up! Charged Fields decay over time, leaving indestructible residue (that decays in a relatively short time) behind. Since you are using a Simple Charged Field, you should expect to have energy for about 10 minutes.
+
+Yeah, it uses energy even when there's nothing connected to it. Since resources are infinite here, time is your resource.
+Anyways, I talked a lot, didn't I? Maybe too much. Let's get automating.]],
         requires = { "Introduction" }
     },
 
     {
         type = "quest",
         title = "Automation",
-        text = "Finally! Automation! Let's get on that, shall we? " ..
-            "Here's what you'll need for a 'Simple Matter Extractor'. " ..
-            "One 'Matter Annihilator', four 'Matter Blob' and four 'Core Dust' " ..
-            "\nTIP: Machines without power occasionally emit red particles.",
-        requires = { "Annihilator" }
+        text = [[Finally! Automation! Let's get on that, shall we? Here's what you'll need for a Simple Matter Extractor:
+
+One Matter Annihilator, four matter blobs and four bits of core dust.
+            
+TIP: Machines without power occasionally emit red particles.]],
+        requires = { "Annihilator", "Charged Field" }
     },
 
     {
         type = "quest",
         title = "Advanced Extractors",
-        text = "That's a shiny new machine you've got there! " ..
-            "Do you also want to increase production? Sure you do. " ..
-            "For Advanced Extractors you'll obviously need a Simple Matter Extractor, " ..
-            "then four 'Matter Annihilator' and four 'Matter Blob'. That's a lot of resouces, " ..
-            "but this Extractor will also occasionally generate 'Core Dust'!",
-        requires = { "Automation", "Power Pipes" }
+        text = [[That's a shiny new machine you've got there! Do you also want to triple your production? Only for DOUBLE THE POWER? Sure you do.
+
+For Advanced Extractors you'll obviously need a Simple Matter Extractor, then four Matter Annihilators and four matter Blobs. That's a lot of resources, but this Extractor will also occasionally generate Core Dust!
+
+For the curious, an Advanced Extractor has a 4% chance of extracting core dust. This means a core dust will be extracted every 40 seconds (on average).]],
+        requires = { "Automation" }
     },
 
     {
         type = "quest",
         title = "Circuitry",
-        text = "Circuits are important crafting components for future recipes. " ..
-            "You'll need them for lots of recipes, and many of them too. " ..
-            "Green Circuits are the most simple to craft, but there are diffrent circuit types which are used in diffrent recipes. " ..
-            "All diffrent Circuit types use Green Circuits as their base. " ..
-            "To craft a Simple Circuit, you'll need one 'Core Dust' and one 'Matter Blob'. " ..
-            "You'll get two Simple Circuits from that craft.",
+        text = [[Circuits are important crafting components for future recipes. You'll need them for lots of recipes, and many of them too.
+
+Simple Circuits are currently your only available Circuit type, but there are different circuit types which will be used in the future. Also, all different Circuit types use Simple Circuits as their base.
+
+To craft a Simple Circuit, you'll need one core dust and one matter blob. You'll get two Simple Circuits from that craft.]],
         requires = { "A bigger platform" }
     },
 
     {
         type = "quest",
         title = "Generators",
-        text = "Right now, you're probably using 'Simple Charged Field' nodes to generate your Global Power, " ..
-            "but since they decay, they dont last forever, which is not convenient. " ..
-            "They also leave behind indestructible residue which can be very annoying. " ..
-            "To solve that, you can use a generator, it consumes 'Core Dust' as fuel over time " ..
-            "and provides you with more power than 'Simple Charged Field' nodes do. " ..
-            "However, Generators are very expensive. Here is the list of materials required: " ..
-            "Four 'Simple Charged Field', one 'Antimatter Dust', three 'Matter Blob' and one 'Matter Annihilator'.",
-        requires = { "Charged Field", "Power Pipes" }
+        text = [[Right now, you're probably using simple charged fields to generate your power, but since they decay, they don't last forever, which is not convenient.
+
+To solve that, you can use a generator; it consumes core dust as fuel over time, and provides you with more power than simple charged fields do.
+
+However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.]],
+        requires = { "Charged Field", "Antimatter" }
     },
 
     {
         type = "quest",
         title = "Matter Plates",
-        text = "Matter Plates are often used for machinery. They are simple to craft, yet important." ..
-            "You can get four 'Matter Plate' by placing one 'Matter Blob' into the crafting grid.",
+        text = [[Matter Plates are often used for machinery. They are simple to craft, yet very important.
+
+You can get four Matter Plates by placing one matter blob into the crafting grid.]],
         requires = { "A bigger platform" }
     },
 
@@ -114,32 +122,33 @@ quests = {
         type = "quest",
         title = "Retaining Circuits",
         text =
-            "Retaining Circuits are a type of Circuit often used in nodes which Store items, either permanently or temporarily. " ..
-            "Circuits depend on other circuits which is why you will need a Simple Circuit to craft this Circuit. " ..
-            "The list of materials is as follows: one 'Simple Circuit', one 'Charged Particle' and one 'Antimatter Dust'. " ..
-            "Unlike Simple Circuits, this will only craft one Retaining Circuit.",
-        requires = { "Circuitry" }
+            [[Retaining Circuits are a type of Circuit often used in nodes which store items, either permanently or temporarily. Circuits depend on other circuits which is why you will need a Simple Circuit to craft this Circuit.
+
+The list of materials is as follows: one Simple Circuit, one charged particle and one antimatter dust.
+
+Unlike Simple Circuits, this will only craft one Retaining Circuit.]],
+        requires = { "Antimatter", "Circuitry" }
     },
 
     {
         type = "quest",
         title = "Storinators",
-        text = "Storinators are the solution to clogged up inventories. " ..
-            "They have 30 Slots of Inventory, and function like a chest. " ..
-            "The more red/green dots the front of a storinator displays, the more full/empty it is. " ..
-            "You will need one 'Simple Charged Field', one 'Simple Circuit', four 'Matter Plate' and three 'Retaining Circuit' " ..
-            "to craft one Storinator.",
-        requires = { "Retaining Circuits" }
+        text = [[Storinators are the solution to clogged up inventories. They have 30 slots of inventory, and function like a chest.
+
+The more red/green dots the front of a storinator displays, the more full/empty it is.
+
+You will need one simple charged field, one Simple Circuit, four matter plates and three Retaining Circuits to craft one Storinator.]],
+        requires = { "Matter Plates", "Charged Field", "Retaining Circuits" }
     },
 
     {
         type = "quest",
         title = "Pretty Pebbles",
         text =
-            "We're making the jump from generic matter to stone now! Here is where building a space station gets fun! " ..
-            "First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring three " ..
-            "'Matter Blob' in a shapeless craft. Pebbles will unlock a lot of decorational nodes to spice up your island, " ..
-            "and if you want you can even start building your own planet. It's all up to your imagination!",
+            [[We're making the jump from generic matter to stone now! Here is where building a space station gets fun!
+
+First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring three matter blobs in a shapeless craft.
+Pebbles will unlock a lot of decorational nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!]],
         requires = { "A bigger platform" }
     },
 
@@ -147,76 +156,88 @@ quests = {
         type = "quest",
         title = "Concrete Plan",
         text =
-            "Just regular old boring stone, nothing really to add here. Like, it's literally just stone. You know, the kind that would make even a rock collector yawn and say, I've seen gravel with more personality. It sits around all day, doing nothing—no metamorphosis, no glittering crystals—just living its best sedentary life. " ..
-            "That said, it's made using 9 pebbles. ",
+            [[Just regular old boring stone, nothing really to add here. Like, it's literally just stone. You know, the kind that would make even a rock collector yawn and say, "I've seen gravel with more personality". It sits around all day, doing nothing—no metamorphosis, no glittering crystals—just living its best sedentary life.
+            
+That said, it's made using 9 pebbles.]],
         requires = { "Pretty Pebbles" }
     },
 
     -- ======================================================================================
-    { type = "text", title = "Questline: Emittrium",    text = "Emittrium is a very important material when working with Cosmic Joules. This Questline will teach you all about it." },
+    { type = "text", title = "Questline: Emittrium",    text = "Emittrium is a very important material when working with Cosmic Joules. This questline will teach you all about it." },
 
     {
         type = "quest",
         title = "Obtain Emittrium",
         text =
-            "Do you see those blue stars in the distance? They're called Emitters. To obtain Emittrium from them, you will have to build a bridge over to one. " ..
-            "I would recommend to choose the closest one to you, but any Emitter works. Next, you'll need a Matter Annihilator. You can't destory the Emitters, but you can " ..
-            "chip away at them. Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine the Emittrium later, but for now we just need it in it's raw state.",
+            [[Do you see those blue stars in the distance? They're called Emitters. To obtain Emittrium from them, you will have to build a bridge over to one.
+I would recommend to choose the closest one to you, but any Emitter works. Next, you'll need a Matter Annihilator. You can't destroy the Emitters, but you can chip away at them.
+
+Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine the Emittrium later, but for now we just need it in its raw state.]],
         requires = { "Annihilator" }
     },
 
-    { type = "quest", title = "Power Pipes",          text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.", requires = { "Obtain Emittrium" } },
+    { type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.", requires = { "Matter Plates", "Obtain Emittrium" } },
 
-    { type = "quest", title = "Switching Station",          text = "To build an actual functioning network, you'll need a switching station connected to your network to manage the flow of power.\nIMPORTANT: If you connect more than one Switching Station to a network, they will explode until there is only one left!", requires = { "Power Pipes" } },
+    { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
-    { type = "quest", title = "Starlight Collectors",          text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
-
-    {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a Matter Plate.", requires = {"Obtain Emittrium", "Retaining Circuits"}},
+    {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules (power), you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a matter plate.", requires = {"Matter Plates", "Obtain Emittrium", "Retaining Circuits"}},
     
-    {type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with Matter Blobs.", requires = {"Emittrium Circuits"}},
-    
-    {type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Emittrium Circuits", "Batteries" }},
+    {type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with matter blobs.", requires = {"Emittrium Circuits"}},
+
+	{type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries" }},
 
     {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
 
-    -- ======================================================================================
-    { type = "text",  title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren islend. So dont just ignore this Questline, okay? :P" },
 
-    {
+    -- ======================================================================================
+    { type = "text",  title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
+	
+	{
         type = "quest",
         title = "Matter Stairs",
-        text = "Stairs in a space game, huh? Let me tell you, they’re the universe’s ultimate prank. You’d think in the vast expanse of space, we’d figure out a way to do away with stairs. But no! Instead, we have these absurd vertical obstacles that defy both gravity and logic. Picture this: you’re navigating a sleek, futuristic spaceship, zooming through hyperspace, and suddenly—bam!—you’re face-to-face with a stairway. Not just any stairway, but one that seems to stretch endlessly between levels of the ship. You’re floating in zero-g, and your only choice is to awkwardly flail your way up or down, hoping you don’t collide with the bulkheads. And what’s with the handrails? They’re always placed at just the wrong height, making it feel like they’re mocking you as you drift by. Oh, you wanted support? Too bad, space cadet! I swear, every time I encounter these space stairs, I wonder if the game developers just had a sadistic streak. Let’s see how they handle these! We’ve mastered faster-than-light travel, but let’s make sure their biggest challenge is a staircase that defies the laws of physics! Next time you’re floating through the cosmos and stumble upon these absurd contraptions, just remember: they’re not there to help you—they’re there to remind you that even in the boundless universe, the real challenge is mastering the art of interstellar stair-climbing.",
+        text = [[Stairs in a space game, huh?
+
+Let me tell you, they’re the universe’s ultimate prank. You’d think in the vast expanse of space, we’d figure out a way to do away with stairs. But no!
+Instead, we have these absurd vertical obstacles that defy both gravity and logic. Picture this: you’re navigating a sleek, futuristic spaceship, zooming through hyperspace, and suddenly—bam!—you’re face-to-face with a stairway.
+Not just any stairway, but one that seems to stretch endlessly between levels of the ship. You’re floating in zero-g, and your only choice is to awkwardly flail your way up or down, hoping you don’t collide with the bulkheads.
+And what’s with the handrails? They’re always placed at just the wrong height, making it feel like they’re mocking you as you drift by. Oh, you wanted support? Too bad, space cadet! 
+I swear, every time I encounter these space stairs, I wonder if the game developers just had a sadistic streak. Let’s see how they handle these! We’ve mastered faster-than-light travel, but let’s make sure their biggest challenge is a staircase that defies the laws of physics!
+Next time you’re floating through the cosmos and stumble upon these absurd contraptions, just remember: they’re not there to help you—they’re there to remind you that even in the boundless universe, the real challenge is mastering the art of interstellar stair-climbing.]],
         requires = { "A bigger platform" }
     },
-
+	
     {
         type = "quest",
         title = "Reinforced Matter",
-        text = "Normal matter isnt sturdy enough? Try this one. This one won't break, unless you break it, then it breaks. Wait a minute...",
+        text = "Normal matter isn't sturdy enough? Try this one. This one won't break, unless you break it, then it breaks. Wait a minute...",
         requires = { "A bigger platform", "Matter Plates" }
     },
 
     {
         type = "quest",
         title = "Emitter Immitators",
-        text = "Emitter Immitators are decorational nodes providing light. " ..
-            "You can get one, by surrounding a 'Matter Blob' with 'Antimatter Dust'. It doesn't glow as much as The Core though. " ..
-            "\nTIP: Emitter Immitators spawn a lot of particles when punched, try it!",
-        requires = { "Antimatter" }
+        text = [[Emitter Immitators are decorational nodes providing light.
+
+You can get one, by surrounding a 'Matter Blob' with 'Antimatter Dust'. They don't glow as much as The Core though.
+            
+TIP: Emitter Immitators spawn a lot of particles when punched, try it!]],
+        requires = { "A bigger platform", "Antimatter" }
     },
 
     {
         type = "quest",
         title = "Photon Lamps",
-        text = "Are Emitter Immitators too dim for you? Introducing: Photon Lamps! " ..
-            "With this revolutionary technology you can light up your world.. uhm... the same way.. as with Emitter Immitators.. just brighter! " ..
-            "As for getting one, well, we dont sell them yet so you're just going to have to make your own! " ..
-            "Here goes: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular " ..
-            "Emitter Immitators. Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in darkness! Yay!",
+        text = [[Are Emitter Immitators too dim for you? Introducing: Photon Lamps!
+
+With this revolutionary technology you can light up your world... uhm... the same way... as with Emitter Immitators... just brighter!
+As for getting one, well, we don't sell them yet so you're just going to have to make your own!
+
+Here goes: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Immitators.
+Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in darkness! Yay!]],
         requires = { "Emitter Immitators", "Matter Plates" }
     },
-
-    {type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires={"Emitter Immitators", "Emittrium Circuits"}},
+	
+	{type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires={"Emitter Immitators", "Emittrium Circuits"}},
 
     -- ======================================================================================
     { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
@@ -337,7 +358,7 @@ local function get_questbook_formspec(selected_quest_index, player_name)
                 quest_list = quest_list .. "► " .. quest.title .. ","
             else
                 quest_list = quest_list .. " ✕ " .. quest.title .. ","
-            end
+	    end
         elseif quest.type == "text" then
             quest_list = quest_list .. "≡ " .. quest.title .. ","
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then
