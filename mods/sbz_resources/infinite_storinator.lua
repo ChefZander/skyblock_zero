@@ -41,6 +41,15 @@ local slots_per_1_power = 8
 
 sbz_api.register_machine("sbz_resources:infinite_storinator", {
     description = "Infinite storinator",
+    tiles = {
+        "infinite_storinator_side.png",
+        "infinite_storinator_side.png",
+        "infinite_storinator_side.png",
+        "infinite_storinator_side.png",
+        "infinite_storinator_side.png",
+        {name="infinite_storinator_front.png", animation={type="vertical_frames", length=2}}
+    },
+    paramtype2 = "facedir",
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
