@@ -26,13 +26,13 @@ minetest.register_node("sbz_resources:matter_stair", {
     tiles = { "matter_blob.png" },
     drawtype = "nodebox",
     paramtype2 = "facedir",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0, 0.5},
-			{-0.5, 0, 0, 0.5, 0.5, 0.5},
-		}
-	},
+    node_box = {
+        type = "fixed",
+        fixed = {
+            { -0.5, -0.5, -0.5, 0.5, 0,   0.5 },
+            { -0.5, 0,    0,    0.5, 0.5, 0.5 },
+        }
+    },
     groups = { matter = 1, cracky = 3 },
     sunlight_propagates = true,
     walkable = true,
@@ -42,11 +42,12 @@ minetest.register_node("sbz_resources:matter_stair", {
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
+    use_texture_alpha = "clip"
 })
 minetest.register_craft({
     output = "sbz_resources:matter_stair 3",
     recipe = {
-        { "sbz_resources:matter_blob", "", "" },
+        { "sbz_resources:matter_blob", "",                          "" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
     }
@@ -54,8 +55,8 @@ minetest.register_craft({
 minetest.register_craft({
     output = "sbz_resources:matter_stair 3",
     recipe = {
-        { "", "", "sbz_resources:matter_blob" },
-        { "", "sbz_resources:matter_blob", "sbz_resources:matter_blob" },
+        { "",                          "",                          "sbz_resources:matter_blob" },
+        { "",                          "sbz_resources:matter_blob", "sbz_resources:matter_blob" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
     }
 })
@@ -250,13 +251,14 @@ sbz_api.register_generator("sbz_resources:starlight_collector", {
     description = "Starlight Collector",
     drawtype = "nodebox",
     tiles = { "starlight_collector.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png" },
-    groups = { matter = 1, pipe_connects=1 },
+    groups = { matter = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     node_box = {
         type = "fixed",
         fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 },
     },
+    use_texture_alpha = "clip",
 
     power_generated = 1,
 })
@@ -264,8 +266,8 @@ sbz_api.register_generator("sbz_resources:starlight_collector", {
 minetest.register_craft({
     output = "sbz_resources:starlight_collector",
     recipe = {
-        { "sbz_resources:raw_emittrium",      "sbz_resources:raw_emittrium",   "sbz_resources:raw_emittrium" },
-        { "sbz_resources:power_pipe", "sbz_resources:power_pipe", "sbz_resources:power_pipe" },
+        { "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium" },
+        { "sbz_resources:power_pipe",    "sbz_resources:power_pipe",    "sbz_resources:power_pipe" },
         { "sbz_resources:matter_blob",   "sbz_resources:matter_blob",   "sbz_resources:matter_blob" }
     }
 })

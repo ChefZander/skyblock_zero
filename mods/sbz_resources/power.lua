@@ -331,6 +331,7 @@ minetest.register_node("sbz_resources:power_pipe", {
         connect_left = wire(wire_size, "left"),
         connect_right = wire(wire_size, "right"),
     },
+    use_texture_alpha = "clip",
 })
 minetest.register_craft({
     type = "shapeless",
@@ -480,7 +481,8 @@ minetest.register_node("sbz_resources:connector_off", {
     on_rightclick = function(pos, node)
         node.name = "sbz_resources:connector_on"
         minetest.swap_node(pos, node)
-    end
+    end,
+    use_texture_alpha = "clip",
 })
 
 minetest.register_node("sbz_resources:connector_on", {
@@ -520,7 +522,8 @@ minetest.register_node("sbz_resources:connector_on", {
                 table.insert_all(network[k], val)
             end
         end
-    end
+    end,
+    use_texture_alpha = "clip",
 })
 
 minetest.register_craft({

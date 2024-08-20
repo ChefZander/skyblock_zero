@@ -265,3 +265,10 @@ function count_nodes_within_radius(pos, itemstring, radius)
     end
     return count
 end
+
+-- mapgen aliases
+
+
+minetest.register_alias("mapgen_stone", "air")
+minetest.register_alias("mapgen_water_source", "air")
+minetest.register_alias("mapgen_river_water_source", "air")
