@@ -78,7 +78,8 @@ local touched_nodes = {}
 
 local function iterate_around_pos(pos, func)
     for i = 0, 5 do
-        func(pos + minetest.wallmounted_to_dir(i))
+        local dir = minetest.wallmounted_to_dir(i)
+        func(pos + dir, dir)
     end
 end
 
@@ -105,45 +106,37 @@ function sbz_api.assemble_network(start_pos, seen)
 
     sbz_api.vm_begin()
 
-    local function internal(pos)
+    local function internal(pos, dir)
         if not seen[hash(pos)] then
-            seen[hash(pos)] = true
-            iterate_around_pos(pos, function(ipos)
-                if not seen[hash(ipos)] then
-                    local node = sbz_api.vm_get_node(ipos).name
-                    local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
-                    local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
-                    local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
-                    local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
+            local node = sbz_api.vm_get_node(pos).name
+            local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
+            local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
+            local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
+            local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
 
-                    local is_conducting = minetest.get_item_group(node, "pipe_conducts") == 1
+            local is_conducting = minetest.get_item_group(node, "pipe_conducts") == 1
 
-                    if node == "sbz_resources:switching_station" then
-                        if by_connector then
-                            touched_nodes[hash(ipos)] = os.time()
-                        else
-                            switching_stations[#switching_stations + 1] = ipos
-                        end
-                    elseif node == "sbz_resources:power_pipe" then
-                        pipes_counter = pipes_counter + 1
-                    elseif is_battery then
-                        batteries[#batteries + 1] = { ipos, node }
-                    elseif is_generator then
-                        generators[#generators + 1] = { ipos, node }
-                    elseif is_machine then
-                        machines[#machines + 1] = { ipos, node }
-                    elseif is_connector then
-                        local dir = ipos - pos
-                        pipes_counter = pipes_counter + 2
-                        node_defs[node].assemble(ipos, sbz_api.vm_get_node(ipos), dir, network, seen)
-                    end
-
-                    if is_conducting then
-                        internal(ipos)
-                    end
-                    seen[hash(ipos)] = true
+            if node == "sbz_resources:switching_station" then
+                if by_connector then
+                    touched_nodes[hash(pos)] = os.time()
+                elseif hash(pos) ~= hash(start_pos) then
+                    switching_stations[#switching_stations + 1] = pos
                 end
-            end)
+            elseif is_battery then
+                batteries[#batteries + 1] = { pos, node }
+            elseif is_generator then
+                generators[#generators + 1] = { pos, node }
+            elseif is_machine then
+                machines[#machines + 1] = { pos, node }
+            elseif is_connector then
+                pipes_counter = pipes_counter + 2
+                node_defs[node].assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
+            end
+            seen[hash(pos)] = true
+            if is_conducting then
+                pipes_counter = pipes_counter + 1
+                iterate_around_pos(pos, internal)
+            end
         end
     end
     internal(table.copy(start_pos))
