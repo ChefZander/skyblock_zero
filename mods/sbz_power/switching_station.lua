@@ -53,7 +53,6 @@ function sbz_api.assemble_network(start_pos, seen)
             elseif is_machine then
                 machines[#machines + 1] = { pos, node }
             elseif is_connector then
-                pipes_counter = pipes_counter + 2
                 node_defs[node].assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
             end
             seen[hash(pos)] = true
