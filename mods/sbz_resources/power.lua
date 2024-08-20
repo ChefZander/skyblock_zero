@@ -75,7 +75,7 @@ local timeout_limit = 3 -- seconds
 local touched_nodes = {}
 
 
-local hey_this_is_sus_limit = 501 -- miliseconds
+local hey_this_is_sus_limit = 200 -- miliseconds
 
 local function check_for_sus_action(pos, meta)
     if math.abs(meta:get_int("last_activated") - minetest.get_us_time() / 1000) < hey_this_is_sus_limit then
@@ -100,7 +100,7 @@ end
 
 local function iterate_around_pos(pos, func)
     for i = 0, 5 do
-        func(pos+minetest.wallmounted_to_dir(i))
+        func(pos + minetest.wallmounted_to_dir(i))
     end
 end
 
@@ -154,8 +154,8 @@ function sbz_api.assemble_network(start_pos, seen)
                     elseif is_machine then
                         machines[#machines + 1] = { ipos, node }
                     elseif is_connector then
-                        local dir = ipos-pos
-                        pipes_counter = pipes_counter+2
+                        local dir = ipos - pos
+                        pipes_counter = pipes_counter + 2
                         node_defs[node].assemble(ipos, sbz_api.vm_get_node(ipos), dir, network, seen)
                     end
                     seen[hash(ipos)] = true
@@ -169,13 +169,13 @@ function sbz_api.assemble_network(start_pos, seen)
 end
 
 function sbz_api.switching_station_tick(start_pos)
-    if touched_nodes[hash(start_pos)] and os.time()-touched_nodes[hash(start_pos)] < 1 then
+    if touched_nodes[hash(start_pos)] and os.time() - touched_nodes[hash(start_pos)] < 1 then
         minetest.get_meta(start_pos):set_string("infotext", "Inactive (connected to another network)")
         return
     end
 
     local t0 = minetest.get_us_time()
-    
+
     local network, pipes_counter = sbz_api.assemble_network(start_pos)
     local generators = network.generators
     local machines = network.machines
@@ -284,7 +284,7 @@ end
 
 minetest.register_node("sbz_resources:switching_station", {
     description = "Switching Station",
-    tiles = {"switching_station.png"},
+    tiles = { "switching_station.png" },
     groups = { matter = 1, cracky = 1, pipe_connects = 1 },
     light_source = 3,
 
@@ -326,7 +326,7 @@ local wire_size = 1 / 8
 
 minetest.register_node("sbz_resources:power_pipe", {
     description = "Emittrium power pipe",
-    connects_to = {"group:pipe_connects"},
+    connects_to = { "group:pipe_connects" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
 
     tiles = { "emitter.png" },
@@ -496,11 +496,11 @@ minetest.register_node("sbz_resources:connector_off", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 3,
-    groups = {pipe_connects=1, matter=1, cracky=3},
+    groups = { pipe_connects = 1, matter = 1, cracky = 3 },
     node_box = {
         type = "fixed",
         fixed = {
-            {-0.25, -0.5, -0.25, 0.25, 0.5, 0.25}
+            { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 }
         }
     },
     tiles = {
@@ -511,8 +511,8 @@ minetest.register_node("sbz_resources:connector_off", {
         "switch_off.png",
         "switch_off.png"
     },
-    connects_to = {"sbz_resources:power_pipe", "group:sbz_machine"},
-    on_rightclick = function (pos, node)
+    connects_to = { "sbz_resources:power_pipe", "group:sbz_machine" },
+    on_rightclick = function(pos, node)
         node.name = "sbz_resources:connector_on"
         minetest.swap_node(pos, node)
     end
@@ -525,11 +525,11 @@ minetest.register_node("sbz_resources:connector_on", {
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
     light_source = 5,
-    groups = {pipe_connects=1, sbz_connector=1, matter=1, cracky=3, not_in_creative_inventory=1},
+    groups = { pipe_connects = 1, sbz_connector = 1, matter = 1, cracky = 3, not_in_creative_inventory = 1 },
     node_box = {
         type = "fixed",
         fixed = {
-            {-0.25, -0.5, -0.25, 0.25, 0.5, 0.25}
+            { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 }
         }
     },
     drop = "sbz_resources:connector_off",
@@ -541,16 +541,16 @@ minetest.register_node("sbz_resources:connector_on", {
         "switch_on.png",
         "switch_on.png"
     },
-    connects_to = {"sbz_resources:power_pipe", "group:sbz_machine"},
-    on_rightclick = function (pos, node)
+    connects_to = { "sbz_resources:power_pipe", "group:sbz_machine" },
+    on_rightclick = function(pos, node)
         node.name = "sbz_resources:connector_off"
         minetest.swap_node(pos, node)
     end,
-    assemble = function (pos, node, dir, network, seen)
+    assemble = function(pos, node, dir, network, seen)
         seen[hash(pos)] = true
         local self_dir = minetest.wallmounted_to_dir(node.param2)
-        if self_dir+dir == vector.zero() or self_dir-dir == vector.zero() then
-            local new_network = sbz_api.assemble_network(pos+dir, seen)
+        if self_dir + dir == vector.zero() or self_dir - dir == vector.zero() then
+            local new_network = sbz_api.assemble_network(pos + dir, seen)
             for k, val in pairs(new_network) do
                 table.insert_all(network[k], val)
             end
@@ -561,18 +561,18 @@ minetest.register_node("sbz_resources:connector_on", {
 minetest.register_craft({
     output = "sbz_resources:connector_off",
     recipe = {
-        {"", "sbz_resources:emittrium_circuit", ""},
-        {"sbz_resources:power_pipe", "sbz_resources:reinforced_matter", "sbz_resources:power_pipe"}
+        { "",                         "sbz_resources:emittrium_circuit", "" },
+        { "sbz_resources:power_pipe", "sbz_resources:reinforced_matter", "sbz_resources:power_pipe" }
     }
 })
 
 minetest.register_node("sbz_resources:phosphor_off", {
     description = "Phosphor",
-    tiles = {"matter_blob.png^phosphor_overlay.png"},
-    groups = {matter=1, cracky=3, pipe_connects=1, sbz_machine=1},
-    action = function (pos, node, meta, supply, demand)
-        if demand+1 <= supply then
-            minetest.set_node(pos, {name="sbz_resources:phosphor_on"})
+    tiles = { "matter_blob.png^phosphor_overlay.png" },
+    groups = { matter = 1, cracky = 3, pipe_connects = 1, sbz_machine = 1 },
+    action = function(pos, node, meta, supply, demand)
+        if demand + 1 <= supply then
+            minetest.set_node(pos, { name = "sbz_resources:phosphor_on" })
             return check_for_sus_action(pos, meta) and 0 or 1
         end
         return 0
@@ -581,17 +581,17 @@ minetest.register_node("sbz_resources:phosphor_off", {
 
 minetest.register_node("sbz_resources:phosphor_on", {
     description = "Phosphor",
-    tiles = {"emitter_imitator.png^phosphor_overlay.png"},
+    tiles = { "emitter_imitator.png^phosphor_overlay.png" },
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 2,
-    groups = {matter=1, cracky=3, pipe_connects=1, sbz_machine=1, not_in_creative_inventory=1},
+    groups = { matter = 1, cracky = 3, pipe_connects = 1, sbz_machine = 1, not_in_creative_inventory = 1 },
     drop = "sbz_resources:phosphor_off",
-    action = function (pos, node, meta, supply, demand)
-        if demand+1 <= supply then
+    action = function(pos, node, meta, supply, demand)
+        if demand + 1 <= supply then
             return check_for_sus_action(pos, meta) and 0 or 1
         else
-            minetest.set_node(pos, {name="sbz_resources:phosphor_off"})
+            minetest.set_node(pos, { name = "sbz_resources:phosphor_off" })
             return 0
         end
     end
@@ -600,5 +600,5 @@ minetest.register_node("sbz_resources:phosphor_on", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:phosphor_on",
-    recipe = {"sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit"}
+    recipe = { "sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit" }
 })
