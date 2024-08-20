@@ -71,7 +71,7 @@ end
     Now the code below is licensed normally
 ]]
 
-local timeout_limit = 3 -- seconds
+local timeout_limit = 1 -- seconds
 local touched_nodes = {}
 
 
@@ -442,6 +442,7 @@ minetest.register_abm({
     action = function(pos, node)
         if not touched_nodes[hash(pos)] or (os.time() - touched_nodes[hash(pos)] >= timeout_limit) then
             minetest.get_meta(pos):set_string("infotext", "No network found")
+            if node_defs[node.name].on_timeout then node_defs[node.name].on_timeout(pos, node) end
         end
     end
 })
@@ -566,7 +567,10 @@ sbz_api.register_machine("sbz_resources:phosphor_on", {
             return 0
         end
     end,
-    control_action_raw = true
+    control_action_raw = true,
+    on_timeout = function (pos, node)
+        minetest.set_node(pos, { name = "sbz_resources:phosphor_off" })
+    end
 })
 
 minetest.register_craft({
