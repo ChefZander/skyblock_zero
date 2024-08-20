@@ -1,5 +1,9 @@
 sbz_api.register_machine("sbz_chem:crusher",{
     description = "Crusher",
+    tiles = {
+        {name="crusher_top.png", animation={type="vertical_frames", length=0.5}},
+        "crusher_side.png"
+    },
     groups = {matter =1},
 
     on_construct = function(pos)
