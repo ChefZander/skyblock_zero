@@ -2,7 +2,7 @@ local generator_power_production = 30
 sbz_api.register_generator("sbz_resources:simple_charge_generator", {
     description = "Simple Charge Generator\n\nGenerates: 30 power.\nRequires 1 Core Dust per 10 Seconds to run.",
     tiles = { "simple_charge_generator.png" },
-    groups = { matter = 1, sbz_machine = 1 },
+    groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)

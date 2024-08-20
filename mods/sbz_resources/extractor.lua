@@ -2,7 +2,7 @@
 sbz_api.register_machine("sbz_resources:simple_matter_extractor", {
     description = "Simple Matter Extractor\n\nConsumes: 3 power.\nMatter per Second: 0.2",
     tiles = { "simple_matter_extractor.png" },
-    groups = { matter = 1, sbz_machine = 1 },
+    groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
@@ -79,7 +79,7 @@ sbz_api.register_machine("sbz_resources:advanced_matter_extractor", {
     description =
     "Advanced Matter Extractor\n\nConsumes: 5 power.\nMatter per Second: 0.6\nHas a 1/25 Chance to Extract 1x 'Core Dust'.",
     tiles = { "advanced_matter_extractor.png" },
-    groups = { matter = 1, sbz_machine = 1 },
+    groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)

@@ -177,7 +177,7 @@ quests = {
     
     {type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Emittrium Circuits", "Batteries" }},
 
-
+    {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
 
     -- ======================================================================================
     { type = "text",  title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren islend. So dont just ignore this Questline, okay? :P" },
@@ -215,6 +215,8 @@ quests = {
             "Emitter Immitators. Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in darkness! Yay!",
         requires = { "Emitter Immitators", "Matter Plates" }
     },
+
+    {type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires={"Emitter Immitators", "Emittrium Circuits"}},
 
     -- ======================================================================================
     { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },

@@ -250,7 +250,7 @@ sbz_api.register_generator("sbz_resources:starlight_collector", {
     description = "Starlight Collector",
     drawtype = "nodebox",
     tiles = { "starlight_collector.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png" },
-    groups = { matter = 1 },
+    groups = { matter = 1, pipe_connects=1 },
     sunlight_propagates = true,
     walkable = true,
     node_box = {
