@@ -378,7 +378,7 @@ local function get_questbook_formspec(selected_quest_index, player_name)
         formspec = formspec ..
             "hypertext[6,0.3;100,100;;\\<big\\>" .. minetest.formspec_escape(selected_quest.title) .. "]" ..
             "textarea[6,1.3;5.8,5;;;" ..
-            (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(c) .. " to unlock.") ..
+            (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock.") ..
             "]" .. -- minetest.formspec_escape(selected_quest.text)
             "label[6,7.2;" ..
             (is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest.") ..
