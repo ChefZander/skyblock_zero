@@ -1,5 +1,6 @@
 sbz_api.register_machine("sbz_chem:crusher",{
     description = "Crusher",
+    tiles = {"crusher.png"},
     groups = {matter =1},
 
     on_construct = function(pos)
@@ -13,8 +14,6 @@ sbz_api.register_machine("sbz_chem:crusher",{
             to_player = player_name,
             gain = 1.0,
         })
-
-        meta:set_int("count", 10)
     end,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
