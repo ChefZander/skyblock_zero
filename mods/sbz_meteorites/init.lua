@@ -307,7 +307,7 @@ minetest.register_abm({
         for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
             if not obj:is_player() and obj:get_luaentity().name == "sbz_meteorites:meteorite" then
                 local dir = pos-obj:get_pos()
-                obj:add_velocity(vector.normalize(dir)*(40/vector.length(dir))^2)
+                obj:add_velocity(vector.normalize(dir)*(30/vector.length(dir))^2)
                 minetest.add_particlespawner({
                     time = 1,
                     amount = math.floor(vector.length(dir)/2),
