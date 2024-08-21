@@ -202,7 +202,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             drag = 0.2,
             glow = 14,
             exptime = {min=10, max=20},
-            size = {min=1, max=2},
+            size = {min=2, max=4},
             texture = "meteorite_trail_"..self.type..".png",
             animation = {type="vertical_frames", aspect_width=4, aspect_height=4, length=-1}
         })
@@ -297,4 +297,37 @@ minetest.register_craft({
         {"", "sbz_meteorites:neutronium", ""},
         {"sbz_resources:matter_blob", "", "sbz_resources:matter_blob"}
     }
+})
+
+minetest.register_abm({
+    interval = 1,
+    chance = 1,
+    nodenames = {"sbz_meteorites:gravitational_attractor"},
+    action = function (pos, node)
+        for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
+            if not obj:is_player() and obj:get_luaentity().name == "sbz_meteorites:meteorite" then
+                local dir = pos-obj:get_pos()
+                obj:add_velocity(vector.normalize(dir)*(40/vector.length(dir))^2)
+                minetest.add_particlespawner({
+                    time = 1,
+                    amount = math.floor(vector.length(dir)/2),
+                    exptime = 2,
+                    size = {min=2, max=4},
+                    drag = 3,
+                    pos = {min=pos, max=obj:get_pos()},
+                    texture = "meteorite_trail_emitter.png^[colorize:#888888:alpha",
+                    animation = {type="vertical_frames", aspect_width=4, aspect_height=4, length=-1},
+                    glow = 7,
+                    attract = {
+                        kind = "line",
+                        origin = vector.zero(),
+                        origin_attached = obj,
+                        direction = dir,
+                        strength = 3,
+                        die_on_contact = false
+                    }
+                })
+            end
+        end
+    end
 })
