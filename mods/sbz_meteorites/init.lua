@@ -187,7 +187,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         local texture = self.type..".png^meteorite.png"
         self.object:set_properties({textures={texture, texture, texture, texture, texture, texture}})
         self.object:set_armor_groups({immortal=1})
-        self.sound = minetest.sound_play({name="rocket-loop-99748", gain=0.5, fade=0.1}, {loop=true})
+        self.sound = minetest.sound_play({name="rocket-loop-99748", gain=0.2, fade=0.1}, {loop=true})
     end,
     on_deactivate = function (self)
         minetest.sound_fade(self.sound, 0.1, 0)
@@ -213,7 +213,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         if moveresult and moveresult.collisions[1] then --colliding with something, should explode
             self.object:remove()
             meteorite_explode(pos, self.type)
-            minetest.sound_play({name="distant-explosion-47562", gain=2})
+            minetest.sound_play({name="distant-explosion-47562"})
         end
     end
 })
