@@ -255,3 +255,46 @@ minetest.register_globalstep(function(dtime)
     end
     storage:set_float("time_since_last_spawn", time_since)
 end)
+
+minetest.register_entity("sbz_meteorites:gravitational_attractor_entity", {
+    initial_properties = {
+        visual = "cube",
+        visual_size = {x=0.5, y=0.5},
+        textures = {"neutronium.png", "neutronium.png", "neutronium.png", "neutronium.png", "neutronium.png", "neutronium.png"},
+        automatic_rotate = 0.2,
+        glow = 14,
+        physical = false,
+        pointable = false
+    },
+    on_activate = function (self)
+        self.object:set_rotation(vector.new(math.random()*2, math.random(), math.random()*2)*math.pi)
+    end,
+    on_step = function (self)
+        local pos = vector.round(self.object:get_pos())
+        if minetest.get_node(pos).name ~= "sbz_meteorites:gravitational_attractor" then self.object:remove() end
+    end
+})
+
+minetest.register_node("sbz_meteorites:gravitational_attractor", {
+    description = "Gravitational Attractor",
+    drawtype = "glasslike",
+    tiles = {"gravitational_attractor.png"},
+    inventory_image = "gravitational_attractor_inventory.png",
+    wield_image = "gravitational_attractor_inventory.png",
+    paramtype = "light",
+    sunlight_propagates = true,
+    light_source = 7,
+    groups = {matter=1, cracky=3},
+    on_construct = function (pos)
+        minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
+    end
+})
+
+minetest.register_craft({
+    output = "sbz_meteorites:gravitational_attractor",
+    recipe = {
+        {"sbz_resources:matter_blob", "", "sbz_resources:matter_blob"},
+        {"", "sbz_meteorites:neutronium", ""},
+        {"sbz_resources:matter_blob", "", "sbz_resources:matter_blob"}
+    }
+})
