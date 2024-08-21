@@ -65,7 +65,16 @@ Anyways, I talked a lot, didn't I? Maybe too much. Let's get automating.]],
         requires = { "Introduction" }
     },
 
-    { type = "quest", title = "Switching Station", text = "The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you dont have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world."}
+    {
+        type = "quest",
+        title = "Matter Plates",
+        text = [[Matter Plates are often used for machinery. They are simple to craft, yet very important.
+
+You can get four Matter Plates by placing one matter blob into the crafting grid.]],
+        requires = { "A bigger platform" }
+    },
+
+    { type = "quest", title = "Switching Station", text = "The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you dont have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world.", requires = {"Matter Plates"}},
 
     {
         type = "quest",
@@ -109,15 +118,6 @@ To solve that, you can use a generator; it consumes core dust as fuel over time,
 
 However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.]],
         requires = { "Charged Field", "Antimatter" }
-    },
-
-    {
-        type = "quest",
-        title = "Matter Plates",
-        text = [[Matter Plates are often used for machinery. They are simple to craft, yet very important.
-
-You can get four Matter Plates by placing one matter blob into the crafting grid.]],
-        requires = { "A bigger platform" }
     },
 
     {
