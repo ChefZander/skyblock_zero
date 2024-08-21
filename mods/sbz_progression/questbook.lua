@@ -403,10 +403,30 @@ local function get_questbook_formspec(selected_quest_index, player_name)
     local quest_icon_spacing = quest_icon_size + 0.5
 
     for i, quest in ipairs(quests) do
+        local quest_display_name = quest.title
+
+        if quest.type == "secret" and not is_achievement_unlocked(player_name, quest.title) then
+            quest_display_name = "???"
+        end
+
+        quest_display_name = center_text(minetest.wrap_text(quest_display_name, 9), 9)
+
+
+        local properties = {}
+
+        if quest.type == "secret" and not is_achievement_unlocked(player_name, quest.title) then
+            table.insert(properties, ";bgcolor=" .. minetest.rgba(38,0,0,255))
+        end
+
+        if is_achievement_unlocked(player_name, quest.title) then
+            table.insert(properties, ";bgcolor=" .. minetest.rgba(0, 255, 0, 255))
+        end
+
+        
         local quest_formspec = {
-            "style[id_select_todo;font_size=14]",
+            "style[", quest.title, ";font_size=14", table.concat(properties, ""), "]",
             "item_image_button[" ,(i-1) * quest_icon_spacing,
-            ",0;", quest_icon_size, ",", quest_icon_size, ";sbz_resources:matter_blob;id_select_todo;", center_text(minetest.wrap_text(quest.title, 9), 9) .. "]",
+            ",0;", quest_icon_size, ",", quest_icon_size, ";sbz_resources:matter_blob;", quest.title, ";", quest_display_name .. "]",
             "box[", ((i-1) * quest_icon_spacing)+quest_icon_size, ", ", quest_icon_size/2, "; 0.5, 0.1;", minetest.rgba(255, 255, 255, 255), "]",
         }
         table.insert(quest_icons, table.concat(quest_formspec, ""))
@@ -419,7 +439,7 @@ local function get_questbook_formspec(selected_quest_index, player_name)
         "scroll_container[0, 0; 16, 10;Quest Menu;horizontal]",
         table.concat(quest_icons, ""),
         "scroll_container_end[]",
-        "scrollbaroptions[min=0;max=".. amount_of_quests * 10 ..";arrows=hide]",
+        "scrollbaroptions[min=0;max=".. amount_of_quests * 20 ..";arrows=hide]",
         "scrollbar[0,9.5;16,0.5;horizontal;Quest Menu;0]",
     }
 
