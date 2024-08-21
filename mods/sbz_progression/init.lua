@@ -134,6 +134,10 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
     elseif itemstack:get_name() == "sbz_power:switching_station" then
         unlock_achievement(player:get_player_name(), "Switching Station")
+
+
+    elseif itemstack:get_name() == "sbz_power:infinite_storinator" then
+        unlock_achievement(player:get_player_name(), "Infinite Storinator")
     end
 end)
 

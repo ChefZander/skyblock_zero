@@ -90,7 +90,7 @@ minetest.register_craft({
     output = "sbz_chem:simple_alloy_furnace",
     recipe = {
         { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust",    "sbz_power:simple_charged_field" },
-        { "sbz_resources:matter_blob",          "sbz_resources:emittrium_cicuit", "sbz_resources:matter_blob" },
+        { "sbz_resources:matter_blob",          "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
         { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",        "sbz_power:simple_charged_field" }
     }
 })

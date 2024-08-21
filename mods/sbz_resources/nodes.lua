@@ -116,6 +116,11 @@ minetest.register_craft({
         { "sbz_resources:pebble", "sbz_resources:pebble", "sbz_resources:pebble" }
     }
 })
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_resources:pebble 9",
+    recipe = {"sbz_resources:stone"}
+})
 
 
 minetest.register_node("sbz_resources:reinforced_matter", {

@@ -65,6 +65,8 @@ Anyways, I talked a lot, didn't I? Maybe too much. Let's get automating.]],
         requires = { "Introduction" }
     },
 
+    { type = "quest", title = "Switching Station", text = "The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you dont have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world."}
+
     {
         type = "quest",
         title = "Automation",
@@ -187,6 +189,8 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
 	{type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries" }},
 
     {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
+
+    {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators"}},
 
 
     -- ======================================================================================
