@@ -37,6 +37,7 @@ local function meteorite_explode(pos, type)
         end
     end
     --placing nodes
+    minetest.set_node(pos, {name="sbz_meteorites:neutronium"})
     local node_types = {matter_blob="sbz_meteorites:meteoric_matter", emitter="sbz_meteorites:meteoric_emittrium"}
     for _ = 1, 16 do
         local new_pos = pos+vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
@@ -152,6 +153,14 @@ minetest.register_node("sbz_meteorites:meteoric_metal", {
             {rarity=16, items={"sbz_chem:lithium_powder"}}
         }
     }
+})
+
+minetest.register_node("sbz_meteorites:neutronium", {
+    description = "Neutronium",
+    tiles = {"neutronium.png"},
+    paramtype = "light",
+    light_source = 14,
+    groups = {matter=1}
 })
 
 minetest.register_entity("sbz_meteorites:meteorite", {
