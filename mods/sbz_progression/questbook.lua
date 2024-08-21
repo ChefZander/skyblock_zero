@@ -252,6 +252,8 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
 	
 	{type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires={"Emitter Immitators", "Emittrium Circuits"}},
 
+    {type = "quest", title = "Interactors", text = "So you've got lots of matter by this point, most likely. But you might be running low on the others unless you're constantly harvesting from the core and the emitters. Here's a node that can do it for you, for a high cost. Just craft the Interactor, place it so it points into one of these nodes, and power it. You'll also find if you put some nodes or a matter annihilator into its input slot, it can use them too.", requires = {}},
+
     -- ======================================================================================
     { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 

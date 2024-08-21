@@ -1,6 +1,7 @@
 local modpath = minetest.get_modpath("sbz_power")
 
 function sbz_api.register_machine(name, def)
+    def.groups = def.groups or {}
     def.groups.sbz_machine = 1
     def.groups.pipe_conducts = 1
     def.groups.pipe_connects = 1
