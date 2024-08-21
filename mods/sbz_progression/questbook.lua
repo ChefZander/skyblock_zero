@@ -191,7 +191,16 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
     {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
 
     {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators"}},
+    -- ======================================================================================
+    { type = "text", title = "Questline: Chemistry",    text = "Good luck." },
 
+    {type = "quest", title = "Crusher", text = "This one's very simple :)\nIt's just pebbles in, metals out. Consumes 5 Power when running.", requires = {"Concrete Plan", "Antimatter", "Charged Field"}},
+
+    {type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = {"Crusher", "Emittrium Circuits", "Antimatter", "Charged Field"}},
+
+    {type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = {"Simple Alloy Furnace", "Crusher"}},
+
+    { type = "secret", title = "It's fake",                 text = "Digital gold? Where have I heard that before..." },
 
     -- ======================================================================================
     { type = "text",  title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
