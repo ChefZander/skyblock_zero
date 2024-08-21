@@ -8,7 +8,9 @@ local simple_alloy_furnace_recipes = {
 
 sbz_api.register_machine("sbz_chem:simple_alloy_furnace",{
     description = "Simple Alloy Furnace",
-    tiles = {"simple_alloy_furnace.png"},
+    tiles = {
+        {name="simple_alloy_furnace.png", animation={type="vertical_frames", length = 0.7}}
+    },
     groups = {matter =1},
 
     on_construct = function(pos)
@@ -82,4 +84,13 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace",{
             return power_needed
         end
     end,
+})
+
+minetest.register_craft({
+    output = "sbz_chem:simple_alloy_furnace",
+    recipe = {
+        { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust",    "sbz_power:simple_charged_field" },
+        { "sbz_resources:matter_blob",          "sbz_resources:emittrium_cicuit", "sbz_resources:matter_blob" },
+        { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",        "sbz_power:simple_charged_field" }
+    }
 })

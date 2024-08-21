@@ -196,9 +196,9 @@ minetest.register_node("sbz_power:switching_station", {
 minetest.register_craft({
     output = "sbz_power:switching_station",
     recipe = {
-        { "",                         "",                          "" },
-        { "sbz_power:power_pipe", "sbz_resources:matter_blob", "sbz_power:power_pipe" },
-        { "",                         "",                          "" }
+        { "",                         "sbz_resources:matter_plate",                          "" },
+        { "sbz_resources:matter_plate", "sbz_resources:matter_plate", "sbz_resources:matter_plate" },
+        { "",                         "sbz_resources:matter_plate",                          "" }
     }
 })
 
