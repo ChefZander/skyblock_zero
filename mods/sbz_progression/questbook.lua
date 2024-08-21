@@ -1,3 +1,10 @@
+---@class Quest
+---@field type string
+---@field title string
+---@field text string Text corpus explaining and providing lore for a quest
+---@field requires? string[] List of other quest titles that need to be completed for unlocking this quest.
+
+---@type Quest[]
 quests = {
     { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
 
@@ -360,67 +367,71 @@ function is_quest_available(player_name, quest_id)
     return true
 end
 
--- Function to create the formspec
+---Text Wrap function
+---@param text string
+---@param max_length integer
+---@return string
+function wrap_text(text, max_length)
+  local words = {}
+  for word in text:gmatch("%S+") do
+    table.insert(words, word)
+  end
+
+  local wrapped_text = ""
+  local current_line_length = 0
+
+  for i, word in ipairs(words) do
+    if current_line_length + #word + (i > 1 and 1 or 0) > max_length then
+      wrapped_text = wrapped_text .. "\n"
+      current_line_length = 0
+    end
+
+    wrapped_text = wrapped_text .. (i > 1 and " " or "") .. word
+    current_line_length = current_line_length + #word + (i > 1 and 1 or 0)
+  end
+
+  return wrapped_text
+end
+
+--- Function to create the formspec
+--- @param selected_quest_index number
+--- @param player_name string
+--- @return string
 local function get_questbook_formspec(selected_quest_index, player_name)
-    local selected_quest = quests[selected_quest_index]
-    local quest_list = ""
-
-    for i, quest in ipairs(quests) do
-        if quest.type == "quest" then
-            if is_achievement_unlocked(player_name, quest.title) then
-                quest_list = quest_list .. "✓ " .. quest.title .. ","
-            elseif is_quest_available(player_name, quest.title) then
-                quest_list = quest_list .. "► " .. quest.title .. ","
-            else
-                quest_list = quest_list .. " ✕ " .. quest.title .. ","
-	    end
-        elseif quest.type == "text" then
-            quest_list = quest_list .. "≡ " .. quest.title .. ","
-        elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then
-            quest_list = quest_list .. "✪ " .. quest.title .. ","
-        elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) == false then
-            quest_list = quest_list .. "✪ ???,"
-        end
-    end
-    quest_list = quest_list:sub(1, -2)
-
-    local formspec = "formspec_version[7]" ..
-        "size[12,8]" ..
-        "label[0.1,0.3;Quest List]" ..
-        "textlist[0,0.7;5.8,7;quest_list;" .. quest_list .. ";" .. selected_quest_index .. "]"
-
-    if selected_quest.type == "quest" or (selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title)) then
-        formspec = formspec ..
-            "hypertext[6,0.3;100,100;;\\<big\\>" .. minetest.formspec_escape(selected_quest.title) .. "]" ..
-            "textarea[6,1.3;5.8,5;;;" ..
-            (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock.") ..
-            "]" .. -- minetest.formspec_escape(selected_quest.text)
-            "label[6,7.2;" ..
-            (is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest.") ..
-            "]"
-    elseif selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title) == false then
-        formspec = formspec ..
-            "label[6,0.3;Secret Quest]" ..
-            "label[6,0.7;Title: ???]" ..
-            "textarea[6,1.2;5.8,5;;;" .. "???" .. "]" .. -- minetest.formspec_escape(selected_quest.text)
-            "label[6,7.2;" ..
-            (is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest.") ..
-            "]"
-    elseif selected_quest.type == "text" then
-        formspec = formspec ..
-            "textarea[6,0.3;5.8,5;;;" ..
-            (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock.") ..
-            "]"
-    end
-
     -- play page sound lol
-
     minetest.sound_play("questbook", {
         to_player = player_name,
         gain = 1.0,
     })
 
-    return formspec
+    local quest_icons = {}
+    local amount_of_quests = #quests
+
+    local quest_spacing = 1.3
+
+    for i, quest in ipairs(quests) do
+        local quest_formspec = {
+            "style[id_select_todo;font_size=-1]",
+            "item_image_button[" .. (i) * quest_spacing ..
+            ",0;1.2,1.2;sbz_resources:matter_blob;id_select_todo;" .. wrap_text(quest.title, 10) .. "]",
+        }
+        table.insert(quest_icons, table.concat(quest_formspec, ""))
+    end
+
+    local formspec = {
+        "formspec_version[7]",
+        "size[16,10,true]", -- width, height, fixed size
+        "real_coordiantes[true]",
+        "scroll_container[0, 0; 16, 10;Quest Menu;horizontal]",
+        table.concat(quest_icons, ""),
+        "scroll_container_end[]",
+        "scrollbaroptions[min=0;max=".. amount_of_quests * 10 ..";arrows=hide]",
+        "scrollbar[0,9.5;16,0.5;horizontal;Quest Menu;0]",
+    }
+
+
+    -- Remove for performance?
+    return table.concat(formspec, "")
 end
 
 -- Handle form submissions
