@@ -22,7 +22,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target or vector.distance(target:get_pos(), pos) < 100 then minetest.log("nope") self.object:remove() end
+            if not target then minetest.log("nope") self.object:remove() end
             self.object:set_velocity(vector.normalize(target:get_pos()-pos+offset))
         end
         local texture = self.type..".png^meteorite.png"
@@ -44,7 +44,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             glow = 14,
             exptime = {min=10, max=20},
             size = {min=1, max=2},
-            texture = "meteorite_trail.png",
+            texture = "meteorite_trail_"..self.type..".png",
             animation = {type="vertical_frames", aspect_width=4, aspect_height=4, length=-1}
         })
     end
@@ -73,7 +73,7 @@ minetest.register_chatcommand("spawn_meteorite", {
             param = vector.new(tonumber(param[1]), tonumber(param[2]), tonumber(param[3]))
         else param = nil end
         local meteorite = spawn_meteorite(param)
-        if not meteorite then minetest.chat_send_player(name, "Failed to spawn meteorite.") end
+        if not meteorite then minetest.chat_send_player(name, "Failed to spawn meteorite.") return end
         local pos = vector.round(meteorite:get_pos())
         minetest.chat_send_player(name, "Spawned meteorite at "..pos.x.." "..pos.y.." "..pos.z..".")
     end
