@@ -50,24 +50,31 @@ minetest.register_entity("sbz_meteorites:meteorite", {
     end
 })
 
-local function spawn_meteorite()
+local function spawn_meteorite(pos)
     local players = minetest.get_connected_players()
     local player = players[math.random(#players)]
-    local pos = vector.zero()
-    while vector.length(pos) < 100 do
-        pos = vector.new(math.random(-120, 120), math.random(-120, 120), math.random(-120, 120))
+    if not pos then
+        pos = vector.zero()
+        while vector.length(pos) < 100 do
+            pos = vector.new(math.random(-120, 120), math.random(-120, 120), math.random(-120, 120))
+        end
+        pos = player:get_pos()+pos
     end
-    return minetest.add_entity(player:get_pos()+pos, "sbz_meteorites:meteorite")
+    return minetest.add_entity(pos, "sbz_meteorites:meteorite")
 end
 
 minetest.register_chatcommand("spawn_meteorite", {
-    params = "",
+    params = "[<x> <y> <z>]",
     description = "Attempts to spawn a meteorite somewhere.",
     privs = {give=true},
-    func = function (player)
-        local meteorite = spawn_meteorite()
-        if not meteorite then minetest.chat_send_player(player, "Failed to spawn meteorite.") end
+    func = function (name, param)
+        param = string.split(param, " ")
+        if #param == 3 and tonumber(param[1]) ~= "fail" and tonumber(param[2]) ~= "fail" and tonumber(param[3]) ~= "fail" then
+            param = vector.new(tonumber(param[1]), tonumber(param[2]), tonumber(param[3]))
+        else param = nil end
+        local meteorite = spawn_meteorite(param)
+        if not meteorite then minetest.chat_send_player(name, "Failed to spawn meteorite.") end
         local pos = vector.round(meteorite:get_pos())
-        minetest.chat_send_player(player, "Spawned meteorite at "..pos.x.." "..pos.y.." "..pos.z..".")
+        minetest.chat_send_player(name, "Spawned meteorite at "..pos.x.." "..pos.y.." "..pos.z..".")
     end
 })
