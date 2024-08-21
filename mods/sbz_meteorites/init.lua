@@ -241,3 +241,17 @@ minetest.register_chatcommand("spawn_meteorite", {
         minetest.chat_send_player(name, "Spawned meteorite at "..pos.x.." "..pos.y.." "..pos.z..".")
     end
 })
+
+local storage = minetest.get_mod_storage()
+local time_since = storage:get_float("time_since_last_spawn")
+
+minetest.register_globalstep(function(dtime)
+    time_since = time_since+dtime
+    if time_since > 120 then
+        time_since = 0
+        if math.random() < 0.2 then
+            spawn_meteorite()
+        end
+    end
+    storage:set_float("time_since_last_spawn", time_since)
+end)
