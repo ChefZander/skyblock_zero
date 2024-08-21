@@ -367,32 +367,6 @@ function is_quest_available(player_name, quest_id)
     return true
 end
 
----Text Wrap function
----@param text string
----@param max_length integer
----@return string
-function wrap_text(text, max_length)
-  local words = {}
-  for word in text:gmatch("%S+") do
-    table.insert(words, word)
-  end
-
-  local wrapped_text = ""
-  local current_line_length = 0
-
-  for i, word in ipairs(words) do
-    if current_line_length + #word + (i > 1 and 1 or 0) > max_length then
-      wrapped_text = wrapped_text .. "\n"
-      current_line_length = 0
-    end
-
-    wrapped_text = wrapped_text .. (i > 1 and " " or "") .. word
-    current_line_length = current_line_length + #word + (i > 1 and 1 or 0)
-  end
-
-  return wrapped_text
-end
-
 --- Function to create the formspec
 --- @param selected_quest_index number
 --- @param player_name string
@@ -413,7 +387,7 @@ local function get_questbook_formspec(selected_quest_index, player_name)
         local quest_formspec = {
             "style[id_select_todo;font_size=-1]",
             "item_image_button[" .. (i) * quest_spacing ..
-            ",0;1.2,1.2;sbz_resources:matter_blob;id_select_todo;" .. wrap_text(quest.title, 10) .. "]",
+            ",0;1.2,1.2;sbz_resources:matter_blob;id_select_todo;" .. minetest.wrap_text(quest.title, 10) .. "]",
         }
         table.insert(quest_icons, table.concat(quest_formspec, ""))
     end
