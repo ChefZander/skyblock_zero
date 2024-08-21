@@ -6,8 +6,6 @@
 
 ---@type Quest[]
 quests = {
-    { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
-
     {
         type = "quest",
         title = "Introduction",
@@ -407,8 +405,9 @@ local function get_questbook_formspec(selected_quest_index, player_name)
     for i, quest in ipairs(quests) do
         local quest_formspec = {
             "style[id_select_todo;font_size=14]",
-            "item_image_button[" .. (i-1) * quest_icon_spacing ..
-            ",0;".. quest_icon_size .. "," .. quest_icon_size .. ";sbz_resources:matter_blob;id_select_todo;" .. center_text(minetest.wrap_text(quest.title, 9), 9) .. "]",
+            "item_image_button[" ,(i-1) * quest_icon_spacing,
+            ",0;", quest_icon_size, ",", quest_icon_size, ";sbz_resources:matter_blob;id_select_todo;", center_text(minetest.wrap_text(quest.title, 9), 9) .. "]",
+            "box[", ((i-1) * quest_icon_spacing)+quest_icon_size, ", ", quest_icon_size/2, "; 0.5, 0.1;", minetest.rgba(255, 255, 255, 255), "]",
         }
         table.insert(quest_icons, table.concat(quest_formspec, ""))
     end
