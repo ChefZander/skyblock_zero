@@ -9,7 +9,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         visual = "cube",
         visual_size = {x=2, y=2},
         automatic_rotate = 0.2,
-        glow = 15,
+        glow = 14,
         physical = true
     },
     on_activate = function (self, staticdata)
@@ -22,7 +22,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target or vector.distance(target:get_pos(), pos) < 100 then self.object:remove() end
+            if not target or vector.distance(target:get_pos(), pos) < 100 then minetest.log("nope") self.object:remove() end
             self.object:set_velocity(vector.normalize(target:get_pos()-pos+offset))
         end
         local texture = self.type..".png^meteorite.png"
@@ -30,7 +30,23 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         self.object:set_armor_groups({immortal=1})
     end,
     get_staticdata = function (self)
-        return self.texture
+        return self.type
+    end,
+    on_step = function (self, dtime)
+        local pos = self.object:get_pos()
+        local diag = vector.new(1, 1, 1)
+        minetest.add_particlespawner({
+            time = dtime,
+            amount = 1,
+            pos = {min=pos-diag, max=pos+diag},
+            vel = {min=-0.5*diag, max=0.5*diag},
+            drag = 0.2,
+            glow = 14,
+            exptime = {min=10, max=20},
+            size = {min=1, max=2},
+            texture = "meteorite_trail.png",
+            animation = {type="vertical_frames", aspect_width=4, aspect_height=4, length=-1}
+        })
     end
 })
 
