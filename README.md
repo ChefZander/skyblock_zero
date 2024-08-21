@@ -37,5 +37,7 @@ Tragic ambient main menu by Brandon Morris, CC0, https://opengameart.org/content
 - MP5 Mag In (2) pt2.ogg by smill.and.welson -- https://freesound.org/s/698840/ -- License: Attribution 4.0
 - pop.ogg by dodrio -- https://freesound.org/s/554022/ -- License: Creative Commons 0
 - Page Turn by redagee -- https://freesound.org/s/737004/ -- License: Creative Commons 0
+- https://pixabay.com/sound-effects/rocket-loop-99748/
+- https://pixabay.com/sound-effects/distant-explosion-47562/ & https://pixabay.com/sound-effects/explosion-80108/ (Edited by theidealist)
 
 For users on ContentDB: The download of this package includes this information within the README.md file.
