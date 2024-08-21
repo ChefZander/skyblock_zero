@@ -41,7 +41,7 @@ local function meteorite_explode(pos, type)
     for _ = 1, 16 do
         local new_pos = pos+vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
         if minetest.get_node(new_pos).name == "air" then
-            minetest.set_node(new_pos, {name=node_types[type]})
+            minetest.set_node(new_pos, {name=math.random() < 0.2 and "sbz_meteorites:meteoric_metal" or node_types[type]})
         end
     end
     --particle effects
@@ -86,7 +86,20 @@ minetest.register_node("sbz_meteorites:meteoric_matter", {
     paramtype = "light",
     light_source = 10,
     groups = {matter=1, cracky=3},
-    drop = "sbz_resources:matter_dust 9"
+    drop = {
+        max_items = 9,
+        items = {
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}}
+        }
+    }
 })
 
 minetest.register_node("sbz_meteorites:meteoric_emittrium", {
@@ -95,11 +108,50 @@ minetest.register_node("sbz_meteorites:meteoric_emittrium", {
     paramtype = "light",
     light_source = 10,
     groups = {matter=1, cracky=3},
-    drop = "sbz_resources:raw_emittrium 9"
+    drop = {
+        max_items = 9,
+        items = {
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}}
+        }
+    }
 })
 
 minetest.register_node("sbz_meteorites:meteoric_metal", {
-    
+    description = "Meteoric Metal",
+    tiles = {"metal.png^meteoric_overlay.png"},
+    paramtype = "light",
+    light_source = 10,
+    groups = {matter=1, cracky=3},
+    drop = {
+        max_items = 9,
+        items = {
+            {rarity=16, items={"sbz_chem:gold_powder"}},
+            {rarity=16, items={"sbz_chem:silver_powder"}},
+            {rarity=16, items={"sbz_chem:iron_powder"}},
+            {rarity=16, items={"sbz_chem:copper_powder"}},
+            {rarity=16, items={"sbz_chem:aluminum_powder"}},
+            {rarity=16, items={"sbz_chem:lead_powder"}},
+            {rarity=16, items={"sbz_chem:zinc_powder"}},
+            {rarity=16, items={"sbz_chem:tin_powder"}},
+            {rarity=16, items={"sbz_chem:nickel_powder"}},
+            {rarity=16, items={"sbz_chem:platinum_powder"}},
+            {rarity=16, items={"sbz_chem:mercury_powder"}},
+            {rarity=16, items={"sbz_chem:cobalt_powder"}},
+            {rarity=16, items={"sbz_chem:titanium_powder"}},
+            {rarity=16, items={"sbz_chem:magnesium_powder"}},
+            {rarity=16, items={"sbz_chem:calcium_powder"}},
+            {rarity=16, items={"sbz_chem:sodium_powder"}},
+            {rarity=16, items={"sbz_chem:lithium_powder"}}
+        }
+    }
 })
 
 minetest.register_entity("sbz_meteorites:meteorite", {
