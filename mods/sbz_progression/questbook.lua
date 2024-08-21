@@ -367,6 +367,26 @@ function is_quest_available(player_name, quest_id)
     return true
 end
 
+---Center Wrapped Text
+---@param text string
+---@param max_length integer
+---@return string
+local function center_text(text, max_length)
+    local lines = {}
+    for line in text:gmatch("[^\n]+") do
+        local centered_line = ""
+        local line_length = #line
+        if line_length <= max_length then
+            local padding = math.floor((max_length - line_length) / 2)
+            centered_line = (" "):rep(padding) .. line
+        else
+            centered_line = line
+        end
+        table.insert(lines, centered_line)
+    end
+    return table.concat(lines, "\n")
+end
+
 --- Function to create the formspec
 --- @param selected_quest_index number
 --- @param player_name string
@@ -381,13 +401,14 @@ local function get_questbook_formspec(selected_quest_index, player_name)
     local quest_icons = {}
     local amount_of_quests = #quests
 
-    local quest_spacing = 1.3
+    local quest_icon_size = 1.5
+    local quest_icon_spacing = quest_icon_size + 0.5
 
     for i, quest in ipairs(quests) do
         local quest_formspec = {
-            "style[id_select_todo;font_size=-1]",
-            "item_image_button[" .. (i) * quest_spacing ..
-            ",0;1.2,1.2;sbz_resources:matter_blob;id_select_todo;" .. minetest.wrap_text(quest.title, 10) .. "]",
+            "style[id_select_todo;font_size=14]",
+            "item_image_button[" .. (i-1) * quest_icon_spacing ..
+            ",0;".. quest_icon_size .. "," .. quest_icon_size .. ";sbz_resources:matter_blob;id_select_todo;" .. center_text(minetest.wrap_text(quest.title, 9), 9) .. "]",
         }
         table.insert(quest_icons, table.concat(quest_formspec, ""))
     end
