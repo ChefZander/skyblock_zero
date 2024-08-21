@@ -2,7 +2,7 @@ minetest.register_node("sbz_resources:matter_blob", {
     description = "Matter Blob",
     drawtype = "glasslike",
     tiles = { "matter_blob.png" },
-    groups = { matter = 1, cracky = 3 },
+    groups = { matter = 1, cracky = 3, explody = 3 },
     sunlight_propagates = true,
     walkable = true,
     sounds = {
@@ -65,7 +65,7 @@ minetest.register_node("sbz_resources:emitter_imitator", {
     description = "Emitter Immitator\n\nLight Source Only. Strength: 10.",
     drawtype = "glasslike",
     tiles = { "emitter_imitator.png" },
-    groups = { matter = 1 },
+    groups = { matter = 1, explody = 3 },
     sunlight_propagates = true,
     paramtype = "light",
     light_source = 10,
