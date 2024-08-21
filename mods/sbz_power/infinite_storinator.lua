@@ -40,7 +40,7 @@ local M = minetest.get_meta
 local slots_per_1_power = 8
 
 sbz_api.register_machine("sbz_power:infinite_storinator", {
-    description = "Infinite storinator",
+    description = "Infinite Storinator",
     tiles = {
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
@@ -131,4 +131,13 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
     end,
 
     control_action_raw = true,
+})
+
+minetest.register_craft({
+    output = "sbz_power:infinite_storinator",
+    recipe = {
+        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
+    }
 })

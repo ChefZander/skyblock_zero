@@ -136,11 +136,25 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
     elseif itemstack:get_name() == "sbz_power:switching_station" then
         unlock_achievement(player:get_player_name(), "Switching Station")
+
+
+    elseif itemstack:get_name() == "sbz_power:infinite_storinator" then
+        unlock_achievement(player:get_player_name(), "Infinite Storinator")
+
+
+    elseif itemstack:get_name() == "sbz_chem:crusher" then
+        unlock_achievement(player:get_player_name(), "Crusher")
+
+
+    elseif itemstack:get_name() == "sbz_chem:simple_alloy_furnace" then
+        unlock_achievement(player:get_player_name(), "Simple Alloy Furnace")
     end
 end)
 
+-- held item check for non craftable items
 minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
+        -- pos stuff
         local pos = player:get_pos()
         if pos.y < -100 then
             unlock_achievement(player:get_player_name(), "Emptiness")
@@ -148,6 +162,15 @@ minetest.register_globalstep(function(dtime)
         if pos.y < -110 then
             displayDialougeLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({x = 0, y = 1, z = 0})
+        end
+
+        local player_name = player:get_player_name()
+        local wielded_item = player:get_wielded_item():get_name()
+
+        if wielded_item == "sbz_chem:gold_powder" then
+            unlock_achievement(player_name, "It's fake")
+        elseif wielded_item == "sbz_chem:bronze_powder" then
+            unlock_achievement(player_name, "Bronze Age")
         end
     end
 end)
