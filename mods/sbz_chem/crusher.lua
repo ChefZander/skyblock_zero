@@ -88,3 +88,13 @@ sbz_api.register_machine("sbz_chem:crusher",{
 
     end,
 })
+
+
+minetest.register_craft({
+    output = "sbz_chem:crusher",
+    recipe = {
+        { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust",    "sbz_power:simple_charged_field" },
+        { "sbz_resources:matter_blob",          "sbz_resources:stone", "sbz_resources:matter_blob" },
+        { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",        "sbz_power:simple_charged_field" }
+    }
+})
