@@ -218,7 +218,7 @@ local function spawn_meteorite(pos)
     local player = players[math.random(#players)]
     if not pos then
         pos = vector.zero()
-        while vector.length(pos) < 100 do
+        while vector.length(pos) < 100 or minetest.get_node(pos).name == "ignore" do
             pos = vector.new(math.random(-120, 120), math.random(-120, 120), math.random(-120, 120))
         end
         pos = player:get_pos()+pos
