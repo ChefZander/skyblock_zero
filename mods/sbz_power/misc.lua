@@ -108,3 +108,58 @@ sbz_api.register_machine("sbz_power:interactor", {
         end
     end
 })
+
+local function vacuum(pos, radius, inv)
+    radius = radius + 0.5
+    local min_pos = vector.subtract(pos, radius)
+    local max_pos = vector.add(pos, radius)
+    for _, obj in pairs(minetest.get_objects_in_area(min_pos, max_pos)) do
+        local entity = obj:get_luaentity()
+        if entity and entity.name == "__builtin:item" then
+            if entity.itemstring ~= "" then
+                local leftover = inv:add_item("main", ItemStack(entity.itemstring))
+                entity.itemstring = ""
+
+                if leftover then
+                    minetest.item_drop(leftover, fakelib.create_player(), obj:get_pos())
+                end
+            end
+            obj:remove()
+        end
+    end
+end
+
+local item_vaccum_power_demand = 5
+-- you expected this to be in the pipeworks mod didn't you... well its more convenient to put it here because sbz_api
+sbz_api.register_machine("sbz_power:item_vacuum", {
+    description = "Item Vacuum",
+    tiles = { "item_vacuum.png" },
+    groups = {
+        sbz_machine = 1,
+        pipe_conducts = 1,
+        pipe_connects = 1,
+        matter = 3,
+        cracky = 3,
+    },
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_size("main", 8 * 2)
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+list[context;main;0.2,0.2;8,4;]
+list[current_player;main;0.2,5;8,4;]
+listring[]"
+    ]])
+    end,
+    power_needed = item_vaccum_power_demand,
+    action_interval = 3,
+    action = function(pos, node, meta, supply, demand)
+        vacuum(pos, 4, meta:get_inventory())
+        return item_vaccum_power_demand
+    end,
+    output_inv = "main",
+    input_inv = "main",
+})

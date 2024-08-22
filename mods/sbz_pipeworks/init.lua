@@ -25,6 +25,6 @@ dofile(pipeworks.modpath .. "/tube_register.lua")
 
 dofile(pipeworks.modpath .. "/filter_injector.lua")
 dofile(pipeworks.modpath .. "/basic_tubes.lua")
-
+dofile(pipeworks.modpath .. "/basic_blocks.lua")
 
 minetest.log("info", "Pipeworks loaded!")

@@ -11,7 +11,7 @@ local function add_tube_support(def)
             insert_object = function(pos, node, stack, direction)
                 local meta = minetest.get_meta(pos)
                 local inv = meta:get_inventory()
-                if inv:get_list(def.input_inv) and inv:get_list(def.output_inv) then
+                if inv:get_list(def.input_inv) then
                     return inv:add_item(def.input_inv, stack)
                 end
                 return stack
@@ -28,8 +28,9 @@ local function add_tube_support(def)
             end,
             input_inventory = def.input_inv,
             connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
-
         }
+        def.after_place_node = def.after_place_node or pipeworks.after_place
+        def.after_dig_node = def.after_dig_node or pipeworks.after_dig
     end
 end
 
