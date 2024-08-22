@@ -69,7 +69,7 @@ minetest.register_abm({
                         kind = "line",
                         origin = vector.zero(),
                         origin_attached = obj,
-                        direction = dir,
+                        direction = pos-obj:get_pos(),
                         strength = 3,
                         die_on_contact = false
                     }
