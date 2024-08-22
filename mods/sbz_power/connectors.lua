@@ -26,6 +26,7 @@ minetest.register_node("sbz_power:connector_off", {
     on_rightclick = function(pos, node)
         node.name = "sbz_power:connector_on"
         minetest.swap_node(pos, node)
+        minetest.sound_play({name="door-lock-43124"}, {pos=pos}, true)
     end,
     use_texture_alpha = "clip",
 })
@@ -57,6 +58,7 @@ minetest.register_node("sbz_power:connector_on", {
     on_rightclick = function(pos, node)
         node.name = "sbz_power:connector_off"
         minetest.swap_node(pos, node)
+        minetest.sound_play({name="door-lock-43124"}, {pos=pos}, true)
     end,
     assemble = function(pos, node, dir, network, seen)
         seen[hash(pos)] = true

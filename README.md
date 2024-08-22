@@ -38,6 +38,9 @@ Tragic ambient main menu by Brandon Morris, CC0, https://opengameart.org/content
 - pop.ogg by dodrio -- https://freesound.org/s/554022/ -- License: Creative Commons 0
 - Page Turn by redagee -- https://freesound.org/s/737004/ -- License: Creative Commons 0
 - https://pixabay.com/sound-effects/rocket-loop-99748/
-- https://pixabay.com/sound-effects/distant-explosion-47562/ & https://pixabay.com/sound-effects/explosion-80108/ (Edited by theidealist)
+- https://pixabay.com/sound-effects/distant-explosion-47562/ & https://pixabay.com/sound-effects/explosion-80108/ (edited)
+- https://pixabay.com/sound-effects/door-lock-43124/
+- https://pixabay.com/sound-effects/050597-ice-crusher-38522/ (edited)
+- https://pixabay.com/sound-effects/goopy-slime-21-229636/ (edited)
 
 For users on ContentDB: The download of this package includes this information within the README.md file.

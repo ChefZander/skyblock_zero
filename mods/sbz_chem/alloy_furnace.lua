@@ -71,6 +71,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace",{
             return power_needed
         else
             meta:set_string("infotext", "Smelting...")
+            minetest.sound_play({name="goopy-slime-21-229636", gain=0.6}, {pos=pos})
 
             if inv:room_for_item("output", selected_item) then
                 inv:add_item("output", selected_item)

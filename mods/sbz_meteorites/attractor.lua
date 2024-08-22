@@ -28,6 +28,7 @@ minetest.register_node("sbz_meteorites:gravitational_attractor", {
     light_source = 7,
     groups = {matter=1, cracky=3},
     on_construct = function (pos)
+        minetest.sound_play({name="machine_build"}, {pos=pos})
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end
 })
