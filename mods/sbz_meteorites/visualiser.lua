@@ -1,5 +1,16 @@
 minetest.register_node("sbz_meteorites:meteorite_radar", {
     description = "Meteorite Radar",
+    drawtype = "mesh",
+    mesh = "meteorite_radar.obj",
+    tiles = {"meteorite_radar.png"},
+    collision_box = {
+        type = "fixed",
+        fixed = {-0.5, -0.5, -0.5, 0.5, 0.25, 0.5}
+    },
+    selection_box = {
+        type = "fixed",
+        fixed = {-0.5, -0.5, -0.5, 0.5, 0.25, 0.5}
+    },
     groups = {matter=1}
 })
 
@@ -7,11 +18,11 @@ minetest.register_abm({
     interval = 1,
     chance = 1,
     nodenames = {"sbz_meteorites:meteorite_radar"},
-    action = function(pos)
+    action = function(radar_pos)
         local players = {}
         local meteorites = {}
         local attractors = {}
-        for _, obj in pairs(minetest.get_objects_inside_radius(pos, 100)) do
+        for _, obj in pairs(minetest.get_objects_inside_radius(radar_pos, 150)) do
             if obj then
                 local entity = obj:get_luaentity()
                 if not entity then
@@ -24,6 +35,16 @@ minetest.register_abm({
                     table.insert(attractors, vector.round(obj:get_pos()))
                 end
             end
+        end
+        if #meteorites > 0 then
+            minetest.add_particle({
+                pos = radar_pos+vector.new(0, 1.5, 0),
+                expiration_time = 1,
+                size = 10,
+                texture = "antenna.png",
+                animation = {type="vertical_frames", aspect_width=18, aspect_height=18, length=0.5},
+                glow = 14
+            })
         end
         for _, obj in ipairs(meteorites) do
             local pos = obj:get_pos()
