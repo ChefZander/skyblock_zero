@@ -34,7 +34,6 @@ minetest.register_node("sbz_resources:matter_stair", {
         }
     },
     groups = { matter = 1, cracky = 3 },
-    sunlight_propagates = true,
     walkable = true,
     sounds = {
         footstep = { name = "step", gain = 1.0 },
@@ -45,7 +44,7 @@ minetest.register_node("sbz_resources:matter_stair", {
     use_texture_alpha = "clip"
 })
 minetest.register_craft({
-    output = "sbz_resources:matter_stair 3",
+    output = "sbz_resources:matter_stair 8",
     recipe = {
         { "sbz_resources:matter_blob", "",                          "" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "" },
@@ -53,11 +52,72 @@ minetest.register_craft({
     }
 })
 minetest.register_craft({
-    output = "sbz_resources:matter_stair 3",
+    output = "sbz_resources:matter_stair 8",
     recipe = {
         { "",                          "",                          "sbz_resources:matter_blob" },
         { "",                          "sbz_resources:matter_blob", "sbz_resources:matter_blob" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
+    }
+})
+
+minetest.register_node("sbz_resources:matter_slab", {
+    description = "Matter Slab",
+    tiles = { "matter_blob.png" },
+    drawtype = "nodebox",
+    paramtype2 = "facedir",
+    node_box = {
+        type = "fixed",
+        fixed = { -0.5, -0.5, -0.5, 0.5, 0,   0.5 }
+    },
+    groups = { matter = 1, cracky = 3 },
+    walkable = true,
+    sounds = {
+        footstep = { name = "step", gain = 1.0 },
+    },
+    on_punch = function(pos, node, puncher)
+        minetest.sound_play("step", { pos = pos, gain = 1.0 })
+    end,
+    on_place = function (itemstack, user, pointed)
+        if pointed.type ~= "node" then return itemstack end
+        if pointed.under.y > pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 23) end
+        if pointed.under.y < pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 0) end
+        local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y%1
+        return minetest.item_place_node(itemstack, user, pointed, (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
+    end
+})
+
+minetest.register_craft({
+    output = "sbz_resources:matter_slab 6",
+    recipe = {
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
+    }
+})
+
+minetest.register_node("sbz_resources:matter_platform", {
+    description = "Matter Platform",
+    tiles = { "matter_blob.png^platform_overlay.png^[makealpha:255,0,0" },
+    use_texture_alpha = "clip",
+    drawtype = "nodebox",
+    node_box = {
+        type = "fixed",
+        fixed = { -0.5, 0.375, -0.5, 0.5, 0.5,   0.5 }
+    },
+    groups = { matter = 2, cracky = 3 },
+    paramtype = "light",
+    sunlight_propagates = true,
+    walkable = true,
+    sounds = {
+        footstep = { name = "step", gain = 1.0 },
+    },
+    on_punch = function(pos, node, puncher)
+        minetest.sound_play("step", { pos = pos, gain = 1.0 })
+    end
+})
+
+minetest.register_craft({
+    output = "sbz_resources:matter_platform 8",
+    recipe = {
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
     }
 })
 
