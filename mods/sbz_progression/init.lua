@@ -139,7 +139,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
 
     elseif itemstack:get_name() == "sbz_power:infinite_storinator" then
-        unlock_achievement(player:get_player_name(), "Infinite Storinator")
+        unlock_achievement(player:get_player_name(), "Infinite Storinators")
 
 
     elseif itemstack:get_name() == "sbz_chem:crusher" then
