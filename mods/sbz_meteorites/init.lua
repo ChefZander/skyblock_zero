@@ -3,8 +3,8 @@ local function spawn_meteorite(pos)
     local player = players[math.random(#players)]
     if not pos then
         pos = vector.zero()
-        while vector.length(pos) < 100 or vector.length(pos) > 120 or minetest.get_node(pos).name == "ignore" do
-            pos = vector.new(math.random(-120, 120), math.random(-120, 120), math.random(-120, 120))
+        while vector.length(pos) < 80 or vector.length(pos) > 100 or minetest.get_node(pos).name == "ignore" do
+            pos = vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
         end
         pos = player:get_pos()+pos
     end
@@ -34,8 +34,13 @@ minetest.register_globalstep(function(dtime)
     time_since = time_since+dtime
     if time_since > 120 then
         time_since = 0
-        if math.random() < 0.2 then
+        if math.random() < 0.25 then
             spawn_meteorite()
+        end
+        for _, obj in ipairs(minetest.object_refs) do
+            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 0.2 then
+                spawn_meteorite()
+            end
         end
     end
     storage:set_float("time_since_last_spawn", time_since)

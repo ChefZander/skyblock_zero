@@ -96,7 +96,8 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         glow = 14,
         physical = true
     },
-    on_activate = function (self, staticdata)
+    on_activate = function (self, staticdata, dtime)
+        if dtime and dtime > 60 then self.object:remove() return end
         self.object:set_rotation(vector.new(math.random()*2, math.random(), math.random()*2)*math.pi)
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
@@ -106,8 +107,8 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target then minetest.log("nope") self.object:remove() end
-            self.object:set_velocity(2*vector.normalize(target:get_pos()-pos+offset))
+            if not target then self.object:remove() end
+            self.object:set_velocity(1.5*vector.normalize(target:get_pos()-pos+offset))
         end
         local texture = self.type..".png^meteorite.png"
         self.object:set_properties({textures={texture, texture, texture, texture, texture, texture}})
@@ -115,12 +116,14 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         self.sound = minetest.sound_play({name="rocket-loop-99748", gain=0.15, fade=0.1}, {loop=true})
     end,
     on_deactivate = function (self)
+        if not self.type then return end
         minetest.sound_fade(self.sound, 0.1, 0)
     end,
     get_staticdata = function (self)
         return self.type
     end,
     on_step = function (self, dtime, moveresult)
+        if not self.type then return end
         local pos = self.object:get_pos()
         local diag = vector.new(1, 1, 1)
         minetest.add_particlespawner({

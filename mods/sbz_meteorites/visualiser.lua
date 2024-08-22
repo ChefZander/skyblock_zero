@@ -14,6 +14,9 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
     groups = {matter=1},
     power_needed = 20,
     action_interval = 0,
+    on_construct = function (pos)
+        minetest.sound_play({name="machine_build"}, {pos=pos})
+    end,
     action = function(radar_pos)
         local players = {}
         local meteorites = {}
