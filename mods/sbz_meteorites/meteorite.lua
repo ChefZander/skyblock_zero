@@ -48,7 +48,7 @@ local function meteorite_explode(pos, type)
     --knockback
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
         local dir = obj:get_pos()-pos
-        obj:add_velocity((vector.normalize(dir)+vector.new(0, 1, 0))*0.5*(16-vector.length(dir)))
+        obj:add_velocity((vector.normalize(dir)+vector.new(0, 0.5, 0))*0.5*(16-vector.length(dir)))
     end
     --particle effects
     minetest.add_particlespawner({
