@@ -14,6 +14,15 @@ minetest.register_node("sbz_meteorites:meteorite_radar", {
     groups = {matter=1}
 })
 
+minetest.register_craft({
+    output = "sbz_meteorites:meteorite_radar",
+    recipe = {
+        {"", "sbz_chem:titanium_alloy_powder", ""},
+        {"", "sbz_chem:titanium_alloy_powder", ""},
+        {"sbz_resources:matter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob"}
+    }
+})
+
 minetest.register_abm({
     interval = 1,
     chance = 1,
