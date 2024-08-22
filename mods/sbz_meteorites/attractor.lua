@@ -41,6 +41,11 @@ minetest.register_craft({
     }
 })
 
+function sbz_api.get_attraction(pos1, pos2)
+    local dir = pos2-pos1
+    return vector.normalize(dir)*(30/vector.length(dir))^2
+end
+
 minetest.register_abm({
     interval = 1,
     chance = 1,
@@ -48,11 +53,10 @@ minetest.register_abm({
     action = function (pos, node)
         for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
             if not obj:is_player() and obj:get_luaentity().name == "sbz_meteorites:meteorite" then
-                local dir = pos-obj:get_pos()
-                obj:add_velocity(vector.normalize(dir)*(30/vector.length(dir))^2)
+                obj:add_velocity(sbz_api.get_attraction(obj:get_pos(), pos))
                 minetest.add_particlespawner({
                     time = 1,
-                    amount = math.floor(vector.length(dir)/2),
+                    amount = math.floor(vector.distance(pos, obj:get_pos())/2),
                     exptime = 2,
                     size = {min=2, max=4},
                     drag = 3,
