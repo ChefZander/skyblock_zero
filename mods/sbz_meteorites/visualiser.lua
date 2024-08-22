@@ -1,4 +1,4 @@
-minetest.register_node("sbz_meteorites:meteorite_radar", {
+sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
     description = "Meteorite Radar",
     drawtype = "mesh",
     mesh = "meteorite_radar.obj",
@@ -11,22 +11,9 @@ minetest.register_node("sbz_meteorites:meteorite_radar", {
         type = "fixed",
         fixed = {-0.5, -0.5, -0.5, 0.5, 0.25, 0.5}
     },
-    groups = {matter=1}
-})
-
-minetest.register_craft({
-    output = "sbz_meteorites:meteorite_radar",
-    recipe = {
-        {"", "sbz_chem:titanium_alloy_powder", ""},
-        {"", "sbz_chem:titanium_alloy_powder", ""},
-        {"sbz_resources:matter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob"}
-    }
-})
-
-minetest.register_abm({
-    interval = 1,
-    chance = 1,
-    nodenames = {"sbz_meteorites:meteorite_radar"},
+    groups = {matter=1},
+    power_needed = 20,
+    action_interval = 0,
     action = function(radar_pos)
         local players = {}
         local meteorites = {}
@@ -78,5 +65,14 @@ minetest.register_abm({
                 if collides then break end
             end
         end
-    end}
-)
+    end
+})
+
+minetest.register_craft({
+    output = "sbz_meteorites:meteorite_radar",
+    recipe = {
+        {"", "sbz_chem:titanium_alloy_powder", ""},
+        {"", "sbz_chem:titanium_alloy_powder", ""},
+        {"sbz_resources:matter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob"}
+    }
+})
