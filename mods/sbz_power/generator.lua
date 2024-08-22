@@ -96,6 +96,8 @@ sbz_api.register_generator("sbz_power:simple_charge_generator", {
         meta:set_string("infotext", "Running")
         return generator_power_production
     end,
+    input_inv = "main",
+    output_inv = "main",
 })
 
 
@@ -103,7 +105,7 @@ minetest.register_craft({
     output = "sbz_power:simple_charge_generator",
     recipe = {
         { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust",    "sbz_power:simple_charged_field" },
-        { "sbz_resources:matter_blob",          "sbz_resources:matter_annihilator", "sbz_resources:matter_blob" },
+        { "sbz_resources:matter_blob",      "sbz_resources:matter_annihilator", "sbz_resources:matter_blob" },
         { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",        "sbz_power:simple_charged_field" }
     }
 })
@@ -241,7 +243,7 @@ minetest.register_craft({
     output = "sbz_power:starlight_collector",
     recipe = {
         { "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium" },
-        { "sbz_power:power_pipe",    "sbz_power:power_pipe",    "sbz_power:power_pipe" },
+        { "sbz_power:power_pipe",        "sbz_power:power_pipe",        "sbz_power:power_pipe" },
         { "sbz_resources:matter_blob",   "sbz_resources:matter_blob",   "sbz_resources:matter_blob" }
     }
 })

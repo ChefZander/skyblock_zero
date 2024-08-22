@@ -31,9 +31,10 @@ sbz_api.register_machine("sbz_power:phosphor_on", {
         end
     end,
     control_action_raw = true,
-    on_timeout = function (pos, node)
+    on_timeout = function(pos, node)
         minetest.set_node(pos, { name = "sbz_power:phosphor_off" })
-    end
+    end,
+    disallow_pipeworks = true,
 })
 
 minetest.register_craft({
@@ -41,6 +42,7 @@ minetest.register_craft({
     output = "sbz_power:phosphor_on",
     recipe = { "sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit" }
 })
+
 
 sbz_api.register_machine("sbz_power:interactor", {
     description = "Interactor",
@@ -50,10 +52,10 @@ sbz_api.register_machine("sbz_power:interactor", {
         "interactor_side.png"
     },
     paramtype2 = "wallmounted",
-    groups = {matter=1, cracky=3},
+    groups = { matter = 1, cracky = 3 },
     action_interval = 3, --on average, an interactor on a core is barely self-sufficient
     power_needed = 30,
-    on_construct = function (pos)
+    on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("input", 1)
@@ -68,8 +70,8 @@ sbz_api.register_machine("sbz_power:interactor", {
             "listring[]"
         )
     end,
-    action = function (pos, node, meta, supply, demand)
-        local target = pos-minetest.wallmounted_to_dir(minetest.get_node(pos).param2)
+    action = function(pos, node, meta, supply, demand)
+        local target = pos - minetest.wallmounted_to_dir(minetest.get_node(pos).param2)
         local target_node = minetest.get_node(target)
         local inv = meta:get_inventory()
         local input_item = inv:get_stack("input", 1)
@@ -85,7 +87,7 @@ sbz_api.register_machine("sbz_power:interactor", {
                 inv:add_item("output", item)
             end
         elseif input_item:get_name() == "sbz_resources:matter_annihilator"
-        and minetest.get_item_group(target_node.name, "matter") then
+            and minetest.get_item_group(target_node.name, "matter") then
             minetest.remove_node(target)
             inv:remove_item("input", input_item)
             if input_item:add_wear_by_uses(30) then
@@ -102,7 +104,7 @@ sbz_api.register_machine("sbz_power:interactor", {
         elseif minetest.registered_nodes[input_item:get_name()] and minetest.registered_nodes[target_node.name].buildable_to then
             input_item:set_count(1)
             inv:remove_item("input", input_item)
-            minetest.set_node(target, {name=input_item:get_name()})
+            minetest.set_node(target, { name = input_item:get_name() })
         end
     end
 })

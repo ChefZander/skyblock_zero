@@ -47,7 +47,7 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
-        {name="infinite_storinator_front.png", animation={type="vertical_frames", length=2}}
+        { name = "infinite_storinator_front.png", animation = { type = "vertical_frames", length = 2 } }
     },
     paramtype2 = "facedir",
     on_construct = function(pos)
@@ -131,6 +131,7 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
     end,
 
     control_action_raw = true,
+    disallow_pipeworks = true, -- FIXME:
 })
 
 minetest.register_craft({
