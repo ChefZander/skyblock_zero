@@ -50,8 +50,8 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
 
             if meteorite_radar_soundhandles[radarid] == nil then
                 meteorite_radar_soundhandles[radarid] = minetest.sound_play(
-                    {name="alarm", gain=1}, 
-                    {pos=radar_pos, loop=true}
+                    {name="alarm", gain=0.7}, 
+                    {pos=radar_pos, loop=true, max_hear_distance=64}
                 )
             end
         else
