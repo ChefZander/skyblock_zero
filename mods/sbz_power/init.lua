@@ -1,8 +1,8 @@
 local modpath = minetest.get_modpath("sbz_power")
 
 local function add_tube_support(def)
-    def.input_inv = def.input_inv or "src"
-    def.output_inv = def.output_inv or "out"
+    def.input_inv = def.input_inv or "input"
+    def.output_inv = def.output_inv or "output"
 
     if def.input_inv and def.output_inv and not def.disallow_pipeworks then
         def.groups.tubedevice = 1

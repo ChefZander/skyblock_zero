@@ -1,5 +1,4 @@
 local S = minetest.get_translator("pipeworks")
-local has_digilines = minetest.get_modpath("digilines")
 
 local function set_wielder_formspec(def, meta)
     local width, height = def.wield_inv.width, def.wield_inv.height
@@ -29,6 +28,7 @@ local function wielder_action(def, pos, node, index)
     local meta = minetest.get_meta(pos)
     local inv = meta:get_inventory()
     local list = inv:get_list(def.wield_inv.name)
+    if list == nil then return end
     local wield_index
     if index then
         if list[index] and (def.wield_hand or not list[index]:is_empty()) then
@@ -88,7 +88,7 @@ function pipeworks.register_wielder(def)
     }
     minetest.register_node(def.name, {
         description = def.description,
-        tiles = def.tiles[state],
+        tiles = def.tiles,
         paramtype2 = "facedir",
         groups = groups,
         is_ground_content = false,
@@ -172,18 +172,17 @@ function pipeworks.register_wielder(def)
     })
 end
 
-local function get_tiles(name)
-    local tiles = {}
-    for _, side in ipairs({ "top", "bottom", "side2", "side1", "back", "front" }) do
-        table.insert(tiles[state], "pipeworks_" .. name .. "_" .. side .. ".png")
-    end
-    return tiles
-end
-
 pipeworks.register_wielder({
     name = "pipeworks:nodebreaker",
     description = S("Node Breaker"),
-    tiles = {},
+    tiles = {
+        "nodebreaker_side.png",
+        "nodebreaker_side.png",
+        "nodebreaker_side.png",
+        "nodebreaker_side.png",
+        "nodebreaker_side.png",
+        "nodebreaker_front.png"
+    },
     connect_sides = { top = 1, bottom = 1, left = 1, right = 1, back = 1 },
     wield_inv = { name = "pick", width = 1, height = 1 },
     wield_hand = true,
@@ -237,9 +236,16 @@ pipeworks.register_wielder({
 pipeworks.register_wielder({
     name = "pipeworks:deployer",
     description = S("Deployer"),
-    tiles = {},
-    connect_sides = { back = 1 },
+    tiles = {
+        "deployer_side.png",
+        "deployer_side.png",
+        "deployer_side.png",
+        "deployer_side.png",
+        "deployer_side.png",
+        "deployer_front.png"
+    },
     wield_inv = { name = "main", width = 3, height = 3 },
+    connect_sides = { top = 1, bottom = 1, left = 1, right = 1, back = 1 },
     action = function(fakeplayer, pointed)
         local stack = fakeplayer:get_wielded_item()
         local def = minetest.registered_items[stack:get_name()]
@@ -261,12 +267,15 @@ pipeworks.register_wielder({
     name = "pipeworks:puncher",
     description = S("Puncher"),
     tiles = {
-        "interactor_top.png",
         "interactor_bottom.png",
-        "interactor_side.png"
+        "interactor_bottom.png",
+        "interactor_bottom.png",
+        "interactor_bottom.png",
+        "interactor_bottom.png",
+        "interactor_top.png"
     },
-    connect_sides = { back = 1 },
     wield_inv = { name = "pick", width = 1, height = 1 },
+    connect_sides = { top = 1, bottom = 1, left = 1, right = 1, back = 1 },
     wield_hand = true,
     eject_drops = true,
     action = function(fakeplayer, pointed)
