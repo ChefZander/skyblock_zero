@@ -28,7 +28,7 @@ minetest.register_globalstep(function(dtime)
     for _, obj in ipairs(meteorites) do
         local pos = obj:get_pos()
         local vel = obj:get_velocity()
-        for _ = 1, 100 do
+        for _ = 1, 500 do
             pos = pos+vel*0.2
             for _, attractor in ipairs(attractors) do
                 vel = vel+0.2*sbz_api.get_attraction(pos, attractor)

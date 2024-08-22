@@ -43,7 +43,7 @@ minetest.register_craft({
 
 function sbz_api.get_attraction(pos1, pos2)
     local dir = pos2-pos1
-    return vector.normalize(dir)*(30/vector.length(dir))^2
+    return vector.normalize(dir)*(16/vector.length(dir))^2
 end
 
 minetest.register_abm({
