@@ -183,7 +183,7 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
     { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
     {type = "quest", title = "Emittrium Circuits", text = "For almost all recipes related to storing or transferring Cosmic Joules (power), you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a matter plate.", requires = {"Matter Plates", "Obtain Emittrium", "Retaining Circuits"}},
-    
+
     {type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with matter blobs.", requires = {"Emittrium Circuits"}},
 
 	{type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries" }},
@@ -199,6 +199,10 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
     {type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = {"Crusher", "Emittrium Circuits", "Antimatter", "Charged Field"}},
 
     {type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = {"Simple Alloy Furnace", "Crusher"}},
+
+    {type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = {"Simple Alloy Furnace", "Emittrium Circuits"}},
+
+    {type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal.", requires = {"Meteorites"}},
 
     { type = "secret", title = "It's fake",                 text = "Digital gold? Where have I heard that before..." },
 
