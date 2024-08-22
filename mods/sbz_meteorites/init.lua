@@ -45,6 +45,11 @@ local function meteorite_explode(pos, type)
             minetest.set_node(new_pos, {name=math.random() < 0.2 and "sbz_meteorites:meteoric_metal" or node_types[type]})
         end
     end
+    --knockback
+    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
+        local dir = obj:get_pos()-pos
+        obj:add_velocity((vector.normalize(dir)+vector.new(0, 1, 0))*0.5*(16-vector.length(dir)))
+    end
     --particle effects
     minetest.add_particlespawner({
         time = 0.1,
