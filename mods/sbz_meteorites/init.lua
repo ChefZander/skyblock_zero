@@ -35,11 +35,11 @@ minetest.register_globalstep(function(dtime)
     if time_since > 120 then
         time_since = 0
         if math.random() < 0.25 then
-            minetest.log(dump(spawn_meteorite()))
+            spawn_meteorite()
         end
         for _, obj in ipairs(minetest.object_refs) do
             if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 0.2 then
-                minetest.log(dump(spawn_meteorite()))
+                spawn_meteorite()
             end
         end
     end
