@@ -45,14 +45,15 @@ minetest.register_craft({
 
 
 sbz_api.register_machine("sbz_power:interactor", {
-    description = "Interactor",
+    description = "Interactor (legacy)",
     tiles = {
         "interactor_top.png",
         "interactor_bottom.png",
         "interactor_side.png"
     },
+    drops = "pipeworks:puncher",
     paramtype2 = "wallmounted",
-    groups = { matter = 1, cracky = 3 },
+    groups = { matter = 1, cracky = 3, not_in_creative_inventory = 1 },
     action_interval = 3, --on average, an interactor on a core is barely self-sufficient
     power_needed = 30,
     on_construct = function(pos)
