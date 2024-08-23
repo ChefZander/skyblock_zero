@@ -114,10 +114,13 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         self.object:set_properties({textures={texture, texture, texture, texture, texture, texture}})
         self.object:set_armor_groups({immortal=1})
         self.sound = minetest.sound_play({name="rocket-loop-99748", gain=0.15, fade=0.1}, {loop=true})
+        self.waypoint = nil
+        self.time_since = 100
     end,
     on_deactivate = function (self)
         if not self.type then return end
         minetest.sound_fade(self.sound, 0.1, 0)
+        if self.waypoint then sbz_api.remove_waypoint(self.waypoint) end
     end,
     get_staticdata = function (self)
         return self.type
@@ -142,6 +145,20 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             self.object:remove()
             meteorite_explode(pos, self.type)
             minetest.sound_play({name="distant-explosion-47562", gain=0.4})
+            return
         end
+        self.time_since = self.time_since+dtime
+        if self.waypoint and self.time_since >= 2 then sbz_api.remove_waypoint(self.waypoint) end
+        sbz_api.move_waypoint(self.waypoint, pos)
+    end,
+    show_waypoint = function (self)
+        if not self.waypoint then
+            self.waypoint = sbz_api.set_waypoint(self.object:get_pos(), {
+                name = "",
+                dist = 10,
+                image = "visualiser_trail.png^[verticalframe:3:0"
+            })
+        end
+        self.time_since = 0
     end
 })

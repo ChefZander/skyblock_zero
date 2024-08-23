@@ -46,6 +46,7 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
             })
         end
         for _, obj in ipairs(meteorites) do
+            obj:get_luaentity():show_waypoint()
             local pos = obj:get_pos()
             local vel = obj:get_velocity()
             for _ = 1, 500 do
