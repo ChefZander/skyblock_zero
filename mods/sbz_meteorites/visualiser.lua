@@ -1,5 +1,3 @@
-meteorite_radar_soundhandles = {}
-
 sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
     description = "Meteorite Radar",
     drawtype = "mesh",
@@ -20,7 +18,6 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
         minetest.sound_play({name="machine_build"}, {pos=pos})
     end,
     action = function(radar_pos)
-        local radarid = radar_pos.x * radar_pos.y * radar_pos.z
         local players = {}
         local meteorites = {}
         local attractors = {}
@@ -48,18 +45,10 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
                 glow = 14
             })
 
-            if meteorite_radar_soundhandles[radarid] == nil then
-                meteorite_radar_soundhandles[radarid] = minetest.sound_play(
-                    {name="alarm", gain=0.7}, 
-                    {pos=radar_pos, loop=true, max_hear_distance=64}
-                )
-            end
-        else
-            if meteorite_radar_soundhandles[radarid] ~= nil then
-                minetest.sound_stop(meteorite_radar_soundhandles[radarid])
-                meteorite_radar_soundhandles[radarid] = nil
-
-            end
+            minetest.sound_play(
+                {name="alarm", gain=0.7},
+                {pos=radar_pos, max_hear_distance=64}
+            )
         end
         for _, obj in ipairs(meteorites) do
             obj:get_luaentity():show_waypoint()
