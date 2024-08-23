@@ -41,6 +41,7 @@ Tragic ambient main menu by Brandon Morris, CC0, https://opengameart.org/content
 - https://pixabay.com/sound-effects/distant-explosion-47562/ & https://pixabay.com/sound-effects/explosion-80108/ (edited)
 - https://pixabay.com/sound-effects/door-lock-43124/
 - https://pixabay.com/sound-effects/050597-ice-crusher-38522/ (edited)
-- https://pixabay.com/sound-effects/goopy-slime-21-229636/ (edited)
+- https://freesound.org/people/dibko/sounds/619103/ -- License: Attribution 4.0 (edited)
+- https://freesound.org/people/newlocknew/sounds/536655/  -- License: Attribution 4.0
 
 For users on ContentDB: The download of this package includes this information within the README.md file.
