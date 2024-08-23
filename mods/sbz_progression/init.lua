@@ -74,7 +74,8 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "Angel's Wing")
     elseif itemstack:get_name() == "sbz_power:battery" then
         unlock_achievement(player:get_player_name(), "Batteries")
-    elseif itemstack:get_name() == "sbz_resources:advanced_battery" then
+
+    elseif itemstack:get_name() == "sbz_power:advanced_battery" then
         unlock_achievement(player:get_player_name(), "Advanced Batteries")
     elseif itemstack:get_name() == "sbz_power:connector_off" then
         unlock_achievement(player:get_player_name(), "Connectors")
@@ -96,12 +97,11 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
         unlock_achievement(player:get_player_name(), "Simple Alloy Furnace")
     elseif itemstack:get_name() == "sbz_meteorites:meteorite_radar" then
         unlock_achievement(player:get_player_name(), "Meteorites")
-    elseif itemstack:get_name() == "sbz_meteorites:gravitational_attractor" then
+    elseif itemstack:get_name() == "sbz_meteorites:gravitational_attractor" or itemstack:get_name() == "sbz_meteorites:gravitational_repulsor" then
         unlock_achievement(player:get_player_name(), "Neutronium")
     end
 end)
 
--- held item check for non craftable items
 minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
         -- pos stuff
@@ -113,14 +113,20 @@ minetest.register_globalstep(function(dtime)
             displayDialougeLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({ x = 0, y = 1, z = 0 })
         end
+    end
+end)
 
-        local player_name = player:get_player_name()
-        local wielded_item = player:get_wielded_item():get_name()
-
-        if wielded_item == "sbz_chem:gold_powder" then
-            unlock_achievement(player_name, "It's fake")
-        elseif wielded_item == "sbz_chem:bronze_powder" then
-            unlock_achievement(player_name, "Bronze Age")
-        end
+minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)
+    local itemstack
+    if action == "move" then
+        itemstack = inv:get_stack(inv_info.to_list, inv_info.to_index)
+    else
+        itemstack = inv_info.stack
+    end
+    local player_name = player:get_player_name()
+    if itemstack:get_name() == "sbz_chem:gold_powder" then
+        unlock_achievement(player_name, "It's fake")
+    elseif itemstack:get_name() == "sbz_chem:bronze_powder" then
+        unlock_achievement(player_name, "Bronze Age")
     end
 end)

@@ -59,7 +59,8 @@ listring[]
             meta:set_string("infotext", "Crushing...")
 
             inv:remove_item("input", "sbz_resources:pebble")
-            minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.6 }, { pos = pos })
+
+            minetest.sound_play({name="050597_ice-crusher-38522", gain=0.4}, {pos=pos})
 
             local output_items = {
                 "sbz_chem:gold_powder",

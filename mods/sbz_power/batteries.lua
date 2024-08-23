@@ -32,7 +32,7 @@ minetest.register_node("sbz_power:advanced_battery", {
 })
 
 minetest.register_craft({
-    output = "sbz_resources:advanced_battery",
+    output = "sbz_power:advanced_battery",
     recipe = {
         { "sbz_resources:matter_blob", "sbz_power:battery",               "sbz_resources:matter_blob" },
         { "sbz_power:battery",         "sbz_resources:emittrium_circuit", "sbz_power:battery" },
