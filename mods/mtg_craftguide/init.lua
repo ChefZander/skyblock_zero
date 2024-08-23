@@ -78,8 +78,8 @@ local function groups_to_item(groups)
 		local group = groups[1]
 		if group_stereotypes[group] then
 			return group_stereotypes[group]
-		elseif minetest.registered_items["default:"..group] then
-			return "default:"..group
+		elseif minetest.registered_items["default:" .. group] then
+			return "default:" .. group
 		end
 	end
 
@@ -128,7 +128,7 @@ local function cache_usages(recipe)
 			if groups then
 				for name, def in pairs(minetest.registered_items) do
 					if not added[name] and show_item(def)
-							and item_has_groups(def.groups, groups) then
+						and item_has_groups(def.groups, groups) then
 						local usage = table.copy(recipe)
 						table_replace(usage.items, item, name)
 						usages_cache[name] = usages_cache[name] or {}
@@ -170,12 +170,12 @@ local function coords(i, cols)
 end
 
 local function is_fuel(item)
-	return minetest.get_craft_result({method="fuel", items={item}}).time > 0
+	return minetest.get_craft_result({ method = "fuel", items = { item } }).time > 0
 end
 
 local function item_button_fs(fs, x, y, item, element_name, groups)
 	table.insert(fs, ("item_image_button[%s,%s;1.05,1.05;%s;%s;%s]")
-		:format(x, y, item, element_name, groups and "\n"..esc(S("G")) or ""))
+		:format(x, y, item, element_name, groups and "\n" .. esc(S("G")) or ""))
 
 	local tooltip
 	if groups then
@@ -192,7 +192,7 @@ local function item_button_fs(fs, x, y, item, element_name, groups)
 	elseif is_fuel(item) then
 		local itemdef = minetest.registered_items[item:match("%S*")]
 		local desc = itemdef and itemdef.description or S("Unknown Item")
-		tooltip = desc.."\n"..minetest.colorize("orange", S("Fuel"))
+		tooltip = desc .. "\n" .. minetest.colorize("orange", S("Fuel"))
 	end
 	if tooltip then
 		table.insert(fs, ("tooltip[%s;%s]"):format(element_name, esc(tooltip)))
@@ -223,10 +223,10 @@ local function recipe_fs(fs, data)
 
 	if #data.recipes > 1 then
 		table.insert(fs,
-			"image_button[5.5,1.6;0.8,0.8;craftguide_prev_icon.png;recipe_prev;]"..
-			"image_button[6.2,1.6;0.8,0.8;craftguide_next_icon.png;recipe_next;]"..
-			"tooltip[recipe_prev;"..esc(S("Previous recipe")).."]"..
-			"tooltip[recipe_next;"..esc(S("Next recipe")).."]")
+			"image_button[5.5,1.6;0.8,0.8;craftguide_prev_icon.png;recipe_prev;]" ..
+			"image_button[6.2,1.6;0.8,0.8;craftguide_next_icon.png;recipe_next;]" ..
+			"tooltip[recipe_prev;" .. esc(S("Previous recipe")) .. "]" ..
+			"tooltip[recipe_next;" .. esc(S("Next recipe")) .. "]")
 	end
 
 	local rows = math.ceil(table.maxn(recipe.items) / width)
@@ -246,7 +246,7 @@ local function recipe_fs(fs, data)
 		local groups = extract_groups(item)
 		if groups then
 			item = groups_to_item(groups)
-			elem_name = esc(item.."."..table.concat(groups, "+"))
+			elem_name = esc(item .. "." .. table.concat(groups, "+"))
 		end
 		item_button_fs(fs, base_x + x, base_y + y, item, elem_name, groups)
 	end
@@ -256,7 +256,7 @@ local function recipe_fs(fs, data)
 			:format(shapeless and "shapeless" or "furnace"))
 		local tooltip = shapeless and S("Shapeless") or
 			S("Cooking time: @1", minetest.colorize("yellow", cooktime))
-		table.insert(fs, "tooltip[3.2,0.5;0.5,0.5;"..esc(tooltip).."]")
+		table.insert(fs, "tooltip[3.2,0.5;0.5,0.5;" .. esc(tooltip) .. "]")
 	end
 	table.insert(fs, "image[3,1;1,1;sfinv_crafting_arrow.png]")
 
@@ -270,23 +270,23 @@ local function get_formspec(player)
 
 	local fs = {}
 	table.insert(fs,
-		"style_type[item_image_button;padding=2]"..
-		"field[0.3,4.2;2.8,1.2;filter;;"..esc(data.filter).."]"..
-		"label[5.8,4.15;"..minetest.colorize("yellow", data.pagenum).." / "..
-			data.pagemax.."]"..
-		"image_button[2.63,4.05;0.8,0.8;craftguide_search_icon.png;search;]"..
-		"image_button[3.25,4.05;0.8,0.8;craftguide_clear_icon.png;clear;]"..
-		"image_button[5,4.05;0.8,0.8;craftguide_prev_icon.png;prev;]"..
-		"image_button[7.25,4.05;0.8,0.8;craftguide_next_icon.png;next;]"..
-		"tooltip[search;"..esc(S("Search")).."]"..
-		"tooltip[clear;"..esc(S("Reset")).."]"..
-		"tooltip[prev;"..esc(S("Previous page")).."]"..
-		"tooltip[next;"..esc(S("Next page")).."]"..
-		"field_enter_after_edit[filter;true]"..
+		"style_type[item_image_button;padding=2]" ..
+		"field[0.3,4.2;2.8,1.2;filter;;" .. esc(data.filter) .. "]" ..
+		"label[5.8,4.15;" .. minetest.colorize("yellow", data.pagenum) .. " / " ..
+		data.pagemax .. "]" ..
+		"image_button[2.63,4.05;0.8,0.8;craftguide_search_icon.png;search;]" ..
+		"image_button[3.25,4.05;0.8,0.8;craftguide_clear_icon.png;clear;]" ..
+		"image_button[5,4.05;0.8,0.8;craftguide_prev_icon.png;prev;]" ..
+		"image_button[7.25,4.05;0.8,0.8;craftguide_next_icon.png;next;]" ..
+		"tooltip[search;" .. esc(S("Search")) .. "]" ..
+		"tooltip[clear;" .. esc(S("Reset")) .. "]" ..
+		"tooltip[prev;" .. esc(S("Previous page")) .. "]" ..
+		"tooltip[next;" .. esc(S("Next page")) .. "]" ..
+		"field_enter_after_edit[filter;true]" ..
 		"field_close_on_enter[filter;false]")
 
 	if #data.items == 0 then
-		table.insert(fs, "label[3,2;"..esc(S("No items to show.")).."]")
+		table.insert(fs, "label[3,2;" .. esc(S("No items to show.")) .. "]")
 	else
 		local first_item = (data.pagenum - 1) * 32
 		for i = first_item, first_item + 31 do
@@ -304,8 +304,8 @@ local function get_formspec(player)
 		recipe_fs(fs, data)
 	elseif data.prev_item then
 		table.insert(fs, ("label[2,1;%s]"):format(esc(data.show_usages
-			and S("No usages.").."\n"..S("Click again to show recipes.")
-			or S("No recipes.").."\n"..S("Click again to show usages."))))
+			and S("No usages.") .. "\n" .. S("Click again to show recipes.")
+			or S("No recipes.") .. "\n" .. S("Click again to show usages."))))
 	end
 	table.insert(fs, "container_end[]")
 
@@ -345,12 +345,11 @@ local function on_receive_fields(player, fields)
 		data.recipes = nil
 		data.items = init_items
 		return true
-
 	elseif (fields.key_enter_field == "filter" or fields.search)
-			and fields.filter then
+		and fields.filter then
 		local new = fields.filter:sub(1, 128) -- truncate to a sane length
-				:gsub("[%z\1-\8\11-\31\127]", "") -- strip naughty control characters (keeps \t and \n)
-				:lower() -- search is case insensitive
+			:gsub("[%z\1-\8\11-\31\127]", "") -- strip naughty control characters (keeps \t and \n)
+			:lower()                    -- search is case insensitive
 		if data.filter == new then
 			return
 		end
@@ -358,7 +357,6 @@ local function on_receive_fields(player, fields)
 		data.pagenum = 1
 		execute_search(data)
 		return true
-
 	elseif fields.prev or fields.next then
 		if data.pagemax == 1 then
 			return
@@ -370,7 +368,6 @@ local function on_receive_fields(player, fields)
 			data.pagenum = data.pagemax
 		end
 		return true
-
 	elseif fields.recipe_next or fields.recipe_prev then
 		data.rnum = data.rnum + (fields.recipe_next and 1 or -1)
 		if data.rnum > #data.recipes then
@@ -379,7 +376,6 @@ local function on_receive_fields(player, fields)
 			data.rnum = #data.recipes
 		end
 		return true
-
 	else
 		local item
 		for field in pairs(fields) do
