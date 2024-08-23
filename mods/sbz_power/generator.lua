@@ -1,19 +1,22 @@
 local generator_power_production = 30
 sbz_api.register_generator("sbz_power:simple_charge_generator", {
-    description = "Simple Charge Generator\n\nGenerates: 30 power.\nRequires 1 Core Dust per 10 Seconds to run.",
+    description = "Simple Charge Generator",
     tiles = { "simple_charge_generator.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_power:simple_charge_generator_formspec",
-            "formspec_version[7]" ..
-            "size[8.2,9]" ..
-            "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;3.5,2;1,1;]" ..
-            "list[current_player;main;0.2,5;8,4;]" ..
-            "listring[]")
+        local meta = minetest.get_meta(pos)
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+item_image[3.4,1.9;1,1;sbz_resources:core_dust]
+list[context;main;3.5,2;1,1;]
+list[current_player;main;0.2,5;8,4;]
+listring[]
+]])
 
         minetest.sound_play("machine_open", {
             to_player = player_name,
@@ -100,6 +103,7 @@ sbz_api.register_generator("sbz_power:simple_charge_generator", {
     end,
     input_inv = "main",
     output_inv = "main",
+    info_generated = 30,
 })
 
 
@@ -113,7 +117,7 @@ minetest.register_craft({
 })
 
 sbz_api.register_generator("sbz_power:simple_charged_field", {
-    description = "Simple Charged Field\n\nGenerates: 3 power.\nDecaying: 10% chance every 100s. (when placed)",
+    description = "Simple Charged Field",
     drawtype = "glasslike",
     tiles = { "simple_charged_field.png" },
     groups = { matter = 1, cracky = 3, sbz_machine = 1 },
@@ -128,6 +132,7 @@ sbz_api.register_generator("sbz_power:simple_charged_field", {
         })
         minetest.node_dig(pos, node, digger)
     end,
+    info_extra = "Decays after some time"
 })
 minetest.register_craft({
     output = "sbz_power:simple_charged_field",

@@ -191,14 +191,15 @@ minetest.register_node("sbz_power:switching_station", {
         local meta = minetest.get_meta(pos)
         meta:set_string("infotext", "Loading....")
     end,
+    info_extra = "If you put 2 of them next to eachother a funny happens",
 })
 
 minetest.register_craft({
     output = "sbz_power:switching_station",
     recipe = {
-        { "",                         "sbz_resources:matter_plate",                          "" },
+        { "",                           "sbz_resources:matter_plate", "" },
         { "sbz_resources:matter_plate", "sbz_resources:matter_plate", "sbz_resources:matter_plate" },
-        { "",                         "sbz_resources:matter_plate",                          "" }
+        { "",                           "sbz_resources:matter_plate", "" }
     }
 })
 

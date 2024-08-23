@@ -81,7 +81,7 @@ minetest.register_node("pipeworks:one_way_tube", {
 
 
 pipeworks.register_tube("pipeworks:crossing_tube", {
-    description = "Tube Junction",
+    description = "Crossing tube",
     plain = { "crossing_tube_plain.png" },
     noctr = { "crossing_tube_noctr.png" },
     node_def = {

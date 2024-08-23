@@ -1,6 +1,6 @@
 -- Simple Extractor Node
 sbz_api.register_machine("sbz_power:simple_matter_extractor", {
-    description = "Simple Matter Extractor\n\nConsumes: 3 power.\nMatter per Second: 0.2",
+    description = "Simple Matter Extractor",
     tiles = { "simple_matter_extractor.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
@@ -81,7 +81,7 @@ minetest.register_craft({
 -- Advanced Extractor Node
 sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     description =
-    "Advanced Matter Extractor\n\nConsumes: 5 power.\nMatter per Second: 0.6\nHas a 1/25 Chance to Extract 1x 'Core Dust'.",
+    "Advanced Matter Extractor",
     tiles = { "advanced_matter_extractor.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,

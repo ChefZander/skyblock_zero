@@ -132,13 +132,14 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
 
     control_action_raw = true,
     disallow_pipeworks = true, -- FIXME:
+    info_extra = "For one power you can get " .. slots_per_1_power .. " slots"
 })
 
 minetest.register_craft({
     output = "sbz_power:infinite_storinator",
     recipe = {
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
     }
 })
