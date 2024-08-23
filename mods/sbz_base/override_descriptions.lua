@@ -23,7 +23,7 @@ minetest.register_on_mods_loaded(function()
 
         if v.info_extra then
             if type(v.info_extra) == "string" then
-                new_desc[#new_desc + 1] = info_extra
+                new_desc[#new_desc + 1] = v.info_extra
             elseif type(v.info_extra) == "table" then
                 for i = 1, #v.info_extra do
                     new_desc[#new_desc + 1] = v.info_extra[i]

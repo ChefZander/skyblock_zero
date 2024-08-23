@@ -30,7 +30,7 @@ end
 
 minetest.register_node("pipeworks:automatic_filter_injector", {
     description = "Automatic Filter-Injector",
-    info_extra = "Pulls stuff from storinators, machines... and more.... to a tube",
+    info_extra = "Pushes items out of blocks... and into tubes or other blocks",
     tiles = {
         "filter_top.png",
         "filter_top.png",
