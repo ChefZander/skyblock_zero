@@ -23,6 +23,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_rightclick = function(pos, node, player, pointed_thing)
@@ -39,6 +40,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
 

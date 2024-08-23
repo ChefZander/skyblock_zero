@@ -19,6 +19,7 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_construct = function(pos)
@@ -30,6 +31,7 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     action = function(pos, node, meta, supply, demand)
@@ -98,6 +100,7 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_construct = function(pos)
@@ -108,6 +111,7 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     action = function(pos, node, meta)

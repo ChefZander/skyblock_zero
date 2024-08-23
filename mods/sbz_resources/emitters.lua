@@ -18,6 +18,7 @@ minetest.register_node("sbz_resources:emitter", {
                 minetest.sound_play("punch_core", {
                     gain = 1.0,
                     max_hear_distance = 32,
+                    pos = pos
                 })
                 minetest.add_particlespawner({
                     amount = 50,
@@ -42,12 +43,14 @@ minetest.register_node("sbz_resources:emitter", {
                 minetest.sound_play("punch_core", {
                     gain = 1.0,
                     max_hear_distance = 32,
+                    pos = pos
                 })
             end
         else
             minetest.sound_play("punch_core", {
                 gain = 1.0,
                 max_hear_distance = 32,
+                pos = pos
             })
             displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
         end

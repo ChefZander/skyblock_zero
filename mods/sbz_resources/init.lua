@@ -8,6 +8,7 @@ local function core_interact(pos, node, puncher, pointed_thing)
     minetest.sound_play("punch_core", {
         gain = 1.0,
         max_hear_distance = 32,
+        pos = pos
     })
 
     local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }

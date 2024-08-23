@@ -18,6 +18,7 @@ sbz_api.register_generator("sbz_power:simple_charge_generator", {
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_construct = function(pos)
@@ -29,6 +30,7 @@ sbz_api.register_generator("sbz_power:simple_charge_generator", {
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
 
         meta:set_int("count", 10)
