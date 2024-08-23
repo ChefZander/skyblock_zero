@@ -148,7 +148,10 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             return
         end
         self.time_since = self.time_since+dtime
-        if self.waypoint and self.time_since >= 2 then sbz_api.remove_waypoint(self.waypoint) end
+        if self.waypoint and self.time_since >= 2 then
+            sbz_api.remove_waypoint(self.waypoint)
+            self.waypoint = nil
+        end
         sbz_api.move_waypoint(self.waypoint, pos)
     end,
     show_waypoint = function (self)
