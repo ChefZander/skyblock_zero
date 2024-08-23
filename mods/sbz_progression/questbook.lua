@@ -190,7 +190,7 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
 
     {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
 
-    {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators"}},
+    {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators", "Meteorites"}},
     -- ======================================================================================
     { type = "text", title = "Questline: Chemistry",    text = "Good luck." },
 
