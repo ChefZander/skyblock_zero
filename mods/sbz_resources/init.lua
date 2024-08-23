@@ -4,7 +4,12 @@ local modpath = minetest.get_modpath("sbz_resources")
 -- The Core
 -- The basis of all progression
 
-local function core_interact(pos, node, puncher, pointed_thing)
+local function core_interact(pos, node, puncher, itemstack, pointed_thing)
+    if not pointed_thing then --this is on_punch instead, which doesn't use itemstack
+        pointed_thing = itemstack
+        itemstack = nil
+    end
+
     minetest.sound_play("punch_core", {
         gain = 1.0,
         max_hear_distance = 32,
@@ -14,6 +19,13 @@ local function core_interact(pos, node, puncher, pointed_thing)
     local item = items[math.random(#items)]
 
     if puncher and puncher:is_player() then
+        unlock_achievement(puncher:get_player_name(), "Introduction")
+        
+        if itemstack and itemstack:get_name() == item and itemstack:get_count() < 256 then
+            itemstack:set_count(itemstack:get_count()+1)
+            return itemstack
+        end
+        
         local inv = puncher:get_inventory()
         if inv then
             local leftover = inv:add_item("main", item)
@@ -21,8 +33,6 @@ local function core_interact(pos, node, puncher, pointed_thing)
                 minetest.add_item(pos, leftover)
             end
         end
-
-        unlock_achievement(puncher:get_player_name(), "Introduction")
     end
 end
 
