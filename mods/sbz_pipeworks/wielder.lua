@@ -282,6 +282,10 @@ pipeworks.register_wielder({
         local node = minetest.get_node(pointed.under)
         local node_def = minetest.registered_nodes[node.name]
 
+        if not node_def then
+            return
+        end
+
         if not node_def.on_punch then
             return
         end

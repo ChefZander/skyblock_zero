@@ -50,7 +50,7 @@ for k, v in ipairs({
         groups = { matter = 1, tubedevice = 1, tubedevice_receiver = 1, },
         paramtype2 = "facedir",
         sunlight_propagates = true,
-        use_texture_alpha = true,
+        use_texture_alpha = "clip",
         on_rightclick = function(pos)
             -- compat for old worlds, remove after a release or something
             minetest.get_meta(pos):set_string("formspec", "formspec_version[7]" ..
