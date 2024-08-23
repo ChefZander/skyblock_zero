@@ -1,28 +1,34 @@
+local elapsed = 0
+
 local function attract_meteorites(pos, dtime)
+    elapsed = elapsed+dtime
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
         if not obj:is_player() and obj:get_luaentity().name == "sbz_meteorites:meteorite" then
             obj:add_velocity(dtime*sbz_api.get_attraction(obj:get_pos(), pos))
-            minetest.add_particlespawner({
-                time = 1,
-                amount = math.floor(vector.distance(pos, obj:get_pos())/2),
-                exptime = 2,
-                size = {min=2, max=4},
-                drag = 3,
-                pos = {min=pos, max=obj:get_pos()},
-                texture = "meteorite_trail_emitter.png^[colorize:#888888:alpha",
-                animation = {type="vertical_frames", aspect_width=4, aspect_height=4, length=-1},
-                glow = 7,
-                attract = {
-                    kind = "line",
-                    origin = vector.zero(),
-                    origin_attached = obj,
-                    direction = pos-obj:get_pos(),
-                    strength = 3,
-                    die_on_contact = false
-                }
-            })
+            if elapsed > 1 then
+                minetest.add_particlespawner({
+                    time = 1,
+                    amount = math.floor(vector.distance(pos, obj:get_pos())/2),
+                    exptime = 2,
+                    size = {min=2, max=4},
+                    drag = 3,
+                    pos = {min=pos, max=obj:get_pos()},
+                    texture = "meteorite_trail_emitter.png^[colorize:#888888:alpha",
+                    animation = {type="vertical_frames", aspect_width=4, aspect_height=4, length=-1},
+                    glow = 7,
+                    attract = {
+                        kind = "line",
+                        origin = vector.zero(),
+                        origin_attached = obj,
+                        direction = pos-obj:get_pos(),
+                        strength = 3,
+                        die_on_contact = false
+                    }
+                })
+            end
         end
     end
+    if elapsed > 1 then elapsed = 0 end
 end
 
 minetest.register_entity("sbz_meteorites:gravitational_attractor_entity", {
