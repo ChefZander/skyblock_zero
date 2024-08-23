@@ -52,8 +52,8 @@ dofile(modpath.."/connectors.lua")
 dofile(modpath.."/infinite_storinator.lua")
 dofile(modpath.."/misc.lua")
 
---aliases for fixing worlds, remove in a few releases
-for _, n in ipairs({
+--fixing worlds, again remove in a few releases
+local fucked_items = {
     "switching_station",
     "power_pipe",
     "battery",
@@ -69,6 +69,59 @@ for _, n in ipairs({
     "infinite_storinator",
     "phosphor_off",
     "phosphor_on"
-}) do
-    minetest.register_alias("sbz_resources:"..n, "sbz_power:"..n)
+}
+
+local function replace_in_inv(inv)
+    for listname, _ in pairs(inv:get_lists()) do
+        for i = 1, inv:get_size(listname) do
+            for _, itemname in ipairs(fucked_items) do
+                local itemstack = inv:get_stack(listname, i)
+                if itemstack:get_name() == "sbz_resources:"..itemname then
+                    itemstack:set_name("sbz_power:"..itemname)
+                    inv:set_stack(listname, i, itemstack)
+                end
+            end
+        end
+    end
 end
+
+minetest.register_on_joinplayer(function(player)
+    replace_in_inv(player:get_inventory())
+end)
+
+local old_fucked_items = {}
+local fucked_item_map = {}
+for i, val in ipairs(fucked_items) do
+    old_fucked_items[i] = val
+    fucked_item_map["sbz_resources:"..val] = "sbz_power:"..val
+end
+
+minetest.register_lbm({
+    name = "sbz_power:replace_old_nodes",
+    nodenames = old_fucked_items,
+    run_at_every_load = true,
+    action = function (pos, node)
+        if fucked_item_map[node.name] then
+            node.name = fucked_item_map[node.name]
+            minetest.swap_node(pos, node)
+        end
+    end
+})
+
+minetest.register_lbm({
+    name = "sbz_power:replace_old_items_in_inv",
+    nodenames = {
+        "sbz_resources:storinator",
+        "sbz_resources:infinite_storinator",
+        "sbz_power:infinite_storinator",
+        "sbz_chem:crusher",
+        "sbz_chem:simple_alloy_furnace",
+        "sbz_power:simple_matter_extractor",
+        "sbz_power:advanced_matter_extractor",
+        "sbz_power:simple_charge_generator"
+    },
+    run_at_every_load = true,
+    action = function (pos)
+        replace_in_inv(minetest.get_meta(pos):get_inventory())
+    end
+})

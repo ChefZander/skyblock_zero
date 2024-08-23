@@ -190,7 +190,7 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
 
     {type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = {"Emittrium Circuits", "Reinforced Matter"}},
 
-    {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators"}},
+    {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators", "Meteorites"}},
     -- ======================================================================================
     { type = "text", title = "Questline: Chemistry",    text = "Good luck." },
 
@@ -202,7 +202,7 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
 
     {type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = {"Simple Alloy Furnace", "Emittrium Circuits"}},
 
-    {type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal.", requires = {"Meteorites"}},
+    {type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = {"Meteorites"}},
 
     { type = "secret", title = "It's fake",                 text = "Digital gold? Where have I heard that before..." },
 

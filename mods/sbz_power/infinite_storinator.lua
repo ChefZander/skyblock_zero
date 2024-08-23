@@ -137,7 +137,7 @@ minetest.register_craft({
     output = "sbz_power:infinite_storinator",
     recipe = {
         { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator",     "sbz_meteorites:neutronium", "sbz_resources:storinator" },
         { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
     }
 })

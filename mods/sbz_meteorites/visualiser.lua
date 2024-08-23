@@ -1,5 +1,3 @@
-meteorite_radar_soundhandles = {}
-
 sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
     description = "Meteorite Radar",
     drawtype = "mesh",
@@ -20,10 +18,10 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
         minetest.sound_play({name="machine_build"}, {pos=pos})
     end,
     action = function(radar_pos)
-        local radarid = radar_pos.x * radar_pos.y * radar_pos.z
         local players = {}
         local meteorites = {}
         local attractors = {}
+        local repulsors = {}
         for _, obj in pairs(minetest.get_objects_inside_radius(radar_pos, 150)) do
             if obj then
                 local entity = obj:get_luaentity()
@@ -34,7 +32,7 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
                 elseif entity.name == "sbz_meteorites:meteorite" then
                     table.insert(meteorites, obj)
                 elseif entity.name == "sbz_meteorites:gravitational_attractor_entity" then
-                    table.insert(attractors, vector.round(obj:get_pos()))
+                    table.insert(entity.type < 0 and repulsors or attractors, vector.round(obj:get_pos()))
                 end
             end
         end
@@ -48,26 +46,22 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
                 glow = 14
             })
 
-            if meteorite_radar_soundhandles[radarid] == nil then
-                meteorite_radar_soundhandles[radarid] = minetest.sound_play(
-                    {name="alarm", gain=0.7}, 
-                    {pos=radar_pos, loop=true, max_hear_distance=64}
-                )
-            end
-        else
-            if meteorite_radar_soundhandles[radarid] ~= nil then
-                minetest.sound_stop(meteorite_radar_soundhandles[radarid])
-                meteorite_radar_soundhandles[radarid] = nil
-
-            end
+            minetest.sound_play(
+                {name="alarm", gain=0.7},
+                {pos=radar_pos, max_hear_distance=64}
+            )
         end
         for _, obj in ipairs(meteorites) do
+            obj:get_luaentity():show_waypoint()
             local pos = obj:get_pos()
             local vel = obj:get_velocity()
             for _ = 1, 500 do
                 pos = pos+vel*0.2
                 for _, attractor in ipairs(attractors) do
                     vel = vel+0.2*sbz_api.get_attraction(pos, attractor)
+                end
+                for _, repulsor in ipairs(repulsors) do
+                    vel = vel-0.2*sbz_api.get_attraction(pos, repulsor)
                 end
                 local collides = minetest.registered_nodes[minetest.get_node(vector.round(pos)).name].walkable
                 for _, player in ipairs(players) do
