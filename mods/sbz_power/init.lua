@@ -109,9 +109,6 @@ local fucked_items = {
     "infinite_storinator",
     "phosphor_off",
     "phosphor_on"
-}) do
-    minetest.register_alias("sbz_resources:" .. n, "sbz_power:" .. n)
-end
 }
 
 local function replace_in_inv(inv)
@@ -119,8 +116,8 @@ local function replace_in_inv(inv)
         for i = 1, inv:get_size(listname) do
             for _, itemname in ipairs(fucked_items) do
                 local itemstack = inv:get_stack(listname, i)
-                if itemstack:get_name() == "sbz_resources:"..itemname then
-                    itemstack:set_name("sbz_power:"..itemname)
+                if itemstack:get_name() == "sbz_resources:" .. itemname then
+                    itemstack:set_name("sbz_power:" .. itemname)
                     inv:set_stack(listname, i, itemstack)
                 end
             end
@@ -136,14 +133,14 @@ local old_fucked_items = {}
 local fucked_item_map = {}
 for i, val in ipairs(fucked_items) do
     old_fucked_items[i] = val
-    fucked_item_map["sbz_resources:"..val] = "sbz_power:"..val
+    fucked_item_map["sbz_resources:" .. val] = "sbz_power:" .. val
 end
 
 minetest.register_lbm({
     name = "sbz_power:replace_old_nodes",
     nodenames = old_fucked_items,
     run_at_every_load = true,
-    action = function (pos, node)
+    action = function(pos, node)
         if fucked_item_map[node.name] then
             node.name = fucked_item_map[node.name]
             minetest.swap_node(pos, node)
@@ -164,8 +161,7 @@ minetest.register_lbm({
         "sbz_power:simple_charge_generator"
     },
     run_at_every_load = true,
-    action = function (pos)
+    action = function(pos)
         replace_in_inv(minetest.get_meta(pos):get_inventory())
     end
 })
-
