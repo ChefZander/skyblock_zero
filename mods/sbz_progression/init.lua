@@ -152,7 +152,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
     elseif itemstack:get_name() == "sbz_meteorites:meteorite_radar" then
         unlock_achievement(player:get_player_name(), "Meteorites")
 
-    elseif itemstack:get_name() == "sbz_meteorites:gravitational_attractor" then
+    elseif itemstack:get_name() == "sbz_meteorites:gravitational_attractor" or itemstack:get_name() == "sbz_meteorites:gravitational_repulsor" then
         unlock_achievement(player:get_player_name(), "Neutronium")
     end
 end)
