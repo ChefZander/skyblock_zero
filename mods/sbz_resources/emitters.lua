@@ -1,4 +1,67 @@
 -- Emitter Node
+
+local action = function(pos, _, puncher)
+    local itemstack = puncher:get_wielded_item()
+    local tool_name = itemstack:get_name()
+
+    if tool_name == "sbz_resources:matter_annihilator" then
+        if math.random(1, 10) == 1 then
+            puncher:get_inventory():add_item("main", "sbz_resources:raw_emittrium")
+            minetest.sound_play("punch_core", {
+                gain = 1.0,
+                max_hear_distance = 32,
+                pos = pos
+            })
+            minetest.add_particlespawner({
+                amount = 50,
+                time = 1,
+                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+                minvel = { x = -1, y = -1, z = -1 },
+                maxvel = { x = 1, y = 1, z = 1 },
+                minacc = { x = 0, y = 0, z = 0 },
+                maxacc = { x = 0, y = 0, z = 0 },
+                minexptime = 3,
+                maxexptime = 5,
+                minsize = 0.5,
+                maxsize = 1.0,
+                collisiondetection = false,
+                vertical = false,
+                texture = "raw_emittrium.png",
+                glow = 10
+            })
+            unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
+        else
+            minetest.sound_play("punch_core", {
+                gain = 1.0,
+                max_hear_distance = 32,
+                pos = pos
+            })
+            local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
+            local item = items[math.random(#items)]
+
+            if puncher and puncher:is_player() then
+                local inv = puncher:get_inventory()
+                if inv then
+                    local leftover = inv:add_item("main", item)
+                    if not leftover:is_empty() then
+                        minetest.add_item(pos, leftover)
+                    end
+                end
+
+                unlock_achievement(puncher:get_player_name(), "Introduction")
+            end
+        end
+    else
+        minetest.sound_play("punch_core", {
+            gain = 1.0,
+            max_hear_distance = 32,
+            pos = pos
+        })
+        displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
+    end
+end
+
 minetest.register_node("sbz_resources:emitter", {
     description = "Emitter",
     tiles = { "emitter.png" },
@@ -8,53 +71,8 @@ minetest.register_node("sbz_resources:emitter", {
     paramtype = "light",
     light_source = 14,
     walkable = true,
-    on_punch = function(pos, node, puncher, pointed_thing)
-        local itemstack = puncher:get_wielded_item()
-        local tool_name = itemstack:get_name()
-
-        if tool_name == "sbz_resources:matter_annihilator" then
-            if math.random(1, 10) == 1 then
-                puncher:get_inventory():add_item("main", "sbz_resources:raw_emittrium")
-                minetest.sound_play("punch_core", {
-                    gain = 1.0,
-                    max_hear_distance = 32,
-                    pos = pos
-                })
-                minetest.add_particlespawner({
-                    amount = 50,
-                    time = 1,
-                    minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                    maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                    minvel = { x = -1, y = -1, z = -1 },
-                    maxvel = { x = 1, y = 1, z = 1 },
-                    minacc = { x = 0, y = 0, z = 0 },
-                    maxacc = { x = 0, y = 0, z = 0 },
-                    minexptime = 3,
-                    maxexptime = 5,
-                    minsize = 0.5,
-                    maxsize = 1.0,
-                    collisiondetection = false,
-                    vertical = false,
-                    texture = "raw_emittrium.png",
-                    glow = 10
-                })
-                unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
-            else
-                minetest.sound_play("punch_core", {
-                    gain = 1.0,
-                    max_hear_distance = 32,
-                    pos = pos
-                })
-            end
-        else
-            minetest.sound_play("punch_core", {
-                gain = 1.0,
-                max_hear_distance = 32,
-                pos = pos
-            })
-            displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
-        end
-    end
+    on_punch = action,
+    on_rightclick = action
 })
 
 

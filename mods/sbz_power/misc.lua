@@ -130,7 +130,7 @@ local function vacuum(pos, radius, inv)
     end
 end
 
-local item_vaccum_power_demand = 5
+local item_vaccum_power_demand = 20
 -- you expected this to be in the pipeworks mod didn't you... well its more convenient to put it here because sbz_api
 sbz_api.register_machine("sbz_power:item_vacuum", {
     description = "Item Vacuum",
@@ -158,7 +158,7 @@ listring[]"
     power_needed = item_vaccum_power_demand,
     action_interval = 3,
     action = function(pos, node, meta, supply, demand)
-        vacuum(pos, 4, meta:get_inventory())
+        vacuum(pos, 16, meta:get_inventory())
         return item_vaccum_power_demand
     end,
     output_inv = "main",

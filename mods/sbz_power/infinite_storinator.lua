@@ -41,6 +41,7 @@ local slots_per_1_power = 8
 
 sbz_api.register_machine("sbz_power:infinite_storinator", {
     description = "Infinite Storinator",
+    info_extra = "If you loose power you will need to re-power it to get your items back",
     tiles = {
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",

@@ -199,7 +199,7 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
 
     { type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators" } },
 
-    {type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = {"Emittrium Circuits", "Storinators", "Meteorites"}},
+    { type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators", "Meteorites" } },
     -- ======================================================================================
     { type = "text", title = "Questline: Chemistry", text = "Good luck." },
 
@@ -211,7 +211,7 @@ Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine 
 
     { type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = { "Simple Alloy Furnace", "Emittrium Circuits" } },
 
-    {type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = {"Meteorites"}},
+    { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
 
     { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
@@ -265,13 +265,66 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
     },
 
     { type = "quest",  title = "Phosphor",                 text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
-
+    -- ======================================================================================
     {
         type = "text",
         title = "Questline: Pipeworks",
         text =
         [[If you already know about regular pipeworks, skyblock_zero's pipeworks are a very modified version of that mod, it will be similar though.]]
-    },
+    }, {
+    type = "quest",
+    title = "Automatic Filter-Injectors",
+    text = [[
+Have you ever wanted to push something out of a node... to another node (Storinator to storinator)?
+
+Or to a tube?
+
+Now you can
+
+The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack each second
+
+]],
+    requires = {}
+}, {
+    type = "quest",
+    title = "Tube",
+    text = [[
+Do you want to transport something more than 1 block...
+
+Introducing tubes... you can like transport stacks easily...
+
+Simply use the Filter-Injector to push something into the tube, and boom.
+
+Also, if 30 stacks are in one tube, the tube becomes broken.
+    ]],
+    requires = {},
+}, {
+    type = "quest",
+    title = "Node breaker",
+    text = [[They break stuff then they throw it away thru their back-side.]]
+}, {
+    type = "quest",
+    title = "Deployer",
+    text = "They place stuff."
+}, {
+    type = "quest",
+    title = "Puncher",
+    text =
+    "They punch stuff... yes this means you can automate emitterium and charged particles, or get faster core dust production."
+}, {
+    type = "quest",
+    title = "Autocrafter",
+    text = "Oh they craft..... really really ***really*** fast...."
+}, {
+    type = "quest",
+    title = "Item void",
+    text = "They destroy any item that goes in... and yes theese are pipeworks trashcans."
+}, {
+    type = "quest",
+    title = "Item vacuum",
+    text = "They vacuum up items in a 16 block radius, don't spam them though.\n\nThey require 20 power."
+},
+
     -- ======================================================================================
     { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
