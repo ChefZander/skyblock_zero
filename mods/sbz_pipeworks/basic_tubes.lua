@@ -36,7 +36,7 @@ pipeworks.register_tube("pipeworks:low_priority_tube", {
     noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "green" } },
     node_def = {
         tube = {
-            priority = -1,
+            priority = 1,
         }
     }
 })
