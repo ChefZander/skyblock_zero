@@ -180,7 +180,10 @@ That said, it's made using 9 pebbles.]],
         [[Do you see those blue stars in the distance? They're called Emitters. To obtain Emittrium from them, you will have to build a bridge over to one.
 I would recommend to choose the closest one to you, but any Emitter works. Next, you'll need a Matter Annihilator. You can't destroy the Emitters, but you can chip away at them.
 
-Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine the Emittrium later, but for now we just need it in its raw state.]],
+Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine the Emittrium later, but for now we just need it in its raw state.
+
+Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of just producing the same materials that core does.
+]],
         requires = { "Annihilator" }
     },
 
@@ -310,7 +313,7 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
     type = "quest",
     title = "Puncher",
     text =
-    "They punch stuff... yes this means you can automate emitterium and charged particles, or get faster core dust production."
+    "They punch stuff... yes this means you can automate emittrium and charged particles, or get faster core dust production."
 }, {
     type = "quest",
     title = "Autocrafter",
