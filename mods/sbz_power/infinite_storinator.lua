@@ -73,7 +73,6 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         local power_consumed = slots / slots_per_1_power
 
         meta:set_int("visible_slots", slots)
-
         meta:set_string("infotext", string.format("Infinite storinator, slots: %s, consuming: %s", slots, power_consumed))
 
         local max_width = 8
@@ -117,6 +116,7 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         end
         return 0
     end,
+
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         local meta = M(pos)
         if index <= meta:get_int("visible_slots") or listname == "main" then
@@ -129,17 +129,20 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         if index <= meta:get_int("visible_slots") or listname == "main" then return stack:get_count() end
         return 0
     end,
+    output_inv = "inv",
+    input_inv = "inv",
+
 
     control_action_raw = true,
-    disallow_pipeworks = true, -- FIXME:
+    disallow_pipeworks = false,
     info_extra = "For one power you can get " .. slots_per_1_power .. " slots"
 })
 
 minetest.register_craft({
     output = "sbz_power:infinite_storinator",
     recipe = {
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_meteorites:neutronium", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator", "sbz_meteorites:neutronium",       "sbz_resources:storinator" },
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
     }
 })
