@@ -4,7 +4,6 @@ local S = minetest.get_translator("pipeworks")
 local autocrafterCache = {}
 
 
-
 local next = next
 
 local function count_index(invlist)
@@ -352,7 +351,6 @@ local function update_meta(meta)
     local fs =
         "formspec_version[7]" ..
         "size[11.4,14]" ..
-        pipeworks.fs_helpers.get_prepends(size) ..
         "list[context;recipe;0.22,0.22;3,3;]" ..
         "image[4,1.45;1,1;[combine:16x16^[noalpha^[colorize:#141318:255]" ..
         "list[context;output;4,1.45;1,1;]" ..
@@ -364,7 +362,9 @@ local function update_meta(meta)
         "listring[context;src]" ..
         "listring[current_player;main]" ..
         "listring[context;dst]" ..
-        "listring[current_player;main]"
+        "listring[current_player;main]" ..
+        string.format("field[0.22,7;4,0.5;maxpow;Max power consumbtion;%s]",
+            meta:get_int("maxpow") or "Unset (so unlimited)")
     meta:set_string("formspec", fs)
 
     -- toggling the button doesn't quite call for running a recipe change check
@@ -445,6 +445,11 @@ minetest.register_node("pipeworks:autocrafter", {
             or not pipeworks.may_configure(pos, sender)
         then
             return
+        end
+
+        if fields.maxpow and tonumber(fields.maxpow) and (tonumber(fields.maxpow) > 0) then
+            local meta = minetest.get_meta(pos)
+            meta:set_int("maxpow", math.floor(fields.maxpow))
         end
     end,
     can_dig = function(pos, player)
@@ -538,24 +543,46 @@ minetest.register_node("pipeworks:autocrafter", {
         end
         return count
     end,
-    info_power_needed = 10,
+    info_extra = "1 power per 1 craft. Can craft unlimited** things per second.",
     action = function(pos, node, meta, supply, demand)
-        if supply < demand + 10 then
-            meta:set_string("Not enough power, needs 10")
-            return 10
-        end
-        reserve_slots(meta)
-        meta:set_string("infotext", "Active")
-        local result
-        local i = 0
-        repeat
-            result = run_autocrafter(pos)
-            i = i + 1
-        until result == false
-        if i == 1 then -- means that it just immiadedly failed
+        if supply <= demand then
+            meta:set_string("infotext", "Not enough power")
             return 0
         end
-        return 10
+        reserve_slots(meta)
+
+        local max_crafts = (supply - demand)
+        max_crafts = math.min(max_crafts, meta:get_int("maxpow"))
+        local is_max_crafts_forced = max_crafts ~= meta:get_int("maxpow")
+        local result
+        if max_crafts == 0 then
+            return 0
+        end
+
+        local gi
+        for i = 1, max_crafts do
+            gi = i
+            result = run_autocrafter(pos)
+            if result == false then break end
+        end
+        local i = gi
+        if i == 1 and is_max_crafts_forced then -- means that it just immiadedly failed
+            meta:set_string("infotext", "Can't craft")
+            return 0
+        end
+
+        meta:set_string("infotext", "Active, consuming: " .. i .. " power")
+        return i
     end,
 
 })
+--[[
+minetest.register_craft({
+    output = "pipeworks:autocrafter",
+    recipe = {
+        {},
+        { "sbz_resources:emittrium_circuit" },
+        {}
+    }
+})
+--]]

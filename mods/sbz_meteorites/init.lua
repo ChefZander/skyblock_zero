@@ -35,25 +35,27 @@ minetest.register_chatcommand("spawn_meteorite", {
 local storage = minetest.get_mod_storage()
 local time_since = storage:get_float("time_since_last_spawn")
 
-minetest.register_globalstep(function(dtime)
+local function meteorite_globalstep(dtime)
     time_since = time_since + dtime
     if time_since > 120 then
         time_since = 0
         local spawns = math.random() < 0.25 and 1 or 0
         for _, obj in ipairs(minetest.object_refs) do
             if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 0.2 then
-                spawns = spawns+obj:get_luaentity().type
+                spawns = spawns + obj:get_luaentity().type
             end
         end
         if spawns > 0 then for _ = 1, spawns do spawn_meteorite() end end
     end
     storage:set_float("time_since_last_spawn", time_since)
-end)
+end
+
+minetest.register_globalstep(meteorite_globalstep)
 
 local modpath = minetest.get_modpath("sbz_meteorites")
 
-dofile(modpath.."/meteorite.lua")
-dofile(modpath.."/nodes.lua")
-dofile(modpath.."/attractor.lua")
-dofile(modpath.."/waypoints.lua")
-dofile(modpath.."/visualiser.lua")
+dofile(modpath .. "/meteorite.lua")
+dofile(modpath .. "/nodes.lua")
+dofile(modpath .. "/attractor.lua")
+dofile(modpath .. "/waypoints.lua")
+dofile(modpath .. "/visualiser.lua")

@@ -4,6 +4,15 @@ pipeworks.register_tube("pipeworks:tube", {
     noctr = { { name = "basic_tube_noctr.png", backface_culling = false } },
 })
 
+minetest.register_craft({
+    output = "pipeworks:tube_1 8",
+    recipe = {
+        { "sbz_chem:platinum_powder", "", "sbz_chem:platinum_powder" },
+        { "",                         "", "" },
+        { "sbz_chem:platinum_powder", "", "sbz_chem:platinum_powder" },
+    }
+})
+
 pipeworks.register_tube("pipeworks:accelerator_tube", {
     description = "Accelerating Tube",
     plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "lime" } },
@@ -19,6 +28,16 @@ pipeworks.register_tube("pipeworks:accelerator_tube", {
     },
 })
 
+local ch_pa = "sbz_resources:charged_particle"
+minetest.register_craft({
+    output = "pipeworks:accelerator_tube_1 1",
+    recipe = {
+        { ch_pa, ch_pa,              ch_pa },
+        { ch_pa, "pipeworks:tube_1", ch_pa },
+        { ch_pa, ch_pa,              ch_pa },
+    }
+})
+
 pipeworks.register_tube("pipeworks:high_priority_tube", {
     description = "High Priority Tube",
     plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "red" } },
@@ -30,6 +49,12 @@ pipeworks.register_tube("pipeworks:high_priority_tube", {
     }
 })
 
+minetest.register_craft({
+    output = "pipeworks:high_priority_tube_1 1",
+    type = "shapeless",
+    recipe = { "pipeworks:tube_1", "sbz_resources:matter_dust" }
+})
+
 pipeworks.register_tube("pipeworks:low_priority_tube", {
     description = "Low Priority Tube",
     plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "green" } },
@@ -39,6 +64,12 @@ pipeworks.register_tube("pipeworks:low_priority_tube", {
             priority = 1,
         }
     }
+})
+
+minetest.register_craft({
+    output = "pipeworks:low_priority_tube_1 1",
+    type = "shapeless",
+    recipe = { "pipeworks:tube_1", "sbz_resources:antimatter_dust" }
 })
 
 
@@ -79,6 +110,14 @@ minetest.register_node("pipeworks:one_way_tube", {
     on_rotate = pipeworks.on_rotate,
 })
 
+minetest.register_craft({
+    output = "pipeworks:one_way_tube",
+    recipe = {
+        { "", "sbz_chem:platinum_powder", "" },
+        { "", "pipeworks:tube_1",         "" },
+        { "", "sbz_chem:platinum_powder", "" }
+    }
+})
 
 pipeworks.register_tube("pipeworks:crossing_tube", {
     description = "Crossing tube",
@@ -89,6 +128,14 @@ pipeworks.register_tube("pipeworks:crossing_tube", {
     },
 })
 
+minetest.register_craft({
+    output = "pipeworks:crossing_tube_1 5",
+    recipe = {
+        { "",                 "pipeworks:tube_1", "" },
+        { "pipeworks:tube_1", "pipeworks:tube_1", "pipeworks:tube_1" },
+        { "",                 "pipeworks:tube_1", "" }
+    }
+})
 
 pipeworks.register_tube("pipeworks:broken_tube", {
     description = "Broken Tube",

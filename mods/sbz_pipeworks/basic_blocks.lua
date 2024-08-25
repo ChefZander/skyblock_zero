@@ -22,7 +22,6 @@ local function item_sorter_formspec(pos)
     meta:set_string("formspec",
         "formspec_version[2]" ..
         "size[10.2,13]" ..
-        pipeworks.fs_helpers.get_prepends(size) ..
         "list[context;line1;1.5,0.25;6,1;]" ..
         "list[context;line2;1.5,1.50;6,1;]" ..
         "list[context;line3;1.5,2.75;6,1;]" ..
@@ -170,7 +169,17 @@ minetest.register_node("pipeworks:item_sorter", {
             return 0
         end
     end,
+    after_dig_node = pipeworks.after_dig,
 
+})
+
+minetest.register_craft({
+    output = "pipeworks:item_sorter",
+    recipe = {
+        { "",                 "pipeworks:tube_1",             "" },
+        { "pipeworks:tube_1", "sbz_resources:simple_circuit", "pipeworks:tube_1" },
+        { "",                 "pipeworks:tube_1",             "" }
+    },
 })
 
 minetest.register_node("pipeworks:item_void", {
@@ -186,4 +195,13 @@ minetest.register_node("pipeworks:item_void", {
     },
     after_place_node = pipeworks.after_place,
     after_dig_node = pipeworks.after_dig,
+})
+
+minetest.register_craft({
+    output = "pipeworks:item_void 1",
+    recipe = {
+        { "sbz_resources:matter_blob", "pipeworks:tube_1",                 "sbz_resources:matter_blob" },
+        { "pipeworks:tube_1",          "sbz_resources:matter_annihilator", "pipeworks:tube_1" },
+        { "sbz_resources:matter_blob", "pipeworks:tube_1",                 "sbz_resources:matter_blob" }
+    },
 })
