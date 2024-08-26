@@ -29,7 +29,7 @@ minetest.register_node("sbz_bio:algae", {
 minetest.register_abm({
     interval = 10,
     chance = 10,
-    nodenames = {"sbz_resources:matter_blob"},
+    nodenames = {"sbz_resources:matter_blob", "group:moss_growable"},
     neighbors = {"sbz_resources:water_source"},
     action = function (pos, node)
         local i = math.random(0, 5)
@@ -56,4 +56,30 @@ minetest.register_abm({
             end
         end
     end
+})
+
+minetest.register_node("sbz_bio:dirt", {
+    description = "Dirt",
+    tiles = {"dirt.png"},
+    groups = {matter=1, cracky=3, moss_growable=1, fertilizable=1}
+})
+
+minetest.register_craft({
+    output = "sbz_bio:dirt",
+    recipe = {
+        {"sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss"},
+        {"sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss"},
+        {"sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss"}
+    }
+})
+
+minetest.register_craftitem("sbz_bio:fertilizer", {
+    description = "Fertilizer",
+    inventory_image = "fertilizer.png"
+})
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_bio:fertilizer",
+    recipe = {"sbz_bio:algae", "sbz_bio:algae", "sbz_bio:algae"}
 })
