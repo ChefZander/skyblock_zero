@@ -23,5 +23,37 @@ minetest.register_node("sbz_bio:algae", {
     paramtype2 = "wallmounted",
     walkable = false,
     buildable_to = true,
-    groups = {matter=3, cracky=3, attached_node=1}
+    groups = {matter=3, cracky=3}
+})
+
+minetest.register_abm({
+    interval = 10,
+    chance = 10,
+    nodenames = {"sbz_resources:matter_blob"},
+    neighbors = {"sbz_resources:water_source"},
+    action = function (pos, node)
+        local i = math.random(0, 5)
+        local dir = minetest.wallmounted_to_dir(i)
+        if sbz_api.get_node_heat(pos-dir) > 7 then
+            local defs = minetest.registered_nodes[minetest.get_node(pos-dir).name]
+            if defs.liquidtype == "none" and defs.buildable_to then
+                minetest.set_node(pos-dir, {name="sbz_bio:moss", param2=i})
+            end
+        end
+    end
+})
+
+minetest.register_abm({
+    interval = 10,
+    chance = 10,
+    nodenames = {"sbz_resources:water_source"},
+    action = function (pos, node)
+        pos.y = pos.y+1
+        if sbz_api.get_node_heat(pos) > 7 then
+            local defs = minetest.registered_nodes[minetest.get_node(pos).name]
+            if defs.liquidtype == "none" and defs.buildable_to then
+                minetest.set_node(pos, {name="sbz_bio:algae", param2=1})
+            end
+        end
+    end
 })
