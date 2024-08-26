@@ -36,6 +36,12 @@ function sbz_api.habitat_tick(start_pos, meta)
         return
     end
 
+    for _, v in ipairs(habitat.plants) do
+        local pos, node = unpack(v)
+        local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
+        growth_tick(pos, node)
+    end
+
     meta:set_string("infotext", table.concat({
         "Plants: ", #habitat.plants,
         "\nHabitat size: ", habitat.size

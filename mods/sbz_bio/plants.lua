@@ -24,7 +24,20 @@ minetest.register_craft({
     recipe = {"sbz_bio:algae", "sbz_bio:algae", "sbz_bio:algae"}
 })
 
-function sbz_api.register_plant(name, desc, drop)
+function sbz_api.plant_growth_tick(num_ticks, next_stage)
+    return function (pos, node)
+        local meta = minetest.get_meta(pos)
+        local count = meta:get_int("count")+10
+        if count >= num_ticks then
+            count = 0
+            node.name = next_stage
+            minetest.swap_node(pos, node)
+        end
+        meta:set_int("count", count)
+    end
+end
+
+function sbz_api.register_plant(name, desc, drop, rate)
     minetest.register_node("sbz_bio:"..name.."_1", {
         description = desc,
         drawtype = "plantlike",
@@ -36,7 +49,8 @@ function sbz_api.register_plant(name, desc, drop)
         walkable = false,
         buildable_to = true,
         groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = {}
+        drop = {},
+        growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_2")
     })
     minetest.register_node("sbz_bio:"..name.."_2", {
         description = desc,
@@ -49,7 +63,8 @@ function sbz_api.register_plant(name, desc, drop)
         walkable = false,
         buildable_to = true,
         groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = {}
+        drop = {},
+        growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_3")
     })
     minetest.register_node("sbz_bio:"..name.."_3", {
         description = desc,
@@ -62,7 +77,8 @@ function sbz_api.register_plant(name, desc, drop)
         walkable = false,
         buildable_to = true,
         groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = {}
+        drop = {},
+        growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_4")
     })
     minetest.register_node("sbz_bio:"..name.."_4", {
         description = desc,
@@ -79,7 +95,7 @@ function sbz_api.register_plant(name, desc, drop)
     })
 end
 
-sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 3")
+sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 3", 1) --note to self, slow down growth later
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
