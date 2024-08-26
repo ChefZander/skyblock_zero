@@ -35,7 +35,7 @@ function sbz_api.register_plant(name, desc, drop)
         sunlight_propagates = true,
         walkable = false,
         buildable_to = true,
-        groups = {dig_immediate=3, attached_node=1, not_in_creative_inventory=1},
+        groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = {}
     })
     minetest.register_node("sbz_bio:"..name.."_2", {
@@ -48,7 +48,7 @@ function sbz_api.register_plant(name, desc, drop)
         sunlight_propagates = true,
         walkable = false,
         buildable_to = true,
-        groups = {dig_immediate=3, attached_node=1, not_in_creative_inventory=1},
+        groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = {}
     })
     minetest.register_node("sbz_bio:"..name.."_3", {
@@ -61,7 +61,7 @@ function sbz_api.register_plant(name, desc, drop)
         sunlight_propagates = true,
         walkable = false,
         buildable_to = true,
-        groups = {dig_immediate=3, attached_node=1, not_in_creative_inventory=1},
+        groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = {}
     })
     minetest.register_node("sbz_bio:"..name.."_4", {
@@ -74,7 +74,7 @@ function sbz_api.register_plant(name, desc, drop)
         sunlight_propagates = true,
         walkable = false,
         buildable_to = true,
-        groups = {matter=3, cracky=3, attached_node=1, not_in_creative_inventory=1},
+        groups = {matter=3, cracky=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = drop
     })
 end
