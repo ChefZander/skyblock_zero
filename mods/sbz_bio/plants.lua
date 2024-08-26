@@ -26,7 +26,7 @@ minetest.register_craft({
 
 function sbz_api.plant_growth_tick(num_ticks, next_stage)
     return function (pos, node)
-        if sbz_api.get_node_heat(pos) > 7 and sbz_api.get_sky_exposure(pos) then
+        if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos) then
             local meta = minetest.get_meta(pos)
             local count = meta:get_int("count")+10
             if count >= num_ticks then

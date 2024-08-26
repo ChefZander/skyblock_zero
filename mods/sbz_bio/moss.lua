@@ -30,7 +30,7 @@ minetest.register_abm({
     interval = 10,
     chance = 20,
     nodenames = {"sbz_resources:matter_blob", "group:moss_growable"},
-    neighbors = {"sbz_resources:water_source"},
+    neighbors = {"sbz_resources:water_source", "sbz_resources:water_flowing"},
     action = function (pos, node)
         local i = math.random(0, 5)
         local dir = minetest.wallmounted_to_dir(i)
