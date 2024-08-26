@@ -61,7 +61,7 @@ minetest.register_abm({
 minetest.register_node("sbz_bio:dirt", {
     description = "Dirt",
     tiles = {"dirt.png"},
-    groups = {matter=1, cracky=3, moss_growable=1, fertilizable=1}
+    groups = {matter=1, cracky=3, moss_growable=1, soil=1}
 })
 
 minetest.register_craft({

@@ -199,6 +199,25 @@ minetest.register_craft({
     }
 })
 
+minetest.register_node("sbz_resources:emittrium_glass", {
+    description = "Emittrium Glass",
+    drawtype = "glasslike",
+    tiles = {"emittrium_glass.png"},
+    use_texture_alpha = "clip",
+    paramtype = "light",
+    sunlight_propagates = true, --very important
+    groups = {matter=1}
+})
+
+minetest.register_craft({
+    output = "sbz_resources:emittrium_glass 16",
+    recipe = {
+        {"sbz_resources:raw_emittrium", "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium"},
+        {"sbz_resources:antimatter_dust", "", "sbz_resources:antimatter_dust"},
+        {"sbz_resources:raw_emittrium", "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium"}
+    }
+})
+
 --Placeholder water - something more interesting will be added later but this will have to do for now
 
 local water_image = "water.png^[opacity:127"

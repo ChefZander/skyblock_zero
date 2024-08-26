@@ -9,7 +9,7 @@ minetest.register_craftitem("sbz_bio:fertilizer", {
     description = "Fertilizer",
     inventory_image = "fertilizer.png",
     on_place = function (itemstack, user, pointed)
-        if pointed.type == "node" and minetest.get_item_group(minetest.get_node(pointed.under).name, "fertilizable")
+        if pointed.type == "node" and minetest.get_item_group(minetest.get_node(pointed.under).name, "soil") > 0
         and minetest.registered_nodes[minetest.get_node(pointed.under+up).name].buildable_to then
             minetest.set_node(pointed.under+up, {name=sprouts[math.random(#sprouts)]})
             itemstack:take_item()
@@ -84,6 +84,7 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
     on_place = function (itemstack, user, pointed)
+        if minetest.get_item_group(minetest.get_node(pointed.above-up).name, "soil") <= 0 then return end
         local _, pos = minetest.item_place_node(ItemStack("sbz_bio:stemfruit_plant_1"), user, pointed)
         if pos then
             itemstack:take_item()
