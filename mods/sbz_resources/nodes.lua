@@ -198,3 +198,39 @@ minetest.register_craft({
         { "",                           "sbz_resources:matter_plate", "" }
     }
 })
+
+--Placeholder water - something more interesting will be added later but this will have to do for now
+
+local water_image = "water.png^[opacity:127"
+
+minetest.register_node("sbz_resources:water_source", {
+    description = "Water Source",
+    drawtype = "liquid",
+    tiles = {water_image},
+    inventory_image = water_image,
+    use_texture_alpha = "clip",
+    post_effect_color = "#4000ffc0",
+    paramtype = "light",
+    walkable = false,
+    buildable_to = true,
+    liquidtype = "source",
+    liquid_alternative_source = "sbz_resources:water_source",
+    liquid_alternative_flowing = "sbz_resources:water_flowing"
+})
+
+minetest.register_node("sbz_resources:water_flowing", {
+    description = "Flowing Water",
+    drawtype = "flowingliquid",
+    tiles = {water_image},
+    special_tiles = {water_image, water_image},
+    inventory_image = water_image,
+    use_texture_alpha = "clip",
+    groups = {not_in_creative_inventory=1},
+    post_effect_color = "#4000ffc0",
+    paramtype = "light",
+    walkable = false,
+    buildable_to = true,
+    liquidtype = "flowing",
+    liquid_alternative_source = "sbz_resources:water_source",
+    liquid_alternative_flowing = "sbz_resources:water_flowing"
+})
