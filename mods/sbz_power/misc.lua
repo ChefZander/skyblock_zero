@@ -164,3 +164,10 @@ listring[]"
     output_inv = "main",
     input_inv = "main",
 })
+
+minetest.register_craft({
+    output = "sbz_power:item_vacuum",
+    recipe = {
+        { "pipeworks:tube_1", "sbz_meteorites:neutronium", "sbz_resources:retaining_circuit" },
+    }
+})

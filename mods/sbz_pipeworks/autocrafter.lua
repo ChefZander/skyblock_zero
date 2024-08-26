@@ -576,13 +576,12 @@ minetest.register_node("pipeworks:autocrafter", {
     end,
 
 })
---[[
+
 minetest.register_craft({
     output = "pipeworks:autocrafter",
     recipe = {
-        {},
-        { "sbz_resources:emittrium_circuit" },
-        {}
+        { "sbz_chem:titanium_alloy_powder", "sbz_resources:robotic_arm",       "sbz_chem:titanium_alloy_powder" },
+        { "sbz_chem:titanium_alloy_powder", "sbz_resources:emittrium_circuit", "sbz_chem:titanium_alloy_powder" },
+        { "sbz_chem:titanium_alloy_powder", "sbz_resources:robotic_arm",       "sbz_chem:titanium_alloy_powder" }
     }
 })
---]]

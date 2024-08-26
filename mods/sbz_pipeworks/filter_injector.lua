@@ -284,3 +284,12 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         return 1
     end
 })
+
+minetest.register_craft {
+    output = "pipeworks:automatic_filter_injector 2",
+    recipe = {
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob",       "sbz_resources:matter_blob" },
+        { "sbz_resources:robotic_arm", "sbz_resources:retaining_circuit", "pipeworks:tube_1" },
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob",       "sbz_resources:matter_blob" }
+    }
+}
