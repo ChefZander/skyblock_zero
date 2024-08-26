@@ -49,7 +49,6 @@ function sbz_api.register_plant(name, desc, drop, rate)
         paramtype = "light",
         sunlight_propagates = true,
         walkable = false,
-        buildable_to = true,
         groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = {},
         growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_2")
@@ -63,7 +62,6 @@ function sbz_api.register_plant(name, desc, drop, rate)
         paramtype = "light",
         sunlight_propagates = true,
         walkable = false,
-        buildable_to = true,
         groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = {},
         growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_3")
@@ -77,7 +75,6 @@ function sbz_api.register_plant(name, desc, drop, rate)
         paramtype = "light",
         sunlight_propagates = true,
         walkable = false,
-        buildable_to = true,
         groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = {},
         growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_4")
@@ -91,7 +88,6 @@ function sbz_api.register_plant(name, desc, drop, rate)
         paramtype = "light",
         sunlight_propagates = true,
         walkable = false,
-        buildable_to = true,
         groups = {matter=3, cracky=3, attached_node=1, plant=1, not_in_creative_inventory=1},
         drop = drop
     })
@@ -101,6 +97,7 @@ sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
+    groups = {burn=3},
     on_place = function (itemstack, user, pointed)
         if minetest.get_item_group(minetest.get_node(pointed.above-up).name, "soil") <= 0 then return end
         local _, pos = minetest.item_place_node(ItemStack("sbz_bio:stemfruit_plant_1"), user, pointed)

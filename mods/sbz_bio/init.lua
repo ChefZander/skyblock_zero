@@ -24,4 +24,5 @@ end
 local modpath = minetest.get_modpath("sbz_bio")
 dofile(modpath.."/moss.lua")
 dofile(modpath.."/habitat.lua")
+dofile(modpath.."/burner.lua")
 dofile(modpath.."/plants.lua")
