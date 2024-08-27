@@ -58,6 +58,7 @@ local action = function(pos, _, puncher)
             max_hear_distance = 32,
             pos = pos
         })
+        if puncher.is_fake_player then return end
         displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
 end

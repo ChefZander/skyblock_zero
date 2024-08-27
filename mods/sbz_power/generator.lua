@@ -212,6 +212,7 @@ minetest.register_node("sbz_power:charged_field_residue", {
     sunlight_propagates = true,
     walkable = true,
     on_punch = function(pos, node, puncher, pointed_thing)
+        if puncher.is_fake_player then return end
         displayDialougeLine(puncher:get_player_name(), "The residue is still decaying.")
     end,
 })

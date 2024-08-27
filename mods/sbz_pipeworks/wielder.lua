@@ -291,8 +291,6 @@ pipeworks.register_wielder({
         end
 
         node_def.on_punch(fakeplayer:get_pos(), node, fakeplayer, pointed)
-
-        --        fakeplayer:get_inventory():add_item("main", fakeplayer:get_wielded_item())
     end,
     cost = 40
 })
