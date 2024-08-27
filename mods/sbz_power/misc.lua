@@ -45,7 +45,7 @@ minetest.register_craft({
 
 
 sbz_api.register_machine("sbz_power:interactor", {
-    description = "Interactor (legacy)",
+    description = "Interactor (legacy + you hacker you!)",
     tiles = {
         "interactor_top.png",
         "interactor_bottom.png",
