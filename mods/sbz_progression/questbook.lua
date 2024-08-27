@@ -302,7 +302,7 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
     type = "quest",
     title = "Node Breakers",
     text = [[They break stuff then they throw it away thru their back-side. They need 1 power and run every second.]],
-    requires = { "Automatic Filter-Injectors", "Crusher" }
+    requires = { "Crusher" }
 }, {
     type = "quest",
     title = "Deployers",
