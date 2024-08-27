@@ -1,6 +1,11 @@
-quests = {
-    { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
+---@class Quest
+---@field type string
+---@field title string
+---@field text string Text corpus explaining and providing lore for a quest
+---@field requires? string[] List of other quest titles that need to be completed for unlocking this quest.
 
+---@type Quest[]
+quests = {
     {
         type = "quest",
         title = "Introduction",
@@ -364,67 +369,87 @@ function is_quest_available(player_name, quest_id)
     return true
 end
 
--- Function to create the formspec
-local function get_questbook_formspec(selected_quest_index, player_name)
-    local selected_quest = quests[selected_quest_index]
-    local quest_list = ""
-
-    for i, quest in ipairs(quests) do
-        if quest.type == "quest" then
-            if is_achievement_unlocked(player_name, quest.title) then
-                quest_list = quest_list .. "✓ " .. quest.title .. ","
-            elseif is_quest_available(player_name, quest.title) then
-                quest_list = quest_list .. "► " .. quest.title .. ","
-            else
-                quest_list = quest_list .. " ✕ " .. quest.title .. ","
-	    end
-        elseif quest.type == "text" then
-            quest_list = quest_list .. "≡ " .. quest.title .. ","
-        elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then
-            quest_list = quest_list .. "✪ " .. quest.title .. ","
-        elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) == false then
-            quest_list = quest_list .. "✪ ???,"
+---Center Wrapped Text
+---@param text string
+---@param max_length integer
+---@return string
+local function center_text(text, max_length)
+    local lines = {}
+    for line in text:gmatch("[^\n]+") do
+        local centered_line = ""
+        local line_length = #line
+        if line_length <= max_length then
+            local padding = math.floor((max_length - line_length) / 2)
+            centered_line = (" "):rep(padding) .. line
+        else
+            centered_line = line
         end
+        table.insert(lines, centered_line)
     end
-    quest_list = quest_list:sub(1, -2)
+    return table.concat(lines, "\n")
+end
 
-    local formspec = "formspec_version[7]" ..
-        "size[12,8]" ..
-        "label[0.1,0.3;Quest List]" ..
-        "textlist[0,0.7;5.8,7;quest_list;" .. quest_list .. ";" .. selected_quest_index .. "]"
-
-    if selected_quest.type == "quest" or (selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title)) then
-        formspec = formspec ..
-            "hypertext[6,0.3;100,100;;\\<big\\>" .. minetest.formspec_escape(selected_quest.title) .. "]" ..
-            "textarea[6,1.3;5.8,5;;;" ..
-            (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock.") ..
-            "]" .. -- minetest.formspec_escape(selected_quest.text)
-            "label[6,7.2;" ..
-            (is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest.") ..
-            "]"
-    elseif selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title) == false then
-        formspec = formspec ..
-            "label[6,0.3;Secret Quest]" ..
-            "label[6,0.7;Title: ???]" ..
-            "textarea[6,1.2;5.8,5;;;" .. "???" .. "]" .. -- minetest.formspec_escape(selected_quest.text)
-            "label[6,7.2;" ..
-            (is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest.") ..
-            "]"
-    elseif selected_quest.type == "text" then
-        formspec = formspec ..
-            "textarea[6,0.3;5.8,5;;;" ..
-            (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock.") ..
-            "]"
-    end
-
+--- Function to create the formspec
+--- @param selected_quest_index number
+--- @param player_name string
+--- @return string
+local function get_questbook_formspec(selected_quest_index, player_name)
     -- play page sound lol
-
     minetest.sound_play("questbook", {
         to_player = player_name,
         gain = 1.0,
     })
 
-    return formspec
+    local quest_icons = {}
+    local amount_of_quests = #quests
+
+    local quest_icon_size = 1.5
+    local quest_icon_spacing = quest_icon_size + 0.5
+
+    for i, quest in ipairs(quests) do
+        local quest_display_name = quest.title
+
+        if quest.type == "secret" and not is_achievement_unlocked(player_name, quest.title) then
+            quest_display_name = "???"
+        end
+
+        quest_display_name = center_text(minetest.wrap_text(quest_display_name, 9), 9)
+
+
+        local properties = {}
+
+        if quest.type == "secret" and not is_achievement_unlocked(player_name, quest.title) then
+            table.insert(properties, ";bgcolor=" .. minetest.rgba(38,0,0,255))
+        end
+
+        if is_achievement_unlocked(player_name, quest.title) then
+            table.insert(properties, ";bgcolor=" .. minetest.rgba(0, 255, 0, 255))
+        end
+
+        
+        local quest_formspec = {
+            "style[", quest.title, ";font_size=14", table.concat(properties, ""), "]",
+            "item_image_button[" ,(i-1) * quest_icon_spacing,
+            ",0;", quest_icon_size, ",", quest_icon_size, ";sbz_resources:matter_blob;", quest.title, ";", quest_display_name .. "]",
+            "box[", ((i-1) * quest_icon_spacing)+quest_icon_size, ", ", quest_icon_size/2, "; 0.5, 0.1;", minetest.rgba(255, 255, 255, 255), "]",
+        }
+        table.insert(quest_icons, table.concat(quest_formspec, ""))
+    end
+
+    local formspec = {
+        "formspec_version[7]",
+        "size[16,10,true]", -- width, height, fixed size
+        "real_coordiantes[true]",
+        "scroll_container[0, 0; 16, 10;Quest Menu;horizontal]",
+        table.concat(quest_icons, ""),
+        "scroll_container_end[]",
+        "scrollbaroptions[min=0;max=".. amount_of_quests * 20 ..";arrows=hide]",
+        "scrollbar[0,9.5;16,0.5;horizontal;Quest Menu;0]",
+    }
+
+
+    -- Remove for performance?
+    return table.concat(formspec, "")
 end
 
 -- Handle form submissions
