@@ -304,16 +304,19 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
 }, {
     type = "quest",
     title = "Node Breakers",
-    text = [[They break stuff then they throw it away thru their back-side.]]
+    text = [[They break stuff then they throw it away thru their back-side. They need 1 power and run every second.]],
+    requires = { "Automatic Filter-Injectors", "Crusher" }
 }, {
     type = "quest",
     title = "Deployers",
-    text = "They place stuff."
+    text = "They place stuff.",
+    requires = { "Automatic Filter-Injectors", "Crusher", "Bear Arms" }
 }, {
     type = "quest",
     title = "Punchers",
     text =
-    "They punch stuff... yes this means you can automate emittrium and charged particles, or get faster core dust production."
+    "They punch stuff... yes this means you can automate emittrium and charged particles, or get automatic core dust production.",
+    requires = { "Automatic Filter-Injectors", "Crusher", "Bear Arms", "Emittrium Circuits" }
 }, {
     type = "quest",
     title = "Autocrafters",
@@ -323,7 +326,7 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
     type = "quest",
     title = "Item Voids",
     text = "They destroy any item that goes in... and yes theese are pipeworks trashcans.",
-    requires = { "Tubes", }
+    requires = { "Tubes" }
 }, {
     type = "quest",
     title = "Item Vacuums",
