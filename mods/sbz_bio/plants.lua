@@ -100,7 +100,7 @@ function sbz_api.register_plant(name, defs)
         paramtype2 = "color",
         palette = "wilting_palette.png",
         walkable = false,
-        groups = {matter=3, cracky=3, attached_node=1, habitat_conducts=1, not_in_creative_inventory=1},
+        groups = {matter=3, oddly_breakable_by_hand=3, attached_node=1, habitat_conducts=1, not_in_creative_inventory=1},
         drop = defs.drop
     })
 end
