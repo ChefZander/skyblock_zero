@@ -215,7 +215,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
     { type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = { "Simple Alloy Furnace", "Emittrium Circuits" } },
 
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
-
+    { type = "quest", title = "Bear Arms", text = "Craft the robotic arm." },
     { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
     -- ======================================================================================
@@ -287,10 +287,10 @@ Now you can
 The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack each second
 
 ]],
-    requires = {}
+    requires = { "Bear Arms" }
 }, {
     type = "quest",
-    title = "Tube",
+    title = "Tubes",
     text = [[
 Do you want to transport something more than 1 block...
 
@@ -300,32 +300,35 @@ Simply use the Filter-Injector to push something into the tube, and boom.
 
 Also, if 30 stacks are in one tube, the tube becomes broken.
     ]],
-    requires = {},
+    requires = { "Automatic Filter-Injectors" },
 }, {
     type = "quest",
-    title = "Node breaker",
+    title = "Node Breakers",
     text = [[They break stuff then they throw it away thru their back-side.]]
 }, {
     type = "quest",
-    title = "Deployer",
+    title = "Deployers",
     text = "They place stuff."
 }, {
     type = "quest",
-    title = "Puncher",
+    title = "Punchers",
     text =
     "They punch stuff... yes this means you can automate emittrium and charged particles, or get faster core dust production."
 }, {
     type = "quest",
-    title = "Autocrafter",
-    text = "Oh they craft..... really really ***really*** fast...."
+    title = "Autocrafters",
+    text = "Oh they craft..... really really ***really*** fast....",
+    requires = { "Bear Arms", "Neutronium", "Crusher", "Emittrium Circuits" }
 }, {
     type = "quest",
-    title = "Item void",
-    text = "They destroy any item that goes in... and yes theese are pipeworks trashcans."
+    title = "Item Voids",
+    text = "They destroy any item that goes in... and yes theese are pipeworks trashcans.",
+    requires = { "Tubes", }
 }, {
     type = "quest",
-    title = "Item vacuum",
-    text = "They vacuum up items in a 16 block radius, don't spam them though.\n\nThey require 20 power."
+    title = "Item Vacuums",
+    text = "They vacuum up items in a 16 block radius, don't spam them though.\n\nThey require 20 power.",
+    requires = { "Neutronium", "Tubes" }
 },
 
     -- ======================================================================================
