@@ -205,7 +205,7 @@ minetest.register_node("sbz_resources:emittrium_glass", {
     tiles = {"emittrium_glass.png"},
     use_texture_alpha = "clip",
     paramtype = "light",
-    sunlight_propagates = true, --very important
+    sunlight_propagates = true,
     groups = {matter=1, transparent=1}
 })
 
