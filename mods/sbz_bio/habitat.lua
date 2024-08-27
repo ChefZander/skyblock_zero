@@ -17,7 +17,8 @@ function sbz_api.assemble_habitat(start_pos, seen)
                 table.insert(plants, {pos, node})
             elseif minetest.get_item_group(node.name, "co2_source") > 0 then
                 table.insert(co2_sources, {pos, node})
-            elseif node.name == "air" or minetest.get_item_group(node.name, "habitat_conducts") > 0 or pos == start_pos then
+            end
+            if node.name == "air" or minetest.get_item_group(node.name, "habitat_conducts") > 0 or pos == start_pos then
                 for i = 0, 5 do
                     table.insert(checking, pos+minetest.wallmounted_to_dir(i))
                 end
@@ -45,17 +46,22 @@ function sbz_api.habitat_tick(start_pos, meta)
         co2 = co2+minetest.registered_nodes[node.name].co2_action(pos, node)
         touched_nodes[hash(pos)] = time
     end
-
+    local co2_supply = co2
+    
+    co2 = co2+meta:get_int("atmospheric_co2")
     for i = 1, math.min(co2, #habitat.plants) do
         local pos, node = unpack(habitat.plants[i])
         local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
         if growth_tick(pos, node) then touched_nodes[hash(pos)] = time end
     end
+    co2 = math.min(math.max(co2-#habitat.plants, 0), habitat.size)
+    meta:set_int("atmospheric_co2", co2)
 
     meta:set_string("infotext", table.concat({
-        "CO2 supply: ", co2,
+        "CO2 supply: ", co2_supply,
         "\nCO2 demand: ", #habitat.plants,
-        "\nHabitat size: ", habitat.size+#habitat.plants
+        "\nAtmospheric CO2: ", co2,
+        "\nHabitat size: ", habitat.size
     }))
 end
 
