@@ -218,8 +218,6 @@ minetest.register_craft({
     }
 })
 
---Placeholder water - something more interesting will be added later but this will have to do for now
-
 local water_image = "water.png^[opacity:127"
 
 minetest.register_node("sbz_resources:water_source", {

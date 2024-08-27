@@ -4,7 +4,7 @@ sbz_api.register_machine("sbz_chem:crusher",{
         {name="crusher_top.png", animation={type="vertical_frames", length = 0.5}},
         "crusher_side.png"
     },
-    groups = {matter =1},
+    groups = {matter=1},
 
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
@@ -40,9 +40,9 @@ sbz_api.register_machine("sbz_chem:crusher",{
         local power_needed = 5
         local inv = meta:get_inventory()
 
-        if not inv:contains_item("input", "sbz_resources:pebble") then 
+        if not inv:contains_item("input", "sbz_resources:pebble") then
             meta:set_string("infotext","Inactive")
-            return 0 
+            return 0
         end
 
         if demand+power_needed > supply then
@@ -81,7 +81,15 @@ sbz_api.register_machine("sbz_chem:crusher",{
                 inv:add_item("output", selected_item)
             else
                 meta:set_string("infotext", "Output inventory full")
-                return power_needed
+            end
+
+            if inv:contains_item("output", "sbz_chem:empty_fluid_cell") then
+                inv:remove_item("output", "sbz_chem:empty_fluid_cell")
+                if inv:room_for_item("output", "sbz_chem:water_fluid_cell") then
+                    inv:add_item("output", "sbz_chem:water_fluid_cell")
+                else
+                    minetest.add_item(pos, "sbz_chem:water_fluid_cell")
+                end
             end
 
             return power_needed
