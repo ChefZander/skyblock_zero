@@ -28,7 +28,7 @@ function sbz_api.plant_growth_tick(num_ticks, next_stage)
     return function (pos, node)
         if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos) then
             local meta = minetest.get_meta(pos)
-            local count = meta:get_int("count")+10
+            local count = meta:get_int("count")+1
             if count >= num_ticks then
                 count = 0
                 if node.param2 > 0 then
@@ -114,7 +114,7 @@ function sbz_api.register_plant(name, desc, drop, rate)
     })
 end
 
-sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 3", 1) --note to self, slow down growth later
+sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 3", 8)
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",

@@ -90,12 +90,12 @@ minetest.register_craft({
 
 minetest.register_abm({
     interval = 10,
-    chance = 1, --20
+    chance = 20,
     nodenames = {"group:plant"},
     action = function (pos, node)
         local touched = touched_nodes[hash(pos)]
         local time = os.time()
-        if not touched or time-touched >= 20 then
+        if not touched or time-touched >= 60 then
             local wilt = minetest.registered_nodes[node.name].wilt or function(...) end
             wilt(pos, node)
             touched_nodes[hash(pos)] = time
