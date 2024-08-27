@@ -27,3 +27,12 @@ minetest.register_node("sbz_bio:burner", {
         return output
     end
 })
+
+minetest.register_craft({
+    output = "sbz_bio:burner",
+    recipe = {
+        {"sbz_bio:pyrograss", "sbz_resources:matter_blob", "sbz_bio:pyrograss" },
+        {"sbz_resources:matter_blob", "sbz_resources:matter_annihilator", "sbz_resources:matter_blob"},
+        {"sbz_bio:pyrograss", "sbz_resources:matter_blob", "sbz_bio:pyrograss"}
+    }
+})
