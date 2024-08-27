@@ -267,12 +267,12 @@ pipeworks.register_wielder({
     name = "pipeworks:puncher",
     description = S("Puncher"),
     tiles = {
-        "interactor_bottom.png",
-        "interactor_bottom.png",
-        "interactor_bottom.png",
-        "interactor_bottom.png",
-        "interactor_bottom.png",
-        "interactor_top.png"
+        "interactor_side.png^[transformFY",
+        "interactor_side.png",
+        "interactor_side.png^[transformR90",
+        "interactor_side.png^[transformR270",
+        "interactor_bottom.png", -- back
+        "interactor_top.png"     -- front
     },
     wield_inv = { name = "pick", width = 1, height = 1 },
     connect_sides = { top = 1, bottom = 1, left = 1, right = 1, back = 1 },

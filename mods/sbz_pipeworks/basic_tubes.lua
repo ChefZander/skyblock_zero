@@ -15,8 +15,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:accelerator_tube", {
     description = "Accelerating Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "lime" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "lime" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "springgreen" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "springgreen" } },
 
     node_def = {
         tube = {
@@ -40,8 +40,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:high_priority_tube", {
     description = "High Priority Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "red" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "red" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "tomato" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "tomato" } },
     node_def = {
         tube = {
             priority = 150,
@@ -57,8 +57,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:low_priority_tube", {
     description = "Low Priority Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "green" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "green" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "lightgreen" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "lightgreen" } },
     node_def = {
         tube = {
             priority = 1,
