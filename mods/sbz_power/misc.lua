@@ -39,7 +39,7 @@ sbz_api.register_machine("sbz_power:phosphor_on", {
 
 minetest.register_craft({
     type = "shapeless",
-    output = "sbz_power:phosphor_on",
+    output = "sbz_power:phosphor_off",
     recipe = { "sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit" }
 })
 
