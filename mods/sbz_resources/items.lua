@@ -64,20 +64,6 @@ minetest.register_craft({
     recipe = { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
 })
 
-minetest.register_craftitem("sbz_resources:robotic_arm", {
-    description = "Robotic Arm",
-    --    inventory_image = "robotic_arm.png",
-})
-
-minetest.register_craft {
-    output = "sbz_resources:robotic_arm",
-    recipe = {
-        { "sbz_chem:iron_powder", "sbz_chem:iron_powder", "sbz_chem:iron_powder" },
-        { "sbz_chem:iron_powder", "",                     "sbz_chem:iron_powder" },
-        { "sbz_chem:iron_powder", "",                     "" }
-    }
-}
-
 -- Angel's Wing
 minetest.register_tool("sbz_resources:angels_wing", {
     description = "Angel's Wing",
