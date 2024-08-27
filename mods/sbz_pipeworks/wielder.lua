@@ -16,7 +16,7 @@ local function set_wielder_formspec(def, meta)
     local inv_offset = 1.5 + height * 1.25
     local fs = "formspec_version[2]size[" .. size .. "]" ..
         pipeworks.fs_helpers.get_prepends(size) .. list_bg ..
-        "item_image[0.5,0.3;1,1;" .. def.name .. "_off]" ..
+        "item_image[0.5,0.3;1,1;" .. def.name .. "]" ..
         "label[1.75,0.8;" .. minetest.formspec_escape(def.description) .. "]" ..
         "list[context;" .. def.wield_inv.name .. ";" .. offset .. ",1.25;" .. width .. "," .. height .. ";]"
         .. pipeworks.fs_helpers.get_inv(inv_offset) .. "listring[]"
