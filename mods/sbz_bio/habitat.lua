@@ -1,4 +1,5 @@
 local hash = minetest.hash_node_position
+local touched_nodes = {}
 
 function sbz_api.assemble_habitat(start_pos, seen)
     local checking = {start_pos}
@@ -33,6 +34,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
 end
 
 function sbz_api.habitat_tick(start_pos, meta)
+    local time = os.time()
     local habitat = sbz_api.assemble_habitat(start_pos)
     if not habitat then
         meta:set_string("infotext", "Habitat unenclosed or too large\nMake sure the habitat is fully sealed")
@@ -43,12 +45,13 @@ function sbz_api.habitat_tick(start_pos, meta)
     for _, v in ipairs(habitat.co2_sources) do
         local pos, node = unpack(v)
         co2 = co2+minetest.registered_nodes[node.name].co2_action(pos, node)
+        touched_nodes[hash(pos)] = time
     end
 
     for i = 1, math.min(co2, #habitat.plants) do
         local pos, node = unpack(habitat.plants[i])
         local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
-        growth_tick(pos, node)
+        if growth_tick(pos, node) then touched_nodes[hash(pos)] = time end
     end
 
     meta:set_string("infotext", table.concat({
@@ -83,4 +86,19 @@ minetest.register_craft({
     type = "shapeless",
     output = "sbz_bio:habitat_regulator",
     recipe = {"sbz_power:switching_station", "sbz_bio:moss"}
+})
+
+minetest.register_abm({
+    interval = 10,
+    chance = 1, --20
+    nodenames = {"group:plant"},
+    action = function (pos, node)
+        local touched = touched_nodes[hash(pos)]
+        local time = os.time()
+        if not touched or time-touched >= 20 then
+            local wilt = minetest.registered_nodes[node.name].wilt or function(...) end
+            wilt(pos, node)
+            touched_nodes[hash(pos)] = time
+        end
+    end
 })
