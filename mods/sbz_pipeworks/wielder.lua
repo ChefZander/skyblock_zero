@@ -180,7 +180,7 @@ pipeworks.register_wielder({
         "nodebreaker_side.png",
         "nodebreaker_side.png",
         "nodebreaker_side.png",
-        "nodebreaker_side.png",
+        "nodebreaker_back.png",
         "nodebreaker_front.png"
     },
     connect_sides = { top = 1, bottom = 1, left = 1, right = 1, back = 1 },
