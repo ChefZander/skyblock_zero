@@ -41,7 +41,10 @@ local slots_per_1_power = 8
 
 sbz_api.register_machine("sbz_power:infinite_storinator", {
     description = "Infinite Storinator",
-    info_extra = "If you loose power you will need to re-power it to get your items back",
+    info_extra = {
+        "If you loose power you will need to re-power it to get your items back",
+        "For one power you can get " .. slots_per_1_power .. " slots"
+    },
     tiles = {
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
@@ -136,7 +139,6 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
 
     control_action_raw = true,
     disallow_pipeworks = false,
-    info_extra = "For one power you can get " .. slots_per_1_power .. " slots"
 })
 
 minetest.register_craft({
