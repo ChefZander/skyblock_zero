@@ -17,20 +17,18 @@ function sbz_api.assemble_habitat(start_pos, seen)
                 table.insert(plants, {pos, node})
             elseif minetest.get_item_group(node.name, "co2_source") > 0 then
                 table.insert(co2_sources, {pos, node})
-            elseif node.name == "air" or pos == start_pos then
+            elseif node.name == "air" or minetest.get_item_group(node.name, "habitat_conducts") > 0 or pos == start_pos then
                 for i = 0, 5 do
                     table.insert(checking, pos+minetest.wallmounted_to_dir(i))
                 end
-            else
-                size = size-1
+                size = size+1
             end
             seen[hash(pos)] = true
-            size = size+1
         end
     end
 
     if #checking > 0 then return end
-    return {plants=plants, co2_sources=co2_sources, size=size}
+    return {plants=plants, co2_sources=co2_sources, size=size-1}
 end
 
 function sbz_api.habitat_tick(start_pos, meta)
@@ -57,7 +55,7 @@ function sbz_api.habitat_tick(start_pos, meta)
     meta:set_string("infotext", table.concat({
         "CO2 supply: ", co2,
         "\nCO2 demand: ", #habitat.plants,
-        "\nHabitat size: ", habitat.size
+        "\nHabitat size: ", habitat.size+#habitat.plants
     }))
 end
 
