@@ -22,6 +22,15 @@ minetest.register_craftitem("sbz_chem:empty_fluid_cell", {
     end
 })
 
+minetest.register_craft({
+    output = "sbz_chem:empty_fluid_cell",
+    recipe = {
+        {"", "sbz_resources:pebble", ""},
+        {"sbz_resources:pebble", "", "sbz_resources:pebble"},
+        {"", "sbz_resources:pebble", ""}
+    }
+})
+
 -- Water (H₂O)
 minetest.register_craftitem("sbz_chem:water_fluid_cell", {
     description = "Water Fluid Cell (H₂O)",
