@@ -1,6 +1,6 @@
 local sprouts = {
+    "sbz_bio:pyrograss_1",
     "sbz_bio:stemfruit_plant_1"
-    --more to be added later
 }
 
 local up = vector.new(0, 1, 0)
@@ -46,6 +46,17 @@ function sbz_api.plant_wilt(stages)
     return function (pos, node)
         node.param2 = node.param2+1
         minetest.swap_node(pos, node.param2 >= stages and {name="air"} or node)
+    end
+end
+
+function sbz_api.plant_plant(plant)
+    return function (itemstack, user, pointed)
+        if minetest.get_item_group(minetest.get_node(pointed.above-up).name, "soil") <= 0 then return end
+        local _, pos = minetest.item_place_node(ItemStack(plant), user, pointed)
+        if pos then
+            itemstack:take_item()
+            return itemstack
+        end
     end
 end
 
@@ -114,17 +125,18 @@ function sbz_api.register_plant(name, desc, drop, rate)
     })
 end
 
+sbz_api.register_plant("pyrograss", "Pyrograss", "sbz_bio:pyrograss 2", 4)
+minetest.register_craftitem("sbz_bio:pyrograss", {
+    description = "Pyrograss",
+    inventory_image = "pyrograss_4.png",
+    groups = {burn=5},
+    on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1")
+})
+
 sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 3", 8)
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
     groups = {burn=3},
-    on_place = function (itemstack, user, pointed)
-        if minetest.get_item_group(minetest.get_node(pointed.above-up).name, "soil") <= 0 then return end
-        local _, pos = minetest.item_place_node(ItemStack("sbz_bio:stemfruit_plant_1"), user, pointed)
-        if pos then
-            itemstack:take_item()
-            return itemstack
-        end
-    end
+    on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1")
 })
