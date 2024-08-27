@@ -60,72 +60,60 @@ function sbz_api.plant_plant(plant)
     end
 end
 
-function sbz_api.register_plant(name, desc, drop, rate)
-    minetest.register_node("sbz_bio:"..name.."_1", {
-        description = desc,
+function sbz_api.register_plant(name, defs)
+    defs.description = defs.description or ""
+    defs.drop = defs.drop
+    defs.growth_rate = defs.growth_rate or 1
+    defs.width = defs.width or 0.5
+    defs.height_min = defs.height_min or 0.5
+    defs.height_max = defs.height_max or 0.5
+    defs.stages = defs.stages or 4
+
+    for i = 1, defs.stages-1 do
+        local interpolant = (i-1)/(defs.stages-1)
+        local height = defs.height_min*(1-interpolant)+defs.height_max*interpolant
+        minetest.register_node("sbz_bio:"..name.."_"..i, {
+            description = defs.description,
+            drawtype = "plantlike",
+            tiles = {name.."_"..i..".png"},
+            inventory_image = name.."_"..i..".png",
+            selection_box = {type="fixed", fixed={-defs.width, -0.5, -defs.width, defs.width, height, defs.width}},
+            paramtype = "light",
+            sunlight_propagates = true,
+            paramtype2 = "color",
+            palette = "wilting_palette.png",
+            walkable = false,
+            groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
+            drop = {},
+            growth_tick = sbz_api.plant_growth_tick(defs.growth_rate, "sbz_bio:"..name.."_"..(i+1)),
+            wilt = sbz_api.plant_wilt(2)
+        })
+    end
+    minetest.register_node("sbz_bio:"..name.."_"..defs.stages, {
+        description = defs.description,
         drawtype = "plantlike",
-        tiles = {name.."_1.png"},
-        inventory_image = name.."_1.png",
-        selection_box = {type="fixed", fixed={-0.125, -0.5, -0.125, 0.125, -0.25, 0.125}},
-        paramtype = "light",
-        sunlight_propagates = true,
-        paramtype2 = "color",
-        palette = "wilting_palette.png",
-        walkable = false,
-        groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = {},
-        growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_2"),
-        wilt = sbz_api.plant_wilt(2)
-    })
-    minetest.register_node("sbz_bio:"..name.."_2", {
-        description = desc,
-        drawtype = "plantlike",
-        tiles = {name.."_2.png"},
-        inventory_image = name.."_2.png",
-        selection_box = {type="fixed", fixed={-0.125, -0.5, -0.125, 0.125, 0, 0.125}},
-        paramtype = "light",
-        sunlight_propagates = true,
-        paramtype2 = "color",
-        palette = "wilting_palette.png",
-        walkable = false,
-        groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = {},
-        growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_3"),
-        wilt = sbz_api.plant_wilt(2)
-    })
-    minetest.register_node("sbz_bio:"..name.."_3", {
-        description = desc,
-        drawtype = "plantlike",
-        tiles = {name.."_3.png"},
-        inventory_image = name.."_3.png",
-        selection_box = {type="fixed", fixed={-0.125, -0.5, -0.125, 0.125, 0.25, 0.125}},
-        paramtype = "light",
-        sunlight_propagates = true,
-        paramtype2 = "color",
-        palette = "wilting_palette.png",
-        walkable = false,
-        groups = {dig_immediate=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = {},
-        growth_tick = sbz_api.plant_growth_tick(rate, "sbz_bio:"..name.."_4"),
-        wilt = sbz_api.plant_wilt(2)
-    })
-    minetest.register_node("sbz_bio:"..name.."_4", {
-        description = desc,
-        drawtype = "plantlike",
-        tiles = {name.."_4.png"},
-        inventory_image = name.."_4.png",
-        selection_box = {type="fixed", fixed={-0.125, -0.5, -0.125, 0.125, 0.5, 0.125}},
+        tiles = {name.."_"..defs.stages..".png"},
+        inventory_image = name.."_"..defs.stages..".png",
+        selection_box = {type="fixed", fixed={-defs.width, -0.5, -defs.width, defs.width, defs.height_max, defs.width}},
         paramtype = "light",
         sunlight_propagates = true,
         paramtype2 = "color",
         palette = "wilting_palette.png",
         walkable = false,
         groups = {matter=3, cracky=3, attached_node=1, plant=1, not_in_creative_inventory=1},
-        drop = drop
+        drop = defs.drop
     })
 end
 
-sbz_api.register_plant("pyrograss", "Pyrograss", "sbz_bio:pyrograss 2", 4)
+sbz_api.register_plant("pyrograss", {
+    description = "Pyrograss",
+    drop = "sbz_bio:pyrograss",
+    growth_rate = 4,
+    width = 0.25,
+    height_min = -0.375,
+    height_max = 0
+})
+
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
@@ -133,7 +121,15 @@ minetest.register_craftitem("sbz_bio:pyrograss", {
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1")
 })
 
-sbz_api.register_plant("stemfruit_plant", "Stemfruit Plant", "sbz_bio:stemfruit 3", 8)
+sbz_api.register_plant("stemfruit_plant", {
+    description = "Stemfruit Plant",
+    drop = "sbz_bio:stemfruit",
+    growth_rate = 8,
+    width = 0.125,
+    height_min = -0.25,
+    height_max = 0.5
+})
+
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
