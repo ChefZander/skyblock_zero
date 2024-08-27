@@ -363,8 +363,8 @@ local function update_meta(meta)
         "listring[current_player;main]" ..
         "listring[context;dst]" ..
         "listring[current_player;main]" ..
-        string.format("field[0.22,7;4,0.5;maxpow;Max power consumbtion;%s]",
-            meta:get_int("maxpow") or "Unset (so unlimited)")
+        string.format("field[0.22,7;4,0.5;maxpow;Max power consumption;%s]",
+            meta:get_int("maxpow"))
     meta:set_string("formspec", fs)
 
     -- toggling the button doesn't quite call for running a recipe change check

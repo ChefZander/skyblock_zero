@@ -28,16 +28,23 @@ local function set_filter_formspec(meta)
 end
 
 
+local animation_def = {
+    type = "vertical_frames",
+    aspect_w = 16,
+    aspect_h = 16,
+    length = 1,
+}
+
 minetest.register_node("pipeworks:automatic_filter_injector", {
     description = "Automatic Filter-Injector",
     info_extra = "Pushes items out of blocks... and into tubes or other blocks",
     tiles = {
-        "filter_top.png",
-        "filter_top.png",
+        { name = "filter_side.png^[transformFX", animation = animation_def },
+        { name = "filter_side.png^[transformFX", animation = animation_def },
         "filter_output.png",
         "filter_input.png",
-        "filter_side.png",
-        "filter_top.png",
+        { name = "filter_side.png",              animation = animation_def },
+        { name = "filter_side.png^[transformFX", animation = animation_def },
     },
     paramtype2 = "facedir",
     groups = { cracky = 3, matter = 1, sbz_machine = 1, pipe_connects = 1, pipe_conducts = 0 }, -- you can optionally make it faster, not a bug, a FEATURE!

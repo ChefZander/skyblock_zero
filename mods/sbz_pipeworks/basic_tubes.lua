@@ -113,9 +113,9 @@ minetest.register_node("pipeworks:one_way_tube", {
 minetest.register_craft({
     output = "pipeworks:one_way_tube",
     recipe = {
-        { "", "sbz_chem:platinum_powder", "" },
-        { "", "pipeworks:tube_1",         "" },
-        { "", "sbz_chem:platinum_powder", "" }
+        { "", "sbz_resources:matter_dust", "" },
+        { "", "pipeworks:tube_1",          "" },
+        { "", "sbz_resources:matter_dust", "" }
     }
 })
 
