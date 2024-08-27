@@ -103,3 +103,12 @@ for k, v in ipairs({
         after_place_node = pipeworks.after_place,
     })
 end
+
+minetest.register_craft({
+    output = "sbz_resources:storinator",
+    recipe = {
+        { "sbz_power:simple_charged_field",  "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" },
+        { "sbz_resources:matter_plate",      "sbz_resources:simple_circuit", "sbz_resources:matter_plate" },
+        { "sbz_resources:retaining_circuit", "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" }
+    }
+})
