@@ -64,6 +64,7 @@ function sbz_api.register_plant(name, defs)
     defs.description = defs.description or ""
     defs.drop = defs.drop
     defs.growth_rate = defs.growth_rate or 1
+    defs.demand = defs.demand or 0
     defs.width = defs.width or 0.5
     defs.height_min = defs.height_min or 0.5
     defs.height_max = defs.height_max or 0.5
@@ -83,7 +84,7 @@ function sbz_api.register_plant(name, defs)
             paramtype2 = "color",
             palette = "wilting_palette.png",
             walkable = false,
-            groups = {dig_immediate=3, attached_node=1, plant=1, habitat_conducts=1, not_in_creative_inventory=1},
+            groups = {dig_immediate=2, attached_node=1, plant=1, needs_co2=defs.demand, habitat_conducts=1, not_in_creative_inventory=1},
             drop = {},
             growth_tick = sbz_api.plant_growth_tick(defs.growth_rate, "sbz_bio:"..name.."_"..(i+1)),
             wilt = sbz_api.plant_wilt(2)
@@ -125,6 +126,7 @@ sbz_api.register_plant("stemfruit_plant", {
     description = "Stemfruit Plant",
     drop = "sbz_bio:stemfruit",
     growth_rate = 8,
+    demand = 1,
     width = 0.125,
     height_min = -0.25,
     height_max = 0.5

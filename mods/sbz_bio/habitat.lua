@@ -5,6 +5,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     local checking = {start_pos}
     seen = seen or {}
     local size = 0
+    local demand = 0
     local plants = {}
     local co2_sources = {}
     sbz_api.vm_begin()
@@ -14,7 +15,9 @@ function sbz_api.assemble_habitat(start_pos, seen)
         if not seen[hash(pos)] then
             local node = sbz_api.vm_get_node(pos) or {name="ignore"}
             if minetest.get_item_group(node.name, "plant") > 0 then
-                table.insert(plants, {pos, node})
+                local d = minetest.get_item_group(node.name, "needs_co2")
+                table.insert(plants, {pos, node, d})
+                demand = demand+d
             elseif minetest.get_item_group(node.name, "co2_source") > 0 then
                 table.insert(co2_sources, {pos, node})
             end
@@ -29,7 +32,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     end
 
     if #checking > 0 then return end
-    return {plants=plants, co2_sources=co2_sources, size=size-1}
+    return {plants=plants, co2_sources=co2_sources, size=size-1, demand=demand}
 end
 
 function sbz_api.habitat_tick(start_pos, meta)
@@ -49,17 +52,23 @@ function sbz_api.habitat_tick(start_pos, meta)
     local co2_supply = co2
     
     co2 = co2+meta:get_int("atmospheric_co2")
-    for i = 1, math.min(co2, #habitat.plants) do
-        local pos, node = unpack(habitat.plants[i])
-        local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
-        if growth_tick(pos, node) then touched_nodes[hash(pos)] = time end
+    for _, v in ipairs(habitat.plants) do
+        local pos, node, d = unpack(v)
+        if co2-d >= 0 then
+            co2 = co2-d
+            local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
+            if growth_tick(pos, node) then touched_nodes[hash(pos)] = time end
+        else
+            co2 = 0
+            break
+        end
     end
-    co2 = math.min(math.max(co2-#habitat.plants, 0), habitat.size)
+    co2 = math.min(co2, habitat.size)
     meta:set_int("atmospheric_co2", co2)
 
     meta:set_string("infotext", table.concat({
         "CO2 supply: ", co2_supply,
-        "\nCO2 demand: ", #habitat.plants,
+        "\nCO2 demand: ", habitat.demand,
         "\nAtmospheric CO2: ", co2,
         "\nHabitat size: ", habitat.size
     }))
