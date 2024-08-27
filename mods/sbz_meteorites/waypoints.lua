@@ -5,8 +5,8 @@ local storage = minetest.get_mod_storage()
 --Set waypoint for all players at given position, returns id
 function sbz_api.set_waypoint(pos, defs)
     local data = minetest.deserialize(storage:get_string("waypoints")) or {}
-    local next = storage:get_int("next_waypoint")+1
-    data[next] = {pos, defs}
+    local next = storage:get_int("next_waypoint") + 1
+    data[next] = { pos, defs }
     storage:set_string("waypoints", minetest.serialize(data))
     storage:set_int("next_waypoint", next)
     return next
@@ -16,7 +16,7 @@ end
 function sbz_api.move_waypoint(id, pos)
     local data = minetest.deserialize(storage:get_string("waypoints")) or {}
     if not data[id] then return false end
-    data[id] = {pos, data[id][2]}
+    data[id] = { pos, data[id][2] }
     storage:set_string("waypoints", minetest.serialize(data))
     return true
 end
@@ -52,8 +52,8 @@ function sbz_api.update(player)
         if vector.distance(player_pos, pos) >= defs.dist then
             table.insert(player_huds[name], player:hud_add({
                 name = defs.name,
-                hud_elem_type = "waypoint",
-                offset = {x=0, y=-60},
+                type = "waypoint",
+                offset = { x = 0, y = -60 },
                 z_index = -300,
                 precision = 1,
                 text = "m",
@@ -62,7 +62,7 @@ function sbz_api.update(player)
             }))
             table.insert(player_huds[name], player:hud_add({
                 hud_elem_type = "image_waypoint",
-                scale = {x=6, y=6},
+                scale = { x = 6, y = 6 },
                 z_index = -300,
                 text = defs.image,
                 world_pos = pos
