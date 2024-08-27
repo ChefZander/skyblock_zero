@@ -241,11 +241,11 @@ pipeworks.register_wielder({
         "deployer_side.png",
         "deployer_side.png",
         "deployer_side.png",
-        "deployer_side.png",
+        "deployer_back.png",
         "deployer_front.png"
     },
     wield_inv = { name = "main", width = 3, height = 3 },
-    connect_sides = { top = 1, bottom = 1, left = 1, right = 1, back = 1 },
+    connect_sides = { back = 1 },
     action = function(fakeplayer, pointed)
         local stack = fakeplayer:get_wielded_item()
         local def = minetest.registered_items[stack:get_name()]
