@@ -137,12 +137,12 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         pos = pos
     })
 
-    itemstack = puncher:get_wielded_item()
-    local tool_name = itemstack:get_name()
+    local tool_stack = puncher:get_wielded_item()
+    local tool_name = tool_stack:get_name()
 
     local multi = minetest.get_item_group(tool_name, "core_drop_multi")
     local n = 1
-    if multi then n = multi end
+    if multi and multi ~= 0 then n = multi end
     for i = 1, n do
         local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
         local item = items[math.random(#items)]
