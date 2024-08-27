@@ -137,31 +137,37 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         pos = pos
     })
 
-    local tool_stack = puncher:get_wielded_item()
-    local tool_name = tool_stack:get_name()
+    itemstack = puncher:get_wielded_item()
+    local tool_name = itemstack:get_name()
+
+
 
     local multi = minetest.get_item_group(tool_name, "core_drop_multi")
     local n = 1
+
+    if not puncher then return end
+    if not puncher:is_player() then return end
+
     if multi and multi ~= 0 then n = multi end
-    for i = 1, n do
+    for _ = 1, n do
         local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
         local item = items[math.random(#items)]
+        unlock_achievement(puncher:get_player_name(), "Introduction")
 
-        if puncher and puncher:is_player() then
-            unlock_achievement(puncher:get_player_name(), "Introduction")
+        if itemstack and itemstack:get_name() == item and itemstack:get_count() < 256 then -- case: wield item
+            itemstack:set_count(itemstack:get_count() + 1)
+            return itemstack
+        end
 
-            if itemstack and itemstack:get_name() == item and itemstack:get_count() < 256 then
-                itemstack:set_count(itemstack:get_count() + 1)
-                return itemstack
-            end
+        local inv = puncher:get_inventory()
 
-            local inv = puncher:get_inventory()
-            if inv then
+        if inv then
+            minetest.after(0, function() -- engine bug makes things weird... if you remove this, troubles may arise
                 local leftover = inv:add_item("main", item)
                 if not leftover:is_empty() then
                     minetest.add_item(pos, leftover)
                 end
-            end
+            end)
         end
     end
 end
