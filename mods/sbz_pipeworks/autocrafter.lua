@@ -387,8 +387,8 @@ end
 minetest.register_node("pipeworks:autocrafter", {
     description = S("Automatic Autocrafter"),
     drawtype = "normal",
-    tiles = { "pipeworks_autocrafter.png" },
-    groups = { snappy = 3, tubedevice = 1, tubedevice_receiver = 1, dig_generic = 1, axey = 1, handy = 1, pickaxey = 1, pipe_connects = 1, pipe_conducts = 1, sbz_machine = 1 },
+    tiles = { "autocrafter.png" },
+    groups = { matter = 2, snappy = 3, tubedevice = 1, tubedevice_receiver = 1, dig_generic = 1, axey = 1, handy = 1, pickaxey = 1, pipe_connects = 1, pipe_conducts = 1, sbz_machine = 1 },
     is_ground_content = false,
     tube = {
         insert_object = function(pos, node, stack, direction)
@@ -580,8 +580,8 @@ minetest.register_node("pipeworks:autocrafter", {
 minetest.register_craft({
     output = "pipeworks:autocrafter",
     recipe = {
-        { "sbz_chem:titanium_alloy_powder", "sbz_resources:robotic_arm",       "sbz_chem:titanium_alloy_powder" },
-        { "sbz_chem:titanium_alloy_powder", "sbz_resources:emittrium_circuit", "sbz_chem:titanium_alloy_powder" },
-        { "sbz_chem:titanium_alloy_powder", "sbz_resources:robotic_arm",       "sbz_chem:titanium_alloy_powder" }
+        { "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm" },
+        { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit" },
+        { "sbz_chem:titanium_alloy_powder",  "sbz_meteorites:neutronium",       "sbz_chem:titanium_alloy_powder" }
     }
 })

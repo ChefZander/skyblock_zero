@@ -3,6 +3,7 @@ minetest.register_tool("sbz_resources:matter_annihilator", {
     description = "Matter Annihilator",
     inventory_image = "matter_annihilator.png", -- Replace with your own image file
 
+    groups = { core_drop_multi = 1 },
     -- Tool properties
     tool_capabilities = {
         full_punch_interval = 2.5,
@@ -31,6 +32,7 @@ minetest.register_craft({
 minetest.register_tool("sbz_resources:robotic_arm", {
     description = "Robotic Arm",
     inventory_image = "robotic_arm.png",
+    groups = { core_drop_multi = 2 },
     -- Tool properties
     tool_capabilities = {
         full_punch_interval = 0.5,
