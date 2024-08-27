@@ -34,6 +34,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
         end
 
         vm:set_data(data)
+        vm:calc_lighting()
         vm:write_to_map()
     end
 end)
