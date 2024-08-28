@@ -1,34 +1,42 @@
 local modpath = minetest.get_modpath("sbz_power")
 
 local function add_tube_support(def)
+    --[[
     def.input_inv = def.input_inv or "input"
     def.output_inv = def.output_inv or "output"
-
-    if def.input_inv and def.output_inv and not def.disallow_pipeworks then
+    --]]
+    if (def.input_inv or def.output_inv) and not def.disallow_pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
-        def.tube = def.tube or {
-            insert_object = function(pos, node, stack, direction)
-                local meta = minetest.get_meta(pos)
-                local inv = meta:get_inventory()
-                if inv:get_list(def.input_inv) then
-                    return inv:add_item(def.input_inv, stack)
-                end
-                return stack
-            end,
-            can_insert = function(pos, node, stack, direction)
-                local meta = minetest.get_meta(pos)
-                local inv = meta:get_inventory()
+        if def.input_inv and def.output_inv then
+            def.tube = def.tube or {
+                insert_object = function(pos, node, stack, direction)
+                    local meta = minetest.get_meta(pos)
+                    local inv = meta:get_inventory()
+                    if inv:get_list(def.input_inv) then
+                        return inv:add_item(def.input_inv, stack)
+                    end
+                    return stack
+                end,
+                can_insert = function(pos, node, stack, direction)
+                    local meta = minetest.get_meta(pos)
+                    local inv = meta:get_inventory()
 
-                if inv:get_list(def.input_inv) then
-                    stack:peek_item(1)
-                    return inv:room_for_item(def.input_inv, stack)
-                end
-                return false
-            end,
-            input_inventory = def.output_inv,
-            connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
-        }
+                    if inv:get_list(def.input_inv) then
+                        stack:peek_item(1)
+                        return inv:room_for_item(def.input_inv, stack)
+                    end
+                    return false
+                end,
+                input_inventory = def.output_inv,
+                connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
+            }
+        elseif def.output_inv then
+            def.tube = def.tube or {
+                input_inventory = def.output_inv,
+                connect_sides = {},
+            }
+        end
         def.after_place_node = def.after_place_node or pipeworks.after_place
         def.after_dig_node = def.after_dig_node or pipeworks.after_dig
     end

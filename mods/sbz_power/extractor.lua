@@ -65,7 +65,6 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     end,
     action_interval = 5,
     power_needed = 3,
-    input_inv = "main",
     output_inv = "main",
 })
 
@@ -154,7 +153,6 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     end,
     power_needed = 5,
     action_interval = 5,
-    input_inv = "main",
     output_inv = "main",
 })
 
