@@ -61,7 +61,7 @@ function sbz_api.update(player)
                 world_pos = pos
             }))
             table.insert(player_huds[name], player:hud_add({
-                hud_elem_type = "image_waypoint",
+                type = "image_waypoint",
                 scale = { x = 6, y = 6 },
                 z_index = -300,
                 text = defs.image,
