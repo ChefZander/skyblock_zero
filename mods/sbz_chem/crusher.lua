@@ -30,7 +30,8 @@ item_image[0.9,1.9;1,1;sbz_resources:pebble]
 list[context;output;3.5,0.5;4,4;]
 list[context;input;1,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
-listring[]
+listring[current_player;main]listring[context;input]listring[current_player;main]listring[context;output]listring[current_player;main]
+
 ]]
         )
 
