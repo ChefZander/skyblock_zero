@@ -32,8 +32,8 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";input;3,1;2,1;]" ..
             "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";output;3.5,3;1,1;]" ..
+            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";input;3,1;2,1;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
 
@@ -73,7 +73,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
             return power_needed
         else
             meta:set_string("infotext", "Smelting...")
-            minetest.sound_play({name="simple_alloy_furnace_running", gain=0.6}, {pos=pos})
+            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
 
             if inv:room_for_item("output", selected_item) then
                 inv:add_item("output", selected_item)

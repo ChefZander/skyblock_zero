@@ -74,6 +74,7 @@ end
 
 function pipeworks.register_wielder(def)
     local groups = {
+        matter = 2,
         snappy = 2,
         choppy = 2,
         oddly_breakable_by_hand = 2,
