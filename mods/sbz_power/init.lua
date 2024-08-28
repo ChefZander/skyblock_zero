@@ -26,7 +26,7 @@ local function add_tube_support(def)
                 end
                 return false
             end,
-            input_inventory = def.input_inv,
+            input_inventory = def.output_inv,
             connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
         }
         def.after_place_node = def.after_place_node or pipeworks.after_place

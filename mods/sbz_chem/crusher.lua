@@ -27,8 +27,8 @@ formspec_version[7]
 size[8.2,9]
 style_type[list;spacing=.2;size=.8]
 item_image[0.9,1.9;1,1;sbz_resources:pebble]
-list[context;input;1,2;1,1;]
 list[context;output;3.5,0.5;4,4;]
+list[context;input;1,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
 listring[]
 ]]
@@ -60,7 +60,7 @@ listring[]
 
             inv:remove_item("input", "sbz_resources:pebble")
 
-            minetest.sound_play({name="050597_ice-crusher-38522", gain=0.4}, {pos=pos})
+            minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.4 }, { pos = pos })
 
             local output_items = {
                 "sbz_chem:gold_powder",
