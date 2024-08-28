@@ -64,7 +64,7 @@ function sbz_api.register_plant(name, defs)
     defs.description = defs.description or ""
     defs.drop = defs.drop
     defs.growth_rate = defs.growth_rate or 1
-    defs.demand = defs.demand or 0
+    defs.co2_demand = defs.co2_demand or 0
     defs.width = defs.width or 0.5
     defs.height_min = defs.height_min or 0.5
     defs.height_max = defs.height_max or 0.5
@@ -84,7 +84,7 @@ function sbz_api.register_plant(name, defs)
             paramtype2 = "color",
             palette = "wilting_palette.png",
             walkable = false,
-            groups = {dig_immediate=2, attached_node=1, plant=1, needs_co2=defs.demand, habitat_conducts=1, transparent=1, not_in_creative_inventory=1},
+            groups = {dig_immediate=2, attached_node=1, plant=1, needs_co2=defs.co2_demand, habitat_conducts=1, transparent=1, not_in_creative_inventory=1},
             drop = {},
             growth_tick = sbz_api.plant_growth_tick(defs.growth_rate, "sbz_bio:"..name.."_"..(i+1)),
             wilt = sbz_api.plant_wilt(2)
@@ -106,9 +106,11 @@ function sbz_api.register_plant(name, defs)
     })
 end
 
+--Pyrograss, hardy and quick to grow, highly flammable due to its carbon content
+--To be used in rockets and explosives and stuff
 sbz_api.register_plant("pyrograss", {
-    description = "Pyrograss",
-    drop = "sbz_bio:pyrograss",
+    description = "Pyrograss Plant",
+    drop = "sbz_bio:pyrograss 2",
     growth_rate = 4,
     width = 0.25,
     height_min = -0.375,
@@ -122,11 +124,13 @@ minetest.register_craftitem("sbz_bio:pyrograss", {
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1")
 })
 
+--Stemfruit, generic plant, quite versatile
+--To be used to craft other plants
 sbz_api.register_plant("stemfruit_plant", {
     description = "Stemfruit Plant",
-    drop = "sbz_bio:stemfruit",
+    drop = "sbz_bio:stemfruit 3",
     growth_rate = 8,
-    demand = 1,
+    co2_demand = 1,
     width = 0.125,
     height_min = -0.25,
     height_max = 0.5
@@ -137,4 +141,39 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
     inventory_image = "stemfruit.png",
     groups = {burn=3},
     on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1")
+})
+
+--Warpshroom, grows slowly, has teleportation powers
+--To be used later in teleporters
+sbz_api.register_plant("warpshroom", {
+    description = "Warpshroom Plant",
+    drop = "sbz_bio:warpshroom 2",
+    growth_rate = 16,
+    co2_demand = 1,
+    width = 0.25,
+    height_min = -0.3125,
+    height_max = 0.25
+})
+
+local function teleport_randomly(user)
+    local user_pos = vector.round(user:get_pos())
+    for _ = 1, 1000 do
+        local pos = user_pos+vector.new(math.random(-16, 16), math.random(-16, 16), math.random(-16, 16))
+        if not minetest.registered_nodes[minetest.get_node(pos).name].walkable
+        and not minetest.registered_nodes[minetest.get_node(pos+up).name].walkable
+        and minetest.registered_nodes[minetest.get_node(pos-up).name].walkable then
+            user:set_pos(pos-up*0.5)
+        end
+    end
+end
+
+minetest.register_craftitem("sbz_bio:warpshroom", {
+    description = "Warpshroom",
+    inventory_image = "warpshroom_4.png",
+    on_place = sbz_api.plant_plant("sbz_bio:warpshroom_1"),
+    on_use = function (itemstack, user)
+        teleport_randomly(user)
+        itemstack:take_item()
+        return itemstack
+    end
 })
