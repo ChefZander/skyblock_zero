@@ -6,7 +6,7 @@ minetest.register_craftitem("sbz_resources:simple_circuit", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:simple_circuit 2",
-    recipe = {"sbz_resources:core_dust", "sbz_resources:matter_blob"}
+    recipe = { "sbz_resources:core_dust", "sbz_resources:matter_blob" }
 })
 
 minetest.register_craftitem("sbz_resources:retaining_circuit", {
@@ -17,7 +17,7 @@ minetest.register_craftitem("sbz_resources:retaining_circuit", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:retaining_circuit",
-    recipe = {"sbz_resources:charged_particle", "sbz_resources:antimatter_dust", "sbz_resources:simple_circuit"}
+    recipe = { "sbz_resources:charged_particle", "sbz_resources:antimatter_dust", "sbz_resources:simple_circuit" }
 })
 
 minetest.register_craftitem("sbz_resources:emittrium_circuit", {
@@ -28,7 +28,7 @@ minetest.register_craftitem("sbz_resources:emittrium_circuit", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:emittrium_circuit",
-    recipe = {"sbz_resources:charged_particle", "sbz_resources:retaining_circuit", "sbz_resources:raw_emittrium", "sbz_resources:matter_plate"}
+    recipe = { "sbz_resources:charged_particle", "sbz_resources:retaining_circuit", "sbz_resources:raw_emittrium", "sbz_resources:matter_plate" }
 })
 
 minetest.register_craftitem("sbz_resources:matter_plate", {
@@ -39,7 +39,7 @@ minetest.register_craftitem("sbz_resources:matter_plate", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:matter_plate 4",
-    recipe = {"sbz_resources:matter_blob"}
+    recipe = { "sbz_resources:matter_blob" }
 })
 
 minetest.register_craftitem("sbz_resources:conversion_chamber", {
@@ -50,7 +50,7 @@ minetest.register_craftitem("sbz_resources:conversion_chamber", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:conversion_chamber",
-    recipe = {"sbz_resources:matter_blob", "sbz_resources:retaining_circuit", "sbz_resources:matter_annihilator"}
+    recipe = { "sbz_resources:matter_blob", "sbz_resources:retaining_circuit", "sbz_resources:matter_annihilator" }
 })
 
 minetest.register_craftitem("sbz_resources:pebble", {
@@ -61,7 +61,7 @@ minetest.register_craftitem("sbz_resources:pebble", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:pebble",
-    recipe = {"sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob"}
+    recipe = { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
 })
 
 -- Angel's Wing
@@ -69,7 +69,7 @@ minetest.register_tool("sbz_resources:angels_wing", {
     description = "Angel's Wing",
     inventory_image = "angels_wing.png",
     stack_max = 1,
-    tool_capabilities = {},  -- No specific tool capabilities, as it's not meant for digging
+    tool_capabilities = {}, -- No specific tool capabilities, as it's not meant for digging
 
     on_use = function(itemstack, user, pointed_thing)
         -- Check if user is valid
@@ -81,18 +81,19 @@ minetest.register_tool("sbz_resources:angels_wing", {
         local player_velocity = user:get_velocity()
 
         -- Apply a small upward velocity
-        local new_velocity = {x = player_velocity.x, y = 10, z = player_velocity.z}
+        local new_velocity = { x = player_velocity.x, y = 10, z = player_velocity.z }
         user:add_velocity(new_velocity)
 
         -- Decrease item durability
         local wear = itemstack:get_wear()
-        wear = wear + (65535 / 100)  -- 65535 is the max wear value in Minetest. 100 uses means wear increases by 655.35 per use.
-        
+        wear = wear +
+            (65535 / 100) -- 65535 is the max wear value in Minetest. 100 uses means wear increases by 655.35 per use.
+
         if wear >= 65535 then
-            itemstack:clear()  -- Remove the item if it's worn out
+            itemstack:clear() -- Remove the item if it's worn out
             unlock_achievement(user:get_player_name(), "Fragile")
         else
-            itemstack:set_wear(wear)  -- Update the wear value
+            itemstack:set_wear(wear) -- Update the wear value
         end
 
         return itemstack
@@ -101,8 +102,8 @@ minetest.register_tool("sbz_resources:angels_wing", {
 minetest.register_craft({
     output = "sbz_resources:angels_wing",
     recipe = {
-        {"sbz_resources:stone", "sbz_resources:stone", "sbz_resources:stone"},
-        {"sbz_resources:stone", "sbz_resources:emittrium_circuit", "sbz_resources:stone"},
-        {"sbz_resources:stone", "sbz_resources:stone", "sbz_resources:stone"}
+        { "sbz_resources:stone", "sbz_resources:stone",             "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_resources:emittrium_circuit", "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_resources:stone",             "sbz_resources:stone" }
     }
 })

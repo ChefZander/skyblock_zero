@@ -1,6 +1,6 @@
 -- Simple Extractor Node
 sbz_api.register_machine("sbz_power:simple_matter_extractor", {
-    description = "Simple Matter Extractor\n\nConsumes: 3 power.\nMatter per Second: 0.2",
+    description = "Simple Matter Extractor",
     tiles = { "simple_matter_extractor.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
@@ -19,6 +19,7 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_construct = function(pos)
@@ -30,6 +31,7 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     action = function(pos, node, meta, supply, demand)
@@ -63,6 +65,7 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     end,
     action_interval = 5,
     power_needed = 3,
+    output_inv = "main",
 })
 
 minetest.register_craft({
@@ -77,7 +80,7 @@ minetest.register_craft({
 -- Advanced Extractor Node
 sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     description =
-    "Advanced Matter Extractor\n\nConsumes: 5 power.\nMatter per Second: 0.6\nHas a 1/25 Chance to Extract 1x 'Core Dust'.",
+    "Advanced Matter Extractor",
     tiles = { "advanced_matter_extractor.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
@@ -96,6 +99,7 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_construct = function(pos)
@@ -106,6 +110,7 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     action = function(pos, node, meta)
@@ -148,6 +153,7 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     end,
     power_needed = 5,
     action_interval = 5,
+    output_inv = "main",
 })
 
 
@@ -156,8 +162,8 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
 minetest.register_craft({
     output = "sbz_power:advanced_matter_extractor",
     recipe = {
-        { "sbz_resources:matter_annihilator", "sbz_resources:matter_blob",             "sbz_resources:matter_annihilator" },
+        { "sbz_resources:matter_annihilator", "sbz_resources:matter_blob",         "sbz_resources:matter_annihilator" },
         { "sbz_resources:matter_blob",        "sbz_power:simple_matter_extractor", "sbz_resources:matter_blob" },
-        { "sbz_resources:matter_annihilator", "sbz_resources:matter_blob",             "sbz_resources:matter_annihilator" }
+        { "sbz_resources:matter_annihilator", "sbz_resources:matter_blob",         "sbz_resources:matter_annihilator" }
     }
 })

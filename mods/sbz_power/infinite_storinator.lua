@@ -41,13 +41,17 @@ local slots_per_1_power = 8
 
 sbz_api.register_machine("sbz_power:infinite_storinator", {
     description = "Infinite Storinator",
+    info_extra = {
+        "If you loose power you will need to re-power it to get your items back",
+        "For one power you can get " .. slots_per_1_power .. " slots"
+    },
     tiles = {
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
         "infinite_storinator_side.png",
-        {name="infinite_storinator_front.png", animation={type="vertical_frames", length=2}}
+        { name = "infinite_storinator_front.png", animation = { type = "vertical_frames", length = 2 } }
     },
     paramtype2 = "facedir",
     on_construct = function(pos)
@@ -73,7 +77,6 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         local power_consumed = slots / slots_per_1_power
 
         meta:set_int("visible_slots", slots)
-
         meta:set_string("infotext", string.format("Infinite storinator, slots: %s, consuming: %s", slots, power_consumed))
 
         local max_width = 8
@@ -117,6 +120,7 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         end
         return 0
     end,
+
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         local meta = M(pos)
         if index <= meta:get_int("visible_slots") or listname == "main" then
@@ -129,15 +133,19 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         if index <= meta:get_int("visible_slots") or listname == "main" then return stack:get_count() end
         return 0
     end,
+    output_inv = "inv",
+    input_inv = "inv",
+
 
     control_action_raw = true,
+    disallow_pipeworks = false,
 })
 
 minetest.register_craft({
     output = "sbz_power:infinite_storinator",
     recipe = {
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_meteorites:neutronium", "sbz_resources:storinator" },
-        { "sbz_resources:storinator",     "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" },
+        { "sbz_resources:storinator", "sbz_meteorites:neutronium",       "sbz_resources:storinator" },
+        { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
     }
 })
