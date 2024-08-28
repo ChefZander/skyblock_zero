@@ -34,6 +34,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
         end
 
         vm:set_data(data)
+        vm:calc_lighting()
         vm:write_to_map()
     end
 end)
@@ -93,9 +94,10 @@ local function playRandomBGM(player_name)
         to_player = player_name,
         gain = 1.0,
     })
-    minetest.after(sound_length + 301, function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred
-        playRandomBGM(player_name)
-    end)
+    minetest.after(sound_length + 301,
+        function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred
+            playRandomBGM(player_name)
+        end)
 end
 
 
@@ -271,3 +273,5 @@ end
 minetest.register_alias("mapgen_stone", "air")
 minetest.register_alias("mapgen_water_source", "air")
 minetest.register_alias("mapgen_river_water_source", "air")
+
+dofile(minetest.get_modpath("sbz_base") .. "/override_descriptions.lua")

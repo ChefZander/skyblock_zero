@@ -15,7 +15,7 @@ minetest.register_craft({
     output = "sbz_power:battery",
     recipe = {
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob",       "sbz_resources:matter_blob" },
-        { "sbz_power:power_pipe",  "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
+        { "sbz_power:power_pipe",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob",       "sbz_resources:matter_blob" }
     }
 })
@@ -34,9 +34,9 @@ minetest.register_node("sbz_power:advanced_battery", {
 minetest.register_craft({
     output = "sbz_power:advanced_battery",
     recipe = {
-        { "sbz_resources:matter_blob", "sbz_power:battery",           "sbz_resources:matter_blob" },
-        { "sbz_power:battery",     "sbz_resources:emittrium_circuit", "sbz_power:battery" },
-        { "sbz_resources:matter_blob", "sbz_power:battery",           "sbz_resources:matter_blob" }
+        { "sbz_resources:matter_blob", "sbz_power:battery",               "sbz_resources:matter_blob" },
+        { "sbz_power:battery",         "sbz_resources:emittrium_circuit", "sbz_power:battery" },
+        { "sbz_resources:matter_blob", "sbz_power:battery",               "sbz_resources:matter_blob" }
     }
 })
 
@@ -49,5 +49,6 @@ minetest.register_node("sbz_power:creative_battery", {
         local current_power = meta:get_int("power")
         meta:set_int("power", 10000000)
         meta:set_string("infotext", string.format("Creative Battery: Infinite power"))
-    end
+    end,
+    info_extra = "Generates power too....",
 })

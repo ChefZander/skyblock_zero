@@ -1,10 +1,10 @@
-sbz_api.register_machine("sbz_chem:crusher",{
+sbz_api.register_machine("sbz_chem:crusher", {
     description = "Crusher",
     tiles = {
-        {name="crusher_top.png", animation={type="vertical_frames", length = 0.5}},
+        { name = "crusher_top.png", animation = { type = "vertical_frames", length = 0.5 } },
         "crusher_side.png"
     },
-    groups = {matter =1},
+    groups = { matter = 1 },
 
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
@@ -16,47 +16,56 @@ sbz_api.register_machine("sbz_chem:crusher",{
         minetest.sound_play("machine_build", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos,
         })
     end,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_resources:crusher_formspec",
-            "formspec_version[7]" ..
-            "size[8.2,9]" ..
-            "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";input;1,2;1,1;]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";output;3.5,0.5;4,4;]" ..
-            "list[current_player;main;0.2,5;8,4;]" ..
-            "listring[]")
+        local meta = minetest.get_meta(pos)
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+item_image[0.9,1.9;1,1;sbz_resources:pebble]
+list[context;output;3.5,0.5;4,4;]
+list[context;input;1,2;1,1;]
+list[current_player;main;0.2,5;8,4;]
+listring[current_player;main]listring[context;input]listring[current_player;main]listring[context;output]listring[current_player;main]
+
+]]
+        )
 
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
+            pos = pos
         })
     end,
 
     control_action_raw = true,
+    info_power_consume = 5,
     action = function(pos, node, meta, supply, demand)
         local power_needed = 5
         local inv = meta:get_inventory()
 
-        if not inv:contains_item("input", "sbz_resources:pebble") then 
-            meta:set_string("infotext","Inactive")
-            return 0 
+        if not inv:contains_item("input", "sbz_resources:pebble") then
+            meta:set_string("infotext", "Inactive")
+            return 0
         end
 
-        if demand+power_needed > supply then
-            meta:set_string("infotext","Not enough power")
+        if demand + power_needed > supply then
+            meta:set_string("infotext", "Not enough power")
             return power_needed
         else
-            meta:set_string("infotext","Crushing...")
+            meta:set_string("infotext", "Crushing...")
 
             inv:remove_item("input", "sbz_resources:pebble")
-            minetest.sound_play({name="050597_ice-crusher-38522", gain=0.4}, {pos=pos})
+
+            minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.4 }, { pos = pos })
 
             local output_items = {
                 "sbz_chem:gold_powder",
-                "sbz_chem:silver_powder", 
+                "sbz_chem:silver_powder",
                 "sbz_chem:iron_powder",
                 "sbz_chem:copper_powder",
                 "sbz_chem:aluminum_powder",
@@ -86,16 +95,17 @@ sbz_api.register_machine("sbz_chem:crusher",{
 
             return power_needed
         end
-
     end,
+    input_inv = "input",
+    output_inv = "output"
 })
 
 
 minetest.register_craft({
     output = "sbz_chem:crusher",
     recipe = {
-        { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust",    "sbz_power:simple_charged_field" },
-        { "sbz_resources:matter_blob",          "sbz_resources:stone", "sbz_resources:matter_blob" },
-        { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",        "sbz_power:simple_charged_field" }
+        { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust", "sbz_power:simple_charged_field" },
+        { "sbz_resources:matter_blob",      "sbz_resources:stone",           "sbz_resources:matter_blob" },
+        { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",     "sbz_power:simple_charged_field" }
     }
 })
