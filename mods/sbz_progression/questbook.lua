@@ -217,7 +217,12 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     -- ======================================================================================
     { type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
-
+    {
+        type = "quest",
+        title = "Screwdriver",
+        text = "Screwdriver rotates blocks when you click on one with it.",
+        requires = { "Antimatter", "Introduction" }
+    },
     {
         type = "quest",
         title = "Matter Stairs",

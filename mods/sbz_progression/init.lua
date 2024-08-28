@@ -77,6 +77,7 @@ local achievment_table = {
     ["pipeworks:autocrafter"] = "Autocrafters",
     ["pipeworks:item_void"] = "Item Voids",
     ["pipeworks:item_vacuum"] = "Item Vacuums",
+    ["screwdriver:screwdriver"] = "Screwdriver"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

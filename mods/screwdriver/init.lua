@@ -34,20 +34,56 @@ screwdriver.rotate = {}
 
 local facedir_tbl = {
 	[screwdriver.ROTATE_FACE] = {
-		[0] = 1, [1] = 2, [2] = 3, [3] = 0,
-		[4] = 5, [5] = 6, [6] = 7, [7] = 4,
-		[8] = 9, [9] = 10, [10] = 11, [11] = 8,
-		[12] = 13, [13] = 14, [14] = 15, [15] = 12,
-		[16] = 17, [17] = 18, [18] = 19, [19] = 16,
-		[20] = 21, [21] = 22, [22] = 23, [23] = 20,
+		[0] = 1,
+		[1] = 2,
+		[2] = 3,
+		[3] = 0,
+		[4] = 5,
+		[5] = 6,
+		[6] = 7,
+		[7] = 4,
+		[8] = 9,
+		[9] = 10,
+		[10] = 11,
+		[11] = 8,
+		[12] = 13,
+		[13] = 14,
+		[14] = 15,
+		[15] = 12,
+		[16] = 17,
+		[17] = 18,
+		[18] = 19,
+		[19] = 16,
+		[20] = 21,
+		[21] = 22,
+		[22] = 23,
+		[23] = 20,
 	},
 	[screwdriver.ROTATE_AXIS] = {
-		[0] = 4, [1] = 4, [2] = 4, [3] = 4,
-		[4] = 8, [5] = 8, [6] = 8, [7] = 8,
-		[8] = 12, [9] = 12, [10] = 12, [11] = 12,
-		[12] = 16, [13] = 16, [14] = 16, [15] = 16,
-		[16] = 20, [17] = 20, [18] = 20, [19] = 20,
-		[20] = 0, [21] = 0, [22] = 0, [23] = 0,
+		[0] = 4,
+		[1] = 4,
+		[2] = 4,
+		[3] = 4,
+		[4] = 8,
+		[5] = 8,
+		[6] = 8,
+		[7] = 8,
+		[8] = 12,
+		[9] = 12,
+		[10] = 12,
+		[11] = 12,
+		[12] = 16,
+		[13] = 16,
+		[14] = 16,
+		[15] = 16,
+		[16] = 20,
+		[17] = 20,
+		[18] = 20,
+		[19] = 20,
+		[20] = 0,
+		[21] = 0,
+		[22] = 0,
+		[23] = 0,
 	},
 }
 
@@ -74,8 +110,8 @@ end
 screwdriver.rotate["color4dir"] = screwdriver.rotate["4dir"]
 
 local wallmounted_tbl = {
-	[screwdriver.ROTATE_FACE] = {[2] = 5, [3] = 4, [4] = 2, [5] = 3, [1] = 0, [0] = 1},
-	[screwdriver.ROTATE_AXIS] = {[2] = 5, [3] = 4, [4] = 2, [5] = 1, [1] = 0, [0] = 3}
+	[screwdriver.ROTATE_FACE] = { [2] = 5, [3] = 4, [4] = 2, [5] = 3, [1] = 0, [0] = 1 },
+	[screwdriver.ROTATE_AXIS] = { [2] = 5, [3] = 4, [4] = 2, [5] = 1, [1] = 0, [0] = 3 }
 }
 
 screwdriver.rotate.wallmounted = function(pos, node, mode)
@@ -138,8 +174,8 @@ screwdriver.handler = function(itemstack, user, pointed_thing, mode, uses)
 	if ndef.on_rotate then
 		-- Copy pos and node because callback can modify it
 		local result = ndef.on_rotate(vector.new(pos),
-				{name = node.name, param1 = node.param1, param2 = node.param2},
-				user, mode, new_param2)
+			{ name = node.name, param1 = node.param1, param2 = node.param2 },
+			user, mode, new_param2)
 		if result == false then -- Disallow rotation
 			return itemstack
 		elseif result == true then
@@ -168,7 +204,7 @@ end
 minetest.register_tool("screwdriver:screwdriver", {
 	description = S("Screwdriver") .. "\n" .. S("(left-click rotates face, right-click rotates axis)"),
 	inventory_image = "screwdriver.png",
-	groups = {tool = 1},
+	groups = { tool = 1 },
 	on_use = function(itemstack, user, pointed_thing)
 		screwdriver.handler(itemstack, user, pointed_thing, screwdriver.ROTATE_FACE, 200)
 		return itemstack
@@ -183,8 +219,9 @@ minetest.register_tool("screwdriver:screwdriver", {
 minetest.register_craft({
 	output = "screwdriver:screwdriver",
 	recipe = {
-		{"default:steel_ingot"},
-		{"group:stick"}
+		{ "sbz_resources:antimatter_dust" },
+		{ "sbz_resources:matter_dust" },
+		{ "sbz_resources:matter_dust" }
 	}
 })
 
