@@ -1,0 +1,14 @@
+# Timeout delay (default is 60)
+tp.timeout_delay (Timeout delay after a request is sent) int 60
+
+# Message color (default color is #FFFFFF)
+tp.message_color (The color of the messages sent to players) string #FFFFFF
+
+# Enables immediate teleport to players for those who have tp_admin privilege (enabled by default)
+tp.enable_immediate_teleport (Immediate teleport for those with tp_admin privilege) bool true
+
+# Enables Teleport To Place command (disabled by default)
+tp.enable_tpp_command (Enable Teleport To Place command) bool false
+
+# Spam prevention (enabled by default)
+tp.enable_spam_prevention (Enable spam prevention) bool true
