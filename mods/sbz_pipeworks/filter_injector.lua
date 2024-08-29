@@ -56,6 +56,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
     end,
     after_place_node = function(pos, placer)
         minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        local node = minetest.get_node(pos)
+        node.param2 = node.param2 + 1
+        minetest.swap_node(pos, node)
         pipeworks.after_place(pos)
     end,
     after_dig_node = pipeworks.after_dig,
