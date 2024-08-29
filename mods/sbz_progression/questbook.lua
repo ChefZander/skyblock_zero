@@ -353,7 +353,7 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
         type = "quest",
         title = "Small Protectors",
         text =
-        "Craft a small protector, small protectors protect a decently sized area.\nUnwanted people won't be able to take items from machines or modify filter injectors if the area is protected.",
+        "Craft a small protector, small protectors protect a decently sized area.\nUnwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.",
         requires = { "Concrete Plan", "Furnace" }
     }, {
     type = "quest",
