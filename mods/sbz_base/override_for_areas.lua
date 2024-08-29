@@ -16,8 +16,8 @@ end
 minetest.register_on_mods_loaded(function()
     for k, v in pairs(minetest.registered_nodes) do
         if minetest.get_item_group(k, "public") < 1 then
-            local move, put, take = v.allow_metadata_inventory_move or nop, v.allow_metadata_inventory_put or nop,
-                v.allow_metadata_inventory_take or nop
+            local move, put, take = v.allow_metadata_inventory_move or nop1, v.allow_metadata_inventory_put or nop2,
+                v.allow_metadata_inventory_take or nop2
             minetest.override_item(k, {
                 allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
                     if prot(pos, player) then
