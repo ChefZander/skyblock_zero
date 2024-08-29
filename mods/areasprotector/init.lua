@@ -372,14 +372,18 @@ minetest.register_node("areasprotector:display_node_small", {
 
 minetest.register_craft({
 	output = "areasprotector:protector_small 2",
-	type = "shapeless",
-	recipe = { "default:steelblock", "basic_materials:padlock" },
+	recipe = {
+		{ "sbz_resources:stone",             "sbz_resources:reinforced_matter", "sbz_resources:stone" },
+		{ "sbz_resources:reinforced_matter", "sbz_chem:cobalt_ingot",           "sbz_resources:reinforced_matter" },
+		{ "sbz_resources:stone",             "sbz_resources:reinforced_matter", "sbz_resources:stone" },
+	}
 })
 
 minetest.register_craft({
 	output = "areasprotector:protector_large",
 	type = "shapeless",
 	recipe = {
+		"areasprotector:protector_small",
 		"areasprotector:protector_small",
 		"areasprotector:protector_small",
 		"areasprotector:protector_small",

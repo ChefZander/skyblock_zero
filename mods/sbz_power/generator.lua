@@ -364,3 +364,12 @@ listring[]
         return stack:get_count()
     end
 })
+
+minetest.register_craft({
+    output = "sbz_power:antimatter_generator",
+    recipe = {
+        { "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter" },
+        { "sbz_resources:matter_dust",       "sbz_meteorites:neutronium",       "sbz_resources:antimatter_dust" },
+        { "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter" }
+    }
+})

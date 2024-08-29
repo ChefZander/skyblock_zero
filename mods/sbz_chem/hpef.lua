@@ -21,6 +21,8 @@ sbz_api.register_machine("sbz_chem:high_power_electric_furnace", {
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
 
+    input_inv = "src",
+    output_inv = "dst",
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
