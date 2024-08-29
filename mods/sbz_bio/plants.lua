@@ -49,13 +49,18 @@ function sbz_api.plant_wilt(stages)
     end
 end
 
-function sbz_api.plant_plant(plant)
+function sbz_api.plant_plant(plant, nodes)
     return function (itemstack, user, pointed)
-        if minetest.get_item_group(minetest.get_node(pointed.above-up).name, "soil") <= 0 then return end
-        local _, pos = minetest.item_place_node(ItemStack(plant), user, pointed)
-        if pos then
-            itemstack:take_item()
-            return itemstack
+        for _, node in ipairs(nodes) do
+            if string.sub(node, 1, 6) == "group:" and minetest.get_item_group(minetest.get_node(pointed.above-up).name, string.sub(node, 7)) > 0
+            or minetest.get_node(pointed.above-up).name == node then
+                local _, pos = minetest.item_place_node(ItemStack(plant), user, pointed)
+                if pos then
+                    itemstack:take_item()
+                    return itemstack
+                end
+                return
+            end
         end
     end
 end
@@ -121,7 +126,7 @@ minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
     groups = {burn=5},
-    on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1")
+    on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", {"group:soil"})
 })
 
 --Stemfruit, generic plant, quite versatile
@@ -140,7 +145,7 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
     groups = {burn=3},
-    on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1")
+    on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", {"group:soil"})
 })
 
 --Warpshroom, grows slowly, has teleportation powers
@@ -170,7 +175,7 @@ end
 minetest.register_craftitem("sbz_bio:warpshroom", {
     description = "Warpshroom",
     inventory_image = "warpshroom_4.png",
-    on_place = sbz_api.plant_plant("sbz_bio:warpshroom_1"),
+    on_place = sbz_api.plant_plant("sbz_bio:warpshroom_1", {"group:matter"}),
     on_use = function (itemstack, user)
         teleport_randomly(user)
         itemstack:take_item()
