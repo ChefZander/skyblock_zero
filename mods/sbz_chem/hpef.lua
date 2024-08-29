@@ -24,8 +24,8 @@ sbz_api.register_machine("sbz_chem:high_power_electric_furnace", {
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        inv:set_size("src", 1)
-        inv:set_size("dst", 1)
+        inv:set_size("src", 4)
+        inv:set_size("dst", 4)
 
 
         minetest.sound_play("machine_build", {
@@ -41,10 +41,12 @@ sbz_api.register_machine("sbz_chem:high_power_electric_furnace", {
 formspec_version[7]
 size[8.2,9]
 style_type[list;spacing=.2;size=.8]
-list[context;src;3.5,1;1,1;]
-list[context;dst;3.5,3;1,1;]
 list[current_player;main;0.2,5;8,4;]
+list[context;src;1.5,1;2,2;]
 listring[]
+list[context;dst;4.5,1;2,2;]
+listring[current_player;main]
+listring[context;dst]
     ]])
         minetest.sound_play("machine_open", {
             to_player = player_name,
@@ -66,12 +68,20 @@ listring[]
 
             local src = inv:get_list("src")
 
-            local out, decremented_input = minetest.get_craft_result({
-                method = "cooking",
-                width = 1,
-                items = src,
-            })
-            if out.item:is_empty() then
+            local out, decremented_input, index
+            for i = 1, 4 do
+                local out_inner, decremented_input_inner = minetest.get_craft_result({
+                    method = "cooking",
+                    width = 1,
+                    items = { src[i] },
+                })
+                if not out_inner.item:is_empty() then
+                    out, decremented_input = out_inner, decremented_input_inner
+                    index = i
+                    break
+                end
+            end
+            if out == nil then
                 meta:set_string("infotext", "Invalid/no recipe")
                 return 0
             end
@@ -81,7 +91,7 @@ listring[]
                 return 0
             end
 
-            inv:set_stack("src", 1, decremented_input.items[1])
+            inv:set_stack("src", index, decremented_input.items[1])
             inv:add_item("dst", out.item)
             return power_needed
         end

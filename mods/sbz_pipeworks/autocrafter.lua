@@ -583,6 +583,6 @@ minetest.register_craft({
     recipe = {
         { "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm" },
         { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit" },
-        { "sbz_chem:titanium_alloy_powder",  "sbz_meteorites:neutronium",       "sbz_chem:titanium_alloy_powder" }
+        { "sbz_chem:titanium_alloy_ingot",   "sbz_meteorites:neutronium",       "sbz_chem:titanium_alloy_ingot" }
     }
 })
