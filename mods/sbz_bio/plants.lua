@@ -177,3 +177,9 @@ minetest.register_craftitem("sbz_bio:warpshroom", {
         return itemstack
     end
 })
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_bio:warpshroom",
+    recipe = {"sbz_bio:stemfruit", "sbz_meteorites:neutronium"}
+})
