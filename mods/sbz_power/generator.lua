@@ -17,7 +17,6 @@ list[context;main;3.5,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
 listring[]
 ]])
-
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
@@ -336,6 +335,22 @@ listring[]
             inv:remove_item("input", "sbz_resources:matter_dust")
             inv:remove_item("input", "sbz_resources:antimatter_dust")
             meta:set_string("infotext", "Running")
+            local def = {
+                amount = 25,
+                time = 1,
+                collisiondetection = false,
+                vertical = false,
+                glow = 14,
+                size = 3,
+                pos = pos,
+                vel = { min = -vector.new(5, 5, 5), max = vector.new(5, 5, 5) },
+                exptime = 3,
+            }
+            def.texture = "antimatter_dust.png"
+            minetest.add_particlespawner(def)
+
+            def.texture = "matter_dust.png"
+            minetest.add_particlespawner(def)
             return 120
         end
 
