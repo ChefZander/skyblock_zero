@@ -116,6 +116,22 @@ for k, v in ipairs({
     minetest.register_node(v .. "_public", public_def)
 end
 
+minetest.register_craft {
+    output = "sbz_resources:storinator_public",
+    type = "shapeless",
+    recipe = {
+        "sbz_resources:storinator"
+    }
+}
+
+minetest.register_craft {
+    output = "sbz_resources:storinator",
+    type = "shapeless",
+    recipe = {
+        "sbz_resources:storinator_public"
+    }
+}
+
 minetest.register_craft({
     output = "sbz_resources:storinator",
     recipe = {
