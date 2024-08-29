@@ -281,3 +281,86 @@ minetest.register_abm({
         })
     end,
 })
+
+sbz_api.register_generator("sbz_power:antimatter_generator", {
+    description = "Antimatter generator",
+    info_extra = {
+        "Generates 120 power",
+        "Needs 1 antimatter/s and 1 matter/s",
+    },
+    groups = { matter = 1, pipe_connects = 1 },
+    tiles = {
+        "antimatter_gen_top.png",
+        "antimatter_gen_top.png",
+        "antimatter_gen_side.png"
+    },
+    input_inv = "input",
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+
+        inv:set_size("input", 2)
+
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+
+item_image[1.4,1.9;1,1;sbz_resources:matter_dust]
+list[context;input;1.5,2;1,1;]
+
+item_image[5.7,1.9;1,1;sbz_resources:antimatter_dust]
+list[context;input;5.8,2;1,1;1]
+
+list[current_player;main;0.2,5;8,4;]
+listring[]
+]])
+    end,
+    action = function(pos, node, meta, supply, demand)
+        local inv = meta:get_inventory()
+        local list = inv:get_list("input")
+        if list[1]:get_name() == "sbz_resources:antimatter_dust" then
+            if list[2]:is_empty() then
+                list[2] = list[1]
+                list[1] = ItemStack("")
+            elseif list[2]:get_name() == "sbz_resources:matter_dust" then
+                local antimatter_stack = list[1]
+                local matter_stack = list[2]
+                list[1] = matter_stack
+                list[2] = antimatter_stack
+            end
+        end
+        inv:set_list("input", list)
+
+        if inv:contains_item("input", "sbz_resources:matter_dust") and inv:contains_item("input", "sbz_resources:antimatter_dust") then
+            inv:remove_item("input", "sbz_resources:matter_dust")
+            inv:remove_item("input", "sbz_resources:antimatter_dust")
+            meta:set_string("infotext", "Running")
+            return 120
+        end
+
+        meta:set_string("infotext", "Can't react")
+        return 0
+    end,
+    allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+        if to_list == "input" then
+            local stackname = (minetest.get_inventory { type = "player", name = player:get_player_name() }):get_stack(
+                from_list, from_index):get_name() -- beautiful
+            if stackname == "sbz_resources:matter_dust" or stackname == "sbz_resources:antimatter_dust" then
+                return count
+            else
+                return 0
+            end
+        end
+        return count
+    end,
+    allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+        if listname == "input" then
+            if stack:get_name() == "sbz_resources:matter_dust" or stack:get_name() == "sbz_resources:antimatter_dust" then
+                return stack:get_count()
+            end
+            return 0
+        end
+        return stack:get_count()
+    end
+})
