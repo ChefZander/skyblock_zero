@@ -195,7 +195,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     { type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with matter blobs.", requires = { "Emittrium Circuits" } },
 
-    { type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries" } },
+    { type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 900 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries", "Furnace" } },
 
     { type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = { "Emittrium Circuits", "Reinforced Matter" } },
 
