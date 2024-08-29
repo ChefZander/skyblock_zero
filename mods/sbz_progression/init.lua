@@ -77,7 +77,11 @@ local achievment_table = {
     ["pipeworks:autocrafter"] = "Autocrafters",
     ["pipeworks:item_void"] = "Item Voids",
     ["pipeworks:item_vacuum"] = "Item Vacuums",
-    ["screwdriver:screwdriver"] = "Screwdriver"
+    ["screwdriver:screwdriver"] = "Screwdriver",
+    ["sbz_chem:high_power_electric_furnace"] = "Furnace",
+    ["areasprotector:protector_small"] = "Small Protectors",
+    ["areasprotector:protector_large"] = "Big Protectors",
+    ["sbz_power:antimatter_generator"] = "Antimatter Generators",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
