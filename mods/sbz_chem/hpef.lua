@@ -15,9 +15,13 @@ end
 sbz_api.register_machine("sbz_chem:high_power_electric_furnace", {
     description = "High Power Electric Furnace",
     tiles = {
-        { name = "simple_alloy_furnace.png", animation = { type = "vertical_frames", length = 0.7 } } -- this needs update TODO
+        { name = "hpef_top.png",   animation = { type = "vertical_frames", length = 0.7 } },
+        { name = "hpef_top.png",   animation = { type = "vertical_frames", length = 0.7 } },
+        { name = "hpef_front.png", animation = { type = "vertical_frames", length = 0.7 } },
+        { name = "hpef_top.png",   animation = { type = "vertical_frames", length = 0.7 } },
     },
     groups = { matter = 1 },
+    paramtype2 = "4dir",
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
 
@@ -34,6 +38,13 @@ sbz_api.register_machine("sbz_chem:high_power_electric_furnace", {
             to_player = player_name,
             gain = 1.0,
         })
+    end,
+    after_place_node = function(pos, placer)
+        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        local node = minetest.get_node(pos)
+        node.param2 = node.param2 + 1
+        minetest.swap_node(pos, node)
+        pipeworks.after_place(pos)
     end,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
