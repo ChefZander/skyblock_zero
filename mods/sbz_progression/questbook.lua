@@ -278,6 +278,21 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         [[If you already know about regular pipeworks, skyblock_zero's pipeworks are a very modified version of that mod, it will be similar though.]]
     }, {
     type = "quest",
+    title = "Tubes",
+    text = [[
+Do you want to transport something...
+
+Introducing tubes... you can like transport stacks easily...
+
+Simply use the Filter-Injector to push something into the tube, and boom.
+
+Also, if 30 stacks are in one tube, the tube becomes broken.
+
+Also you NEED the Automatic Filter-Injector to push something in the tube.
+    ]],
+    requires = { "Crusher" },
+}, {
+    type = "quest",
     title = "Automatic Filter-Injectors",
     text = [[
 Have you ever wanted to push something out of a node... to another node (Storinator to storinator)?
@@ -289,25 +304,12 @@ Now you can
 The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack each second
 
 ]],
-    requires = { "Bear Arms" }
-}, {
-    type = "quest",
-    title = "Tubes",
-    text = [[
-Do you want to transport something more than 1 block...
-
-Introducing tubes... you can like transport stacks easily...
-
-Simply use the Filter-Injector to push something into the tube, and boom.
-
-Also, if 30 stacks are in one tube, the tube becomes broken.
-    ]],
-    requires = { "Automatic Filter-Injectors" },
+    requires = { "Bear Arms", "Tubes" }
 }, {
     type = "quest",
     title = "Node Breakers",
     text = [[They break stuff then they throw it away thru their back-side. They need 1 power and run every second.]],
-    requires = { "Crusher" }
+    requires = { "Crusher", "Automatic Filter-Injectors" }
 }, {
     type = "quest",
     title = "Deployers",
@@ -323,7 +325,7 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
     type = "quest",
     title = "Autocrafters",
     text = "They craft... and they can craft fast, or really slow, depends on how you want them to",
-    requires = { "Bear Arms", "Neutronium", "Crusher", "Emittrium Circuits" }
+    requires = { "Bear Arms", "Neutronium", "Crusher", "Emittrium Circuits", "Automatic Filter-Injectors" }
 }, {
     type = "quest",
     title = "Item Voids",
