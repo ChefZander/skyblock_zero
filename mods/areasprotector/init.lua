@@ -36,13 +36,14 @@ areas:registerProtectionCondition(function(pos1, pos2, name)
 	end
 end)
 
-local function get_formspec(owners)
-	local ifs = [[
+local function get_formspec(owners, opened_up)
+	local ifs = string.format([[
 formspec_version[7]
 size[6,15]
 position[0.3,0.5]
 label[0.3,0.5;Owners:]
-]]
+checkbox[0.2,14;open;Open;%s]
+]], opened_up)
 
 	local fs = { ifs }
 
@@ -115,10 +116,21 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 			table.remove(owners, k)
 		end
 	end
+	if fields.open ~= nil then
+		local open = nil
+		if fields.open == "true" then
+			open = true
+		elseif fields.open == "false" then
+			open = false
+		end
+		areas.areas[meta:get_int("area_id")].open = open or nil
+		meta:set_string("is_open", fields.open)
+		areas:save()
+	end
 
 	meta:set_string("owners", minetest.serialize(owners))
 	meta:set_string("owners_area_id", minetest.serialize(owners_area_id))
-	meta:set_string("formspec", get_formspec(owners))
+	meta:set_string("formspec", get_formspec(owners, meta:get_string("is_open")))
 end
 
 local function on_place(itemstack, player, pointed, radius, height, sizeword)

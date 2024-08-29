@@ -47,7 +47,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         { name = "filter_side.png^[transformFX", animation = animation_def },
     },
     paramtype2 = "facedir",
-    groups = { cracky = 3, matter = 1, sbz_machine = 1, pipe_connects = 1, pipe_conducts = 0 }, -- you can optionally make it faster, not a bug, a FEATURE!
+    groups = { cracky = 3, matter = 1, sbz_machine = 1, pipe_connects = 1, pipe_conducts = 1 },
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
