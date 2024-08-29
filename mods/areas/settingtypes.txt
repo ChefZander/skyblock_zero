@@ -5,7 +5,7 @@
 
 # Allow players with a privilege create their own areas using /protect
 # within the specified size and amount limits.
-areas.self_protection (Self protection) bool false
+areas.self_protection (Self protection) bool true
 
 # Self protection: Privilege required to protect an area
 areas.self_protection_privilege (Self protection: Required privs) string interact
@@ -23,7 +23,7 @@ areas.legacy_table (Legacy owner_defs metatable) bool false
 areas.self_protection_max_size (Maximal area size) v3f (64, 128, 64)
 
 # Self protection (normal): Maximal amount of protected areas per player
-areas.self_protection_max_areas (Maximal area count) int 4
+areas.self_protection_max_areas (Maximal area count) int 999999
 
 [Self protection (high)]
 
