@@ -360,6 +360,12 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     title = "Big Protectors",
     text = "Craft the large protector... its the same as the small one... but bigger",
     requires = { "Small Protectors" }
+}, {
+    type = "quest",
+    title = "Public Storinators",
+    text =
+    "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
+    requires = { "Storinators" }
 },
     { type = "secret", title = "Emptiness", text = "Damn. You fell off." },
     { type = "secret", title = "Desolate",  text = "You talked to yourself." },

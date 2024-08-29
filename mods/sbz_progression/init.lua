@@ -82,6 +82,7 @@ local achievment_table = {
     ["areasprotector:protector_small"] = "Small Protectors",
     ["areasprotector:protector_large"] = "Big Protectors",
     ["sbz_power:antimatter_generator"] = "Antimatter Generators",
+    ["sbz_resources:storinator_public"] = "Public Storinators"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
