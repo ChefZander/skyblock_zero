@@ -50,7 +50,7 @@ function sbz_api.habitat_tick(start_pos, meta)
         touched_nodes[hash(pos)] = time
     end
     local co2_supply = co2
-    
+
     co2 = co2+meta:get_int("atmospheric_co2")
     for _, v in ipairs(habitat.plants) do
         local pos, node, d = unpack(v)

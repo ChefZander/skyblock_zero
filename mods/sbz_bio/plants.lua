@@ -9,12 +9,17 @@ minetest.register_craftitem("sbz_bio:fertilizer", {
     description = "Fertilizer",
     inventory_image = "fertilizer.png",
     on_place = function (itemstack, user, pointed)
-        if pointed.type == "node" and minetest.get_item_group(minetest.get_node(pointed.under).name, "soil") > 0
+        if pointed.type ~= "node" then return end
+        local node = minetest.get_node(pointed.under)
+        if minetest.get_item_group(node.name, "soil") > 0
         and minetest.registered_nodes[minetest.get_node(pointed.under+up).name].buildable_to then
             minetest.set_node(pointed.under+up, {name=sprouts[math.random(#sprouts)]})
-            itemstack:take_item()
-            return itemstack
-        end
+        elseif minetest.get_item_group(node.name, "plant") > 0
+        and minetest.registered_nodes[node.name].grow then
+            minetest.registered_nodes[node.name].grow(pointed.under, node)
+        else return end
+        itemstack:take_item()
+        return itemstack
     end
 })
 
@@ -24,17 +29,23 @@ minetest.register_craft({
     recipe = {"sbz_bio:algae", "sbz_bio:algae", "sbz_bio:algae"}
 })
 
-function sbz_api.plant_growth_tick(num_ticks, next_stage)
+function sbz_api.plant_grow(next_stage)
+    return function (pos, node)
+        if node.param2 > 0 then
+            node.param2 = node.param2-1
+        else node.name = next_stage end
+        minetest.swap_node(pos, node)
+    end
+end
+
+function sbz_api.plant_growth_tick(num_ticks)
     return function (pos, node)
         if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos) then
             local meta = minetest.get_meta(pos)
             local count = meta:get_int("count")+1
             if count >= num_ticks then
                 count = 0
-                if node.param2 > 0 then
-                    node.param2 = node.param2-1
-                else node.name = next_stage end
-                minetest.swap_node(pos, node)
+                minetest.registered_nodes[node.name].grow(pos, node)
             end
             meta:set_int("count", count)
             return true
@@ -91,7 +102,8 @@ function sbz_api.register_plant(name, defs)
             walkable = false,
             groups = {dig_immediate=2, attached_node=1, plant=1, needs_co2=defs.co2_demand, habitat_conducts=1, transparent=1, not_in_creative_inventory=1},
             drop = {},
-            growth_tick = sbz_api.plant_growth_tick(defs.growth_rate, "sbz_bio:"..name.."_"..(i+1)),
+            growth_tick = sbz_api.plant_growth_tick(defs.growth_rate),
+            grow = sbz_api.plant_grow("sbz_bio:"..name.."_"..(i+1)),
             wilt = sbz_api.plant_wilt(2)
         })
     end
@@ -230,13 +242,16 @@ minetest.register_node("sbz_bio:fiberweed", {
             local count = meta:get_int("count")+1
             if count >= 4 then
                 count = 0
-                if is_all_water(pos, node.param2+8) then
-                    node.param2 = node.param2+8
-                    minetest.swap_node(pos, node)
-                end
+                minetest.registered_nodes[node.name].grow(pos, node)
             end
             meta:set_int("count", count)
             return true
+        end
+    end,
+    grow = function (pos, node)
+        if is_all_water(pos, node.param2+8) then
+            node.param2 = node.param2+8
+            minetest.swap_node(pos, node)
         end
     end,
     wilt = function (pos, node)
