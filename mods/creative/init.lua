@@ -69,6 +69,7 @@ if minetest.is_creative_enabled("") then
 					choppy  = caps,
 					unbreakable = {times = {[1] = digtime * 2}, uses = 0, maxlevel = 256},
 					matter = caps,
+					antimatter = caps,
 					oddly_breakable_by_hand = caps,
 					-- dig_immediate group doesn't use value 1. Value 3 is instant dig
 					dig_immediate =
