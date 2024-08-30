@@ -79,6 +79,9 @@ sbz_api.register_machine("sbz_bio:habitat_regulator", {
     tiles = {"habitat_regulator.png"},
     groups = {matter=1},
     control_action_raw = true,
+    after_place_node = function (pos, user)
+        unlock_achievement(user:get_player_name(), "Growing Plants")
+    end,
     action = function (pos, node, meta, supply, demand)
         if demand+20 > supply then
             meta:set_string("infotext", "Not enough power, needs: 20")

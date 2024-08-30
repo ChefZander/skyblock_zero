@@ -190,6 +190,7 @@ minetest.register_craftitem("sbz_bio:warpshroom", {
     on_place = sbz_api.plant_plant("sbz_bio:warpshroom_1", {"group:matter"}),
     on_use = function (itemstack, user)
         teleport_randomly(user)
+        unlock_achievement(user:get_player_name(), "Not Chorus Fruit")
         itemstack:take_item()
         return itemstack
     end
@@ -232,6 +233,7 @@ minetest.register_node("sbz_bio:fiberweed", {
     end,
     after_dig_node = function (pos, node, meta, user)
         minetest.set_node(pos, {name="sbz_bio:dirt"})
+        unlock_achievement(user:get_player_name(), "Fiberweed")
         local inv = user:get_inventory()
         local drop = inv:add_item("main", "sbz_bio:fiberweed "..math.floor(node.param2/8))
         if drop then minetest.add_item(pos+up, drop) end
