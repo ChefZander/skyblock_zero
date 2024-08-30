@@ -244,3 +244,12 @@ minetest.register_node("sbz_bio:fiberweed", {
         minetest.swap_node(pos, node.param2 <= 0 and {name="sbz_bio:dirt"} or node)
     end
 })
+
+minetest.register_craft({
+    output = "sbz_bio:fiberweed",
+    recipe = {
+        {"sbz_bio:algae", "sbz_bio:algae", "sbz_bio:algae"},
+        {"sbz_bio:algae", "sbz_bio:stemfruit", "sbz_bio:algae"},
+        {"sbz_bio:algae", "sbz_bio:algae", "sbz_bio:algae"}
+    }
+})
