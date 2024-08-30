@@ -6,7 +6,6 @@ function sbz_api.is_sky_exposed(pos)
     local dir = vector.random_direction()
     dir.y = math.abs(dir.y) --not downwards
     local ray = minetest.raycast(pos, pos+200*dir, false, true)
-    ray:next() --discard itself
     for pointed in ray do
         if pointed.type == "node" then
             local node = minetest.get_node(pointed.under)

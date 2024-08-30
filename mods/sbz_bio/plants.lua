@@ -188,3 +188,59 @@ minetest.register_craft({
     output = "sbz_bio:warpshroom",
     recipe = {"sbz_bio:stemfruit", "sbz_meteorites:neutronium"}
 })
+
+--Fiberweed, multi-node seaweed which grows vertically, requires water along its entire stem
+--To be used in making string and fabric for various uses
+local function is_all_water(pos, leveled)
+    for i = 1, math.ceil(leveled/16) do
+        local nodename = minetest.get_node(pos+up*i).name
+        if nodename ~= "sbz_resources:water_source" and nodename ~= "sbz_resources:water_flowing" then return false end
+    end
+    return true
+end
+
+minetest.register_node("sbz_bio:fiberweed", {
+    description = "Fiberweed",
+    drawtype = "plantlike_rooted",
+    tiles = {"dirt.png^fiberweed_overlay.png", "dirt.png"},
+    special_tiles = {{name="fiberweed_plant.png", tileable_vertical=true}},
+    inventory_image = "fiberweed_plant.png",
+    selection_box = {type="fixed", fixed={{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}, {-0.25, 0.5, -0.25, 0.25, 1.25, 0.25}}},
+    paramtype2 = "leveled",
+    place_param2 = 8,
+    groups = {matter=1, plant=1, needs_co2=3, transparent=1},
+    drop = {},
+    node_dig_prediction = "sbz_bio:dirt",
+    node_placement_prediction = "",
+    on_place = function (itemstack, user, pointed)
+        if pointed.type ~= "node" or minetest.get_node(pointed.under).name ~= "sbz_bio:dirt" then return end
+        minetest.set_node(pointed.under, {name="sbz_bio:fiberweed", param2=8})
+        itemstack:take_item()
+        return itemstack
+    end,
+    after_dig_node = function (pos, node, meta, user)
+        minetest.set_node(pos, {name="sbz_bio:dirt"})
+        local inv = user:get_inventory()
+        local drop = inv:add_item("main", "sbz_bio:fiberweed "..math.floor(node.param2/8))
+        if drop then minetest.add_item(pos+up, drop) end
+    end,
+    growth_tick = function (pos, node)
+        if sbz_api.get_node_heat(pos+up) > 7 and sbz_api.is_sky_exposed(pos+up*math.ceil(node.param2/16)) and is_all_water(pos, node.param2) then
+            local meta = minetest.get_meta(pos)
+            local count = meta:get_int("count")+1
+            if count >= 4 then
+                count = 0
+                if is_all_water(pos, node.param2+8) then
+                    node.param2 = node.param2+8
+                    minetest.swap_node(pos, node)
+                end
+            end
+            meta:set_int("count", count)
+            return true
+        end
+    end,
+    wilt = function (pos, node)
+        node.param2 = node.param2-8
+        minetest.swap_node(pos, node.param2 <= 0 and {name="sbz_bio:dirt"} or node)
+    end
+})

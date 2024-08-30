@@ -9,7 +9,7 @@ minetest.register_node("sbz_bio:moss", {
     paramtype2 = "wallmounted",
     walkable = false,
     buildable_to = true,
-    groups = {matter=3, oddly_breakable_by_hand=3, burn=1, habitat_conducts=1, attached_node=1}
+    groups = {matter=3, oddly_breakable_by_hand=3, burn=1, habitat_conducts=1, transparent=1, attached_node=1}
 })
 
 minetest.register_node("sbz_bio:algae", {
@@ -23,7 +23,7 @@ minetest.register_node("sbz_bio:algae", {
     paramtype2 = "wallmounted",
     walkable = false,
     buildable_to = true,
-    groups = {matter=3, oddly_breakable_by_hand=3, burn=1, habitat_conducts=1}
+    groups = {matter=3, oddly_breakable_by_hand=3, burn=1, habitat_conducts=1, transparent=1}
 })
 
 minetest.register_abm({
