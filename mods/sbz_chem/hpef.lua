@@ -12,13 +12,13 @@ local function allow_metadata_inventory_move(pos, from_list, from_index, to_list
 end
 
 
-sbz_api.register_machine("sbz_chem:high_power_electric_furnace", {
+sbz_api.register_stateful_machine("sbz_chem:high_power_electric_furnace", {
     description = "High Power Electric Furnace",
     tiles = {
-        { name = "hpef_top.png",   animation = { type = "vertical_frames", length = 0.7 } },
-        { name = "hpef_top.png",   animation = { type = "vertical_frames", length = 0.7 } },
-        { name = "hpef_front.png", animation = { type = "vertical_frames", length = 0.7 } },
-        { name = "hpef_top.png",   animation = { type = "vertical_frames", length = 0.7 } },
+        "hpef_top.png",
+        "hpef_top.png",
+        "hpef_front_off.png",
+        "hpef_top.png",
     },
     groups = { matter = 1 },
     paramtype2 = "4dir",
@@ -67,14 +67,14 @@ listring[context;dst]
         })
     end,
 
-    control_action_raw = true,
+    autostate = true,
     action = function(pos, node, meta, supply, demand)
         local power_needed = 15
         local inv = meta:get_inventory()
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")
-            return power_needed
+            return power_needed, false
         else
             meta:set_string("infotext", "Smelting...")
             minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6, pos = pos })
@@ -109,6 +109,14 @@ listring[context;dst]
             return power_needed
         end
     end,
+}, {
+    tiles = {
+        "hpef_top.png",
+        "hpef_top.png",
+        { name = "hpef_front.png", animation = { type = "vertical_frames", length = 0.7 } },
+        "hpef_top.png",
+    },
+    light_source = 10,
 })
 
 minetest.register_craft({

@@ -1,7 +1,7 @@
 local generator_power_production = 30
-sbz_api.register_generator("sbz_power:simple_charge_generator", {
+sbz_api.register_stateful_generator("sbz_power:simple_charge_generator", {
     description = "Simple Charge Generator",
-    tiles = { "simple_charge_generator.png" },
+    tiles = { "simple_charge_generator_off.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
@@ -34,16 +34,10 @@ listring[]
             gain = 1.0,
             pos = pos,
         })
-
-        meta:set_int("count", 10)
     end,
-
+    action_interval = 10,
     action = function(pos, node, meta)
-        local count = meta:get_int("count")
-        count = count - 1
-        meta:set_int("count", count)
         local inv = meta:get_inventory()
-
         -- check if fuel is there
         if not inv:contains_item("main", "sbz_resources:core_dust") then
             minetest.add_particlespawner({
@@ -65,44 +59,46 @@ listring[]
                 glow = 10
             })
             meta:set_string("infotext", "Stopped")
-            return 0
+            return 0, true
         end
-        if count <= 0 then
-            meta:set_int("count", 10)
-            local stack = inv:get_stack("main", 1)
-            if stack:is_empty() then
-                meta:set_string("infotext", "Stopped")
-                return 0
-            end
-
-            stack:take_item(1)
-            inv:set_stack("main", 1, stack)
-
-            minetest.add_particlespawner({
-                amount = 25,
-                time = 1,
-                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                minvel = { x = 0, y = 5, z = 0 },
-                maxvel = { x = 0, y = 5, z = 0 },
-                minacc = { x = 0, y = 0, z = 0 },
-                maxacc = { x = 0, y = 0, z = 0 },
-                minexptime = 1,
-                maxexptime = 3,
-                minsize = 0.5,
-                maxsize = 1.0,
-                collisiondetection = false,
-                vertical = false,
-                texture = "charged_particle.png",
-                glow = 10
-            })
+        local stack = inv:get_stack("main", 1)
+        if stack:is_empty() then
+            meta:set_string("infotext", "Stopped")
+            return 0, true
         end
+
+        stack:take_item(1)
+        inv:set_stack("main", 1, stack)
+
+        minetest.add_particlespawner({
+            amount = 25,
+            time = 1,
+            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+            minvel = { x = 0, y = 5, z = 0 },
+            maxvel = { x = 0, y = 5, z = 0 },
+            minacc = { x = 0, y = 0, z = 0 },
+            maxacc = { x = 0, y = 0, z = 0 },
+            minexptime = 1,
+            maxexptime = 3,
+            minsize = 0.5,
+            maxsize = 1.0,
+            collisiondetection = false,
+            vertical = false,
+            texture = "charged_particle.png",
+            glow = 10
+        })
         meta:set_string("infotext", "Running")
-        return generator_power_production
+        return generator_power_production, false
     end,
     input_inv = "main",
     output_inv = "main",
     info_generated = 30,
+    info_extra = "Consumes 1 core dust/10 seconds",
+    autostate = true,
+}, {
+    light_source = 14,
+    tiles = { "simple_charge_generator.png" }
 })
 
 
@@ -281,7 +277,7 @@ minetest.register_abm({
     end,
 })
 
-sbz_api.register_generator("sbz_power:antimatter_generator", {
+sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
     description = "Antimatter generator",
     info_extra = {
         "Generates 120 power",
@@ -315,6 +311,7 @@ list[current_player;main;0.2,5;8,4;]
 listring[]
 ]])
     end,
+    autostate = true,
     action = function(pos, node, meta, supply, demand)
         local inv = meta:get_inventory()
         local list = inv:get_list("input")
@@ -378,6 +375,13 @@ listring[]
         end
         return stack:get_count()
     end
+}, {
+    tiles = {
+        "antimatter_gen_top.png",
+        "antimatter_gen_top.png",
+        { name = "antimatter_gen_side_on.png", animation = { type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 1.0 } }
+    },
+    light_source = 14,
 })
 
 minetest.register_craft({

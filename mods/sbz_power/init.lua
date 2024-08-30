@@ -42,30 +42,68 @@ local function add_tube_support(def)
     end
 end
 
+local function overwrite(original, overwrites)
+    for k, v in pairs(overwrites) do
+        if type(overwrites[k]) == "table" and type(original[k]) == "table" then
+            overwrite(original[k], overwrites[k])
+        else
+            original[k] = overwrites[k]
+        end
+    end
+    return original
+end
+
 function sbz_api.register_machine(name, def)
     def.groups = def.groups or {}
+
     def.groups.sbz_machine = 1
-    def.groups.pipe_conducts = 1
+    def.groups.pipe_conducts = def.groups.pipe_conducts or 1
     def.groups.pipe_connects = 1
 
     add_tube_support(def)
     if not def.control_action_raw then
         local old_action = def.action
-
-        function def.action(pos, node, meta, supply, demand)
-            if (demand + def.power_needed) > supply then
-                meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
-                return def.power_needed
-            else
-                meta:set_string("infotext", "Running")
-                local count = meta:get_int("count")
-                if count >= def.action_interval then
-                    old_action(pos, node, meta, supply, demand)
-                    meta:set_int("count", 0)
+        if def.power_needed then
+            function def.action(pos, node, meta, supply, demand)
+                if (demand + def.power_needed) > supply then
+                    meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
+                    if def.stateful then
+                        sbz_api.turn_off(pos)
+                    end
+                    return def.power_needed
                 else
-                    meta:set_int("count", count + 1)
+                    if def.stateful then
+                        sbz_api.turn_on(pos)
+                    end
+                    meta:set_string("infotext", "Running")
+                    local count = meta:get_int("count")
+                    local power_consumed = def.idle_consume or def.power_needed
+                    if count >= def.action_interval then
+                        power_consumed = old_action(pos, node, meta, supply, demand) or def.power_needed
+                        meta:set_int("count", 0)
+                    else
+                        meta:set_int("count", count + 1)
+                    end
+                    return power_consumed
                 end
-                return def.power_needed
+            end
+        elseif def.autostate then
+            function def.action(pos, node, meta, supply, demand)
+                local power_output, overwrite_decision = old_action(pos, node, meta, supply, demand)
+                if overwrite_decision ~= nil then
+                    if overwrite_decision == true then
+                        sbz_api.turn_on(pos)
+                    elseif overwrite_decision == false then
+                        sbz_api.turn_off(pos)
+                    end
+                else
+                    if power_output <= 0 then
+                        sbz_api.turn_off(pos)
+                    else
+                        sbz_api.turn_on(pos)
+                    end
+                end
+                return power_output
             end
         end
     end
@@ -75,7 +113,7 @@ end
 function sbz_api.register_generator(name, def)
     def.groups.sbz_machine = 1
     def.groups.sbz_generator = 1
-    def.groups.pipe_conducts = 1
+    def.groups.pipe_conducts = def.groups.pipe_conducts or 1
     def.groups.pipe_connects = 1
 
     if def.power_generated then
@@ -84,10 +122,99 @@ function sbz_api.register_generator(name, def)
             return def.power_generated
         end
         def.disallow_pipeworks = true
+    else -- not just a static solar panel but also something that like.. yeah
+        local old_action = def.action
+        def.action = function(pos, node, meta, ...)
+            if meta:get_int("count") <= 0 then
+                local power_generated, no_restart_count = old_action(pos, node, meta, ...)
+                meta:set_int("power_generated", power_generated)
+                if not no_restart_count then
+                    meta:set_int("count", def.action_interval or 0)
+                end
+                -- autostate :D
+                if def.stateful and def.autostate then
+                    if power_generated <= 0 then
+                        sbz_api.turn_off(pos)
+                    else
+                        sbz_api.turn_on(pos)
+                    end
+                end
+            else
+                meta:set_int("count", meta:get_int("count") - 1)
+            end
+            return meta:get_int("power_generated")
+        end
     end
     add_tube_support(def)
 
     minetest.register_node(name, def)
+end
+
+local function register_stateful_internal(name, def, on_def, off_def, func)
+    local name_off = name .. "_off"
+    local name_on = name .. "_on"
+
+    def.stateful = true
+
+    on_def.groups = on_def.groups or {}
+    on_def.groups.not_in_creative_inventory = on_def.groups.not_in_creative_inventory or 1
+    on_def.drop = on_def.drop or name_off
+    func(name_on, overwrite(table.copy(def), on_def))
+    func(name_off, overwrite(table.copy(def), off_def or {}))
+
+    minetest.register_alias(name, name_off)
+end
+
+function sbz_api.register_stateful_machine(name, def, on_def, off_def)
+    register_stateful_internal(name, def, on_def, off_def, sbz_api.register_machine)
+end
+
+function sbz_api.register_stateful_generator(name, def, on_def, off_def)
+    register_stateful_internal(name, def, on_def, off_def, sbz_api.register_generator)
+end
+
+local ndef = minetest.registered_nodes
+-- easier manipulating of stateful machines
+function sbz_api.turn_off(pos)
+    local node = minetest.get_node(pos)
+    local nodename = node.name
+    if string.sub(nodename, -3) == "_on" then
+        node.name = string.sub(nodename, 1, -4) .. "_off"
+        minetest.swap_node(pos, node)
+    end
+    local ndef_nodename = ndef[nodename]
+    if ndef_nodename and ndef_nodename.on_turn_off then
+        ndef_nodename.on_turn_off(pos)
+    end
+end
+
+function sbz_api.turn_on(pos)
+    local node = minetest.get_node(pos)
+    local nodename = node.name
+    if string.sub(nodename, -4) == "_off" then
+        node.name = string.sub(nodename, 1, -5) .. "_on"
+        minetest.swap_node(pos, node)
+    end
+
+    local ndef_nodename = ndef[nodename]
+    if ndef_nodename and ndef_nodename.on_turn_on then
+        ndef_nodename.on_turn_on(pos)
+    end
+end
+
+function sbz_api.force_turn_off(pos, meta)
+    sbz_api.turn_off(pos)
+    meta:set_int("force_off", 1)
+end
+
+function sbz_api.force_turn_on(pos, meta)
+    sbz_api.turn_on(pos)
+    meta:set_int("force_off", 0)
+end
+
+function sbz_api.is_on(pos)
+    local nodename = minetest.get_node(pos).name
+    return string.sub(nodename, -4) ~= "_off"
 end
 
 dofile(modpath .. "/vm.lua")

@@ -6,10 +6,10 @@ local simple_alloy_furnace_recipes = {
     { recipe = { "sbz_chem:gold_powder", "sbz_chem:nickel_powder" },       output = { "sbz_chem:white_gold_powder" } },
 }
 
-sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
+sbz_api.register_stateful_machine("sbz_chem:simple_alloy_furnace", {
     description = "Simple Alloy Furnace",
     tiles = {
-        { name = "simple_alloy_furnace.png", animation = { type = "vertical_frames", length = 0.7 } }
+        "simple_alloy_furnace.png^[verticalframe:13:1"
     },
     groups = { matter = 1 },
 
@@ -44,8 +44,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
             pos = pos,
         })
     end,
-
-    control_action_raw = true,
+    autostate = true,
     action = function(pos, node, meta, supply, demand)
         local power_needed = 10
         local inv = meta:get_inventory()
@@ -71,7 +70,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")
-            return power_needed
+            return power_needed, false
         else
             meta:set_string("infotext", "Smelting...")
             minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
@@ -82,7 +81,7 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
                 inv:remove_item("input", input_2)
             else
                 meta:set_string("infotext", "Output inventory full")
-                return power_needed
+                return 0
             end
 
             return power_needed
@@ -90,6 +89,11 @@ sbz_api.register_machine("sbz_chem:simple_alloy_furnace", {
     end,
     input_inv = "input",
     output_inv = "output"
+}, {
+    tiles = {
+        { name = "simple_alloy_furnace.png", animation = { type = "vertical_frames", length = 0.7 } }
+    },
+    light_source = 3,
 })
 
 minetest.register_craft({

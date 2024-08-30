@@ -211,7 +211,7 @@ minetest.register_abm({
     action = sbz_api.switching_station_tick
 })
 
-local timeout_limit = 1 -- seconds
+local timeout_limit = 2 -- seconds
 
 minetest.register_abm({
     label = "Machine timeout check",
@@ -221,7 +221,10 @@ minetest.register_abm({
     action = function(pos, node)
         if not touched_nodes[hash(pos)] or (os.time() - touched_nodes[hash(pos)] >= timeout_limit) then
             minetest.get_meta(pos):set_string("infotext", "No network found")
-            if node_defs[node.name].on_timeout then node_defs[node.name].on_timeout(pos, node) end
+            sbz_api.turn_off(pos)
+            if node_defs[node.name].on_timeout then
+                node_defs[node.name].on_timeout(pos, node)
+            end
         end
     end
 })
