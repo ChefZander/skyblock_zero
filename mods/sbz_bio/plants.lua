@@ -208,7 +208,7 @@ minetest.register_node("sbz_bio:fiberweed", {
     selection_box = {type="fixed", fixed={{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}, {-0.25, 0.5, -0.25, 0.25, 1.25, 0.25}}},
     paramtype2 = "leveled",
     place_param2 = 8,
-    groups = {matter=1, plant=1, needs_co2=3, transparent=1},
+    groups = {matter=1, plant=1, needs_co2=3, transparent=1, burn=1},
     drop = {},
     node_dig_prediction = "sbz_bio:dirt",
     node_placement_prediction = "",
