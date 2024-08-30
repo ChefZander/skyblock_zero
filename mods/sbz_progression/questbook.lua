@@ -36,7 +36,7 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
 Craft some 'Antimatter Dust', we'll need it for later. It's made by mixing 'Matter Dust' and 'Core Dust'. Let's see you figure this out, smart one.]],
         requires = { "Introduction" }
     },
-
+	
     {
         type = "quest",
         title = "Annihilator",
@@ -217,7 +217,16 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     -- ======================================================================================
     { type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
-    {
+	{
+        type = "quest",
+        title = "More Antimatter",
+        text =
+        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
+
+TIP: Matter and antimatter will instantly explode on contact. You can use the knockback the explosion gives off to launch yourself upwards.]],
+        requires = { "Antimatter" }
+    },
+	{
         type = "quest",
         title = "Screwdriver",
         text = "Screwdriver rotates blocks when you click on one with it.",
@@ -253,7 +262,7 @@ Next time you’re floating through the cosmos and stumble upon these absurd con
 You can get one, by surrounding a 'Matter Blob' with 'Antimatter Dust'. They don't glow as much as The Core though.
 
 TIP: Emitter Immitators spawn a lot of particles when punched, try it!]],
-        requires = { "A bigger platform", "Antimatter" }
+        requires = { "A bigger platform", "More Antimatter" }
     },
 
     {
