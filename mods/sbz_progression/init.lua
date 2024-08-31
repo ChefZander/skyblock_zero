@@ -113,5 +113,7 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
         unlock_achievement(player_name, "It's fake")
     elseif itemstack:get_name() == "sbz_chem:bronze_powder" then
         unlock_achievement(player_name, "Bronze Age")
+    elseif itemstack:get_name() == "sbz_meteorites:antineutronium" then
+        unlock_achievement(player_name, "Antineutronium")
     end
 end)

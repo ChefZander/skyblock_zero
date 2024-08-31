@@ -221,9 +221,9 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
         type = "quest",
         title = "More Antimatter",
         text =
-        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
+        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island. They also create a big explosion that can affect your machinery when in contact with matter.
 
-TIP: Matter and antimatter will instantly explode on contact. You can use the knockback the explosion gives off to launch yourself upwards.]],
+TIP: You can use simple charged fields as scaffolding when dealing with antimatter.]],
         requires = { "Antimatter" }
     },
 	{
@@ -349,6 +349,11 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
     { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
     { type = "quest",  title = "Angel's Wing",             text = "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.",                                                                                                           requires = { "Emittrium Circuits", "Concrete Plan" } },
+
+    { type = "quest", title = "Antineutronium", text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core, which repulses things.
+You can also craft antineutronium into a Gravitational Repulsor, which repulses meteorites.
+
+TIP: You can go upwards with the antigravity of antineutronium.]], requires = { "Meteorites" } },
 
     { type = "secret", title = "Emptiness",                text = "Damn. You fell off." },
     { type = "secret", title = "Desolate",                 text = "You talked to yourself." },
