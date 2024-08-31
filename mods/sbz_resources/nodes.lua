@@ -349,23 +349,23 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		minetest.add_particlespawner({
-            amount = 1000,
-            time = 0.2,
-            minpos = { x = pos.x - 1/3, y = pos.y - 1/3, z = pos.z - 1/3 },
-            maxpos = { x = pos.x + 1/3, y = pos.y + 1/3, z = pos.z + 1/3 },
-            minvel = { x = -5, y = -5, z = -5 },
-            maxvel = { x = 5, y = 5, z = 5 },
-            minacc = { x = -1, y = -1, z = -1 },
-            maxacc = { x = 1, y = 1, z = 1 },
-            minexptime = 5,
-            maxexptime = 10,
-            minsize = 0.5,
-            maxsize = 1.5,
-            collisiondetection = false,
-            vertical = false,
-            texture = "star.png",
-            glow = 10
-        })
+			amount = 1000,
+            		time = 0.2,
+           		minpos = { x = pos.x - 1/3, y = pos.y - 1/3, z = pos.z - 1/3 },
+            		maxpos = { x = pos.x + 1/3, y = pos.y + 1/3, z = pos.z + 1/3 },
+           		minvel = { x = -5, y = -5, z = -5 },
+            		maxvel = { x = 5, y = 5, z = 5 },
+            		minacc = { x = -1, y = -1, z = -1 },
+            		maxacc = { x = 1, y = 1, z = 1 },
+            		minexptime = 5,
+           		maxexptime = 10,
+            		minsize = 0.5,
+            		maxsize = 1.5,
+        		collisiondetection = false,
+            		vertical = false,
+            		texture = "star.png",
+            		glow = 10
+        	})
 		minetest.remove_node(pos)
 		 -- copied from sbz_meteorites
 		for _ = 1, 100 do
@@ -383,11 +383,10 @@ minetest.register_abm({
 			end
 		end
 		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 8)) do
-        if obj:is_player() then
-            local dir = obj:get_pos() - pos
-            obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 1.5 * (8 - vector.length(dir)))
-        end
-		
-    end
+        		if obj:is_player() then
+            			local dir = obj:get_pos() - pos
+            			obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 1.5 * (8 - vector.length(dir)))
+        		end
+    		end
 	end
 })
