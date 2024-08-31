@@ -48,6 +48,7 @@ local achievment_table = {
     ["sbz_resources:matter_plate"] = "Matter Plates",
     ["sbz_resources:retaining_circuit"] = "Retaining Circuits",
     ["sbz_resources:storinator"] = "Storinators",
+	["sbz_resources:antimatter_blob"] = "More Antimatter",
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
     ["sbz_resources:pebble"] = "Pretty Pebbles",
     ["sbz_resources:stone"] = "Concrete Plan",
