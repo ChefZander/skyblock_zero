@@ -21,14 +21,16 @@ local function meteorite_explode(pos, type)
         end
     end
     --placing nodes
-    minetest.set_node(pos, { name = "sbz_meteorites:neutronium" })
-    local node_types = { matter_blob = "sbz_meteorites:meteoric_matter", emitter = "sbz_meteorites:meteoric_emittrium" }
+    minetest.set_node(pos, { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
+    local node_types = { matter_blob = {"sbz_meteorites:meteoric_matter","sbz_meteorites:meteoric_metal"},
+						 emitter = {"sbz_meteorites:meteoric_emittrium","sbz_meteorites:meteoric_metal"},
+						 antimatter_blob = {"sbz_meteorites:meteoric_antimatter","sbz_meteorites:meteoric_antimatter"}}
     for _ = 1, 16 do
         local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
         if minetest.get_node(new_pos).name == "air" then
             minetest.set_node(new_pos, {
-                name = math.random() < 0.2 and "sbz_meteorites:meteoric_metal" or
-                    node_types[type]
+                name = math.random() < 0.2 and node_types[type][2] or
+                    node_types[type][1]
             })
         end
     end
@@ -93,7 +95,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
         else                                    --new entity, initialise stuff
-            local types = { "matter_blob", "emitter" }
+            local types = { "matter_blob", "emitter", "antimatter_blob" }
             self.type = types[math.random(#types)]
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
