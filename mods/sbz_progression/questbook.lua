@@ -205,6 +205,8 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     { type = "quest", title = "Crusher", text = "This one's very simple :)\nIt's just pebbles in, metals out. Consumes 5 Power when running.", requires = { "Concrete Plan", "Antimatter", "Charged Field" } },
 
+    { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
+    
     { type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
 
     { type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = { "Simple Alloy Furnace", "Crusher" } },
@@ -213,7 +215,6 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
     { type = "quest", title = "Bear Arms", text = "Craft the robotic arm." },
-    { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
     -- ======================================================================================
     {type="text", title="Questline: Organics", text="Grow plants and fungi to craft more things and also make your base look really cool."},
