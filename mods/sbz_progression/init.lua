@@ -78,7 +78,12 @@ local achievment_table = {
     ["pipeworks:autocrafter"] = "Autocrafters",
     ["pipeworks:item_void"] = "Item Voids",
     ["pipeworks:item_vacuum"] = "Item Vacuums",
-    ["screwdriver:screwdriver"] = "Screwdriver"
+    ["screwdriver:screwdriver"] = "Screwdriver",
+    ["sbz_bio:emittrium_glass"] = "Emittrium Glass",
+    ["sbz_bio:dirt"] = "Dirt",
+    ["sbz_bio:fertilizer"] = "Sprouting Plants",
+    ["sbz_bio:burner"] = "Carbon Dioxide",
+    ["sbz_bio:airlock"] = "Airlocks"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -109,11 +114,16 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
         itemstack = inv_info.stack
     end
     local player_name = player:get_player_name()
-    if itemstack:get_name() == "sbz_chem:gold_powder" then
+    local itemname = itemstack:get_name()
+    if itemname == "sbz_chem:gold_powder" then
         unlock_achievement(player_name, "It's fake")
-    elseif itemstack:get_name() == "sbz_chem:bronze_powder" then
+    elseif itemname == "sbz_chem:bronze_powder" then
         unlock_achievement(player_name, "Bronze Age")
     elseif itemstack:get_name() == "sbz_meteorites:antineutronium" then
         unlock_achievement(player_name, "Antineutronium")
+    elseif itemname == "sbz_chem:water_fluid_cell" then
+        unlock_achievement(player_name, "Liquid Water")
+    elseif itemname == "sbz_bio:stemfruit" then
+        unlock_achievement(player_name, "Stemfruit")
     end
 end)

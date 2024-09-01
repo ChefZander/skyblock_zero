@@ -68,6 +68,7 @@ minetest.register_node("sbz_resources:emitter", {
     description = "Emitter",
     tiles = { "emitter.png" },
     groups = { gravity = 25, unbreakable = 1 },
+    groups = { unbreakable = 1, transparent = 1 },
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",
