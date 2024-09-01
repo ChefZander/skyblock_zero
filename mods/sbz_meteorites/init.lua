@@ -52,7 +52,7 @@ end
 
 local G = 1/1000
 local max_attraction = 3
-local range = 4
+local range = 3
 minetest.register_globalstep(function(dt)
 	meteorite_globalstep(dt)
 	for _, player in ipairs(minetest.get_connected_players()) do
