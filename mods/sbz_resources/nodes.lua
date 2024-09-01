@@ -198,3 +198,59 @@ minetest.register_craft({
         { "",                           "sbz_resources:matter_plate", "" }
     }
 })
+
+minetest.register_node("sbz_resources:emittrium_glass", {
+    description = "Emittrium Glass",
+    drawtype = "glasslike",
+    tiles = {"emittrium_glass.png"},
+    use_texture_alpha = "clip",
+    paramtype = "light",
+    sunlight_propagates = true,
+    groups = {matter=1, transparent=1}
+})
+
+minetest.register_craft({
+    output = "sbz_resources:emittrium_glass 16",
+    recipe = {
+        {"sbz_resources:raw_emittrium", "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium"},
+        {"sbz_resources:antimatter_dust", "", "sbz_resources:antimatter_dust"},
+        {"sbz_resources:raw_emittrium", "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium"}
+    }
+})
+
+local water_image = "water.png^[opacity:127"
+
+minetest.register_node("sbz_resources:water_source", {
+    description = "Water Source",
+    drawtype = "liquid",
+    tiles = {water_image},
+    inventory_image = water_image,
+    use_texture_alpha = "clip",
+    groups = {habitat_conducts=1, transparent=1},
+    post_effect_color = "#4000ff80",
+    paramtype = "light",
+    walkable = false,
+    pointable = false,
+    buildable_to = true,
+    liquidtype = "source",
+    liquid_alternative_source = "sbz_resources:water_source",
+    liquid_alternative_flowing = "sbz_resources:water_flowing"
+})
+
+minetest.register_node("sbz_resources:water_flowing", {
+    description = "Flowing Water",
+    drawtype = "flowingliquid",
+    tiles = {water_image},
+    special_tiles = {water_image, water_image},
+    inventory_image = water_image,
+    use_texture_alpha = "clip",
+    groups = {habitat_conducts=1, transparent=1, not_in_creative_inventory=1},
+    post_effect_color = "#4000ff80",
+    paramtype = "light",
+    walkable = false,
+    pointable = false,
+    buildable_to = true,
+    liquidtype = "flowing",
+    liquid_alternative_source = "sbz_resources:water_source",
+    liquid_alternative_flowing = "sbz_resources:water_flowing"
+})

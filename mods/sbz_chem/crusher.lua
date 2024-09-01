@@ -93,6 +93,15 @@ listring[current_player;main]listring[context;input]listring[current_player;main
                 return 0
             end
 
+            if inv:contains_item("output", "sbz_chem:empty_fluid_cell") then
+                inv:remove_item("output", "sbz_chem:empty_fluid_cell")
+                if inv:room_for_item("output", "sbz_chem:water_fluid_cell") then
+                    inv:add_item("output", "sbz_chem:water_fluid_cell")
+                else
+                    minetest.add_item(pos, "sbz_chem:water_fluid_cell")
+                end
+            end
+
             return power_needed
         end
     end,

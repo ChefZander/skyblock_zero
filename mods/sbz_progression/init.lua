@@ -23,18 +23,19 @@ minetest.register_chatcommand("cheat_hacker", {
     description = "Cheat haguh",
     privs = {},
     func = function(name, param)
-        if not name == "zander" then return end -- if youre a modder, change this to your name to allow for easier testing
-        if param == "all" then
-            for _, q in ipairs(quests) do
-                unlock_achievement(name, q.title)
-            end
-            return
-        end
-        unlock_achievement(name, param)
         displayDialougeLine(name, "Cheat haguh")
     end,
 })
 
+minetest.register_chatcommand("giv_achievments", {
+    description = "Yeah",
+    privs = { "server" },
+    func = function(name, param)
+        for _, q in ipairs(quests) do
+            unlock_achievement(name, q.title)
+        end
+    end
+})
 local achievment_table = {
     ["sbz_resources:matter_blob"] = "A bigger platform",
     ["sbz_resources:matter_stair"] = "Matter Stairs",
@@ -82,7 +83,13 @@ local achievment_table = {
     ["areasprotector:protector_small"] = "Small Protectors",
     ["areasprotector:protector_large"] = "Big Protectors",
     ["sbz_power:antimatter_generator"] = "Antimatter Generators",
-    ["sbz_resources:storinator_public"] = "Public Storinators"
+    ["sbz_resources:storinator_public"] = "Public Storinators",
+
+    ["sbz_bio:emittrium_glass"] = "Emittrium Glass",
+    ["sbz_bio:dirt"] = "Dirt",
+    ["sbz_bio:fertilizer"] = "Sprouting Plants",
+    ["sbz_bio:burner"] = "Carbon Dioxide",
+    ["sbz_bio:airlock"] = "Airlocks"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -113,9 +120,14 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
         itemstack = inv_info.stack
     end
     local player_name = player:get_player_name()
-    if itemstack:get_name() == "sbz_chem:gold_powder" then
+    local itemname = itemstack:get_name()
+    if itemname == "sbz_chem:gold_powder" then
         unlock_achievement(player_name, "It's fake")
-    elseif itemstack:get_name() == "sbz_chem:bronze_powder" then
+    elseif itemname == "sbz_chem:bronze_powder" then
         unlock_achievement(player_name, "Bronze Age")
+    elseif itemname == "sbz_chem:water_fluid_cell" then
+        unlock_achievement(player_name, "Liquid Water")
+    elseif itemname == "sbz_bio:stemfruit" then
+        unlock_achievement(player_name, "Stemfruit")
     end
 end)
