@@ -29,7 +29,7 @@ minetest.register_chatcommand("cheat_hacker", {
 
 minetest.register_chatcommand("giv_achievments", {
     description = "Yeah",
-    privs = { "server" },
+    privs = { ["server"] = true },
     func = function(name, param)
         for _, q in ipairs(quests) do
             unlock_achievement(name, q.title)
