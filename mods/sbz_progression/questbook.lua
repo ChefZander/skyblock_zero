@@ -187,7 +187,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
         requires = { "Annihilator" }
     },
 
-    { type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.", requires = { "Matter Plates", "Obtain Emittrium" } },
+    { type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.\nALSO, if you put a machine next to another machine, it will conduct power to that machine, so you only need power pipes in very specific cases (like automation).", requires = { "Matter Plates", "Obtain Emittrium" } },
 
     { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
@@ -195,7 +195,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     { type = "quest", title = "Batteries", text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 300 Cosmic Joules of energy. You can craft it by surrounding a Emittrium Circuit with matter blobs.", requires = { "Emittrium Circuits" } },
 
-    { type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 600 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries" } },
+    { type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 900 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries", "Furnace" } },
 
     { type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = { "Emittrium Circuits", "Reinforced Matter" } },
 
@@ -205,8 +205,10 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     { type = "quest", title = "Crusher", text = "This one's very simple :)\nIt's just pebbles in, metals out. Consumes 5 Power when running.", requires = { "Concrete Plan", "Antimatter", "Charged Field" } },
 
+    { type = "quest", title = "Furnace", text = "Craft the high power electric furnace (H.P.E.F for short), allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.", requires = { "Crusher" } },
+
     { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
-    
+
     { type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
 
     { type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = { "Simple Alloy Furnace", "Crusher" } },
@@ -214,7 +216,9 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
     { type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = { "Simple Alloy Furnace", "Emittrium Circuits" } },
 
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
-    { type = "quest", title = "Bear Arms", text = "Craft the robotic arm." },
+
+    { type = "quest", title = "Bear Arms", text = "Craft the robotic arm.", requires = { "Furnace" } },
+    { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a LARGE ammount of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
 
     -- ======================================================================================
     {type="text", title="Questline: Organics", text="Grow plants and fungi to craft more things and also make your base look really cool."},
@@ -283,7 +287,7 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         requires = { "Emitter Immitators", "Matter Plates" }
     },
 
-    { type = "quest",  title = "Phosphor",                 text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
+    { type = "quest", title = "Phosphor",                 text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
     -- ======================================================================================
     {
         type = "text",
@@ -291,6 +295,21 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         text =
         [[If you already know about regular pipeworks, skyblock_zero's pipeworks are a very modified version of that mod, it will be similar though.]]
     }, {
+    type = "quest",
+    title = "Tubes",
+    text = [[
+Do you want to transport something...
+
+Introducing tubes... you can like transport stacks easily...
+
+Simply use the Filter-Injector to push something into the tube, and boom.
+
+Also, if 30 stacks are in one tube, the tube becomes broken.
+
+Also you NEED the Automatic Filter-Injector to push something in the tube.
+    ]],
+    requires = { "Furnace" },
+}, {
     type = "quest",
     title = "Automatic Filter-Injectors",
     text = [[
@@ -303,41 +322,28 @@ Now you can
 The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack each second
 
 ]],
-    requires = { "Bear Arms" }
-}, {
-    type = "quest",
-    title = "Tubes",
-    text = [[
-Do you want to transport something more than 1 block...
-
-Introducing tubes... you can like transport stacks easily...
-
-Simply use the Filter-Injector to push something into the tube, and boom.
-
-Also, if 30 stacks are in one tube, the tube becomes broken.
-    ]],
-    requires = { "Automatic Filter-Injectors" },
+    requires = { "Bear Arms", "Tubes" }
 }, {
     type = "quest",
     title = "Node Breakers",
     text = [[They break stuff then they throw it away thru their back-side. They need 1 power and run every second.]],
-    requires = { "Crusher" }
+    requires = { "Automatic Filter-Injectors" }
 }, {
     type = "quest",
     title = "Deployers",
     text = "They place stuff.",
-    requires = { "Automatic Filter-Injectors", "Crusher", "Bear Arms" }
+    requires = { "Automatic Filter-Injectors", "Bear Arms" }
 }, {
     type = "quest",
     title = "Punchers",
     text =
     "They punch stuff... yes this means you can automate emittrium and charged particles, or get automatic core dust production.",
-    requires = { "Automatic Filter-Injectors", "Crusher", "Bear Arms", "Emittrium Circuits" }
+    requires = { "Automatic Filter-Injectors", "Bear Arms", "Emittrium Circuits" }
 }, {
     type = "quest",
     title = "Autocrafters",
-    text = "Oh they craft..... really really ***really*** fast....",
-    requires = { "Bear Arms", "Neutronium", "Crusher", "Emittrium Circuits" }
+    text = "They craft... and they can craft fast, or really slow, depends on how you want them to",
+    requires = { "Bear Arms", "Neutronium", "Emittrium Circuits", "Automatic Filter-Injectors" }
 }, {
     type = "quest",
     title = "Item Voids",
@@ -351,13 +357,36 @@ Also, if 30 stacks are in one tube, the tube becomes broken.
 },
 
     -- ======================================================================================
-    { type = "text",   title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
+    { type = "text",  title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
-    { type = "quest",  title = "Angel's Wing",             text = "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.",                                                                                                           requires = { "Emittrium Circuits", "Concrete Plan" } },
-
-    { type = "secret", title = "Emptiness",                text = "Damn. You fell off." },
-    { type = "secret", title = "Desolate",                 text = "You talked to yourself." },
-    { type = "secret", title = "Fragile",                  text = "You broke an Angel's Wing." },
+    {
+        type = "quest",
+        title = "Angel's Wing",
+        text =
+        "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.",
+        requires = { "Emittrium Circuits", "Concrete Plan" }
+    },
+    {
+        type = "quest",
+        title = "Small Protectors",
+        text =
+        "Craft a small protector, small protectors protect a decently sized area.\nUnwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.",
+        requires = { "Concrete Plan", "Furnace" }
+    }, {
+    type = "quest",
+    title = "Big Protectors",
+    text = "Craft the large protector... its the same as the small one... but bigger",
+    requires = { "Small Protectors" }
+}, {
+    type = "quest",
+    title = "Public Storinators",
+    text =
+    "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
+    requires = { "Storinators" }
+},
+    { type = "secret", title = "Emptiness", text = "Damn. You fell off." },
+    { type = "secret", title = "Desolate",  text = "You talked to yourself." },
+    { type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." },
 }
 
 local function getquestbyname(questname)

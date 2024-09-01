@@ -67,7 +67,7 @@ minetest.register_node("sbz_resources:matter_slab", {
     paramtype2 = "facedir",
     node_box = {
         type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0,   0.5 }
+        fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 }
     },
     groups = { matter = 1, cracky = 3 },
     walkable = true,
@@ -77,12 +77,13 @@ minetest.register_node("sbz_resources:matter_slab", {
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
-    on_place = function (itemstack, user, pointed)
+    on_place = function(itemstack, user, pointed)
         if pointed.type ~= "node" then return itemstack end
         if pointed.under.y > pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 23) end
         if pointed.under.y < pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 0) end
-        local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y%1
-        return minetest.item_place_node(itemstack, user, pointed, (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
+        local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y % 1
+        return minetest.item_place_node(itemstack, user, pointed,
+            (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
     end
 })
 
@@ -100,7 +101,7 @@ minetest.register_node("sbz_resources:matter_platform", {
     drawtype = "nodebox",
     node_box = {
         type = "fixed",
-        fixed = { -0.5, 0.375, -0.5, 0.5, 0.5,   0.5 }
+        fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 }
     },
     groups = { matter = 2, cracky = 3 },
     paramtype = "light",
@@ -179,7 +180,7 @@ minetest.register_craft({
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:pebble 9",
-    recipe = {"sbz_resources:stone"}
+    recipe = { "sbz_resources:stone" }
 })
 
 
@@ -201,20 +202,20 @@ minetest.register_craft({
 
 minetest.register_node("sbz_resources:emittrium_glass", {
     description = "Emittrium Glass",
-    drawtype = "glasslike",
-    tiles = {"emittrium_glass.png"},
+    drawtype = "glasslike_framed_optional",
+    tiles = { "emittrium_glass.png", "emittrium_glass_shine.png" },
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
-    groups = {matter=1, transparent=1}
+    groups = { matter = 1, transparent = 1 }
 })
 
 minetest.register_craft({
     output = "sbz_resources:emittrium_glass 16",
     recipe = {
-        {"sbz_resources:raw_emittrium", "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium"},
-        {"sbz_resources:antimatter_dust", "", "sbz_resources:antimatter_dust"},
-        {"sbz_resources:raw_emittrium", "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium"}
+        { "sbz_resources:raw_emittrium",   "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium" },
+        { "sbz_resources:antimatter_dust", "",                              "sbz_resources:antimatter_dust" },
+        { "sbz_resources:raw_emittrium",   "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium" }
     }
 })
 
@@ -223,10 +224,10 @@ local water_image = "water.png^[opacity:127"
 minetest.register_node("sbz_resources:water_source", {
     description = "Water Source",
     drawtype = "liquid",
-    tiles = {water_image},
+    tiles = { water_image },
     inventory_image = water_image,
     use_texture_alpha = "clip",
-    groups = {habitat_conducts=1, transparent=1},
+    groups = { habitat_conducts = 1, transparent = 1 },
     post_effect_color = "#4000ff80",
     paramtype = "light",
     walkable = false,
@@ -240,11 +241,11 @@ minetest.register_node("sbz_resources:water_source", {
 minetest.register_node("sbz_resources:water_flowing", {
     description = "Flowing Water",
     drawtype = "flowingliquid",
-    tiles = {water_image},
-    special_tiles = {water_image, water_image},
+    tiles = { water_image },
+    special_tiles = { water_image, water_image },
     inventory_image = water_image,
     use_texture_alpha = "clip",
-    groups = {habitat_conducts=1, transparent=1, not_in_creative_inventory=1},
+    groups = { habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
     post_effect_color = "#4000ff80",
     paramtype = "light",
     walkable = false,

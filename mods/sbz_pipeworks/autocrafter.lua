@@ -363,7 +363,7 @@ local function update_meta(meta)
         "listring[current_player;main]" ..
         "listring[context;dst]" ..
         "listring[current_player;main]" ..
-        string.format("field[0.22,7;4,0.5;maxpow;Max power consumption;%s]",
+        string.format("field[0.22,7;7,0.5;maxpow;Crafts/s (consumes more power);%s]",
             meta:get_int("maxpow"))
     meta:set_string("formspec", fs)
 
@@ -435,6 +435,7 @@ minetest.register_node("pipeworks:autocrafter", {
         inv:set_size("recipe", 3 * 3)
         inv:set_size("dst", 4 * 3)
         inv:set_size("output", 1)
+        meta:set_int("maxpow", 1)
         update_meta(meta)
     end,
     on_rightclick = function(pos)
@@ -582,6 +583,6 @@ minetest.register_craft({
     recipe = {
         { "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm" },
         { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit" },
-        { "sbz_chem:titanium_alloy_powder",  "sbz_meteorites:neutronium",       "sbz_chem:titanium_alloy_powder" }
+        { "sbz_chem:titanium_alloy_ingot",   "sbz_meteorites:neutronium",       "sbz_chem:titanium_alloy_ingot" }
     }
 })

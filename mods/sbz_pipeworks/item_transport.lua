@@ -218,6 +218,7 @@ minetest.register_entity("pipeworks:tubed_item", {
 			is_visible = true,
 			textures = { stack:get_name() }
 		})
+
 		local def = stack:get_definition()
 		self.object:set_yaw((def and def.type == "node") and 0 or math.pi * 0.25)
 	end,

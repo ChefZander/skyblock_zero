@@ -54,7 +54,7 @@ minetest.register_tool("sbz_resources:robotic_arm", {
 minetest.register_craft {
     output = "sbz_resources:robotic_arm",
     recipe = {
-        { "sbz_resources:matter_annihilator", "sbz_chem:iron_powder",            "sbz_resources:matter_annihilator" },
+        { "sbz_resources:matter_annihilator", "sbz_chem:iron_ingot",             "sbz_resources:matter_annihilator" },
         { "sbz_resources:reinforced_matter",  "sbz_resources:emittrium_circuit", "sbz_resources:reinforced_matter" },
         { "sbz_resources:reinforced_matter",  "sbz_resources:emittrium_circuit", "sbz_resources:reinforced_matter" }
     }

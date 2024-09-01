@@ -301,7 +301,7 @@ minetest.register_craft({
     recipe = {
         { "sbz_resources:robotic_arm", "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm" },
         { "pipeworks:tube_1",          "sbz_resources:emittrium_circuit", "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_powder",  "sbz_chem:aluminum_powder",        "sbz_chem:aluminum_powder" }
+        { "sbz_chem:aluminum_ingot",   "sbz_chem:aluminum_ingot",         "sbz_chem:aluminum_ingot" }
     }
 })
 
@@ -310,15 +310,15 @@ minetest.register_craft({
     recipe = {
         { "sbz_resources:matter_annihilator", "sbz_resources:matter_annihilator", "sbz_resources:matter_annihilator" },
         { "pipeworks:tube_1",                 "sbz_resources:simple_circuit",     "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_powder",         "sbz_chem:aluminum_powder",         "sbz_chem:aluminum_powder" }
+        { "sbz_chem:aluminum_ingot",          "sbz_chem:aluminum_ingot",          "sbz_chem:aluminum_ingot" }
     }
 })
 
 minetest.register_craft({
     output = "pipeworks:deployer",
     recipe = {
-        { "",                         "sbz_resources:robotic_arm",    "" },
-        { "pipeworks:tube_1",         "sbz_resources:simple_circuit", "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_powder", "sbz_chem:aluminum_powder",     "sbz_chem:aluminum_powder" }
+        { "",                        "sbz_resources:robotic_arm",    "" },
+        { "pipeworks:tube_1",        "sbz_resources:simple_circuit", "pipeworks:automatic_filter_injector" },
+        { "sbz_chem:aluminum_ingot", "sbz_chem:aluminum_ingot",      "sbz_chem:aluminum_ingot" }
     }
 })

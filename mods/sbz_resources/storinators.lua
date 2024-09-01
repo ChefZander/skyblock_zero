@@ -19,8 +19,15 @@ local function update_node_texture(pos)
     else
         new_texture = "storinator_full_3"
     end
+
     local node = minetest.get_node(pos)
+
+    if string.sub(node.name, - #"_public") == "_public" then
+        new_texture = new_texture .. "_public"
+    end
+
     node.name = "sbz_resources:" .. new_texture
+
 
     minetest.swap_node(pos, node)
 end
@@ -37,8 +44,9 @@ for k, v in ipairs({
     if v ~= "sbz_resources:storinator" then
         tex = string.sub(v, 15) .. ".png"
     end
-    minetest.register_node(v, {
-        description = "Storinator\n\nInventory Slots: 30.",
+    local def = {
+        description = "Storinator",
+        info_extra = "32 slots",
         tiles = {
             "storinator_side.png",
             "storinator_side.png",
@@ -47,7 +55,7 @@ for k, v in ipairs({
             "storinator_side.png",
             tex
         },
-        groups = { matter = 1, tubedevice = 1, tubedevice_receiver = 1, },
+        groups = { matter = 1, tubedevice = 1, tubedevice_receiver = 1, not_in_creative_inventory = not (v == "sbz_resources:storinator") and 1 or 0 },
         paramtype2 = "facedir",
         sunlight_propagates = true,
         use_texture_alpha = "clip",
@@ -63,24 +71,18 @@ for k, v in ipairs({
         on_construct = function(pos)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            inv:set_size("main", 30)
+            inv:set_size("main", 32)
 
             meta:set_string("formspec", "formspec_version[7]" ..
                 "size[8.2,9]" ..
                 "style_type[list;spacing=.2;size=.8]" ..
-                "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;0.2,0.2;8,4;]" ..
+                "list[context;main;0.2,0.2;8,4;]" ..
                 "list[current_player;main;0.2,5;8,4;]" ..
                 "listring[]")
         end,
-        on_metadata_inventory_put = function(pos, listname, index, stack, player)
-            update_node_texture(pos)
-        end,
-        on_metadata_inventory_take = function(pos, listname, index, stack, player)
-            update_node_texture(pos)
-        end,
-        on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-            update_node_texture(pos)
-        end,
+        on_metadata_inventory_put = update_node_texture,
+        on_metadata_inventory_take = update_node_texture,
+        on_metadata_inventory_move = update_node_texture,
         drop = "sbz_resources:storinator",
         tube = {
             input_inventory = "main",
@@ -101,8 +103,34 @@ for k, v in ipairs({
         },
         after_dig_node = pipeworks.after_dig,
         after_place_node = pipeworks.after_place,
-    })
+    }
+    local public_def = table.copy(def)
+
+    minetest.register_node(v, def)
+    public_def.description = "Public Storinator (anyone is allowed to access it)"
+
+    for kk, vv in ipairs(public_def.tiles) do
+        public_def.tiles[kk] = vv .. "^[colorize:cyan:50"
+    end
+    public_def.groups.public = 1
+    minetest.register_node(v .. "_public", public_def)
 end
+
+minetest.register_craft {
+    output = "sbz_resources:storinator_public",
+    type = "shapeless",
+    recipe = {
+        "sbz_resources:storinator"
+    }
+}
+
+minetest.register_craft {
+    output = "sbz_resources:storinator",
+    type = "shapeless",
+    recipe = {
+        "sbz_resources:storinator_public"
+    }
+}
 
 minetest.register_craft({
     output = "sbz_resources:storinator",

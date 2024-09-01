@@ -1,7 +1,10 @@
 minetest.log("action", "sbz base: init")
 
 local modname = minetest.get_current_modname()
-sbz_api = {}
+sbz_api = {
+    debug = true
+}
+
 
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
@@ -275,3 +278,4 @@ minetest.register_alias("mapgen_water_source", "air")
 minetest.register_alias("mapgen_river_water_source", "air")
 
 dofile(minetest.get_modpath("sbz_base") .. "/override_descriptions.lua")
+dofile(minetest.get_modpath("sbz_base") .. "/override_for_areas.lua")

@@ -1,7 +1,7 @@
 local generator_power_production = 30
-sbz_api.register_generator("sbz_power:simple_charge_generator", {
+sbz_api.register_stateful_generator("sbz_power:simple_charge_generator", {
     description = "Simple Charge Generator",
-    tiles = { "simple_charge_generator.png" },
+    tiles = { "simple_charge_generator_off.png" },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
@@ -17,7 +17,6 @@ list[context;main;3.5,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
 listring[]
 ]])
-
         minetest.sound_play("machine_open", {
             to_player = player_name,
             gain = 1.0,
@@ -35,16 +34,10 @@ listring[]
             gain = 1.0,
             pos = pos,
         })
-
-        meta:set_int("count", 10)
     end,
-
+    action_interval = 10,
     action = function(pos, node, meta)
-        local count = meta:get_int("count")
-        count = count - 1
-        meta:set_int("count", count)
         local inv = meta:get_inventory()
-
         -- check if fuel is there
         if not inv:contains_item("main", "sbz_resources:core_dust") then
             minetest.add_particlespawner({
@@ -66,44 +59,46 @@ listring[]
                 glow = 10
             })
             meta:set_string("infotext", "Stopped")
-            return 0
+            return 0, true
         end
-        if count <= 0 then
-            meta:set_int("count", 10)
-            local stack = inv:get_stack("main", 1)
-            if stack:is_empty() then
-                meta:set_string("infotext", "Stopped")
-                return 0
-            end
-
-            stack:take_item(1)
-            inv:set_stack("main", 1, stack)
-
-            minetest.add_particlespawner({
-                amount = 25,
-                time = 1,
-                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                minvel = { x = 0, y = 5, z = 0 },
-                maxvel = { x = 0, y = 5, z = 0 },
-                minacc = { x = 0, y = 0, z = 0 },
-                maxacc = { x = 0, y = 0, z = 0 },
-                minexptime = 1,
-                maxexptime = 3,
-                minsize = 0.5,
-                maxsize = 1.0,
-                collisiondetection = false,
-                vertical = false,
-                texture = "charged_particle.png",
-                glow = 10
-            })
+        local stack = inv:get_stack("main", 1)
+        if stack:is_empty() then
+            meta:set_string("infotext", "Stopped")
+            return 0, true
         end
+
+        stack:take_item(1)
+        inv:set_stack("main", 1, stack)
+
+        minetest.add_particlespawner({
+            amount = 25,
+            time = 1,
+            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+            minvel = { x = 0, y = 5, z = 0 },
+            maxvel = { x = 0, y = 5, z = 0 },
+            minacc = { x = 0, y = 0, z = 0 },
+            maxacc = { x = 0, y = 0, z = 0 },
+            minexptime = 1,
+            maxexptime = 3,
+            minsize = 0.5,
+            maxsize = 1.0,
+            collisiondetection = false,
+            vertical = false,
+            texture = "charged_particle.png",
+            glow = 10
+        })
         meta:set_string("infotext", "Running")
-        return generator_power_production
+        return generator_power_production, false
     end,
     input_inv = "main",
     output_inv = "main",
     info_generated = 30,
+    info_extra = "Consumes 1 core dust/10 seconds",
+    autostate = true,
+}, {
+    light_source = 14,
+    tiles = { "simple_charge_generator.png" }
 })
 
 
@@ -280,4 +275,120 @@ minetest.register_abm({
             glow = 10
         })
     end,
+})
+
+sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
+    description = "Antimatter generator",
+    info_extra = {
+        "Generates 120 power",
+        "Needs 1 antimatter/s and 1 matter/s",
+    },
+    groups = { matter = 1, pipe_connects = 1 },
+    tiles = {
+        "antimatter_gen_top.png",
+        "antimatter_gen_top.png",
+        "antimatter_gen_side.png"
+    },
+    input_inv = "input",
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+
+        inv:set_size("input", 2)
+
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+
+item_image[1.4,1.9;1,1;sbz_resources:matter_dust]
+list[context;input;1.5,2;1,1;]
+
+item_image[5.7,1.9;1,1;sbz_resources:antimatter_dust]
+list[context;input;5.8,2;1,1;1]
+
+list[current_player;main;0.2,5;8,4;]
+listring[]
+]])
+    end,
+    autostate = true,
+    action = function(pos, node, meta, supply, demand)
+        local inv = meta:get_inventory()
+        local list = inv:get_list("input")
+        if list[1]:get_name() == "sbz_resources:antimatter_dust" then
+            if list[2]:is_empty() then
+                list[2] = list[1]
+                list[1] = ItemStack("")
+            elseif list[2]:get_name() == "sbz_resources:matter_dust" then
+                local antimatter_stack = list[1]
+                local matter_stack = list[2]
+                list[1] = matter_stack
+                list[2] = antimatter_stack
+            end
+        end
+        inv:set_list("input", list)
+
+        if inv:contains_item("input", "sbz_resources:matter_dust") and inv:contains_item("input", "sbz_resources:antimatter_dust") then
+            inv:remove_item("input", "sbz_resources:matter_dust")
+            inv:remove_item("input", "sbz_resources:antimatter_dust")
+            meta:set_string("infotext", "Running")
+            local def = {
+                amount = 25,
+                time = 1,
+                collisiondetection = false,
+                vertical = false,
+                glow = 14,
+                size = 3,
+                pos = pos,
+                vel = { min = -vector.new(5, 5, 5), max = vector.new(5, 5, 5) },
+                exptime = 3,
+            }
+            def.texture = "antimatter_dust.png"
+            minetest.add_particlespawner(def)
+
+            def.texture = "matter_dust.png"
+            minetest.add_particlespawner(def)
+            return 120
+        end
+
+        meta:set_string("infotext", "Can't react")
+        return 0
+    end,
+    allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+        if to_list == "input" then
+            local stackname = (minetest.get_inventory { type = "player", name = player:get_player_name() }):get_stack(
+                from_list, from_index):get_name() -- beautiful
+            if stackname == "sbz_resources:matter_dust" or stackname == "sbz_resources:antimatter_dust" then
+                return count
+            else
+                return 0
+            end
+        end
+        return count
+    end,
+    allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+        if listname == "input" then
+            if stack:get_name() == "sbz_resources:matter_dust" or stack:get_name() == "sbz_resources:antimatter_dust" then
+                return stack:get_count()
+            end
+            return 0
+        end
+        return stack:get_count()
+    end
+}, {
+    tiles = {
+        "antimatter_gen_top.png",
+        "antimatter_gen_top.png",
+        { name = "antimatter_gen_side_on.png", animation = { type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 1.0 } }
+    },
+    light_source = 14,
+})
+
+minetest.register_craft({
+    output = "sbz_power:antimatter_generator",
+    recipe = {
+        { "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter" },
+        { "sbz_resources:matter_dust",       "sbz_meteorites:neutronium",       "sbz_resources:antimatter_dust" },
+        { "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter" }
+    }
 })
