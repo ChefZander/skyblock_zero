@@ -7,9 +7,9 @@ pipeworks.register_tube("pipeworks:tube", {
 minetest.register_craft({
     output = "pipeworks:tube_1 8",
     recipe = {
-        { "sbz_chem:platinum_powder", "", "sbz_chem:platinum_powder" },
-        { "",                         "", "" },
-        { "sbz_chem:platinum_powder", "", "sbz_chem:platinum_powder" },
+        { "sbz_chem:platinum_ingot", "", "sbz_chem:platinum_ingot" },
+        { "",                        "", "" },
+        { "sbz_chem:platinum_ingot", "", "sbz_chem:platinum_ingot" },
     }
 })
 
@@ -92,7 +92,7 @@ minetest.register_node("pipeworks:one_way_tube", {
         type = "fixed",
         fixed = pipeworks.tube_long
     },
-    groups = { snappy = 2, choppy = 2, oddly_breakable_by_hand = 2, tubedevice = 1, axey = 1, handy = 1, pickaxey = 1 },
+    groups = { matter = 2, snappy = 2, choppy = 2, oddly_breakable_by_hand = 2, tubedevice = 1, axey = 1, handy = 1, pickaxey = 1 },
     is_ground_content = false,
     tube = {
         connect_sides = { left = 1, right = 1 },

@@ -23,18 +23,19 @@ minetest.register_chatcommand("cheat_hacker", {
     description = "Cheat haguh",
     privs = {},
     func = function(name, param)
-        if not name == "zander" then return end -- if youre a modder, change this to your name to allow for easier testing
-        if param == "all" then
-            for _, q in ipairs(quests) do
-                unlock_achievement(name, q.title)
-            end
-            return
-        end
-        unlock_achievement(name, param)
         displayDialougeLine(name, "Cheat haguh")
     end,
 })
 
+minetest.register_chatcommand("giv_achievments", {
+    description = "Yeah",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        for _, q in ipairs(quests) do
+            unlock_achievement(name, q.title)
+        end
+    end
+})
 local achievment_table = {
     ["sbz_resources:matter_blob"] = "A bigger platform",
     ["sbz_resources:matter_stair"] = "Matter Stairs",
@@ -79,6 +80,12 @@ local achievment_table = {
     ["pipeworks:item_void"] = "Item Voids",
     ["pipeworks:item_vacuum"] = "Item Vacuums",
     ["screwdriver:screwdriver"] = "Screwdriver",
+    ["sbz_chem:high_power_electric_furnace"] = "Furnace",
+    ["areasprotector:protector_small"] = "Small Protectors",
+    ["areasprotector:protector_large"] = "Big Protectors",
+    ["sbz_power:antimatter_generator"] = "Antimatter Generators",
+    ["sbz_resources:storinator_public"] = "Public Storinators",
+
     ["sbz_bio:emittrium_glass"] = "Emittrium Glass",
     ["sbz_bio:dirt"] = "Dirt",
     ["sbz_bio:fertilizer"] = "Sprouting Plants",

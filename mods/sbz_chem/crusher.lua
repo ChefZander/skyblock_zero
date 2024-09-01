@@ -1,7 +1,7 @@
-sbz_api.register_machine("sbz_chem:crusher", {
+sbz_api.register_stateful_machine("sbz_chem:crusher", {
     description = "Crusher",
     tiles = {
-        { name = "crusher_top.png", animation = { type = "vertical_frames", length = 0.5 } },
+        "crusher_top.png^[verticalframe:4:1",
         "crusher_side.png"
     },
     groups = { matter = 1 },
@@ -42,8 +42,8 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         })
     end,
 
-    control_action_raw = true,
     info_power_consume = 5,
+    autostate = true,
     action = function(pos, node, meta, supply, demand)
         local power_needed = 5
         local inv = meta:get_inventory()
@@ -55,7 +55,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")
-            return power_needed
+            return power_needed, false
         else
             meta:set_string("infotext", "Crushing...")
 
@@ -90,6 +90,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
                 inv:add_item("output", selected_item)
             else
                 meta:set_string("infotext", "Output inventory full")
+                return 0
             end
 
             if inv:contains_item("output", "sbz_chem:empty_fluid_cell") then
@@ -106,6 +107,12 @@ listring[current_player;main]listring[context;input]listring[current_player;main
     end,
     input_inv = "input",
     output_inv = "output"
+}, {
+    tiles = {
+        { name = "crusher_top.png", animation = { type = "vertical_frames", length = 0.5 } },
+        "crusher_side.png"
+    },
+    light_source = 3,
 })
 
 

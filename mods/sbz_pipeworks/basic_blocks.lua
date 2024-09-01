@@ -176,9 +176,9 @@ minetest.register_node("pipeworks:item_sorter", {
 minetest.register_craft({
     output = "pipeworks:item_sorter",
     recipe = {
-        { "sbz_chem:invar_powder", "pipeworks:tube_1",             "sbz_chem:invar_powder" },
-        { "pipeworks:tube_1",      "sbz_resources:simple_circuit", "pipeworks:tube_1" },
-        { "sbz_chem:invar_powder", "pipeworks:tube_1",             "sbz_chem:invar_powder" }
+        { "sbz_chem:invar_ingot", "pipeworks:tube_1",             "sbz_chem:invar_ingot" },
+        { "pipeworks:tube_1",     "sbz_resources:simple_circuit", "pipeworks:tube_1" },
+        { "sbz_chem:invar_ingot", "pipeworks:tube_1",             "sbz_chem:invar_ingot" }
     },
 })
 
