@@ -120,9 +120,9 @@ listring[context;dst]
 })
 
 minetest.register_craft({
-    output = "sbz_chem:simple_alloy_furnace",
+    output = "sbz_chem:high_power_electric_furnace",
     recipe = {
-        { "sbz_power:simple_charged_field", "sbz_resources:antimatter_dust",   "sbz_power:simple_charged_field" },
+        { "sbz_power:simple_charged_field", "sbz_resources:matter_dust",       "sbz_power:simple_charged_field" },
         { "sbz_resources:matter_blob",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
         { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",       "sbz_power:simple_charged_field" }
     }

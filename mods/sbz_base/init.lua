@@ -1,7 +1,10 @@
 minetest.log("action", "sbz base: init")
 
 local modname = minetest.get_current_modname()
-sbz_api = {}
+sbz_api = {
+    debug = true
+}
+
 
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
