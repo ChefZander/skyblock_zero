@@ -97,8 +97,8 @@ local function playRandomBGM(player_name)
         to_player = player_name,
         gain = 1.0,
     })
-    minetest.after(sound_length + 301,
-        function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred
+    minetest.after(sound_length + math.random(10, 100),
+        function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
             playRandomBGM(player_name)
         end)
 end
