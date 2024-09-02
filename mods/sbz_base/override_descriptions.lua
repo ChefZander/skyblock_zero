@@ -5,7 +5,7 @@ minetest.register_on_mods_loaded(function()
         local new_desc = { og_desc }
 
         if v.power_needed or v.info_power_needed then
-            new_desc[#new_desc + 1] = "Needs " .. (v.power_needed or v.info_power_needed) .. " power"
+            new_desc[#new_desc + 1] = "Consumes " .. (v.power_needed or v.info_power_needed) .. " power"
         end
         if v.power_generated or v.info_generated then
             new_desc[#new_desc + 1] = "Generates " .. (v.power_generated or v.info_generated) .. " power"
@@ -22,7 +22,7 @@ minetest.register_on_mods_loaded(function()
         end
 
         if v.groups ~= nil and v.groups.core_drop_multi ~= nil then
-            new_desc[#new_desc + 1] = "Gets " .. v.groups.core_drop_multi .. "x core and emittrium drops"
+            new_desc[#new_desc + 1] = "Yields " .. v.groups.core_drop_multi .. "x core and emittrium drops"
         end
 
         if v.info_extra then
