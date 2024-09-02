@@ -20,6 +20,28 @@ minetest.register_node("sbz_meteorites:meteoric_matter", {
     }
 })
 
+minetest.register_node("sbz_meteorites:meteoric_antimatter", {
+    description = "Meteoric Antiatter",
+    tiles = {"antimatter_blob.png^meteoric_overlay.png"},
+    paramtype = "light",
+    light_source = 12,
+    groups = {antimatter=1, cracky=3},
+    drop = {
+        max_items = 9,
+        items = {
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}}
+        }
+    }
+})
+
 minetest.register_node("sbz_meteorites:meteoric_emittrium", {
     description = "Meteoric Emittrium",
     tiles = {"emitter.png^meteoric_overlay.png"},
