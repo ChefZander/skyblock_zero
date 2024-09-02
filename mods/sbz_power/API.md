@@ -57,3 +57,6 @@ and `sbz_api.register_stateful_generator` is literally the same thing but for ge
 all of theese work only on stateful nodes actually
 
 
+# oh yeah how could i forget
+
+`def.subticking` - literally just makes your action trigger 4x faster, only for machines, not generators
