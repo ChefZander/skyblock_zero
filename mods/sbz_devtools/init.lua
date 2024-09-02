@@ -103,26 +103,42 @@ minetest.register_chatcommand("dev_close", {
             return false, "Player not found!"
         end
 
-        local pos = player:get_pos()
+        local pos = vector.round(player:get_pos())
         local unique_nodes = {}
         local found_nodes = 0
 
-        for x = -32, 32 do
-            for y = -32, 32 do
-                for z = -32, 32 do
+        -- Define the maximum distance
+        local max_distance = 32
+
+        -- Search from the player position outward
+        for distance = 0, max_distance do
+            for x = -distance, distance do
+                for y = -distance, distance do
+                    for z = -distance, distance do
+                        -- Skip points outside the current spherical shell
+                        if math.abs(x) ~= distance and math.abs(y) ~= distance and math.abs(z) ~= distance then
+                            goto continue
+                        end
+
+                        if found_nodes >= 8 then
+                            break
+                        end
+
+                        local node_pos = vector.add(pos, {x = x, y = y, z = z})
+                        local node = minetest.get_node(node_pos)
+                        local node_name = node.name
+
+                        if node_name ~= "air" and not unique_nodes[node_name] then
+                            unique_nodes[node_name] = true
+                            found_nodes = found_nodes + 1
+                            local item_stack = ItemStack(node_name)
+                            player:get_inventory():add_item("main", item_stack)
+                        end
+
+                        ::continue::
+                    end
                     if found_nodes >= 8 then
                         break
-                    end
-
-                    local node_pos = vector.add(pos, {x = x, y = y, z = z})
-                    local node = minetest.get_node(node_pos)
-                    local node_name = node.name
-
-                    if node_name ~= "air" and not unique_nodes[node_name] then
-                        unique_nodes[node_name] = true
-                        found_nodes = found_nodes + 1
-                        local item_stack = ItemStack(node_name)
-                        player:get_inventory():add_item("main", item_stack)
                     end
                 end
                 if found_nodes >= 8 then
