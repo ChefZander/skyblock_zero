@@ -25,7 +25,26 @@ minetest.register_node("sbz_bio:burner", {
         itemstack:take_item()
         inv:set_stack("main", 1, itemstack)
         return output
-    end
+    end,
+    tube = {
+        insert_object = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            if inv:get_list("main") then
+                return inv:add_item("main", stack)
+            end
+            return stack
+        end,
+        can_insert = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+
+            stack:peek_item(1)
+            return inv:room_for_item("main", stack)
+        end,
+        input_inventory = "main",
+        connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
+    }
 })
 
 minetest.register_craft({
