@@ -27,15 +27,43 @@ minetest.register_chatcommand("cheat_hacker", {
     end,
 })
 
-minetest.register_chatcommand("giv_achievments", {
-    description = "Yeah",
+minetest.register_chatcommand("give_achievements", {
+    description = "Gives achievements - for debugging only",
+    params = '<name> | "all"',
+
     privs = { ["server"] = true },
     func = function(name, param)
-        for _, q in ipairs(quests) do
-            unlock_achievement(name, q.title)
+        if param == "all" then
+            for _, q in ipairs(quests) do
+                unlock_achievement(name, q.title)
+            end
+            minetest.chat_send_player(name, "Gave you all achievements")
+        else
+            unlock_achievement(name, param)
+            minetest.chat_send_player(name, "Gave you the achievement with the name \"" .. param .. "\"")
         end
     end
 })
+
+minetest.register_chatcommand("revoke_achievement", {
+    description = "Revoke an achievement - for debugging only",
+    params = '<name> | "all"',
+
+    privs = { ["server"] = true },
+    func = function(name, param)
+        if param == "all" then
+            for _, q in ipairs(quests) do
+                revoke_achievement(name, q.title)
+            end
+            minetest.chat_send_player(name, "Revoked you all achievements")
+        else
+            revoke_achievement(name, param)
+            minetest.chat_send_player(name, "Revoked you the achievement with the name \"" .. param .. "\"")
+        end
+    end
+})
+
+
 local achievment_table = {
     ["sbz_resources:matter_blob"] = "A bigger platform",
     ["sbz_resources:matter_stair"] = "Matter Stairs",
