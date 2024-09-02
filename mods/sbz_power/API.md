@@ -3,7 +3,7 @@
 ### `sbz_api.register_machine(name, def)`
 - registers a... machine
 - you can choose if it conducts power by setting the pipe_conducts group to 0
-- `def.disallow_pipeworks` - so if you dont want itemtransport (DONT DO THIS INTENTIONALLY to make your machine more "balanced", PLEASE) you just set this to true, also this automatically happens when you dont have a output_inv, but you still get `pipeworks.after_place` and `pipeworks.after_dig`, also if you have your own after_place_node or after_dig_node you need to manually add in pipeworks.after_dig(blabla) and yeah you get it
+- `def.disallow_pipeworks` - so if you dont want itemtransport (DONT DO THIS INTENTIONALLY to make your machine more "balanced", PLEASE) you just set this to true, also this automatically happens when you dont have a output_inv
 - `def.input_inv` `def.output_inv` - theese are the input/output inventory lists, `def.input_inv` is optional for pipeworks
 - `power_consumed = def.action(pos, node, meta, supply, demand)`
  - node: its the node name... not really useful
@@ -13,8 +13,7 @@
  - runs once per second*
 - `def.power_needed` - so if your machine is something like the extractor where theres not much going on, you can just set this value to 5, it will modify your action to only execute when it has that amount of power
   - `def.idle_consume` - requires `def.power_needed` - the idle consumbtion of the thing... when it like doesnt have enough power thats what yeah.... defaults to `def.power_needed`, keep it nil if you didnt get my amazing explanation  
-  - `def.action_interval` - requires `def.power_needed` - the delay between your actions, yeah im sorry that it requires power_needed but whatever i was too lazy while writing the api ok
-
+- `def.action_interval` - the delay between your actions
 
 ### `sbz_api.register_generator(name, def)`
 - `def.power_generated` so if your generator is a literal constant solar panel, you might want to set this to like 3 and it will just generate that amount of power... no `def.action` required
@@ -43,7 +42,7 @@ oh yeah also
 
 `def.stateful` - this gets automatically set to true, for internal pourpourses
 
-`def.autostate` - if you set it to true, state will (most likely) be automatically managed for you, so that when you require 0 power, its off, when you require more than 0 power... its on
+`def.autostate` - if you set it to true, state will (most likely) be automatically managed for you, so that when you require 0 power, its off, when you require more than 0 power... its on, also, when using a machine and with this being turned on, you can put a second return value that would just turn it on/off depending on if its true/false, or just leave it nil to like actually autostate
 
 and `sbz_api.register_stateful_generator` is literally the same thing but for generators
 

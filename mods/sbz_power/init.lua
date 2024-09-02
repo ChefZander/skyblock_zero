@@ -1,10 +1,6 @@
 local modpath = minetest.get_modpath("sbz_power")
 
 local function add_tube_support(def)
-    --[[
-    def.input_inv = def.input_inv or "input"
-    def.output_inv = def.output_inv or "output"
-    --]]
     if (def.input_inv or def.output_inv) and not def.disallow_pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
@@ -37,8 +33,23 @@ local function add_tube_support(def)
                 connect_sides = {},
             }
         end
-        def.after_place_node = def.after_place_node or pipeworks.after_place
-        def.after_dig_node = def.after_dig_node or pipeworks.after_dig
+
+        if def.tube then
+            local old_after_place = def.after_place_node
+            local old_after_dig = def.after_dig_node
+
+            function def.after_place_node(...)
+                local retval = { old_after_place(...) }
+                pipeworks.after_place(...)
+                return unpack(retval)
+            end
+
+            function def.after_dig_node(...)
+                local retval = { old_after_dig(...) }
+                pipeworks.after_dig(...)
+                return unpack(retval)
+            end
+        end
     end
 end
 
@@ -62,32 +73,35 @@ function sbz_api.register_machine(name, def)
 
     add_tube_support(def)
     if not def.control_action_raw then
-        local old_action = def.action
         if def.power_needed then
+            local old_action = def.action
             function def.action(pos, node, meta, supply, demand)
                 if (demand + def.power_needed) > supply then
                     meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
-                    if def.stateful then
-                        sbz_api.turn_off(pos)
-                    end
                     return def.power_needed
                 else
-                    if def.stateful then
-                        sbz_api.turn_on(pos)
-                    end
                     meta:set_string("infotext", "Running")
-                    local count = meta:get_int("count")
-                    local power_consumed = def.idle_consume or def.power_needed
-                    if count >= def.action_interval then
-                        power_consumed = old_action(pos, node, meta, supply, demand) or def.power_needed
-                        meta:set_int("count", 0)
-                    else
-                        meta:set_int("count", count + 1)
-                    end
+                    local power_consumed = old_action(pos, node, meta, supply, demand) or def.idle_consume or
+                        def.power_needed
                     return power_consumed
                 end
             end
-        elseif def.autostate then
+        end
+
+        if def.action_interval then
+            local old_action = def.action
+            function def.action(pos, node, meta, supply, demand)
+                local count = meta:get_int("count")
+                if count >= def.action_interval then
+                    power_consumed = old_action(pos, node, meta, supply, demand) or def.power_needed
+                    meta:set_int("count", 0)
+                else
+                    meta:set_int("count", count + 1)
+                end
+            end
+        end
+        if def.autostate then
+            local old_action = def.action
             function def.action(pos, node, meta, supply, demand)
                 local power_output, overwrite_decision = old_action(pos, node, meta, supply, demand)
                 if overwrite_decision ~= nil then
