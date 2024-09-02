@@ -82,7 +82,7 @@ minetest.register_chatcommand("dev_platform", {
 })
 
 minetest.register_chatcommand("dev_trail", {
-    description = "Set hotbar slot count - for debugging only",
+    description = "Enable/Disable particle trail - for debugging only",
     params = '',
     privs = { ["server"] = true },
 
