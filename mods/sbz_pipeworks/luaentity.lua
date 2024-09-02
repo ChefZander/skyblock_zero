@@ -5,7 +5,7 @@ pipeworks.luaentity = luaentity
 
 luaentity.registered_entities = {}
 
-local filename = minetest.get_worldpath().."/luaentities"
+local filename = minetest.get_worldpath() .. "/luaentities"
 local function read_file()
 	local f = io.open(filename, "r")
 	if f == nil then return {} end
@@ -24,17 +24,16 @@ end
 local function read_entities()
 	local t = read_file()
 	for _, entity in pairs(t) do
+		local x = entity.start_pos.x
+		local y = entity.start_pos.y
+		local z = entity.start_pos.z
 
-		local x=entity.start_pos.x
-		local y=entity.start_pos.y
-		local z=entity.start_pos.z
-
-		x=math.max(-30912,x)
-		y=math.max(-30912,y)
-		z=math.max(-30912,z)
-		x=math.min(30927,x)
-		y=math.min(30927,y)
-		z=math.min(30927,z)
+		x = math.max(-30912, x)
+		y = math.max(-30912, y)
+		z = math.max(-30912, z)
+		x = math.min(30927, x)
+		y = math.min(30927, y)
+		z = math.min(30927, z)
 
 		entity.start_pos.x = x
 		entity.start_pos.y = y
@@ -67,36 +66,43 @@ end
 minetest.register_on_shutdown(write_entities)
 luaentity.entities_index = 0
 
-local function get_blockpos(pos)
-	return {x = math.floor(pos.x / 16),
-	        y = math.floor(pos.y / 16),
-	        z = math.floor(pos.z / 16)}
-end
-
 local move_entities_globalstep_part1
 local is_active
 
 if pipeworks.use_real_entities then
 	local active_blocks = {} -- These only contain active blocks near players (i.e., not forceloaded ones)
 
+	local function get_blockpos(pos)
+		return {
+			x = math.floor(pos.x / 16),
+			y = math.floor(pos.y / 16),
+			z = math.floor(pos.z / 16)
+		}
+	end
+
 	move_entities_globalstep_part1 = function(dtime)
 		local active_block_range = tonumber(minetest.settings:get("active_block_range")) or 2
-		local new_active_blocks = {}
+		for key in pairs(active_blocks) do
+			active_blocks[key] = nil
+		end
 		for _, player in ipairs(minetest.get_connected_players()) do
 			local blockpos = get_blockpos(player:get_pos())
-			local minp = vector.subtract(blockpos, active_block_range)
-			local maxp = vector.add(blockpos, active_block_range)
+			local minpx = blockpos.x - active_block_range
+			local minpy = blockpos.y - active_block_range
+			local minpz = blockpos.z - active_block_range
+			local maxpx = blockpos.x + active_block_range
+			local maxpy = blockpos.y + active_block_range
+			local maxpz = blockpos.z + active_block_range
 
-			for x = minp.x, maxp.x do
-			for y = minp.y, maxp.y do
-			for z = minp.z, maxp.z do
-				local pos = {x = x, y = y, z = z}
-				new_active_blocks[minetest.hash_node_position(pos)] = pos
-			end
-			end
+			for x = minpx, maxpx do
+				for y = minpy, maxpy do
+					for z = minpz, maxpz do
+						local pos = { x = x, y = y, z = z }
+						active_blocks[minetest.hash_node_position(pos)] = true
+					end
+				end
 			end
 		end
-		active_blocks = new_active_blocks
 		-- todo: callbacks on block load/unload
 	end
 
@@ -274,7 +280,7 @@ local entitydef_default = {
 function luaentity.register_entity(name, prototype)
 	-- name = check_modname_prefix(name)
 	prototype.name = name
-	setmetatable(prototype, {__index = entitydef_default})
+	setmetatable(prototype, { __index = entitydef_default })
 	prototype.__index = prototype -- Make it possible to use it as metatable
 	luaentity.registered_entities[name] = prototype
 end
@@ -301,8 +307,8 @@ function luaentity.add_entity(pos, name)
 		name = name,
 		_id = index,
 		_pos = vector.new(pos),
-		_velocity = {x = 0, y = 0, z = 0},
-		_acceleration = {x = 0, y = 0, z = 0},
+		_velocity = { x = 0, y = 0, z = 0 },
+		_acceleration = { x = 0, y = 0, z = 0 },
 		_attached_entities = {},
 	}
 
@@ -357,11 +363,11 @@ local move_entities_globalstep_part2 = function(dtime)
 			entity._velocity = master_entity:get_velocity()
 			entity._acceleration = master_entity:get_acceleration()
 		else
-			entity._velocity = entity._velocity or vector.new(0,0,0)
-			entity._acceleration = entity._acceleration or vector.new(0,0,0)
+			entity._velocity = entity._velocity or vector.new(0, 0, 0)
+			entity._acceleration = entity._acceleration or vector.new(0, 0, 0)
 			entity._pos = vector.add(vector.add(
-				entity._pos,
-				vector.multiply(entity._velocity, dtime)),
+					entity._pos,
+					vector.multiply(entity._velocity, dtime)),
 				vector.multiply(entity._acceleration, 0.5 * dtime * dtime))
 			entity._velocity = vector.add(
 				entity._velocity,

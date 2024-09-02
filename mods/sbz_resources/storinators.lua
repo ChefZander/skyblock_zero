@@ -89,14 +89,13 @@ for k, v in ipairs({
             insert_object = function(pos, node, stack, direction)
                 local meta = minetest.get_meta(pos)
                 local inv = meta:get_inventory()
+                update_node_texture(pos)
                 return inv:add_item("main", stack)
             end,
             can_insert = function(pos, node, stack, direction)
                 local meta = minetest.get_meta(pos)
                 local inv = meta:get_inventory()
-                if meta:get_int("splitstacks") == 1 then
-                    stack = stack:peek_item(1)
-                end
+                stack = stack:peek_item(1)
                 return inv:room_for_item("main", stack)
             end,
             connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 }
