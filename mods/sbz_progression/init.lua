@@ -113,7 +113,7 @@ local achievment_table = {
     ["sbz_power:antimatter_generator"] = "Antimatter Generators",
     ["sbz_resources:storinator_public"] = "Public Storinators",
 
-    ["sbz_bio:emittrium_glass"] = "Emittrium Glass",
+    ["sbz_resources:emittrium_glass"] = "Emittrium Glass",
     ["sbz_bio:dirt"] = "Dirt",
     ["sbz_bio:fertilizer"] = "Sprouting Plants",
     ["sbz_bio:burner"] = "Carbon Dioxide",
