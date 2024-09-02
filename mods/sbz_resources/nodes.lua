@@ -376,7 +376,7 @@ minetest.register_abm({
 			for pointed in raycast do
 				if pointed.type == "node" then
 					local nodename = minetest.get_node(pointed.under).name
-					wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
+					wear = wear + (1 / minetest.get_item_group(nodename, "explody")) + minetest.get_item_group(nodename, "sbz_machine")
 					--the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
 					--although this is very random
 					if wear > 1 then break end
