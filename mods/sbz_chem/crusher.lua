@@ -108,7 +108,24 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         end
     end,
     input_inv = "input",
-    output_inv = "output"
+    output_inv = "output",
+    allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+        if listname == "input" then
+            if stack:get_name() == "sbz_resources:pebble" then
+                return stack:get_count()
+            else
+                return 0
+            end
+        end
+        if listname == "output" then
+            if stack:get_name() == "sbz_chem:empty_fluid_cell" then
+                return stack:get_count()
+            else
+                return 0
+            end
+        end
+        return stack:get_count()
+    end
 }, {
     tiles = {
         { name = "crusher_top.png", animation = { type = "vertical_frames", length = 0.5 } },
