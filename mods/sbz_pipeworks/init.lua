@@ -29,4 +29,6 @@ dofile(pipeworks.modpath .. "/basic_blocks.lua")
 
 dofile(pipeworks.modpath .. "/wielder.lua")
 dofile(pipeworks.modpath .. "/autocrafter.lua")
+
+dofile(pipeworks.modpath .. "/fluid_transport.lua")
 minetest.log("info", "Pipeworks loaded!")

@@ -41,11 +41,16 @@ function sbz_api.assemble_network(start_pos, seen)
     local function internal(pos, dir)
         if not seen[hash(pos)] then
             local node = sbz_api.vm_get_node(pos).name
+            local node_def_of_this_node = node_defs[node]
+            if not node_def_of_this_node then
+                seen[hash(pos)] = true
+                return
+            end
             local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
             local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
             local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
             local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
-            local is_subticking = node_defs[node].action_subticking
+            local is_subticking = node_def_of_this_node.action_subticking
 
             local is_conducting = minetest.get_item_group(node, "pipe_conducts") == 1
 
@@ -64,7 +69,7 @@ function sbz_api.assemble_network(start_pos, seen)
             elseif is_machine then
                 machines[#machines + 1] = { pos, node }
             elseif is_connector then
-                node_defs[node].assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
+                node_def_of_this_node.assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
             end
             seen[hash(pos)] = true
             if is_conducting then
@@ -339,58 +344,3 @@ end
 
 
 minetest.register_globalstep(sbz_api.switching_station_globalstep)
-
-sbz_api.register_stateful_machine("sbz_power:flicker", {
-    description = "(for debugging) Flicker - changes every 0.25 seconds",
-    tiles = {
-        "blank.png^[invert:rga"
-    },
-    groups = { matter = 1 },
-    control_action_raw = true,
-    autostate = false,
-    action = function(pos, node, meta, supply, demand)
-        if supply < demand + 1 then
-            return 0
-        end
-        if sbz_api.is_on(pos) then
-            meta:set_string("infotext", "Off")
-            sbz_api.turn_off(pos)
-        else
-            meta:set_string("infotext", "On")
-            sbz_api.turn_on(pos)
-        end
-        return 1
-    end,
-    action_subticking = true,
-}, {
-    tiles = {
-        "blank.png^[invert:rba"
-    },
-})
-
-sbz_api.register_stateful_machine("sbz_power:flicker_1", {
-    description = "(for debugging) Flicker - changes every 1 second",
-    tiles = {
-        "blank.png^[invert:ga"
-    },
-    groups = { matter = 1 },
-    control_action_raw = true,
-    autostate = false,
-    action = function(pos, node, meta, supply, demand)
-        if supply < demand + 1 then
-            return 0
-        end
-        meta:set_string("infotext", "On")
-        sbz_api.turn_on(pos)
-        return 1
-    end,
-}, {
-    tiles = {
-        "blank.png^[invert:ba"
-    },
-    action = function(pos, node, meta)
-        meta:set_string("infotext", "Off")
-        sbz_api.turn_off(pos)
-        return 1
-    end
-})
