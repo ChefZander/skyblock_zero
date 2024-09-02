@@ -48,3 +48,7 @@ minetest.register_node("pipeworks:fluid_pipe", {
     },
     use_texture_alpha = "clip",
 })
+
+minetest.register_node("pipeworks:fluid_tank", {
+    description = "Fluid tank",
+})
