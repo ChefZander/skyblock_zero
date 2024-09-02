@@ -80,3 +80,16 @@ minetest.register_chatcommand("dev_platform", {
         end
     end
 })
+
+minetest.register_chatcommand("dev_trail", {
+    description = "Set hotbar slot count - for debugging only",
+    params = '',
+    privs = { ["server"] = true },
+
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        local state = ((player:get_meta():get_int("trailHidden") == 1) and 0 or 1)
+        player:get_meta():set_int("trailHidden", state)
+        return true, "Trail state is "..state
+    end
+})
