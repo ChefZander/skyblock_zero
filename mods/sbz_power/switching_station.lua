@@ -342,10 +342,13 @@ sbz_api.register_stateful_machine("sbz_power:flicker", {
     control_action_raw = true,
     autostate = false,
     action_subtick = function(pos, node, meta)
-        minetest.log("Subtick 2")
-        meta:set_string("infotext", "Off")
-        sbz_api.turn_on(pos)
-        minetest.log(minetest.get_node(pos).name)
+        if sbz_api.is_on(pos) then
+            meta:set_string("infotext", "Off")
+            sbz_api.turn_off(pos)
+        else
+            meta:set_string("infotext", "On")
+            sbz_api.turn_on(pos)
+        end
         return 1
     end,
     action = function() return 0 end,
@@ -353,14 +356,6 @@ sbz_api.register_stateful_machine("sbz_power:flicker", {
     tiles = {
         "blank.png^[invert:rba"
     },
-    action_subtick = function(pos, node, meta)
-        minetest.log("Subtick 1")
-        meta:set_string("infotext", "On")
-        minetest.log(minetest.get_node(pos).name)
-        sbz_api.turn_off(pos)
-        minetest.log(minetest.get_node(pos).name)
-        return 1
-    end
 })
 
 sbz_api.register_stateful_machine("sbz_power:flicker_1", {
