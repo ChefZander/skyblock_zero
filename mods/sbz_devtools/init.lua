@@ -160,7 +160,7 @@ minetest.register_chatcommand("dev_close", {
 
 minetest.register_chatcommand("dev_clear", {
     description = "Clears the player's inventory - for debugging only",
-    privs = {interact = true},
+    privs = { ["server"] = true },
     func = function(name)
         local player = minetest.get_player_by_name(name)
         if not player then
