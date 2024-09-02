@@ -208,25 +208,27 @@ minetest.register_globalstep(function(dtime)
     minetest.set_timeofday(0)
 
     for _, player in ipairs(minetest.get_connected_players()) do
-        local pos = player:get_pos()
-        minetest.add_particlespawner({
-            amount = 1,
-            time = 1,
-            minpos = { x = pos.x - 0, y = pos.y - 0, z = pos.z - 0 },
-            maxpos = { x = pos.x + 0, y = pos.y + 0, z = pos.z + 0 },
-            minvel = { x = 0, y = 0, z = 0 },
-            maxvel = { x = 0, y = 0, z = 0 },
-            minacc = { x = 0, y = 0, z = 0 },
-            maxacc = { x = 0, y = 0, z = 0 },
-            minexptime = 1,
-            maxexptime = 1,
-            minsize = 1.0,
-            maxsize = 1.0,
-            collisiondetection = true,
-            vertical = false,
-            texture = "star.png",
-            glow = 10
-        })
+        if player:get_meta():get_int("trailHidden") == 0 then
+            local pos = player:get_pos()
+            minetest.add_particlespawner({
+                amount = 1,
+                time = 1,
+                minpos = { x = pos.x - 0, y = pos.y - 0, z = pos.z - 0 },
+                maxpos = { x = pos.x + 0, y = pos.y + 0, z = pos.z + 0 },
+                minvel = { x = 0, y = 0, z = 0 },
+                maxvel = { x = 0, y = 0, z = 0 },
+                minacc = { x = 0, y = 0, z = 0 },
+                maxacc = { x = 0, y = 0, z = 0 },
+                minexptime = 1,
+                maxexptime = 1,
+                minsize = 1.0,
+                maxsize = 1.0,
+                collisiondetection = true,
+                vertical = false,
+                texture = "star.png",
+                glow = 10
+            })
+        end
     end
 end)
 
