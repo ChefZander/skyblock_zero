@@ -50,28 +50,7 @@ local function meteorite_globalstep(dtime)
     storage:set_float("time_since_last_spawn", time_since)
 end
 
-local G = 1/1000
-local max_attraction = 3
-local range = 3
-minetest.register_globalstep(function(dt)
-	meteorite_globalstep(dt)
-	for _, player in ipairs(minetest.get_connected_players()) do
-		local nodes, _ = minetest.find_nodes_in_area(vector.subtract(player:get_pos(), range), vector.add(player:get_pos(), range), {"group:gravity"})
-		for _, nodepos in ipairs(nodes) do
-			local multiplier = minetest.get_item_group(minetest.get_node(nodepos).name, "gravity")/100
-			local vel = sbz_api.get_attraction(player:get_pos(),nodepos)*multiplier*G
-			if vector.length(vel) > max_attraction then vel = (vel/vector.length(vel))*max_attraction end
-			player:add_velocity(vel)
-		end
-		nodes, _ = minetest.find_nodes_in_area(vector.subtract(player:get_pos(), range), vector.add(player:get_pos(), range), {"group:antigravity"})
-		for _, nodepos in ipairs(nodes) do
-			local multiplier = -minetest.get_item_group(minetest.get_node(nodepos).name, "antigravity")/100
-			local vel = sbz_api.get_attraction(player:get_pos(),nodepos)*multiplier*G
-			if vector.length(vel) > max_attraction then vel = (vel/vector.length(vel))*max_attraction end
-			player:add_velocity(vel)
-		end
-	end
-end)
+minetest.register_globalstep(meteorite_globalstep)
 
 local modpath = minetest.get_modpath("sbz_meteorites")
 
