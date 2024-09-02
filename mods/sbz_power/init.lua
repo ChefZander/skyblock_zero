@@ -214,7 +214,7 @@ end
 
 function sbz_api.is_on(pos)
     local nodename = minetest.get_node(pos).name
-    return string.sub(nodename, -4) ~= "_off"
+    return string.sub(nodename, -3) == "_on"
 end
 
 dofile(modpath .. "/vm.lua")
