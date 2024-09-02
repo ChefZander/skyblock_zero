@@ -1,6 +1,7 @@
 local all_switching_stations = {}
 local all_switching_stations_reverse = {}
 
+sbz_api.switching_station_networks = {}
 
 
 local touched_nodes = {}
@@ -24,7 +25,8 @@ function sbz_api.assemble_network(start_pos, seen)
         machines = {},
         switching_stations = {},
         batteries = {},
-        connectors = {}
+        connectors = {},
+        subticking_machines = {},
     }
 
     local generators = network.generators
@@ -43,6 +45,7 @@ function sbz_api.assemble_network(start_pos, seen)
             local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
             local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
             local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
+            local is_subticking = node_defs[node].action_subticking
 
             local is_conducting = minetest.get_item_group(node, "pipe_conducts") == 1
 
@@ -56,6 +59,8 @@ function sbz_api.assemble_network(start_pos, seen)
                 batteries[#batteries + 1] = { pos, node }
             elseif is_generator then
                 generators[#generators + 1] = { pos, node }
+            elseif is_subticking then
+                network.subticking_machines[#network.subticking_machines + 1] = { pos, node }
             elseif is_machine then
                 machines[#machines + 1] = { pos, node }
             elseif is_connector then
@@ -76,7 +81,7 @@ end
 
 function sbz_api.switching_station_tick(start_pos)
     local meta = minetest.get_meta(start_pos)
-    local network_before = minetest.deserialize(meta:get_string("network"))
+    local network_before = sbz_api.switching_station_networks[hash(start_pos)]
 
     if network_before ~= nil then
         local excess = (network_before.supply - network_before.battery_supply_only) - network_before.demand
@@ -134,7 +139,6 @@ function sbz_api.switching_station_tick(start_pos)
     local machines = network.machines
     local switching_stations = network.switching_stations
     local batteries = network.batteries
-
     local supply = 0
     local demand = 0
     local battery_max = 0
@@ -179,7 +183,9 @@ function sbz_api.switching_station_tick(start_pos)
         local node = v[2]
 
         touched_nodes[hash(position)] = os.time()
-        supply = supply + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+        local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+        assert(action_result, "You need to return something in the action function... fauly node: " .. node)
+        supply = supply + action_result
     end
 
     for k, v in ipairs(machines) do
@@ -187,7 +193,9 @@ function sbz_api.switching_station_tick(start_pos)
         local node = v[2]
 
         touched_nodes[hash(position)] = os.time()
-        demand = demand + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+        local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+        assert(action_result, "You need to return something in the action function... fauly node: " .. node)
+        demand = demand + action_result
     end
 
 
@@ -200,18 +208,18 @@ function sbz_api.switching_station_tick(start_pos)
     network.demand = demand
     network.battery_max = battery_max
 
-    meta:set_string("network", minetest.serialize(network))
+    sbz_api.switching_station_networks[hash(start_pos)] = network
+
     return true
 end
 
 function sbz_api.switching_station_sub_tick(start_pos)
     local t0 = minetest.get_us_time()
-    local meta = minetest.get_meta(start_pos)
 
-    local network = minetest.deserialize(meta:get_string("network"))
+    local network = sbz_api.switching_station_networks[hash(start_pos)]
     if network == nil then return end
 
-    local machines = network.machines
+    local machines = network.subticking_machines or {}
 
     local supply = network.supply
     local demand = network.demand
@@ -222,9 +230,7 @@ function sbz_api.switching_station_sub_tick(start_pos)
         local node = v[2]
 
         touched_nodes[hash(position)] = os.time()
-        if node_defs[node].action_subtick then
-            demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
-        end
+        demand = demand + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
     end
 
     local t1 = minetest.get_us_time()
@@ -232,7 +238,6 @@ function sbz_api.switching_station_sub_tick(start_pos)
 
     network.demand = demand
 
-    meta:set_string("network", minetest.serialize(network))
     return true
 end
 
@@ -309,6 +314,7 @@ sbz_api.switching_station_globalstep = function(dtime)
                 getmeta(pos):set_string("infotext", "Inactive")
                 table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right
                 all_switching_stations_reverse[v] = nil
+                sbz_api.switching_station_networks[v] = nil
             else
                 sbz_api.switching_station_sub_tick(pos)
             end
@@ -323,6 +329,7 @@ sbz_api.switching_station_globalstep = function(dtime)
                 getmeta(pos):set_string("infotext", "Inactive")
                 table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right
                 all_switching_stations_reverse[v] = nil
+                sbz_api.switching_station_networks[v] = nil
             else
                 sbz_api.switching_station_tick(pos)
             end
@@ -341,7 +348,10 @@ sbz_api.register_stateful_machine("sbz_power:flicker", {
     groups = { matter = 1 },
     control_action_raw = true,
     autostate = false,
-    action_subtick = function(pos, node, meta)
+    action = function(pos, node, meta, supply, demand)
+        if supply < demand + 1 then
+            return 0
+        end
         if sbz_api.is_on(pos) then
             meta:set_string("infotext", "Off")
             sbz_api.turn_off(pos)
@@ -351,7 +361,7 @@ sbz_api.register_stateful_machine("sbz_power:flicker", {
         end
         return 1
     end,
-    action = function() return 0 end,
+    action_subticking = true,
 }, {
     tiles = {
         "blank.png^[invert:rba"
@@ -366,7 +376,10 @@ sbz_api.register_stateful_machine("sbz_power:flicker_1", {
     groups = { matter = 1 },
     control_action_raw = true,
     autostate = false,
-    action = function(pos, node, meta)
+    action = function(pos, node, meta, supply, demand)
+        if supply < demand + 1 then
+            return 0
+        end
         meta:set_string("infotext", "On")
         sbz_api.turn_on(pos)
         return 1

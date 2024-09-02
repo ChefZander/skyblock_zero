@@ -93,11 +93,12 @@ function sbz_api.register_machine(name, def)
             function def.action(pos, node, meta, supply, demand)
                 local count = meta:get_int("count")
                 if count >= def.action_interval then
-                    power_consumed = old_action(pos, node, meta, supply, demand) or def.power_needed
+                    meta:set_int("power_consumed", old_action(pos, node, meta, supply, demand))
                     meta:set_int("count", 0)
                 else
                     meta:set_int("count", count + 1)
                 end
+                return meta:get_int("power_consumed")
             end
         end
         if def.autostate then
