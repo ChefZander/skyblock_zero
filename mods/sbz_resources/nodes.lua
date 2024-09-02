@@ -313,7 +313,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:reinforced_matter", {
     description = "Reinforced Matter",
     tiles = { "reinforced_matter.png" },
-    groups = { explody = -1, matter = 1 },
+    groups = { matter = 1 },
     sunlight_propagates = true,
     walkable = true,
 })
@@ -329,7 +329,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:reinforced_antimatter", {
     description = "Reinforced Antimatter",
     tiles = { "reinforced_antimatter.png" },
-    groups = { explody = -1, antimatter = 1 },
+    groups = { antimatter = 1 },
 	light_source = 5,
     sunlight_propagates = true,
     walkable = true,
