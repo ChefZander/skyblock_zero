@@ -28,10 +28,10 @@ minetest.register_chatcommand("dev_revokequest", {
             for _, q in ipairs(quests) do
                 revoke_achievement(name, q.title)
             end
-            minetest.chat_send_player(name, "Revoked you all achievements")
+            minetest.chat_send_player(name, "Revoked all achievements")
         else
             revoke_achievement(name, param)
-            minetest.chat_send_player(name, "Revoked you the achievement with the name \"" .. param .. "\"")
+            minetest.chat_send_player(name, "Revoked the achievement with the name \"" .. param .. "\"")
         end
     end
 })
