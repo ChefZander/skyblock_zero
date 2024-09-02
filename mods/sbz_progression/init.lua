@@ -27,15 +27,7 @@ minetest.register_chatcommand("cheat_hacker", {
     end,
 })
 
-minetest.register_chatcommand("giv_achievments", {
-    description = "Yeah",
-    privs = { ["server"] = true },
-    func = function(name, param)
-        for _, q in ipairs(quests) do
-            unlock_achievement(name, q.title)
-        end
-    end
-})
+
 local achievment_table = {
     ["sbz_resources:matter_blob"] = "A bigger platform",
     ["sbz_resources:matter_stair"] = "Matter Stairs",
@@ -86,7 +78,7 @@ local achievment_table = {
     ["sbz_power:antimatter_generator"] = "Antimatter Generators",
     ["sbz_resources:storinator_public"] = "Public Storinators",
 
-    ["sbz_bio:emittrium_glass"] = "Emittrium Glass",
+    ["sbz_resources:emittrium_glass"] = "Emittrium Glass",
     ["sbz_bio:dirt"] = "Dirt",
     ["sbz_bio:fertilizer"] = "Sprouting Plants",
     ["sbz_bio:burner"] = "Carbon Dioxide",
