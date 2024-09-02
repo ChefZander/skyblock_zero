@@ -53,3 +53,30 @@ minetest.register_chatcommand("dev_hotbar", {
         end
     end
 })
+
+minetest.register_chatcommand("dev_platform", {
+    description = "Spawn a 10x10 platform below the player - for debugging only",
+    privs = { ["server"] = true },
+
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if player then
+            local pos = player:get_pos()
+            local platform_start_pos = vector.subtract(pos, {x = 5, y = 1, z = 5})
+            for x = 0, 9 do
+                for z = 0, 9 do
+                    if (x == 0 and z == 0) or (x == 0 and z == 9) or (x == 9 and z == 0) or (x == 9 and z == 9) then
+                        local platform_pos = vector.add(platform_start_pos, {x = x, y = 0, z = z})
+                        minetest.set_node(platform_pos, {name = "sbz_decor:photonlamp"})
+                    else
+                        local platform_pos = vector.add(platform_start_pos, {x = x, y = 0, z = z})
+                        minetest.set_node(platform_pos, {name = "sbz_resources:matter_blob"})
+                    end
+                end
+            end
+            return true, "platform spawned."
+        else
+            return false, "Player not found."
+        end
+    end
+})
