@@ -236,11 +236,13 @@ dofile(modpath .. "/vm.lua")
 dofile(modpath .. "/switching_station.lua")
 dofile(modpath .. "/power_pipes.lua")
 dofile(modpath .. "/batteries.lua")
+dofile(modpath .. "/fluid_transport.lua")
 dofile(modpath .. "/extractor.lua")
 dofile(modpath .. "/generator.lua")
 dofile(modpath .. "/connectors.lua")
 dofile(modpath .. "/infinite_storinator.lua")
 dofile(modpath .. "/misc.lua")
+
 
 --fixing worlds, again remove in a few releases
 local fucked_items = {
