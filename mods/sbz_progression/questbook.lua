@@ -396,8 +396,7 @@ TIP: You can go upwards with the antigravity of antineutronium.]], requires = { 
     text =
     "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
     requires = { "Storinators" }
-}
-
+}}
 local function getquestbyname(questname)
     for i, quest in ipairs(quests) do
         if quest.title == questname then
