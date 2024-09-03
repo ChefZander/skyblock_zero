@@ -227,7 +227,7 @@ minetest.register_node("sbz_resources:water_source", {
     tiles = { water_image },
     inventory_image = water_image,
     use_texture_alpha = "clip",
-    groups = { habitat_conducts = 1, transparent = 1 },
+    groups = { habitat_conducts = 1, transparent = 1, liquid_capturable = 1 },
     post_effect_color = "#4000ff80",
     paramtype = "light",
     walkable = false,

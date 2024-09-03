@@ -57,9 +57,40 @@ local animation_def = {
     length = 1,
 }
 
-function sbz_api.pump(pos, liquid_stack)
-    local name, amount = liquid_stack.name, liquid_stack.amount
+local function iterate_around_pos(pos, func)
+    for i = 0, 5 do
+        local dir = minetest.wallmounted_to_dir(i)
+        func(pos + dir, dir)
+    end
+end
 
+local function liquid_inv_add_item(inv, stack, on_update, pos)
+    local max_count_in_each_stack = inv.max_count_in_each_stack
+
+    for i = 1, #inv do
+        local inv_stack = inv[i]
+        if
+            (inv_stack.name == stack.name or (inv_stack.name == "any" or (inv_stack.can_change_name and inv_stack.count == 0)))
+            and inv_stack.count < max_count_in_each_stack
+        then
+            local leftover = 0
+            inv_stack.count = inv_stack.count + stack.count
+            if inv_stack.count > max_count_in_each_stack then
+                leftover = inv_stack.count - max_count_in_each_stack
+                inv_stack.count = inv_stack.count - leftover
+            end
+            stack.count = leftover
+            if inv_stack.name == "any" then inv_stack.name = stack.name end
+            on_update(pos, inv)
+            if stack.count == 0 then
+                break
+            end
+        end
+    end
+    return stack
+end
+
+function sbz_api.pump(start_pos, liquid_stack, frompos)
     sbz_api.vm_begin()
 
     local abort = false
@@ -74,8 +105,15 @@ function sbz_api.pump(pos, liquid_stack)
             local is_conducting = node == "sbz_power:fluid_pipe"
             local is_storing = minetest.get_item_group(node, "fluid_pipe_stores") == 1
 
-            if is_storing then
-                do_storey_stuff()
+            if is_storing and hash(pos) ~= hash(frompos) then
+                local meta = minetest.get_meta(pos)
+                local liquid_inventory = minetest.deserialize(meta:get_string("liquid_inv"))
+                liquid_stack = liquid_inv_add_item(liquid_inventory, liquid_stack,
+                    minetest.registered_nodes[node].on_liquid_inv_update, pos)
+                if liquid_stack.count == 0 then
+                    abort = true
+                end
+                meta:set_string("liquid_inv", minetest.serialize(liquid_inventory))
             end
             seen[hash(pos)] = true
 
@@ -85,24 +123,33 @@ function sbz_api.pump(pos, liquid_stack)
         end
     end
     internal(table.copy(start_pos))
+    return liquid_stack
 end
 
 sbz_api.register_stateful_machine("sbz_power:pump", {
     description = "Fluid pump",
     autostate = true,
-    disallow_pipeworks = true,
     paramtype2 = "facedir",
+    after_place_node = function(pos)
+        local node = minetest.get_node(pos)
+        node.param2 = node.param2 + 1
+        minetest.swap_node(pos, node)
+    end,
+    disallow_pipeworks = true,
     tiles = {
-        { name = "filter_side.png^[transformFX", animation = animation_def },
-        { name = "filter_side.png^[transformFX", animation = animation_def },
-        "filter_output.png",
-        "filter_input.png",
-        { name = "filter_side.png",              animation = animation_def },
-        { name = "filter_side.png^[transformFX", animation = animation_def },
+        { name = "pump_side.png", animation = animation_def },
+        { name = "pump_side.png", animation = animation_def },
+        "pump_output.png",
+        "pump_input.png",
+        { name = "pump_side.png^[transformFX", animation = animation_def },
+        { name = "pump_side.png",              animation = animation_def },
     },
     groups = { matter = 1, fluid_pipe_connects = 1 },
+    connect_sides = {
+        "right"
+    },
     action = function(pos, node, meta, supply, demand)
-        if supply > demand + pump_consumbtion then
+        if supply < demand + pump_consumbtion then
             meta:set_string("infotext", "Not enough power")
             return pump_consumbtion
         else
@@ -132,20 +179,267 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
                 meta:set_string("infotext", "The node you are pulling from doesn't have a liquid inventory.")
                 return 0
             end
-            local target_stack = from_liquid_inv[#from_liquid_inv]
+
+            local target_stack
+            local target_stack_index
+
+            for k, v in ipairs(from_liquid_inv) do
+                if v.count ~= 0 then
+                    target_stack = v
+                    target_stack_index = k
+                    break
+                end
+            end
+
             if target_stack == nil then
                 meta:set_string("infotext", "The node you are pulling from is empty.")
                 return 0
             end
 
-            local stack_left = sbz_api.pump(topos, target_stack)
-            from_liquid_inv[#from_liquid_inv + 1] = stack_left
+            local target_stack_copy = table.copy(target_stack)
+
+            local stack_left = sbz_api.pump(topos, target_stack, frompos)
+            from_liquid_inv[target_stack_index] = stack_left
 
             frommeta:set_string("liquid_inv", minetest.serialize(from_liquid_inv))
+
+            if stack_left.count == target_stack_copy.count then
+                meta:set_string("infotext", "Can't push - everything that can be filled is")
+                return 0
+            end
+
+
             meta:set_string("infotext", "Running")
             return pump_consumbtion
         end
     end
 }, {
     light_source = 3,
+}, {
+    tiles = {
+        [1] = "pump_side.png^[verticalframe:15:1",
+        [2] = "pump_side.png^[verticalframe:15:1",
+        [5] = "pump_side.png^[transformFX^[verticalframe:15:1",
+        [6] = "pump_side.png^[verticalframe:15:1",
+    }
+})
+
+
+minetest.register_node("sbz_power:fluid_tank", {
+    description = "Fluid Storage Tank",
+    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, },
+    tiles = {
+        "fluid_tank_top.png",
+        "fluid_tank_top.png",
+        "fluid_tank_side.png",
+        "fluid_tank_side.png",
+        "fluid_tank_side.png",
+        "fluid_tank_side.png",
+    },
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        meta:set_string("liquid_inv", minetest.serialize({
+            max_count_in_each_stack = 100, -- 100 buckets
+            [1] = {
+                name = "any",
+                count = 0,
+                can_change_name = true,
+            },
+        }))
+        meta:set_string("infotext", "Waiting for a liquid...")
+    end,
+    on_liquid_inv_update = function(pos, lqinv)
+        local meta = minetest.get_meta(pos)
+        if lqinv[1].name == "any" then
+            meta:set_string("infotext", "Waiting for a liquid...")
+        end
+        meta:set_string("infotext",
+            string.format("Storing %s : %s/%s",
+                string.gsub(minetest.registered_nodes[lqinv[1].name].description, " Source", ""), lqinv[1].count,
+                lqinv.max_count_in_each_stack))
+    end
+})
+
+
+local fluid_capturer_demand = 10
+sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
+    description = "Fluid Capturer",
+    autostate = true,
+    tiles = {
+        "fluid_capturer_top.png^[verticalframe:7:7",
+        "fluid_capturer_bottom.png",
+        "fluid_capturer_side.png^[verticalframe:8:0",
+    },
+    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, },
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        meta:set_string("liquid_inv", minetest.serialize({
+            max_count_in_each_stack = 5,
+            [1] = {
+                name = "any",
+                count = 0,
+                can_change_name = false,
+            },
+        }))
+    end,
+
+    action = function(pos, node, meta, supply, demand)
+        if supply < demand + fluid_capturer_demand then
+            meta:set_string("infotext", "Not enough power")
+            return fluid_capturer_demand
+        end
+        local up_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
+        local up_node = minetest.get_node(up_pos).name
+        if minetest.get_item_group(up_node, "liquid_capturable") ~= 1 then
+            meta:set_string("infotext", "Above this node isn't a valid liquid")
+            return 0
+        end
+
+        local lqinv = minetest.deserialize(meta:get_string("liquid_inv"))
+
+        local expect = lqinv[1].name
+
+        if expect ~= "any" and expect ~= up_node then
+            meta:set_string("infotext", "Can't accept that liquid")
+            return 0
+        end
+
+        if lqinv[1].count >= lqinv.max_count_in_each_stack then
+            meta:set_string("infotext", "Full")
+            return 0
+        end
+
+        meta:set_string("infotext", "Running")
+
+        lqinv[1].name = up_node
+        minetest.remove_node(up_pos)
+        lqinv[1].count = lqinv[1].count + 1
+        meta:set_string("liquid_inv", minetest.serialize(lqinv))
+        return fluid_capturer_demand
+    end,
+
+}, {
+    tiles = {
+        { name = "fluid_capturer_top.png", animation = animation_def },
+        [3] = { name = "fluid_capturer_side.png", animation = animation_def }
+    },
+    light_source = 3,
+})
+
+local fluid_cell_filler_crafts = {
+    ["sbz_resources:water_source"] = "sbz_chem:water_fluid_cell"
+}
+
+
+local fluid_cell_filler_consumbtion = 10
+sbz_api.register_machine("sbz_power:fluid_cell_filler", {
+    description = "Fluid Cell Filler",
+    tiles = {
+        "fluid_tank_top.png",
+        "fluid_tank_top.png",
+        "fluid_tank_top.png^fluid_cell.png",
+    },
+    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, },
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        meta:set_string("liquid_inv", minetest.serialize({
+            max_count_in_each_stack = 5,
+            [1] = {
+                name = "any",
+                count = 0,
+                can_change_name = false,
+            },
+        }))
+        local inv = meta:get_inventory()
+        inv:set_size("input", 1)
+        inv:set_size("output", 1)
+    end,
+    on_rightclick = function(pos)
+        minetest.get_meta(pos):set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+item_image[2.4,1.9;1,1;sbz_chem:empty_fluid_cell]
+list[context;input;2.5,2;1,1;]
+list[context;output;4.5,2;1,1;]
+list[current_player;main;0.2,5;8,4;]
+listring[context;input]listring[]
+    ]])
+    end,
+    allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+        if listname == "input" then
+            if stack:get_name() == "sbz_chem:empty_fluid_cell" then
+                return stack:get_count()
+            end
+            return 0
+        elseif listname == "output" then
+            return 0
+        else
+            return stack:get_count()
+        end
+    end,
+    tube = {
+        insert_object = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            if stack:get_name() ~= "sbz_chem:empty_fluid_cell" then
+                return stack
+            end
+            return inv:add_item("input", stack)
+        end,
+        can_insert = function(pos, node, stack, direction)
+            if stack:get_name() ~= "sbz_chem:empty_fluid_cell" then
+                return false
+            end
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+
+            stack:peek_item(1)
+            return inv:room_for_item("input", stack)
+        end,
+        input_inventory = "output",
+        connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
+    },
+    input_inv = "input",
+    output_inv = "output",
+    action = function(pos, node, meta, supply, demand)
+        if supply < demand + fluid_capturer_demand then
+            meta:set_string("infotext", "Not enough power")
+            return fluid_cell_filler_consumbtion
+        end
+        local inv = meta:get_inventory()
+        local input = inv:get_stack("input", 1)
+        local output = inv:get_stack("input", 1)
+
+        local lqinv = minetest.deserialize(meta:get_string("liquid_inv"))
+
+        if lqinv[1].count == 0 then
+            meta:set_string("infotext", "Not enough fluid inside")
+            return 0
+        end
+        if not fluid_cell_filler_crafts[lqinv[1].name] then
+            meta:set_string("infotext", "Cannot put that liquid in a fluid cell")
+            return 0
+        end
+        if input:get_count() == 0 then
+            meta:set_string("infotext", "Ran out of empty fluid cells")
+            return 0
+        end
+
+        local craftresult = fluid_cell_filler_crafts[lqinv[1].name]
+
+        if not inv:room_for_item("output", craftresult) then
+            meta:set_string("infotext", "Full")
+            return 0
+        end
+
+        lqinv[1].count = lqinv[1].count - 1
+        inv:add_item("output", craftresult)
+        inv:remove_item("input", "sbz_chem:empty_fluid_cell")
+        meta:set_string("liquid_inv", minetest.serialize(lqinv))
+
+        meta:set_string("infotext", "Running")
+        return fluid_cell_filler_consumbtion
+    end,
+    on_liquid_inv_update = function() end,
 })
