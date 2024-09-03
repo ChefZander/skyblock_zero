@@ -35,8 +35,8 @@ local function add_tube_support(def)
         end
 
         if def.tube then
-            local old_after_place = def.after_place_node
-            local old_after_dig = def.after_dig_node
+            local old_after_place = def.after_place_node or function() end
+            local old_after_dig = def.after_dig_node or function() end
 
             function def.after_place_node(...)
                 local retval = { old_after_place(...) }
@@ -234,6 +234,7 @@ end
 
 dofile(modpath .. "/vm.lua")
 dofile(modpath .. "/switching_station.lua")
+dofile(modpath .. "/fluid_transport.lua")
 dofile(modpath .. "/power_pipes.lua")
 dofile(modpath .. "/batteries.lua")
 dofile(modpath .. "/fluid_transport.lua")

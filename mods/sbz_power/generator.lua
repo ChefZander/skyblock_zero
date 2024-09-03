@@ -23,6 +23,7 @@ listring[]
             pos = pos,
         })
     end,
+
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
