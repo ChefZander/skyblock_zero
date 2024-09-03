@@ -368,10 +368,7 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     -- ======================================================================================
     { type = "text",  title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
-    { type = "quest", title = "Antineutronium", text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core, which repulses things.
-You can also craft antineutronium into a Gravitational Repulsor, which repulses meteorites.
-
-TIP: You can go upwards with the antigravity of antineutronium.]], requires = { "Meteorites" } },
+    { type = "quest", title = "Antineutronium", text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core. Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.]], requires = { "Meteorites" } },
     {
         type = "quest",
         title = "Angel's Wing",
