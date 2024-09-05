@@ -2,7 +2,7 @@ minetest.register_node("sbz_resources:matter_blob", {
     description = "Matter Blob",
     drawtype = "glasslike",
     tiles = { "matter_blob.png" },
-    groups = { matter = 1, cracky = 3, explody = 3 },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
     sounds = {
@@ -33,7 +33,7 @@ minetest.register_node("sbz_resources:matter_stair", {
             { -0.5, 0,    0,    0.5, 0.5, 0.5 },
         }
     },
-    groups = { matter = 1, cracky = 3 },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 3 },
     walkable = true,
     sounds = {
         footstep = { name = "step", gain = 1.0 },
@@ -69,7 +69,7 @@ minetest.register_node("sbz_resources:matter_slab", {
         type = "fixed",
         fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 }
     },
-    groups = { matter = 1, cracky = 3 },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 2 },
     walkable = true,
     sounds = {
         footstep = { name = "step", gain = 1.0 },
@@ -103,7 +103,7 @@ minetest.register_node("sbz_resources:matter_platform", {
         type = "fixed",
         fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 }
     },
-    groups = { matter = 2, cracky = 3 },
+    groups = { matter = 2, cracky = 3, explody = 8, moss_growable = 2 },
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
@@ -165,7 +165,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:stone", {
     description = "Stone",
     tiles = { "stone.png" },
-    groups = { matter = 1 },
+    groups = { matter = 1, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
 })
@@ -187,7 +187,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:reinforced_matter", {
     description = "Reinforced Matter",
     tiles = { "reinforced_matter.png" },
-    groups = { matter = 1 },
+    groups = { matter = 1, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
 })
