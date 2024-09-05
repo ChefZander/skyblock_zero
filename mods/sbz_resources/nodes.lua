@@ -77,10 +77,18 @@ minetest.register_node("sbz_resources:matter_slab", {
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
+    node_placement_prediction = "",
     on_place = function(itemstack, user, pointed)
         if pointed.type ~= "node" then return itemstack end
-        if pointed.under.y > pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 23) end
-        if pointed.under.y < pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 0) end
+        local ydir = pointed.under.y-pointed.above.y
+        local node = minetest.get_node(pointed.under)
+        if node.name == "sbz_resources:matter_slab" and (node.param2 == 0 and ydir < 0 or node.param2 == 23 and ydir > 0) then
+            minetest.set_node(pointed.under, {name="sbz_resources:matter_blob"})
+            itemstack:take_item()
+            return itemstack
+        end
+        if ydir > 0 then return minetest.item_place_node(itemstack, user, pointed, 23) end
+        if ydir < 0 then return minetest.item_place_node(itemstack, user, pointed, 0) end
         local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y % 1
         return minetest.item_place_node(itemstack, user, pointed,
             (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
