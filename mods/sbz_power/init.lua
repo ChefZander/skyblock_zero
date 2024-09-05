@@ -76,13 +76,13 @@ function sbz_api.register_machine(name, def)
                         sbz_api.turn_on(pos)
                     end
                     meta:set_string("infotext", "Running")
-                    local count = meta:get_int("count")
+                    local count = meta:get_int("count")+1
                     local power_consumed = def.idle_consume or def.power_needed
                     if count >= def.action_interval then
                         power_consumed = old_action(pos, node, meta, supply, demand) or def.power_needed
                         meta:set_int("count", 0)
                     else
-                        meta:set_int("count", count + 1)
+                        meta:set_int("count", count)
                     end
                     return power_consumed
                 end
