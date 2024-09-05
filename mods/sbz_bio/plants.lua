@@ -137,7 +137,7 @@ sbz_api.register_plant("pyrograss", {
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
-    groups = {burn=5},
+    groups = {burn=10},
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", {"group:soil"})
 })
 
@@ -156,7 +156,7 @@ sbz_api.register_plant("stemfruit_plant", {
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
-    groups = {burn=3},
+    groups = {burn=6},
     on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", {"group:soil"})
 })
 
@@ -221,7 +221,7 @@ minetest.register_node("sbz_bio:fiberweed", {
     selection_box = {type="fixed", fixed={{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}, {-0.25, 0.5, -0.25, 0.25, 1.25, 0.25}}},
     paramtype2 = "leveled",
     place_param2 = 8,
-    groups = {matter=1, plant=1, needs_co2=1, transparent=1, burn=1},
+    groups = {matter=1, plant=1, needs_co2=1, transparent=1, burn=2},
     drop = {},
     node_dig_prediction = "sbz_bio:dirt",
     node_placement_prediction = "",
