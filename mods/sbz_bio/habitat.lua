@@ -49,7 +49,15 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
         if stage == PcgRandom(hash(pos)):next(0, 9) then co2 = co2+minetest.registered_nodes[node.name].co2_action(pos, node) end
         touched_nodes[hash(pos)] = time
     end
-    local co2_supply = co2
+    local co2_supply_temp = meta:get_int("co2_supply_temp")+co2
+    local co2_supply = meta:get_int("co2_supply")
+    if stage == 0 then
+        co2_supply = co2_supply_temp
+        meta:set_int("co2_supply", co2_supply)
+        meta:set_int("co2_supply_temp", 0)
+    else
+        meta:set_int("co2_supply_temp", co2_supply_temp)
+    end
 
     co2 = co2+meta:get_int("atmospheric_co2")
     for _, v in ipairs(habitat.plants) do
@@ -69,7 +77,7 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
     meta:set_int("atmospheric_co2", co2)
 
     meta:set_string("infotext", table.concat({
-        "CO2 supply: ", co2_supply,
+        "CO2 supply: ", math.max(co2_supply, co2_supply_temp),
         "\nCO2 demand: ", habitat.demand,
         "\nAtmospheric CO2: ", co2,
         "\nHabitat size: ", habitat.size
