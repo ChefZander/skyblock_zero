@@ -1,6 +1,6 @@
 local modpath = minetest.get_modpath("sbz_power")
 
-local function add_tube_support(def)
+function sbz_api.add_tube_support(def)
     --[[
     def.input_inv = def.input_inv or "input"
     def.output_inv = def.output_inv or "output"
@@ -40,6 +40,7 @@ local function add_tube_support(def)
         def.after_place_node = def.after_place_node or pipeworks.after_place
         def.after_dig_node = def.after_dig_node or pipeworks.after_dig
     end
+    return def --just in case
 end
 
 local function overwrite(original, overwrites)
@@ -60,7 +61,7 @@ function sbz_api.register_machine(name, def)
     def.groups.pipe_conducts = def.groups.pipe_conducts or 1
     def.groups.pipe_connects = 1
 
-    add_tube_support(def)
+    sbz_api.add_tube_support(def)
     if not def.control_action_raw then
         local old_action = def.action
         if def.power_needed then
@@ -145,7 +146,7 @@ function sbz_api.register_generator(name, def)
             return meta:get_int("power_generated")
         end
     end
-    add_tube_support(def)
+    sbz_api.add_tube_support(def)
 
     minetest.register_node(name, def)
 end
