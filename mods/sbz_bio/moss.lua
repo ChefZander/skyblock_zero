@@ -28,12 +28,14 @@ minetest.register_node("sbz_bio:algae", {
 
 minetest.register_abm({
     interval = 10,
-    chance = 20,
+    chance = 1,
     nodenames = {"group:moss_growable"},
     neighbors = {"sbz_resources:water_source", "sbz_resources:water_flowing"},
     action = function (pos, node)
         local i = math.random(0, 5)
         local dir = minetest.wallmounted_to_dir(i)
+        local allow_moss_growth = minetest.registered_nodes[node.name].allow_moss_growth
+        if allow_moss_growth and not allow_moss_growth(pos, node, -dir) then return end
         if sbz_api.get_node_heat(pos-dir) > 7 then
             local defs = minetest.registered_nodes[minetest.get_node(pos-dir).name]
             if defs.liquidtype == "none" and defs.buildable_to then
@@ -47,7 +49,7 @@ minetest.register_abm({
     interval = 10,
     chance = 20,
     nodenames = {"sbz_resources:water_source"},
-    action = function (pos, node)
+    action = function (pos)
         pos.y = pos.y+1
         if sbz_api.get_node_heat(pos) > 7 then
             local defs = minetest.registered_nodes[minetest.get_node(pos).name]

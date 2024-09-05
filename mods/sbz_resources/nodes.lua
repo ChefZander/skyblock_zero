@@ -33,7 +33,7 @@ minetest.register_node("sbz_resources:matter_stair", {
             { -0.5, 0,    0,    0.5, 0.5, 0.5 },
         }
     },
-    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 3 },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     walkable = true,
     sounds = {
         footstep = { name = "step", gain = 1.0 },
@@ -43,6 +43,7 @@ minetest.register_node("sbz_resources:matter_stair", {
     end,
     use_texture_alpha = "clip"
 })
+
 minetest.register_craft({
     output = "sbz_resources:matter_stair 8",
     recipe = {
@@ -69,7 +70,7 @@ minetest.register_node("sbz_resources:matter_slab", {
         type = "fixed",
         fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 }
     },
-    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 2 },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     walkable = true,
     sounds = {
         footstep = { name = "step", gain = 1.0 },
@@ -92,6 +93,9 @@ minetest.register_node("sbz_resources:matter_slab", {
         local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y % 1
         return minetest.item_place_node(itemstack, user, pointed,
             (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
+    end,
+    allow_moss_growth = function (pos, node, dir)
+        return dir.y == 0 or node.param2 == 0 and dir.y < 0 or node.param2 == 23 and dir.y > 0
     end
 })
 
@@ -111,7 +115,7 @@ minetest.register_node("sbz_resources:matter_platform", {
         type = "fixed",
         fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 }
     },
-    groups = { matter = 2, cracky = 3, explody = 8, moss_growable = 2 },
+    groups = { matter = 2, cracky = 3, explody = 8, moss_growable = 1 },
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
@@ -120,6 +124,9 @@ minetest.register_node("sbz_resources:matter_platform", {
     },
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
+    end,
+    allow_moss_growth = function (pos, node, dir)
+        return dir.y > 0
     end
 })
 
