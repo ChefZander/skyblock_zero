@@ -45,6 +45,9 @@ minetest.register_node("sbz_power:power_pipe", {
     },
     use_texture_alpha = "clip",
 })
+
+minetest.register_alias("sbz_power:power_pipe", "sbz_power:power_cable")
+
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_power:power_pipe",

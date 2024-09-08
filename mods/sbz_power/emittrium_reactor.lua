@@ -114,8 +114,17 @@ minetest.register_node("sbz_power:reactor_shell", {
         "reactor_shell.png", "blank.png^[invert:rgba^[multiply:#639bFF"
     },
     drawtype = "glasslike_framed",
-    groups = { matter = 1, reactor_shell = 1, explody = 2 },
+    groups = { matter = 1, reactor_shell = 1, explody = 1 },
 })
+
+minetest.register_craft {
+    output = "sbz_power:reactor_shell",
+    recipe = {
+        { "sbz_resources:compressed_core_dust", "sbz_resources:raw_emittrium",        "sbz_resources:compressed_core_dust" },
+        { "sbz_resources:raw_emittrium",        "sbz_resources:compressed_core_dust", "sbz_resources:raw_emittrium" },
+        { "sbz_resources:compressed_core_dust", "sbz_resources:raw_emittrium",        "sbz_resources:compressed_core_dust" },
+    }
+}
 
 minetest.register_node("sbz_power:reactor_glass", {
     description = "Reactor Glass",
@@ -127,6 +136,15 @@ minetest.register_node("sbz_power:reactor_glass", {
     paramtype = "light",
     groups = { matter = 1, reactor_shell = 1, explody = 3 },
 })
+
+minetest.register_craft {
+    output = "sbz_power:reactor_glass",
+    recipe = {
+        { "sbz_resources:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_resources:simple_charged_field" },
+        { "sbz_resources:emittrium_glass",      "sbz_power:reactor_shell",       "sbz_resources:emittrium_glass" },
+        { "sbz_resources:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_resources:simple_charged_field" }
+    }
+}
 
 local reactor_shell = "blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.png"
 
@@ -169,6 +187,13 @@ minetest.register_node("sbz_power:reactor_item_input", {
     },
 })
 
+minetest.register_craft {
+    output = "sbz_power:reactor_item_input",
+    recipe = {
+        { "pipeworks:tube_1", "sbz_resources:retaining_circuit", "sbz_power:reactor_shell" }
+    }
+}
+
 sbz_api.register_stateful("sbz_power:reactor_core", {
     description = "Reactor Core",
     info_extra = "Don't let it explode!",
@@ -189,6 +214,14 @@ sbz_api.register_stateful("sbz_power:reactor_core", {
     light_source = 14
 })
 
+minetest.register_craft {
+    output = "sbz_power:reactor_core",
+    recipe = {
+        { "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", },
+        { "sbz_meteorites:neutronium", "sbz_power:reactor_shell",   "sbz_meteorites:neutronium", },
+        { "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", }
+    }
+}
 
 local function make_infoscreen_on_formspec(meta)
     local function barchart_this_number(x, max)
@@ -316,6 +349,13 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
     end,
 })
 
+minetest.register_craft {
+    output = "sbz_power:reactor_infoscreen",
+    recipe = {
+        { "sbz_power:reactor_glass", "sbz_power:reactor_shell", "sbz_power:connector_off" }
+    }
+}
+
 sbz_api.register_generator("sbz_power:reactor_power_port", {
     description = "Reactor Power Port",
     paramtype2 = "4dir",
@@ -347,6 +387,13 @@ sbz_api.register_generator("sbz_power:reactor_power_port", {
 
 })
 
+minetest.register_craft {
+    output = "sbz_power:reactor_power_port",
+    recipe = {
+        { "sbz_power:power_pipe", "sbz_power:reactor_shell", "sbz_power:simple_charged_field" }
+    }
+}
+
 minetest.register_node("sbz_power:reactor_coolant_port", {
     description = "Reactor Coolant Port",
     info_extra = "Provide it water",
@@ -375,6 +422,12 @@ minetest.register_node("sbz_power:reactor_coolant_port", {
     end,
     on_liquid_inv_update = function(pos, lqinv) end,
 })
+minetest.register_craft {
+    output = "sbz_power:reactor_coolant_port",
+    recipe = {
+        { "sbz_power:fluid_pipe", "sbz_power:fluid_tank", "sbz_power:reactor_shell" }
+    }
+}
 
 local function explode(pos)
     --breaking nodes
