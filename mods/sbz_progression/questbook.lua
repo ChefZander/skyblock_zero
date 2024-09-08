@@ -187,7 +187,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
         requires = { "Annihilator" }
     },
 
-    { type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.\nALSO, if you put a machine next to another machine, it will conduct power to that machine, so you only need power pipes in very specific cases (like automation).", requires = { "Matter Plates", "Obtain Emittrium" } },
+    { type = "quest", title = "Power Cables", text = "To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate. The Cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.\nALSO, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).", requires = { "Matter Plates", "Obtain Emittrium" } },
 
     { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 

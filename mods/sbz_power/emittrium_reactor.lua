@@ -1,5 +1,6 @@
 local HEAT_MAX = 30
 local POWER_GEN = 800
+--[[
 local ghost_removal_delay = 5
 
 
@@ -67,6 +68,45 @@ function sbz_api.render_schem_ghost(start_pos, schem)
     end
 end
 
+
+local function show_reactor_builder_ghost(pos)
+    sbz_api.render_schem_ghost(vector.add(pos, { x = -1, y = 1, z = -1 }), sbz_api.emittrium_reactor_schem)
+end
+
+minetest.register_node("sbz_power:reactor_builder", {
+    description = "Reactor Builder",
+    info_extra = "Builds an emittrium reactor",
+    paramtype2 = "4dir",
+    tiles = {
+        "reactor_builder_top.png",
+        "reactor_builder_side.png",
+        "reactor_builder_side.png",
+    },
+    groups = { matter = 1 },
+    on_punch = show_reactor_builder_ghost
+})
+
+local offset = vector.new({ x = 3, y = 3, z = 3 })
+
+local function try_linking(pos, meta)
+    local nodes = minetest.find_nodes_in_area(vector.subtract(pos, offset), vector.add(pos, offset),
+        { "sbz_power:reactor_core_off", "sbz_power:reactor_core_on" }, true)
+    local firstpos
+    if nodes["sbz_power:reactor_core_off"] ~= nil then
+        firstpos = nodes["sbz_power:reactor_core_off"][1]
+    elseif nodes["sbz_power:reactor_core_on"] ~= nil then
+        firstpos = nodes["sbz_power:reactor_core_on"][1]
+    else
+        meta:set_string("infotext", "No reactor core nearby")
+        return false
+    end
+    meta:set_string("linked_pos", vector.to_string(firstpos))
+    meta:set_int("linked", 1)
+    return true
+end
+
+-- dont remove maybe idk
+--]]
 minetest.register_node("sbz_power:reactor_shell", {
     description = "Reactor Shell",
     info_extra = "Used for the emittrium reactor",
@@ -149,41 +189,6 @@ sbz_api.register_stateful("sbz_power:reactor_core", {
     light_source = 14
 })
 
-local function show_reactor_builder_ghost(pos)
-    sbz_api.render_schem_ghost(vector.add(pos, { x = -1, y = 1, z = -1 }), sbz_api.emittrium_reactor_schem)
-end
-
-minetest.register_node("sbz_power:reactor_builder", {
-    description = "Reactor Builder",
-    info_extra = "Builds an emittrium reactor",
-    paramtype2 = "4dir",
-    tiles = {
-        "reactor_builder_top.png",
-        "reactor_builder_side.png",
-        "reactor_builder_side.png",
-    },
-    groups = { matter = 1 },
-    on_punch = show_reactor_builder_ghost
-})
-
-local offset = vector.new({ x = 3, y = 3, z = 3 })
-
-local function try_linking(pos, meta)
-    local nodes = minetest.find_nodes_in_area(vector.subtract(pos, offset), vector.add(pos, offset),
-        { "sbz_power:reactor_core_off", "sbz_power:reactor_core_on" }, true)
-    local firstpos
-    if nodes["sbz_power:reactor_core_off"] ~= nil then
-        firstpos = nodes["sbz_power:reactor_core_off"][1]
-    elseif nodes["sbz_power:reactor_core_on"] ~= nil then
-        firstpos = nodes["sbz_power:reactor_core_on"][1]
-    else
-        meta:set_string("infotext", "No reactor core nearby")
-        return false
-    end
-    meta:set_string("linked_pos", vector.to_string(firstpos))
-    meta:set_int("linked", 1)
-    return true
-end
 
 local function make_infoscreen_on_formspec(meta)
     local function barchart_this_number(x, max)
