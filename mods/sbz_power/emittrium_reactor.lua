@@ -430,6 +430,7 @@ minetest.register_craft {
 }
 
 local function explode(pos)
+    local owner = minetest.get_meta(pos):get_string("owner")
     --breaking nodes
     minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
     local wear_max = 1.5
@@ -443,7 +444,9 @@ local function explode(pos)
                 --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                 --although this is very random
                 if wear > wear_max then break end
-                minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+                if not minetest.is_protected(pointed.under, owner) then
+                    minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+                end
             end
         end
     end

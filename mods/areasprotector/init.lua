@@ -50,8 +50,8 @@ checkbox[0.2,14;open;Open;%s]
 	local max_y = 1
 	for i = 1, #owners do -- max 13
 		fs[#fs + 1] = string.format("box[0.2,%s;5.6,1;grey]", i)
-		fs[#fs + 1] = string.format("label[0.3,%s;%s]", i + 0.5, owners[i])
-		fs[#fs + 1] = string.format("button[5,%s;0.5,0.5;%s_x;x]", i + 0.25, owners[i])
+		fs[#fs + 1] = string.format("label[0.3,%s;%s]", i + 0.5, minetest.formspec_escape(owners[i]))
+		fs[#fs + 1] = string.format("button[5,%s;0.5,0.5;%s_x;x]", i + 0.25, minetest.formspec_escape(owners[i]))
 		max_y = max_y + 1
 	end
 	if #owners ~= 12 then
@@ -101,6 +101,12 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 		local perm, err = areas:canPlayerAddArea(pos1, pos2, owner_name)
 		if not perm then
 			minetest.chat_send_player(owner_name, red("You are not allowed to protect that area: ") .. err)
+			return
+		end
+		if string.find(name, "[\\%[%];,$]", 1, false) then
+			minetest.chat_send_player(owner_name,
+				red("You are not allowed to protect that area: ") ..
+				"That name is obviously invalid and also it would be slightly tricky displaying it so like yeah")
 			return
 		end
 		owners_area_id[name] = areas:add(name, "Protector block sub-area", pos1, pos2, meta:get_int("area_id"))
