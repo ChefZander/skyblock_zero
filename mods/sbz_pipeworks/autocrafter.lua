@@ -385,7 +385,7 @@ end
 
 
 minetest.register_node("pipeworks:autocrafter", {
-    description = S("Automatic Autocrafter"),
+    description = S("Autocrafter"),
     drawtype = "normal",
     tiles = { "autocrafter.png" },
     groups = { matter = 2, snappy = 3, tubedevice = 1, tubedevice_receiver = 1, dig_generic = 1, axey = 1, handy = 1, pickaxey = 1, pipe_connects = 1, pipe_conducts = 1, sbz_machine = 1 },
