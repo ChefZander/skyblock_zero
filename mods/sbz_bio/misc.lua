@@ -1,4 +1,4 @@
-minetest.register_node("sbz_bio:burner", {
+minetest.register_node("sbz_bio:burner", sbz_api.add_tube_support({
     description = "Burner",
     tiles = { "burner.png" },
     groups = { matter = 1, co2_source = 1 },
@@ -25,8 +25,10 @@ minetest.register_node("sbz_bio:burner", {
         itemstack:take_item()
         inv:set_stack("main", 1, itemstack)
         return output
-    end
-})
+    end,
+    output_inv = "main",
+    input_inv = "main",
+}))
 
 minetest.register_craft({
     output = "sbz_bio:burner",
