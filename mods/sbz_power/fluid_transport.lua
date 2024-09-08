@@ -49,6 +49,16 @@ minetest.register_node("sbz_power:fluid_pipe", {
     use_texture_alpha = "clip",
 })
 
+minetest.register_craft {
+    output = "sbz_power:fluid_pipe 8",
+    recipe = {
+        { "pipeworks:tube_1", "pipeworks:tube_1",                   "pipeworks:tube_1" },
+        { "pipeworks:tube_1", "sbz_resources:compressed_core_dust", "pipeworks:tube_1" },
+        { "pipeworks:tube_1", "pipeworks:tube_1",                   "pipeworks:tube_1" },
+    }
+}
+
+
 local pump_consumbtion = 5
 local animation_def = {
     type = "vertical_frames",
@@ -222,6 +232,12 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
     }
 })
 
+minetest.register_craft({
+    output = "sbz_power:pump_off",
+    recipe = {
+        { "sbz_power:fluid_pipe", "pipeworks:automatic_filter_injector", "sbz_power:fluid_pipe" }
+    }
+})
 
 minetest.register_node("sbz_power:fluid_tank", {
     description = "Fluid Storage Tank",
@@ -258,6 +274,14 @@ minetest.register_node("sbz_power:fluid_tank", {
     end
 })
 
+minetest.register_craft({
+    output = "sbz_power:fluid_tank",
+    recipe = {
+        { "sbz_power:fluid_pipe", "sbz_resources:storinator",           "sbz_power:fluid_pipe" },
+        { "sbz_power:fluid_pipe", "sbz_resources:retaining_circuit",    "sbz_power:fluid_pipe" },
+        { "sbz_power:fluid_pipe", "sbz_resources:compressed_core_dust", "sbz_power:fluid_pipe" }
+    }
+})
 
 local fluid_capturer_demand = 10
 sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
@@ -324,10 +348,18 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
     light_source = 3,
 })
 
+minetest.register_craft({
+    output = "sbz_power:fluid_capturer_off",
+    recipe = {
+        { "sbz_chem:empty_fluid_cell" },
+        { "sbz_power:fluid_pipe" },
+        { "sbz_power:fluid_tank" }
+    }
+})
+
 local fluid_cell_filler_crafts = {
     ["sbz_resources:water_source"] = "sbz_chem:water_fluid_cell"
 }
-
 
 local fluid_cell_filler_consumbtion = 10
 sbz_api.register_machine("sbz_power:fluid_cell_filler", {
@@ -441,3 +473,10 @@ listring[context;input]listring[]
     end,
     on_liquid_inv_update = function() end,
 })
+
+minetest.register_craft {
+    output = "sbz_power:fluid_cell_filler",
+    recipe = {
+        { "sbz_chem:empty_fluid_cell", "sbz_resources:robotic_arm", "sbz_power:fluid_tank" }
+    }
+}

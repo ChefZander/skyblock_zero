@@ -1,5 +1,7 @@
 local HEAT_MAX = 30
+local POWER_GEN = 800
 local ghost_removal_delay = 5
+
 
 minetest.register_entity("sbz_power:node_ghost", {
     initial_properties = {
@@ -72,7 +74,7 @@ minetest.register_node("sbz_power:reactor_shell", {
         "reactor_shell.png", "blank.png^[invert:rgba^[multiply:#639bFF"
     },
     drawtype = "glasslike_framed",
-    groups = { matter = 1, reactor_shell = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 2 },
 })
 
 minetest.register_node("sbz_power:reactor_glass", {
@@ -83,7 +85,7 @@ minetest.register_node("sbz_power:reactor_glass", {
     },
     drawtype = "glasslike_framed",
     paramtype = "light",
-    groups = { matter = 1, reactor_shell = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 3 },
 })
 
 local reactor_shell = "blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.png"
@@ -91,7 +93,7 @@ local reactor_shell = "blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.pn
 minetest.register_node("sbz_power:reactor_item_input", {
     description = "Reactor Emittrium Input",
     info_extra = "ONLY ONE can be used in an emittrium reactor, supplies emittrium to the reactor core",
-    groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1 },
+    groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1, explody = 2 },
 
     tiles = {
         reactor_shell,
@@ -133,7 +135,7 @@ sbz_api.register_stateful("sbz_power:reactor_core", {
     tiles = {
         "reactor_core.png"
     },
-    groups = { matter = 1, reactor_shell = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 1 },
     after_place_node = function(pos, placer, itemstack, pointed_thing)
         minetest.get_meta(pos):set_string("owner", placer:get_player_name())
     end,
@@ -196,18 +198,18 @@ label[0.2,1;Heat]
 box[0.2,2;1,9;grey]
 box[0.2,2;1,%s;red]
 
-label[3.2,1;Coolant]
-box[3.2,2;1,9;grey]
-box[3.2,2;1,%s;blue]
+label[1.7,1;Coolant]
+box[1.7,2;1,9;grey]
+box[1.7,2;1,%s;blue]
 
-label[5.2,1;Emittrium]
-box[5.2,2;1,9;grey]
-box[5.2,2;1,%s;cyan]
+label[3.2,1;Emittrium]
+box[3.2,2;1,9;grey]
+box[3.2,2;1,%s;cyan]
 button[0.2,11;3,1;turn_off;Turn off the reactor]
 ]],
         barchart_this_number(meta:get_int("heat"), HEAT_MAX),
         barchart_this_number(meta:get_int("water_level"), 100),
-        barchart_this_number(meta:get_int("emittrium_level"), 16))
+        barchart_this_number(meta:get_int("emittrium_level"), 256))
 end
 
 local function make_infoscreen_off_formspec(meta)
@@ -236,7 +238,7 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
         reactor_shell,
         "reactor_infoscreen.png",
     },
-    groups = { matter = 1, reactor_shell = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 2 },
     on_rightclick = function(pos)
         local meta = minetest.get_meta(pos)
         if meta:get_int("linked") == 0 then
@@ -308,7 +310,8 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
         meta:set_string("formspec", make_infoscreen_on_formspec(meta))
     end,
 })
-minetest.register_node("sbz_power:reactor_power_port", {
+
+sbz_api.register_generator("sbz_power:reactor_power_port", {
     description = "Reactor Power Port",
     paramtype2 = "4dir",
     tiles = {
@@ -321,8 +324,21 @@ minetest.register_node("sbz_power:reactor_power_port", {
         reactor_shell,
         "reactor_powerport.png",
     },
-    groups = { matter = 1, reactor_shell = 1, pipe_connects = 1 },
-    connect_sides = { "front" }
+    groups = { matter = 1, reactor_shell = 1, pipe_connects = 1, explody = 2 },
+    connect_sides = { "front" },
+    action = function(pos, node, meta, supply, demand)
+        meta:set_string("infotext", "")
+        local reactor_pos = vector.from_string(meta:get_string("linked_coords"))
+
+        if reactor_pos == nil then return 0 end
+        local state = sbz_api.is_on(reactor_pos)
+        if state == true then
+            return POWER_GEN
+        else
+            return 0
+        end
+    end,
+    disallow_pipeworks = true,
 
 })
 
@@ -340,7 +356,7 @@ minetest.register_node("sbz_power:reactor_coolant_port", {
         reactor_shell,
         "reactor_coolantport.png",
     },
-    groups = { matter = 1, reactor_shell = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1 },
+    groups = { matter = 1, reactor_shell = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, explody = 2 },
     connect_sides = { "front" },
     on_construct = function(pos)
         minetest.get_meta(pos):set_string("liquid_inv", minetest.serialize({
@@ -356,17 +372,63 @@ minetest.register_node("sbz_power:reactor_coolant_port", {
 })
 
 local function explode(pos)
-    minetestl.log "BOOM!"
+    --breaking nodes
+    minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
+    local wear_max = 1.5
+    for _ = 1, 360 do
+        local raycast = minetest.raycast(pos, pos + vector.random_direction() * 32, false)
+        local wear = 0
+        for pointed in raycast do
+            if pointed.type == "node" then
+                local nodename = minetest.get_node(pointed.under).name
+                wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
+                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
+                --although this is very random
+                if wear > wear_max then break end
+                minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+            end
+        end
+    end
+    --knockback
+    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
+        if obj:is_player() then
+            local dir = obj:get_pos() - pos
+            obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 0.5 * (16 - vector.length(dir)))
+        end
+    end
+    --particle effects
+    minetest.add_particlespawner({
+        time = 1,
+        amount = 9000,
+        pos = pos,
+        radius = 1,
+        drag = 0.2,
+        glow = 14,
+        exptime = { min = 2, max = 10 },
+        size = { min = 3, max = 6 },
+        texture = "reactor_explosion_particle.png",
+        attract = {
+            kind = "point",
+            origin = pos,
+            strength = { min = -20, max = 0 }
+        },
+        acc = { x = 0, y = -3, z = 0 }, -- gravity
+        collisiondetection = true,
+    })
 end
+
+sbz_api.reactor_explode = explode
 
 local CONSUME_EMITTRIUM_EVERY_X_SEC = 30
 local function core_tick(pos)
     local meta = minetest.get_meta(pos)
     local tickcount = meta:get_int("tickcount") or 0
     if tickcount >= CONSUME_EMITTRIUM_EVERY_X_SEC then
+        tickcount = 0
         meta:set_int("tickcount", 0)
+    else
+        meta:set_int("tickcount", tickcount + 1)
     end
-    meta:set_int("tickcount", tickcount + 1)
     local err = nil
     local nodes = {
         info = nil,
@@ -415,7 +477,7 @@ local function core_tick(pos)
         end
     end
     if nodes.n_shells ~= 27 then
-        err = "Not enough reactor shells"
+        err = "Not enough shells/glass"
         sbz_api.turn_off(pos)
     end
 
@@ -438,7 +500,7 @@ local function core_tick(pos)
 
     local emittriummeta = minetest.get_meta(nodes.emittrium)
     local emittrium_stack = emittriummeta:get_inventory():get_stack("main", 1)
-    minetest.log(tickcount)
+
     if tickcount == 0 then
         local newcount = emittrium_stack:get_count() - 16
         if newcount < 0 then
@@ -446,6 +508,7 @@ local function core_tick(pos)
             meta:set_int("tickcount", CONSUME_EMITTRIUM_EVERY_X_SEC) -- resets
         else
             emittrium_stack:set_count(emittrium_stack:get_count() - 16)
+            emittriummeta:get_inventory():set_stack("main", 1, emittrium_stack)
         end
     end
     local infometa = minetest.get_meta(nodes.info)
@@ -454,6 +517,8 @@ local function core_tick(pos)
     if not err then
         local heat = meta:get_int("heat")
 
+        local powermeta = minetest.get_meta(nodes.power)
+        powermeta:set_string("linked_coords", vector.to_string(pos))
         local water = nodes.coolant
         local watermeta = minetest.get_meta(water)
         local waterinv = minetest.deserialize(watermeta:get_string("liquid_inv"))
@@ -468,7 +533,6 @@ local function core_tick(pos)
 
         if heat > HEAT_MAX then
             explode(pos)
-            powermeta:set_int("power", 0)
         end
 
         meta:set_int("heat", heat)

@@ -120,7 +120,7 @@ minetest.register_ore({
 minetest.register_craftitem("sbz_resources:raw_emittrium", {
     description = "Raw Emittrium",
     inventory_image = "raw_emittrium.png",
-    stack_max = 16,
+    stack_max = 256,
 })
 
 
