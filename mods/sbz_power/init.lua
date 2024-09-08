@@ -1,6 +1,11 @@
 local modpath = minetest.get_modpath("sbz_power")
 
-local function add_tube_support(def)
+
+function sbz_api.add_tube_support(def)
+    --[[
+    def.input_inv = def.input_inv or "input"
+    def.output_inv = def.output_inv or "output"
+    --]]
     if (def.input_inv or def.output_inv) and not def.disallow_pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
@@ -51,6 +56,7 @@ local function add_tube_support(def)
             end
         end
     end
+    return def --just in case
 end
 
 local function overwrite(original, overwrites)
@@ -71,7 +77,7 @@ function sbz_api.register_machine(name, def)
     def.groups.pipe_conducts = def.groups.pipe_conducts or 1
     def.groups.pipe_connects = 1
 
-    add_tube_support(def)
+    sbz_api.add_tube_support(def)
     if not def.control_action_raw then
         if def.power_needed then
             local old_action = def.action
@@ -81,8 +87,9 @@ function sbz_api.register_machine(name, def)
                     return def.power_needed
                 else
                     meta:set_string("infotext", "Running")
-                    local power_consumed = old_action(pos, node, meta, supply, demand) or def.idle_consume or
-                        def.power_needed
+                    local power_consumed = old_action(pos, node, meta, supply, demand) or def.idle_consume
+                        or def.power_needed
+
                     return power_consumed
                 end
             end
@@ -160,7 +167,7 @@ function sbz_api.register_generator(name, def)
             return meta:get_int("power_generated")
         end
     end
-    add_tube_support(def)
+    sbz_api.add_tube_support(def)
 
     minetest.register_node(name, def)
 end
