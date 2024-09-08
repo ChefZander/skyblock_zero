@@ -91,7 +91,7 @@ function sbz_api.register_machine(name, def)
         if def.action_interval then
             local old_action = def.action
             function def.action(pos, node, meta, supply, demand)
-                local count = meta:get_int("count")
+                local count = meta:get_int("count") + 1
                 if count >= def.action_interval then
                     meta:set_int("power_consumed", old_action(pos, node, meta, supply, demand))
                     meta:set_int("count", 0)
@@ -188,6 +188,10 @@ function sbz_api.register_stateful_generator(name, def, on_def, off_def)
     register_stateful_internal(name, def, on_def, off_def, sbz_api.register_generator)
 end
 
+function sbz_api.register_stateful(name, def, on_def, off_def)
+    register_stateful_internal(name, def, on_def, off_def, minetest.register_node)
+end
+
 local ndef = minetest.registered_nodes
 -- easier manipulating of stateful machines
 function sbz_api.turn_off(pos)
@@ -210,7 +214,6 @@ function sbz_api.turn_on(pos)
         node.name = string.sub(nodename, 1, -5) .. "_on"
         minetest.swap_node(pos, node)
     end
-
     local ndef_nodename = ndef[nodename]
     if ndef_nodename and ndef_nodename.on_turn_on then
         ndef_nodename.on_turn_on(pos)

@@ -145,13 +145,11 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
         { name = "pump_side.png",              animation = animation_def },
     },
     groups = { matter = 1, fluid_pipe_connects = 1 },
-    connect_sides = {
-        "right"
-    },
+
     action = function(pos, node, meta, supply, demand)
         if supply < demand + pump_consumbtion then
             meta:set_string("infotext", "Not enough power")
-            return pump_consumbtion
+            return pump_consumbtion, false
         else
             node = minetest.get_node(pos)
             local dir = pipeworks.facedir_to_right_dir(node.param2)
@@ -286,7 +284,7 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
     action = function(pos, node, meta, supply, demand)
         if supply < demand + fluid_capturer_demand then
             meta:set_string("infotext", "Not enough power")
-            return fluid_capturer_demand
+            return fluid_capturer_demand, false
         end
         local up_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
         local up_node = minetest.get_node(up_pos).name
@@ -405,7 +403,7 @@ listring[context;input]listring[]
     action = function(pos, node, meta, supply, demand)
         if supply < demand + fluid_capturer_demand then
             meta:set_string("infotext", "Not enough power")
-            return fluid_cell_filler_consumbtion
+            return fluid_cell_filler_consumbtion, false
         end
         local inv = meta:get_inventory()
         local input = inv:get_stack("input", 1)
