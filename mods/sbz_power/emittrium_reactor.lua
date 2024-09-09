@@ -142,9 +142,9 @@ minetest.register_node("sbz_power:reactor_glass", {
 minetest.register_craft {
     output = "sbz_power:reactor_glass",
     recipe = {
-        { "sbz_resources:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_resources:simple_charged_field" },
-        { "sbz_resources:emittrium_glass",      "sbz_power:reactor_shell",       "sbz_resources:emittrium_glass" },
-        { "sbz_resources:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_resources:simple_charged_field" }
+        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_power:simple_charged_field" },
+        { "sbz_resources:emittrium_glass",  "sbz_power:reactor_shell",       "sbz_resources:emittrium_glass" },
+        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_power:simple_charged_field" }
     }
 }
 
@@ -610,6 +610,7 @@ local function core_tick(pos)
         infometa:set_int("water_level", waterinv[1].count)
         infometa:set_int("emittrium_level", emittrium_stack:get_count())
         minetest.registered_nodes["sbz_power:reactor_infoscreen"].on_reactor_update(nodes.info)
+        unlock_achievement(meta:get_string("owner"), "Building the emittrium reactor and turning it on")
     else
         sbz_api.turn_off(pos)
     end
