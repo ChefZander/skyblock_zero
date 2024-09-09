@@ -348,6 +348,7 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
         elseif fields.relink then
             try_linking(pos, meta)
             meta:set_string("formspec", "")
+            meta:set_string("infotext", "")
         end
     end,
     on_reactor_update = function(pos)

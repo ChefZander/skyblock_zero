@@ -357,9 +357,6 @@ minetest.register_craft({
     }
 })
 
-local fluid_cell_filler_crafts = {
-    ["sbz_resources:water_source"] = "sbz_chem:water_fluid_cell"
-}
 
 local fluid_cell_filler_consumbtion = 10
 sbz_api.register_machine("sbz_power:fluid_cell_filler", {
@@ -447,7 +444,7 @@ listring[context;input]listring[]
             meta:set_string("infotext", "Not enough fluid inside")
             return 0
         end
-        if not fluid_cell_filler_crafts[lqinv[1].name] then
+        if not sbz_api.fluid_cells2sources[lqinv[1].name] then
             meta:set_string("infotext", "Cannot put that liquid in a fluid cell")
             return 0
         end
@@ -456,7 +453,7 @@ listring[context;input]listring[]
             return 0
         end
 
-        local craftresult = fluid_cell_filler_crafts[lqinv[1].name]
+        local craftresult = sbz_api.fluid_cells2sources[lqinv[1].name]
 
         if not inv:room_for_item("output", craftresult) then
             meta:set_string("infotext", "Full")
