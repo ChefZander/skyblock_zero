@@ -86,6 +86,9 @@ minetest.register_node("sbz_power:reactor_builder", {
     on_punch = show_reactor_builder_ghost
 })
 
+-- dont remove maybe idk
+--]]
+
 local offset = vector.new({ x = 3, y = 3, z = 3 })
 
 local function try_linking(pos, meta)
@@ -98,6 +101,7 @@ local function try_linking(pos, meta)
         firstpos = nodes["sbz_power:reactor_core_on"][1]
     else
         meta:set_string("infotext", "No reactor core nearby")
+        meta:set_int("linked", 0)
         return false
     end
     meta:set_string("linked_pos", vector.to_string(firstpos))
@@ -105,8 +109,6 @@ local function try_linking(pos, meta)
     return true
 end
 
--- dont remove maybe idk
---]]
 minetest.register_node("sbz_power:reactor_shell", {
     description = "Reactor Shell",
     info_extra = "Used for the emittrium reactor",
@@ -244,6 +246,8 @@ label[3.2,1;Emittrium]
 box[3.2,2;1,9;grey]
 box[3.2,2;1,%s;cyan]
 button[0.2,11;3,1;turn_off;Turn off the reactor]
+button[3.2,11;3,1;relink;Re-Link]
+tooltip[relink;Use if 2 infoscreens are linked to the same reactor core]
 ]],
         barchart_this_number(meta:get_int("heat"), HEAT_MAX),
         barchart_this_number(meta:get_int("water_level"), 100),
@@ -341,6 +345,9 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
             meta:set_string("infotext", "Linked")
             sbz_api.turn_off(linkedpos)
             meta:set_string("formspec", make_infoscreen_off_formspec(meta))
+        elseif fields.relink then
+            try_linking(pos, meta)
+            meta:set_string("formspec", "")
         end
     end,
     on_reactor_update = function(pos)
