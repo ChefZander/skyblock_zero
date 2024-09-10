@@ -66,3 +66,25 @@ function sbz_api.vm_get_node(pos)
     end
     return node.name ~= "ignore" and { name = node.name, param1 = node.param1, param2 = node.param2 } or nil
 end
+
+-- Gets the node at a given position, regardless of whether it is loaded or
+-- not, respecting a transaction if one is in progress.
+--
+-- Outside a VM transaction, if the mapblock is not loaded, it is pulled into
+-- the server’s main map data cache and then accessed from there.
+--
+-- Inside a VM transaction, the transaction’s VM cache is used.
+function sbz_api.get_node_force(pos)
+    if vm_cache then
+        return sbz_api.vm_get_node(pos)
+    else
+        local node = minetest.get_node_or_nil(pos)
+        if node == nil then
+            -- Node is not currently loaded; use a VoxelManipulator to prime
+            -- the mapblock cache and try again.
+            minetest.get_voxel_manip(pos, pos)
+            node = minetest.get_node_or_nil(pos)
+        end
+        return node
+    end
+end

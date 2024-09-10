@@ -28,7 +28,8 @@ minetest.register_node("sbz_bio:burner", sbz_api.add_tube_support({
     end,
     output_inv = "main",
     input_inv = "main",
-}))
+})
+)
 
 minetest.register_craft({
     output = "sbz_bio:burner",

@@ -187,7 +187,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
         requires = { "Annihilator" }
     },
 
-    { type = "quest", title = "Power Pipes", text = "To transfer power from generators to machines, you'll need Power Pipes. You can get a power pipe with a shapeless craft using one Raw Emittrium and one Matter Plate. The Pipes will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.\nALSO, if you put a machine next to another machine, it will conduct power to that machine, so you only need power pipes in very specific cases (like automation).", requires = { "Matter Plates", "Obtain Emittrium" } },
+    { type = "quest", title = "Power Cables", text = "To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate. The Cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.\nALSO, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).", requires = { "Matter Plates", "Obtain Emittrium" } },
 
     { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
@@ -232,6 +232,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
     { type = "quest", title = "Fiberweed", text = "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.", requires = { "Stemfruit" } },
     { type = "quest", title = "Airlocks", text = "Tired of breaking a hole in the wall whenever you want to enter a habitat? Introducing the Airlock: a node which holds in the atmosphere while letting you effortlessly walk through.", requires = { "Growing Plants", "Emittrium Glass", "Neutronium" } },
     { type = "secret", title = "Not Chorus Fruit", text = "So apparently Warpshrooms make you teleport randomly when you eat them. Dunno if that makes up for how long they take to grow." },
+
 
     -- ======================================================================================
     { type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
@@ -287,7 +288,7 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         requires = { "Emitter Immitators", "Matter Plates" }
     },
 
-    { type = "quest", title = "Phosphor",                 text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
+    { type = "quest", title = "Phosphor",                                         text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
     -- ======================================================================================
     {
         type = "text",
@@ -355,9 +356,26 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     text = "They vacuum up items in a 16 block radius, don't spam them though.\n\nThey require 20 power.",
     requires = { "Neutronium", "Tubes" }
 },
+    -- ==================================================================================================
 
+    { type = "text",  title = "Questline: Fluid Transport",                       text = "So uh if you want to transport fluids.... this is the questline for you i guess" },
+    { type = "quest", title = "Fluid Pipes",                                      text = "A fluid pipe.... is capable of transporting fluid (wow!) You will need a fluid pump to actually push items thru the fluid pipe.",                                                                                                                                requires = { "Tubes" } },
+    { type = "quest", title = "Fluid Pumps",                                      text = "Works like the Automatic Filter-Injector.... but for fluids",                                                                                                                                                                                                    requires = { "Automatic Filter-Injectors" } },
+    { type = "quest", title = "Fluid Storage Tanks",                              text = "They store fluids...",                                                                                                                                                                                                                                           requires = { "Tubes", "Storinators" } },
+    { type = "quest", title = "Fluid Capturers",                                  text = "Captures fluid from the top, the fluid in the top MUST be a full source. That captured fluid can be pulled out with a pump.",                                                                                                                                    requires = { "Fluid Storage Tanks" } },
+    { type = "quest", title = "Fluid Cell Fillers",                               text = "Fills fluid cells with the liquid that it has inside",                                                                                                                                                                                                           requires = { "Fluid Storage Tanks" } },
+    -- ==================================================================================================
+    { type = "text",  title = "Questline: Emittrium Reactor",                     text = "Emittrium reactor consists of 3x3x3 blocks, with the reactor core at its center. It consumes emittrium and water, generates 800 power. If it doesn't have enough power... it heats up.... if it heats up too much it explodes. " },
+    { type = "quest", title = "Reactor Shells",                                   text = "Reactor shells are needed in crafting the emittrium reactor parts, and construction of the emittrium reactor.",                                                                                                                                                  requires = { "Obtain Emittrium" } },
+    { type = "quest", title = "Reactor Glass",                                    text = "Reactor Glass is needed in crafting recipes, and optionally can be used as a replacement for the reactor shell in the construction of the emittrium reactor.",                                                                                                   requires = { "Emittrium Glass", "Reactor Shells" } },
+    { type = "quest", title = "Reactor Infoscreens",                              text = "They are needed in the construction of the emittrium reactor, and are needed to turn on the reactor.",                                                                                                                                                           requires = { "Reactor Glass" } },
+    { type = "quest", title = "Reactor Power Ports",                              text = "Needed in the construction of the emittrium reactor. They output 800 power once their reactor is on.",                                                                                                                                                           requires = { "Reactor Shells" } },
+    { type = "quest", title = "Reactor Coolant Ports",                            text = "Needed in the construction of the emittrium reactor. They need 1 water bucket/s (delivered in pipes).",                                                                                                                                                          requires = { "Fluid Storage Tanks" } },
+    { type = "quest", title = "Reactor Emittrium Input",                          text = "Needed in the construction of the emittrium reactor. They need 16 emittrium/minute.",                                                                                                                                                                            requires = { "Reactor Shells", "Tubes" } },
+    { type = "quest", title = "Reactor Core",                                     text = "Needed in the construction of the emittrium reactor. Needs to be in the center.",                                                                                                                                                                                requires = { "Neutronium", "Reactor Shells" } },
+    { type = "quest", title = "Building the emittrium reactor and turning it on", text = "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of theese shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)",                                          requires = { "Reactor Shells", "Reactor Infoscreens", "Reactor Power Ports", "Reactor Coolant Ports", "Reactor Emittrium Input", "Reactor Core" } },
     -- ======================================================================================
-    { type = "text",  title = "Questline: Completionist", text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
+    { type = "text",  title = "Questline: Completionist",                         text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
     {
         type = "quest",

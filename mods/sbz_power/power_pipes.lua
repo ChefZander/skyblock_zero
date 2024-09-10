@@ -20,11 +20,11 @@ end
 local wire_size = 1 / 8
 
 minetest.register_node("sbz_power:power_pipe", {
-    description = "Emittrium power pipe",
+    description = "Emittrium Power Cable",
     connects_to = { "group:pipe_connects" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
 
-    tiles = { "emitter.png" },
+    tiles = { "power_pipe.png" },
 
     drawtype = "nodebox",
     light_source = 3,
@@ -45,6 +45,9 @@ minetest.register_node("sbz_power:power_pipe", {
     },
     use_texture_alpha = "clip",
 })
+
+minetest.register_alias("sbz_power:power_pipe", "sbz_power:power_cable")
+
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_power:power_pipe",

@@ -86,6 +86,8 @@ listring[current_player;main]listring[context;input]listring[current_player;main
             local random_index = math.random(1, #output_items)
             local selected_item = output_items[random_index]
 
+
+
             if inv:room_for_item("output", selected_item) then
                 inv:add_item("output", selected_item)
             else

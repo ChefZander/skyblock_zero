@@ -51,7 +51,7 @@ local achievment_table = {
     ["sbz_power:advanced_battery"] = "Advanced Batteries",
     ["sbz_power:connector_off"] = "Connectors",
     ["sbz_power:phosphor_off"] = "Phosphor",
-    ["sbz_power:power_pipe"] = "Power Pipes",
+    ["sbz_power:power_pipe"] = "Power Cables",
     ["sbz_power:starlight_collector"] = "Starlight Collectors",
     ["sbz_resources:reinforced_matter"] = "Reinforced Matter",
     ["sbz_power:switching_station"] = "Switching Station",
@@ -81,7 +81,21 @@ local achievment_table = {
     ["sbz_bio:dirt"] = "Dirt",
     ["sbz_bio:fertilizer"] = "Sprouting Plants",
     ["sbz_bio:burner"] = "Carbon Dioxide",
-    ["sbz_bio:airlock"] = "Airlocks"
+    ["sbz_bio:airlock"] = "Airlocks",
+    ["sbz_power:fluid_pipe"] = "Fluid Pipes",
+    ["sbz_power:pump_off"] = "Fluid Pumps",
+    ["sbz_power:fluid_capturer_off"] = "Fluid Capturers",
+    ["sbz_power:fluid_tank"] = "Fluid Storage Tanks",
+    ["sbz_power:fluid_cell_filler"] = "Fluid Cell Fillers",
+
+    ["sbz_power:reactor_shell"] = "Reactor Shells",
+    ["sbz_power:reactor_glass"] = "Reactor Glass",
+    ["sbz_power:reactor_infoscreen"] = "Reactor Infoscreens",
+    ["sbz_power:reactor_power_port"] = "Reactor Power Ports",
+    ["sbz_power:reactor_coolant_port"] = "Reactor Coolant Ports",
+    ["sbz_power:reactor_item_input"] = "Reactor Emittrium Input",
+    ["sbz_power:reactor_core_off"] = "Reactor Core",
+
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

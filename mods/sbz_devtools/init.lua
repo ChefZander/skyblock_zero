@@ -62,15 +62,15 @@ minetest.register_chatcommand("dev_platform", {
         local player = minetest.get_player_by_name(name)
         if player then
             local pos = player:get_pos()
-            local platform_start_pos = vector.subtract(pos, {x = 5, y = 1, z = 5})
+            local platform_start_pos = vector.subtract(pos, { x = 5, y = 1, z = 5 })
             for x = 0, 9 do
                 for z = 0, 9 do
                     if (x == 0 and z == 0) or (x == 0 and z == 9) or (x == 9 and z == 0) or (x == 9 and z == 9) then
-                        local platform_pos = vector.add(platform_start_pos, {x = x, y = 0, z = z})
-                        minetest.set_node(platform_pos, {name = "sbz_decor:photonlamp"})
+                        local platform_pos = vector.add(platform_start_pos, { x = x, y = 0, z = z })
+                        minetest.set_node(platform_pos, { name = "sbz_decor:photonlamp" })
                     else
-                        local platform_pos = vector.add(platform_start_pos, {x = x, y = 0, z = z})
-                        minetest.set_node(platform_pos, {name = "sbz_resources:matter_blob"})
+                        local platform_pos = vector.add(platform_start_pos, { x = x, y = 0, z = z })
+                        minetest.set_node(platform_pos, { name = "sbz_resources:matter_blob" })
                     end
                 end
             end
@@ -90,7 +90,7 @@ minetest.register_chatcommand("dev_trail", {
         local player = minetest.get_player_by_name(name)
         local state = ((player:get_meta():get_int("trailHidden") == 1) and 0 or 1)
         player:get_meta():set_int("trailHidden", state)
-        return true, "Trail state is "..state
+        return true, "Trail state is " .. state
     end
 })
 
@@ -124,7 +124,7 @@ minetest.register_chatcommand("dev_close", {
                             break
                         end
 
-                        local node_pos = vector.add(pos, {x = x, y = y, z = z})
+                        local node_pos = vector.add(pos, { x = x, y = y, z = z })
                         local node = minetest.get_node(node_pos)
                         local node_name = node.name
 
@@ -158,6 +158,7 @@ minetest.register_chatcommand("dev_close", {
     end
 })
 
+-- this is such a zander thing to do lmfao
 minetest.register_chatcommand("dev_clear", {
     description = "Clears the player's inventory - for debugging only",
     privs = { ["server"] = true },
