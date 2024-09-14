@@ -48,6 +48,7 @@ local achievment_table = {
     ["sbz_decor:photonlamp"] = "Photon Lamps",
     ["sbz_decor:factory_floor"] = "Factory Flooring",
     ["sbz_decor:factory_floor_tiling"] = "Tiled Factory Flooring",
+    ["sbz_decor:factory_ventilator"] = "Factory Ventilator",
 
     ["sbz_resources:emittrium_circuit"] = "Emittrium Circuits",
     ["sbz_resources:angels_wing"] = "Angel's Wing",

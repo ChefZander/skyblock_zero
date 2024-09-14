@@ -272,6 +272,13 @@ Next time you’re floating through the cosmos and stumble upon these absurd con
 
     {
         type = "quest",
+        title = "Factory Ventilator",
+        text = "You might want a Ventilation system inside a factory, just saying.",
+        requires = {"Factory Flooring", "Crusher"}
+    },
+
+    {
+        type = "quest",
         title = "Reinforced Matter",
         text =
         "Normal matter isn't sturdy enough? Try this one. This one won't break, unless you break it, then it breaks. Wait a minute...",
