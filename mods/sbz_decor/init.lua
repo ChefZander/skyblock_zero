@@ -27,3 +27,47 @@ minetest.register_craft({
         { "sbz_resources:matter_plate",     "sbz_resources:emitter_imitator", "sbz_resources:matter_plate" }
     }
 })
+
+
+minetest.register_node("sbz_decor:factory_floor", {
+    description = "Factory Floor",
+    tiles = { "factory_floor.png" },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+    sunlight_propagates = true,
+    walkable = true,
+    sounds = {
+        footstep = { name = "step", gain = 1.0 },
+    },
+    on_punch = function(pos, node, puncher)
+        minetest.sound_play("step", { pos = pos, gain = 1.0 })
+    end,
+})
+minetest.register_craft({
+    output = "sbz_decor:factory_floor 2",
+    type = "shapeless",
+    recipe = {
+        "sbz_resources:matter_blob", 
+        "sbz_resources:matter_blob", 
+        "sbz_resources:matter_blob", 
+        "sbz_resources:matter_blob"
+    }
+})
+
+minetest.register_node("sbz_decor:factory_floor_tiling", {
+    description = "Factory Floor (Tiled)",
+    tiles = { "factory_floor_tiling.png" },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+    sunlight_propagates = true,
+    walkable = true,
+    sounds = {
+        footstep = { name = "step", gain = 1.0 },
+    },
+    on_punch = function(pos, node, puncher)
+        minetest.sound_play("step", { pos = pos, gain = 1.0 })
+    end,
+})
+minetest.register_craft({
+    output = "sbz_decor:factory_floor_tiling 4",
+    type = "shapeless",
+    recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_decor:factory_floor" }
+})

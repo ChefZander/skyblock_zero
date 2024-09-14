@@ -44,7 +44,11 @@ local achievment_table = {
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
     ["sbz_resources:pebble"] = "Pretty Pebbles",
     ["sbz_resources:stone"] = "Concrete Plan",
+
     ["sbz_decor:photonlamp"] = "Photon Lamps",
+    ["sbz_decor:factory_floor"] = "Factory Flooring",
+    ["sbz_decor:factory_floor_tiling"] = "Tiled Factory Flooring",
+
     ["sbz_resources:emittrium_circuit"] = "Emittrium Circuits",
     ["sbz_resources:angels_wing"] = "Angel's Wing",
     ["sbz_power:battery"] = "Batteries",
