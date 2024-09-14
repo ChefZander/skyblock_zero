@@ -393,7 +393,10 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     text =
     "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
     requires = { "Storinators" }
-}}
+},
+{ type = "secret", title = "Emptiness", text = "Damn. You fell off." },
+{ type = "secret", title = "Desolate",  text = "You talked to yourself." },
+{ type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." },}
 local function getquestbyname(questname)
     for i, quest in ipairs(quests) do
         if quest.title == questname then
