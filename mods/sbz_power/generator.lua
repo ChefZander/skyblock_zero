@@ -240,7 +240,13 @@ sbz_api.register_generator("sbz_power:starlight_collector", {
     },
     use_texture_alpha = "clip",
 
-    power_generated = 1,
+    action_interval = 1,
+    action = function(pos, node, meta)
+        local r = math.random(0, 2)
+        if r == 1 then return 1 end
+        return 0
+    end,
+    info_extra = "Has a 1/3 Chance to produce 1 power.",
 })
 
 minetest.register_craft({
