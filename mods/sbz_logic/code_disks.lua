@@ -8,7 +8,7 @@ minetest.register_craftitem("sbz_logic:data_disk", {
         "Can be configured to override editor or normal code on use.",
         "Insert into a luacontroller to configure",
     },
-    can_hold = 1024 * 1024 * 1024, -- 1 megabyte
+    can_hold = 1024 * 20, -- 20 kilobytes
     on_use = function(stack, user, pointed)
         if pointed.type ~= "node" then return end
         local stack_meta = stack:get_meta()
@@ -55,7 +55,7 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
             end
 
             local node = minetest.get_node(target)
-            if not minetest.get_item_group(node.name, "sbz_luacontroller") == 1 then return end
+            if minetest.get_item_group(node.name, "sbz_luacontroller") ~= 1 then return end
 
             if punch_editor then
                 logic.override_editor(target, source)

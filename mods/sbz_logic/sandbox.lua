@@ -57,7 +57,7 @@ function logic.serialize_mem(mem, max, name)
     local safe_mem = make_safe(mem)
     local serialized_mem = minetest.serialize(safe_mem)
     if #serialized_mem > max then
-        return false, string.format("You stored too much in %s (%s/%s bytes)", name, #serialized_mem, max_memsize)
+        return false, string.format("You stored too much in %s (%s/%s bytes)", name, #serialized_mem, max)
     else
         return serialized_mem
     end
@@ -83,7 +83,8 @@ function logic.request_disks_and_mem(meta, env)
                     punches_code = stack_meta:get_int("override_code") == 1,
                     punches_editor = stack_meta:get_int("override_editor") == 1,
                     name = stack_meta:get_string("description"),
-                    index = k
+                    index = k,
+                    max = minetest.registered_craftitems[stack_name].can_hold
                 }
                 env.disks.by_name[stack_meta:get_string("description")] = env.disks[k]
             else
@@ -94,7 +95,7 @@ function logic.request_disks_and_mem(meta, env)
                     punches_code = node_def.punches_code,
                     punches_editor = node_def.punches_editor,
                     name = node_def.description,
-                    index = k
+                    index = k,
                 }
                 env.disks.by_name[node_def.description] = env.disks[k]
             end

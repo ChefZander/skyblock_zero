@@ -25,7 +25,7 @@ hypertext[0,0.3;20,1;;<center><big>Super basic editor, YOU can make a better one
 textarea[0.2,2;19.6,10;code;The code...;%s]
 %s
 label[4,12.5;%s]
-]], minetest.formspec_escape(editor.code), control_button, editor.error)
+]], minetest.formspec_escape(editor.code) or "", control_button, editor.error)
 end
 
 -- only makes sense to render if it's on
@@ -51,12 +51,52 @@ end
 local function render_disk_editor()
     local fs = {}
     local Y = 0.2
-    for k, v in ipairs(disks.by_id) do
+    for k, v in ipairs(disks) do
         fs[#fs + 1] = string.format("image_button[0.2,%s;1,1;%s;%s;]", Y,
             v.immutable and "system_code_disk.png" or "data_disk.png",
             k)
-        fs[#fs + 1] = string.format("tooltip[%s,%s]", k, v.name)
+        fs[#fs + 1] = string.format("tooltip[%s;%s]", k, v.name)
         Y = Y + 1.2
+    end
+    if #disks == 0 then
+        fs[#fs + 1] = "label[0.4,0.4;No disks found... you may want to insert some?]"
+    end
+    if not mem.selected then
+        return string.format(prepend, 4) .. table.concat(fs)
+    end
+
+    local selected_disk = disks[mem.selected]
+    if not selected_disk then
+        mem.selected = nil
+        return string.format(prepend, 4) .. table.concat(fs)
+    end
+    if not selected_disk.immutable then
+        fs[#fs + 1] = string.format([[
+field[2,1;10,1;set_disk_name;Disk Name;%s]
+textarea[2,3;10,10;%s;Disk Data;%s]
+checkbox[13,1;punches_editor;Punches editor;%s]
+checkbox[13,2;punches_code;Punches code;%s]
+button[13,3;3,1;save;Save]
+label[13,13;Can hold: %s kb]
+    ]], minetest.formspec_escape(selected_disk.name),
+            type(selected_disk.data) == "string" and "set_disk_data" or "",
+            (type(selected_disk.data) == "string" or selected_disk.data == nil) and
+            minetest.formspec_escape(selected_disk.data) or
+            "\nCan't edit it here because it's a non-string type, can't show it but here is the dumped version:\n" ..
+            minetest.formspec_escape(dump(selected_disk.data)),
+            tostring(selected_disk.punches_editor),
+            tostring(selected_disk.punches_code),
+            tostring(selected_disk.max / 1024))
+    else
+        fs[#fs + 1] = string.format([[
+textarea[2,1;10,1;;Disk Name;%s]
+textarea[2,3;10,10;;Disk Data;%s]
+label[13,1;Punches editor: %s]
+label[13,2;Punches code: %s]
+label[13,13;This disk is immutable]
+    ]], minetest.formspec_escape(selected_disk.name), minetest.formspec_escape(selected_disk.data),
+            selected_disk.punches_editor and "yes" or "no",
+            selected_disk.punches_code and "yes" or "no")
     end
     return string.format(prepend, 4) .. table.concat(fs)
 end
@@ -86,7 +126,27 @@ if event.type == "gui" or event.type == "off" or event.type == "on" then
 
     if fields.code then editor.code = fields.code end
     if tonumber(fields.tabs) then mem.current_tab = tonumber(fields.tabs) end
+    for k, v in ipairs(disks) do
+        if fields[tostring(k)] then
+            mem.selected = tonumber(k)
+        end
+    end
 
+    local selected_disk = disks[mem.selected]
+    if selected_disk and not selected_disk.immutable then
+        if fields.set_disk_name then
+            selected_disk.name = fields.set_disk_name
+        end
+        if fields.set_disk_data then
+            selected_disk.data = fields.set_disk_data
+        end
+        if fields.punches_editor then
+            selected_disk.punches_editor = fields.punches_editor
+        end
+        if fields.punches_code then
+            selected_disk.punches_code = fields.punches_code
+        end
+    end
 
     editor.formspec = render_formspec(tonumber(fields.tabs) or current_tab)
 end
