@@ -31,7 +31,8 @@ minetest.register_craftitem("sbz_logic:data_disk", {
             logic.override_code(target, stack_meta:get_string("data"))
         end
     end,
-    inventory_image = "data_disk.png"
+    inventory_image = "data_disk.png",
+    groups = { sbz_disk = 1 },
 })
 
 function logic.register_system_disk(name, desc, source, punch_editor, punch_code)
@@ -41,7 +42,10 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
         info_extra = {
             "Immutable",
         },
+        groups = { sbz_disk = 1, sbz_disk_immutable = 1 },
         source = source,
+        punches_editor = punch_editor,
+        punches_code = punch_code,
         on_use = function(stack, user, pointed)
             if pointed.type ~= "node" then return end
             local target = pointed.under

@@ -16,11 +16,21 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         "No like actually...",
         "Punch with the basic editor disk to get started.",
     },
+    disallow_pipeworks = true,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        inv:set_size("disks", 16)
+        inv:set_size("disks", 8)
+        inv:set_size("upgrades", 8)
     end,
+    allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+        if listname == "disks" and minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then
+            return 0
+        else
+            return stack:get_count()
+        end
+    end,
+
     action = function(pos, node, meta, supply, demand)
         return 0
     end,

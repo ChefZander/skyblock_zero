@@ -3,17 +3,14 @@
 
     Anyway, this editor stores everything it needs in the coroutine_env (like terminal stuff)
 ]]
+
 local is_on = coroutine_env ~= nil
-local current_tab = (coroutine_env or {}).current_tab or 1
+local current_tab = mem.current_tab or 1
 local prepend = [[
 formspec_version[7]
 size[20,15]
+tabheader[0,0;1;tabs;Code,Terminal,Inventory,Disks;%s;false;true]
 ]]
-if is_on then
-    prepend = prepend .. [[
-    tabheader[0,0;1;tabs;Code,Terminal;%s;false;true]
-    ]]
-end
 
 local function render_formspec_edit()
     local control_button
@@ -28,16 +25,40 @@ hypertext[0,0.3;20,1;;<center><big>Super basic editor, YOU can make a better one
 textarea[0.2,2;19.6,10;code;The code...;%s]
 %s
 label[4,12.5;%s]
-]], editor.code, control_button, editor.error)
+]], minetest.formspec_escape(editor.code), control_button, editor.error)
 end
 
 -- only makes sense to render if it's on
 local function render_formspec_term()
     local terminal_text = minetest.formspec_escape((coroutine_env or {}).terminal_text or "")
     return string.format(prepend, 2) .. string.format([[
-    box[0,0;20,15;black]
-    textarea[0,0;20,15;;;%s]
+box[0,0;20,15;black]
+textarea[0,0;20,15;;;%s]
 ]], terminal_text)
+end
+
+local function render_formspec_inventory()
+    return string.format(prepend, 3) .. string.format([[
+list[current_player;main;0.2,10;8,4]
+label[0.2,1;Upgrades]
+list[context;upgrades;0.2,1.5;8,1]
+
+label[0.2,2.9;Disks]
+list[context;disks;0.2,3.4;8,1]
+    ]])
+end
+
+local function render_disk_editor()
+    local fs = {}
+    local Y = 0.2
+    for k, v in ipairs(disks.by_id) do
+        fs[#fs + 1] = string.format("image_button[0.2,%s;1,1;%s;%s;]", Y,
+            v.immutable and "system_code_disk.png" or "data_disk.png",
+            k)
+        fs[#fs + 1] = string.format("tooltip[%s,%s]", k, v.name)
+        Y = Y + 1.2
+    end
+    return string.format(prepend, 4) .. table.concat(fs)
 end
 
 local function render_formspec(tabs)
@@ -45,13 +66,16 @@ local function render_formspec(tabs)
         return render_formspec_edit()
     elseif tabs == 2 then
         return render_formspec_term()
+    elseif tabs == 3 then
+        return render_formspec_inventory()
+    elseif tabs == 4 then
+        return render_disk_editor()
     end
 end
 
 if event.type == "program" then
     editor.formspec = render_formspec_edit()
 end
-
 
 if event.type == "gui" or event.type == "off" or event.type == "on" then
     local fields = event.fields or {}
@@ -60,8 +84,9 @@ if event.type == "gui" or event.type == "off" or event.type == "on" then
     end
     if fields.turn_on then turn_on() end
 
-    if fields.code then editor.code = minetest.formspec_escape(fields.code) end
-    if tonumber(fields.tabs) then coroutine_env.current_tab = fields.tabs end
+    if fields.code then editor.code = fields.code end
+    if tonumber(fields.tabs) then mem.current_tab = tonumber(fields.tabs) end
+
 
     editor.formspec = render_formspec(tonumber(fields.tabs) or current_tab)
 end
