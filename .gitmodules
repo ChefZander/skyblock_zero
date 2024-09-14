@@ -1,0 +1,3 @@
+[submodule "mods/libox"]
+	path = mods/libox
+	url = git@github.com:TheEt1234/libox.git

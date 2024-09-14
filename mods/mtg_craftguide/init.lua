@@ -177,6 +177,7 @@ local function item_button_fs(fs, x, y, item, element_name, groups)
 	table.insert(fs, ("item_image_button[%s,%s;1.05,1.05;%s;%s;%s]")
 		:format(x, y, item, element_name, groups and "\n" .. esc(S("G")) or ""))
 
+
 	local tooltip
 	if groups then
 		table.sort(groups)
@@ -194,6 +195,7 @@ local function item_button_fs(fs, x, y, item, element_name, groups)
 		local desc = itemdef and itemdef.description or S("Unknown Item")
 		tooltip = desc .. "\n" .. minetest.colorize("orange", S("Fuel"))
 	end
+
 	if tooltip then
 		table.insert(fs, ("tooltip[%s;%s]"):format(element_name, esc(tooltip)))
 	end
@@ -308,7 +310,6 @@ local function get_formspec(player)
 			or S("No recipes.") .. "\n" .. S("Click again to show usages."))))
 	end
 	table.insert(fs, "container_end[]")
-
 	return table.concat(fs)
 end
 

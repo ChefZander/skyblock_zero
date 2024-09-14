@@ -282,7 +282,7 @@ minetest.register_abm({
     end
 })
 
-local timeout_limit = 2 -- seconds
+local timeout_limit = 3 -- seconds
 
 minetest.register_abm({
     label = "Machine timeout check",
