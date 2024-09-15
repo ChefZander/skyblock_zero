@@ -26,9 +26,9 @@ local function remove_display(pos)
 end
 
 areas:registerProtectionCondition(function(pos1, pos2, name)
-	local core_no_protects_pos1 = vector.add(pos1,
+	local core_no_protects_pos1 = vector.add(pos2,
 		vector.new(core_no_protects_radius, core_no_protects_radius, core_no_protects_radius))
-	local core_no_protects_pos2 = vector.add(pos2,
+	local core_no_protects_pos2 = vector.add(pos1,
 		vector.new(-core_no_protects_radius, -core_no_protects_radius, -core_no_protects_radius))
 
 	if #minetest.find_nodes_in_area(core_no_protects_pos1, core_no_protects_pos2, { "sbz_resources:the_core" }) > 0 then
