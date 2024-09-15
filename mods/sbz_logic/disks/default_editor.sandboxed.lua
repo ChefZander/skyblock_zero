@@ -115,7 +115,7 @@ if event.type == "program" then
     editor.formspec = render_formspec_edit()
 end
 
-if event.type == "gui" or event.type == "off" or event.type == "on" then
+if event.type == "gui" or event.type == "off" or event.type == "on" or event.type == "normal_sandbox_run" then
     local fields = event.fields or {}
     if fields.turn_off then
         turn_off()

@@ -177,8 +177,49 @@ function logic.can_run(pos, meta, editor)
     return true
 end
 
-function logic.post_run(pos, response)
+logic.post_runs = {
+    ["wait"] = {
+        typedef = {
+            time = function(n)
+                if libox.type("number")(n) == false then return false end
+                if n < 0 then return false end
+                return true
+            end,
+        },
+        f = function(pos, response)
+            sbz_api.queue:add_action(pos, "logic_send_event", { {
+                type = "wait"
+            } }, response.time)
+        end
+    }
+}
 
+function logic.is_on(pos)
+    return not libox_coroutine.is_sandbox_dead(M(pos):get_string("ID"))
+end
+
+function logic.post_run(pos, response)
+    if type(response) == "string" then
+        response = {
+            type = response
+        }
+    end
+    if type(response) ~= "table" then
+        return
+    end
+    if type(response.type) ~= "string" then
+        return
+    end
+
+    if logic.post_runs[response.type] then
+        local post_run = logic.post_runs[response.type]
+        local typedef = post_run.typedef
+        typedef.type = libox.type("string")
+        local ok, errmsg = libox.type_check(response, typedef)
+        if ok then
+            post_run.f(pos, response)
+        end
+    end
 end
 
 function logic.receives_events(meta)
@@ -242,6 +283,12 @@ function logic.send_event_to_sandbox(pos, event)
     else
         local value = errmsg
         logic.post_run(pos, value)
+        -- send back to the editor
+        if type(event) ~= "gui" then
+            logic.send_editor_event(pos, {
+                type = "normal_sandbox_run",
+            })
+        end
         return true
     end
 end
@@ -282,11 +329,15 @@ function logic.send_editor_event(pos, event)
 end
 
 function logic.on_receive_fields(pos, formname, fields, sender)
-    logic.send_editor_event(pos, {
+    local ev = {
         fields = fields,
         clicker = sender:get_player_name(),
         type = "gui",
-    })
+    }
+    logic.send_editor_event(pos, ev)
+    if logic.is_on(pos) then
+        logic.send_event_to_sandbox(pos, ev)
+    end
 end
 
 function logic.override_editor(pos, code)
@@ -314,16 +365,18 @@ sbz_api.queue:add_function("logic_turn_on", logic.turn_on)
 
 
 function logic.calculate_bill(us_taken_main, us_taken_editor)
-    return math.floor((us_taken_main + us_taken_editor) / 1000)
+    return math.ceil((us_taken_main + us_taken_editor) / 1000)
 end
 
 function logic.on_tick(pos, node, meta, supply, demand)
-    if meta:get_int("bill") ~= 0 then
-        local net = supply - demand
-        local consume = math.max(0, meta:get_int("bill") - net)
-        meta:set_int("bill", meta:get_int("bill") - consume)
-        return consume
+    local old_bill = meta:get_int("bill")
+    if old_bill ~= 0 then
+        local bill = old_bill
+        local result = math.max(0, bill - (supply - demand))
+        meta:set_int("bill", result)
+        return math.max(0, meta:get_int("bill") - result)
     end
+
     local us_taken_main = meta:get_float("microseconds_taken_main_sandbox")
     local us_taken_editor = meta:get_float("microseconds_taken_editor_sandbox")
 
@@ -331,21 +384,23 @@ function logic.on_tick(pos, node, meta, supply, demand)
 
     local net = supply - demand
     local return_value
-    minetest.log(net)
+
     if net < bill then -- bill needs to get paid over multiple ticks, that means that your luacontroller will also not work (no editor, no nothing)
-        return_value = math.max(0, bill - net)
-        meta:set_int("bill", bill - return_value)
+        local result = math.max(0, bill - net)
+        meta:set_int("bill", result)
+        return_value = math.max(0, meta:get_int("bill") - result)
     else
-        minetest.log("Can just pay the bill lol!")
+        meta:set_int("bill", 0)
         return_value = bill
     end
     local function format_us(x)
         return tostring(math.floor(x / 1000)) .. "ms"
     end
     meta:set_string("infotext",
-        string.format("Editor lag: %s\nMain sandbox lag: %s\nBill: %s Cj\nCan run: %s",
-            format_us(us_taken_editor), format_us(us_taken_main), bill,
-            logic.can_run(pos, meta, true) and "yes" or "no (probably hasn't paid the bill?)"))
+        string.format("Editor lag: %s\nMain sandbox lag: %s\nCombined: %s\nBill: %s Cj\nCan run: %s",
+            format_us(us_taken_editor), format_us(us_taken_main), format_us(us_taken_editor + us_taken_main), bill,
+            logic.can_run(pos, meta, true) and "yes" or
+            "no (probably hasn't paid the bill? or you used more than 100 miliseconds)"))
 
     meta:set_float("microseconds_taken_main_sandbox", 0)
     meta:set_float("microseconds_taken_editor_sandbox", 0)
