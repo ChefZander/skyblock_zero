@@ -1,7 +1,5 @@
 --[[
     Hello, if you are seeing this, go make your own editor
-
-    Anyway, this editor stores everything it needs in the coroutine_env (like terminal stuff)
 ]]
 
 local is_on = coroutine_env ~= nil
@@ -86,7 +84,7 @@ label[13,13;Can hold: %s kb]
             minetest.formspec_escape(dump(selected_disk.data)),
             tostring(selected_disk.punches_editor),
             tostring(selected_disk.punches_code),
-            tostring(selected_disk.max / 1024))
+            tostring(math.floor(selected_disk.max / 1024)))
     else
         fs[#fs + 1] = string.format([[
 textarea[2,1;10,1;;Disk Name;%s]

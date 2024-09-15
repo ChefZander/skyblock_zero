@@ -17,6 +17,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         "Punch with the basic editor disk to get started.",
     },
     disallow_pipeworks = true,
+    autostate = false,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
@@ -31,9 +32,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         end
     end,
 
-    action = function(pos, node, meta, supply, demand)
-        return 0
-    end,
+    action = logic.on_tick,
     action_subtick = function(pos, node, meta, supply, demand)
         return 0
     end,

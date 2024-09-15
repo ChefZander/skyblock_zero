@@ -4,10 +4,10 @@ local M = minetest.get_meta
 local libox_coroutine = libox.coroutine
 local active_sandboxes = libox_coroutine.active_sandboxes
 
-local time_limit = 5000        -- 5ms
-local editor_time_limit = 1000 -- 1ms
-local max_memsize = 1024       -- 1024 serialized characters, just use disks lol
-
+local time_limit = 5000              -- 5ms
+local editor_time_limit = 1000       -- 1ms
+local max_memsize = 1024             -- 1024 serialized characters, just use disks lol
+local max_us_per_second = 100 * 1000 -- 100 milis
 
 -- from mesecons - https://github.com/minetest-mods/mesecons/blob/master/mesecons_luacontroller/init.lua - heavily edited
 local function make_safe(x)
@@ -103,19 +103,6 @@ function logic.request_disks_and_mem(meta, env)
     end
 end
 
---[[
-    env.disk = {
-        [1] = disk def 1..
-        [2] = disk def 2..
-        ...
-        [n] = disk def n..
-
-        by_name = {
-            ["hello"] = disk def hello... (= disk def n)
-        }
-    }
-]]
-
 function logic.save_disks_and_mem(meta, env)
     local disk_array = env.disks
     local inv = meta:get_inventory()
@@ -171,14 +158,23 @@ function logic.turn_off(pos)
     sbz_api.turn_off(pos) -- nah, no special logic needed yet
 end
 
-function logic.can_run(pos, meta)
-    if libox_coroutine.is_sandbox_dead(meta:get_string("ID")) then
-        return true
-    else
-        active_sandboxes[meta:get_string("ID")] = nil
-        logic.send_editor_event(pos, { type = "off" })
-        return true
+function logic.can_run(pos, meta, editor)
+    if meta:get_int("bill") ~= 0 then
+        return false
     end
+    if (meta:get_float "microseconds_taken_main_sandbox" + meta:get_float "microseconds_taken_editor_sandbox") > max_us_per_second then
+        return false
+    end
+    if not editor then
+        if libox_coroutine.is_sandbox_dead(meta:get_string("ID")) then
+            return true
+        else
+            active_sandboxes[meta:get_string("ID")] = nil
+            logic.send_editor_event(pos, { type = "off" })
+            return true
+        end
+    end
+    return true
 end
 
 function logic.post_run(pos, response)
@@ -214,6 +210,8 @@ function logic.turn_on(pos)
 end
 
 function logic.send_event_to_sandbox(pos, event)
+    local t0 = minetest.get_us_time()
+
     local meta = M(pos)
     local id = meta:get_string("ID")
     if id == nil or libox_coroutine.is_sandbox_dead(id) then
@@ -231,6 +229,9 @@ function logic.send_event_to_sandbox(pos, event)
 
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
 
+    meta:set_float("microseconds_taken_main_sandbox",
+        meta:get_float("microseconds_taken_main_sandbox") + (minetest.get_us_time() - t0))
+
     local _, mem_errmsg = logic.save_disks_and_mem(meta, env)
 
     if not ok or mem_errmsg then
@@ -247,7 +248,13 @@ end
 
 -- editor is a different type of sandbox for simplicity
 function logic.send_editor_event(pos, event)
+    local t0 = minetest.get_us_time()
+
     local meta = M(pos)
+
+    if not logic.can_run(pos, meta, true) then
+        return false
+    end
     local env = logic.get_editor_env(pos, meta, event)
 
     logic.request_disks_and_mem(meta, env)
@@ -259,7 +266,9 @@ function logic.send_editor_event(pos, event)
     }
     local mem_ok, mem_errmsg = logic.save_disks_and_mem(meta, env)
 
-    meta:set_string("infotext", "Luacontroller")
+    meta:set_float("microseconds_taken_editor_sandbox",
+        meta:get_float("microseconds_taken_editor_sandbox") + (minetest.get_us_time() - t0))
+
     if not mem_ok then
         meta:set_string("infotext", "Error in editor code:" .. mem_errmsg)
         return false
@@ -302,3 +311,44 @@ end
 sbz_api.queue:add_function("logic_send_event", logic.send_event_to_sandbox)
 sbz_api.queue:add_function("logic_turn_off", logic.turn_off)
 sbz_api.queue:add_function("logic_turn_on", logic.turn_on)
+
+
+function logic.calculate_bill(us_taken_main, us_taken_editor)
+    return math.floor((us_taken_main + us_taken_editor) / 1000)
+end
+
+function logic.on_tick(pos, node, meta, supply, demand)
+    if meta:get_int("bill") ~= 0 then
+        local net = supply - demand
+        local consume = math.max(0, meta:get_int("bill") - net)
+        meta:set_int("bill", meta:get_int("bill") - consume)
+        return consume
+    end
+    local us_taken_main = meta:get_float("microseconds_taken_main_sandbox")
+    local us_taken_editor = meta:get_float("microseconds_taken_editor_sandbox")
+
+    local bill = logic.calculate_bill(us_taken_main, us_taken_editor)
+
+    local net = supply - demand
+    local return_value
+    minetest.log(net)
+    if net < bill then -- bill needs to get paid over multiple ticks, that means that your luacontroller will also not work (no editor, no nothing)
+        return_value = math.max(0, bill - net)
+        meta:set_int("bill", bill - return_value)
+    else
+        minetest.log("Can just pay the bill lol!")
+        return_value = bill
+    end
+    local function format_us(x)
+        return tostring(math.floor(x / 1000)) .. "ms"
+    end
+    meta:set_string("infotext",
+        string.format("Editor lag: %s\nMain sandbox lag: %s\nBill: %s Cj\nCan run: %s",
+            format_us(us_taken_editor), format_us(us_taken_main), bill,
+            logic.can_run(pos, meta, true) and "yes" or "no (probably hasn't paid the bill?)"))
+
+    meta:set_float("microseconds_taken_main_sandbox", 0)
+    meta:set_float("microseconds_taken_editor_sandbox", 0)
+
+    return return_value
+end

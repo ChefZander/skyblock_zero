@@ -71,6 +71,7 @@ end
 sbz_api.queue = {
     funcs = {}
 }
+
 -- localize for speed
 local queue = sbz_api.queue
 
