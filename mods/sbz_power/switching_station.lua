@@ -64,12 +64,14 @@ function sbz_api.assemble_network(start_pos, seen)
                 batteries[#batteries + 1] = { pos, node }
             elseif is_generator then
                 generators[#generators + 1] = { pos, node }
-            elseif is_subticking then
-                network.subticking_machines[#network.subticking_machines + 1] = { pos, node }
             elseif is_machine then
                 machines[#machines + 1] = { pos, node }
             elseif is_connector then
                 node_def_of_this_node.assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
+            end
+
+            if is_subticking then
+                network.subticking_machines[#network.subticking_machines + 1] = { pos, node }
             end
             seen[hash(pos)] = true
             if is_conducting then
@@ -235,7 +237,7 @@ function sbz_api.switching_station_sub_tick(start_pos)
         local node = v[2]
 
         touched_nodes[hash(position)] = os.time()
-        demand = demand + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+        demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
     end
 
     local t1 = minetest.get_us_time()

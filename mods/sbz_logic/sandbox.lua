@@ -225,15 +225,17 @@ function logic.post_run(pos, response)
     end
 end
 
-local non_trigger_events = {
+logic.non_trigger_events = {
     ["gui"] = true,
-    ["wait"] = true
+    ["wait"] = true,
+    ["tick"] = true,
+    ["subtick"] = true,
 }
 
 function logic.receives_events(pos, event)
     if type(event) == "table" then
         local event_type = event.type
-        if non_trigger_events[event_type] == true and not logic.is_on(pos) then
+        if logic.non_trigger_events[event_type] == true and not logic.is_on(pos) then
             return false
         end
     end
@@ -399,6 +401,7 @@ function logic.on_tick(pos, node, meta, supply, demand)
         return math.max(0, meta:get_int("bill") - result)
     end
 
+
     local us_taken_main = meta:get_float("microseconds_taken_main_sandbox")
     local us_taken_editor = meta:get_float("microseconds_taken_editor_sandbox")
 
@@ -426,6 +429,8 @@ function logic.on_tick(pos, node, meta, supply, demand)
 
     meta:set_float("microseconds_taken_main_sandbox", 0)
     meta:set_float("microseconds_taken_editor_sandbox", 0)
+
+    logic.send_event_to_sandbox(pos, { type = "tick", supply = supply, demand = demand })
 
     return return_value
 end

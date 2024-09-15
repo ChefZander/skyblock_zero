@@ -34,8 +34,11 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
 
     action = logic.on_tick,
     action_subtick = function(pos, node, meta, supply, demand)
+        logic.send_event_to_sandbox(pos, { type = "subtick", supply = supply, demand = demand })
         return 0
     end,
+    action_subticking = true,
+
     on_turn_off = logic.on_turn_off,
     after_dig = logic.on_turn_off,
     on_receive_fields = logic.on_receive_fields,
