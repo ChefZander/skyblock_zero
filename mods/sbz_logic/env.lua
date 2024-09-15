@@ -26,6 +26,22 @@ function logic.get_env(pos, meta)
 
         pos = vector.copy(pos),
         yield = coroutine.yield,
+        wait = function(t)
+            local ignored_events = {}
+            local e = coroutine.yield({
+                type = "wait",
+                time = t,
+            })
+            if e.type == "wait" then return ignored_events end
+            while true do
+                e = coroutine.yield()
+                if e.type ~= "wait" then
+                    ignored_events[#ignored_events + 1] = e
+                else
+                    return ignored_events
+                end
+            end
+        end
     } do
         base[k] = v
     end

@@ -239,14 +239,14 @@ sbz_api.register_generator("sbz_power:starlight_collector", {
         fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 },
     },
     use_texture_alpha = "clip",
-
     action_interval = 1,
     action = function(pos, node, meta)
+        meta:set_string("infotext", "")
         local r = math.random(0, 2)
         if r == 1 then return 1 end
         return 0
     end,
-    info_extra = "Has a 1/3 Chance to produce 1 power.",
+    info_extra = "Has a 1/3 Chance/Second to produce 1 power.",
 })
 
 minetest.register_craft({

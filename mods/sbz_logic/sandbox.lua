@@ -149,6 +149,7 @@ end
 
 function logic.on_turn_off(pos)
     local meta = M(pos)
+    meta:set_int("waiting", 0)
     local ID = meta:get_string("ID")
     active_sandboxes[ID] = nil
     logic.send_editor_event(pos, { type = "off" })
@@ -187,9 +188,11 @@ logic.post_runs = {
             end,
         },
         f = function(pos, response)
-            sbz_api.queue:add_action(pos, "logic_send_event", { {
-                type = "wait"
-            } }, response.time)
+            local meta = M(pos)
+            if meta:get_int("waiting") == 0 then -- incase something REALLY REALLY STRANGE happens
+                meta:set_int("waiting", 1)
+                sbz_api.queue:add_action(pos, "logic_wait", {}, response.time)
+            end
         end
     }
 }
@@ -222,7 +225,18 @@ function logic.post_run(pos, response)
     end
 end
 
-function logic.receives_events(meta)
+local non_trigger_events = {
+    ["gui"] = true,
+    ["wait"] = true
+}
+
+function logic.receives_events(pos, event)
+    if type(event) == "table" then
+        local event_type = event.type
+        if non_trigger_events[event_type] == true and not logic.is_on(pos) then
+            return false
+        end
+    end
     return true
 end
 
@@ -253,15 +267,16 @@ end
 function logic.send_event_to_sandbox(pos, event)
     local t0 = minetest.get_us_time()
 
+    if not logic.receives_events(pos, event) then
+        return false
+    end
+
     local meta = M(pos)
     local id = meta:get_string("ID")
     if id == nil or libox_coroutine.is_sandbox_dead(id) then
         id = logic.turn_on(pos)
         if not id then return false end
         meta:set_string("ID", id)
-    end
-    if not logic.receives_events(meta) then
-        return false
     end
 
     -- set mem
@@ -360,6 +375,13 @@ function logic.override_code(pos, code)
 end
 
 sbz_api.queue:add_function("logic_send_event", logic.send_event_to_sandbox)
+sbz_api.queue:add_function("logic_wait", function(pos)
+    M(pos):set_int("waiting", 0)
+    logic.send_event_to_sandbox(pos, {
+        type = "wait",
+    })
+end)
+
 sbz_api.queue:add_function("logic_turn_off", logic.turn_off)
 sbz_api.queue:add_function("logic_turn_on", logic.turn_on)
 
