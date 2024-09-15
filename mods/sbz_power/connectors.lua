@@ -66,7 +66,11 @@ minetest.register_node("sbz_power:connector_on", {
         if self_dir + dir == vector.zero() or self_dir - dir == vector.zero() then
             local new_network = sbz_api.assemble_network(pos + dir, seen)
             for k, val in pairs(new_network) do
-                table.insert_all(network[k], val)
+                if type(val) ~= "table" then
+                    network[k] = val
+                else
+                    table.insert_all(network[k], val)
+                end
             end
         end
     end,
