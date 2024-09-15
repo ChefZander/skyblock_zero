@@ -41,6 +41,7 @@ local achievment_table = {
     ["sbz_resources:matter_plate"] = "Matter Plates",
     ["sbz_resources:retaining_circuit"] = "Retaining Circuits",
     ["sbz_resources:storinator"] = "Storinators",
+	["sbz_resources:antimatter_blob"] = "More Antimatter",
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
     ["sbz_resources:pebble"] = "Pretty Pebbles",
     ["sbz_resources:stone"] = "Concrete Plan",
@@ -136,6 +137,8 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
         unlock_achievement(player_name, "It's fake")
     elseif itemname == "sbz_chem:bronze_powder" then
         unlock_achievement(player_name, "Bronze Age")
+    elseif itemstack:get_name() == "sbz_meteorites:antineutronium" then
+        unlock_achievement(player_name, "Antineutronium")
     elseif itemname == "sbz_chem:water_fluid_cell" then
         unlock_achievement(player_name, "Liquid Water")
     elseif itemname == "sbz_bio:stemfruit" then

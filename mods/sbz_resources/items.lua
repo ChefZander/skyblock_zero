@@ -41,6 +41,16 @@ minetest.register_craft({
     output = "sbz_resources:matter_plate 4",
     recipe = { "sbz_resources:matter_blob" }
 })
+minetest.register_craftitem("sbz_resources:antimatter_plate", {
+    description = "Antimatter Plate",
+    inventory_image = "antimatter_plate.png",
+    stack_max = 256,
+})
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_resources:antimatter_plate 4",
+    recipe = { "sbz_resources:antimatter_blob" }
+})
 
 minetest.register_craftitem("sbz_resources:conversion_chamber", {
     description = "Conversion Chamber",

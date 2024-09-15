@@ -36,7 +36,7 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
 Craft some 'Antimatter Dust', we'll need it for later. It's made by mixing 'Matter Dust' and 'Core Dust'. Let's see you figure this out, smart one.]],
         requires = { "Introduction" }
     },
-
+	
     {
         type = "quest",
         title = "Annihilator",
@@ -236,7 +236,16 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     -- ======================================================================================
     { type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
-    {
+	{
+        type = "quest",
+        title = "More Antimatter",
+        text =
+        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island. They also create a big explosion that can affect your machinery when in contact with matter.
+
+TIP: You can use simple charged fields as scaffolding when dealing with antimatter.]],
+        requires = { "Antimatter" }
+    },
+	{
         type = "quest",
         title = "Screwdriver",
         text = "Screwdriver rotates blocks when you click on one with it.",
@@ -293,7 +302,7 @@ Next time you’re floating through the cosmos and stumble upon these absurd con
 You can get one, by surrounding a 'Matter Blob' with 'Antimatter Dust'. They don't glow as much as The Core though.
 
 TIP: Emitter Immitators spawn a lot of particles when punched, try it!]],
-        requires = { "A bigger platform", "Antimatter" }
+        requires = { "A bigger platform", "More Antimatter" }
     },
 
     {
@@ -398,6 +407,7 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     -- ======================================================================================
     { type = "text",  title = "Questline: Completionist",                         text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
+    { type = "quest", title = "Antineutronium", text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core. Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.]], requires = { "Meteorites" } },
     {
         type = "quest",
         title = "Angel's Wing",
@@ -423,11 +433,9 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
     requires = { "Storinators" }
 },
-    { type = "secret", title = "Emptiness", text = "Damn. You fell off." },
-    { type = "secret", title = "Desolate",  text = "You talked to yourself." },
-    { type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." },
-}
-
+{ type = "secret", title = "Emptiness", text = "Damn. You fell off." },
+{ type = "secret", title = "Desolate",  text = "You talked to yourself." },
+{ type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." },}
 local function getquestbyname(questname)
     for i, quest in ipairs(quests) do
         if quest.title == questname then
