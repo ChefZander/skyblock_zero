@@ -123,6 +123,8 @@ end
 
 local item_vaccum_power_demand = 20
 -- you expected this to be in the pipeworks mod didn't you... well its more convenient to put it here because sbz_api
+-- Couldnt you just make pipeworks depend on the mod that implements register_machine and just call it from there ???
+
 sbz_api.register_machine("sbz_power:item_vacuum", {
     description = "Item Vacuum",
     tiles = { "item_vacuum.png" },

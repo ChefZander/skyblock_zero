@@ -258,6 +258,27 @@ Next time you’re floating through the cosmos and stumble upon these absurd con
 
     {
         type = "quest",
+        title = "Factory Flooring",
+        text = "This is a node to use as floor for your factory, to give it those classic vibes.",
+        requires = {"A bigger platform"}
+    },
+
+    {
+        type = "quest",
+        title = "Tiled Factory Flooring",
+        text = "A variation of Factory Flooring which add even more tiling!",
+        requires = {"A bigger platform", "Factory Flooring"}
+    },
+
+    {
+        type = "quest",
+        title = "Factory Ventilator",
+        text = "You might want a Ventilation system inside a factory, just saying.",
+        requires = {"Factory Flooring", "Crusher"}
+    },
+
+    {
+        type = "quest",
         title = "Reinforced Matter",
         text =
         "Normal matter isn't sturdy enough? Try this one. This one won't break, unless you break it, then it breaks. Wait a minute...",
