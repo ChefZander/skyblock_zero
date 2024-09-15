@@ -204,10 +204,11 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
     { type = "text", title = "Questline: Chemistry", text = "Good luck." },
 
     { type = "quest", title = "Crusher", text = "This one's very simple :)\nIt's just pebbles in, metals out. Consumes 5 Power when running.", requires = { "Concrete Plan", "Antimatter", "Charged Field" } },
+    
+    { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
     { type = "quest", title = "Furnace", text = "Craft the high power electric furnace (H.P.E.F for short), allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.", requires = { "Crusher" } },
 
-    { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
     { type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
 
