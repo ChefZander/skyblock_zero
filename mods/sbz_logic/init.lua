@@ -145,9 +145,6 @@ local function make_link(meta, pos, placer)
         links[name][#links[name] + 1] = pos -- perfect code right there!
     end
 
-
-
-
     -- dupe check
     local names = {}
     for lname, lpos in pairs(links) do
@@ -157,21 +154,28 @@ local function make_link(meta, pos, placer)
                     names[#names + 1] = { lname, lname_2 }
                 end
             end
-        else
+        elseif lpos.x then
             if vector.equals(lpos, lname) then
                 names[#names + 1] = lname
             end
         end
     end
     if #names >= 2 then
-        local shift = 0
+        local tables_to_fix = {}
         for _, v in pairs(names) do
             if type(v) == "table" then
-                table.remove(links[v[1]], v[2] - shift)
-                shift = shift + 1
+                links[v[1]][v[2]] = nil
+                tables_to_fix[#tables_to_fix + 1] = v[1]
             else
                 links[v] = nil
             end
+        end
+        for _, t in ipairs(tables_to_fix) do
+            local new_t = {}
+            for k, v in pairs(links[t]) do
+                new_t[#new_t + 1] = v
+            end
+            links[t] = new_t
         end
     end
     for k, v in pairs(links) do
@@ -180,8 +184,6 @@ local function make_link(meta, pos, placer)
     end
 
     linked_meta:set_string("links", minetest.serialize(links))
-
-    if not links[name] then return end
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -194,7 +196,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         return true, "sus"
     end
 
-    wield_item:get_meta():set_string("name", name or "")
+    wield_item:get_meta():set_string("name", (name or ""):trim())
     if player:get_meta():get_string("target") then
         local target = player:get_meta():get_string("target")
         local target_pos = vector.from_string(target)
@@ -210,9 +212,10 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     description = "Luacontroller Linker",
     short_description = "Luacontroller Linker",
     info_extra = {
-        "Left click: ask for a name, if a block is pointed to, link the block",
-        "Right click: use the previous name, and link the block",
+        "Right click: ask for a name, if a block is pointed to, link the block",
+        "Left click: use the previous name, and link the block",
         "Aux1 + right click/left click: link to that luacontroller",
+        "If you hold it, it should show all the links and the luacontroller's radius"
     },
     inventory_image = "luacontroller_linker.png",
     range = 10,
