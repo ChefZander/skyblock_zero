@@ -3,7 +3,4 @@
 	url = git@github.com:TheEt1234/libox.git
 [submodule "mods/vizlib"]
 	path = mods/vizlib
-	url = https://github.com/OgelGames/vizlib
-[submodule "mods/signs_lib"]
-	path = mods/signs_lib
-	url = https://github.com/mt-mods/signs_lib
+	url = https://github.com/TheEt1234/vizlib
