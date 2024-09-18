@@ -63,6 +63,12 @@ minetest.register_on_newplayer(function(player)
         end
     end
 end)
+minetest.register_on_joinplayer(function(ref, last_login)
+    minetest.change_player_privs(ref:get_player_name(), {
+        home = true,
+        tp = true
+    })
+end)
 
 -- also allow /core
 minetest.register_chatcommand("core", {

@@ -19,36 +19,44 @@ local function get_editor_table(meta)
     })
 end
 
+local libf = libox.sandbox_lib_f
 function logic.get_env(pos, meta)
     local base = libox.create_basic_environment()
+
+    local function wait_for_event_type(event_type)
+        local ignored_events = {}
+        while true do
+            local e = coroutine.yield()
+            ignored_events[#ignored_events + 1] = e
+            if e.type == event_type then
+                return ignored_events
+            end
+        end
+    end
+
     for k, v in pairs {
         editor = get_editor_table(meta),
-
         pos = vector.copy(pos),
+        origin = vector.new(0, 0, 0),
         yield = coroutine.yield,
+        wait_for_event_type = wait_for_event_type,
         wait = function(t)
-            local ignored_events = {}
             local e = coroutine.yield({
                 type = "wait",
                 time = t,
             })
-            if e.type == "wait" then return ignored_events end
-            while true do
-                e = coroutine.yield()
-                if e.type ~= "wait" then
-                    ignored_events[#ignored_events + 1] = e
-                else
-                    return ignored_events
-                end
-            end
-        end
+            if e.type == "wait" then return { e } end
+            return wait_for_event_type("wait")
+        end,
+        send_to = libf(function(send_to_pos, msg)
+            if not libox.type_vector(send_to_pos) then return false, "send_to_pos must be vector" end
+            return logic.send(vector.add(pos, send_to_pos), msg, pos)
+        end)
     } do
         base[k] = v
     end
     return base
 end
-
-local libf = libox.sandbox_lib_f
 
 function logic.get_editor_env(pos, meta, event)
     local base = libox.create_basic_environment()

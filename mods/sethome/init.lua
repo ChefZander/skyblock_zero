@@ -87,7 +87,7 @@ minetest.register_privilege("home", {
 
 minetest.register_chatcommand("home", {
 	description = S("Teleport you to your home point"),
-	privs = {home = true},
+	privs = { interact = true },
 	func = function(name)
 		local player = minetest.get_player_by_name(name)
 		if not player then
@@ -102,7 +102,7 @@ minetest.register_chatcommand("home", {
 
 minetest.register_chatcommand("sethome", {
 	description = S("Set your home point"),
-	privs = {home = true},
+	privs = { home = true },
 	func = function(name)
 		name = name or "" -- fallback to blank name if nil
 		local player = minetest.get_player_by_name(name)
