@@ -1,0 +1,162 @@
+-- like the digibuilder... but better... yea!
+-- more overpowered!!
+
+
+local power_per_action = 40
+local queue_max = 50
+local range = 40
+
+
+
+local function get_index(inv, item)
+    if not inv:contains_item("main", item) then return false end
+    local list = inv:get_list("main")
+
+    for k, v in ipairs(list) do
+        v:set_count(1) -- so that counts match, doesnt actually modify anything in the inventory, kinda wish it would ngl
+        if item:equals(v) and item:is_known() then
+            return k
+        end
+    end
+    return false
+end
+
+local function build(pos, owner, def, param2, inv, index)
+    if param2 ~= nil then if param2 < 0 or param2 > 255 then param2 = nil end end
+    if not def.on_place then return end
+
+    local player = fakelib.create_player({
+        name = owner,
+        inventory = inv,
+        wield_list = "main",
+        wield_index = index,
+        position = pos,
+    })
+
+    local pointed_thing = {
+        under = pos,
+        above = pos,
+        type = "node"
+    }
+    if def.paramtype2 == "facedir" then
+        pointed_thing.under = vector.add(pos, minetest.facedir_to_dir(param2))
+    elseif def.paramtype2 == "wallmounted" then
+        pointed_thing.under = vector.add(pos, minetest.wallmounted_to_dir(param2))
+    end
+    local stack = inv:get_stack("main", index)
+    local leftover = def.on_place(stack, player, pointed_thing)
+    inv:set_stack("main", index, leftover or stack)
+    if param2 then -- set param2
+        local node = minetest.get_node(pos)
+        node.param2 = param2
+        minetest.swap_node(pos, node)
+    end
+end
+
+local function punch(pos, owner, def_target, inv, index, node)
+    if not def_target.on_punch then return end
+    local player = fakelib.create_player{
+        name = owner,
+        inventory = inv,
+        wield_list = "main",
+        wield_index = index,
+        position = pos,
+    }
+    local pointed_thing = {
+        under = pos,
+        above = pos,
+        type = "node"
+    }
+
+    def_target.on_punch(pos, node, player, pointed_thing)
+end
+
+sbz_api.register_machine("sbz_logic_devices:builder", {
+    description = "Lua Builder",
+    info_extra = {
+        "It lets the lua controller... control it... so that... yea... it builds!!! you can build!!!",
+    },
+    tiles = {
+        "lua_builder.png"
+    },
+    groups = { matter = 1 },
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        meta:get_inventory():set_size("main", 32)
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+list[context;main;0.2,0.2;8,4;]
+list[current_player;main;0.2,5;8,4;]
+listring[]
+    ]])
+    end,
+    after_place_node = function(pos, placer)
+        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        pipeworks.after_place(pos)
+    end,
+    input_inv = "main",
+    output_inv = "main",
+    action = function() return 0 end,
+    action_subtick = function(pos, _, meta, supply, demand)
+        local net = supply - demand
+        local queued_events = minetest.deserialize(meta:get_string("queued_events")) or {}
+        local queue_can_handle = math.min(
+            math.min(queue_max, #queued_events),
+            math.max(0, math.floor(net / (queue_max * power_per_action)))
+        ) -- spagetti math
+        local inv = meta:get_inventory()
+
+        local owner = meta:get_string("owner")
+
+        local ndef = minetest.registered_nodes
+
+        local function inner_loop(i)
+            local e = queued_events[i]
+            local ok = libox.type_check(e, {
+                type = libox.type("string"),
+                pos = libox.type_vector,
+                item = libox.type("string"),
+                param2 = function(x) return x == nil and true or libox.type("number")(x) end
+            })
+            if not ok then return end -- ha see, continue statement, lua has continue statements...!!!!
+
+            local item = ItemStack(e.item)
+            item:set_count(1)
+            local index = get_index(inv, item)
+            if not index then return end
+            local abs_pos = vector.add(e.pos, pos)
+            if not sbz_api.logic.in_square_radius(pos, abs_pos, range) then return end
+            if minetest.is_protected(abs_pos, owner) then return end
+
+            local node_at_pos = sbz_api.get_node_force(abs_pos)
+            if node_at_pos == nil then return end
+            local ndef_node = ndef[node_at_pos.name]
+            if ndef_node == nil then return end
+            if e.type == "build" then
+                build(abs_pos, owner, ndef[item:get_name()], e.param2, inv, index)
+            elseif e.type == "dig" then
+
+            elseif e.type == "punch" then
+                punch(abs_pos, owner, ndef_node, inv, index, node_at_pos)
+            end
+        end
+        for i = 1, queue_can_handle do
+            inner_loop(i)
+        end
+        meta:set_string("queued_events", "")
+        meta:set_string("infotext",
+            string.format("Lua Builder\nHandling: %s events\nConsuming: %s Cj", queue_can_handle,
+                queue_can_handle * power_per_action))
+        return queue_can_handle * power_per_action
+    end,
+    action_subticking = true,
+
+    on_logic_send = function(pos, msg, from_pos)
+        local meta = minetest.get_meta(pos)
+        local queued_events = minetest.deserialize(meta:get_string("queued_events")) or {}
+        queued_events[#queued_events + 1] = msg
+        meta:set_string("queued_events", minetest.serialize(queued_events))
+    end
+})

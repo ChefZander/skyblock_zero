@@ -11,6 +11,7 @@ local render_links_delay = 1
 
 local waypoint_ids = {}
 
+
 function sbz_api.render_individual_link(pos, name)
     -- just put up their name, "simple" enough...
     if pos.x then
@@ -49,13 +50,9 @@ function sbz_api.render_links()
                 end
                 local links = minetest.deserialize(linked_meta:get_string("links"))
                 if type(links) == "table" then
-                    for k, v in pairs(links) do
-                        if v[1] then
-                            for _, v in pairs(v) do
-                                sbz_api.render_individual_link(v, k)
-                            end
-                        else
-                            sbz_api.render_individual_link(v, k)
+                    for k, link in pairs(links) do
+                        for _, position in pairs(link) do
+                            sbz_api.render_individual_link(position, k)
                         end
                     end
                 end
@@ -65,7 +62,7 @@ function sbz_api.render_links()
     minetest.after(render_links_delay, sbz_api.render_links)
 end
 
-minetest.register_on_mods_loaded(sbz_api.render_links) -- me elegant!
+minetest.after(0, sbz_api.render_links) -- me elegant!
 
 local function in_square_radius(pos1, pos2, rad)
     local x1, y1, z1 = pos1.x, pos1.y, pos1.z
@@ -78,6 +75,53 @@ local function in_square_radius(pos1, pos2, rad)
         return false
     end
     return true
+end
+
+logic.in_square_radius = in_square_radius
+
+function logic.add_to_link(link, value)
+    if link.x then
+        return vector.add(link, value)
+    else
+        link = table.copy(link)
+        for k, v in pairs(link) do
+            link[k] = vector.add(v, value)
+        end
+        return link
+    end
+end
+
+function logic.range_check(luac_pos, pos2)
+    local M = minetest.get_meta
+    local ret_value = true
+    local meta = M(luac_pos)
+    local linking_range = meta:get_int("linking_range")
+    local owner = meta:get_string("owner")
+    if not pos2.x then
+        for k, v in pairs(pos2) do
+            ret_value = ret_value and in_square_radius(luac_pos, v, linking_range)
+                and not minetest.is_protected(v, owner)
+        end
+    else
+        ret_value = ret_value and in_square_radius(luac_pos, pos2, linking_range) and
+            not minetest.is_protected(pos2, owner)
+    end
+    return ret_value
+end
+
+function logic.type_link(x, or_pos)
+    if libox.type_vector(x) and or_pos then return true end
+
+    local ret = true
+    for k, v in pairs(x) do
+        ret = ret and libox.type_vector(v)
+    end
+    return ret
+end
+
+function logic.try_to_unpack(x)
+    if #x == 1 then return x[1] end
+    return x
 end
 
 local function try_to_link_to_luac(stack, pos, placer)
@@ -137,38 +181,23 @@ local function make_link(meta, pos, placer)
 
     local links = minetest.deserialize(linked_meta:get_string("links")) or {}
 
-    if links[name] == nil then
-        links[name] = pos
-    elseif links[name].x then
-        links[name] = { [1] = links[name], [2] = pos }
-    else
-        links[name][#links[name] + 1] = pos -- perfect code right there!
-    end
+    links[name] = links[name] or {}
+    links[name][#links[name] + 1] = pos
 
     -- dupe check
     local names = {}
     for lname, lpos in pairs(links) do
-        if lpos[1] then -- pos array
-            for lname_2, lpos_2 in ipairs(lpos) do
-                if vector.equals(pos, lpos_2) then
-                    names[#names + 1] = { lname, lname_2 }
-                end
-            end
-        elseif lpos.x then
-            if vector.equals(lpos, lname) then
-                names[#names + 1] = lname
+        for lname_2, lpos_2 in ipairs(lpos) do
+            if vector.equals(pos, lpos_2) then
+                names[#names + 1] = { lname, lname_2 }
             end
         end
     end
     if #names >= 2 then
         local tables_to_fix = {}
         for _, v in pairs(names) do
-            if type(v) == "table" then
-                links[v[1]][v[2]] = nil
-                tables_to_fix[#tables_to_fix + 1] = v[1]
-            else
-                links[v] = nil
-            end
+            links[v[1]][v[2]] = nil
+            tables_to_fix[#tables_to_fix + 1] = v[1]
         end
         for _, t in ipairs(tables_to_fix) do
             local new_t = {}
@@ -179,10 +208,8 @@ local function make_link(meta, pos, placer)
         end
     end
     for k, v in pairs(links) do
-        if #v == 0 and not v.x then links[k] = nil end
-        if #v == 1 and not v.x then links[k] = links[k][1] end
+        if #v == 0 then links[k] = nil end
     end
-
     linked_meta:set_string("links", minetest.serialize(links))
 end
 
@@ -271,6 +298,9 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         inv:set_size("disks", 8)
         inv:set_size("upgrades", 8)
     end,
+    after_place_node = function(pos, placer, stack, pointed)
+        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+    end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         if listname == "disks" and minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then
             return 0
@@ -295,7 +325,6 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     end,
 
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-        if to_list == "disks" and from_list == "disks" then return 0 end
         return count
     end,
 

@@ -20,6 +20,22 @@ local function get_editor_table(meta)
 end
 
 local libf = libox.sandbox_lib_f
+
+
+function logic.get_the_get_node_function(start_pos)
+    return libf(function(pos)
+        if not libox.type_vector(pos) then
+            return false, "Invalid position"
+        end
+        pos = vector.add(pos, start_pos)
+        local range_allowed = logic.range_check(start_pos, pos)
+        if not range_allowed then
+            return false, "The node you are trying to get is too far away or is protected."
+        end
+        return minetest.get_node(pos)
+    end)
+end
+
 function logic.get_env(pos, meta)
     local base = libox.create_basic_environment()
 
@@ -36,6 +52,7 @@ function logic.get_env(pos, meta)
 
     for k, v in pairs {
         editor = get_editor_table(meta),
+
         pos = vector.copy(pos),
         origin = vector.new(0, 0, 0),
         yield = coroutine.yield,
@@ -48,10 +65,30 @@ function logic.get_env(pos, meta)
             if e.type == "wait" then return { e } end
             return wait_for_event_type("wait")
         end,
+        make_link_from_pos = function(pos)
+            return { pos } -- lmao
+        end,
         send_to = libf(function(send_to_pos, msg)
-            if not libox.type_vector(send_to_pos) then return false, "send_to_pos must be vector" end
-            return logic.send(vector.add(pos, send_to_pos), msg, pos)
-        end)
+            if not logic.type_link(send_to_pos, true) then return false, "send_to_pos must be a link or position" end
+            return logic.send(logic.add_to_link(send_to_pos, pos), msg, pos)
+        end),
+        get_node = logic.get_the_get_node_function(pos),
+        is_protected = function(rpos, who)
+            if not libox.type_vector(rpos) then return false, "Invalid position." end
+            local abs_pos = vector.add(rpos, pos)
+            return minetest.is_protected(abs_pos, who or meta:get_string("owner"))
+        end,
+        full_traceback = debug.traceback,
+        turn_on = function(rpos)
+            if not libox.type_vector(rpos) then return false, "Invalid position." end
+            if not sbz_api.is_machine(pos) then return false, "Not a machine." end
+            return sbz_api.force_turn_on(vector.add(pos, rpos), minetest.get_meta(vector.add(pos, rpos)))
+        end,
+        turn_off = function(rpos)
+            if not libox.type_vector(rpos) then return false, "Invalid position." end
+            if not sbz_api.is_machine(pos) then return false, "Not a machine." end
+            return sbz_api.force_turn_off(vector.add(pos, rpos), minetest.get_meta(vector.add(pos, rpos)))
+        end,
     } do
         base[k] = v
     end
@@ -68,7 +105,6 @@ function logic.get_editor_env(pos, meta, event)
         end
     end
     for k, v in pairs {
-        log = minetest.log,
         editor = get_editor_table(meta),
         event = event,
         turn_on = libf(function()

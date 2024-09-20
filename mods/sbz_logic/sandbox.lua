@@ -63,7 +63,7 @@ function logic.serialize_mem(mem, max, name)
     end
 end
 
-function logic.initialize_env(meta, env)
+function logic.initialize_env(meta, env, pos)
     env.mem = minetest.deserialize(meta:get_string("mem"))
     env.disks = {
         by_name = {}
@@ -108,14 +108,22 @@ function logic.initialize_env(meta, env)
         end
     end
     env.links = minetest.deserialize(meta:get_string("links"))
+    for k, v in pairs(env.links) do
+        for k, v in pairs(v) do -- transform to relative positions
+            v.x = v.x - pos.x
+            v.y = v.y - pos.y
+            v.z = v.z - pos.z
+        end
+    end
 end
 
 function logic.save_disks_and_mem(meta, env)
+    meta:set_int("force_off", 0) -- hehe!
     local disk_array = env.disks
     local inv = meta:get_inventory()
     local disk_list = inv:get_list("disks")
 
-    if type(disk_array) ~= "table" then return true end -- by that you chose to not save the disks
+    if type(disk_array) ~= "table" then return true end -- by that you chose to not save the disks.. and memory... yea, dont do that lol
     for k, v in ipairs(disk_list) do
         local stack_name = v:get_name()
         if stack_name ~= "" then
@@ -291,7 +299,7 @@ function logic.send_event_to_sandbox(pos, event)
 
     -- set mem
     local env = active_sandboxes[id].env
-    logic.initialize_env(meta, env)
+    logic.initialize_env(meta, env, pos)
 
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
 
@@ -329,7 +337,7 @@ function logic.send_editor_event(pos, event)
     end
     local env = logic.get_editor_env(pos, meta, event)
 
-    logic.initialize_env(meta, env)
+    logic.initialize_env(meta, env, pos)
 
     local ok, errmsg = libox.normal_sandbox {
         code = meta:get_string("editor_code"),

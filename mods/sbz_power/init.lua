@@ -201,9 +201,15 @@ end
 
 local ndef = minetest.registered_nodes
 -- easier manipulating of stateful machines
+
+local function is_stateful(nodename)
+    return string.sub(nodename, -3) == "_on" or string.sub(nodename, -4) == "_off"
+end
+
 function sbz_api.turn_off(pos)
     local node = minetest.get_node(pos)
     local nodename = node.name
+    if not is_stateful(nodename) then return end
     if string.sub(nodename, -3) == "_on" then
         node.name = string.sub(nodename, 1, -4) .. "_off"
         minetest.swap_node(pos, node)
@@ -217,6 +223,7 @@ end
 function sbz_api.turn_on(pos)
     local node = minetest.get_node(pos)
     local nodename = node.name
+    if not is_stateful(nodename) then return end
     if string.sub(nodename, -4) == "_off" then
         node.name = string.sub(nodename, 1, -5) .. "_on"
         minetest.swap_node(pos, node)
@@ -232,9 +239,12 @@ function sbz_api.force_turn_off(pos, meta)
     meta:set_int("force_off", 1)
 end
 
-function sbz_api.force_turn_on(pos, meta)
-    sbz_api.turn_on(pos)
+function sbz_api.force_turn_on(_, meta)
     meta:set_int("force_off", 0)
+end
+
+function sbz_api.is_machine(pos)
+    return minetest.get_item_group(minetest.get_node(pos).name, "sbz_machine") == 1
 end
 
 function sbz_api.is_on(pos)

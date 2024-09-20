@@ -172,15 +172,18 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
         local meta = minetest.get_meta(position)
+        if meta:get_int("force_off") == 1 then
+            batteries[k] = nil
+        else
+            touched_nodes[hash(position)] = os.time()
 
-        touched_nodes[hash(position)] = os.time()
+            v[3] = node_defs[node].battery_max
+            v[4] = meta:get_int("power")
+            v[5] = meta
 
-        v[3] = node_defs[node].battery_max
-        v[4] = meta:get_int("power")
-        v[5] = meta
-
-        battery_max = battery_max + v[3]
-        supply = supply + v[4]
+            battery_max = battery_max + v[3]
+            supply = supply + v[4]
+        end
     end
 
     network.battery_supply_only = supply -- copy
@@ -188,21 +191,24 @@ function sbz_api.switching_station_tick(start_pos)
     for k, v in ipairs(generators) do
         local position = v[1]
         local node = v[2]
-
-        touched_nodes[hash(position)] = os.time()
-        local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
-        assert(action_result, "You need to return something in the action function... fauly node: " .. node)
-        supply = supply + action_result
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
+            touched_nodes[hash(position)] = os.time()
+            local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+            assert(action_result, "You need to return something in the action function... fauly node: " .. node)
+            supply = supply + action_result
+        end
     end
 
     for k, v in ipairs(machines) do
         local position = v[1]
         local node = v[2]
 
-        touched_nodes[hash(position)] = os.time()
-        local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
-        assert(action_result, "You need to return something in the action function... fauly node: " .. node)
-        demand = demand + action_result
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
+            touched_nodes[hash(position)] = os.time()
+            local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+            assert(action_result, "You need to return something in the action function... fauly node: " .. node)
+            demand = demand + action_result
+        end
     end
 
 
