@@ -64,7 +64,7 @@ function logic.serialize_mem(mem, max, name)
 end
 
 function logic.initialize_env(meta, env, pos)
-    env.mem = minetest.deserialize(meta:get_string("mem"))
+    env.mem = minetest.deserialize(meta:get_string("mem")) or {}
     env.disks = {
         by_name = {}
     }
