@@ -107,7 +107,7 @@ function logic.initialize_env(meta, env, pos)
             end
         end
     end
-    env.links = minetest.deserialize(meta:get_string("links"))
+    env.links = minetest.deserialize(meta:get_string("links")) or {}
     for k, v in pairs(env.links) do
         for k, v in pairs(v) do -- transform to relative positions
             v.x = v.x - pos.x
