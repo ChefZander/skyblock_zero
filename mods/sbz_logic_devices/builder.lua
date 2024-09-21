@@ -85,6 +85,7 @@ end
 -- also from pipeworks
 local function dig(pos, owner, def_target, def_item, inv, index, node)
     if not def_target.on_dig then return end
+
     local player = fakelib.create_player {
         name = owner,
         inventory = inv,
@@ -92,7 +93,6 @@ local function dig(pos, owner, def_target, def_item, inv, index, node)
         wield_index = index,
         position = pos,
     }
-
     local stack = player:get_wielded_item()
     local old_stack = ItemStack(stack)
     local tool = stack:get_tool_capabilities()
@@ -100,7 +100,7 @@ local function dig(pos, owner, def_target, def_item, inv, index, node)
         local hand = ItemStack():get_tool_capabilities()
         if not minetest.get_dig_params(def_target.groups, hand).diggable then return end
     end
-    if node_def.on_dig(pos, node, player) == false then return end
+    if def_target.on_dig(pos, node, player) == false then return end
 
     player:set_wielded_item(stack)
     dont_wear_out(stack, old_stack, player, def_item)
@@ -199,7 +199,7 @@ listring[]
             local def_node = ndef[node_at_pos.name]
             if def_node == nil then return end
 
-            local def_item = idef[item]
+            local def_item = idef[item:get_name()]
             if def_item == nil then return end
 
             if e.type == "build" then
