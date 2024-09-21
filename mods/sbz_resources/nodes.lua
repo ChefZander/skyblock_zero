@@ -366,7 +366,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		minetest.add_particlespawner({
-			amount = 1000,
+			amount = 500,
             		time = 0.2,
            		minpos = { x = pos.x - 1/3, y = pos.y - 1/3, z = pos.z - 1/3 },
             		maxpos = { x = pos.x + 1/3, y = pos.y + 1/3, z = pos.z + 1/3 },
