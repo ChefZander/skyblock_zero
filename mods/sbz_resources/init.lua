@@ -31,6 +31,11 @@ minetest.register_craft({
     output = "sbz_resources:antimatter_dust",
     recipe = { "sbz_resources:core_dust", "sbz_resources:matter_dust" }
 })
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_resources:matter_dust",
+    recipe = { "sbz_resources:core_dust", "sbz_resources:antimatter_dust" }
+})
 
 -- dofiles
 dofile(modpath .. "/emitters.lua")
