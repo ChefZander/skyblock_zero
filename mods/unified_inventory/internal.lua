@@ -12,15 +12,16 @@ local ui = unified_inventory
 -- an encoding that avoids all formspec metacharacters.
 
 function ui.mangle_for_formspec(str)
-	return string.gsub(str, "([^A-Za-z0-9])", function (c) return string.format("_%d_", string.byte(c)) end)
+	return string.gsub(str, "([^A-Za-z0-9])", function(c) return string.format("_%d_", string.byte(c)) end)
 end
+
 function ui.demangle_for_formspec(str)
-	return string.gsub(str, "_([0-9]+)_", function (v) return string.char(v) end)
+	return string.gsub(str, "_([0-9]+)_", function(v) return string.char(v) end)
 end
 
 -- Get the player-specific unified_inventory style
 function ui.get_per_player_formspec(player_name)
-	local draw_lite_mode = ui.lite_mode and not minetest.check_player_privs(player_name, {ui_full=true})
+	local draw_lite_mode = ui.lite_mode and not minetest.check_player_privs(player_name, { ui_full = true })
 
 	local style = table.copy(draw_lite_mode and ui.style_lite or ui.style_full)
 	style.is_lite_mode = draw_lite_mode
@@ -35,12 +36,12 @@ local function formspec_button(ui_peruser, name, image, offset, pos, scale, labe
 	elseif image:find(":", 1, true) then
 		image = "unknown_item.png"
 	end
-	local spc = (1-scale)*ui_peruser.btn_size/2
-	local size = ui_peruser.btn_size*scale
+	local spc = (1 - scale) * ui_peruser.btn_size / 2
+	local size = ui_peruser.btn_size * scale
 	return string.format("%s[%f,%f;%f,%f;%s;%s;]", element,
-		(offset.x or offset[1]) + ( ui_peruser.btn_spc * (pos.x or pos[1]) ) + spc,
-		(offset.y or offset[2]) + ( ui_peruser.btn_spc * (pos.y or pos[2]) ) + spc,
-		size, size, image, name) ..
+			(offset.x or offset[1]) + (ui_peruser.btn_spc * (pos.x or pos[1])) + spc,
+			(offset.y or offset[2]) + (ui_peruser.btn_spc * (pos.y or pos[2])) + spc,
+			size, size, image, name) ..
 		string.format("tooltip[%s;%s]", name, F(label or name))
 end
 
@@ -63,13 +64,13 @@ local function formspec_tab_buttons(player, formspec, style)
 	local needs_scrollbar = #filtered_inv_buttons > style.main_button_cols * style.main_button_rows
 
 	formspec[n] = ("scroll_container[%g,%g;%g,%g;tabbtnscroll;vertical]"):format(
-		style.main_button_x, style.main_button_y, -- position
+		style.main_button_x, style.main_button_y,                -- position
 		style.main_button_cols * style.btn_spc, style.main_button_rows -- size
 	)
 	n = n + 1
 
 	for i, def in pairs(filtered_inv_buttons) do
-		local pos_x =           ((i - 1) % style.main_button_cols) * style.btn_spc
+		local pos_x = ((i - 1) % style.main_button_cols) * style.btn_spc
 		local pos_y = math.floor((i - 1) / style.main_button_cols) * style.btn_spc
 
 		if def.type == "image" then
@@ -78,30 +79,29 @@ local function formspec_tab_buttons(player, formspec, style)
 					pos_x, pos_y, style.btn_size, style.btn_size,
 					F(def.image),
 					F(def.name))
-				formspec[n+1] = "tooltip["..F(def.name)..";"..(def.tooltip or "").."]"
-				n = n+2
-
+				formspec[n + 1] = "tooltip[" .. F(def.name) .. ";" .. (def.tooltip or "") .. "]"
+				n = n + 2
 			else
 				formspec[n] = string.format("image[%g,%g;%g,%g;%s^[colorize:#808080:alpha]",
 					pos_x, pos_y, style.btn_size, style.btn_size,
 					def.image)
-				n = n+1
+				n = n + 1
 			end
 		end
 	end
 	formspec[n] = "scroll_container_end[]"
 	if needs_scrollbar then
 		local total_rows = math.ceil(#filtered_inv_buttons / style.main_button_cols)
-		formspec[n+1] = ("scrollbaroptions[max=%i;arrows=hide]"):format(
-			-- This calculation is not 100% accurate but "good enough"
+		formspec[n + 1] = ("scrollbaroptions[max=%i;arrows=hide]"):format(
+		-- This calculation is not 100% accurate but "good enough"
 			(total_rows - style.main_button_rows) * style.btn_spc * 10
 		)
-		formspec[n+2] = ("scrollbar[%g,%g;0.4,%g;vertical;tabbtnscroll;0]"):format(
+		formspec[n + 2] = ("scrollbar[%g,%g;0.4,%g;vertical;tabbtnscroll;0]"):format(
 			style.main_button_x + style.main_button_cols * style.btn_spc - 0.1, -- x pos
-			style.main_button_y, -- y pos
-			style.main_button_rows * style.btn_spc -- height
+			style.main_button_y,                                       -- y pos
+			style.main_button_rows * style.btn_spc                     -- height
 		)
-		formspec[n+3] = "scrollbaroptions[max=1000;arrows=default]"
+		formspec[n + 3] = "scrollbaroptions[max=1000;arrows=default]"
 	end
 end
 
@@ -112,7 +112,7 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 
 	local categories_pos = {
 		ui_peruser.page_x,
-		ui_peruser.page_y-ui_peruser.btn_spc-0.5
+		ui_peruser.page_y - ui_peruser.btn_spc - 0.5
 	}
 	local categories_scroll_pos = {
 		ui_peruser.page_x,
@@ -120,10 +120,11 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 	}
 
 	formspec[n] = string.format("background9[%f,%f;%f,%f;%s;false;16]",
-		ui_peruser.page_x-0.15, categories_scroll_pos[2],
-		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1.4 + (ui_peruser.is_lite_mode and 0 or 0.2),
-		"ui_smallbg_9_sliced.png")
+		ui_peruser.page_x - 0.15, categories_scroll_pos[2],
+		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1.4 + (ui_peruser.is_lite_mode and 0 or 0.2) + 0.2,
+		"theme_background.png^[colorize:purple:30")
 	n = n + 1
+
 
 	formspec[n] = string.format("label[%f,%f;%s]",
 		ui_peruser.page_x,
@@ -143,18 +144,21 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 			if ui.current_category[player_name] == category.name then
 				scale = 1
 			end
-			formspec[n] = formspec_button(ui_peruser, "category_"..category.name, category.symbol, categories_pos, {column-1, 0}, scale, category.label)
+			formspec[n] = formspec_button(ui_peruser, "category_" .. category.name, category.symbol, categories_pos,
+				{ column - 1, 0 }, scale, category.label)
 			n = n + 1
 		end
 	end
 	if category_count > ui_peruser.pagecols and scroll_offset > 0 then
 		-- prev
-		formspec[n] = formspec_button(ui_peruser, "prev_category", "ui_left_icon.png", categories_scroll_pos, {ui_peruser.pagecols - 2, 0}, 0.8, S("Scroll categories left"))
+		formspec[n] = formspec_button(ui_peruser, "prev_category", "ui_left_icon.png", categories_scroll_pos,
+			{ ui_peruser.pagecols - 2, 0 }, 0.8, S("Scroll categories left"))
 		n = n + 1
 	end
 	if category_count > ui_peruser.pagecols and category_count - scroll_offset > ui_peruser.pagecols then
 		-- next
-		formspec[n] = formspec_button(ui_peruser, "next_category", "ui_right_icon.png", categories_scroll_pos, {ui_peruser.pagecols - 1, 0}, 0.8, S("Scroll categories right"))
+		formspec[n] = formspec_button(ui_peruser, "next_category", "ui_right_icon.png", categories_scroll_pos,
+			{ ui_peruser.pagecols - 1, 0 }, 0.8, S("Scroll categories right"))
 	end
 end
 
@@ -164,22 +168,22 @@ local function formspec_add_search_box(player, formspec, ui_peruser)
 
 	formspec[n] = "field_close_on_enter[searchbox;false]"
 
-	formspec[n+1] = string.format("field[%f,%f;%f,%f;searchbox;;%s]",
+	formspec[n + 1] = string.format("field[%f,%f;%f,%f;searchbox;;%s]",
 		ui_peruser.page_buttons_x, ui_peruser.page_buttons_y,
 		ui_peruser.searchwidth - 0.1, ui_peruser.btn_size,
 		F(ui.current_searchbox[player_name]))
-	formspec[n+2] = string.format("image_button[%f,%f;%f,%f;ui_search_icon.png;searchbutton;]",
+	formspec[n + 2] = string.format("image_button[%f,%f;%f,%f;ui_search_icon.png;searchbutton;]",
 		ui_peruser.page_buttons_x + ui_peruser.searchwidth, ui_peruser.page_buttons_y,
-		ui_peruser.btn_size,ui_peruser.btn_size)
-	formspec[n+3] = "tooltip[searchbutton;" ..F(S("Search")) .. "]"
-	formspec[n+4] = string.format("image_button[%f,%f;%f,%f;ui_reset_icon.png;searchresetbutton;]",
+		ui_peruser.btn_size, ui_peruser.btn_size)
+	formspec[n + 3] = "tooltip[searchbutton;" .. F(S("Search")) .. "]"
+	formspec[n + 4] = string.format("image_button[%f,%f;%f,%f;ui_reset_icon.png;searchresetbutton;]",
 		ui_peruser.page_buttons_x + ui_peruser.searchwidth + ui_peruser.btn_spc,
 		ui_peruser.page_buttons_y,
 		ui_peruser.btn_size, ui_peruser.btn_size)
-	formspec[n+5] = "tooltip[searchresetbutton;"..F(S("Reset search and display everything")).."]"
+	formspec[n + 5] = "tooltip[searchresetbutton;" .. F(S("Reset search and display everything")) .. "]"
 
 	if ui.activefilter[player_name] ~= "" then
-		formspec[n+6] = string.format("label[%f,%f;%s: %s]",
+		formspec[n + 6] = string.format("label[%f,%f;%s: %s]",
 			ui_peruser.page_x, ui_peruser.page_y - 0.25,
 			F(S("Filter")), F(ui.activefilter[player_name]))
 	end
@@ -192,12 +196,12 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 	-- Controls to flip items pages
 
 	local btnlist = {
-		{ "ui_skip_backward_icon.png", "start_list", S("First page") },
-		{ "ui_doubleleft_icon.png",    "rewind3",    S("Back three pages") },
-		{ "ui_left_icon.png",          "rewind1",    S("Back one page") },
-		{ "ui_right_icon.png",         "forward1",   S("Forward one page") },
-		{ "ui_doubleright_icon.png",   "forward3",   S("Forward three pages") },
-		{ "ui_skip_forward_icon.png",  "end_list",   S("Last page") },
+		{ "ui_skip_icon.png^[transformFX",   "start_list", S("First page") },
+		{ "ui_double_icon.png^[transformFX", "rewind3",    S("Back three pages") },
+		{ "ui_dir_icon.png^[transformFX",    "rewind1",    S("Back one page") },
+		{ "ui_dir_icon.png",                 "forward1",   S("Forward one page") },
+		{ "ui_double_icon.png",              "forward3",   S("Forward three pages") },
+		{ "ui_skip_icon.png",                "end_list",   S("Last page") },
 	}
 
 	if ui_peruser.is_lite_mode then
@@ -207,12 +211,12 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 
 	local bn = 0
 	for _, b in pairs(btnlist) do
-		formspec[n] =  string.format("image_button[%f,%f;%f,%f;%s;%s;]",
-			ui_peruser.page_buttons_x + ui_peruser.btn_spc*bn,
+		formspec[n] = string.format("image_button[%f,%f;%f,%f;%s;%s;]",
+			ui_peruser.page_buttons_x + ui_peruser.btn_spc * bn,
 			ui_peruser.page_buttons_y + ui_peruser.btn_spc,
 			ui_peruser.btn_size, ui_peruser.btn_size,
-			b[1],b[2])
-		formspec[n+1] = "tooltip["..b[2]..";"..F(b[3]).."]"
+			b[1], b[2])
+		formspec[n + 1] = "tooltip[" .. b[2] .. ";" .. F(b[3]) .. "]"
 		bn = bn + 1
 		n = n + 2
 	end
@@ -224,7 +228,7 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 			no_matches = S("No matches.")
 		end
 
-		formspec[n] = "label["..ui_peruser.page_x..","..(ui_peruser.page_y+0.15)..";" .. F(no_matches) .. "]"
+		formspec[n] = "label[" .. ui_peruser.page_x .. "," .. (ui_peruser.page_y + 0.15) .. ";" .. F(no_matches) .. "]"
 		return
 	end
 
@@ -233,7 +237,7 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 	local page2 = math.floor(list_index / (ui_peruser.items_per_page) + 1)
 	local pagemax = math.floor(
 		(#ui.filtered_items_list[player_name] - 1)
-			/ (ui_peruser.items_per_page) + 1)
+		/ (ui_peruser.items_per_page) + 1)
 	for y = 0, ui_peruser.pagerows - 1 do
 		for x = 0, ui_peruser.pagecols - 1 do
 			local name = ui.filtered_items_list[player_name][list_index]
@@ -248,7 +252,7 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 						dir = "recipe"
 					end
 				else
-				-- Default: use active search direction by default
+					-- Default: use active search direction by default
 					dir = ui.active_search_direction[player_name]
 				end
 
@@ -274,16 +278,16 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 			list_index = list_index + 1
 		end
 	end
+
 	formspec[n] = "style[page_number;content_offset=0]"
 	formspec[n + 1] = string.format("image_button[%f,%f;%f,0.4;;page_number;%s: %s;false;false;]",
 		ui_peruser.page_buttons_x,
 		ui_peruser.page_buttons_y + ui_peruser.btn_spc * 2 - 0.1,
 		ui_peruser.btn_spc * (bn - 1) + ui_peruser.btn_size,
-		F(S("Page")), S("@1 of @2",page2,pagemax))
+		F(S("Page")), S("@1 of @2", page2, pagemax))
 end
 
 function ui.get_formspec(player, page)
-
 	if not player then
 		return ""
 	end
@@ -297,10 +301,10 @@ function ui.get_formspec(player, page)
 	if not pagedef then
 		return "" -- Invalid page name
 	end
-
+	if pagedef.formspec_prepend == nil then pagedef.formspec_prepend = true end
 	local fs = {
-		"formspec_version[4]",
-		"size["..ui_peruser.formw..","..ui_peruser.formh.."]",
+		"formspec_version[7]",
+		"size[" .. ui_peruser.formw .. "," .. ui_peruser.formh .. "]",
 		pagedef.formspec_prepend and "" or "no_prepend[]",
 		ui.standard_background
 	}
@@ -312,9 +316,11 @@ function ui.get_formspec(player, page)
 
 	formspec_tab_buttons(player, fs, ui_peruser)
 
+
 	if fsdata.draw_inventory ~= false then
 		-- Player inventory
-		fs[#fs + 1] = "listcolors[#00000000;#00000000]"
+		--		fs[#fs + 1] = "listcolors[#00000000;#00000000]"
+
 		fs[#fs + 1] = ui_peruser.standard_inv
 	end
 
@@ -374,7 +380,7 @@ function ui.apply_filter(player, filter, search_dir)
 
 			for _, group in ipairs(groups) do
 				if not def.groups[group]
-				or def.groups[group] <= 0 then
+					or def.groups[group] <= 0 then
 					return false
 				end
 			end
@@ -412,8 +418,8 @@ function ui.apply_filter(player, filter, search_dir)
 	elseif category == 'uncategorized' then
 		for _, name in ipairs(ui.items_list) do
 			if not ui.find_category(name)
-					and fprefilter(name)
-					and ffilter(name) then
+				and fprefilter(name)
+				and ffilter(name) then
 				table.insert(filtered_items, name)
 			end
 		end
@@ -421,8 +427,8 @@ function ui.apply_filter(player, filter, search_dir)
 		-- Any other category is selected
 		for name, exists in pairs(ui.registered_category_items[category]) do
 			if exists
-					and fprefilter(name)
-					and ffilter(name) then
+				and fprefilter(name)
+				and ffilter(name) then
 				table.insert(filtered_items, name)
 			end
 		end

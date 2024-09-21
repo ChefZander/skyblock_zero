@@ -42,14 +42,14 @@ unified_inventory = {
 
 	-- Trash enabled
 	trash_enabled = (minetest.settings:get_bool("unified_inventory_trash") ~= false),
-	imgscale = 1.25,
+	imgscale = 1,
 	list_img_offset = 0.13,
-	standard_background = "bgcolor[#0000]background9[0,0;1,1;ui_formbg_9_sliced.png;true;16]",
-
+	--	standard_background = "bgcolor[#0000]background9[0,0;1,1;ui_formbg_9_sliced.png;true;16]",
+	standard_background = "",
 	hide_disabled_buttons = minetest.settings:get_bool("unified_inventory_hide_disabled_buttons", false),
 	hide_uncraftable_items = minetest.settings:get_bool("unified_inventory_hide_uncraftable_items", false),
 
-	version = 5
+	version = 5 + math.pi -- hehe!
 }
 
 local ui = unified_inventory
@@ -161,20 +161,6 @@ for _, style in ipairs({ ui.style_full, ui.style_lite }) do
 	})
 end
 
--- Disable default creative inventory
-local creative = rawget(_G, "creative") or rawget(_G, "creative_inventory")
-if creative then
-	function creative.set_creative_formspec(player, start_i, pagenum)
-		return
-	end
-end
-
--- Disable sfinv inventory
-local sfinv = rawget(_G, "sfinv")
-if sfinv then
-	sfinv.enabled = false
-end
-
 dofile(modpath .. "/group.lua")
 dofile(modpath .. "/category.lua")
 dofile(modpath .. "/default-categories.lua")
@@ -182,6 +168,4 @@ dofile(modpath .. "/internal.lua")
 dofile(modpath .. "/callbacks.lua")
 dofile(modpath .. "/match_craft.lua")
 dofile(modpath .. "/register.lua")
-if minetest.settings:get_bool("unified_inventory_item_names") ~= false then
-	dofile(modpath .. "/item_names.lua")
-end
+dofile(modpath .. "/item_names.lua")

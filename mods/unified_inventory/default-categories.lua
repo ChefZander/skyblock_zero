@@ -16,7 +16,7 @@ unified_inventory.register_category('chem', {
 })
 
 unified_inventory.register_category('deco', {
-	symbol = "sbz_decor:photonlamp",
+	symbol = "sbz_decor:factory_warning",
 	label = S("Decor")
 })
 
@@ -74,7 +74,7 @@ local function register_automatic_categorization()
 			if group.sbz_machine then
 				unified_inventory.add_category_item("machines", name)
 			end
-			if string.sub(name, 1, #"pipeworks") == "pipeworks" then
+			if string.sub(name, 1, #"pipeworks") == "pipeworks" or group.ui_fluid then
 				unified_inventory.add_category_item("pipeworks", name)
 			end
 		end

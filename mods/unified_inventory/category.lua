@@ -43,13 +43,14 @@ function update_category_list()
 	table.insert(category_list, {
 		name = "all",
 		label = S("All Items"),
-		symbol = "ui_category_all.png",
+		symbol = "sbz_resources:the_core",
 		index = -2,
 	})
+
 	table.insert(category_list, {
 		name = "uncategorized",
-		label = S("Uncategorized"),
-		symbol = "ui_category_none.png",
+		label = S("Miscellaneous"),
+		symbol = "sbz_resources:matter_dust",
 		index = -1,
 	})
 	for category, def in pairs(unified_inventory.registered_categories) do

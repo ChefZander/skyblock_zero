@@ -417,8 +417,11 @@ end
 ---------------- Formspec helpers ----------------
 
 function ui.single_slot(xpos, ypos, bright)
+	return ""
+	--[[
 	return string.format("background9[%f,%f;%f,%f;ui_single_slot%s.png;false;16]",
 		xpos, ypos, ui.imgscale, ui.imgscale, (bright and "_bright" or ""))
+		--]]
 end
 
 function ui.make_trash_slot(xpos, ypos)

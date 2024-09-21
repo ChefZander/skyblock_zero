@@ -34,7 +34,7 @@ minetest.register_node("sbz_power:fluid_pipe", {
     paramtype = "light",
     sunlight_propagates = true,
 
-    groups = { matter = 1, cracky = 3, fluid_pipe_connects = 1 },
+    groups = { matter = 1, cracky = 3, fluid_pipe_connects = 1, ui_fluid = 1 },
 
     node_box = {
         type = "connected",
@@ -154,7 +154,7 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
         { name = "pump_side.png^[transformFX", animation = animation_def },
         { name = "pump_side.png",              animation = animation_def },
     },
-    groups = { matter = 1, fluid_pipe_connects = 1 },
+    groups = { matter = 1, fluid_pipe_connects = 1, ui_fluid = 1 },
 
     action = function(pos, node, meta, supply, demand)
         if supply < demand + pump_consumbtion then
@@ -241,7 +241,7 @@ minetest.register_craft({
 
 minetest.register_node("sbz_power:fluid_tank", {
     description = "Fluid Storage Tank",
-    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, },
+    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1 },
     tiles = {
         "fluid_tank_top.png",
         "fluid_tank_top.png",
@@ -292,7 +292,7 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
         "fluid_capturer_bottom.png",
         "fluid_capturer_side.png^[verticalframe:8:0",
     },
-    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, },
+    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1 },
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:set_string("liquid_inv", minetest.serialize({
@@ -366,7 +366,7 @@ sbz_api.register_machine("sbz_power:fluid_cell_filler", {
         "fluid_tank_top.png",
         "fluid_tank_top.png^fluid_cell.png",
     },
-    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, },
+    groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1 },
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:set_string("liquid_inv", minetest.serialize({
