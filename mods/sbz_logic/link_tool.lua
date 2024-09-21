@@ -28,7 +28,7 @@ local function render_individual_link(pos, name)
             precision = 0,
             image = "visualiser_trail.png^[verticalframe:3:0"
         })
-    elseif pos[1] then
+    else
         for k, v in pairs(pos) do
             render_individual_link(v, k)
         end
@@ -48,9 +48,9 @@ local function render_links()
                 local linked_meta = minetest.get_meta(linked_pos)
                 local radius = linked_meta:get_int("linking_range")
                 if radius ~= 0 then
-                    vizlib.draw_cube(linked_pos, radius, {
+                    vizlib.draw_cube(linked_pos, radius + 0.5, {
                         player = v,
-                        color = vizlib.blue,
+                        color = "blue",
                         infinite = false,
                         time = render_links_delay + 0.1
                     })

@@ -1,6 +1,5 @@
 local modpath = minetest.get_modpath("sbz_decor")
 
-dofile(modpath .. "/deco_wires.lua")
 
 minetest.register_node("sbz_decor:photonlamp", {
     description = "Photon Lamp\n\nLight Source Only. Strength: 14,",
@@ -46,9 +45,9 @@ minetest.register_craft({
     output = "sbz_decor:factory_floor 2",
     type = "shapeless",
     recipe = {
-        "sbz_resources:matter_blob", 
-        "sbz_resources:matter_blob", 
-        "sbz_resources:matter_blob", 
+        "sbz_resources:matter_blob",
+        "sbz_resources:matter_blob",
+        "sbz_resources:matter_blob",
         "sbz_resources:matter_blob"
     }
 })

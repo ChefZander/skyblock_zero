@@ -30,21 +30,21 @@ function sfinv.get_nav_fs(player, context, nav, current_idx)
 	-- Only show tabs if there is more than one page
 	if #nav > 1 then
 		return "tabheader[0,0;sfinv_nav_tabs;" .. table.concat(nav, ",") ..
-			";" .. current_idx .. ";true;false]"
+				";" .. current_idx .. ";true;false]"
 	else
 		return ""
 	end
 end
 
 local theme_inv = [[
-		image[0,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[1,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[2,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[3,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[4,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[5,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[6,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
-		image[7,5.2;1,1;blank.png^[invert:rgba^[multiply:#333333]
+		image[0,5.2;1,1;gui_hb_bg.png]
+		image[1,5.2;1,1;gui_hb_bg.png]
+		image[2,5.2;1,1;gui_hb_bg.png]
+		image[3,5.2;1,1;gui_hb_bg.png]
+		image[4,5.2;1,1;gui_hb_bg.png]
+		image[5,5.2;1,1;gui_hb_bg.png]
+		image[6,5.2;1,1;gui_hb_bg.png]
+		image[7,5.2;1,1;gui_hb_bg.png]
 		list[current_player;main;0,5.2;8,1;]
 		list[current_player;main;0,6.35;8,3;8]
 	]]
@@ -91,7 +91,7 @@ function sfinv.get_formspec(player, context)
 
 		if old_page == home_page then
 			minetest.log("error", "[sfinv] Couldn't find " .. dump(old_page) ..
-				", which is also the old page")
+					", which is also the old page")
 
 			return ""
 		end
@@ -99,7 +99,7 @@ function sfinv.get_formspec(player, context)
 		context.page = home_page
 		assert(sfinv.pages[context.page], "[sfinv] Invalid homepage")
 		minetest.log("warning", "[sfinv] Couldn't find " .. dump(old_page) ..
-			" so switching to homepage")
+				" so switching to homepage")
 
 		return sfinv.get_formspec(player, context)
 	end
@@ -123,7 +123,7 @@ end
 
 function sfinv.set_player_inventory_formspec(player, context)
 	local fs = sfinv.get_formspec(player,
-		context or sfinv.get_or_create_context(player))
+			context or sfinv.get_or_create_context(player))
 	player:set_inventory_formspec(fs)
 end
 

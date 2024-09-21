@@ -12,6 +12,7 @@ dofile(MP .. "/env.lua")
 dofile(MP .. "/sandbox.lua")
 dofile(MP .. "/code_disks.lua")
 
+
 sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     tiles = { "luacontroller_top.png", "luacontroller_top.png", "luacontroller.png" },
     description = "Lua Controller",
@@ -97,3 +98,5 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
 }, {
     light_source = 14
 })
+
+dofile(MP .. "/books_n_crafts.lua")

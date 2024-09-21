@@ -67,7 +67,7 @@ end
 minetest.register_node("sbz_resources:emitter", {
     description = "Emitter",
     tiles = { "emitter.png" },
-    groups = { gravity = 25, unbreakable = 1, transparent = 1 },
+    groups = { gravity = 25, unbreakable = 1, transparent = 1, not_in_creative_inventory = 1 },
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",
@@ -176,7 +176,7 @@ end
 minetest.register_node("sbz_resources:the_core", {
     description = "The Core",
     tiles = { "the_core.png" },
-    groups = { gravity = 25, unbreakable = 1 },
+    groups = { gravity = 25, unbreakable = 1, not_in_creative_inventory = 1 },
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",

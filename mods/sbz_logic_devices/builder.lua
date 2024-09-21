@@ -4,7 +4,7 @@
 
 local power_per_action = 40
 local queue_max = 50
-local range = 40
+local range = 20
 
 
 
@@ -157,6 +157,10 @@ listring[]
         minetest.get_meta(pos):set_string("owner", placer:get_player_name())
         pipeworks.after_place(pos)
     end,
+    on_punch = function(pos, _, player)
+        vizlib.draw_cube(pos, range + 0.5, { player = player })
+    end,
+
     input_inv = "main",
     output_inv = "main",
     action = function() return 0 end,
