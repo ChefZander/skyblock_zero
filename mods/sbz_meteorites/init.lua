@@ -51,7 +51,7 @@ local function meteorite_globalstep(dtime)
         -- the above is a horrible idea that should never had entered production
 =======
         for _, obj in ipairs(minetest.object_refs) do
-            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 1/12 then
+            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 1/20 then
                 spawns = spawns + obj:get_luaentity().type
             end
         end
