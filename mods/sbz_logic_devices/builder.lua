@@ -14,6 +14,7 @@ local function get_index(inv, item)
 
     for k, v in ipairs(list) do
         v:set_count(1) -- so that counts match, doesnt actually modify anything in the inventory, kinda wish it would ngl
+        v:set_wear(1)  -- so that wear matches
         if item:equals(v) and item:is_known() then
             return k
         end
@@ -55,7 +56,7 @@ end
 
 local function punch(pos, owner, def_target, inv, index, node)
     if not def_target.on_punch then return end
-    local player = fakelib.create_player{
+    local player = fakelib.create_player {
         name = owner,
         inventory = inv,
         wield_list = "main",
@@ -69,6 +70,66 @@ local function punch(pos, owner, def_target, inv, index, node)
     }
 
     def_target.on_punch(pos, node, player, pointed_thing)
+end
+
+-- from pipeworks
+local function dont_wear_out(stack, old_stack, player, item_def)
+    if stack:get_name() == old_stack:get_name() then
+        if stack:get_wear() ~= old_stack:get_wear() and stack:get_count() == old_stack:get_count()
+            and (item_def.wear_represents == nil or item_def.wear_represents == "mechanical_wear") then
+            player:set_wielded_item(old_stack)
+        end
+    end
+end
+
+-- also from pipeworks
+local function dig(pos, owner, def_target, def_item, inv, index, node)
+    if not def_target.on_dig then return end
+    local player = fakelib.create_player {
+        name = owner,
+        inventory = inv,
+        wield_list = "main",
+        wield_index = index,
+        position = pos,
+    }
+
+    local stack = player:get_wielded_item()
+    local old_stack = ItemStack(stack)
+    local tool = stack:get_tool_capabilities()
+    if not minetest.get_dig_params(def_target.groups, tool).diggable then
+        local hand = ItemStack():get_tool_capabilities()
+        if not minetest.get_dig_params(def_target.groups, hand).diggable then return end
+    end
+    if node_def.on_dig(pos, node, player) == false then return end
+
+    player:set_wielded_item(stack)
+    dont_wear_out(stack, old_stack, player, def_item)
+end
+
+
+
+local function use(pos, owner, def_item, inv, index)
+    if not item_def.on_use then return end
+    local player = fakelib.create_player {
+        name = owner,
+        inventory = inv,
+        wield_list = "main",
+        wield_index = index,
+        position = pos,
+    }
+
+    local pointed_thing = {
+        under = pos,
+        above = pos,
+        type = "node"
+    }
+
+    stack = player:get_wielded_item()
+    local old_stack = ItemStack(stack)
+    stack = item_def.on_use(stack, player, pointed_thing) or stack
+    player:set_wielded_item(stack)
+
+    dont_wear_out(stack, old_stack, player.def_item)
 end
 
 sbz_api.register_machine("sbz_logic_devices:builder", {
@@ -111,6 +172,7 @@ listring[]
         local owner = meta:get_string("owner")
 
         local ndef = minetest.registered_nodes
+        local idef = minetest.registered_items
 
         local function inner_loop(i)
             local e = queued_events[i]
@@ -123,7 +185,9 @@ listring[]
             if not ok then return end -- ha see, continue statement, lua has continue statements...!!!!
 
             local item = ItemStack(e.item)
+            -- prepare for comparing
             item:set_count(1)
+            item:set_wear(1)
             local index = get_index(inv, item)
             if not index then return end
             local abs_pos = vector.add(e.pos, pos)
@@ -132,14 +196,20 @@ listring[]
 
             local node_at_pos = sbz_api.get_node_force(abs_pos)
             if node_at_pos == nil then return end
-            local ndef_node = ndef[node_at_pos.name]
-            if ndef_node == nil then return end
-            if e.type == "build" then
-                build(abs_pos, owner, ndef[item:get_name()], e.param2, inv, index)
-            elseif e.type == "dig" then
+            local def_node = ndef[node_at_pos.name]
+            if def_node == nil then return end
 
+            local def_item = idef[item]
+            if def_item == nil then return end
+
+            if e.type == "build" then
+                build(abs_pos, owner, item_def, e.param2, inv, index)
+            elseif e.type == "dig" then
+                dig(abs_pos, owner, def_node, def_item, inv, index, node_at_pos)
             elseif e.type == "punch" then
-                punch(abs_pos, owner, ndef_node, inv, index, node_at_pos)
+                punch(abs_pos, owner, def_node, inv, index, node_at_pos)
+            elseif e.type == "use" then
+                use(abs_pos, owner, def_item, inv, index)
             end
         end
         for i = 1, queue_can_handle do
