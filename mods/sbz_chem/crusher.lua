@@ -1,3 +1,15 @@
+local output_items = sbz_api.crusher_drops
+
+for k, v in pairs(output_items) do
+    unified_inventory.register_craft {
+        output = v,
+        type = "crushing",
+        items = {
+            "sbz_resources:pebble"
+        }
+    }
+end
+
 sbz_api.register_stateful_machine("sbz_chem:crusher", {
     description = "Crusher",
     tiles = {
@@ -63,25 +75,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
             minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.4 }, { pos = pos })
 
-            local output_items = {
-                "sbz_chem:gold_powder",
-                "sbz_chem:silver_powder",
-                "sbz_chem:iron_powder",
-                "sbz_chem:copper_powder",
-                "sbz_chem:aluminum_powder",
-                "sbz_chem:lead_powder",
-                "sbz_chem:zinc_powder",
-                "sbz_chem:tin_powder",
-                "sbz_chem:nickel_powder",
-                "sbz_chem:platinum_powder",
-                "sbz_chem:mercury_powder",
-                "sbz_chem:cobalt_powder",
-                "sbz_chem:titanium_powder",
-                "sbz_chem:magnesium_powder",
-                "sbz_chem:calcium_powder",
-                "sbz_chem:sodium_powder",
-                "sbz_chem:lithium_powder"
-            }
+
 
             local random_index = math.random(1, #output_items)
             local selected_item = output_items[random_index]

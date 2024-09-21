@@ -151,13 +151,13 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 	end
 	if category_count > ui_peruser.pagecols and scroll_offset > 0 then
 		-- prev
-		formspec[n] = formspec_button(ui_peruser, "prev_category", "ui_left_icon.png", categories_scroll_pos,
+		formspec[n] = formspec_button(ui_peruser, "prev_category", "ui_dir_icon.png^[transformFX", categories_scroll_pos,
 			{ ui_peruser.pagecols - 2, 0 }, 0.8, S("Scroll categories left"))
 		n = n + 1
 	end
 	if category_count > ui_peruser.pagecols and category_count - scroll_offset > ui_peruser.pagecols then
 		-- next
-		formspec[n] = formspec_button(ui_peruser, "next_category", "ui_right_icon.png", categories_scroll_pos,
+		formspec[n] = formspec_button(ui_peruser, "next_category", "ui_dir_icon.png", categories_scroll_pos,
 			{ ui_peruser.pagecols - 1, 0 }, 0.8, S("Scroll categories right"))
 	end
 end

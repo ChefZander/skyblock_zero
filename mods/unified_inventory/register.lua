@@ -345,9 +345,9 @@ ui.register_page("craftguide", {
 		if alternates and alternates > 1 then
 			formspec[n] = string.format("label[%f,%f;%s]",
 				craftguidex + 4, craftguidey + 2.3, F(S(recipe_text[dir], alternate, alternates)))
-			formspec[n + 1] = string.format("image_button[%f,%f;1.1,1.1;ui_left_icon.png;alternate_prev;]",
+			formspec[n + 1] = string.format("image_button[%f,%f;1.1,1.1;ui_dir_icon.png^\\[transformFX;alternate_prev;]",
 				craftguidearrowx + 0.2, craftguidey + 2.6)
-			formspec[n + 2] = string.format("image_button[%f,%f;1.1,1.1;ui_right_icon.png;alternate;]",
+			formspec[n + 2] = string.format("image_button[%f,%f;1.1,1.1;ui_dir_icon.png;alternate;]",
 				craftguidearrowx + 1.35, craftguidey + 2.6)
 			formspec[n + 3] = "tooltip[alternate_prev;" .. F(prev_alt_text[dir]) .. "]"
 			formspec[n + 4] = "tooltip[alternate;" .. F(next_alt_text[dir]) .. "]"

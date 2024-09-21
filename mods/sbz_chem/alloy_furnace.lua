@@ -1,10 +1,22 @@
 local simple_alloy_furnace_recipes = {
     { recipe = { "sbz_chem:copper_powder", "sbz_chem:tin_powder" },        output = { "sbz_chem:bronze_powder" } },
-    { recipe = { "sbz_chem:copper_powder", "sbz_chem:zinc_powder" },       output = { "sbz_chem:brass_powder" } },
+    --    { recipe = { "sbz_chem:copper_powder", "sbz_chem:zinc_powder" },       output = { "sbz_chem:brass_powder" } },
     { recipe = { "sbz_chem:iron_powder", "sbz_chem:nickel_powder" },       output = { "sbz_chem:invar_powder" } },
     { recipe = { "sbz_chem:titanium_powder", "sbz_chem:aluminum_powder" }, output = { "sbz_chem:titanium_alloy_powder" } },
-    { recipe = { "sbz_chem:gold_powder", "sbz_chem:nickel_powder" },       output = { "sbz_chem:white_gold_powder" } },
+    --    { recipe = { "sbz_chem:gold_powder", "sbz_chem:nickel_powder" },       output = { "sbz_chem:white_gold_powder" } },
+    -- uncomment to enable white gold or brass
 }
+minetest.after(0, function()
+    for k, v in ipairs(simple_alloy_furnace_recipes) do
+        unified_inventory.register_craft {
+            output = v.output[1],
+            type = "alloying",
+            items = v.recipe
+        }
+    end
+end)
+
+sbz_api.simple_alloy_furnace_recipes = simple_alloy_furnace_recipes
 
 sbz_api.register_stateful_machine("sbz_chem:simple_alloy_furnace", {
     description = "Simple Alloy Furnace",

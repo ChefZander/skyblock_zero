@@ -123,6 +123,13 @@ minetest.register_craftitem("sbz_resources:raw_emittrium", {
     stack_max = 256,
 })
 
+unified_inventory.register_craft {
+    output = "sbz_resources:raw_emittrium",
+    type = "punching",
+    items = {
+        "sbz_resources:emitter"
+    }
+}
 
 -- THE CORE!!! interraction...
 local function core_interact(pos, node, puncher, itemstack, pointed_thing)

@@ -7,9 +7,9 @@ pipeworks.register_tube("pipeworks:tube", {
 minetest.register_craft({
     output = "pipeworks:tube_1 8",
     recipe = {
-        { "sbz_chem:platinum_ingot", "", "sbz_chem:platinum_ingot" },
+        { "sbz_chem:aluminum_ingot", "", "sbz_chem:aluminum_ingot" },
         { "",                        "", "" },
-        { "sbz_chem:platinum_ingot", "", "sbz_chem:platinum_ingot" },
+        { "sbz_chem:aluminum_ingot", "", "sbz_chem:aluminum_ingot" },
     }
 })
 

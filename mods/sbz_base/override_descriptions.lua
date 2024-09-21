@@ -28,6 +28,10 @@ minetest.register_on_mods_loaded(function()
             if v.groups.moss_growable ~= nil then
                 new_desc[#new_desc + 1] = "Moss can grow on this node."
             end
+            if v.groups.chem_disabled ~= nil then
+                new_desc[#new_desc + 1] =
+                "This chemical is disabled.\nThis means that you won't be able to obtain it anymore, but it may receive a use in the future."
+            end
         end
 
         if v.info_extra then
