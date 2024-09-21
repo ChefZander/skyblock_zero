@@ -6,25 +6,10 @@ local S = minetest.get_translator("creative")
 creative = {}
 creative.get_translator = S
 
-local function update_sfinv(name)
-	minetest.after(0, function()
-		local player = minetest.get_player_by_name(name)
-		if player then
-			if sfinv.get_page(player):sub(1, 9) == "creative:" then
-				sfinv.set_page(player, sfinv.get_homepage_name(player))
-			else
-				sfinv.set_player_inventory_formspec(player)
-			end
-		end
-	end)
-end
-
 minetest.register_privilege("creative", {
 	description = S("Allow player to use creative inventory"),
 	give_to_singleplayer = false,
 	give_to_admin = false,
-	on_grant = update_sfinv,
-	on_revoke = update_sfinv,
 })
 
 -- Override the engine's creative mode function
@@ -34,7 +19,7 @@ function minetest.is_creative_enabled(name)
 	if name == "" then
 		return old_is_creative_enabled(name)
 	end
-	return minetest.check_player_privs(name, {creative = true}) or
+	return minetest.check_player_privs(name, { creative = true }) or
 		old_is_creative_enabled(name)
 end
 
@@ -42,8 +27,6 @@ end
 function creative.is_enabled_for(name)
 	return minetest.is_creative_enabled(name)
 end
-
-dofile(minetest.get_modpath("creative") .. "/inventory.lua")
 
 if minetest.is_creative_enabled("") then
 	minetest.register_on_mods_loaded(function()
@@ -54,7 +37,7 @@ if minetest.is_creative_enabled("") then
 		-- increased such that nodes of differing levels have an insignificant
 		-- effect on digtime.
 		local digtime = 42
-		local caps = {times = {digtime, digtime, digtime}, uses = 0, maxlevel = 256}
+		local caps = { times = { digtime, digtime, digtime }, uses = 0, maxlevel = 256 }
 
 		-- Override the hand tool
 		minetest.override_item("", {
@@ -64,18 +47,15 @@ if minetest.is_creative_enabled("") then
 				max_drop_level = 3,
 				groupcaps = {
 					crumbly = caps,
-					cracky  = caps,
-					snappy  = caps,
-					choppy  = caps,
-					unbreakable = {times = {[1] = digtime * 2}, uses = 0, maxlevel = 256},
-					matter = caps,
-					antimatter = caps,
+					cracky = caps,
+					snappy = caps,
+					choppy = caps,
 					oddly_breakable_by_hand = caps,
 					-- dig_immediate group doesn't use value 1. Value 3 is instant dig
 					dig_immediate =
-						{times = {[2] = digtime, [3] = 0}, uses = 0, maxlevel = 256},
+					{ times = { [2] = digtime, [3] = 0 }, uses = 0, maxlevel = 256 },
 				},
-				damage_groups = {fleshy = 10},
+				damage_groups = { fleshy = 10 },
 			}
 		})
 	end)

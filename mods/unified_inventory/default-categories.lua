@@ -15,9 +15,19 @@ unified_inventory.register_category('chem', {
 	label = S("Powders and Ingots")
 })
 
-unified_inventory.register_category('lighting', {
+unified_inventory.register_category('deco', {
 	symbol = "sbz_decor:photonlamp",
-	label = S("Lighting")
+	label = S("Decor")
+})
+
+unified_inventory.register_category("machines", {
+	symbol = "sbz_power:advanced_matter_extractor",
+	label = S("Machines")
+})
+
+unified_inventory.register_category("pipeworks", {
+	symbol = "pipeworks:tube_1",
+	label = S "Item or Fluid Transportation"
 })
 
 local function register_automatic_categorization()
@@ -51,12 +61,21 @@ local function register_automatic_categorization()
 				group.needs_co2
 			then
 				unified_inventory.add_category_item('organics', name)
-			elseif def.type == 'tool' then
+			end
+			if def.type == 'tool' then
 				unified_inventory.add_category_item('tools', name)
-			elseif def.liquidtype == 'source' then
-				unified_inventory.add_category_item('environment', name)
-			elseif def.light_source and def.light_source > 0 then
-				unified_inventory.add_category_item('lighting', name)
+			end
+			if string.sub(name, 1, #"sbz_decor") == "sbz_decor" or def.mod_origin == "sbz_decor" then
+				unified_inventory.add_category_item('deco', name)
+			end
+			if group.chem_element then
+				unified_inventory.add_category_item("chem", name)
+			end
+			if group.sbz_machine then
+				unified_inventory.add_category_item("machines", name)
+			end
+			if string.sub(name, 1, #"pipeworks") == "pipeworks" then
+				unified_inventory.add_category_item("pipeworks", name)
 			end
 		end
 	end

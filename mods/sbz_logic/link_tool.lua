@@ -195,7 +195,6 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     inventory_image = "luacontroller_linker.png",
     range = 10,
     liquids_pointable = true,
-    light_source = 14,
     on_place = function(stack, placer, pointed)
         if placer:get_player_control().aux1 == false then
             local target = pointed.under

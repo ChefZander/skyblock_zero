@@ -1,11 +1,11 @@
 sbz_api.register_element = function(name, color, description)
     minetest.register_craftitem("sbz_chem:" .. name .. "_powder", {
-        groups = { chem_element = 1, not_in_craft_guide = 1 },
+        groups = { chem_element = 1 },
         description = string.format(description, "Powder"),
         inventory_image = "powder.png^[colorize:" .. color .. ":100"
     })
     minetest.register_craftitem("sbz_chem:" .. name .. "_ingot", {
-        groups = { chem_element = 1, ingot = 1, not_in_craft_guide = 1 },
+        groups = { chem_element = 1, ingot = 1 },
         description = string.format(description, "Ingot"),
         inventory_image = "ingot.png^[colorize:" .. color .. ":100"
     })

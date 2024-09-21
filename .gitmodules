@@ -4,3 +4,6 @@
 [submodule "mods/vizlib"]
 	path = mods/vizlib
 	url = https://github.com/TheEt1234/vizlib
+[submodule "mods/unified_inventory_plus"]
+	path = mods/unified_inventory_plus
+	url = https://github.com/mt-mods/unified_inventory_plus/

@@ -14,7 +14,7 @@ local function is_recipe_craftable(recipe)
 			-- Possibly an item
 			local itemname_cleaned = ItemStack(itemname):get_name()
 			if not minetest.registered_items[itemname_cleaned]
-					or minetest.get_item_group(itemname_cleaned, "not_in_craft_guide") ~= 0 then
+				or minetest.get_item_group(itemname_cleaned, "not_in_craft_guide") ~= 0 then
 				return false
 			end
 		end
@@ -54,7 +54,7 @@ minetest.after(0.01, function()
 
 	table.sort(ui.items_list)
 	ui.items_list_size = #ui.items_list
-	print("Unified Inventory. Inventory size: "..ui.items_list_size)
+	print("Unified Inventory. Inventory size: " .. ui.items_list_size)
 
 	-- Analyse dropped items -> custom "digging" recipes
 	for _, name in ipairs(ui.items_list) do
@@ -65,13 +65,12 @@ minetest.after(0.01, function()
 			if not dstack:is_empty() and dstack:get_name() ~= name then
 				ui.register_craft({
 					type = "digging",
-					items = {name},
+					items = { name },
 					output = def.drop,
 					width = 0,
 				})
-
 			end
-		-- Complex drops. Yes, it's really complex!
+			-- Complex drops. Yes, it's really complex!
 		elseif type(def.drop) == "table" then
 			--[[ Extract single items from the table and save them into dedicated tables
 			to register them later, in order to avoid duplicates. These tables counts
@@ -97,11 +96,11 @@ minetest.after(0.01, function()
 			local max_start = true
 			-- Let's iterate through the items madness!
 			-- Handle invalid drop entries gracefully.
-			local drop_items = def.drop.items or { }
-			for i=1,#drop_items do
+			local drop_items = def.drop.items or {}
+			for i = 1, #drop_items do
 				if max_items_left ~= nil and max_items_left <= 0 then break end
 				local itit = drop_items[i]
-				for j=1,#itit.items do
+				for j = 1, #itit.items do
 					local dstack = ItemStack(itit.items[j])
 					if not dstack:is_empty() and dstack:get_name() ~= name then
 						local dname = dstack:get_name()
@@ -117,7 +116,7 @@ minetest.after(0.01, function()
 								max_items_left = max_items_left - 1
 								if max_items_left <= 0 then break end
 							end
-						-- Drop was a “maybe”
+							-- Drop was a “maybe”
 						else
 							if max_items_left ~= nil then max_start = false end
 							if drop_maybe[dname] == nil then
@@ -131,7 +130,7 @@ minetest.after(0.01, function()
 			for itemstring, count in pairs(drop_guaranteed) do
 				ui.register_craft({
 					type = "digging",
-					items = {name},
+					items = { name },
 					output = itemstring .. " " .. count,
 					width = 0,
 				})
@@ -139,7 +138,7 @@ minetest.after(0.01, function()
 			for itemstring, count in pairs(drop_maybe) do
 				ui.register_craft({
 					type = "digging_chance",
-					items = {name},
+					items = { name },
 					output = itemstring .. " " .. count,
 					width = 0,
 				})
@@ -234,7 +233,7 @@ local function load_home()
 		local y = input:read("*n")
 		local z = input:read("*n")
 		local name = input:read("*l")
-		ui.home_pos[name:sub(2)] = {x = x, y = y, z = z}
+		ui.home_pos[name:sub(2)] = { x = x, y = y, z = z }
 	end
 	io.close(input)
 end
@@ -253,7 +252,7 @@ function ui.set_home(player, pos)
 		return
 	end
 	for k, v in pairs(ui.home_pos) do
-		output:write(v.x.." "..v.y.." "..v.z.." "..k.."\n")
+		output:write(v.x .. " " .. v.y .. " " .. v.z .. " " .. k .. "\n")
 	end
 	io.close(output)
 end
@@ -284,7 +283,7 @@ function ui.register_craft(options)
 	if not ui.crafts_for.recipe[item_name] then
 		ui.crafts_for.recipe[item_name] = {}
 	end
-	table.insert(ui.crafts_for.recipe[item_name],options)
+	table.insert(ui.crafts_for.recipe[item_name], options)
 
 	for _, callback in ipairs(ui.craft_registered_callbacks) do
 		callback(item_name, options)
@@ -301,23 +300,21 @@ function ui.craft_type_defaults(name, options)
 	if not options.description then
 		options.description = name
 	end
-	setmetatable(options, {__index = craft_type_defaults})
+	setmetatable(options, { __index = craft_type_defaults })
 	return options
 end
-
 
 function ui.register_craft_type(name, options)
 	ui.registered_craft_types[name] = ui.craft_type_defaults(name, options)
 end
-
 
 ui.register_craft_type("normal", {
 	description = F(S("Crafting")),
 	icon = "ui_craftgrid_icon.png",
 	width = 3,
 	height = 3,
-	get_shaped_craft_width = function (craft) return craft.width end,
-	dynamic_display_size = function (craft)
+	get_shaped_craft_width = function(craft) return craft.width end,
+	dynamic_display_size = function(craft)
 		local w = craft.width
 		local h = math.ceil(table.maxn(craft.items) / craft.width)
 		local g = w < h and h or w
@@ -332,10 +329,10 @@ ui.register_craft_type("shapeless", {
 	icon = "ui_craftgrid_icon.png",
 	width = 3,
 	height = 3,
-	dynamic_display_size = function (craft)
+	dynamic_display_size = function(craft)
 		local maxn = table.maxn(craft.items)
 		local g = 1
-		while g*g < maxn do g = g + 1 end
+		while g * g < maxn do g = g + 1 end
 		return { width = g, height = g }
 	end,
 	uses_crafting_grid = true,
@@ -344,7 +341,7 @@ ui.register_craft_type("shapeless", {
 
 ui.register_craft_type("cooking", {
 	description = F(S("Cooking")),
-	icon = "default_furnace_front.png",
+	icon = "hpef_front.png^[verticalframe:5:1",
 	width = 1,
 	height = 1,
 })
@@ -352,14 +349,14 @@ ui.register_craft_type("cooking", {
 
 ui.register_craft_type("digging", {
 	description = F(S("Digging")),
-	icon = "default_tool_steelpick.png",
+	icon = "robotic_arm.png",
 	width = 1,
 	height = 1,
 })
 
 ui.register_craft_type("digging_chance", {
 	description = "Digging (by chance)",
-	icon = "default_tool_steelpick.png^[transformFY.png",
+	icon = "robotic_arm.png^[transformFY.png",
 	width = 1,
 	height = 1,
 })
@@ -369,7 +366,6 @@ ui.register_craft_type("digging_chance", {
 function ui.register_page(name, def)
 	ui.pages[name] = def
 end
-
 
 function ui.register_button(name, def)
 	if not def.action then
@@ -414,7 +410,7 @@ end
 ---------------- Player utilities ----------------
 
 function ui.is_creative(playername)
-	return minetest.check_player_privs(playername, {creative=true})
+	return minetest.check_player_privs(playername, { creative = true })
 		or minetest.settings:get_bool("creative_mode")
 end
 
@@ -422,21 +418,21 @@ end
 
 function ui.single_slot(xpos, ypos, bright)
 	return string.format("background9[%f,%f;%f,%f;ui_single_slot%s.png;false;16]",
-	xpos, ypos, ui.imgscale, ui.imgscale, (bright and "_bright" or "") )
+		xpos, ypos, ui.imgscale, ui.imgscale, (bright and "_bright" or ""))
 end
 
 function ui.make_trash_slot(xpos, ypos)
 	return
-		ui.single_slot(xpos, ypos)..
-		"image["..xpos..","..ypos..";1.25,1.25;ui_trash_slot_icon.png]"..
-		"list[detached:trash;main;"..(xpos + ui.list_img_offset)..","..(ypos + ui.list_img_offset)..";1,1;]"
+		ui.single_slot(xpos, ypos) ..
+		"image[" .. xpos .. "," .. ypos .. ";1.25,1.25;ui_trash_slot_icon.png]" ..
+		"list[detached:trash;main;" .. (xpos + ui.list_img_offset) .. "," .. (ypos + ui.list_img_offset) .. ";1,1;]"
 end
 
 function ui.make_inv_img_grid(xpos, ypos, width, height, bright)
 	local tiled = {}
-	local n=1
+	local n = 1
 	for y = 0, (height - 1) do
-		for x = 0, (width -1) do
+		for x = 0, (width - 1) do
 			tiled[n] = ui.single_slot(xpos + (ui.imgscale * x), ypos + (ui.imgscale * y), bright)
 			n = n + 1
 		end
