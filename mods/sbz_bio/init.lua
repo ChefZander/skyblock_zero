@@ -18,7 +18,7 @@ end
 function sbz_api.is_hydrated(pos)
     pos = pos - vector.new(0, 1, 0)
     return is_node_within_radius(pos, "sbz_resources:water_source", 1) or
-    is_node_within_radius(pos, "sbz_resources:water_flowing", 1)
+        is_node_within_radius(pos, "sbz_resources:water_flowing", 1)
 end
 
 local modpath = minetest.get_modpath("sbz_bio")
@@ -27,3 +27,4 @@ dofile(modpath .. "/habitat.lua")
 dofile(modpath .. "/plants.lua")
 dofile(modpath .. "/misc.lua")
 dofile(modpath .. "/uses.lua")
+dofile(modpath .. "/potions.lua")
