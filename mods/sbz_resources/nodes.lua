@@ -463,3 +463,26 @@ minetest.register_node("sbz_resources:water_flowing", {
     liquid_alternative_source = "sbz_resources:water_source",
     liquid_alternative_flowing = "sbz_resources:water_flowing"
 })
+
+minetest.register_node("sbz_resources:compressed_core_dust", {
+    description = "Compressed core dust",
+    tiles = {
+        "compressed_core_dust.png"
+    },
+    info_extra = {"You can use this to protect against antimatter"},
+    groups = { dig_immediate = 1, explody = 5 },
+})
+
+minetest.register_craft({
+    output = "sbz_resources:compressed_core_dust",
+    recipe = {
+        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
+        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
+        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
+    }
+})
+minetest.register_craft({
+	type = "shapeless",
+    output = "sbz_resources:core_dust 9",
+    recipe = { "sbz_resources:compressed_core_dust" }
+})
