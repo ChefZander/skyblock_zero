@@ -5,6 +5,20 @@ local logic = sbz_api.logic
     def.action_out = function(stack, logic_pos, logic_meta) -- undo that ^
 ]]
 
+minetest.register_craftitem("sbz_logic:upgrade_template", {
+    description = "Logic Upgrade Template",
+    inventory_image = "upgrade_template.png"
+})
+minetest.register_craft {
+    output = "sbz_logic:upgrade_template",
+    recipe = {
+        { "",                      "sbz_chem:nickel_ingot",           "" },
+        { "sbz_chem:nickel_ingot", "sbz_resources:emittrium_circuit", "sbz_chem:nickel_ingot" },
+        { "",                      "sbz_chem:nickel_ingot",           "" }
+    }
+}
+
+
 logic.register_upgrade = function(name, def)
     def.groups = { sbz_logic_upgrade = 1, }
     minetest.register_craftitem(name, def)
@@ -23,3 +37,10 @@ logic.register_upgrade("sbz_logic:linking_upgrade", {
     end,
     inventory_image = "luacontroller_linking_upgrade.png"
 })
+
+minetest.register_craft {
+    output = "sbz_logic:linking_upgrade",
+    recipe = {
+        { "sbz_logic:luacontroller_linker", "sbz_logic:upgrade_template" }
+    }
+}

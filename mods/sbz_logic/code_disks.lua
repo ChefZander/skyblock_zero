@@ -35,6 +35,16 @@ minetest.register_craftitem("sbz_logic:data_disk", {
     groups = { sbz_disk = 1 },
 })
 
+unified_inventory.register_craft {
+    type = "ele_fab",
+    width = 2,
+    height = 1,
+    output = "sbz_logic:data_disk",
+    items = {
+        "sbz_resources:luanium 2", "sbz_resources:retaining_circuit 16"
+    }
+}
+
 function logic.register_system_disk(name, desc, source, punch_editor, punch_code)
     local def = {
         description = "System Code Disk - " .. desc,

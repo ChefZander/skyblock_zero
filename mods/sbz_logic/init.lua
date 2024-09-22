@@ -99,4 +99,13 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     light_source = 14
 })
 
-dofile(MP .. "/books_n_crafts.lua")
+minetest.register_craft {
+    output = "sbz_logic:lua_controller",
+    recipe = {
+        { "sbz_resources:lua_chip", "sbz_logic:data_disk",       "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_meteorites:neutronium", "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_resources:storinator",  "sbz_resources:lua_chip" },
+    }
+}
+
+dofile(MP .. "/knowledge.lua")

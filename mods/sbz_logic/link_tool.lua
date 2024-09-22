@@ -222,3 +222,12 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
         return stack
     end
 })
+
+minetest.register_craft {
+    output = "sbz_logic:luacontroller_linker",
+    recipe = {
+        { "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", },
+        { "sbz_resources:compressed_core_dust", "sbz_bio:warpshroom",                 "sbz_resources:compressed_core_dust", },
+        { "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", },
+    }
+}

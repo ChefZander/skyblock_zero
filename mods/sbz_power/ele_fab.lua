@@ -71,7 +71,19 @@ unified_inventory.register_craft {
     height = 1
 }
 
-local power_needed = 90
+unified_inventory.register_craft {
+    type = "ele_fab",
+    output = "sbz_resources:lua_chip",
+    items = {
+        "sbz_resources:luanium 4",
+        "sbz_resources:matter_plate 2"
+    },
+    width = 2,
+    height = 1
+}
+
+
+local power_needed = 30
 
 sbz_api.register_stateful_machine("sbz_power:ele_fab", {
     description = "Ele Fab",
