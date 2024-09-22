@@ -253,7 +253,7 @@ There is one more thing which almost all plants except Pyrograss need: CO2, whic
         text =
         [[As you keep expanding your space station, you might wonder: "What am I going to do with all this Core Dust?". The answer to that question is to...
 
-Compress it! Compressed Core Dust can be used as a building material, a way to efficiently store Core Dust or as a shield to protect against antimatter.]]
+Compress it! Compressed Core Dust can be used as a building material, a way to efficiently store Core Dust or as a shield to protect against antimatter.]],
         requires = { "A bigger platform" }
     },
     {
