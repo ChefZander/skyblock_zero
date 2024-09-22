@@ -470,7 +470,7 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
         "compressed_core_dust.png"
     },
     info_extra = {"You can use this to protect against antimatter"},
-    groups = { dig_immediate = 1, explody = 5 },
+    groups = { dig_immediate = 2, explody = 5 },
 })
 
 minetest.register_craft({
