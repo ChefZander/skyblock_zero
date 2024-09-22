@@ -1,4 +1,5 @@
 # Unified Inventory
+### This is a modified version of the unified inventory mod!
 
 [![](https://github.com/minetest-mods/unified_inventory/workflows/Check%20&%20Release/badge.svg)](https://github.com/minetest-mods/unified_inventory/actions)
 

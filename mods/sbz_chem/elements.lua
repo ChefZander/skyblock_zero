@@ -1,9 +1,6 @@
 unified_inventory.register_craft_type("crushing", {
-    -- ^ Unique identifier for `register_craft`
     description = "Crushing",
-    -- ^ Text shown below the crafting arrow
     icon = "crusher_top.png^[verticalframe:4:1",
-    -- ^ Image shown above the crafting arrow
     width = 1,
     height = 1,
     uses_crafting_grid = false,
@@ -39,18 +36,17 @@ sbz_api.register_element = function(name, color, description, disabled, part_of_
             output = "sbz_chem:" .. name .. "_ingot",
             recipe = "sbz_chem:" .. name .. "_powder",
         })
+        unified_inventory.register_craft {
+            type = "crushing",
+            output = "sbz_chem:" .. name .. "_powder",
+            items = { "sbz_chem:" .. name .. "_ingot" }
+        }
         if part_of_crusher_drops == nil or part_of_crusher_drops == true then
             sbz_api.crusher_drops[#sbz_api.crusher_drops + 1] = "sbz_chem:" .. name .. "_powder"
         end
     else
         sbz_api.unused_chem[#sbz_api.unused_chem + 1] = "sbz_chem:" .. name
     end
-
-    unified_inventory.register_craft {
-        type = "crushing",
-        output = "sbz_chem:" .. name .. "_powder",
-        items = { "sbz_chem:" .. name .. "_ingot" }
-    }
 end
 
 minetest.after(0, function()
@@ -95,7 +91,7 @@ sbz_api.register_element("lithium", "#c8a4db", "Lithium %s (Li)")
 -- alloys
 
 sbz_api.register_element("bronze", "#CD7F32", "Bronze %s (CuSn)", false, false)
-sbz_api.register_element("brass", "#B5A642", "Brass %s (CuZn)", true, true)
+sbz_api.register_element("brass", "#B5A642", "Brass %s (CuZn)", true, false)
 sbz_api.register_element("invar", "#808080", "Invar %s (FeNi)", false, false)
 sbz_api.register_element("titanium_alloy", "#B0C4DE", "Titanium Alloy %s (TiAl)", false, false)
 sbz_api.register_element("white_gold", "#E5E4E2", "White Gold %s (AuNi)", true, false)
