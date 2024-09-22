@@ -399,6 +399,10 @@ function ui.get_recipe_list(output)
 	return ui.crafts_for.recipe[output]
 end
 
+function ui.get_usage_list(output)
+	return ui.crafts_for.usage[output]
+end
+
 function ui.get_registered_outputs()
 	local outputs = {}
 	for item_name, _ in pairs(ui.crafts_for.recipe) do

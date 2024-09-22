@@ -3,7 +3,7 @@ local BATTERY_MAX_POWER = 300
 minetest.register_node("sbz_power:battery", {
     description = "Battery",
     tiles = { "battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 0 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 1 },
     battery_max = BATTERY_MAX_POWER,
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -23,7 +23,7 @@ minetest.register_craft({
 minetest.register_node("sbz_power:advanced_battery", {
     description = "Advanced Battery",
     tiles = { "advanced_battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 0 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 1 },
     battery_max = BATTERY_MAX_POWER * 3,
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -43,7 +43,7 @@ minetest.register_craft({
 minetest.register_node("sbz_power:creative_battery", {
     description = "Creative Battery",
     tiles = { "creative_battery.png" },
-    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_conducts = 1, pipe_connects = 0 },
+    groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_conducts = 1, pipe_connects = 1 },
     battery_max = 10000000, -- 10 mil
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")

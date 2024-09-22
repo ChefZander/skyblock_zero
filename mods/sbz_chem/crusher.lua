@@ -38,7 +38,6 @@ sbz_api.register_stateful_machine("sbz_chem:crusher", {
 formspec_version[7]
 size[8.2,9]
 style_type[list;spacing=.2;size=.8]
-item_image[0.9,1.9;1,1;sbz_resources:pebble]
 list[context;output;3.5,0.5;4,4;]
 list[context;input;1,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
@@ -60,35 +59,43 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         local power_needed = 5
         local inv = meta:get_inventory()
 
-        if not inv:contains_item("input", "sbz_resources:pebble") then
+        if demand + power_needed > supply then
+            meta:set_string("infotext", "Not enough power")
+            return power_needed, false
+        end
+
+        local itemname = inv:get_stack("input", 1):get_name()
+
+        local recipe_outputs = unified_inventory.get_usage_list(itemname)
+
+
+        local possible_outputs = {}
+
+        for k, v in pairs(recipe_outputs or {}) do
+            if v.type == "crushing" then
+                possible_outputs[#possible_outputs + 1] = v.output
+            end
+        end
+
+        if #possible_outputs == 0 then
             meta:set_string("infotext", "Inactive")
             return 0
         end
 
-        if demand + power_needed > supply then
-            meta:set_string("infotext", "Not enough power")
-            return power_needed, false
+        meta:set_string("infotext", "Crushing...")
+        inv:remove_item("input", itemname)
+        minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.4 }, { pos = pos })
+
+        local selected_item = possible_outputs[math.random(1, #possible_outputs)]
+
+
+        if inv:room_for_item("output", selected_item) then
+            inv:add_item("output", selected_item)
         else
-            meta:set_string("infotext", "Crushing...")
-
-            inv:remove_item("input", "sbz_resources:pebble")
-
-            minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.4 }, { pos = pos })
-
-
-
-            local random_index = math.random(1, #output_items)
-            local selected_item = output_items[random_index]
-
-
-
-            if inv:room_for_item("output", selected_item) then
-                inv:add_item("output", selected_item)
-            else
-                meta:set_string("infotext", "Output inventory full")
-                return 0
-            end
-
+            meta:set_string("infotext", "Output inventory full")
+            return 0
+        end
+        if itemname == "sbz_resources:pebble" then
             if inv:contains_item("output", "sbz_chem:empty_fluid_cell") then
                 inv:remove_item("output", "sbz_chem:empty_fluid_cell")
                 if inv:room_for_item("output", "sbz_chem:water_fluid_cell") then
@@ -97,20 +104,13 @@ listring[current_player;main]listring[context;input]listring[current_player;main
                     minetest.add_item(pos, "sbz_chem:water_fluid_cell")
                 end
             end
-
-            return power_needed
         end
+
+        return power_needed
     end,
     input_inv = "input",
     output_inv = "output",
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-        if listname == "input" then
-            if stack:get_name() == "sbz_resources:pebble" then
-                return stack:get_count()
-            else
-                return 0
-            end
-        end
         if listname == "output" then
             if stack:get_name() == "sbz_chem:empty_fluid_cell" then
                 return stack:get_count()

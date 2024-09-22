@@ -80,6 +80,11 @@ Get a list of all the output items crafts have been registered for:
 		...
 	}
 
+oh yea i forgot to mention:
+
+	unified_inventory.get_usage_list(item) - added by me, frog, its like get_recipe_list but gives you the usages instead... really unsure why this wasn't put in
+
+
 
 Pages
 -----

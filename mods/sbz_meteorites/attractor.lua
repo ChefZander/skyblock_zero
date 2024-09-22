@@ -14,7 +14,7 @@ local function attract_meteorites(pos, dtime, t)
                     drag = 3,
                     pos = { min = pos, max = obj:get_pos() },
                     texture = "meteorite_trail_emitter.png" ..
-                    (t < 0 and "^[colorize:#ffcccc:alpha" or "^[colorize:#888888:alpha"),
+                        (t < 0 and "^[colorize:#ffcccc:alpha" or "^[colorize:#888888:alpha"),
                     animation = { type = "vertical_frames", aspect_width = 4, aspect_height = 4, length = -1 },
                     glow = 7,
                     attract = {
@@ -58,8 +58,10 @@ minetest.register_entity("sbz_meteorites:gravitational_attractor_entity", {
     on_step = function(self, dtime)
         local pos = self.object:get_pos()
         local node = minetest.get_node(vector.round(pos)).name
-        if node ~= "sbz_meteorites:gravitational_attractor" and node ~= "sbz_meteorites:gravitational_repulsor" then self
-                .object:remove() end
+        if node ~= "sbz_meteorites:gravitational_attractor" and node ~= "sbz_meteorites:gravitational_repulsor" then
+            self
+                .object:remove()
+        end
         attract_meteorites(pos, dtime, self.type)
     end
 })
@@ -109,9 +111,9 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
 minetest.register_craft({
     output = "sbz_meteorites:gravitational_repulsor",
     recipe = {
-        { "sbz_resources:antimatter_blob", "",                          "sbz_resources:antimatter_blob" },
+        { "sbz_resources:antimatter_blob", "",                              "sbz_resources:antimatter_blob" },
         { "",                              "sbz_meteorites:antineutronium", "" },
-        { "sbz_resources:antimatter_blob", "",                          "sbz_resources:antimatter_blob" }
+        { "sbz_resources:antimatter_blob", "",                              "sbz_resources:antimatter_blob" }
     }
 })
 
