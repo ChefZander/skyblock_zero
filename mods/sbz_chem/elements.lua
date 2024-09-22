@@ -87,6 +87,8 @@ sbz_api.register_element("magnesium", "#DADADA", "Magnesium %s (Mg)", true)
 sbz_api.register_element("calcium", "#F5F5DC", "Calcium %s (Ca)", true)
 sbz_api.register_element("sodium", "#F4F4F4", "Sodium %s (Na)", true)
 sbz_api.register_element("lithium", "#c8a4db", "Lithium %s (Li)")
+sbz_api.register_element("silicon", "#5ba082", "Silicon %s (Si)")
+
 
 -- alloys
 

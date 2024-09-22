@@ -42,9 +42,7 @@ list[context;output;3.5,0.5;4,4;]
 list[context;input;1,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
 listring[current_player;main]listring[context;input]listring[current_player;main]listring[context;output]listring[current_player;main]
-
-]]
-        )
+]])
 
         minetest.sound_play("machine_open", {
             to_player = player_name,
@@ -58,11 +56,6 @@ listring[current_player;main]listring[context;input]listring[current_player;main
     action = function(pos, node, meta, supply, demand)
         local power_needed = 5
         local inv = meta:get_inventory()
-
-        if demand + power_needed > supply then
-            meta:set_string("infotext", "Not enough power")
-            return power_needed, false
-        end
 
         local itemname = inv:get_stack("input", 1):get_name()
 
@@ -80,6 +73,11 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         if #possible_outputs == 0 then
             meta:set_string("infotext", "Inactive")
             return 0
+        end
+
+        if demand + power_needed > supply then
+            meta:set_string("infotext", "Not enough power")
+            return power_needed, false
         end
 
         meta:set_string("infotext", "Crushing...")
