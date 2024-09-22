@@ -20,7 +20,7 @@ minetest.register_craftitem("sbz_bio:screen_inverter_potion", {
 minetest.register_craft {
     output = "sbz_bio:screen_inverter_potion",
     recipe = {
-        { "sbz_resources:warpshroom" },
+        { "sbz_bio:warpshroom" },
         { "sbz_resources:emittrium_glass" }
     }
 }
