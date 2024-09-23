@@ -4,7 +4,7 @@ local modpath = minetest.get_modpath("sbz_progression")
 dofile(modpath .. "/questbook.lua")
 dofile(modpath .. "/annoy.lua")
 
-function displayDialougeLine(player_name, text)
+function displayDialogueLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
         to_player = player_name,
@@ -12,20 +12,15 @@ function displayDialougeLine(player_name, text)
     })
 end
 
-function displayGlobalDialougeLine(text)
+function displayGlobalDialogueLine(text)
     minetest.chat_send_all("⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
         gain = 1.0,
     })
 end
 
-minetest.register_chatcommand("cheat_hacker", {
-    description = "Cheat haguh",
-    privs = {},
-    func = function(name, param)
-        displayDialougeLine(name, "Cheat haguh")
-    end,
-})
+displayDialougeLine = displayDialogueLine
+displayGlobalDialougeLine = displayGlobalDialogueLine
 
 
 local achievment_table = {
