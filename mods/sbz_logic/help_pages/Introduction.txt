@@ -29,17 +29,52 @@ Main code - Code that actually does the thing you want to achieve with the luaco
 To not cause any harm to the server, or accidental infinite loops, the execution *time* of the luacontroller is limited.
 
 The editor is limited to $EDITOR_MS_LIMIT$ miliseconds per event (such as clicking).
-The main code is limited to $MAIN_MS_LIMIT$ miliseconds per event.
+The main code is limited to $MAIN_MS_LIMIT$ miliseconds without yielding.
 There is no hard cap on how many events per second you can have, but instead miliseconds per second. *Unlike luacontrollers*
-So if main code and editor take up more than $COMBINED_MS_LIMIT$ miliseconds, per second, the sandbox won't be able to receive events until the next second passes.
+So if main code and editor take up more than $COMBINED_MS_LIMIT$ miliseconds, per second, the sandbox won't be able to receive events (including editor) until the next second passes.
 
-Also, for each milisecond you take, you get billed 4 power.
+Also, for each milisecond you take, you get billed 4 power. If you consumed too much, the luacontroller (including editor) won't function until the bill is paid.
 
 <bigger>Main Code</bigger>
 
 So, if you are used to the mesecons luacontroller, temporarily forget *everything* about how the code is executed, this is <b>very</b> different.
 
 The main code gets executed inside a coroutine, and you can *yield* it, in fact that is how you obtain events.
+so <mono>event = yield()</mono>
 
-<mono>event = yield()</mono>
+You can yield <big>ANYWHERE*!!</big>
 
+<mono>
+i = 0
+local function yield_if_needed()
+    i = i + 1
+    if i == 5 then
+        _event = yield()
+        i = 0
+    end
+end
+
+for x = 1,100 do
+    for y = 1,100 do
+        for z = 1,100 do
+            yield_if_needed() -- pauses the sandbox so we don't time out
+            do_some_complex_stuff_idk_have_fun()
+        end
+    end
+end
+</mono>
+
+*with luajit :heart:, PUC lua is not supported
+
+It is turned on/off by the editor, or turned on by a <mono>send</mono> event
+
+You can have up to $MAIN_RAM_LIMIT$ MEGABYTE(S) in the environment (though that also includes all the mounted disks), it weighs all locals, functions, their upvalues, their locals, their functions... IF libox is included in the trusted mods setting. (If it isn't and it's a server that's a serious vurnability.)
+
+Only disks and mem get saved though.
+
+<bigger>Editor Code</bigger>
+
+Code that's responsible for the... editor...
+Executes VERY similarly to the mesecons luacontroller
+
+Only contains a very basic environment, but once the main sandbox is on, it can access that environment directly.

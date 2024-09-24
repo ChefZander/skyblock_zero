@@ -1,5 +1,7 @@
 -- concept shamelessly borrowed from techage
 
+-- todo: Ram sticks and LEDs
+
 local animation_def = {
     type = "vertical_frames",
     aspect_w = 16,

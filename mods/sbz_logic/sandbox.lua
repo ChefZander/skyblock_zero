@@ -8,9 +8,11 @@ local time_limit = 5000              -- 5ms
 local editor_time_limit = 1000       -- 1ms
 local max_memsize = 1024             -- 1024 serialized characters, just use disks lol
 local max_us_per_second = 100 * 1000 -- 100 milis
+local max_ram = 1024 * 1024          -- 1 megabyte
 
 logic.main_limit, logic.editor_limit, logic.mem_size, logic.combined_limit = time_limit, editor_time_limit, max_memsize,
     max_us_per_second
+logic.max_ram = max_ram
 
 -- from mesecons - https://github.com/minetest-mods/mesecons/blob/master/mesecons_luacontroller/init.lua - heavily edited
 local function make_safe(x)
@@ -163,6 +165,7 @@ function logic.save_disks_and_mem(meta, env)
         return false, errmsg
     end
     meta:set_string('mem', serialized_mem)
+    meta:mark_as_private("mem")
     return true
 end
 
@@ -269,14 +272,16 @@ function logic.turn_on(pos)
     meta:set_string("error", "")
 
     local mem = minetest.deserialize(meta:get_string("mem"))
-
+    meta:mark_as_private("code")
     local id = libox_coroutine.create_sandbox {
         ID = vector.to_string(pos),
         code = meta:get_string("code"),
         env = logic.get_env(pos, meta, mem),
         time_limit = time_limit,
+        size_limit = ram,
     }
     meta:set_string("ID", id)
+    meta:mark_as_private("ID")
     local ok = logic.send_event_to_sandbox(pos, { type = "program" })
     if not ok then
         return false
@@ -314,6 +319,7 @@ function logic.send_event_to_sandbox(pos, event)
     if not ok or mem_errmsg then
         local used_errmsg = mem_errmsg or errmsg
         meta:set_string("error", used_errmsg)
+        meta:mark_as_private("error")
         logic.turn_off(pos)
         return false
     else
@@ -341,7 +347,7 @@ function logic.send_editor_event(pos, event)
     local env = logic.get_editor_env(pos, meta, event)
 
     logic.initialize_env(meta, env, pos)
-
+    meta:mark_as_private("editor_code")
     local ok, errmsg = libox.normal_sandbox {
         code = meta:get_string("editor_code"),
         env = env,
