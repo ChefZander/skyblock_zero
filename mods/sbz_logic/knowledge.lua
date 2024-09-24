@@ -41,7 +41,7 @@ local function gen_page(meta)
         size[20,20]
         container[0.2,0.2]
             textlist[0,0;5,19.6;main;%s;%s;false]
-            hypertext[5.2,0;14.8,19.6;a;%s]
+            hypertext[5.2,0;14.6,19.6;a;%s]
         container_end[]
         ]],
             table.concat(sbz_api.help_pages_by_index, ","),
