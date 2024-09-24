@@ -4,6 +4,7 @@ local P = minetest.get_modpath("sbz_logic") .. "/help_pages/"
 sbz_api.help_pages = {}
 sbz_api.help_pages_by_index = {
     [1] = "Introduction",
+    [2] = "Better Understanding Main Sandboxes"
 }
 
 
@@ -54,7 +55,8 @@ end
 
 local function on_receive_fields(pos, formname, fields, sender)
     local meta = minetest.get_meta(pos)
-    meta:set_int("index", tonumber(fields.index) or meta:get_int("index"))
+    local textlist = minetest.explode_textlist_event(fields.main)
+    meta:set_int("index", tonumber(textlist.index) or meta:get_int("index"))
     meta:set_string("formspec", gen_page(meta))
 end
 

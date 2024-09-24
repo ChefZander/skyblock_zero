@@ -1,0 +1,5 @@
+<bigger>Better Understadning Main Sandboxes</bigger>
+
+Okay so, yeah, i described there earlier that <mono>event = yield()</mono>
+But what does that exactly mean??
+

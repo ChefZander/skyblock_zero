@@ -48,7 +48,7 @@ $C1i = 0
 $C1local function yield_if_needed()
 $C1    i = i + 1
 $C1    if i == 5 then
-$C1        _event = yield()
+$C1        _missed_events = wait(0.1) -- this function internally calls yield, ill go over it later.
 $C1        i = 0
 $C1    end
 $C1end
@@ -79,3 +79,4 @@ Executes VERY similarly to the mesecons luacontroller
 Only contains a very basic environment, but once the main sandbox is on, it can access that environment directly.
 
 As mentioned earlier, if there is an error with the editor code, it ends up in the infotext.
+Both editor and main sandbox receive gui events.
