@@ -13,6 +13,7 @@ local function get_editor_table(meta)
         end,
         __newindex = function(t, k, v)
             if valid_keys[k] and type(v) == 'string' then
+                meta:mark_as_private(k) -- hopefully not a client lag generator
                 meta:set_string(k, v)
             end
         end
