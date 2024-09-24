@@ -9,6 +9,9 @@ local editor_time_limit = 1000       -- 1ms
 local max_memsize = 1024             -- 1024 serialized characters, just use disks lol
 local max_us_per_second = 100 * 1000 -- 100 milis
 
+logic.main_limit, logic.editor_limit, logic.mem_size, logic.combined_limit = time_limit, editor_time_limit, max_memsize,
+    max_us_per_second
+
 -- from mesecons - https://github.com/minetest-mods/mesecons/blob/master/mesecons_luacontroller/init.lua - heavily edited
 local function make_safe(x)
     local function is_allowed(_x)
@@ -405,7 +408,7 @@ sbz_api.queue:add_function("logic_turn_on", logic.turn_on)
 
 
 function logic.calculate_bill(us_taken_main, us_taken_editor)
-    return math.ceil((us_taken_main + us_taken_editor) / 1000)
+    return math.ceil((us_taken_main + us_taken_editor) / 1000) * 4
 end
 
 function logic.on_tick(pos, node, meta, supply, demand)

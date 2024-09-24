@@ -109,6 +109,7 @@ minetest.register_tool("sbz_resources:angels_wing", {
         return itemstack
     end,
 })
+
 minetest.register_craft({
     output = "sbz_resources:angels_wing",
     recipe = {
