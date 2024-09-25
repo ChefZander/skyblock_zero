@@ -1,0 +1,99 @@
+<bigger>Standard Libox Environment</bigger>
+
+Environment = The sandboxed global environment you get to work with
+std. = standard/unchanged from what non-sandboxed lua has
+
+<big>Globals</big>
+
+<mono>assert</mono> - std.
+<mono>error</mono> - std.
+<mono>collectgarbage</mono> - only valid argument is <mono>"count"</mono>
+<mono>ipairs</mono> - std.
+<mono>pairs</mono> - std.
+<mono>next</mono> - std.
+<mono>select</mono> - std.
+<mono>unpack</mono> - std.
+<mono>pcall</mono> - pcall won't catch timeout errors
+<mono>xpcall</mono> - xpcall won't catch timeout errors
+<mono>tonumber</mono> - std.
+<mono>tostring</mono> - std.
+<mono>type</mono> - std.
+<mono>loadstring(code)</mono> - does the usual stuff like disabling jit and setting the environment, you can't input a chukname
+<mono>_G</mono> - std.
+<mono>traceback</mono> - custom traceback
+<mono>dump</mono> - std., from minetest
+<mono>dump2</mono> - std., from minetest
+<mono>PcgRandom</mono> - You call it like <mono>my_random.func</mono> and NOT like <mono>my_random:func</mono>, and also <mono>rand_normal_dist</mono> has a limited amount of tries
+<mono>PerlinNoise</mono> - called same as PcgRandom
+
+<big>Strings</big> (<mono>string.*</mono> and <mono>(""):*</mono>)
+
+<mono>byte</mono> - std.
+<mono>dump</mono> - std.
+<mono>find</mono> - forced to not match patterns
+<mono>format</mono> - std.
+<mono>len</mono> - std.
+<mono>lower</mono> - std.
+<mono>rep</mono> - changed so that you can't make 5 terabyte strings with this
+<mono>reverse</mono> - std.
+<mono>sub</mono> - std.
+<mono>upper</mono> - std.
+<mono>trim</mono> - std., from minetest
+<mono>split</mono> - forced to not match patterns, std.
+
+<big>Tables</big> (<mono>table.*</mono>)
+
+<mono>insert</mono> - std.
+<mono>maxn</mono> - std.
+<mono>remove</mono> - std.
+<mono>concat</mono> - std.
+<mono>sort</mono> - std.
+<mono>indexof</mono> - std., from minetest
+<mono>copy</mono> - std., from minetest
+<mono>insert_all</mono> - std., from minetest
+<mono>key_value_swap</mono> - std., from minetest
+<mono>shuffle</mono> - std., from minetest
+<mono>move</mono> - std., luajit only
+
+<big>Math</big> (<mono>math.*</mono>)
+
+<mono>abs, acos, asin, atan, atan2, ceil, cos, cosh, deg, exp, floor, fmod, frexp, huge, ldexp, log, log10, max, min, modf, pi, pow, rad, random, sin, sinh, sqrt, tan, tanh</mono> - std.
+
+<mono>hypot, sign, factorial, round</mono> - std., from minetest
+
+<big>Os library</big> (<mono>os.*</mono>)
+<mono>clock</mono> - std.
+<mono>datetable</mono> - returns time as a table (<mono>os.date("*t")</mono>)
+<mono>difftime</mono> - std.
+<mono>time</mono> - std.
+<mono>date</mono> - mooncontroller's (internally named) safe_date, edited to prevent segfaults
+
+<big>Minetest</big> (<mono>minetest.*</mono>)
+<mono>formspec_escape</mono> - std.*
+<mono>explode_table_event</mono> - std.*
+<mono>explode_textlist_event</mono> - std.*
+<mono>explode_scrollbar_event</mono> - std.*
+<mono>inventorycube</mono> - std.*
+<mono>urlencode</mono> - std.*
+<mono>rgba</mono> - std.*
+<mono>encode_base64</mono> - std.*
+<mono>decode_base64</mono> - std.*
+<mono>get_us_time</mono> - std.*
+
+*All of theese functions will fail if you give them gigantic string inputs
+
+<big>Pattern library</big> (<mono>pat.*</mono>)
+Pure lua implementation of functions <mono>find, match, gmatch</mono>, they support patterns
+
+See https://notabug.org/pgimeno/patlua
+
+
+<big>Bit</big> (<mono>bit.*</mono>)
+
+<mono>tobit, tohex, bnot, band, bor, bxor, lshift, rshift, arshift, rol, ror, bswap</mono> - std.
+(see https://bitop.luajit.org/ for documentation on this)
+
+<big>Vectors</big> (<mono>vector.*</mono>)
+
+std., removed <mono>vector.metatable</mono>
+See https://api.minetest.net/spatial-vectors/ for documentation on this

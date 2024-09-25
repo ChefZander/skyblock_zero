@@ -4,7 +4,8 @@ local P = minetest.get_modpath("sbz_logic") .. "/help_pages/"
 sbz_api.help_pages = {}
 sbz_api.help_pages_by_index = {
     [1] = "Introduction",
-    [2] = "Better Understanding Main Sandboxes"
+    [2] = "Better Understanding Main Sandboxes",
+    [3] = "Standard Libox Environment"
 }
 
 
