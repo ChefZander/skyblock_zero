@@ -1,2 +1,40 @@
 <bigger>Main Sandbox Environment</bigger>
+Based off of the standard libox environment
 
+<big> Definitions</big>
+Relative position/rpos - offset from the luacontroller's position
+Link - <mono>{[1] = relative position 1, [2] = relative position 2, ..., [n] = relative position n}</mono>
+
+Converting a position to link is trivial, just do <mono>{ [1] = pos }</mono>
+
+<big>The actual environment</big>
+<mono>editor</mono> - through a metatable metatable, this allows you to get and edit:
+$C1     <mono>editor.formspec</mono> - the formspec of the editor
+$C1     <mono>editor.editor_code</mono> - the editor code
+$C1     <mono>editor.code</mono> - the normal code
+$C1     <mono>editor.error</mono> - the error that happened in main code (can be edited, wouldnt recomend as you dont know what the editor will do with it)
+
+<mono>origin</mono> - <mono>vector.new(0,0,0)</mono> - in relative coordinates, this is the position to itself
+<mono>pos</mono> - the in-world/non-relative position of the luacontroller
+<mono>yield</mono> - <mono>coroutine.yield</mono>
+
+<mono>missed_events = wait_for_event_type(event_type)</mono> - yields until the <mono>event.type</mono> of the event is equal to <mono>event_type</mono>, the last event (<mono>misssed_events[#missed_events]</mono>) is that event type
+<mono>missed_events = wait(t)</mono> - sends a wait yield command, then calls <mono>wait_for_event_type("wait")</mono>
+
+<mono>ok, errmsg = send_to(link_or_relative_position, "Something :D")</mono>
+- allows you to send information to all positions of a link (or just a single position)
+- you can even send_to(origin, "Something") to loop-back and send it to yourself
+- You can only send 20 kilobytes of information, and only the basic (anythings thats NOT NaN (1/0 and similar), coroutine, function, userdata) types are allowed, rest get replaced as nil
+- Range is limited by linking range
+resulting event is:
+<mono>{
+$C1    from_pos = <whatever position you sent to, if you sent to a link, some position of that link will be returned>,
+$C1    msg = <whatever was sent to you>,
+$C1    type = "send"
+}</mono>
+
+<mono>node, errmsg = get_node(pos)</mono> - gets a node (table of <mono>{ param1 = int, param2 = int, name = "sbz_resources:poo_or_whatever_idk" }</mono>), limited to linking range
+<mono>boolean = is_protected(pos[, someone_else])</mono> - checks if that position is protected to the owner, optionally with the second argument, it can check if it's protected to someone else, not limited by linking range
+<mono>traceback = full_traceback()</mono> - alias for debug.traceback, experimental but shouldnt be harmful
+
+<mono>ok, errmsg = turn_off(pos)/turn_on(pos)</mono> - forcefully turns on/off a machine

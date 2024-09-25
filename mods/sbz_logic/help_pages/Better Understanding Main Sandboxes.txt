@@ -8,6 +8,8 @@ The default behaviour is to always just listen for events and do nothing extra.
 
 An event is (usually) a table received from outside of the sandbox, for this the sandbox needs to get unpaused (so the sandbox moves past that line of code).
 
+<bigger>Waiting</bigger>
+
 Now, just receiving events is boring, what if we want to do something like... idk... wait?
 You can do that with the <mono>missed_events = wait(<x>)</mono> function
 

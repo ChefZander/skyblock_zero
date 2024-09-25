@@ -80,3 +80,9 @@ Only contains a very basic environment, but once the main sandbox is on, it can 
 
 As mentioned earlier, if there is an error with the editor code, it ends up in the infotext.
 Both editor and main sandbox receive gui events.
+
+<bigger>Linking</bigger>
+
+Linking range = The radius of the square that you see when you wield the luacontroller linking tool (with the luacontroller linking tool being linked to a luacontroller)
+Linking range is usually enforced for doing anything that's in the world (like sending information or getting a node)
+To increase linking range (by default 0, so the luacontroller basically can't do anything), you will need to upgrade the luacontroller with a Linking Upgrade.

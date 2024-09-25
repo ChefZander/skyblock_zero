@@ -13,6 +13,9 @@ local function get_editor_table(meta)
         end,
         __newindex = function(t, k, v)
             if valid_keys[k] and type(v) == 'string' then
+                if #v > 1024 * 10 then
+                    error("editor.* metatable speaking here: Value way too large WTF dude!")
+                end
                 meta:mark_as_private(k) -- hopefully not a client lag generator
                 meta:set_string(k, v)
             end
@@ -66,9 +69,6 @@ function logic.get_env(pos, meta)
             if e.type == "wait" then return { e } end
             return wait_for_event_type("wait")
         end,
-        make_link_from_pos = function(pos)
-            return { pos } -- lmao
-        end,
         send_to = libf(function(send_to_pos, msg)
             if not logic.type_link(send_to_pos, true) then return false, "send_to_pos must be a link or position" end
             return logic.send(logic.add_to_link(send_to_pos, pos), msg, pos)
@@ -83,12 +83,16 @@ function logic.get_env(pos, meta)
         turn_on = function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             if not sbz_api.is_machine(pos) then return false, "Not a machine." end
-            return sbz_api.force_turn_on(vector.add(pos, rpos), minetest.get_meta(vector.add(pos, rpos)))
+            local abs_pos = vector.add(pos, rpos)
+            if not logic.range_check(pos, abs_pos) then return false, "Can't turn on that, outside of linking range" end
+            return sbz_api.force_turn_on(abs_pos, minetest.get_meta(abs_pos))
         end,
         turn_off = function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             if not sbz_api.is_machine(pos) then return false, "Not a machine." end
-            return sbz_api.force_turn_off(vector.add(pos, rpos), minetest.get_meta(vector.add(pos, rpos)))
+            local abs_pos = vector.add(pos, rpos)
+            if not logic.range_check(pos, abs_pos) then return false, "Can't turn off that, outside of linking range" end
+            return sbz_api.force_turn_off(abs_pos, minetest.get_meta(abs_pos))
         end,
     } do
         base[k] = v

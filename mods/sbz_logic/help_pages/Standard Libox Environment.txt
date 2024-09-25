@@ -1,10 +1,11 @@
 <bigger>Standard Libox Environment</bigger>
 
+This is the environment that both the main code's and editor code's environment is based off of.
+
 Environment = The sandboxed global environment you get to work with
 std. = standard/unchanged from what non-sandboxed lua has
 
 <big>Globals</big>
-
 <mono>assert</mono> - std.
 <mono>error</mono> - std.
 <mono>collectgarbage</mono> - only valid argument is <mono>"count"</mono>
@@ -27,7 +28,6 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>PerlinNoise</mono> - called same as PcgRandom
 
 <big>Strings</big> (<mono>string.*</mono> and <mono>(""):*</mono>)
-
 <mono>byte</mono> - std.
 <mono>dump</mono> - std.
 <mono>find</mono> - forced to not match patterns
@@ -42,7 +42,6 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>split</mono> - forced to not match patterns, std.
 
 <big>Tables</big> (<mono>table.*</mono>)
-
 <mono>insert</mono> - std.
 <mono>maxn</mono> - std.
 <mono>remove</mono> - std.
@@ -56,9 +55,7 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>move</mono> - std., luajit only
 
 <big>Math</big> (<mono>math.*</mono>)
-
 <mono>abs, acos, asin, atan, atan2, ceil, cos, cosh, deg, exp, floor, fmod, frexp, huge, ldexp, log, log10, max, min, modf, pi, pow, rad, random, sin, sinh, sqrt, tan, tanh</mono> - std.
-
 <mono>hypot, sign, factorial, round</mono> - std., from minetest
 
 <big>Os library</big> (<mono>os.*</mono>)
@@ -79,21 +76,21 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>encode_base64</mono> - std.*
 <mono>decode_base64</mono> - std.*
 <mono>get_us_time</mono> - std.*
+<mono>hash_node_position</mono> - std.*
+<mono>get_position_from_hash</mono> - std.*
+
 
 *All of theese functions will fail if you give them gigantic string inputs
 
 <big>Pattern library</big> (<mono>pat.*</mono>)
 Pure lua implementation of functions <mono>find, match, gmatch</mono>, they support patterns
-
 See https://notabug.org/pgimeno/patlua
 
-
 <big>Bit</big> (<mono>bit.*</mono>)
-
 <mono>tobit, tohex, bnot, band, bor, bxor, lshift, rshift, arshift, rol, ror, bswap</mono> - std.
 (see https://bitop.luajit.org/ for documentation on this)
 
 <big>Vectors</big> (<mono>vector.*</mono>)
-
 std., removed <mono>vector.metatable</mono>
 See https://api.minetest.net/spatial-vectors/ for documentation on this
+
