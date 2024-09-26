@@ -77,9 +77,9 @@ checkbox[13,2;punches_code;Punches code;%s]
 button[13,3;3,1;save;Save]
 label[13,13;Can hold: %s kb]
     ]], minetest.formspec_escape(selected_disk.name),
-            type(selected_disk.data) == "string" and "set_disk_data" or "",
+            (type(selected_disk.data) == "string" or selected_disk.data == nil) and "set_disk_data" or "",
             (type(selected_disk.data) == "string" or selected_disk.data == nil) and
-            minetest.formspec_escape(selected_disk.data) or
+            minetest.formspec_escape(selected_disk.data or "") or
             "\nCan't edit it here because it's a non-string type, can't show it but here is the dumped version:\n" ..
             minetest.formspec_escape(dump(selected_disk.data)),
             tostring(selected_disk.punches_editor),

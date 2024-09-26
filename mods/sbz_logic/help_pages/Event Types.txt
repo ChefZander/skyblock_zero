@@ -1,0 +1,70 @@
+<big>Event Types</big>
+
+So yeah there are many many different event types
+
+<big>Subtick</big>
+<mono>
+{
+$C1 type = "subtick",
+$C1 supply = supply, -- number
+$C1 demand = demand, -- number
+}
+</mono>
+Sent every 0.25 seconds by the switching station, demand also includes the total battery supply with it (so not the supply stat you see with the switching station)
+Sent only to main sandbox.
+
+<big>Tick</big>
+<mono>
+{
+$C1 type = "tick",
+$C1 supply = supply, -- number
+$C1 demand = demand, -- number
+}
+</mono>
+Sent every second by the switching station, this is when most machines and generators actually execute so the supply/demand values are going to change here, supply also includes the total battery supply with it
+Sent only to main sandbox.
+
+<big>Gui</big>
+<mono>
+{
+$C1 type = "gui",
+$C1 fields = fields, -- table
+$C1 clicker = sender:get_player_name(), -- string
+}
+</mono>
+Sent when a player clicks something in the editor, fields are documented here: <action name=url url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md?plain=1#L5827>in minetest docs</action>
+Sent BOTH to editor and the main sandbox.
+
+<big>Receive</big>
+<mono>
+{
+$C1 type = "receive",
+$C1 msg = msg, -- any type
+$C1 from_pos = from_pos, -- vector
+}
+</mono>
+Sent when something sends information to the luacontroller.
+Sent only to main sandbox.
+
+<big>Waiting</big>
+<mono> { type = "wait" } </mono>
+Sent after the amount of time specified in <mono>yield({type = "wait", time = t})</mono> runs out
+Sent only to main sandbox.
+
+<big>On/off</big>
+<mono>
+{ type = "off" }
+{ type = "on" }
+</mono>
+Sent when the main sandbox gets turned on/off.
+Sent only to editor.
+
+<big>Ran</big>
+<mono>{ type = "ran" }</mono>
+Sent when the main sandbox receives an event.
+Sent only to editor.
+
+<big>Program</big>
+<mono>{ type = "program" }</mono>
+Sent when a disk punches editor into a luacontroller.
+Sent only to editor.

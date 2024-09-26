@@ -6,7 +6,10 @@ sbz_api.help_pages_by_index = {
     [1] = "Introduction",
     [2] = "Better Understanding Main Sandboxes",
     [3] = "Standard Libox Environment",
-    [4] = "Main Sandbox Environment"
+    [4] = "Main Sandbox Environment",
+    [5] = "Editor Environment",
+    [6] = "Event Types",
+    [7] = "Disks and Mem",
 }
 
 

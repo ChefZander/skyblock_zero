@@ -1,0 +1,43 @@
+<bigger>Disks and Mem</bigger>
+
+<big><mono>mem</mono></big>
+It is persistant storage. Present in both editor and main.
+In the editor sandbox, it can be used to store data accross events. Can only store 1024 bytes.
+can't store types:
+- function
+- userdata
+- thread
+
+<big><mono>disk</mono></big>
+If set to nil, both mem and disks won't save.
+<mono>
+$C1disks = {
+$C1    [1] = {
+$C1        name = "example", -- can write
+$C1        data = <whatever you want, same restriction on types as mem>, -- can write
+$C1        punches_editor = false, -- can write
+$C1        punches_code = false, -- can write
+$C1        immutable = false, -- read only, if true, it's a system disk
+$C1        max = 20480, -- read only, if absent, it's probably a system disk
+$C1        index = 1, -- read only, just the index
+$C1    },
+$C1    [2] = ...,
+$C1    by_name = {
+$C1        ["example"] = disks[1],
+$C1        ...
+$C1    }
+$C1}
+</mono>
+
+<big>Links</big>
+The links from the link tool
+<mono>
+$C1links = {
+$C1    ["some name"] = {
+$C1        [1] = pos1,
+$C1        [2] = ...,
+$C1    },
+$C1    ["some other name"] = ...,
+$C1    ...
+$C1}
+</mono>

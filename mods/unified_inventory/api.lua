@@ -356,7 +356,7 @@ ui.register_craft_type("digging", {
 
 ui.register_craft_type("digging_chance", {
 	description = "Digging (by chance)",
-	icon = "robotic_arm.png^[transformFY.png",
+	icon = "robotic_arm.png",
 	width = 1,
 	height = 1,
 })

@@ -147,12 +147,12 @@ function logic.save_disks_and_mem(meta, env)
                     return false, errmsg
                 end
                 local function toint(x)
-                    if x == true then return 1 else return 0 end
+                    if x then return 1 else return 0 end
                 end
                 stack_meta:set_string('data', serialized_data)
                 stack_meta:set_int("override_code", toint(target_disk.punches_code))
                 stack_meta:set_int("override_editor", toint(target_disk.punches_editor))
-                stack_meta:set_string("description", tostring(target_disk.name))
+                stack_meta:set_string("description", tostring(target_disk.name) or "")
                 inv:set_stack("disks", k, v)
             end
         end
@@ -278,7 +278,7 @@ function logic.turn_on(pos)
         code = meta:get_string("code"),
         env = logic.get_env(pos, meta, mem),
         time_limit = time_limit,
-        size_limit = ram,
+        size_limit = max_ram,
     }
     meta:set_string("ID", id)
     meta:mark_as_private("ID")
@@ -328,7 +328,7 @@ function logic.send_event_to_sandbox(pos, event)
         -- send back to the editor
         if type(event) ~= "gui" then
             logic.send_editor_event(pos, {
-                type = "normal_sandbox_run",
+                type = "ran",
             })
         end
         return true

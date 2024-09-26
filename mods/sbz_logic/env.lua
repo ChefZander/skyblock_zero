@@ -13,10 +13,12 @@ local function get_editor_table(meta)
         end,
         __newindex = function(t, k, v)
             if valid_keys[k] and type(v) == 'string' then
-                if #v > 1024 * 10 then
+                if #v > 1024 * 22 then
                     error("editor.* metatable speaking here: Value way too large WTF dude!")
                 end
-                meta:mark_as_private(k) -- hopefully not a client lag generator
+                if k ~= "formspec" then
+                    meta:mark_as_private(k) -- hopefully not a client lag generator
+                end
                 meta:set_string(k, v)
             end
         end
@@ -80,14 +82,14 @@ function logic.get_env(pos, meta)
             return minetest.is_protected(abs_pos, who or meta:get_string("owner"))
         end,
         full_traceback = debug.traceback,
-        turn_on = function(rpos)
+        turn_on_machine = function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             if not sbz_api.is_machine(pos) then return false, "Not a machine." end
             local abs_pos = vector.add(pos, rpos)
             if not logic.range_check(pos, abs_pos) then return false, "Can't turn on that, outside of linking range" end
             return sbz_api.force_turn_on(abs_pos, minetest.get_meta(abs_pos))
         end,
-        turn_off = function(rpos)
+        turn_off_machine = function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             if not sbz_api.is_machine(pos) then return false, "Not a machine." end
             local abs_pos = vector.add(pos, rpos)
