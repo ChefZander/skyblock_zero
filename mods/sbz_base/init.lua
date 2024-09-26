@@ -204,6 +204,7 @@ minetest.register_on_joinplayer(function(player)
     -- space gravity yeeeah
     player:set_physics_override({
         gravity = 0.5,
+        sneak_glitch = true, -- sneak glitch is super based
     })
 
     player:set_formspec_prepend([[
