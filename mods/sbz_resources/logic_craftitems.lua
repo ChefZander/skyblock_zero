@@ -7,7 +7,7 @@ minetest.register_craftitem("sbz_resources:lua_chip", {
     description = "Lua Chip",
     inventory_image = "luachip.png"
 })
-minetest.register_craftitem("sbz_resources:led", {
-    description = "LEDs",
-    inventory_image = "leds.png"
+minetest.register_craftitem("sbz_resources:ram_stick_1kb", {
+    description = "Ram Stick",
+    inventory_image = "ram1kb.png"
 })

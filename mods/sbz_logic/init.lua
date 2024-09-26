@@ -89,7 +89,6 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     end,
     can_link = true,
 
-
     on_turn_off = logic.on_turn_off,
     after_dig = logic.on_turn_off,
     on_receive_fields = logic.on_receive_fields,
@@ -102,9 +101,9 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
 minetest.register_craft {
     output = "sbz_logic:lua_controller",
     recipe = {
-        { "sbz_resources:lua_chip", "sbz_logic:data_disk",       "sbz_resources:lua_chip" },
-        { "sbz_resources:lua_chip", "sbz_meteorites:neutronium", "sbz_resources:lua_chip" },
-        { "sbz_resources:lua_chip", "sbz_resources:storinator",  "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_logic:data_disk",         "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_resources:ram_stick_1kb", "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_resources:storinator",    "sbz_resources:lua_chip" },
     }
 }
 

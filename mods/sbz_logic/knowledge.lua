@@ -74,4 +74,14 @@ minetest.register_node("sbz_logic:knowledge_station", {
     end,
     on_receive_fields = on_receive_fields,
     groups = { matter = 1, ui_logic = 1 },
+    tiles = { "knowledge_station.png" }
 })
+
+minetest.register_craft {
+    output = "sbz_logic:knowledge_station",
+    recipe = {
+        { "sbz_resources:stone", "sbz_resources:luanium",              "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_resources:simple_charged_field", "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_resources:stone",                "sbz_resources:stone" },
+    }
+}

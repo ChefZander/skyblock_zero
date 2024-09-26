@@ -66,7 +66,7 @@ unified_inventory.register_craft {
     type = "ele_fab",
     output = "sbz_resources:luanium",
     items = {
-        "sbz_resources:reinforced_matter 8",
+        "sbz_chem:copper_ingot 8",
         "sbz_chem:silicon_ingot 8"
     },
     width = 2,
@@ -84,6 +84,14 @@ unified_inventory.register_craft {
     height = 1
 }
 
+unified_inventory.register_craft {
+    type = "ele_fab",
+    output = "sbz_resources:ram_stick_1kb",
+    items = {
+        "sbz_resources:gold_ingot 2",
+        "sbz_resources:silicon_ingot 2"
+    }
+}
 
 local power_needed = 30
 
