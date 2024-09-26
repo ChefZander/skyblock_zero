@@ -12,8 +12,6 @@ sbz_api.help_pages_by_index = {
     [7] = "Disks and Mem",
 }
 
-
-
 local function edit_text(t)
     local function f(x)
         return "<mono>" .. math.floor(x / 1000) .. "</mono>"
@@ -22,23 +20,20 @@ local function edit_text(t)
     t = string.gsub(t, "%$MAIN_MS_LIMIT%$", f(logic.main_limit))
     t = string.gsub(t, "%$COMBINED_MS_LIMIT%$", f(logic.combined_limit))
     t = string.gsub(t, "%$MAIN_RAM_LIMIT%$", f(logic.max_ram / 1024))
-    t = string.gsub(t, "%$C1", string.char(1))
+    t = string.gsub(t, "%$C1", string.char(1)) -- needed because minetest hypertext is insanely dumb
     return t
 end
 
-for k, v in pairs(sbz_api.help_pages_by_index) do
+for _, v in pairs(sbz_api.help_pages_by_index) do
     local f = assert(io.open(P .. v .. ".txt", "r"),
-        "dude no dont delete random files you think are 'unimportant' but turn out to be actually required")
+        "dude no you arent cool, dont delete random files you think are 'unimportant' but turn out to be actually required")
     local tex = f:read("*a")
     f:close()
     sbz_api.help_pages[v] = edit_text(tex)
 end
 
-
-
-
 local function gen_page(meta)
-    local idx = (meta:get_int "index")
+    local idx = meta:get_int "index"
     if idx == 0 then idx = 1 end
     local fs = {
         string.format([[
@@ -62,12 +57,13 @@ local function on_receive_fields(pos, formname, fields, sender)
     local meta = minetest.get_meta(pos)
     local textlist = minetest.explode_textlist_event(fields.main)
     meta:set_int("index", tonumber(textlist.index) or meta:get_int("index"))
+    meta:mark_as_private("index")
     meta:set_string("formspec", gen_page(meta))
 end
 
 minetest.register_node("sbz_logic:knowledge_station", {
     description = "Knowledge Station",
-    info_extra = "Explains (mostly) all of logic.",
+    info_extra = "Explains (mostly... ehh... tries to...) all of logic.",
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec", gen_page(meta))
@@ -80,8 +76,8 @@ minetest.register_node("sbz_logic:knowledge_station", {
 minetest.register_craft {
     output = "sbz_logic:knowledge_station",
     recipe = {
-        { "sbz_resources:stone", "sbz_resources:luanium",              "sbz_resources:stone" },
-        { "sbz_resources:stone", "sbz_resources:simple_charged_field", "sbz_resources:stone" },
-        { "sbz_resources:stone", "sbz_resources:stone",                "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_resources:luanium",          "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_power:simple_charged_field", "sbz_resources:stone" },
+        { "sbz_resources:stone", "sbz_resources:stone",            "sbz_resources:stone" },
     }
 }

@@ -12,7 +12,7 @@ Also keep in mind that minetest is using luajit. (Almost the same as lua5.1, any
 So... how do you actually use a luacontroller...
 
 By default, even when connected to power, it doesn't do anything....
-To actually be able to use the luacontroller (well, for the first time anyway), you need to get the editor system disk. (See System Disks section)
+To actually be able to use the luacontroller (well, for the first time anyway), you need to get the editor system disk.  (by just crafting it)
 
 If you click the luacontroller with the editor system disk (will be reffered to as "punching editor" [code] here), it will deploy the disk's editor code to the luacontroller,
 so if you right click the luacontroller, an editor should appear.

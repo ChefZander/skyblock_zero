@@ -45,7 +45,7 @@ unified_inventory.register_craft {
     }
 }
 
-function logic.register_system_disk(name, desc, source, punch_editor, punch_code)
+function logic.register_system_disk(name, desc, source, punch_editor, punch_code, craft)
     local def = {
         description = "System Code Disk - " .. desc,
         inventory_image = "system_code_disk.png",
@@ -77,6 +77,7 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
 
     }
     minetest.register_craftitem(name, def)
+    minetest.register_craft(craft)
 end
 
 local file = assert(io.open(minetest.get_modpath("sbz_logic") .. "/disks/default_editor.sandboxed.lua", "r"), "wtf??")
@@ -85,4 +86,10 @@ file:close()
 
 logic.register_system_disk("sbz_logic:basic_editor_disk", "Basic Editor Disk\n(Go make your own editor!)",
     default_editor_code,
-    true, false)
+    true, false, {
+        type = "shapeless",
+        output = "sbz_logic:basic_editor_disk",
+        recipe = {
+            "sbz_logic:data_disk", "sbz_resources:matter_dust"
+        }
+    })
