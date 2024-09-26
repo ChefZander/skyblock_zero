@@ -32,7 +32,7 @@ minetest.register_craftitem("sbz_logic:data_disk", {
         end
     end,
     inventory_image = "data_disk.png",
-    groups = { sbz_disk = 1 },
+    groups = { sbz_disk = 1, ui_logic = 1 },
 })
 
 unified_inventory.register_craft {
@@ -52,7 +52,7 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
         info_extra = {
             "Immutable",
         },
-        groups = { sbz_disk = 1, sbz_disk_immutable = 1 },
+        groups = { sbz_disk = 1, sbz_disk_immutable = 1, ui_logic = 1 },
         source = source,
         punches_editor = punch_editor,
         punches_code = punch_code,

@@ -220,7 +220,8 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
             try_to_link_to_luac(stack, pointed.under, placer)
         end
         return stack
-    end
+    end,
+    groups = { ui_logic = 1 }
 })
 
 minetest.register_craft {

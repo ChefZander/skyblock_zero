@@ -92,7 +92,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     on_turn_off = logic.on_turn_off,
     after_dig = logic.on_turn_off,
     on_receive_fields = logic.on_receive_fields,
-    groups = { sbz_luacontroller = 1, matter = 1 },
+    groups = { sbz_luacontroller = 1, matter = 1, ui_logic = 1 },
 
 }, {
     light_source = 14

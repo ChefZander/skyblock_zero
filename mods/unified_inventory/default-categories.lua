@@ -29,6 +29,10 @@ unified_inventory.register_category("pipeworks", {
 	symbol = "pipeworks:tube_1",
 	label = S "Item or Fluid Transportation"
 })
+unified_inventory.register_category("lua", {
+	symbol = "sbz_logic:lua_controller_on",
+	label = S "Anything to do with luacontrollers."
+})
 
 local function register_automatic_categorization()
 	-- Preparation for ore registration: find all possible drops (digging)
@@ -76,6 +80,9 @@ local function register_automatic_categorization()
 			end
 			if string.sub(name, 1, #"pipeworks") == "pipeworks" or group.ui_fluid then
 				unified_inventory.add_category_item("pipeworks", name)
+			end
+			if group.ui_logic then
+				unified_inventory.add_category_item("lua", name)
 			end
 		end
 	end

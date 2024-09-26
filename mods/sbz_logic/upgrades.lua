@@ -7,7 +7,8 @@ local logic = sbz_api.logic
 
 minetest.register_craftitem("sbz_logic:upgrade_template", {
     description = "Logic Upgrade Template",
-    inventory_image = "upgrade_template.png"
+    inventory_image = "upgrade_template.png",
+    groups = { ui_logic = 1 }
 })
 minetest.register_craft {
     output = "sbz_logic:upgrade_template",
@@ -20,7 +21,7 @@ minetest.register_craft {
 
 
 logic.register_upgrade = function(name, def)
-    def.groups = { sbz_logic_upgrade = 1, }
+    def.groups = { sbz_logic_upgrade = 1, ui_logic = 1 }
     minetest.register_craftitem(name, def)
 end
 
