@@ -88,9 +88,11 @@ unified_inventory.register_craft {
     type = "ele_fab",
     output = "sbz_resources:ram_stick_1kb",
     items = {
-        "sbz_resources:gold_ingot 2",
-        "sbz_resources:silicon_ingot 2"
-    }
+        "sbz_chem:gold_ingot 2",
+        "sbz_chem:silicon_ingot 2"
+    },
+    width = 2,
+    height = 1
 }
 
 unified_inventory.register_craft {
@@ -101,7 +103,9 @@ unified_inventory.register_craft {
         "pipeworks:deployer 4",
         "pipeworks:nodebreaker 4",
         "sbz_resources:luanium 32"
-    }
+    },
+    width = 2,
+    height = 2,
 }
 
 local power_needed = 30
@@ -167,3 +171,12 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         [3] = { name = "ele_fab.png", animation = animation_def },
     }
 })
+
+minetest.register_craft {
+    output = "sbz_power:ele_fab",
+    recipe = {
+        { "sbz_power:simple_charged_field",  "sbz_resources:antimatter_plate", "sbz_power:simple_charged_field" },
+        { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_glass",  "sbz_resources:emittrium_circuit" },
+        { "sbz_power:simple_charged_field",  "sbz_resources:antimatter_plate", "sbz_power:simple_charged_field" }
+    }
+}

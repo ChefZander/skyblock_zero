@@ -41,7 +41,7 @@ local achievment_table = {
     ["sbz_resources:matter_plate"] = "Matter Plates",
     ["sbz_resources:retaining_circuit"] = "Retaining Circuits",
     ["sbz_resources:storinator"] = "Storinators",
-	["sbz_resources:antimatter_blob"] = "More Antimatter",
+    ["sbz_resources:antimatter_blob"] = "More Antimatter",
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
     ["sbz_resources:pebble"] = "Pretty Pebbles",
     ["sbz_resources:stone"] = "Concrete Plan",
@@ -101,6 +101,8 @@ local achievment_table = {
     ["sbz_power:reactor_coolant_port"] = "Reactor Coolant Ports",
     ["sbz_power:reactor_item_input"] = "Reactor Emittrium Input",
     ["sbz_power:reactor_core_off"] = "Reactor Core",
+
+    ["sbz_power:ele_fab"] = "Ele Fabs",
 
 }
 

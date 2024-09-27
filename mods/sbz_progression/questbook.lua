@@ -36,7 +36,7 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
 Craft some 'Antimatter Dust', we'll need it for later. It's made by mixing 'Matter Dust' and 'Core Dust'. Let's see you figure this out, smart one.]],
         requires = { "Introduction" }
     },
-	
+
     {
         type = "quest",
         title = "Annihilator",
@@ -200,11 +200,12 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
     { type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = { "Emittrium Circuits", "Reinforced Matter" } },
 
     { type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators", "Meteorites" } },
+    { type = "quest", title = "Ele Fabs", text = "Used to manifacture various components, especially for logic.", requires = { "Antimatter", "Emittrium Circuits" } },
     -- ======================================================================================
     { type = "text", title = "Questline: Chemistry", text = "Good luck." },
 
     { type = "quest", title = "Crusher", text = "This one's very simple :)\nIt's just pebbles in, metals out. Consumes 5 Power when running.", requires = { "Concrete Plan", "Antimatter", "Charged Field" } },
-    
+
     { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
     { type = "quest", title = "Furnace", text = "Craft the high power electric furnace (H.P.E.F for short), allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.", requires = { "Crusher" } },
@@ -237,7 +238,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     -- ======================================================================================
     { type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
-	{
+    {
         type = "quest",
         title = "More Antimatter",
         text =
@@ -246,7 +247,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 TIP: You can use simple charged fields as scaffolding when dealing with antimatter.]],
         requires = { "Antimatter" }
     },
-	{
+    {
         type = "quest",
         title = "Screwdriver",
         text = "Screwdriver rotates blocks when you click on one with it.",
@@ -408,7 +409,7 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     -- ======================================================================================
     { type = "text",  title = "Questline: Completionist",                         text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
-    { type = "quest", title = "Antineutronium", text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core. Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.]], requires = { "Meteorites" } },
+    { type = "quest", title = "Antineutronium",                                   text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core. Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.]],                                                                                                                                                                                                                                                                           requires = { "Meteorites" } },
     {
         type = "quest",
         title = "Angel's Wing",
@@ -434,9 +435,9 @@ The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack 
     "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
     requires = { "Storinators" }
 },
-{ type = "secret", title = "Emptiness", text = "Damn. You fell off." },
-{ type = "secret", title = "Desolate",  text = "You talked to yourself." },
-{ type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." },}
+    { type = "secret", title = "Emptiness", text = "Damn. You fell off." },
+    { type = "secret", title = "Desolate",  text = "You talked to yourself." },
+    { type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." }, }
 local function getquestbyname(questname)
     for i, quest in ipairs(quests) do
         if quest.title == questname then
