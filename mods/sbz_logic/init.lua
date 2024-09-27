@@ -31,6 +31,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     end,
     after_place_node = function(pos, placer, stack, pointed)
         minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        pipeworks.after_place(pos)
     end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         if listname == "disks" and minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then
@@ -61,15 +62,12 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
             return stack:get_count()
         end
     end,
-
-    -- all TODOs: Make UPGRADES AND DISKS GREAT AGAI- WORK...
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         if listname == "upgrades" then
             minetest.registered_craftitems[stack:get_name()].action_out(stack, pos, minetest.get_meta(pos))
         end
         return stack:get_count()
     end,
-
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
         return count
     end,
@@ -90,10 +88,28 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     can_link = true,
 
     on_turn_off = logic.on_turn_off,
-    after_dig = logic.on_turn_off,
+    after_dig_node = logic.on_turn_off,
     on_receive_fields = logic.on_receive_fields,
-    groups = { sbz_luacontroller = 1, matter = 1, ui_logic = 1 },
-
+    groups = {
+        sbz_luacontroller = 1, matter = 1, ui_logic = 1, tubedevice = 1, tubedevice_receiver = 1
+    },
+    tube = {
+        input_inventory = "disks",
+        insert_object = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            if minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return stack end
+            return inv:add_item("disks", stack)
+        end,
+        can_insert = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            stack:peek_item(1)
+            if minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return false end
+            return inv:room_for_item("disks", stack)
+        end,
+        connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
+    },
 }, {
     light_source = 14
 })

@@ -1,0 +1,40 @@
+<bigger>Lua Builder</bigger>
+
+Lua builder is a super expensive, sliightly overpowered, insanely power consuming node that allows the luacontroller to BUILD...
+
+It can build/destroy/punch 50 things per 0.25 seconds (200 things/second).
+For each thing punched/built/destroyed it consumes 40 power (At maximum, consumes 8 000 power... yea... you will need like 10 reactors for that).
+It can place nodes in a 20 radius cube around itself.
+
+To use it, you will need to link it to the luacontroller with the luacontroller linker or use/calculate/remember the relative position of it.
+
+<big>Digging</big>
+<mono>send_to(links.builder,{
+$C1    type = "dig",
+$C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+$C1    item = "sbz_resources:robotic_arm" -- needs to be an item that is inside the builder's inventory
+})</mono>
+
+<big>Building</big>
+<mono>send_to(links.builder,{
+$C1    type = "build",
+$C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+$C1    item = "sbz_resources:matter_blob" -- needs to be an item that is inside the builder's inventory
+$C1    param2 = 4, -- needs to be between 0 and 255
+})</mono>
+
+<big>Punching</big>
+<mono>send_to(links.builder,{
+$C1    type = "punch",
+$C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+$C1    item = "sbz_resources:robotic_arm" -- needs to be an item that is inside the builder's inventory
+})</mono>
+
+<big>Using</big>
+(nodebreaker chooses between digging and using automatically, but this aint the nodebreaker and i felt lazy)
+(using = clicking somewhere with a tool, without the intention of holding your mouse button and breaking the node, for example luacontroller linker)
+<mono>send_to(links.builder,{
+$C1    type = "use",
+$C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+$C1    item = "sbz_resources:robotic_arm" -- needs to be an item that is inside the builder's inventory
+})</mono>

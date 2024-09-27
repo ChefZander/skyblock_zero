@@ -151,7 +151,7 @@ style_type[list;spacing=.2;size=.8]
 list[context;main;0.2,0.2;8,4;]
 list[current_player;main;0.2,5;8,4;]
 listring[]
-    ]])
+]])
     end,
     after_place_node = function(pos, placer)
         minetest.get_meta(pos):set_string("owner", placer:get_player_name())

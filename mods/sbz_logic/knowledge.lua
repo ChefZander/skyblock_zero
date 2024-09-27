@@ -10,6 +10,7 @@ sbz_api.help_pages_by_index = {
     [5] = "Editor Environment",
     [6] = "Event Types",
     [7] = "Disks and Mem",
+    [8] = "Lua Builder"
 }
 
 local function edit_text(t)

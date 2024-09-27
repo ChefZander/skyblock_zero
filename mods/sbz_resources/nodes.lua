@@ -136,6 +136,7 @@ minetest.register_craft({
         { "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
     }
 })
+
 minetest.register_node("sbz_resources:antimatter_blob", {
     description = "Antimatter Blob",
     drawtype = "glasslike",
