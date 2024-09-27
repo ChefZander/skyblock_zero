@@ -201,6 +201,7 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     { type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators", "Meteorites" } },
     { type = "quest", title = "Ele Fabs", text = "Used to manifacture various components, especially for logic.", requires = { "Antimatter", "Emittrium Circuits" } },
+    { type = "quest", title = "Knowledge Stations", text = "Teaches you about logic, logic is not documented in this questbook but instead in the knowledge station. Good luck.", requires = { "Concrete Plan", "Ele Fabs" } },
     -- ======================================================================================
     { type = "text", title = "Questline: Chemistry", text = "Good luck." },
 
