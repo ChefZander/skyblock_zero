@@ -58,7 +58,6 @@ function logic.get_env(pos, meta)
 
     for k, v in pairs {
         editor = get_editor_table(meta),
-
         pos = vector.copy(pos),
         origin = vector.new(0, 0, 0),
         yield = coroutine.yield,

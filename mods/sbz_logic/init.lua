@@ -72,6 +72,19 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         return count
     end,
 
+    -- all TODOs: Make UPGRADES AND DISKS GREAT AGAI- WORK...
+    allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+        if listname == "upgrades" then
+            minetest.registered_craftitems[stack:get_name()].action_out(stack, pos, minetest.get_meta(pos))
+        end
+        return stack:get_count()
+    end,
+
+    allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+        if to_list == "disks" and from_list == "disks" then return 0 end
+        return count
+    end,
+
     action = logic.on_tick,
     action_subtick = function(pos, node, meta, supply, demand)
         logic.send_event_to_sandbox(pos, { type = "subtick", supply = supply, demand = demand })

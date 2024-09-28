@@ -436,7 +436,6 @@ The Automatic Filter-Injector takes stacks of items from nodes, and places them 
     requires = { "Neutronium", "Tubes" }
 },
     -- ==================================================================================================
-
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },
     { type = "quest", title = "Fluid Pipes",                text = "A fluid pipe is like a tube, but with fluids. They move fluids around, just like how tubes move items around.",                                                                                                                                                  requires = { "Tubes" } },
     { type = "quest", title = "Fluid Pumps",                text = "Fluid Pumps are automatic filter-injectors, but for pipes. They take fluids from fluid inventories.",                                                                                                                                                            requires = { "Automatic Filter-Injectors" } },
@@ -469,7 +468,7 @@ If it doesn't have enough coolant (water), it heats up, and bad things happen if
 Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core.
 Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.
 
-TIP: Build a shield out of simple charged fields to protect against antimatter meteorites.]],
+TIP: Build a shield out of compressed core dust to protect against antimatter meteorites.]],
         requires = { "Meteorites" }
     },
     {
