@@ -22,7 +22,7 @@ minetest.register_node("sbz_meteorites:meteoric_matter", {
 })
 
 minetest.register_node("sbz_meteorites:meteoric_antimatter", {
-    description = "Meteoric Antiatter",
+    description = "Meteoric Antimatter",
     tiles = { "antimatter_blob.png^(meteoric_overlay.png^[invert:rgb)" },
     paramtype = "light",
     light_source = 12,
