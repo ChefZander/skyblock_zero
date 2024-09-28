@@ -266,12 +266,21 @@ There is one more thing which almost all plants except Pyrograss need: CO2, whic
     { type = "text",   title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
     {
         type = "quest",
+        title = "Compressed Core Dust",
+        text =
+        [[As you keep expanding your space station, you might wonder: "What am I going to do with all this Core Dust?". The answer to that question is to...
+
+Compress it! Compressed Core Dust can be used as a building material, a way to efficiently store Core Dust or as a shield to protect against antimatter.]],
+        requires = { "A bigger platform" }
+    },
+    {
+        type = "quest",
         title = "More Antimatter",
         text =
         [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
 You can even make antimatter versions of some decorational blocks! Just be careful when placing them; if antimatter and matter come in contact then they will annihilate and create a violent explosion.
 
-TIP: You can use simple charged fields as scaffolding when dealing with antimatter.]],
+TIP: You can use compressed core dust as a buffer when dealing with antimatter.]],
         requires = { "Antimatter" }
     },
     {
@@ -280,7 +289,13 @@ TIP: You can use simple charged fields as scaffolding when dealing with antimatt
         text =
         [[Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can.
 
-Craft some 'Antimatter Annihilator', we'll need it for later. It's made by mixing 'Antimatter Blob', 'Charged Particle' and 'Matter Dust'. Let's see you figure this out, smart one.]],
+Now, to craft an Antimatter Annihilator you'll need a couple things:
+
+* one Matter Dust
+* one Charged Particle
+* three Antimatter Blobs.
+
+Make sure the Charged Particle is properly encased in antimatter, or it'll escape.]],
         requires = { "More Antimatter" }
     },
     {
