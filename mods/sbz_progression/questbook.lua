@@ -187,15 +187,10 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
         requires = { "Annihilator" }
     },
 
-    {
-        type = "quest",
-        title = "Power Cables",
-        text = [[
+    { type = "quest", title = "Power Cables", text = [[
 To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate.
 The cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.
-Also, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).]],
-        requires = { "Matter Plates", "Obtain Emittrium" }
-    },
+Also, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).]], requires = { "Matter Plates", "Obtain Emittrium" } },
 
     { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
@@ -275,6 +270,15 @@ Compress it! Compressed Core Dust can be used as a building material, a way to e
     },
     {
         type = "quest",
+        title = "Compressed Core Dust",
+        text =
+        [[As you keep expanding your space station, you might wonder: "What am I going to do with all this Core Dust?". The answer to that question is to...
+
+Compress it! Compressed Core Dust can be used as a building material, a way to efficiently store Core Dust or as a shield to protect against antimatter.]],
+        requires = { "A bigger platform" }
+    },
+    {
+        type = "quest",
         title = "More Antimatter",
         text =
         [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
@@ -298,7 +302,11 @@ Now, to craft an Antimatter Annihilator you'll need a couple things:
 Make sure the Charged Particle is properly encased in antimatter, or it'll escape.]],
         requires = { "More Antimatter" }
     },
+<<<<<<< HEAD
     {
+=======
+	{
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
         type = "quest",
         title = "Screwdriver",
         text = "Screwdriver rotates blocks when you click on one with it.",
@@ -371,7 +379,11 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         requires = { "Emitter Immitators", "Matter Plates" }
     },
 
+<<<<<<< HEAD
     { type = "quest", title = "Phosphor",                   text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
+=======
+    { type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.",                                                                                                                                                                                                                                                  requires = { "Emitter Immitators", "Emittrium Circuits" } },
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     -- ======================================================================================
     {
         type = "text",
@@ -398,15 +410,23 @@ Have you ever been tired of taking items out of nodes? Do you just want to inter
 
 Now you can!
 
+<<<<<<< HEAD
 The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes.
+=======
+The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes. 
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
 
 ]],
     requires = { "Bear Arms", "Tubes" }
 }, {
     type = "quest",
     title = "Node Breakers",
+<<<<<<< HEAD
     text =
     "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 1 power and run every second.",
+=======
+    text = "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 1 power and run every second.",
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     requires = { "Automatic Filter-Injectors" }
 }, {
     type = "quest",
@@ -421,8 +441,12 @@ The Automatic Filter-Injector takes stacks of items from nodes, and places them 
 }, {
     type = "quest",
     title = "Autocrafters",
+<<<<<<< HEAD
     text =
     "Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts/s.",
+=======
+    text = "Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts/s.",
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     requires = { "Bear Arms", "Neutronium", "Emittrium Circuits", "Automatic Filter-Injectors" }
 }, {
     type = "quest",
@@ -436,6 +460,7 @@ The Automatic Filter-Injector takes stacks of items from nodes, and places them 
     requires = { "Neutronium", "Tubes" }
 },
     -- ==================================================================================================
+<<<<<<< HEAD
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },
     { type = "quest", title = "Fluid Pipes",                text = "A fluid pipe is like a tube, but with fluids. They move fluids around, just like how tubes move items around.",                                                                                                                                                  requires = { "Tubes" } },
     { type = "quest", title = "Fluid Pumps",                text = "Fluid Pumps are automatic filter-injectors, but for pipes. They take fluids from fluid inventories.",                                                                                                                                                            requires = { "Automatic Filter-Injectors" } },
@@ -457,6 +482,26 @@ If it doesn't have enough coolant (water), it heats up, and bad things happen if
     { type = "quest", title = "Reactor Coolant Ports",                            text = "A Reactor Coolant Port is needed in the construction of the emittrium reactor. They need 1 water bucket/s (delivered in pipes) to sustain reactor heat.",                                                                                                                                                                                                                                                                                                                                                        requires = { "Fluid Storage Tanks" } },
     { type = "quest", title = "Reactor Emittrium Input",                          text = "A Reactor Emittrium Input is needed in the construction of the emittrium reactor. They need 16 emittrium/minute to fuel the reactor.",                                                                                                                                                                                                                                                                                                                                                                           requires = { "Reactor Shells", "Tubes" } },
     { type = "quest", title = "Reactor Core",                                     text = "A Reactor Core is needed in the construction of the emittrium reactor. Needs to be in the center.",                                                                                                                                                                                                                                                                                                                                                                                                              requires = { "Neutronium", "Reactor Shells" } },
+=======
+
+    { type = "text",  title = "Questline: Fluid Transport",                       text = "This questline is all about transporting fluids." },
+    { type = "quest", title = "Fluid Pipes",                                      text = "A fluid pipe is like a tube, but with fluids. They move fluids around, just like how tubes move items around.",                                                                                                                                                                                                                                                                                                                                                                                 requires = { "Tubes" } },
+    { type = "quest", title = "Fluid Pumps",                                      text = "Fluid Pumps are automatic filter-injectors, but for pipes. They take fluids from fluid inventories.",                                                                                                                                                                                                                                                                                                                                                                                                                                                     requires = { "Automatic Filter-Injectors" } },
+    { type = "quest", title = "Fluid Storage Tanks",                              text = "Fluid Storage Tanks are storinators for fluids. They can store 100 nodes of fluid. That's a lot!",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Tubes", "Storinators" } },
+    { type = "quest", title = "Fluid Capturers",                                  text = "Fluid Capturers capture liquid SOURCES from their top and store them. You can take out the captured fluid with a fluid pump.",                                                                                                                                                                                                                                                                                                                                                                                     requires = { "Fluid Storage Tanks" } },
+    { type = "quest", title = "Fluid Cell Fillers",                               text = "Fluid Cell Fillers fill empty fluid cells in their inventories.",                                                                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Fluid Storage Tanks" } },
+    -- ==================================================================================================
+    { type = "text",  title = "Questline: Emittrium Reactor",                     text = [[
+Emittrium reactors are another way of generating energy. They are a 3x3x3 cube made of reactor shells (or reactor glass), with a reactor core in the center. The shells can be replaced with a reactor power port, a reactor coolant port, a reactor emittrium port and a reactor infoscreen. It consumes emittrium and water, and generates 800 power.
+If it doesn't have enough coolant (water), it heats up, and bad things happen if it heats up too much.]] },
+    { type = "quest", title = "Reactor Shells",                                   text = "Reactor Shells are needed in crafting the emittrium reactor parts, and construction of the emittrium reactor.",                                                                                                                                                                                                                                                                                                                                                                                                   requires = { "Obtain Emittrium" } },
+    { type = "quest", title = "Reactor Glass",                                    text = "Reactor Glass is needed in crafting recipes, and optionally can be used as a replacement for the reactor shell in the construction of the emittrium reactor.",                                                                                                                                                                                                                                                                                                                                                    requires = { "Emittrium Glass", "Reactor Shells" } },
+    { type = "quest", title = "Reactor Infoscreens",                              text = "A Reactor Infoscreen is needed in the construction of the emittrium reactor, and are needed to turn on the reactor.",                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Reactor Glass" } },
+    { type = "quest", title = "Reactor Power Ports",                              text = "A Reactor Power Port is needed in the construction of the emittrium reactor. They deliver the energy generated by the reactor core.",                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Reactor Shells" } },
+    { type = "quest", title = "Reactor Coolant Ports",                            text = "A Reactor Coolant Port is needed in the construction of the emittrium reactor. They need 1 water bucket/s (delivered in pipes) to sustain reactor heat.",                                                                                                                                                                                                                                                                                                                                                                                                           requires = { "Fluid Storage Tanks" } },
+    { type = "quest", title = "Reactor Emittrium Input",                          text = "A Reactor Emittrium Input is needed in the construction of the emittrium reactor. They need 16 emittrium/minute to fuel the reactor.",                                                                                                                                                                                                                                                                                                                                                                                                                             requires = { "Reactor Shells", "Tubes" } },
+    { type = "quest", title = "Reactor Core",                                     text = "A Reactor Core is needed in the construction of the emittrium reactor. Needs to be in the center.",                                                                                                                                                                                                                                                                                                                                                                                                                                 requires = { "Neutronium", "Reactor Shells" } },
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     { type = "quest", title = "Building the emittrium reactor and turning it on", text = "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of these shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)\n\nNow, to actually turn the reactor on, click the infoscreen, then turn it on in the UI. If you have something wrong in the reactor, it will tell you.\n\nIf you have multiple reactors, try pressing the re-link button if you think the infoscreen is displaying the wrong information", requires = { "Reactor Shells", "Reactor Infoscreens", "Reactor Power Ports", "Reactor Coolant Ports", "Reactor Emittrium Input", "Reactor Core" } },
     -- ======================================================================================
     { type = "text",  title = "Questline: Completionist",                         text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
@@ -467,9 +512,17 @@ If it doesn't have enough coolant (water), it heats up, and bad things happen if
 Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core.
 Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.
 
+<<<<<<< HEAD
 TIP: Build a shield out of compressed core dust to protect against antimatter meteorites.]],
         requires = { "Meteorites" }
     },
+=======
+    { type = "quest", title = "Antineutronium", text = [[
+Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core.
+Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.
+
+TIP: Build a shield out of compressed core dust to protect against antimatter meteorites.]], requires = { "Meteorites" } },
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     {
         type = "quest",
         title = "Angel's Wing",

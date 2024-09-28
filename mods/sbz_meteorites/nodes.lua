@@ -7,6 +7,7 @@ minetest.register_node("sbz_meteorites:meteoric_matter", {
     drop = {
         max_items = 9,
         items = {
+<<<<<<< HEAD
             { rarity = 2, items = { "sbz_resources:matter_dust" } },
             { rarity = 2, items = { "sbz_resources:matter_dust" } },
             { rarity = 2, items = { "sbz_resources:matter_dust" } },
@@ -16,19 +17,36 @@ minetest.register_node("sbz_meteorites:meteoric_matter", {
             { rarity = 2, items = { "sbz_resources:matter_dust" } },
             { rarity = 2, items = { "sbz_resources:matter_dust" } },
             { rarity = 2, items = { "sbz_resources:matter_dust" } }
+=======
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=2, items={"sbz_resources:matter_dust"}},
+            {rarity=16, items={"sbz_resources:matter_blob"}},
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
         }
     }
 })
 
 minetest.register_node("sbz_meteorites:meteoric_antimatter", {
     description = "Meteoric Antimatter",
+<<<<<<< HEAD
     tiles = { "antimatter_blob.png^(meteoric_overlay.png^[invert:rgb)" },
+=======
+    tiles = {"antimatter_blob.png^(meteoric_overlay.png^[invert:rgb)"},
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     paramtype = "light",
     light_source = 12,
     groups = { antimatter = 1, cracky = 3 },
     drop = {
         max_items = 9,
         items = {
+<<<<<<< HEAD
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } },
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } },
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } },
@@ -38,6 +56,18 @@ minetest.register_node("sbz_meteorites:meteoric_antimatter", {
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } },
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } },
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } }
+=======
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=2, items={"sbz_resources:antimatter_dust"}},
+            {rarity=16, items={"sbz_resources:antimatter_blob"}},
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
         }
     }
 })
@@ -51,6 +81,7 @@ minetest.register_node("sbz_meteorites:meteoric_emittrium", {
     drop = {
         max_items = 9,
         items = {
+<<<<<<< HEAD
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } },
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } },
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } },
@@ -60,6 +91,18 @@ minetest.register_node("sbz_meteorites:meteoric_emittrium", {
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } },
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } },
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } }
+=======
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=2, items={"sbz_resources:raw_emittrium"}},
+            {rarity=8, items={"sbz_resources:raw_emittrium 2"}},
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
         }
     }
 })
@@ -81,7 +124,34 @@ minetest.register_node("sbz_meteorites:meteoric_metal", {
     groups = { matter = 1, cracky = 3 },
     drop = {
         max_items = 9,
+<<<<<<< HEAD
         items = processed_drops
+=======
+        items = {
+            {rarity=16, items={"sbz_chem:gold_powder"}},
+            {rarity=16, items={"sbz_chem:silver_powder"}},
+            {rarity=16, items={"sbz_chem:iron_powder"}},
+            {rarity=16, items={"sbz_chem:copper_powder"}},
+            {rarity=16, items={"sbz_chem:aluminum_powder"}},
+            {rarity=16, items={"sbz_chem:lead_powder"}},
+            {rarity=16, items={"sbz_chem:zinc_powder"}},
+            {rarity=16, items={"sbz_chem:tin_powder"}},
+            {rarity=16, items={"sbz_chem:nickel_powder"}},
+            {rarity=16, items={"sbz_chem:platinum_powder"}},
+            {rarity=16, items={"sbz_chem:mercury_powder"}},
+            {rarity=16, items={"sbz_chem:cobalt_powder"}},
+            {rarity=16, items={"sbz_chem:titanium_powder"}},
+            {rarity=16, items={"sbz_chem:magnesium_powder"}},
+            {rarity=16, items={"sbz_chem:calcium_powder"}},
+            {rarity=16, items={"sbz_chem:sodium_powder"}},
+            {rarity=16, items={"sbz_chem:lithium_powder"}},
+            {rarity=64, items={"sbz_chem:bronze_powder"}},
+            {rarity=64, items={"sbz_chem:white_gold_powder"}},
+            {rarity=64, items={"sbz_chem:invar_powder"}},
+            {rarity=64, items={"sbz_chem:brass_powder"}},
+            {rarity=64, items={"sbz_chem:titanium_alloy_powder"}},
+        }
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     }
 })
 

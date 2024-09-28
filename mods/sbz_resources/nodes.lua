@@ -359,6 +359,7 @@ minetest.register_craft({
         { "",                               "sbz_resources:antimatter_plate", "" }
     }
 })
+<<<<<<< HEAD
 if false then
     minetest.register_abm({
         label = "Annihilate matter and antimatter",
@@ -412,6 +413,58 @@ if false then
         end
     })
 end
+=======
+
+minetest.register_abm({
+	label = "Annihilate matter and antimatter",
+	nodenames = {"group:matter"},
+	neighbors = {"group:antimatter"},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+		minetest.add_particlespawner({
+			amount = 500,
+            		time = 0.2,
+           		minpos = { x = pos.x - 1/3, y = pos.y - 1/3, z = pos.z - 1/3 },
+            		maxpos = { x = pos.x + 1/3, y = pos.y + 1/3, z = pos.z + 1/3 },
+           		minvel = { x = -5, y = -5, z = -5 },
+            		maxvel = { x = 5, y = 5, z = 5 },
+            		minacc = { x = -1, y = -1, z = -1 },
+            		maxacc = { x = 1, y = 1, z = 1 },
+            		minexptime = 5,
+           		maxexptime = 10,
+            		minsize = 0.5,
+            		maxsize = 1.5,
+        		collisiondetection = false,
+            		vertical = false,
+            		texture = "star.png",
+            		glow = 10
+        	})
+		minetest.remove_node(pos)
+		 -- copied from sbz_meteorites
+		for _ = 1, 100 do
+			local raycast = minetest.raycast(pos, pos + vector.random_direction() * 8, false)
+			local wear = 0
+			for pointed in raycast do
+				if pointed.type == "node" then
+					local nodename = minetest.get_node(pointed.under).name
+					wear = wear + (1 / minetest.get_item_group(nodename, "explody")) + minetest.get_item_group(nodename, "sbz_machine")
+					--the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
+					--although this is very random
+					if wear > 1 then break end
+					minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+				end
+			end
+		end
+		for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 8)) do
+        		if obj:is_player() then
+            			local dir = obj:get_pos() - pos
+            			obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 1.5 * (8 - vector.length(dir)))
+        		end
+    		end
+	end
+})
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
 
 minetest.register_node("sbz_resources:emittrium_glass", {
     description = "Emittrium Glass",
@@ -474,7 +527,11 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
     tiles = {
         "compressed_core_dust.png"
     },
+<<<<<<< HEAD
     info_extra = { "You can use this to protect against antimatter" },
+=======
+    info_extra = {"You can use this to protect against antimatter"},
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     groups = { dig_immediate = 2, explody = 5 },
 })
 
@@ -487,7 +544,11 @@ minetest.register_craft({
     }
 })
 minetest.register_craft({
+<<<<<<< HEAD
     type = "shapeless",
+=======
+	type = "shapeless",
+>>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
     output = "sbz_resources:core_dust 9",
     recipe = { "sbz_resources:compressed_core_dust" }
 })
