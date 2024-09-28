@@ -1,0 +1,2 @@
+# The default color for shapes if no color is specified upon creation. Must be a valid color string.
+vizlib_default_color (Default particle color) string #ff0000
