@@ -47,12 +47,6 @@ sbz_api.register_element = function(name, color, description, disabled, part_of_
     else
         sbz_api.unused_chem[#sbz_api.unused_chem + 1] = "sbz_chem:" .. name
     end
-
-    unified_inventory.register_craft {
-        type = "crushing",
-        output = "sbz_chem:" .. name .. "_powder",
-        items = { "sbz_chem:" .. name .. "_ingot" }
-    }
 end
 
 minetest.after(0, function()
