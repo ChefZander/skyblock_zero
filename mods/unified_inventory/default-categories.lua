@@ -78,11 +78,16 @@ local function register_automatic_categorization()
 			if group.sbz_machine then
 				unified_inventory.add_category_item("machines", name)
 			end
+<<<<<<< HEAD
 			if string.sub(name, 1, #"pipeworks") == "pipeworks" or group.ui_fluid then
 				unified_inventory.add_category_item("pipeworks", name)
 			end
 			if group.ui_logic then
 				unified_inventory.add_category_item("lua", name)
+=======
+			if string.sub(name, 1, #"pipeworks") == "pipeworks" then
+				unified_inventory.add_category_item("pipeworks", name)
+>>>>>>> 031cc37 (Merge)
 			end
 		end
 	end
