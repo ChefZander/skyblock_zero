@@ -1,9 +1,0 @@
-[submodule "mods/libox"]
-	path = mods/libox
-	url = https://github.com/TheEt1234/libox.git
-[submodule "mods/vizlib"]
-	path = mods/vizlib
-	url = https://github.com/TheEt1234/vizlib
-[submodule "mods/unified_inventory_plus"]
-	path = mods/unified_inventory_plus
-	url = https://github.com/mt-mods/unified_inventory_plus
