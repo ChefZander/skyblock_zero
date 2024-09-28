@@ -117,7 +117,6 @@ minetest.register_craft({
         { "sbz_resources:stone", "sbz_resources:emittrium_circuit", "sbz_resources:stone" },
         { "sbz_resources:stone", "sbz_resources:stone",             "sbz_resources:stone" }
     }
-<<<<<<< HEAD
 })
 
 minetest.register_node("sbz_resources:compressed_core_dust", {
@@ -143,6 +142,3 @@ minetest.register_craft {
         { "sbz_resources:compressed_core_dust" }
     }
 }
-=======
-})
->>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
