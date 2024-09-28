@@ -117,20 +117,3 @@ minetest.register_craft({
         { "sbz_resources:stone", "sbz_resources:stone",             "sbz_resources:stone" }
     }
 })
-
-minetest.register_node("sbz_resources:compressed_core_dust", {
-    description = "Compressed core dust",
-    tiles = {
-        "compressed_core_dust.png"
-    },
-    groups = { matter = 1, explody = 5 },
-})
-
-minetest.register_craft({
-    output = "sbz_resources:compressed_core_dust",
-    recipe = {
-        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
-        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
-        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
-    }
-})

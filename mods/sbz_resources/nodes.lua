@@ -366,7 +366,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		minetest.add_particlespawner({
-			amount = 1000,
+			amount = 500,
             		time = 0.2,
            		minpos = { x = pos.x - 1/3, y = pos.y - 1/3, z = pos.z - 1/3 },
             		maxpos = { x = pos.x + 1/3, y = pos.y + 1/3, z = pos.z + 1/3 },
@@ -462,4 +462,27 @@ minetest.register_node("sbz_resources:water_flowing", {
     liquidtype = "flowing",
     liquid_alternative_source = "sbz_resources:water_source",
     liquid_alternative_flowing = "sbz_resources:water_flowing"
+})
+
+minetest.register_node("sbz_resources:compressed_core_dust", {
+    description = "Compressed core dust",
+    tiles = {
+        "compressed_core_dust.png"
+    },
+    info_extra = {"You can use this to protect against antimatter"},
+    groups = { dig_immediate = 2, explody = 5 },
+})
+
+minetest.register_craft({
+    output = "sbz_resources:compressed_core_dust",
+    recipe = {
+        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
+        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
+        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
+    }
+})
+minetest.register_craft({
+	type = "shapeless",
+    output = "sbz_resources:core_dust 9",
+    recipe = { "sbz_resources:compressed_core_dust" }
 })

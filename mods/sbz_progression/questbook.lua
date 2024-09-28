@@ -187,7 +187,10 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
         requires = { "Annihilator" }
     },
 
-    { type = "quest", title = "Power Cables", text = "To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate. The Cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.\nALSO, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).", requires = { "Matter Plates", "Obtain Emittrium" } },
+    { type = "quest", title = "Power Cables", text = [[
+To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate.
+The cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.
+Also, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).]], requires = { "Matter Plates", "Obtain Emittrium" } },
 
     { type = "quest", title = "Starlight Collectors", text = "Starlight Collectors turn the light of stars into power for you to use. But the stars are very faint, so you'll need a lot of these if you want to power a whole factory!", requires = { "Obtain Emittrium" } },
 
@@ -223,12 +226,19 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
 
     -- ======================================================================================
     { type = "text", title = "Questline: Organics", text = "Grow plants and fungi to craft more things and also make your base look really cool." },
-    { type = "quest", title = "Liquid Water", text = "So it turns out that crushing pebbles actually squeezes out a bit of water. You can take advantage of this by crafting some fluid vials and putting them in the crusher output to collect it. Once you've done that, go build a little pool or something, I dunno.", requires = { "Crusher" } },
+    { type = "quest", title = "Liquid Water", text = "So it turns out that crushing pebbles actually squeezes out a bit of water. You can take advantage of this by crafting some fluid cells and putting them in the crusher output to collect it. Once you've done that, go build a little pool or something, I dunno.", requires = { "Crusher" } },
     { type = "quest", title = "Emittrium Glass", text = "The other preliminary we need before growing stuff is glass. Thankfully it's really easy to craft, it only needs emittrium and antimatter and crafts a lot of glass.", requires = { "Antimatter", "Obtain Emittrium" } },
     { type = "quest", title = "Dirt", text = "If you've followed my instructions and built a pool, you should notice moss beginning to grow around it, and algae on top of it, if there's enough light. Take some of that moss and craft it into dirt.", requires = { "Liquid Water" } },
     { type = "quest", title = "Sprouting Plants", text = "You'll also need to craft the algae on your pool into fertilizer. This is useful for speeding up plant growth, or for forcing dormant seeds in the dirt to germinate.", requires = { "Liquid Water" } },
-    { type = "quest", title = "Growing Plants", text = "Alright, this is where it gets complicated, so read carefully.\n\nAll plants except moss and algae need to be placed in a habitat in order to grow properly. This means a fully enclosed room with a powered Habitat Regulator placed inside it.\n\nPlants also need three things: water next to the node they're on, heat from nearby light sources, and as much sky access as possible, hence the walls and ceiling of the habitat should be made of glass. If they don't get these things, they'll start to wilt and die instead of growing. So take that into consideration when designing a habitat.", requires = { "Switching Station", "Emittrium Glass", "Dirt", "Sprouting Plants" } },
-    { type = "quest", title = "Carbon Dioxide", text = "So now that you have a habitat, all you've got to do is use some fertilizer on some dirt inside it. Keep trying until you get a sort of purple grass - this is Pyrograss, a hardy yet very flammable monocotyledon. Wait for it to grow to full height and then harvest it.\n\nThere is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary. Some items are better than others, try out a few and see what works best!", requires = { "Growing Plants", "Annihilator" } },
+    { type = "quest", title = "Growing Plants", text = [[
+Alright, this is where it gets complicated, so read carefully.
+
+All plants except moss and algae need to be placed in a habitat in order to grow properly. This means a fully enclosed room with a powered Habitat Regulator placed inside it.
+Plants also need three things: water next to the node they're on, heat from nearby light sources, and as much sky access as possible, hence the walls and ceiling of the habitat should be made of glass. If they don't get these things, they'll start to wilt and die instead of growing. So take that into consideration when designing a habitat.]], requires = { "Switching Station", "Emittrium Glass", "Dirt", "Sprouting Plants" } },
+    { type = "quest", title = "Carbon Dioxide", text = [[
+So now that you have a habitat, all you've got to do is use some fertilizer on some dirt inside it. Keep trying until you get a sort of purple grass - this is Pyrograss, a hardy yet very flammable monocotyledon. Wait for it to grow to full height and then harvest it.
+	
+There is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary. Some items are better than others, try out a few and see what works best!]], requires = { "Growing Plants", "Annihilator" } },
     { type = "quest", title = "Stemfruit", text = "The only other plant you can get from fertilizing dirt is Stemfruit; you won't need to grow much of these, but due to their unusual genetic instability you can craft them with stuff to make new types of plant. Try out some combinations and see what you get!", requires = { "Carbon Dioxide" } },
     { type = "quest", title = "Fiberweed", text = "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.", requires = { "Stemfruit" } },
     { type = "quest", title = "Airlocks", text = "Tired of breaking a hole in the wall whenever you want to enter a habitat? Introducing the Airlock: a node which holds in the atmosphere while letting you effortlessly walk through.", requires = { "Growing Plants", "Emittrium Glass", "Neutronium" } },
@@ -239,12 +249,36 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of jus
     { type = "text", title = "Questline: Decorator", text = "An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P" },
 	{
         type = "quest",
+        title = "Compressed Core Dust",
+        text =
+        [[As you keep expanding your space station, you might wonder: "What am I going to do with all this Core Dust?". The answer to that question is to...
+
+Compress it! Compressed Core Dust can be used as a building material, a way to efficiently store Core Dust or as a shield to protect against antimatter.]],
+        requires = { "A bigger platform" }
+    },
+    {
+        type = "quest",
         title = "More Antimatter",
         text =
-        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island. They also create a big explosion that can affect your machinery when in contact with matter.
+        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
+You can even make antimatter versions of some decorational blocks! Just be careful when placing them; if antimatter and matter come in contact then they will annihilate and create a violent explosion.
 
-TIP: You can use simple charged fields as scaffolding when dealing with antimatter.]],
+TIP: You can use compressed core dust as a buffer when dealing with antimatter.]],
         requires = { "Antimatter" }
+    },
+    {
+        type = "quest",
+        title = "Anti-Annihilator",
+        text = [[Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can.
+
+Now, to craft an Antimatter Annihilator you'll need a couple things:
+
+* one Matter Dust
+* one Charged Particle
+* three Antimatter Blobs.
+
+Make sure the Charged Particle is properly encased in antimatter, or it'll escape.]],
+        requires = { "More Antimatter" }
     },
 	{
         type = "quest",
@@ -270,21 +304,21 @@ Next time you’re floating through the cosmos and stumble upon these absurd con
         type = "quest",
         title = "Factory Flooring",
         text = "This is a node to use as floor for your factory, to give it those classic vibes.",
-        requires = {"A bigger platform"}
+        requires = { "A bigger platform" }
     },
 
     {
         type = "quest",
         title = "Tiled Factory Flooring",
         text = "A variation of Factory Flooring which add even more tiling!",
-        requires = {"A bigger platform", "Factory Flooring"}
+        requires = { "A bigger platform", "Factory Flooring" }
     },
 
     {
         type = "quest",
         title = "Factory Ventilator",
         text = "You might want a Ventilation system inside a factory, just saying.",
-        requires = {"Factory Flooring", "Crusher"}
+        requires = { "Factory Flooring", "Crusher" }
     },
 
     {
@@ -319,119 +353,121 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         requires = { "Emitter Immitators", "Matter Plates" }
     },
 
-    { type = "quest", title = "Phosphor",                                         text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.", requires = { "Emitter Immitators", "Emittrium Circuits" } },
+    { type = "quest", title = "Phosphor", text = "On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator to make Phosphor, a very weak light source which however is turned on and off using power. This may be useful as an indicator of whether machines are working... or for discos.",                                                                                                                                                                                                                                                  requires = { "Emitter Immitators", "Emittrium Circuits" } },
     -- ======================================================================================
     {
         type = "text",
         title = "Questline: Pipeworks",
         text =
-        [[If you already know about regular pipeworks, skyblock_zero's pipeworks are a very modified version of that mod, it will be similar though.]]
+        [[If you already know about regular pipeworks, skyblock_zero's pipeworks are a very modified version of that mod, but it will be similar though.]]
     }, {
     type = "quest",
     title = "Tubes",
     text = [[
-Do you want to transport something...
+Have you ever wanted to automatically move items around without input?
 
-Introducing tubes... you can like transport stacks easily...
+Now you can!
 
-Simply use the Filter-Injector to push something into the tube, and boom.
+Tubes are, well, tubes that can transport items around! Currently, you can't interact with them: but just have some lying around, the next and future quests utilize them.
 
-Also, if 30 stacks are in one tube, the tube becomes broken.
-
-Also you NEED the Automatic Filter-Injector to push something in the tube.
-    ]],
+TIP: Items in tubes will go into directions with higher priority.]],
     requires = { "Furnace" },
 }, {
     type = "quest",
     title = "Automatic Filter-Injectors",
     text = [[
-Have you ever wanted to push something out of a node... to another node (Storinator to storinator)?
+Have you ever been tired of taking items out of nodes? Do you just want to interact with tubes as soon as possible?
 
-Or to a tube?
+Now you can!
 
-Now you can
-
-The Automatic Filter-Injector requires 1 power to operate, it pulls out a stack each second
+The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes. 
 
 ]],
     requires = { "Bear Arms", "Tubes" }
 }, {
     type = "quest",
     title = "Node Breakers",
-    text = [[They break stuff then they throw it away thru their back-side. They need 1 power and run every second.]],
+    text = "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 1 power and run every second.",
     requires = { "Automatic Filter-Injectors" }
 }, {
     type = "quest",
     title = "Deployers",
-    text = "They place stuff.",
+    text = "Deployers try to place a node into their front-side. That's about it.",
     requires = { "Automatic Filter-Injectors", "Bear Arms" }
 }, {
     type = "quest",
     title = "Punchers",
-    text =
-    "They punch stuff... yes this means you can automate emittrium and charged particles, or get automatic core dust production.",
+    text = "Punchers punch stuff, allowing you to automate resource generation even more.",
     requires = { "Automatic Filter-Injectors", "Bear Arms", "Emittrium Circuits" }
 }, {
     type = "quest",
     title = "Autocrafters",
-    text = "They craft... and they can craft fast, or really slow, depends on how you want them to",
+    text = "Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts/s.",
     requires = { "Bear Arms", "Neutronium", "Emittrium Circuits", "Automatic Filter-Injectors" }
 }, {
     type = "quest",
     title = "Item Voids",
-    text = "They destroy any item that goes in... and yes theese are pipeworks trashcans.",
+    text = "Item voids delete every item that goes in, and yes these are pipeworks trashcans.",
     requires = { "Tubes" }
 }, {
     type = "quest",
     title = "Item Vacuums",
-    text = "They vacuum up items in a 16 block radius, don't spam them though.\n\nThey require 20 power.",
+    text = "Item Vacuums vacuum up items in a 16 block radius, but they tend to cause lag.",
     requires = { "Neutronium", "Tubes" }
 },
     -- ==================================================================================================
 
-    { type = "text",  title = "Questline: Fluid Transport",                       text = "So uh if you want to transport fluids.... this is the questline for you i guess" },
-    { type = "quest", title = "Fluid Pipes",                                      text = "A fluid pipe.... is capable of transporting fluid (wow!) You will need a fluid pump to actually push items thru the fluid pipe.",                                                                                                                                requires = { "Tubes" } },
-    { type = "quest", title = "Fluid Pumps",                                      text = "Works like the Automatic Filter-Injector.... but for fluids",                                                                                                                                                                                                    requires = { "Automatic Filter-Injectors" } },
-    { type = "quest", title = "Fluid Storage Tanks",                              text = "They store fluids...",                                                                                                                                                                                                                                           requires = { "Tubes", "Storinators" } },
-    { type = "quest", title = "Fluid Capturers",                                  text = "Captures fluid from the top, the fluid in the top MUST be a full source. That captured fluid can be pulled out with a pump.",                                                                                                                                    requires = { "Fluid Storage Tanks" } },
-    { type = "quest", title = "Fluid Cell Fillers",                               text = "Fills fluid cells with the liquid that it has inside",                                                                                                                                                                                                           requires = { "Fluid Storage Tanks" } },
+    { type = "text",  title = "Questline: Fluid Transport",                       text = "This questline is all about transporting fluids." },
+    { type = "quest", title = "Fluid Pipes",                                      text = "A fluid pipe is like a tube, but with fluids. They move fluids around, just like how tubes move items around.",                                                                                                                                                                                                                                                                                                                                                                                 requires = { "Tubes" } },
+    { type = "quest", title = "Fluid Pumps",                                      text = "Fluid Pumps are automatic filter-injectors, but for pipes. They take fluids from fluid inventories.",                                                                                                                                                                                                                                                                                                                                                                                                                                                     requires = { "Automatic Filter-Injectors" } },
+    { type = "quest", title = "Fluid Storage Tanks",                              text = "Fluid Storage Tanks are storinators for fluids. They can store 100 nodes of fluid. That's a lot!",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Tubes", "Storinators" } },
+    { type = "quest", title = "Fluid Capturers",                                  text = "Fluid Capturers capture liquid SOURCES from their top and store them. You can take out the captured fluid with a fluid pump.",                                                                                                                                                                                                                                                                                                                                                                                     requires = { "Fluid Storage Tanks" } },
+    { type = "quest", title = "Fluid Cell Fillers",                               text = "Fluid Cell Fillers fill empty fluid cells in their inventories.",                                                                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Fluid Storage Tanks" } },
     -- ==================================================================================================
-    { type = "text",  title = "Questline: Emittrium Reactor",                     text = "Emittrium reactor consists of 3x3x3 blocks, with the reactor core at its center. It consumes emittrium and water, generates 800 power. If it doesn't have enough power... it heats up.... if it heats up too much it explodes. " },
-    { type = "quest", title = "Reactor Shells",                                   text = "Reactor shells are needed in crafting the emittrium reactor parts, and construction of the emittrium reactor.",                                                                                                                                                  requires = { "Obtain Emittrium" } },
-    { type = "quest", title = "Reactor Glass",                                    text = "Reactor Glass is needed in crafting recipes, and optionally can be used as a replacement for the reactor shell in the construction of the emittrium reactor.",                                                                                                   requires = { "Emittrium Glass", "Reactor Shells" } },
-    { type = "quest", title = "Reactor Infoscreens",                              text = "They are needed in the construction of the emittrium reactor, and are needed to turn on the reactor.",                                                                                                                                                           requires = { "Reactor Glass" } },
-    { type = "quest", title = "Reactor Power Ports",                              text = "Needed in the construction of the emittrium reactor. They output 800 power once their reactor is on.",                                                                                                                                                           requires = { "Reactor Shells" } },
-    { type = "quest", title = "Reactor Coolant Ports",                            text = "Needed in the construction of the emittrium reactor. They need 1 water bucket/s (delivered in pipes).",                                                                                                                                                          requires = { "Fluid Storage Tanks" } },
-    { type = "quest", title = "Reactor Emittrium Input",                          text = "Needed in the construction of the emittrium reactor. They need 16 emittrium/minute.",                                                                                                                                                                            requires = { "Reactor Shells", "Tubes" } },
-    { type = "quest", title = "Reactor Core",                                     text = "Needed in the construction of the emittrium reactor. Needs to be in the center.",                                                                                                                                                                                requires = { "Neutronium", "Reactor Shells" } },
-    { type = "quest", title = "Building the emittrium reactor and turning it on", text = "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of theese shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)",                                          requires = { "Reactor Shells", "Reactor Infoscreens", "Reactor Power Ports", "Reactor Coolant Ports", "Reactor Emittrium Input", "Reactor Core" } },
+    { type = "text",  title = "Questline: Emittrium Reactor",                     text = [[
+Emittrium reactors are another way of generating energy. They are a 3x3x3 cube made of reactor shells (or reactor glass), with a reactor core in the center. The shells can be replaced with a reactor power port, a reactor coolant port, a reactor emittrium port and a reactor infoscreen. It consumes emittrium and water, and generates 800 power.
+If it doesn't have enough coolant (water), it heats up, and bad things happen if it heats up too much.]] },
+    { type = "quest", title = "Reactor Shells",                                   text = "Reactor Shells are needed in crafting the emittrium reactor parts, and construction of the emittrium reactor.",                                                                                                                                                                                                                                                                                                                                                                                                   requires = { "Obtain Emittrium" } },
+    { type = "quest", title = "Reactor Glass",                                    text = "Reactor Glass is needed in crafting recipes, and optionally can be used as a replacement for the reactor shell in the construction of the emittrium reactor.",                                                                                                                                                                                                                                                                                                                                                    requires = { "Emittrium Glass", "Reactor Shells" } },
+    { type = "quest", title = "Reactor Infoscreens",                              text = "A Reactor Infoscreen is needed in the construction of the emittrium reactor, and are needed to turn on the reactor.",                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Reactor Glass" } },
+    { type = "quest", title = "Reactor Power Ports",                              text = "A Reactor Power Port is needed in the construction of the emittrium reactor. They deliver the energy generated by the reactor core.",                                                                                                                                                                                                                                                                                                                                                                                                            requires = { "Reactor Shells" } },
+    { type = "quest", title = "Reactor Coolant Ports",                            text = "A Reactor Coolant Port is needed in the construction of the emittrium reactor. They need 1 water bucket/s (delivered in pipes) to sustain reactor heat.",                                                                                                                                                                                                                                                                                                                                                                                                           requires = { "Fluid Storage Tanks" } },
+    { type = "quest", title = "Reactor Emittrium Input",                          text = "A Reactor Emittrium Input is needed in the construction of the emittrium reactor. They need 16 emittrium/minute to fuel the reactor.",                                                                                                                                                                                                                                                                                                                                                                                                                             requires = { "Reactor Shells", "Tubes" } },
+    { type = "quest", title = "Reactor Core",                                     text = "A Reactor Core is needed in the construction of the emittrium reactor. Needs to be in the center.",                                                                                                                                                                                                                                                                                                                                                                                                                                 requires = { "Neutronium", "Reactor Shells" } },
+    { type = "quest", title = "Building the emittrium reactor and turning it on", text = "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of these shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)\n\nNow, to actually turn the reactor on, click the infoscreen, then turn it on in the UI. If you have something wrong in the reactor, it will tell you.\n\nIf you have multiple reactors, try pressing the re-link button if you think the infoscreen is displaying the wrong information", requires = { "Reactor Shells", "Reactor Infoscreens", "Reactor Power Ports", "Reactor Coolant Ports", "Reactor Emittrium Input", "Reactor Core" } },
     -- ======================================================================================
     { type = "text",  title = "Questline: Completionist",                         text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
 
-    { type = "quest", title = "Antineutronium", text = [[Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core. Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.]], requires = { "Meteorites" } },
+    { type = "quest", title = "Antineutronium", text = [[
+Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core.
+Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.
+
+TIP: Build a shield out of compressed core dust to protect against antimatter meteorites.]], requires = { "Meteorites" } },
     {
         type = "quest",
         title = "Angel's Wing",
         text =
-        "The Angel's Wing can make you fly. Right-Click to use, it has 100 Uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.",
+        "The Angel's Wing can make you fly. Right-Click to use, it has 100 uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.",
         requires = { "Emittrium Circuits", "Concrete Plan" }
     },
     {
         type = "quest",
         title = "Small Protectors",
         text =
-        "Craft a small protector, small protectors protect a decently sized area.\nUnwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.",
+        [[
+Small protectors protect a decently sized area.
+Unwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.]],
         requires = { "Concrete Plan", "Furnace" }
     }, {
     type = "quest",
     title = "Big Protectors",
-    text = "Craft the large protector... its the same as the small one... but bigger",
+    text = "Large protectors are like the small protectors but bigger.",
     requires = { "Small Protectors" }
 }, {
     type = "quest",
     title = "Public Storinators",
     text =
-    "Craft the public storinator... it's like the regular storinator but accessible to ANYONE, regardless of protections.",
+    "Public storinators are like regular storinators but accessible to ANYONE, regardless of protections.",
     requires = { "Storinators" }
 },
 { type = "secret", title = "Emptiness", text = "Damn. You fell off." },

@@ -15,25 +15,28 @@ local function meteorite_explode(pos, type)
                 wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
                 --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                 --although this is very random
-                if wear > 1 then break end
+                if wear > 1 or minetest.is_protected(pointed.under, ".meteorite") then break end
                 minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
             end
         end
     end
     --placing nodes
-    minetest.set_node(pos, { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
+	local protected = minetest.is_protected(pos, ".meteorite")
+    if not protected then minetest.set_node(pos, { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" }) end
     local node_types = { matter_blob = {"sbz_meteorites:meteoric_matter","sbz_meteorites:meteoric_metal"},
 						 emitter = {"sbz_meteorites:meteoric_emittrium","sbz_meteorites:meteoric_metal"},
 						 antimatter_blob = {"sbz_meteorites:meteoric_antimatter","sbz_meteorites:meteoric_antimatter"}}
-    for _ = 1, 16 do
-        local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
-        if minetest.get_node(new_pos).name == "air" then
-            minetest.set_node(new_pos, {
-                name = math.random() < 0.2 and node_types[type][2] or
-                    node_types[type][1]
-            })
-        end
-    end
+	if not protected then
+		for _ = 1, 16 do
+			local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
+			if minetest.get_node(new_pos).name == "air" then
+				minetest.set_node(new_pos, {
+					name = math.random() < 0.2 and node_types[type][2] or
+						node_types[type][1]
+				})
+			end
+		end
+	end
     --knockback
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
         if obj:is_player() then
@@ -44,7 +47,7 @@ local function meteorite_explode(pos, type)
     --particle effects
     minetest.add_particlespawner({
         time = 0.1,
-        amount = 2000,
+        amount = 2000 / (protected and 5 or 1),
         pos = pos,
         radius = 1,
         drag = 0.2,
@@ -62,7 +65,7 @@ local function meteorite_explode(pos, type)
     local forward = vector.new(1, 0, 0)
     local up = vector.new(0, 1, 0)
 
-    for _ = 1, 500 do
+    for _ = 1, 500 / (protected and 5 or 1) do
         local dir = vector.rotate_around_axis(forward, up, math.random() * 2 * math.pi)
         local expiry = math.random() * 3 + 2
         minetest.add_particle({

@@ -2,7 +2,8 @@ sbz_api.register_stateful_machine("sbz_power:phosphor", {
     description = "Phosphor",
     paramtype = "light",
     sunlight_propagates = true,
-    tiles = { "matter_blob.png^phosphor_overlay.png" },
+	drawtype = "glasslike_framed",
+    tiles = { "phosphor_overlay.png", "matter_blob.png" },
     groups = { matter = 1, cracky = 3 },
     action = function(pos, node, meta, supply, demand)
         meta:set_string("infotext", "")
@@ -15,7 +16,8 @@ sbz_api.register_stateful_machine("sbz_power:phosphor", {
     control_action_raw = true,
     disallow_pipeworks = true
 }, {
-    tiles = { "emitter_imitator.png^phosphor_overlay.png" },
+    drawtype = "glasslike_framed",
+    tiles = { "phosphor_overlay.png", "emitter_imitator.png" },
     light_source = 2,
     action = function(pos, node, meta, supply, demand)
         meta:set_string("infotext", "")
