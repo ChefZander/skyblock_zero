@@ -460,7 +460,6 @@ If it doesn't have enough coolant (water), it heats up, and bad things happen if
     { type = "quest", title = "Building the emittrium reactor and turning it on", text = "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of these shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)\n\nNow, to actually turn the reactor on, click the infoscreen, then turn it on in the UI. If you have something wrong in the reactor, it will tell you.\n\nIf you have multiple reactors, try pressing the re-link button if you think the infoscreen is displaying the wrong information", requires = { "Reactor Shells", "Reactor Infoscreens", "Reactor Power Ports", "Reactor Coolant Ports", "Reactor Emittrium Input", "Reactor Core" } },
     -- ======================================================================================
     { type = "text",  title = "Questline: Completionist",                         text = "This is the Completionist Questline. Only for hardcore gaming enjoyers, good luck completing it." },
-
     {
         type = "quest",
         title = "Antineutronium",
