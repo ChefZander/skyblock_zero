@@ -21,41 +21,27 @@ local function meteorite_explode(pos, type)
         end
     end
     --placing nodes
-<<<<<<< HEAD
-    minetest.set_node(pos,
-        { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
+    local protected = minetest.is_protected(pos, ".meteorite")
+    if not protected then
+        minetest.set_node(pos,
+            { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
+    end
     local node_types = {
         matter_blob = { "sbz_meteorites:meteoric_matter", "sbz_meteorites:meteoric_metal" },
         emitter = { "sbz_meteorites:meteoric_emittrium", "sbz_meteorites:meteoric_metal" },
         antimatter_blob = { "sbz_meteorites:meteoric_antimatter", "sbz_meteorites:meteoric_antimatter" }
     }
-    for _ = 1, 16 do
-        local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
-        if minetest.get_node(new_pos).name == "air" then
-            minetest.set_node(new_pos, {
-                name = math.random() < 0.2 and node_types[type][2] or
-                    node_types[type][1]
-            })
+    if not protected then
+        for _ = 1, 16 do
+            local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
+            if minetest.get_node(new_pos).name == "air" then
+                minetest.set_node(new_pos, {
+                    name = math.random() < 0.2 and node_types[type][2] or
+                        node_types[type][1]
+                })
+            end
         end
     end
-=======
-	local protected = minetest.is_protected(pos, ".meteorite")
-    if not protected then minetest.set_node(pos, { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" }) end
-    local node_types = { matter_blob = {"sbz_meteorites:meteoric_matter","sbz_meteorites:meteoric_metal"},
-						 emitter = {"sbz_meteorites:meteoric_emittrium","sbz_meteorites:meteoric_metal"},
-						 antimatter_blob = {"sbz_meteorites:meteoric_antimatter","sbz_meteorites:meteoric_antimatter"}}
-	if not protected then
-		for _ = 1, 16 do
-			local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
-			if minetest.get_node(new_pos).name == "air" then
-				minetest.set_node(new_pos, {
-					name = math.random() < 0.2 and node_types[type][2] or
-						node_types[type][1]
-				})
-			end
-		end
-	end
->>>>>>> c924a96 (do what frog said (meteorite changes))
     --knockback
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
         if obj:is_player() then

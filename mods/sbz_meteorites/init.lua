@@ -42,20 +42,12 @@ local function meteorite_globalstep(dtime)
     if time_since > 120 then
         time_since = 0
         local spawns = math.random() < 0.25 and 1 or 0
-<<<<<<< HEAD
         --        for _, obj in ipairs(minetest.object_refs) do
         --            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 0.2 then
         --                spawns = spawns + obj:get_luaentity().type
         --            end
         --        end
         -- the above is a horrible idea that should never had entered production
-=======
-        for _, obj in ipairs(minetest.object_refs) do
-            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 1/20 then
-                spawns = spawns + obj:get_luaentity().type
-            end
-        end
->>>>>>> c924a96 (do what frog said (meteorite changes))
         if spawns > 0 then for _ = 1, spawns do spawn_meteorite() end end
     end
     storage:set_float("time_since_last_spawn", time_since)
