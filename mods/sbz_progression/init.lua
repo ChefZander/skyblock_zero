@@ -41,11 +41,13 @@ local achievment_table = {
     ["sbz_resources:matter_plate"] = "Matter Plates",
     ["sbz_resources:retaining_circuit"] = "Retaining Circuits",
     ["sbz_resources:storinator"] = "Storinators",
+    ["sbz_resources:pebble"] = "Pretty Pebbles",
+    ["sbz_resources:stone"] = "Concrete Plan",
+
+    ["sbz_resources:compressed_core_dust"] = "Compressed Core Dust",
     ["sbz_resources:antimatter_blob"] = "More Antimatter",
     ["sbz_resources:antimatter_annihilator"] = "Anti-Annihilator",
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
-    ["sbz_resources:pebble"] = "Pretty Pebbles",
-    ["sbz_resources:stone"] = "Concrete Plan",
 
     ["sbz_decor:photonlamp"] = "Photon Lamps",
     ["sbz_decor:factory_floor"] = "Factory Flooring",
