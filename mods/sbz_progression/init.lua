@@ -40,11 +40,14 @@ local achievment_table = {
     ["sbz_resources:stone"] = "Concrete Plan",
 
     ["sbz_resources:compressed_core_dust"] = "Compressed Core Dust",
+<<<<<<< HEAD
+=======
+    ["sbz_decor:photonlamp"] = "Photon Lamps",
+>>>>>>> 4ea54be (merge)
     ["sbz_resources:antimatter_blob"] = "More Antimatter",
     ["sbz_resources:antimatter_annihilator"] = "Anti-Annihilator",
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
 
-    ["sbz_decor:photonlamp"] = "Photon Lamps",
     ["sbz_decor:factory_floor"] = "Factory Flooring",
     ["sbz_decor:factory_floor_tiling"] = "Tiled Factory Flooring",
     ["sbz_decor:factory_ventilator"] = "Factory Ventilator",
