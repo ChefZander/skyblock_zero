@@ -38,9 +38,12 @@ function sbz_api.assemble_network(start_pos, seen)
 
     sbz_api.vm_begin()
 
+    local max_iter = 5000
+    local iter = 0
     local function internal(pos, dir)
-        if not seen[hash(pos)] then
-            local node = sbz_api.vm_get_node(pos).name
+        if not seen[hash(pos)] and iter < max_iter then
+            iter = iter + 1
+            local node = (sbz_api.vm_get_node(pos) or {}).name
             local node_def_of_this_node = node_defs[node]
             if not node_def_of_this_node then
                 seen[hash(pos)] = true

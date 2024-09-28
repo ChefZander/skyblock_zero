@@ -73,7 +73,6 @@ listring[context;dst]
             return power_needed, false
         else
             meta:set_string("infotext", "Smelting...")
-            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6, pos = pos })
 
             local src = inv:get_list("src")
 
@@ -102,6 +101,7 @@ listring[context;dst]
 
             inv:set_stack("src", index, decremented_input.items[1])
             inv:add_item("dst", out.item)
+            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6, pos = pos })
             return power_needed
         end
     end,

@@ -6,7 +6,9 @@ local function spawn_meteorite(pos)
         while vector.length(pos) < 80 or vector.length(pos) > 100 or minetest.get_node(pos).name == "ignore" do
             pos = vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
         end
-        pos = player:get_pos() + pos
+        if player then
+            pos = player:get_pos() + pos
+        end
     end
     return minetest.add_entity(pos, "sbz_meteorites:meteorite")
 end
