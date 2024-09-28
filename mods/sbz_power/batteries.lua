@@ -24,7 +24,11 @@ minetest.register_node("sbz_power:advanced_battery", {
     description = "Advanced Battery",
     tiles = { "advanced_battery.png" },
     groups = { sbz_battery = 1, sbz_machine = 1, matter = 1, pipe_connects = 1, pipe_conducts = 1 },
+<<<<<<< HEAD
     battery_max = BATTERY_MAX_POWER * 5,
+=======
+    battery_max = BATTERY_MAX_POWER * 3,
+>>>>>>> e9caa41 (merge)
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
         meta:set_string("infotext",
