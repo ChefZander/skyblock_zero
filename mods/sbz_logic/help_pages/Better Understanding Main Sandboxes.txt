@@ -1,0 +1,20 @@
+<bigger>Better Understadning Main Sandboxes</bigger>
+Okay so, yeah, i described there earlier that <mono>event = yield()</mono>
+But what does that exactly mean??
+
+The <mono>yield</mono> function is just an alias for the native lua's <mono>coroutine.yield</mono> function
+That yield function pauses the sandbox, when it is called as <mono>yield()</mono> it is given no arguments, nothing special will happen.
+The default behaviour is to always just listen for events and do nothing extra.
+
+An event is (usually) a table received from outside of the sandbox, for this the sandbox needs to get unpaused (so the sandbox moves past that line of code).
+
+<bigger>Waiting</bigger>
+
+Now, just receiving events is boring, what if we want to do something like... idk... wait?
+You can do that with the <mono>missed_events = wait(<x>)</mono> function
+
+The <mono>wait</mono> function uses <i>yield logic</i>, so <mono>yield({ type = "wait", time = x })</mono>
+Which schedules a wait event (a wait event is <mono>{ type = "wait" }</mono> table), but doesn't block new events
+
+<mono>wait</mono> function uses the <mono>wait_for_event_type</mono> function to actually collect all the events that aren't the type "wait" into a missed_events table and returns that
+

@@ -41,11 +41,10 @@ local achievment_table = {
 
     ["sbz_resources:compressed_core_dust"] = "Compressed Core Dust",
     ["sbz_decor:photonlamp"] = "Photon Lamps",
-	["sbz_resources:antimatter_blob"] = "More Antimatter",
-	["sbz_resources:antimatter_annihilator"] = "Anti-Annihilator",
+    ["sbz_resources:antimatter_blob"] = "More Antimatter",
+    ["sbz_resources:antimatter_annihilator"] = "Anti-Annihilator",
     ["sbz_resources:emitter_imitator"] = "Emitter Immitators",
 
-    ["sbz_decor:photonlamp"] = "Photon Lamps",
     ["sbz_decor:factory_floor"] = "Factory Flooring",
     ["sbz_decor:factory_floor_tiling"] = "Tiled Factory Flooring",
     ["sbz_decor:factory_ventilator"] = "Factory Ventilator",
@@ -101,6 +100,8 @@ local achievment_table = {
     ["sbz_power:reactor_item_input"] = "Reactor Emittrium Input",
     ["sbz_power:reactor_core_off"] = "Reactor Core",
 
+    ["sbz_power:ele_fab_off"] = "Ele Fabs",
+    ["sbz_logic:knowledge_station"] = "Knowledge Stations"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

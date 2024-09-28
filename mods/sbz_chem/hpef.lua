@@ -17,8 +17,10 @@ sbz_api.register_stateful_machine("sbz_chem:high_power_electric_furnace", {
     tiles = {
         "hpef_top.png",
         "hpef_top.png",
-        "hpef_front_off.png",
         "hpef_top.png",
+        "hpef_top.png",
+        "hpef_top.png",
+        "hpef_front_off.png",
     },
     groups = { matter = 1 },
     paramtype2 = "4dir",
@@ -39,13 +41,7 @@ sbz_api.register_stateful_machine("sbz_chem:high_power_electric_furnace", {
             gain = 1.0,
         })
     end,
-    after_place_node = function(pos, placer)
-        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
-        local node = minetest.get_node(pos)
-        node.param2 = node.param2 + 1
-        minetest.swap_node(pos, node)
-        pipeworks.after_place(pos)
-    end,
+    after_place_node = pipeworks.after_place,
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
         local meta = minetest.get_meta(pos)
@@ -77,7 +73,6 @@ listring[context;dst]
             return power_needed, false
         else
             meta:set_string("infotext", "Smelting...")
-            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6, pos = pos })
 
             local src = inv:get_list("src")
 
@@ -106,6 +101,7 @@ listring[context;dst]
 
             inv:set_stack("src", index, decremented_input.items[1])
             inv:add_item("dst", out.item)
+            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6, pos = pos })
             return power_needed
         end
     end,

@@ -78,6 +78,12 @@ minetest.register_on_newplayer(function(player)
         end
     end
 end)
+minetest.register_on_joinplayer(function(ref, last_login)
+    minetest.change_player_privs(ref:get_player_name(), {
+        home = true,
+        tp = true
+    })
+end)
 
 -- also allow /core
 minetest.register_chatcommand("core", {
@@ -198,6 +204,7 @@ minetest.register_on_joinplayer(function(player)
     -- space gravity yeeeah
     player:set_physics_override({
         gravity = 0.5,
+        sneak_glitch = true, -- sneak glitch is super based
     })
 
     player:set_formspec_prepend([[

@@ -1,3 +1,4 @@
+--
 local function get_nearby_player(pos)
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
         if obj:is_player() then return obj end
@@ -21,22 +22,25 @@ local function meteorite_explode(pos, type)
         end
     end
     --placing nodes
-	local protected = minetest.is_protected(pos, ".meteorite")
-    if not protected then minetest.set_node(pos, { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" }) end
-    local node_types = { matter_blob = {"sbz_meteorites:meteoric_matter","sbz_meteorites:meteoric_metal"},
-						 emitter = {"sbz_meteorites:meteoric_emittrium","sbz_meteorites:meteoric_metal"},
-						 antimatter_blob = {"sbz_meteorites:meteoric_antimatter","sbz_meteorites:meteoric_antimatter"}}
-	if not protected then
-		for _ = 1, 16 do
-			local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
-			if minetest.get_node(new_pos).name == "air" then
-				minetest.set_node(new_pos, {
-					name = math.random() < 0.2 and node_types[type][2] or
-						node_types[type][1]
-				})
-			end
-		end
-	end
+    local protected = minetest.is_protected(pos, ".meteorite")
+    if not protected then minetest.set_node(pos,
+            { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" }) end
+    local node_types = {
+        matter_blob = { "sbz_meteorites:meteoric_matter", "sbz_meteorites:meteoric_metal" },
+        emitter = { "sbz_meteorites:meteoric_emittrium", "sbz_meteorites:meteoric_metal" },
+        antimatter_blob = { "sbz_meteorites:meteoric_antimatter", "sbz_meteorites:meteoric_antimatter" }
+    }
+    if not protected then
+        for _ = 1, 16 do
+            local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
+            if minetest.get_node(new_pos).name == "air" then
+                minetest.set_node(new_pos, {
+                    name = math.random() < 0.2 and node_types[type][2] or
+                        node_types[type][1]
+                })
+            end
+        end
+    end
     --knockback
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
         if obj:is_player() then
@@ -103,7 +107,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target then self.object:remove() end
+            if not target then return self.object:remove() end
             self.object:set_velocity(1.5 * vector.normalize(target:get_pos() - pos + offset))
         end
         local texture = self.type .. ".png^meteorite.png"
@@ -115,7 +119,9 @@ minetest.register_entity("sbz_meteorites:meteorite", {
     end,
     on_deactivate = function(self)
         if not self.type then return end
-        minetest.sound_fade(self.sound, 0.1, 0)
+        if self.sound then
+            minetest.sound_fade(self.sound, 0.1, 0)
+        end
         if self.waypoint then sbz_api.remove_waypoint(self.waypoint) end
     end,
     get_staticdata = function(self)
@@ -143,7 +149,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
             return
         end
-        self.time_since = self.time_since + dtime
+        self.time_since = (self.time_since or 0) + dtime
         if self.waypoint and self.time_since >= 2 then
             sbz_api.remove_waypoint(self.waypoint)
             self.waypoint = nil

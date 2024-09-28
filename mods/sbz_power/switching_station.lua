@@ -38,9 +38,12 @@ function sbz_api.assemble_network(start_pos, seen)
 
     sbz_api.vm_begin()
 
+    local max_iter = 5000
+    local iter = 0
     local function internal(pos, dir)
-        if not seen[hash(pos)] then
-            local node = sbz_api.vm_get_node(pos).name
+        if not seen[hash(pos)] and iter < max_iter then
+            iter = iter + 1
+            local node = (sbz_api.vm_get_node(pos) or {}).name
             local node_def_of_this_node = node_defs[node]
             if not node_def_of_this_node then
                 seen[hash(pos)] = true
@@ -64,12 +67,14 @@ function sbz_api.assemble_network(start_pos, seen)
                 batteries[#batteries + 1] = { pos, node }
             elseif is_generator then
                 generators[#generators + 1] = { pos, node }
-            elseif is_subticking then
-                network.subticking_machines[#network.subticking_machines + 1] = { pos, node }
             elseif is_machine then
                 machines[#machines + 1] = { pos, node }
             elseif is_connector then
                 node_def_of_this_node.assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
+            end
+
+            if is_subticking then
+                network.subticking_machines[#network.subticking_machines + 1] = { pos, node }
             end
             seen[hash(pos)] = true
             if is_conducting then
@@ -170,15 +175,18 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
         local meta = minetest.get_meta(position)
+        if meta:get_int("force_off") == 1 then
+            batteries[k] = nil
+        else
+            touched_nodes[hash(position)] = os.time()
 
-        touched_nodes[hash(position)] = os.time()
+            v[3] = node_defs[node].battery_max
+            v[4] = meta:get_int("power")
+            v[5] = meta
 
-        v[3] = node_defs[node].battery_max
-        v[4] = meta:get_int("power")
-        v[5] = meta
-
-        battery_max = battery_max + v[3]
-        supply = supply + v[4]
+            battery_max = battery_max + v[3]
+            supply = supply + v[4]
+        end
     end
 
     network.battery_supply_only = supply -- copy
@@ -186,21 +194,24 @@ function sbz_api.switching_station_tick(start_pos)
     for k, v in ipairs(generators) do
         local position = v[1]
         local node = v[2]
-
-        touched_nodes[hash(position)] = os.time()
-        local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
-        assert(action_result, "You need to return something in the action function... fauly node: " .. node)
-        supply = supply + action_result
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
+            touched_nodes[hash(position)] = os.time()
+            local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+            assert(action_result, "You need to return something in the action function... fauly node: " .. node)
+            supply = supply + action_result
+        end
     end
 
     for k, v in ipairs(machines) do
         local position = v[1]
         local node = v[2]
 
-        touched_nodes[hash(position)] = os.time()
-        local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
-        assert(action_result, "You need to return something in the action function... fauly node: " .. node)
-        demand = demand + action_result
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
+            touched_nodes[hash(position)] = os.time()
+            local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+            assert(action_result, "You need to return something in the action function... fauly node: " .. node)
+            demand = demand + action_result
+        end
     end
 
 
@@ -235,7 +246,7 @@ function sbz_api.switching_station_sub_tick(start_pos)
         local node = v[2]
 
         touched_nodes[hash(position)] = os.time()
-        demand = demand + node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+        demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
     end
 
     local t1 = minetest.get_us_time()
@@ -282,7 +293,7 @@ minetest.register_abm({
     end
 })
 
-local timeout_limit = 2 -- seconds
+local timeout_limit = 3 -- seconds
 
 minetest.register_abm({
     label = "Machine timeout check",

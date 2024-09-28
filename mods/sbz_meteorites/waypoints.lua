@@ -1,7 +1,7 @@
 -- Borrowed mostly from the sub_nav mod in Subnodeica (I'd already done the work, didn't want to have to do it all again)
 
 local storage = minetest.get_mod_storage()
-
+storage:set_string("waypoints", "")
 --Set waypoint for all players at given position, returns id
 function sbz_api.set_waypoint(pos, defs)
     local data = minetest.deserialize(storage:get_string("waypoints")) or {}
@@ -55,18 +55,20 @@ function sbz_api.update(player)
                 type = "waypoint",
                 offset = { x = 0, y = -60 },
                 z_index = -300,
-                precision = 1,
+                precision = defs.precision or 1,
                 text = "m",
                 number = 0xcef0ff,
                 world_pos = pos
             }))
-            table.insert(player_huds[name], player:hud_add({
-                type = "image_waypoint",
-                scale = { x = 6, y = 6 },
-                z_index = -300,
-                text = defs.image,
-                world_pos = pos
-            }))
+            if defs.image then
+                table.insert(player_huds[name], player:hud_add({
+                    type = "image_waypoint",
+                    scale = { x = 6, y = 6 },
+                    z_index = -300,
+                    text = defs.image,
+                    world_pos = pos
+                }))
+            end
         end
     end
 end
