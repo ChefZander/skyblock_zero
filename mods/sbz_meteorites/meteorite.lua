@@ -1,3 +1,4 @@
+--
 local function get_nearby_player(pos)
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
         if obj:is_player() then return obj end
