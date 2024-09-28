@@ -12,12 +12,12 @@ unified_inventory.register_category('tools', {
 })
 unified_inventory.register_category('chem', {
 	symbol = "sbz_chem:iron_ingot",
-	label = S("Powders and Ingots")
+	label = S("Chemistry")
 })
 
 unified_inventory.register_category('deco', {
 	symbol = "sbz_decor:factory_warning",
-	label = S("Decor")
+	label = S("Decorations")
 })
 
 unified_inventory.register_category("machines", {
@@ -31,7 +31,7 @@ unified_inventory.register_category("pipeworks", {
 })
 unified_inventory.register_category("lua", {
 	symbol = "sbz_logic:lua_controller_on",
-	label = S "Anything to do with luacontrollers."
+	label = S "Luacontrollers"
 })
 
 local function register_automatic_categorization()
