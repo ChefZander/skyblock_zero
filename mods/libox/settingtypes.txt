@@ -1,0 +1,24 @@
+# Enables automatic coroutine sandbox garbage
+# collection, this is only nessesary when:
+# 1) You have a mod that does not clean up sandboxes after itself
+# - Also, unloaded areas may be a huge issue
+# 2) You have way too many sandboxes running
+# is experimental
+libox.gc.auto (Enable automatic garbage collection) bool false
+
+
+# (In seconds) If a coroutine sandbox has been untouched
+# for this long, garbage collection may remove it
+libox.gc.time_treshold (Garbage collection time treshold) float 600
+
+
+# Garbage collection will start to
+# actually do stuff when there are this
+# many coroutine sandboxes
+libox.gc.number_of_sandboxes (Garbage collection "number of sandboxes" treshold) int 60
+
+# In seconds
+# "How often should the gc be executed"
+# Only works when Automatic gc is enabled
+# (gc = garbage collection)
+libox.gc.interval (Garbage collection interval) int 60
