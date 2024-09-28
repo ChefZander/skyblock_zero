@@ -407,12 +407,7 @@ Have you ever been tired of taking items out of nodes? Do you just want to inter
 
 Now you can!
 
-<<<<<<< HEAD
 The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes.
-=======
-The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes.
->>>>>>> c534db112651f9a1e7fa63e6f00030634233eb95
-
 ]],
     requires = { "Bear Arms", "Tubes" }
 }, {

@@ -1,5 +1,4 @@
 <bigger>Main Sandbox Environment</bigger>
-<<<<<<< HEAD
 Based off of the standard libox environment
 
 <big> Definitions</big>
@@ -43,6 +42,3 @@ $C1    type = "receive"
 
 Also, the basic editor that is in the systemdisk, cares about the global <mono>terminal_text</mono>
 If you do <mono>terminal_text = "helloo world"</mono> it will display "helloo world" on the terminal
-=======
-
->>>>>>> abc9184 (Add libox environment docs)

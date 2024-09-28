@@ -1,18 +1,11 @@
 <bigger>Standard Libox Environment</bigger>
 
-<<<<<<< HEAD
 This is the environment that both the main code's and editor code's environment is based off of.
 
-=======
->>>>>>> abc9184 (Add libox environment docs)
 Environment = The sandboxed global environment you get to work with
 std. = standard/unchanged from what non-sandboxed lua has
 
 <big>Globals</big>
-<<<<<<< HEAD
-=======
-
->>>>>>> abc9184 (Add libox environment docs)
 <mono>assert</mono> - std.
 <mono>error</mono> - std.
 <mono>collectgarbage</mono> - only valid argument is <mono>"count"</mono>
@@ -35,10 +28,6 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>PerlinNoise</mono> - called same as PcgRandom
 
 <big>Strings</big> (<mono>string.*</mono> and <mono>(""):*</mono>)
-<<<<<<< HEAD
-=======
-
->>>>>>> abc9184 (Add libox environment docs)
 <mono>byte</mono> - std.
 <mono>dump</mono> - std.
 <mono>find</mono> - forced to not match patterns
@@ -53,10 +42,6 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>split</mono> - forced to not match patterns, std.
 
 <big>Tables</big> (<mono>table.*</mono>)
-<<<<<<< HEAD
-=======
-
->>>>>>> abc9184 (Add libox environment docs)
 <mono>insert</mono> - std.
 <mono>maxn</mono> - std.
 <mono>remove</mono> - std.
@@ -70,13 +55,7 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>move</mono> - std., luajit only
 
 <big>Math</big> (<mono>math.*</mono>)
-<<<<<<< HEAD
 <mono>abs, acos, asin, atan, atan2, ceil, cos, cosh, deg, exp, floor, fmod, frexp, huge, ldexp, log, log10, max, min, modf, pi, pow, rad, random, sin, sinh, sqrt, tan, tanh</mono> - std.
-=======
-
-<mono>abs, acos, asin, atan, atan2, ceil, cos, cosh, deg, exp, floor, fmod, frexp, huge, ldexp, log, log10, max, min, modf, pi, pow, rad, random, sin, sinh, sqrt, tan, tanh</mono> - std.
-
->>>>>>> abc9184 (Add libox environment docs)
 <mono>hypot, sign, factorial, round</mono> - std., from minetest
 
 <big>Os library</big> (<mono>os.*</mono>)
@@ -97,39 +76,21 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>encode_base64</mono> - std.*
 <mono>decode_base64</mono> - std.*
 <mono>get_us_time</mono> - std.*
-<<<<<<< HEAD
 <mono>hash_node_position</mono> - std.*
 <mono>get_position_from_hash</mono> - std.*
 
-=======
->>>>>>> abc9184 (Add libox environment docs)
 
 *All of theese functions will fail if you give them gigantic string inputs
 
 <big>Pattern library</big> (<mono>pat.*</mono>)
 Pure lua implementation of functions <mono>find, match, gmatch</mono>, they support patterns
-<<<<<<< HEAD
 See https://notabug.org/pgimeno/patlua
 
 <big>Bit</big> (<mono>bit.*</mono>)
-=======
-
-See https://notabug.org/pgimeno/patlua
-
-
-<big>Bit</big> (<mono>bit.*</mono>)
-
->>>>>>> abc9184 (Add libox environment docs)
 <mono>tobit, tohex, bnot, band, bor, bxor, lshift, rshift, arshift, rol, ror, bswap</mono> - std.
 (see https://bitop.luajit.org/ for documentation on this)
 
 <big>Vectors</big> (<mono>vector.*</mono>)
-<<<<<<< HEAD
 std., removed <mono>vector.metatable</mono>
 See https://api.minetest.net/spatial-vectors/ for documentation on this
 
-=======
-
-std., removed <mono>vector.metatable</mono>
-See https://api.minetest.net/spatial-vectors/ for documentation on this
->>>>>>> abc9184 (Add libox environment docs)
