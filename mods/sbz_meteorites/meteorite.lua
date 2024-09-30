@@ -108,7 +108,8 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
             if not target then return self.object:remove() end
-            self.object:set_velocity(1.5 * vector.normalize(target:get_pos() - pos + offset))
+            local velocity = 3.5 * vector.normalize(target:get_pos() - pos + offset + vector.new(1, 1, 1))
+            self.object:set_velocity(velocity)
         end
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
