@@ -75,7 +75,7 @@ function logic.initialize_env(meta, env, pos)
     }
 
     local inv = meta:get_inventory()
-    local disk_list = inv:get_list("disks")
+    local disk_list = inv:get_list("disks") or {}
 
     table.sort(disk_list, function(x, y)
         x = x:is_empty()
@@ -126,7 +126,7 @@ function logic.save_disks_and_mem(meta, env)
     meta:set_int("force_off", 0) -- hehe!
     local disk_array = env.disks
     local inv = meta:get_inventory()
-    local disk_list = inv:get_list("disks")
+    local disk_list = inv:get_list("disks") or {}
 
     if type(disk_array) ~= "table" then return true end -- by that you chose to not save the disks.. and memory... yea, dont do that lol
     for k, v in ipairs(disk_list) do
