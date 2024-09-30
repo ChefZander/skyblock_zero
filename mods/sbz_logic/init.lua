@@ -62,16 +62,6 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
             return stack:get_count()
         end
     end,
-    allow_metadata_inventory_take = function(pos, listname, index, stack, player)
-        if listname == "upgrades" then
-            minetest.registered_craftitems[stack:get_name()].action_out(stack, pos, minetest.get_meta(pos))
-        end
-        return stack:get_count()
-    end,
-    allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-        return count
-    end,
-
     -- all TODOs: Make UPGRADES AND DISKS GREAT AGAI- WORK...
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         if listname == "upgrades" then
