@@ -156,7 +156,8 @@ minetest.register_on_joinplayer(function(player)
     -- disable the sun, moon, clouds, stars and sky
     player:set_sky({
         base_color = "#000000",
-        type = "plain",
+        type = "skybox",
+        textures = {"sb_top.png", "sb_bot.png", "sb_front.png", "sb_back.png", "sb_right.png", "sb_left.png"},
         sky_color = {
             day_sky = "#000000",
             day_horizon = "#000000",
@@ -166,7 +167,7 @@ minetest.register_on_joinplayer(function(player)
             night_horizon = "#000000",
             indoors = "#000000",
         },
-    }, "plain", {})
+    })
 
     player:set_sun({
         visible = false,
@@ -211,7 +212,7 @@ minetest.register_on_joinplayer(function(player)
         bgcolor[#080808BB;true]
         background9[5,5;1,1;theme_background.png^\[colorize:purple:50;true;10]
         listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
-]])
+    ]])
 end)
 
 -- for the immersion

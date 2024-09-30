@@ -20,6 +20,9 @@ This Game uses part of the code of Mesecons, Minetest Game, and potentially othe
 #### Main Menu
 Tragic ambient main menu by Brandon Morris, CC0, https://opengameart.org/content/tragic-ambient-main-menu 
 
+#### Skybox
+Art by StumpyStrust, CC0, https://opengameart.org/content/space-skyboxes-0
+
 #### In Game
 - Cave Theme by Brandon Morris, CC0, https://opengameart.org/content/cave-theme
 - Background space track by yd, CC0, https://opengameart.org/content/background-space-track
