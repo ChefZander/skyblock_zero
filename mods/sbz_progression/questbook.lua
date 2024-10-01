@@ -205,11 +205,11 @@ Also, if you put a machine next to another machine, it will conduct power to tha
 
     { type = "quest", title = "Advanced Batteries", text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores 900 Cosmic Joules, it's for when your factory needs to be compact. Yadda yadda.", requires = { "Batteries", "Furnace" } },
 
-    { type = "quest", title = "Connectors", text = "If for some reason you want to turn machines off and on, you can use these things called Connectors. They join two networks together, and you can click on them to turn them on and off. Yeah, that's about it.", requires = { "Emittrium Circuits", "Reinforced Matter" } },
+    { type = "quest", title = "Connectors", text = "If you want to turn machines on and off, you can use Connectors. They join two networks together, and you can click on them to turn them on and off.", requires = { "Emittrium Circuits", "Reinforced Matter" } },
 
     { type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators", "Meteorites" } },
     { type = "quest", title = "Ele Fabs", text = "Used to manifacture various components, especially for logic.", requires = { "Antimatter", "Emittrium Circuits" } },
-    { type = "quest", title = "Knowledge Stations", text = "Teaches you about logic, logic is not documented in this questbook but instead in the knowledge station. Good luck.", requires = { "Concrete Plan", "Ele Fabs" } },
+    { type = "quest", title = "Knowledge Stations", text = "Teaches you about logic, which is not documented in this questbook but instead in the knowledge station. Good luck.", requires = { "Concrete Plan", "Ele Fabs" } },
     -- ======================================================================================
     { type = "text", title = "Questline: Chemistry", text = "Good luck." },
 
@@ -229,12 +229,12 @@ Also, if you put a machine next to another machine, it will conduct power to tha
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
 
     { type = "quest", title = "Bear Arms", text = "Craft the robotic arm.", requires = { "Furnace" } },
-    { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a LARGE ammount of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
+    { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
 
     -- ======================================================================================
     { type = "text", title = "Questline: Organics", text = "Grow plants and fungi to craft more things and also make your base look really cool." },
-    { type = "quest", title = "Liquid Water", text = "So it turns out that crushing pebbles actually squeezes out a bit of water. You can take advantage of this by crafting some fluid cells and putting them in the crusher output to collect it. Once you've done that, go build a little pool or something, I dunno.", requires = { "Crusher" } },
-    { type = "quest", title = "Emittrium Glass", text = "The other preliminary we need before growing stuff is glass. Thankfully it's really easy to craft, it only needs emittrium and antimatter and crafts a lot of glass.", requires = { "Antimatter", "Obtain Emittrium" } },
+    { type = "quest", title = "Liquid Water", text = "Crushing pebbles squeezes out a bit of water. You can take advantage of this by crafting some fluid cells and putting them in the crusher output to collect it. Once you've done that, go build a little pool or something. :)", requires = { "Crusher" } },
+    { type = "quest", title = "Emittrium Glass", text = "The other preliminary we need before we can start growing plants is glass. Thankfully it's really easy to craft, it only needs emittrium and antimatter and crafts a lot of glass.", requires = { "Antimatter", "Obtain Emittrium" } },
     { type = "quest", title = "Dirt", text = "If you've followed my instructions and built a pool, you should notice moss beginning to grow around it, and algae on top of it, if there's enough light. Take some of that moss and craft it into dirt.", requires = { "Liquid Water" } },
     { type = "quest", title = "Sprouting Plants", text = "You'll also need to craft the algae on your pool into fertilizer. This is useful for speeding up plant growth, or for forcing dormant seeds in the dirt to germinate.", requires = { "Liquid Water" } },
     {
