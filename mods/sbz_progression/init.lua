@@ -1,6 +1,7 @@
 minetest.log("action", "sbz progression: init")
 local modpath = minetest.get_modpath("sbz_progression")
 
+dofile(modpath .. "/quests.lua")
 dofile(modpath .. "/questbook.lua")
 dofile(modpath .. "/annoy.lua")
 
