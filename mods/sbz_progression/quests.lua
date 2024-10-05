@@ -30,40 +30,21 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
     {
         type = "quest",
         title = "Antimatter",
-        text =
-        [[Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can.
-
-Craft some 'Antimatter Dust', we'll need it for later. It's made by mixing 'Matter Dust' and 'Core Dust'. Let's see you figure this out, smart one.]],
+        text = "Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can. Craft some 'Antimatter Dust', we'll need it for later.",
         requires = { "Introduction" }
     },
 
     {
         type = "quest",
         title = "Annihilator",
-        text = [[Doesn't it feel weird to be holding antimatter?
-
-Now, to craft a Matter Annihilator you'll need a couple things:
-
-* one Antimatter Dust
-* one Charged Particle
-* three Matter Blobs.
-
-Make sure the Charged Particle is properly encased in matter, or it'll escape.]],
+        text = "Doesn't it feel weird to be holding antimatter? To break nodes you'll need a Matter Annihilator, you should craft it up now since it's used in some other crafts down the line. \nTIP: Half-broken Annihilators can also be used to craft with.",
         requires = { "A bigger platform", "Antimatter" }
     },
 
     {
         type = "quest",
         title = "Charged Field",
-        text = [[Now, then. We have one more thing to do before we can start automating. Can you guess what it is?
-
-That's right! We need power generation.
-
-Using nine Charged Particles, you can craft yourself a Simple Charged Field.
-But listen up! Charged Fields decay over time, leaving indestructible residue (that decays in a relatively short time) behind. Since you are using a Simple Charged Field, you should expect to have energy for about 10 minutes.
-
-Yeah, it uses energy even when there's nothing connected to it. Since resources are infinite here, time is your resource.
-Anyways, I talked a lot, didn't I? Maybe too much. Let's get automating.]],
+        text = "Now, then. We have one more thing to do before we can start automating. Can you guess what it is? \nThat's right! We need power generation. \n\nTo get going, craft yourself a Simple Charged Field.\nBut listen up! Charged Fields decay over time, leaving indestructible residue (that decays in a relatively short time) behind. Since you are using a Simple Charged Field, you should expect to have energy for about 10 minutes. \nGenerators use energy even when there's nothing connected to them. Since resources are infinite here, time is your resource. Let's get automating.",
         requires = { "Introduction" }
     },
 
