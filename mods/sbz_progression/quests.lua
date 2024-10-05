@@ -378,62 +378,70 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         title = "Questline: Pipeworks",
         text =
         [[If you already know about regular pipeworks, skyblock_zero's pipeworks are a very modified version of that mod, but it will be similar though.]]
-    }, {
-    type = "quest",
-    title = "Tubes",
-    text = [[
-Have you ever wanted to automatically move items around without input?
+    }, 
+    {
+        type = "quest",
+        title = "Tubes",
+        text = [[
+    Have you ever wanted to automatically move items around without input?
 
-Now you can!
+    Now you can!
 
-Tubes are, well, tubes that can transport items around! Currently, you can't interact with them: but just have some lying around, the next and future quests utilize them.
+    Tubes are, well, tubes that can transport items around! Currently, you can't interact with them: but just have some lying around, the next and future quests utilize them.
 
-TIP: Items in tubes will go into directions with higher priority.]],
-    requires = { "Furnace" },
-}, {
-    type = "quest",
-    title = "Automatic Filter-Injectors",
-    text = [[
-Have you ever been tired of taking items out of nodes? Do you just want to interact with tubes as soon as possible?
+    TIP: Items in tubes will go into directions with higher priority.]],
+        requires = { "Furnace" },
+    }, 
+    {
+        type = "quest",
+        title = "Automatic Filter-Injectors",
+        text = [[
+    Have you ever been tired of taking items out of nodes? Do you just want to interact with tubes as soon as possible?
 
-Now you can!
+    Now you can!
 
-The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes.
-]],
-    requires = { "Bear Arms", "Tubes" }
-}, {
-    type = "quest",
-    title = "Node Breakers",
-    text =
-    "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 1 power and run every second.",
-    requires = { "Automatic Filter-Injectors" }
-}, {
-    type = "quest",
-    title = "Deployers",
-    text = "Deployers try to place a node into their front-side. That's about it.",
-    requires = { "Automatic Filter-Injectors", "Bear Arms" }
-}, {
-    type = "quest",
-    title = "Punchers",
-    text = "Punchers punch stuff, allowing you to automate resource generation even more.",
-    requires = { "Automatic Filter-Injectors", "Bear Arms", "Emittrium Circuits" }
-}, {
-    type = "quest",
-    title = "Autocrafters",
-    text =
-    "Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts/s.",
-    requires = { "Bear Arms", "Neutronium", "Emittrium Circuits", "Automatic Filter-Injectors" }
-}, {
-    type = "quest",
-    title = "Item Voids",
-    text = "Item voids delete every item that goes in, and yes these are pipeworks trashcans.",
-    requires = { "Tubes" }
-}, {
-    type = "quest",
-    title = "Item Vacuums",
-    text = "Item Vacuums vacuum up items in a 16 block radius, but they tend to cause lag.",
-    requires = { "Neutronium", "Tubes" }
-},
+    The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes.
+    ]],
+        requires = { "Bear Arms", "Tubes" }
+    }, 
+    {
+        type = "quest",
+        title = "Node Breakers",
+        text =
+        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 1 power and run every second.",
+        requires = { "Automatic Filter-Injectors" }
+    }, 
+    {
+        type = "quest",
+        title = "Deployers",
+        text = "Deployers try to place a node into their front-side. That's about it.",
+        requires = { "Automatic Filter-Injectors", "Bear Arms" }
+    }, 
+    {
+        type = "quest",
+        title = "Punchers",
+        text = "Punchers punch stuff, allowing you to automate resource generation even more.",
+        requires = { "Automatic Filter-Injectors", "Bear Arms", "Emittrium Circuits" }
+    }, 
+    {
+        type = "quest",
+        title = "Autocrafters",
+        text =
+        "Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts/s.",
+        requires = { "Bear Arms", "Neutronium", "Emittrium Circuits", "Automatic Filter-Injectors" }
+    }, 
+    {
+        type = "quest",
+        title = "Item Voids",
+        text = "Item voids delete every item that goes in, and yes these are pipeworks trashcans.",
+        requires = { "Tubes" }
+    }, 
+    {
+        type = "quest",
+        title = "Item Vacuums",
+        text = "Item Vacuums vacuum up items in a 16 block radius, but they tend to cause lag.",
+        requires = { "Neutronium", "Tubes" }
+    },
     -- ==================================================================================================
 
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },
@@ -485,18 +493,21 @@ TIP: Build a shield out of compressed core dust to protect against antimatter me
 Small protectors protect a decently sized area.
 Unwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.]],
         requires = { "Concrete Plan", "Furnace" }
-    }, {
-    type = "quest",
-    title = "Big Protectors",
-    text = "Large protectors are like the small protectors but bigger.",
-    requires = { "Small Protectors" }
-}, {
-    type = "quest",
-    title = "Public Storinators",
-    text =
-    "Public storinators are like regular storinators but accessible to ANYONE, regardless of protections.",
-    requires = { "Storinators" }
-},
+    }, 
+    {
+        type = "quest",
+        title = "Big Protectors",
+        text = "Large protectors are like the small protectors but bigger.",
+        requires = { "Small Protectors" }
+    }, 
+    {
+        type = "quest",
+        title = "Public Storinators",
+        text =
+        "Public storinators are like regular storinators but accessible to ANYONE, regardless of protections.",
+        requires = { "Storinators" }
+    },
     { type = "secret", title = "Emptiness", text = "Damn. You fell off." },
     { type = "secret", title = "Desolate",  text = "You talked to yourself." },
-    { type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." }, }
+    { type = "secret", title = "Fragile",   text = "You broke an Angel's Wing." }, 
+}
