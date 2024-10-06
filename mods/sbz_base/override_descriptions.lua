@@ -21,6 +21,7 @@ minetest.register_on_mods_loaded(function()
             end
         end
 
+        local explody = false
         if v.groups ~= nil then
             if v.groups.core_drop_multi ~= nil then
                 new_desc[#new_desc + 1] = "Yields " .. v.groups.core_drop_multi .. "x core and emittrium drops"
@@ -32,6 +33,12 @@ minetest.register_on_mods_loaded(function()
                 new_desc[#new_desc + 1] =
                 "This chemical is disabled.\nThis means that you won't be able to obtain it anymore, but it may receive a use in the future."
             end
+            if v.groups.explody then explody = true end
+        end
+
+
+        if v.type == "node" and not explody then
+            new_desc[#new_desc + 1] = "Immune to explosions"
         end
 
         if v.info_extra then

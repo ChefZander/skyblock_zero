@@ -116,7 +116,7 @@ sbz_api.register_generator("sbz_power:simple_charged_field", {
     description = "Simple Charged Field",
     drawtype = "glasslike",
     tiles = { "simple_charged_field.png" },
-    groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1 },
+    groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5 },
     sunlight_propagates = true,
     walkable = false,
     power_generated = 3,
