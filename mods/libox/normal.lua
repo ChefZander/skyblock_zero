@@ -2,6 +2,10 @@ local BYTECODE_CHAR = 27
 
 
 function libox.normal_sandbox(def)
+    if libox.disabled then
+        return false, "Libox is disabled. Please wait until the server admins re-enable it."
+    end
+
     local code = def.code
     local env = def.env
     local error_handler = def.error_handler or libox.unsafe_traceback
@@ -25,10 +29,12 @@ function libox.normal_sandbox(def)
 
     f = function_wrap(f)
 
+    local old_hook = { debug.gethook() }
+
     debug.sethook(in_hook, "", def.hook_time or libox.default_hook_time)
     getmetatable("").__index = env.string
     local ok, ret = xpcall(f, error_handler)
-    debug.sethook()
+    debug.sethook(unpack(old_hook))
 
     getmetatable("").__index = string
     if not ok then

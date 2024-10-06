@@ -1,7 +1,8 @@
 libox = {
     safe = {},
-    supply_additional_environment = function(...) return ... end, -- for other mods
+    supply_additional_environment = function(...) return ... end, -- for other mods to do their stuff
     default_hook_time = 20,
+    disabled = false
 }
 
 

@@ -218,18 +218,15 @@ function libox.create_basic_environment()
         remove = table.remove,
         sort = table.sort,
         concat = table.concat,
-        -- minetest helpers:
+        -- minetest only
         indexof = table.indexof,
         copy = table.copy,
         insert_all = table.insert_all,
         key_value_swap = table.key_value_swap,
         shuffle = table.shuffle,
 
-        -- luajit only helpers
+        -- luajit only
         move = table.move,
-        -- deprecated stuff
-        foreach = table.foreach,
-        foreachi = table.foreachi,
     }
 
 
