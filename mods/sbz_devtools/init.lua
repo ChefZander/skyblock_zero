@@ -175,3 +175,12 @@ minetest.register_chatcommand("dev_clear", {
         return true, "Inventory cleared."
     end
 })
+
+minetest.register_chatcommand("dev_disable_libox", {
+    description = "Enables/Disables all lua sandboxing",
+    privs = { ["server"] = true },
+    func = function()
+        libox.disabled = not libox.disabled
+        return true, "Status: " .. dump(libox.disabled)
+    end
+})

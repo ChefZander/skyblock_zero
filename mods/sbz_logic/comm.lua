@@ -2,7 +2,8 @@ local logic = sbz_api.logic
 
 local send_max_cost = 10 * 1024 -- idk 10 kilobytes??
 
-function logic.send(pos, thing, from_pos)
+function logic.send_l(pos, thing, from_pos)
+    -- used for the luacontroller, dont use anywhere else it wont work
     local msg, cost = libox.digiline_sanitize(thing, false)
     if cost > send_max_cost then
         return false, "Whatever you are sending is way too large"
@@ -19,6 +20,12 @@ function logic.send(pos, thing, from_pos)
     else
         sbz_api.queue:add_action(pos, "logic_send", { msg, from_pos })
     end
+    return true
+end
+
+function logic.send(pos, thing, from_pos) -- used in logic devices
+    local msg = libox.digiline_sanitize(thing, false)
+    sbz_api.queue:add_action(pos, "logic_send", { msg, from_pos })
     return true
 end
 

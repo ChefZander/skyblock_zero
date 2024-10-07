@@ -1,0 +1,57 @@
+<bigger>Object Detector</bigger>
+
+Used for... detecting objects... and also it gives you their inventories and properties :D
+
+You can use it by just doing this:
+<mono>
+$C1 send_to(links.detector, { -- this just triggers the detector, you can do it with any message like "GET" or "POO", but with a table you may configure it
+$C1     inventories = false, -- (default: true) if false, disables getting inventories and wielded items, may be useful to prevent a scenario where there is too much data.
+$C1     props = false, -- (default: true) if false, disables getting the object properties.
+$C1 })
+</mono>
+
+<big>The response:</big>
+See https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md for what the obj:<x> functions represent, or just dump() them and see
+
+For both:
+<mono>
+is_player = obj:is_player()
+nametag = obj:get_nametag_attributes()
+pos = obj:get_pos(),
+props = obj:get_properties()
+hp = obj:get_hp()
+armor_groups = obj:get_armor_groups()
+velocity = obj:get_velocity()
+</mono>
+
+For entities only:
+<mono>
+acceleration = obj:get_acceleration(),
+rotation = obj:get_rotation(),
+yaw = obj:get_yaw(),
+texture_mod = obj:get_texture_mod(),
+name = obj:get_luaentity().name,
+</mono>
+
+For players only:
+<mono>
+name = v:get_player_name(),
+
+camera = {
+$C1    dir = v:get_look_dir(),
+$C1    pitch = v:get_look_vertical(),
+$C1    yaw = v:get_look_horizontal(),
+$C1    fov = v:get_fov()
+},
+control = v:get_player_control(),
+physics = v:get_physics_override(),
+lighting = v:get_lighting(),
+
+inv = settings.inventories v:get_inventory():get_lists(), -- but converts the ItemStacks into tables using <ItemStack>:to_table()
+wield_index = v:get_wield_index(), -- can be used for fun stuff like controls in a game
+wielded_item = settings.inventories and v:get_wielded_item(),
+</mono>
+
+(All of theese are in a table)
+
+Good luck!
