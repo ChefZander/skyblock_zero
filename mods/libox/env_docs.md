@@ -46,7 +46,7 @@
 - insert_all = unchanged, from minetest
 - key_value_swap = unchanged, from minetest
 - shuffle = unchanged, from minetest
-- move = unchanged, luajit only
+- move = unchanged, LUAJIT ONLY
 - concat = unchanged
 
 # Math library (math.*)

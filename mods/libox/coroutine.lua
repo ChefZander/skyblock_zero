@@ -245,6 +245,10 @@ function api.get_default_hook(max_time) -- im sorry
 end
 
 function api.run_sandbox(ID, value_passed)
+    if libox.disabled then
+        return false, "Libox is disabled. Please wait until the server admins re-enable it."
+    end
+
     local sandbox = active_sandboxes[ID]
     if sandbox == nil then
         return false, "Sandbox not found. (Garbage collected?)"
@@ -264,6 +268,8 @@ function api.run_sandbox(ID, value_passed)
         return false, "The coroutine is dead, nothing to do."
     end
 
+    local old_hook = { debug.gethook() }
+
     local ok, errmsg_or_value
 
     local pcall_ok, pcall_errmsg = pcall(function()
@@ -274,7 +280,7 @@ function api.run_sandbox(ID, value_passed)
     -- in rare cases this is actually nessesary,
     -- in all other cases coroutine.resume works perfectly fine to catch the error
     -- actually i dont really know if its that nessesary...
-    debug.sethook()
+    debug.sethook(unpack(old_hook))
     getmetatable("").__index = string
 
     local size_check = api.size_check(sandbox.env, sandbox.size_limit, thread)

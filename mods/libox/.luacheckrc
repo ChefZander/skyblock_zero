@@ -14,3 +14,5 @@ read_globals = {
     "mesecon", "digilines", "dbg"
 
 }
+
+ignore = {"631"}

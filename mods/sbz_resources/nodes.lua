@@ -420,7 +420,7 @@ minetest.register_node("sbz_resources:emittrium_glass", {
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
-    groups = { matter = 1, transparent = 1 }
+    groups = { matter = 1, transparent = 1, explody = 100 }
 })
 
 minetest.register_craft({

@@ -9,7 +9,7 @@ minetest.register_node("sbz_bio:moss", {
     paramtype2 = "wallmounted",
     walkable = false,
     buildable_to = true,
-    groups = { matter = 3, oddly_breakable_by_hand = 3, burn = 2, habitat_conducts = 1, transparent = 1, attached_node = 1 }
+    groups = { matter = 3, oddly_breakable_by_hand = 3, burn = 2, habitat_conducts = 1, transparent = 1, attached_node = 1, explody = 100 }
 })
 
 minetest.register_node("sbz_bio:algae", {
@@ -23,7 +23,7 @@ minetest.register_node("sbz_bio:algae", {
     paramtype2 = "wallmounted",
     walkable = false,
     buildable_to = true,
-    groups = { matter = 3, oddly_breakable_by_hand = 3, burn = 2, habitat_conducts = 1, transparent = 1 }
+    groups = { matter = 3, oddly_breakable_by_hand = 3, burn = 2, habitat_conducts = 1, transparent = 1, explody = 100 }
 })
 
 minetest.register_abm({
@@ -63,7 +63,7 @@ minetest.register_abm({
 minetest.register_node("sbz_bio:dirt", {
     description = "Dirt",
     tiles = { "dirt.png" },
-    groups = { matter = 1, cracky = 3, moss_growable = 1, soil = 1 }
+    groups = { matter = 1, cracky = 3, moss_growable = 1, soil = 1, explody = 10 }
 })
 
 minetest.register_craft({

@@ -22,7 +22,11 @@
 
 `msg, cost = libox.digiline_sanitize(input, allow_functions, wrap)` - use this instead of your own clean_and_weigh_digiline_message implementation, `wrap` is a function that accepts a function and returns another one, this gets called on user functions
 
-`libox.sandbox_lib_f(f, ...)` - use this if you want to escape the string sandbox (do this if you are not 100% sure that your code is free of `"":this_stuff()`) **don't use this on functions that run user functions**
+`libox.sandbox_lib_f(f, ...)` - use this if you want to escape the string sandbox (do this if you are not 100% sure that your code is free of `"":this_stuff()`) **don't use this on functions that run user 
+
+`libox.disabled = true/false` - use when you want to disable libox (e.g. when using jitprofiler) 
+
+**functions**
 
 `libox.type_check(thing, check)`
 - `thing` = untrusted data
