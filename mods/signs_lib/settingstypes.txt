@@ -1,0 +1,1 @@
+signs_lib.edit_priv (Allows to rotate signs and to open (and consequently edit) any default sign formspec) string signslib_edit

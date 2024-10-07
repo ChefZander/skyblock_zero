@@ -1,0 +1,12 @@
+# textdomain: signs_lib
+Locked sign, owned by @1@n=защищенная табличка, пренадлежит @1@n
+Skims through all currently-loaded sign-bearing mapblocks, clears away any entities within each sign's node space, and regenerates their text entities, if any.=
+There are no signs in the currently-loaded terrain.=
+Found a total of @1 sign nodes across @2 blocks.=
+Regenerating sign entities ...=
+Finished.=
+Write=записать
+Unicode font=
+Wide font=
+Wooden Wall Sign=
+Steel Wall Sign=

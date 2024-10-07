@@ -1,0 +1,8 @@
+signs_lib.unicode_install({208,132,"0404"})
+signs_lib.unicode_install({208,134,"0406"})
+signs_lib.unicode_install({208,135,"0407"})
+signs_lib.unicode_install({209,148,"0454"})
+signs_lib.unicode_install({209,150,"0456"})
+signs_lib.unicode_install({209,151,"0457"})
+signs_lib.unicode_install({210,144,"0490"})
+signs_lib.unicode_install({210,145,"0491"})
