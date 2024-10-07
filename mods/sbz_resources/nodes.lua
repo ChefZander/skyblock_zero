@@ -297,9 +297,9 @@ minetest.register_node("sbz_resources:emitter_imitator", {
 minetest.register_craft({
     output = "sbz_resources:emitter_imitator",
     recipe = {
-        { "sbz_resources:antimatter_blob", "sbz_resources:core_dust",   "sbz_resources:antimatter_blob" },
-        { "sbz_resources:core_dust",       "sbz_resources:matter_blob", "sbz_resources:core_dust" },
-        { "sbz_resources:antimatter_blob", "sbz_resources:core_dust",   "sbz_resources:antimatter_blob" }
+        { "",                        "sbz_resources:core_dust",       "" },
+        { "sbz_resources:core_dust", "sbz_resources:antimatter_blob", "sbz_resources:core_dust" },
+        { "",                        "sbz_resources:core_dust",       "" }
     }
 })
 
