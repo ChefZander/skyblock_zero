@@ -72,7 +72,7 @@ function logic.get_env(pos, meta)
         end,
         send_to = libf(function(send_to_pos, msg)
             if not logic.type_link(send_to_pos, true) then return false, "send_to_pos must be a link or position" end
-            return logic.send(logic.add_to_link(send_to_pos, pos), msg, pos)
+            return logic.send_l(logic.add_to_link(send_to_pos, pos), msg, pos)
         end),
         get_node = logic.get_the_get_node_function(pos),
         is_protected = function(rpos, who)

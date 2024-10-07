@@ -33,11 +33,11 @@ function logic.range_check(luac_pos, pos2)
     local owner = meta:get_string("owner")
     if not pos2.x then
         for k, v in pairs(pos2) do
-            ret_value = ret_value and in_square_radius(luac_pos, v, linking_range)
+            ret_value = ret_value and logic.in_square_radius(luac_pos, v, linking_range)
                 and not minetest.is_protected(v, owner)
         end
     else
-        ret_value = ret_value and in_square_radius(luac_pos, pos2, linking_range) and
+        ret_value = ret_value and logic.in_square_radius(luac_pos, pos2, linking_range) and
             not minetest.is_protected(pos2, owner)
     end
     return ret_value
@@ -56,4 +56,15 @@ end
 function logic.try_to_unpack(x)
     if #x == 1 then return x[1] end
     return x
+end
+
+function logic.kill_itemstacks(t)
+    for k, v in pairs(t) do
+        if type(v) == "table" then
+            t[k] = logic.kill_itemstacks(v)
+        elseif type(v) == "userdata" and v.to_table then
+            t[k] = v:to_table()
+        end
+    end
+    return t
 end
