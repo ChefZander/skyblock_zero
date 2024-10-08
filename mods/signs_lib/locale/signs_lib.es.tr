@@ -1,0 +1,12 @@
+# textdomain: signs_lib
+Locked sign, owned by @1@n=Cartel bloqueado, propiedad de @1
+Skims through all currently-loaded sign-bearing mapblocks, clears away any entities within each sign's node space, and regenerates their text entities, if any.=Examina todos los bloques de mapas que contienen letreros cargados actualmente, elimina cualquier entidad dentro del espacio de nodo de cada cartel y regenera sus entidades de texto, si las hay.
+There are no signs in the currently-loaded terrain.=No hay carteles en el terreno actual cargado.
+Found a total of @1 sign nodes across @2 blocks.=Se han encontrado un total de @1 cartel(es) a traves de @2 bloque(s).
+Regenerating sign entities ...=Regenerando entidades de los carteles...
+Finished.=Terminado
+Write=Escribir
+Unicode font=Fuente unicode
+Wide font=Fuente ancha
+Wooden Wall Sign=Cartel de Madera
+Steel Wall Sign=Cartel de Acero

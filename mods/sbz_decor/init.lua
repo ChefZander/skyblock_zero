@@ -110,3 +110,6 @@ minetest.register_craft({
     type = "shapeless",
     recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:gold_powder", "sbz_chem:gold_powder" }
 })
+
+local MP = minetest.get_modpath("sbz_decor")
+dofile(MP .. "/signs.lua")

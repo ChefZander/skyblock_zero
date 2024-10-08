@@ -1,0 +1,7 @@
+signs_lib.unicode_install({195,132,"00c4"})
+signs_lib.unicode_install({195,150,"00d6"})
+signs_lib.unicode_install({195,156,"00dc"})
+signs_lib.unicode_install({195,159,"00df"})
+signs_lib.unicode_install({195,164,"00e4"})
+signs_lib.unicode_install({195,182,"00f6"})
+signs_lib.unicode_install({195,188,"00fc"})

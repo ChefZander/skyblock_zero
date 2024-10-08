@@ -1,0 +1,12 @@
+# textdomain: signs_lib
+Locked sign, owned by @1@n=Abgeschlossenes Schild, gehört @1@n
+Skims through all currently-loaded sign-bearing mapblocks, clears away any entities within each sign's node space, and regenerates their text entities, if any.=Iteriert durch alle derzeit geladenen Kartenblöcke, die Schilder enthalten, löscht alle Entities innerhalb des Node-Raums eines jeden Schildes und erzeugt ihre Text-Entities, falls vorhanden, neu.
+There are no signs in the currently-loaded terrain.=Im derzeit geladenen Gelände befinden sich keine Schilder.
+Found a total of @1 sign nodes across @2 blocks.=Insgesamt wurden @1 Schild-Nodes über @2 Kartenblöcke gefunden.
+Regenerating sign entities ...=Schild-Entities werden neu erzeugt ...
+Finished.=Fertig.
+Write=Schreiben
+Unicode font=Unicode-Schrift
+Wide font=Weite Schrift
+Wooden Wall Sign=Holzwandschild
+Steel Wall Sign=Stahlwandschild
