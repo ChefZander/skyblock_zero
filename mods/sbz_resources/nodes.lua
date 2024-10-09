@@ -20,91 +20,9 @@ minetest.register_craft({
         { "sbz_resources:matter_dust", "sbz_resources:matter_dust", "sbz_resources:matter_dust" }
     }
 })
-
-minetest.register_node("sbz_resources:matter_stair", {
-    description = "Matter Stair",
-    tiles = { "matter_blob.png" },
-    drawtype = "nodebox",
-    paramtype2 = "facedir",
-    node_box = {
-        type = "fixed",
-        fixed = {
-            { -0.5, -0.5, -0.5, 0.5, 0,   0.5 },
-            { -0.5, 0,    0,    0.5, 0.5, 0.5 },
-        }
-    },
-    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
-    walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
-    use_texture_alpha = "clip"
-})
-
-minetest.register_craft({
-    output = "sbz_resources:matter_stair 8",
-    recipe = {
-        { "sbz_resources:matter_blob", "",                          "" },
-        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "" },
-        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
-    }
-})
-minetest.register_craft({
-    output = "sbz_resources:matter_stair 8",
-    recipe = {
-        { "",                          "",                          "sbz_resources:matter_blob" },
-        { "",                          "sbz_resources:matter_blob", "sbz_resources:matter_blob" },
-        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
-    }
-})
-
-minetest.register_node("sbz_resources:matter_slab", {
-    description = "Matter Slab",
-    tiles = { "matter_blob.png" },
-    drawtype = "nodebox",
-    paramtype2 = "facedir",
-    node_box = {
-        type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 }
-    },
-    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
-    walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
-    node_placement_prediction = "",
-    on_place = function(itemstack, user, pointed)
-        if pointed.type ~= "node" then return itemstack end
-        local ydir = pointed.under.y - pointed.above.y
-        local node = minetest.get_node(pointed.under)
-        if node.name == "sbz_resources:matter_slab" and (node.param2 == 0 and ydir < 0 or node.param2 == 23 and ydir > 0) then
-            minetest.set_node(pointed.under, { name = "sbz_resources:matter_blob" })
-            itemstack:take_item()
-            return itemstack
-        end
-        if ydir > 0 then return minetest.item_place_node(itemstack, user, pointed, 23) end
-        if ydir < 0 then return minetest.item_place_node(itemstack, user, pointed, 0) end
-        local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y % 1
-        return minetest.item_place_node(itemstack, user, pointed,
-            (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
-    end,
-    allow_moss_growth = function(pos, node, dir)
-        return dir.y == 0 or node.param2 == 0 and dir.y < 0 or node.param2 == 23 and dir.y > 0
-    end
-})
-
-minetest.register_craft({
-    output = "sbz_resources:matter_slab 6",
-    recipe = {
-        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob" }
-    }
-})
+stairs.register("sbz_resources:matter_blob")
+minetest.register_alias("sbz_resources:matter_stair", "sbz_resources:matter_blob_stair")
+minetest.register_alias("sbz_resources:matter_slab", "sbz_resources:matter_blob_slab")
 
 minetest.register_node("sbz_resources:matter_platform", {
     description = "Matter Platform",
@@ -129,7 +47,6 @@ minetest.register_node("sbz_resources:matter_platform", {
         return dir.y > 0
     end
 })
-
 minetest.register_craft({
     output = "sbz_resources:matter_platform 8",
     recipe = {
@@ -161,80 +78,9 @@ minetest.register_craft({
     }
 })
 
-minetest.register_node("sbz_resources:antimatter_stair", {
-    description = "Antimatter Stair",
-    tiles = { "antimatter_blob.png" },
-    drawtype = "nodebox",
-    paramtype2 = "facedir",
-    light_source = 2,
-    node_box = {
-        type = "fixed",
-        fixed = {
-            { -0.5, -0.5, -0.5, 0.5, 0,   0.5 },
-            { -0.5, 0,    0,    0.5, 0.5, 0.5 },
-        }
-    },
-    groups = { antimatter = 1, cracky = 3 },
-    walkable = true,
-    sounds = {
-        footstep = { name = "invertedstep", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("invertedstep", { pos = pos, gain = 1.0 })
-    end,
-    use_texture_alpha = "clip"
-})
-minetest.register_craft({
-    output = "sbz_resources:antimatter_stair 8",
-    recipe = {
-        { "sbz_resources:antimatter_blob", "",                              "" },
-        { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", "" },
-        { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob" }
-    }
-})
-minetest.register_craft({
-    output = "sbz_resources:matter_stair 8",
-    recipe = {
-        { "",                              "",                              "sbz_resources:antimatter_blob" },
-        { "",                              "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob" },
-        { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob" }
-    }
-})
-
-minetest.register_node("sbz_resources:antimatter_slab", {
-    description = "Antimatter Slab",
-    tiles = { "antimatter_blob.png" },
-    drawtype = "nodebox",
-    paramtype2 = "facedir",
-    node_box = {
-        type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0, 0.5 }
-    },
-    groups = { antimatter = 1, cracky = 3 },
-    light_source = 2,
-    walkable = true,
-    sounds = {
-        footstep = { name = "invertedstep", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("invertedstep", { pos = pos, gain = 1.0 })
-    end,
-    on_place = function(itemstack, user, pointed)
-        if pointed.type ~= "node" then return itemstack end
-        if pointed.under.y > pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 23) end
-        if pointed.under.y < pointed.above.y then return minetest.item_place_node(itemstack, user, pointed, 0) end
-        local exact_pos = minetest.pointed_thing_to_face_pos(user, pointed).y % 1
-        return minetest.item_place_node(itemstack, user, pointed,
-            (exact_pos > 0.5 and exact_pos < 1 or exact_pos > -0.5 and exact_pos < 0) and 0 or 23)
-    end
-})
-
-minetest.register_craft({
-    output = "sbz_resources:antimatter_slab 6",
-    recipe = {
-        { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob" }
-    }
-})
+stairs.register("sbz_resources:antimatter_blob")
+minetest.register_alias("sbz_resources:antimatter_stair", "sbz_resources:antimatter_blob_stair")
+minetest.register_alias("sbz_resources:antimatter_slab", "sbz_resources:antimatter_blob_slab")
 
 minetest.register_node("sbz_resources:antimatter_platform", {
     description = "Antimatter Platform",
@@ -259,7 +105,7 @@ minetest.register_node("sbz_resources:antimatter_platform", {
 })
 
 minetest.register_craft({
-    output = "sbz_resources:matter_platform 8",
+    output = "sbz_resources:antimatter_platform 8",
     recipe = {
         { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob" }
     }
@@ -312,6 +158,9 @@ minetest.register_node("sbz_resources:stone", {
     sunlight_propagates = true,
     walkable = true,
 })
+
+stairs.register("sbz_resources:stone")
+
 minetest.register_craft({
     output = "sbz_resources:stone",
     recipe = {
@@ -359,7 +208,7 @@ minetest.register_craft({
         { "",                               "sbz_resources:antimatter_plate", "" }
     }
 })
-if false then
+if false then -- annoying as hell
     minetest.register_abm({
         label = "Annihilate matter and antimatter",
         nodenames = { "group:matter" },
@@ -437,10 +286,13 @@ local water_image = "water.png^[opacity:127"
 minetest.register_node("sbz_resources:water_source", {
     description = "Water Source",
     drawtype = "liquid",
-    tiles = { water_image },
-    inventory_image = water_image,
-    use_texture_alpha = "clip",
-    groups = { habitat_conducts = 1, transparent = 1, liquid_capturable = 1 },
+    tiles = {
+        { name = water_image, backface_culling = false },
+        { name = water_image, backface_culling = true }
+    },
+    inventory_image = minetest.inventorycube "water.png",
+    use_texture_alpha = "blend",
+    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 1 },
     post_effect_color = "#4000ff80",
     paramtype = "light",
     walkable = false,
@@ -448,25 +300,36 @@ minetest.register_node("sbz_resources:water_source", {
     buildable_to = true,
     liquidtype = "source",
     liquid_alternative_source = "sbz_resources:water_source",
-    liquid_alternative_flowing = "sbz_resources:water_flowing"
+    liquid_alternative_flowing = "sbz_resources:water_flowing",
+    drop = "",
+    liquid_viscosity = 1,
+    waving = 3,
 })
 
 minetest.register_node("sbz_resources:water_flowing", {
     description = "Flowing Water",
     drawtype = "flowingliquid",
-    tiles = { water_image },
+    tiles = {
+        { name = water_image, backface_culling = false },
+        { name = water_image, backface_culling = true },
+    },
     special_tiles = { water_image, water_image },
     inventory_image = water_image,
-    use_texture_alpha = "clip",
-    groups = { habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
+    use_texture_alpha = "blend",
+    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
     post_effect_color = "#4000ff80",
     paramtype = "light",
+    paramtype2 = "flowingliquid",
     walkable = false,
     pointable = false,
     buildable_to = true,
     liquidtype = "flowing",
     liquid_alternative_source = "sbz_resources:water_source",
-    liquid_alternative_flowing = "sbz_resources:water_flowing"
+    liquid_alternative_flowing = "sbz_resources:water_flowing",
+    drop = "",
+    liquid_viscosity = 1,
+    waving = 3,
+
 })
 
 minetest.register_node("sbz_resources:compressed_core_dust", {

@@ -106,6 +106,7 @@ local achievment_table = {
 
     ["sbz_decor:matter_sign"] = "Signs",
     ["sbz_decor:antimatter_sign"] = "Signs",
+    ["sbz_decor:cnc"] = "CNC Machines",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

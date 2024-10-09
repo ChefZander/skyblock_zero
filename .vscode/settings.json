@@ -1,0 +1,14 @@
+{
+    "Lua.diagnostics.globals": [
+        "minetest",
+        "PcgRandom",
+        "PerlinNoise",
+        "vector",
+        "ItemStack",
+        "table"
+    ],
+    "Lua.diagnostics.disable": [
+        "global-in-nil-env",
+        "lowercase-global"
+    ]
+}
