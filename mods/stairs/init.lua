@@ -302,7 +302,6 @@ local action = function(action)
 		return stack
 	end
 end
-
 minetest.register_craftitem("stairs:leveled_tool", {
 	description = "Leveled node tool",
 	info_extra = {
@@ -312,7 +311,7 @@ minetest.register_craftitem("stairs:leveled_tool", {
 		"Aux+<any action>: Mountain making mode, and multiplies by 5, radius is changed by shift",
 		"Zoom+<any action>: Resets the level",
 	},
-	groups = { ui_decor = 1 },
+	groups = { ui_decor = 1, not_in_creative_inventory = 1, --[[ !!UNUSED!!]] },
 	inventory_image = "leveled_tool.png",
 	range = 10,
 	liquids_pointable = true,

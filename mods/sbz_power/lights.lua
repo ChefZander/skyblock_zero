@@ -102,14 +102,14 @@ sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
 })
 
 minetest.register_craft {
-    output = "sbz_power:powered_lamp",
+    output = "sbz_power:powered_lamp_off",
     recipe = {
         { "sbz_resources:emittrium_glass", "sbz_resources:simple_circuit", "sbz_resources:antimatter_dust" }
     }
 }
 
 minetest.register_craft {
-    output = "sbz_power:super_powered_lamp",
+    output = "sbz_power:super_powered_lamp_off",
     recipe = {
         { "sbz_chem:silicon_ingot",        "sbz_chem:silicon_ingot",          "sbz_chem:silicon_ingot" },
         { "sbz_resources:antimatter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:antimatter_blob" },

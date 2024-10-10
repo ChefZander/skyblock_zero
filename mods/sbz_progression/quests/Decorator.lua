@@ -134,6 +134,13 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         title = "Signs",
         text =
         "Do you want to write something.... that's like... visible in the world? You should consider crafting a sign.",
-        requires = { "More Antimatter" }
+        requires = { "Antimatter" }
+    },
+    {
+        type = "quest",
+        title = "Powered Lights",
+        text =
+        "Do you want to light up an area, cheaply? Powered lamps are the way to do it.... if you find something cheaper its a bug.\nOr do you want to light up a huge area, the Super powered lamp is for you, it fills up a 12x12x12 cube with invisible lights for somewhat low power consumbtion!",
+        requires = { "Switching Station", "More Antimatter", "Emittrium Glass" }
     }
 }
