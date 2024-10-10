@@ -78,7 +78,9 @@ minetest.register_on_newplayer(function(player)
         end
     end
 end)
+
 minetest.register_on_joinplayer(function(ref, last_login)
+    assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
         home = true,
         tp = true
@@ -157,7 +159,7 @@ minetest.register_on_joinplayer(function(player)
     player:set_sky({
         base_color = "#000000",
         type = "skybox",
-        textures = {"sb_top.png", "sb_bot.png", "sb_front.png", "sb_back.png", "sb_right.png", "sb_left.png"},
+        textures = { "sb_top.png", "sb_bot.png", "sb_front.png", "sb_back.png", "sb_right.png", "sb_left.png" },
         sky_color = {
             day_sky = "#000000",
             day_horizon = "#000000",
