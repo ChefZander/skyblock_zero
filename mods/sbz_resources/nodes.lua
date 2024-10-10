@@ -20,7 +20,7 @@ minetest.register_craft({
         { "sbz_resources:matter_dust", "sbz_resources:matter_dust", "sbz_resources:matter_dust" }
     }
 })
-stairs.register("sbz_resources:matter_blob")
+stairs.register("sbz_resources:matter_blob", "leveled")
 minetest.register_alias("sbz_resources:matter_stair", "sbz_resources:matter_blob_stair")
 minetest.register_alias("sbz_resources:matter_slab", "sbz_resources:matter_blob_slab")
 
@@ -58,7 +58,7 @@ minetest.register_node("sbz_resources:antimatter_blob", {
     description = "Antimatter Blob",
     drawtype = "glasslike",
     tiles = { "antimatter_blob.png" },
-    groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 255, },
+    groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767, },
     sunlight_propagates = true,
     walkable = true,
     light_source = 3,

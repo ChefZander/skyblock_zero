@@ -264,6 +264,7 @@ dofile(modpath .. "/infinite_storinator.lua")
 dofile(modpath .. "/misc.lua")
 dofile(modpath .. "/emittrium_reactor.lua")
 dofile(modpath .. "/ele_fab.lua")
+dofile(modpath .. "/lights.lua")
 
 --fixing worlds, again remove in a few releases
 local fucked_items = {

@@ -64,9 +64,11 @@ local function internal2human(v)
 	return "!Unknown! (FIX THIS IMMIADEDLY)"
 end
 
-function stairs.register(name, tex, worldalign)
+function stairs.register(name, reg_def)
 	local def = assert(minetest.registered_nodes[name])
-
+	reg_def = reg_def or {}
+	if reg_def == "leveled" then reg_def = { leveled = true } end
+	local tex = reg_def.tex
 
 	local has_color = def.paramtype2 == "colorfacedir"
 	for k, v in ipairs { "slab", "stair", "stair_inner", "stair_outer" } do
@@ -113,7 +115,7 @@ function stairs.register(name, tex, worldalign)
 				return rotate_and_place(itemstack, placer, pointed_thing)
 			end,
 			node_box = nb,
-			tiles = set_textures(def_copy.tiles, worldalign)
+			tiles = set_textures(def_copy.tiles, reg_def.align)
 		}) do
 			def_copy[k] = v
 		end
@@ -148,9 +150,30 @@ function stairs.register(name, tex, worldalign)
 				def_copy.tiles[5] = def.tiles[1]
 				def_copy.tiles[6] = tex.stair_side .. "^[transformFX"
 			end
-			def_copy.tiles = set_textures(def_copy.tiles, worldalign)
+			def_copy.tiles = set_textures(def_copy.tiles, reg_def.align)
 		end
 		minetest.register_node(name .. "_" .. v, def_copy)
+	end
+
+	if reg_def.leveled == true then
+		local c = table.copy(def)
+		for k, v in pairs {
+			description = c.description .. " - Leveled",
+			drawtype = "nodebox",
+			paramtype = "light",
+			paramtype2 = "leveled",
+			sunlight_propagates = true,
+			use_texture_alpha = "clip",
+			is_ground_content = false,
+			node_box = {
+				type = "leveled",
+				fixed = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 }
+			},
+			tiles = set_textures(c.tiles, reg_def.align)
+		} do
+			c[k] = v
+		end
+		minetest.register_node(def.name .. "_leveled", c)
 	end
 
 	--[[
@@ -219,8 +242,81 @@ function stairs.register(name, tex, worldalign)
 
 	to_override_info_extra[#to_override_info_extra + 1] = "You can make stairs with it!"
 
+	local g = def.groups
+	for k, v in pairs { cnc = 1, cnc_leveled = reg_def.leveled and 1 or 0 } do g[k] = v end
 	minetest.override_item(name, {
 		info_extra = to_override_info_extra,
-		groups = { cnc = 1 },
+		groups = g
 	})
 end
+
+local action = function(action)
+	return function(stack, placer, pointed)
+		if pointed.type ~= "node" then return end
+		local amount = (action == "place") and 1 or -1
+		local control = placer:get_player_control()
+		local r = 1
+		if control.sneak then
+			amount = amount * 5
+		end
+		if control.aux1 then
+			amount = amount * 5
+			r = 5
+			if control.sneak then
+				r = 30
+			end
+		end
+		local bpos = pointed.under
+
+		local function doit(pos, a)
+			local n = minetest.get_node(pos)
+			if n == nil then return end
+			local ndef = minetest.registered_nodes[n.name]
+			if ndef == nil then return end
+			if ndef.paramtype2 ~= "leveled" then return end
+			local level = minetest.get_node_level(pos)
+			local max = minetest.get_node_max_level(pos)
+			level = math.round(level + a)
+			if level <= 0 then level = 0 end
+			if level >= max then level = max end
+			if control.zoom then level = 0 end
+			minetest.set_node_level(pos, level)
+		end
+
+		if r == 1 then
+			doit(bpos, amount)
+		else
+			local minpos = vector.subtract(bpos, r)
+			local maxpos = vector.add(bpos, r)
+			local y = bpos.y
+			for x = minpos.x, maxpos.x do
+				for z = minpos.z, maxpos.z do
+					local p = vector.new(x, y, z)
+					local dst = vector.distance(bpos, p)
+					if dst < r then
+						doit(p, amount - dst)
+					end
+				end
+			end
+		end
+		return stack
+	end
+end
+
+minetest.register_craftitem("stairs:leveled_tool", {
+	description = "Leveled node tool",
+	info_extra = {
+		"Placing: Increase level by 1",
+		"Breaking: Decrease level by 1",
+		"Shift+<any action>: Multiply the increase/decrease by 5",
+		"Aux+<any action>: Mountain making mode, and multiplies by 5, radius is changed by shift",
+		"Zoom+<any action>: Resets the level",
+	},
+	groups = { ui_decor = 1 },
+	inventory_image = "leveled_tool.png",
+	range = 10,
+	liquids_pointable = true,
+	on_place = action("place"), -- a fancy boy am i
+	on_use = action("dig"),
+	stack_max = 1
+})
