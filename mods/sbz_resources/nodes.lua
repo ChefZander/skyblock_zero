@@ -20,7 +20,7 @@ minetest.register_craft({
         { "sbz_resources:matter_dust", "sbz_resources:matter_dust", "sbz_resources:matter_dust" }
     }
 })
-stairs.register("sbz_resources:matter_blob", "leveled")
+stairs.register("sbz_resources:matter_blob")
 minetest.register_alias("sbz_resources:matter_stair", "sbz_resources:matter_blob_stair")
 minetest.register_alias("sbz_resources:matter_slab", "sbz_resources:matter_blob_slab")
 
