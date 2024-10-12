@@ -5,7 +5,8 @@
         "PerlinNoise",
         "vector",
         "ItemStack",
-        "table"
+        "table",
+        "dump"
     ],
     "Lua.diagnostics.disable": [
         "global-in-nil-env",

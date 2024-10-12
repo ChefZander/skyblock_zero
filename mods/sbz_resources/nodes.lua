@@ -1,4 +1,4 @@
-minetest.register_node("sbz_resources:matter_blob", {
+minetest.register_node("sbz_resources:matter_blob", unifieddyes.def {
     description = "Matter Blob",
     drawtype = "glasslike",
     tiles = { "matter_blob.png" },
@@ -54,7 +54,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_node("sbz_resources:antimatter_blob", {
+minetest.register_node("sbz_resources:antimatter_blob", unifieddyes.def {
     description = "Antimatter Blob",
     drawtype = "glasslike",
     tiles = { "antimatter_blob.png" },
@@ -151,7 +151,7 @@ minetest.register_craft({
 
 
 
-minetest.register_node("sbz_resources:stone", {
+minetest.register_node("sbz_resources:stone", unifieddyes.def {
     description = "Stone",
     tiles = { "stone.png" },
     groups = { matter = 1, moss_growable = 1 },

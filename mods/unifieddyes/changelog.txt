@@ -1,0 +1,101 @@
+Changelog
+---------
+
+2013-04-30:  Multiple changes
+
+* Refactored the code to use default "common" dyes
+rather than directly from flowers.
+
+* This mod now depends on "default" and "dye" from the Minetest common
+sub-game.  Since the default dye mod uses default flowers, this mod no
+longer checks for what version of flowers you're using, or even depends
+on it.
+
+* Bottle-based textures have been replaced with piles of dye powder, based
+on the default red dye texture.
+
+* All dyes are obtained by crafting, not cooking, for consistency with the 
+default dye mod.
+
+* The somewhat-complicated method using separate "pigment" powders, glass
+bottles and "liquid dye base" has been done away with.  Now it's just
+dry dye powders, as with the default dye mod.
+
+* Also, got rid of the whole paint scheme, in favor of dry powders.
+
+* All old dyes, paints, and Unified Dyes pigment powders have been aliased
+back to the standard dye powders.
+
+2012-07-26: Added a "version" check for the flowers dependency: If the 
+flowers mod defines "flowers:flower_geranium" (as is the case with my 
+update of 2012-08-01), then those will be used to get blue pigment 
+powder, and violas will produce violet powder, both of which can be 
+directly used to create their respective liquid dye colors.  If it is 
+not defined (e.g. the user has an older version of the flowers mod), 
+then violas produce blue dye powder.  Violet dye can still be formed by 
+mixing blue and magenta or blue and red dyes, as before.
+
+2012-07-26: Better bottle textures.  Note that these are blended against 
+the 50% grey field they normally appear on in the inventory display, so 
+they will show artifacts if you try to wield them.  Don't do that. :-)
+
+2012-07-26: Split off glass bottles into a separate mod, "Vessels".  
+This mod now depends on it.
+
+2012-07-25 (almost immediately after): Fixed a copy&paste error for 
+black dye.
+
+2012-07-25: Replaced missing craftitem entries and got rid of some 
+redundant code left over from last update.  Added group settings for all 
+dyes according to recently-published standard.  Fixed a few typos in 
+item descriptions, and straightened up capitalization.
+
+2012-07-24: Added some extra steps to the dye-making process, added 
+recommendation that empty bottles be given back to the player on use.  
+Dyes are still easy to make, they just require a more realistic (and 
+this, harder) process now.
+
+2012-07-16 (a bit later): fixed a minor error in generation of medium 
+grey.
+
+2012-07-16: Added a new set of colors, "light" (brightness of 150% 
+versus the 'full' shade), for a total of 89.  No 50% saturation version 
+of this set.  Added a palette image showing the full set of colors.
+
+2012-07-13: Fixed some missing commas.
+
+2012-07-13: Added a script to aid in the generation of new textures for 
+mods that depend on unifieddyes.  Moved this changelog from the forum 
+into the distribution directory.  Rewrote the README to contain 
+everything from the forum post, and expanded it to document the new 
+generation script.
+
+2012-07-12 (a bit later): added groups = {dye=1}, to each 
+register_craftitem call, to make it easier for other mods to identify 
+the dyes and categorize them.
+
+2012-07-12: moved project to github.
+
+2012-07-11 (continuing): Tweaked the script to remove titanium dioxide 
+from the output, since it isn't intended to be directly used as a 
+dye/paint (but rather, to make paint that can then be used).  
+Regenerated colors.txt.
+
+2012-07-11 (immediately after): The script was reading the wrong pixel 
+from the image, resulting in lighter-than-correct colors.  Fixed it and 
+regenerated the colors.txt file.
+
+2012-07-11: Added a script to list all of the colors and their RGB 
+values and texture filenames, and a text file containing the output 
+thereof.
+
+2012-07-08 (a bit later): deleted a few unused files (copy&paste error).
+
+2012-07-08: Major boost in the number of available colors - was 8, now 
+77.  Should cover pretty much the entire spectrum of colors one might 
+use in this game.
+
+2012-07-02: Deleted a few redundant files (leftovers from when I wanted 
+to merge in flowers and then changed my mind).
+
+2012-06-26: Initial upload.

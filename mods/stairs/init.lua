@@ -8,6 +8,7 @@
 
 stairs = {}
 
+
 local function rotate_and_place(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
@@ -64,13 +65,14 @@ local function internal2human(v)
 	return "!Unknown! (FIX THIS IMMIADEDLY)"
 end
 
+
 function stairs.register(name, reg_def)
 	local def = assert(minetest.registered_nodes[name])
 	reg_def = reg_def or {}
 	if reg_def == "leveled" then reg_def = { leveled = true } end
 	local tex = reg_def.tex
 
-	local has_color = def.paramtype2 == "colorfacedir"
+	local has_color = def.paramtype2 == "color"
 	for k, v in ipairs { "slab", "stair", "stair_inner", "stair_outer" } do
 		local nb = {
 			type = "fixed"
@@ -96,10 +98,11 @@ function stairs.register(name, reg_def)
 				{ -0.5, 0.0,  0.0,  0.0, 0.5, 0.5 },
 			}
 		end
+
 		local def_copy = table.copy(def)
 		def_copy.groups[v] = 1
 		def_copy.groups.not_in_creative_inventory = 1
-		for k, v in pairs({
+		for k, v in pairs(unifieddyes.def {
 			description = def_copy.description .. " " .. internal2human(v),
 			drawtype = "nodebox",
 			paramtype = "light",
@@ -114,6 +117,7 @@ function stairs.register(name, reg_def)
 
 				return rotate_and_place(itemstack, placer, pointed_thing)
 			end,
+
 			node_box = nb,
 			tiles = set_textures(def_copy.tiles, reg_def.align)
 		}) do

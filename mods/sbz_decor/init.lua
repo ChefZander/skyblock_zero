@@ -28,7 +28,7 @@ minetest.register_craft({
 })
 
 
-minetest.register_node("sbz_decor:factory_floor", {
+minetest.register_node("sbz_decor:factory_floor", unifieddyes.def {
     description = "Factory Floor",
     tiles = { "factory_floor.png" },
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
@@ -58,11 +58,10 @@ stairs.register("sbz_decor:factory_floor", {
     stair_cross = "factory_floor_sc.png"
 })
 
-minetest.register_node("sbz_decor:factory_floor_tiling", {
+minetest.register_node("sbz_decor:factory_floor_tiling", unifieddyes.def {
     description = "Factory Floor (Tiled)",
     tiles = { "factory_floor_tiling.png" },
-    paramtype2 = "colorfacedir",
-    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+    groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
     sunlight_propagates = true,
     walkable = true,
     sounds = {
@@ -102,7 +101,7 @@ minetest.register_craft({
     recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:lithium_powder", "sbz_chem:lead_powder" }
 })
 
-minetest.register_node("sbz_decor:factory_warning", {
+minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {
     description = "Factory Warning",
     tiles = { "factory_warning.png" },
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
