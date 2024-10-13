@@ -25,6 +25,9 @@ Boston, MA  02110-1301, USA.
 local BLOCKSIZE = 16
 
 -- convert node position --> block hash
+
+---@param pos vector
+---@return integer
 local function hash_blockpos(pos)
     return minetest.hash_node_position({
         x = math.floor(pos.x / BLOCKSIZE),
@@ -33,15 +36,16 @@ local function hash_blockpos(pos)
     })
 end
 
-local vm_cache = nil
-local vm_node_cache = nil
+local vm_cache = {}
+local vm_node_cache = {}
 
-
+--- Resets the vm cache, does the same thing as vm_abort actually
 function sbz_api.vm_begin()
     vm_cache = {}
     vm_node_cache = {}
 end
 
+---@deprecated
 function sbz_api.vm_abort()
     vm_cache = nil
     vm_node_cache = nil
@@ -57,6 +61,10 @@ local function vm_get_or_create_entry(pos)
     return tbl
 end
 
+--- Gets node from the vm_cache or creates an entry
+--- May not be up to date!
+--- @param pos vector
+--- @return node|nil
 function sbz_api.vm_get_node(pos)
     local hash = minetest.hash_node_position(pos)
     local node = vm_node_cache[hash]
@@ -74,6 +82,8 @@ end
 -- the server’s main map data cache and then accessed from there.
 --
 -- Inside a VM transaction, the transaction’s VM cache is used.
+--- @param pos vector
+--- @return node | nil
 function sbz_api.get_node_force(pos)
     if vm_cache then
         return sbz_api.vm_get_node(pos)

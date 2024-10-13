@@ -140,7 +140,7 @@ sbz_api.register_machine("sbz_logic_devices:builder", {
     tiles = {
         "lua_builder.png"
     },
-    groups = { matter = 1, ui_logic = 1 },
+    groups = { matter = 1, ui_logic = 1, sbz_machine_subticking = 1 },
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:get_inventory():set_size("main", 32)
@@ -225,7 +225,6 @@ listring[]
                 queue_can_handle * power_per_action))
         return queue_can_handle * power_per_action
     end,
-    action_subticking = true,
 
     on_logic_send = function(pos, msg, from_pos)
         local meta = minetest.get_meta(pos)

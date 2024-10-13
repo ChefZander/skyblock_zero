@@ -252,7 +252,7 @@ function sbz_api.is_on(pos)
     return string.sub(nodename, -3) == "_on"
 end
 
-dofile(modpath .. "/vm.lua")
+--dofile(modpath .. "/vm.lua") -- moved to sbz_base
 dofile(modpath .. "/switching_station.lua")
 dofile(modpath .. "/fluid_transport.lua")
 dofile(modpath .. "/power_pipes.lua")

@@ -2,9 +2,18 @@ minetest.log("action", "sbz base: init")
 
 local modname = minetest.get_current_modname()
 sbz_api = {
-    debug = true
+    debug = minetest.settings:get_bool("debug", false)
 }
 
+---@class vector
+---@field x number
+---@field y number
+---@field z number
+
+---@class node
+---@field name string
+---@field param2 integer
+---@field param1 integer
 
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
@@ -12,6 +21,7 @@ local storage = minetest.get_mod_storage()
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then
+    ---@return vector
     function vector.random_direction()
         -- Generate a random direction of unit length, via rejection sampling
         local x, y, z, l2
@@ -22,6 +32,39 @@ if not vector.random_direction then
         -- normalize
         local l = math.sqrt(l2)
         return vector.new(x / l, y / l, z / l)
+    end
+end
+
+-- not the exact implementations but BETTER!!
+
+---@param key_last boolean
+---@diagnostic disable-next-line: duplicate-set-field
+table.foreach = function(t, f, key_last)
+    for k, v in pairs(t) do
+        if key_last then
+            f(v, k)
+        else
+            f(k, v)
+        end
+    end
+end
+
+---@param key_last boolean
+---@diagnostic disable-next-line: duplicate-set-field
+table.foreachi = function(t, f, key_last)
+    for k, v in ipairs(t) do
+        if key_last then
+            f(v, k)
+        else
+            f(k, v)
+        end
+    end
+end
+
+function iterate_around_pos(pos, func)
+    for i = 0, 5 do
+        local dir = minetest.wallmounted_to_dir(i)
+        func(pos + dir, dir)
     end
 end
 
@@ -128,7 +171,6 @@ end
 
 
 
--- WHY LUA, WHY
 local function table_length(tbl)
     local count = 0
     for _ in pairs(tbl) do
@@ -228,11 +270,12 @@ minetest.register_on_chat_message(function(name, message)
 end)
 
 -- everything pitch dark always
-local dtimer = 0
-minetest.register_globalstep(function(dtime)
+
+minetest.register_globalstep(function(_)
     minetest.set_timeofday(0)
 
     for _, player in ipairs(minetest.get_connected_players()) do
+        -- let the trail indicate that like yeah a globalstep happened
         if player:get_meta():get_int("trailHidden") == 0 then
             local pos = player:get_pos()
             minetest.add_particlespawner({
@@ -304,8 +347,12 @@ minetest.register_alias("mapgen_stone", "air")
 minetest.register_alias("mapgen_water_source", "air")
 minetest.register_alias("mapgen_river_water_source", "air")
 
-dofile(minetest.get_modpath("sbz_base") .. "/override_descriptions.lua")
-dofile(minetest.get_modpath("sbz_base") .. "/override_for_areas.lua")
+local MP = minetest.get_modpath("sbz_base")
+
+dofile(MP .. "/override_descriptions.lua")
+dofile(MP .. "/override_for_areas.lua")
+dofile(MP .. "/vm.lua")
+dofile(MP .. "/queue.lua")
 
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev

@@ -123,7 +123,7 @@ local function color_block(stack, player, pointed)
 	end
 
 	-- see if the player actually has the colorium
-	local colorium_inventory_index = -1
+
 	local pinv = player:get_inventory()
 
 	if not pinv:contains_item("main", "unifieddyes:colorium 1") then

@@ -6,17 +6,18 @@ sbz_api.switching_station_networks = {}
 
 local touched_nodes = {}
 
-local function iterate_around_pos(pos, func)
-    for i = 0, 5 do
-        local dir = minetest.wallmounted_to_dir(i)
-        func(pos + dir, dir)
-    end
-end
-
+---@type function
 local hash = minetest.hash_node_position
+local h = hash
+---@type function
 local unhash = minetest.get_position_from_hash
+---@type table
 local node_defs = minetest.registered_nodes
+---@type function
+local IG = minetest.get_item_group
 
+---@param start_pos vector
+---@param seen table
 function sbz_api.assemble_network(start_pos, seen)
     local by_connector = not not seen
     seen = seen or {}
@@ -34,58 +35,65 @@ function sbz_api.assemble_network(start_pos, seen)
     local switching_stations = network.switching_stations
     local batteries = network.batteries
 
-    local pipes_counter = 0
+    -- from wikipedia's pseudocode for BFS
+    seen = seen or {}
+    setmetatable(seen, {
+        __index = function(t, k)
+            return rawget(t, h(k))
+        end,
+        __newindex = function(t, k, v)
+            rawset(t, h(k), v)
+        end
+    })
+    local queue = Queue.new()
+    queue:enqueue({ start_pos })
+    seen[start_pos] = true
 
     sbz_api.vm_begin()
 
-    local max_iter = 5000
-    local iter = 0
-    local function internal(pos, dir)
-        if not seen[hash(pos)] and iter < max_iter then
-            iter = iter + 1
-            local node = (sbz_api.vm_get_node(pos) or {}).name
-            local node_def_of_this_node = node_defs[node]
-            if not node_def_of_this_node then
-                seen[hash(pos)] = true
-                return
+    -- inspired by https://github.com/minetest-mods/digilines/blob/7d4895d5d4a093041e3e6c8a8676f3b99bb477b7/internal.lua#L99
+    while not queue:is_empty() do
+        local current_pos, dir = unpack(queue:dequeue())
+        local nn = (sbz_api.get_node_force(current_pos) or {}).name -- node name
+        local is_conducting = IG(nn, "pipe_conducts") == 1
+
+
+        local is_generator = IG(nn, "sbz_generator") == 1
+        local is_machine = IG(nn, "sbz_machine") == 1
+        local is_battery = IG(nn, "sbz_battery") == 1
+        local is_connector = IG(nn, "sbz_connector") > 0
+        local is_subticking = IG(nn, "sbz_machine_subticking") == 1
+
+        if nn == "sbz_power:switching_station" then
+            if by_connector then
+                touched_nodes[hash(current_pos)] = os.time()
+            elseif h(current_pos) ~= h(start_pos) then
+                switching_stations[#switching_stations + 1] = current_pos
             end
-            local is_generator = minetest.get_item_group(node, "sbz_generator") == 1
-            local is_machine = minetest.get_item_group(node, "sbz_machine") == 1
-            local is_battery = minetest.get_item_group(node, "sbz_battery") == 1
-            local is_connector = minetest.get_item_group(node, "sbz_connector") > 0
-            local is_subticking = node_def_of_this_node.action_subticking
+        elseif is_battery then
+            batteries[#batteries + 1] = { current_pos, nn }
+        elseif is_generator then
+            generators[#generators + 1] = { current_pos, nn }
+        elseif is_machine then
+            machines[#machines + 1] = { current_pos, nn }
+        elseif is_connector then
+            minetest.registered_nodes[nn].assemble(current_pos, sbz_api.vm_get_node(current_pos), dir, network, seen)
+        end
 
-            local is_conducting = minetest.get_item_group(node, "pipe_conducts") == 1
+        if is_subticking then
+            network.subticking_machines[#network.subticking_machines + 1] = { current_pos, nn }
+        end
 
-            if node == "sbz_power:switching_station" then
-                if by_connector then
-                    touched_nodes[hash(pos)] = os.time()
-                elseif hash(pos) ~= hash(start_pos) then
-                    switching_stations[#switching_stations + 1] = pos
+        if is_conducting then
+            iterate_around_pos(current_pos, function(pos, dir)
+                if not seen[pos] then
+                    seen[pos] = true
+                    queue:enqueue({ pos, dir })
                 end
-            elseif is_battery then
-                batteries[#batteries + 1] = { pos, node }
-            elseif is_generator then
-                generators[#generators + 1] = { pos, node }
-            elseif is_machine then
-                machines[#machines + 1] = { pos, node }
-            elseif is_connector then
-                node_def_of_this_node.assemble(pos, sbz_api.vm_get_node(pos), dir, network, seen)
-            end
-
-            if is_subticking then
-                network.subticking_machines[#network.subticking_machines + 1] = { pos, node }
-            end
-            seen[hash(pos)] = true
-            if is_conducting then
-                pipes_counter = pipes_counter + 1
-                iterate_around_pos(pos, internal)
-            end
+            end)
         end
     end
-    internal(table.copy(start_pos))
-    --sbz_api.vm_abort()
-    network.pipes_counter = pipes_counter
+
     return network
 end
 
@@ -129,8 +137,7 @@ function sbz_api.switching_station_tick(start_pos)
             node_defs[node].action(position, node, meta, supply, demand)
         end
 
-        local network_size = #network_before.generators + #network_before.machines + #network_before.batteries +
-            network_before.pipes_counter
+        local network_size = #network_before.generators + #network_before.machines + #network_before.batteries
 
         meta:set_string("infotext",
             string.format(
