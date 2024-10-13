@@ -34,7 +34,7 @@ minetest.register_node("sbz_power:fluid_pipe", {
     paramtype = "light",
     sunlight_propagates = true,
 
-    groups = { matter = 1, cracky = 3, fluid_pipe_connects = 1, ui_fluid = 1 },
+    groups = { matter = 1, cracky = 3, fluid_pipe_connects = 1, ui_fluid = 1, sbz_fluid_conducts = 1 },
 
     node_box = {
         type = "connected",
@@ -66,13 +66,6 @@ local animation_def = {
     aspect_h = 16,
     length = 1,
 }
-
-local function iterate_around_pos(pos, func)
-    for i = 0, 5 do
-        local dir = minetest.wallmounted_to_dir(i)
-        func(pos + dir, dir)
-    end
-end
 
 local function liquid_inv_add_item(inv, stack, on_update, pos)
     local max_count_in_each_stack = inv.max_count_in_each_stack
@@ -107,32 +100,38 @@ function sbz_api.pump(start_pos, liquid_stack, frompos)
 
     local seen = {}
     local hash = minetest.hash_node_position
+    local queue = Queue.new()
 
-    local function internal(pos)
-        if not seen[hash(pos)] and not abort then
-            local node = sbz_api.vm_get_node(pos).name
+    seen[hash(start_pos)] = true
+    queue:enqueue(start_pos)
 
-            local is_conducting = node == "sbz_power:fluid_pipe"
-            local is_storing = minetest.get_item_group(node, "fluid_pipe_stores") == 1
+    while not queue:is_empty() do
+        local current_pos = queue:dequeue()
+        local node = (sbz_api.get_node_force(current_pos) or {}).name
+        local is_conducting = minetest.get_item_group(node, "sbz_fluid_conducts") == 1
+        local is_storing = minetest.get_item_group(node, "fluid_pipe_stores") == 1
 
-            if is_storing and hash(pos) ~= hash(frompos) then
-                local meta = minetest.get_meta(pos)
-                local liquid_inventory = minetest.deserialize(meta:get_string("liquid_inv"))
-                liquid_stack = liquid_inv_add_item(liquid_inventory, liquid_stack,
-                    minetest.registered_nodes[node].on_liquid_inv_update, pos)
-                if liquid_stack.count == 0 then
-                    abort = true
+        if is_storing and hash(current_pos) ~= hash(frompos) then
+            local meta = minetest.get_meta(current_pos)
+            local liquid_inventory = minetest.deserialize(meta:get_string("liquid_inv"))
+            liquid_stack = liquid_inv_add_item(liquid_inventory, liquid_stack,
+                minetest.registered_nodes[node].on_liquid_inv_update, current_pos)
+            if liquid_stack.count == 0 then
+                abort = true
+            end
+            meta:set_string("liquid_inv", minetest.serialize(liquid_inventory))
+        end
+
+        if is_conducting then
+            iterate_around_pos(current_pos, function(pos)
+                if not seen[hash(pos)] then
+                    seen[hash(pos)] = true
+                    queue:enqueue(pos)
                 end
-                meta:set_string("liquid_inv", minetest.serialize(liquid_inventory))
-            end
-            seen[hash(pos)] = true
-
-            if is_conducting then
-                iterate_around_pos(pos, internal)
-            end
+            end)
         end
     end
-    internal(table.copy(start_pos))
+
     return liquid_stack
 end
 
@@ -267,9 +266,11 @@ minetest.register_node("sbz_power:fluid_tank", {
         if lqinv[1].name == "any" then
             meta:set_string("infotext", "Waiting for a liquid...")
         end
+        local def = minetest.registered_nodes[lqinv[1].name]
+        local desc = string.gsub(def.short_description or def.description or lqinv[1].name, " Source", "")
         meta:set_string("infotext",
             string.format("Storing %s : %s/%s",
-                string.gsub(minetest.registered_nodes[lqinv[1].name].description, " Source", ""), lqinv[1].count,
+                desc, lqinv[1].count,
                 lqinv.max_count_in_each_stack))
     end
 })

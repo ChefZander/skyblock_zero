@@ -19,6 +19,7 @@ local IG = minetest.get_item_group
 ---@param start_pos vector
 ---@param seen table
 function sbz_api.assemble_network(start_pos, seen)
+    local t0 = minetest.get_us_time()
     local by_connector = not not seen
     seen = seen or {}
     local network = {
@@ -93,7 +94,7 @@ function sbz_api.assemble_network(start_pos, seen)
             end)
         end
     end
-
+    network.lag = minetest.get_us_time() - t0
     return network
 end
 
@@ -151,6 +152,7 @@ function sbz_api.switching_station_tick(start_pos)
 
     local t0 = minetest.get_us_time()
 
+    ---@diagnostic disable-next-line: missing-parameter
     local network = sbz_api.assemble_network(start_pos)
     local generators = network.generators
     local machines = network.machines
@@ -225,7 +227,7 @@ function sbz_api.switching_station_tick(start_pos)
 
     local t1 = minetest.get_us_time()
     local lag = t1 - t0
-    network.lag = lag
+    network.lag = network.lag + lag
 
     network.supply = supply
     network.demand = demand
