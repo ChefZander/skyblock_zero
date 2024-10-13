@@ -200,6 +200,7 @@ minetest.register_node("sbz_resources:reinforced_antimatter", {
     sunlight_propagates = true,
     walkable = true,
 })
+
 minetest.register_craft({
     output = "sbz_resources:reinforced_antimatter",
     recipe = {

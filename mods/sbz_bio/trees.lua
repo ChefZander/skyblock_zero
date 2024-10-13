@@ -47,7 +47,7 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
             fixed = { -4 / 16, -0.5, -4 / 16, 4 / 16, 7 / 16, 4 / 16 }
         },
         groups = { snappy = 2, dig_immediate = 3, burn = 1,
-            attached_node = 1, sapling = 1, explody = 100, matter = 1 },
+            attached_node = 1, sapling = 1, explody = 100, matter = 1, ui_bio = 1 },
         on_construct = function(pos)
             minetest.get_node_timer(pos):start(math.random(300, 1500))
         end,
@@ -121,7 +121,7 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
             if take_item then
                 stack:take_item()
             end
-
+            minetest.get_meta(pos):set_string("owner", name)
             return stack
         end,
         on_timer = sbz_api.grow_sapling,
@@ -129,6 +129,7 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
             if not sbz_api.can_grow(pos) then
                 return true -- re-run
             else
+                unlock_achievement(minetest.get_meta(pos):get_string("owner"), "Colorium Trees")
                 minetest.remove_node(pos)
 
                 -- prepare
@@ -143,7 +144,6 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
                         end
                     end
                 end
-
                 -- do
                 minetest.place_schematic(
                     { x = pos.x - (size.x / 2), y = pos.y, z = pos.z - (size.z / 2) },
@@ -207,8 +207,8 @@ function sbz_api.register_leaves(name, def)
             local drops = minetest.get_node_drops(node.name)
             for _, item in ipairs(drops) do
                 local is_leaf = minetest.get_item_group(item, "leaves")
-                if minetest.get_item_group(item, "leafdecay_drop") ~= 0 or
-                    not is_leaf then
+
+                if (minetest.get_item_group(item, "leafdecay_drop") ~= 0) or not is_leaf then
                     minetest.add_item({
                         x = pos.x - 0.5 + math.random(),
                         y = pos.y - 0.5 + math.random(),
@@ -263,7 +263,8 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", {
         habitat_conducts = 1,
         transparent = 1,
         explody = 10,
-        tree = 1
+        tree = 1,
+        ui_bio = 1
     },
     radius = 3,
     paramtype2 = "wallmounted",
@@ -286,7 +287,10 @@ sbz_api.register_leaves("sbz_bio:colorium_leaves", {
         explody = 10,
         leaves = 1,
         leafdecay = 1,
-        leafdecay_drop = 0
+        leafdecay_drop = 0,
+        cracky = 3,
+        dig_immediate = 3,
+        ui_bio = 1
     },
 
     tiles = {
@@ -301,14 +305,23 @@ sbz_api.register_leaves("sbz_bio:colorium_leaves", {
         items = {
             {
                 items = { "sbz_bio:colorium_sapling" },
-                rarity = 20
+                rarity = 5
             },
             {
-                items = { "sbz_bio:colorium_leaves" }
+                items = { "sbz_bio:colorium_leaves" },
             }
         }
     }
 })
+
+minetest.register_craft {
+    output = "sbz_bio:colorium_sapling",
+    recipe = {
+        { "sbz_meteorites:neutronium" },
+        { "sbz_resources:core_dust" },
+        { "sbz_resources:core_dust" },
+    }
+}
 
 local schems = minetest.get_modpath("sbz_bio") .. "/schematics/"
 
