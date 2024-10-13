@@ -6,7 +6,8 @@
         "vector",
         "ItemStack",
         "table",
-        "dump"
+        "dump",
+        "VoxelArea"
     ],
     "Lua.diagnostics.disable": [
         "global-in-nil-env",

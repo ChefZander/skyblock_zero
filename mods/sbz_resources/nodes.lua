@@ -303,7 +303,6 @@ minetest.register_node("sbz_resources:water_source", {
     liquid_alternative_flowing = "sbz_resources:water_flowing",
     drop = "",
     liquid_viscosity = 1,
-    waving = 3,
 })
 
 minetest.register_node("sbz_resources:water_flowing", {
@@ -328,7 +327,6 @@ minetest.register_node("sbz_resources:water_flowing", {
     liquid_alternative_flowing = "sbz_resources:water_flowing",
     drop = "",
     liquid_viscosity = 1,
-    waving = 3,
 
 })
 

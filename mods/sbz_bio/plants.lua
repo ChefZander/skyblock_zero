@@ -5,24 +5,33 @@ local sprouts = {
 
 local up = vector.new(0, 1, 0)
 
+
+local fert_use = function(itemstack, user, pointed)
+    if pointed.type ~= "node" then return end
+
+    local pos = pointed.under
+    local node = minetest.get_node(pos)
+    local name = node.name
+    local def = minetest.registered_nodes[node.name] or {}
+
+    if minetest.get_item_group(name, "soil") > 0
+        and minetest.registered_nodes[minetest.get_node(pos + up).name].buildable_to then
+        minetest.set_node(pos + up, { name = sprouts[math.random(#sprouts)] })
+    elseif minetest.get_item_group(name, "plant") > 0 and def.grow then
+        def.grow(pointed.under, node)
+    elseif minetest.get_item_group(name, "sapling") > 0 then
+        def.grow(pointed.under)
+    else
+        return
+    end
+    itemstack:take_item()
+    return itemstack
+end
 minetest.register_craftitem("sbz_bio:fertilizer", {
     description = "Fertilizer",
     inventory_image = "fertilizer.png",
-    on_place = function(itemstack, user, pointed)
-        if pointed.type ~= "node" then return end
-        local node = minetest.get_node(pointed.under)
-        if minetest.get_item_group(node.name, "soil") > 0
-            and minetest.registered_nodes[minetest.get_node(pointed.under + up).name].buildable_to then
-            minetest.set_node(pointed.under + up, { name = sprouts[math.random(#sprouts)] })
-        elseif minetest.get_item_group(node.name, "plant") > 0
-            and minetest.registered_nodes[node.name].grow then
-            minetest.registered_nodes[node.name].grow(pointed.under, node)
-        else
-            return
-        end
-        itemstack:take_item()
-        return itemstack
-    end,
+    on_place = fert_use,
+    on_use = fert_use,
     groups = { ui_bio = 1 },
 })
 

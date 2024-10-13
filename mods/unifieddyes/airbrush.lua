@@ -2,7 +2,16 @@ minetest.register_craftitem("unifieddyes:colorium", {
 	description = "Colorium",
 	inventory_image = "colorium.png",
 })
+minetest.register_craft {
+	type = "cooking",
+	output = "unifieddyes:colorium",
+	recipe = "unifieddyes:colorium_powder",
+}
 
+minetest.register_craftitem("unifieddyes:colorium_powder", {
+	description = "Colorium Powder",
+	inventory_image = "powder.png^[mask:colorium.png",
+})
 minetest.register_node("unifieddyes:colorium_blob", unifieddyes.def {
 	description = "Colorium Blob",
 	tiles = {
