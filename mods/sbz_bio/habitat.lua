@@ -1,37 +1,48 @@
 local hash = minetest.hash_node_position
 local touched_nodes = {}
 
+local habitat_max_size = 4096
+
 function sbz_api.assemble_habitat(start_pos, seen)
-    local checking = { start_pos }
     seen = seen or {}
+
+    local queue = Queue.new()
+    queue:enqueue(start_pos)
+    seen[hash(start_pos)] = true
+
     local size = 0
     local demand = 0
     local plants = {}
     local co2_sources = {}
     sbz_api.vm_begin()
 
-    while #checking > 0 and size < 4096 do
-        local pos = table.remove(checking, 1)
-        if not seen[hash(pos)] then
-            local node = sbz_api.vm_get_node(pos) or { name = "ignore" }
-            if minetest.get_item_group(node.name, "plant") > 0 then
-                local d = minetest.get_item_group(node.name, "needs_co2")
-                table.insert(plants, { pos, node, d })
-                demand = demand + d
-            elseif minetest.get_item_group(node.name, "co2_source") > 0 then
-                table.insert(co2_sources, { pos, node })
-            end
-            if node.name == "air" or minetest.get_item_group(node.name, "habitat_conducts") > 0 or pos == start_pos then
-                for i = 0, 5 do
-                    table.insert(checking, pos + minetest.wallmounted_to_dir(i))
+    while not queue:is_empty() and size < habitat_max_size do
+        local pos = queue:dequeue()
+        local node = sbz_api.get_node_force(pos) or { name = "ignore" }
+        local name = node.name
+        if minetest.get_item_group(name, "plant") > 0 then
+            local d = minetest.get_item_group(name, "needs_co2")
+            table.insert(plants, { pos, node, d })
+            demand = demand + d
+        elseif minetest.get_item_group(name, "co2_source") > 0 then
+            table.insert(co2_sources, { pos, node })
+        end
+
+        if name == "air" or minetest.get_item_group(name, "habitat_conducts") > 0 or pos == start_pos then
+            iterate_around_pos(pos, function(cpos)
+                if not seen[hash(cpos)] then
+                    queue:enqueue(cpos)
+                    seen[hash(cpos)] = true
                 end
-                size = size + 1
-            end
-            seen[hash(pos)] = true
+            end)
+            size = size + 1
+        end
+        if name == "sbz_bio:habitat_regulator" and pos ~= start_pos then
+            return
         end
     end
 
-    if #checking > 0 then return end
+    if not queue:is_empty() then return end
     return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand }
 end
 
@@ -39,7 +50,10 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
     local time = os.time()
     local habitat = sbz_api.assemble_habitat(start_pos)
     if not habitat then
-        meta:set_string("infotext", "Habitat unenclosed or too large\nMake sure the habitat is fully sealed")
+        meta:set_string("infotext",
+            ("Habitat unenclosed or too large (max size is %s nodes) or there are multiple habitat regulators in the same habitat.\nMake sure the habitat is fully sealed.")
+            :format(
+                habitat_max_size))
         return
     end
 

@@ -268,10 +268,7 @@ minetest.register_node("sbz_power:fluid_tank", {
         end
         local def = minetest.registered_nodes[lqinv[1].name]
         local desc = string.gsub(def.short_description or def.description or lqinv[1].name, " Source", "")
-        meta:set_string("infotext",
-            string.format("Storing %s : %s/%s",
-                desc, lqinv[1].count,
-                lqinv.max_count_in_each_stack))
+        meta:set_string("infotext", ("Storing %s : %s/%s"):format(desc, lqinv[1].count, lqinv.max_count_in_each_stack))
     end
 })
 
