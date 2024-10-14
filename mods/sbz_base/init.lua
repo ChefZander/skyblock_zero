@@ -5,16 +5,6 @@ sbz_api = {
     debug = minetest.settings:get_bool("debug", false)
 }
 
----@class vector
----@field x number
----@field y number
----@field z number
-
----@class node
----@field name string
----@field param2 integer
----@field param1 integer
-
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
 
