@@ -326,18 +326,24 @@ minetest.register_abm({
 
 local dtime_accum_subtick = 0
 local dtime_accum_fulltick = 0
+
+sbz_api.power_tick = 1
+sbz_api.power_subtick = 0.25
+
 sbz_api.switching_station_globalstep = function(dtime)
     local getnode = minetest.get_node
     local getmeta = minetest.get_meta
     dtime_accum_subtick = dtime_accum_subtick + dtime
-    if dtime_accum_subtick >= 0.25 then
+
+    -- subtick
+    if dtime_accum_subtick >= sbz_api.power_subtick then
         dtime_accum_subtick = 0
-        dtime_accum_fulltick = dtime_accum_fulltick + 0.25
+        dtime_accum_fulltick = dtime_accum_fulltick + sbz_api.power_subtick
         for k, v in ipairs(all_switching_stations) do
             local pos = unhash(v)
             if getnode(pos).name ~= "sbz_power:switching_station" then
                 getmeta(pos):set_string("infotext", "Inactive")
-                table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right
+                table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right, yes
                 all_switching_stations_reverse[v] = nil
                 sbz_api.switching_station_networks[v] = nil
             else
@@ -346,7 +352,8 @@ sbz_api.switching_station_globalstep = function(dtime)
         end
     end
 
-    if dtime_accum_fulltick >= 1 then
+    -- tick
+    if dtime_accum_fulltick >= sbz_api.power_tick then
         dtime_accum_fulltick = 0
         for k, v in ipairs(all_switching_stations) do
             local pos = unhash(v)

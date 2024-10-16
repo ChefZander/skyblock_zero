@@ -7,10 +7,11 @@
         "ItemStack",
         "table",
         "dump",
-        "VoxelArea"
+        "VoxelArea",
+        "factions",
+        "dbg"
     ],
     "Lua.diagnostics.disable": [
-        "global-in-nil-env",
-        "lowercase-global"
+        "lowercase-global",
     ]
 }

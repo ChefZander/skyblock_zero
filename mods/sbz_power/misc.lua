@@ -2,7 +2,7 @@ sbz_api.register_stateful_machine("sbz_power:phosphor", {
     description = "Phosphor",
     paramtype = "light",
     sunlight_propagates = true,
-	drawtype = "glasslike_framed",
+    drawtype = "glasslike_framed",
     tiles = { "phosphor_overlay.png", "matter_blob.png" },
     groups = { matter = 1, cracky = 3 },
     action = function(pos, node, meta, supply, demand)
@@ -38,13 +38,13 @@ minetest.register_craft({
 
 
 sbz_api.register_machine("sbz_power:interactor", {
-    description = "Interactor (legacy + you hacker you!)",
+    description = "Interactor (deprecated + you hacker you! you should not own this)",
     tiles = {
         "interactor_top.png",
         "interactor_bottom.png",
         "interactor_side.png"
     },
-    drops = "pipeworks:puncher",
+    drop = "pipeworks:puncher",
     paramtype2 = "wallmounted",
     groups = { matter = 1, cracky = 3, not_in_creative_inventory = 1 },
     action_interval = 3, --on average, an interactor on a core is barely self-sufficient

@@ -31,7 +31,6 @@ listring[]
 
 
         minetest.sound_play("machine_build", {
-            to_player = player_name,
             gain = 1.0,
             pos = pos,
         })

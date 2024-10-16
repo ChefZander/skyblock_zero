@@ -108,19 +108,23 @@ function vector.offset(v1, v2) end
 function vector.check(v) end
 
 ---@param v vector
----@param x number
+---@param x number|vector
+---@return vector
 function vector.add(v, x) end
 
 ---@param v vector
----@param x number
+---@param x number|vector
+---@return vector
 function vector.subtract(v, x) end
 
 ---@param v vector
----@param x number
+---@param x number|vector
+---@return vector
 function vector.multiply(v, x) end
 
 ---@param v vector
----@param x number
+---@param x number|vector
+---@return vector
 function vector.divide(v, x) end
 
 ---@param pos vector
@@ -167,9 +171,9 @@ function core.register_alias_force(alias, original_name) end
 ---@field exclude_player string
 ---@field max_hear_distance number
 
----@class node_def
+---@class node_def: any
 
----@type table<string,node_def>
+---@type table<string, table>
 core.registered_nodes = {}
 
 --- x1, y1, z1, x2, y2, z2
@@ -381,6 +385,22 @@ function core.pointed_thing_to_face_pos(placer, pointed_thing) end
 ---@param initial_wear integer?
 ---@return integer
 function core.get_tool_wear_after_use(uses, initial_wear) end
+
+--- TEMPORARY CLASSES YO HEY
+---@class tool_capabilities: table
+---@class dig_params: table
+---@class hit_params: table
+---@class item_def: table
+---@class abm_def: table
+---@class lbm_def: table
+---@class biome_def: table
+---@class luaentity_def: table
+---@class ore_def: table
+---@class deco_def: table
+---@class recipe_def: table
+---@class priv_def: table
+---@class chatcommand_def: table
+---@class schem_def: table
 
 ---@param tool_capabilities tool_capabilities
 ---@param groups table no its not the groups type for a reason
@@ -720,7 +740,7 @@ function core.register_tool(name, item_def) end
 
 ---@param name string
 ---@param redefinition table
----@param del_fields table
+---@param del_fields table?
 ---@return nil
 function core.override_item(name, redefinition, del_fields) end
 

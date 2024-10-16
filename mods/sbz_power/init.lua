@@ -1,6 +1,9 @@
 local modpath = minetest.get_modpath("sbz_power")
 
+sbz_power = {} -- todo: migrate the codebase over to sbz_power.*
 
+---@param def table
+---@return table
 function sbz_api.add_tube_support(def)
     --[[
     def.input_inv = def.input_inv or "input"
@@ -254,9 +257,9 @@ end
 
 --dofile(modpath .. "/vm.lua") -- moved to sbz_base
 dofile(modpath .. "/switching_station.lua")
+dofile(modpath .. "/ui.lua")
 dofile(modpath .. "/fluid_transport.lua")
 dofile(modpath .. "/power_pipes.lua")
-dofile(modpath .. "/batteries.lua")
 dofile(modpath .. "/extractor.lua")
 dofile(modpath .. "/generator.lua")
 dofile(modpath .. "/connectors.lua")
@@ -265,77 +268,4 @@ dofile(modpath .. "/misc.lua")
 dofile(modpath .. "/emittrium_reactor.lua")
 dofile(modpath .. "/ele_fab.lua")
 dofile(modpath .. "/lights.lua")
-
---fixing worlds, again remove in a few releases
-local fucked_items = {
-    "switching_station",
-    "power_pipe",
-    "battery",
-    "advanced_battery",
-    "creative_battery",
-    "simple_matter_extractor",
-    "advanced_matter_extractor",
-    "simple_charge_generator",
-    "simple_charged_field",
-    "starlight_collector",
-    "connector_off",
-    "connector_on",
-    "infinite_storinator",
-    "phosphor_off",
-    "phosphor_on"
-}
-
-local function replace_in_inv(inv)
-    for listname, _ in pairs(inv:get_lists()) do
-        for i = 1, inv:get_size(listname) do
-            for _, itemname in ipairs(fucked_items) do
-                local itemstack = inv:get_stack(listname, i)
-                if itemstack:get_name() == "sbz_resources:" .. itemname then
-                    itemstack:set_name("sbz_power:" .. itemname)
-                    inv:set_stack(listname, i, itemstack)
-                end
-            end
-        end
-    end
-end
-
-minetest.register_on_joinplayer(function(player)
-    replace_in_inv(player:get_inventory())
-end)
-
-local old_fucked_items = {}
-local fucked_item_map = {}
-for i, val in ipairs(fucked_items) do
-    old_fucked_items[i] = val
-    fucked_item_map["sbz_resources:" .. val] = "sbz_power:" .. val
-end
-
-minetest.register_lbm({
-    name = "sbz_power:replace_old_nodes",
-    nodenames = old_fucked_items,
-    run_at_every_load = true,
-    action = function(pos, node)
-        if fucked_item_map[node.name] then
-            node.name = fucked_item_map[node.name]
-            minetest.swap_node(pos, node)
-        end
-    end
-})
-
-minetest.register_lbm({
-    name = "sbz_power:replace_old_items_in_inv",
-    nodenames = {
-        "sbz_resources:storinator",
-        "sbz_resources:infinite_storinator",
-        "sbz_power:infinite_storinator",
-        "sbz_chem:crusher",
-        "sbz_chem:simple_alloy_furnace",
-        "sbz_power:simple_matter_extractor",
-        "sbz_power:advanced_matter_extractor",
-        "sbz_power:simple_charge_generator"
-    },
-    run_at_every_load = true,
-    action = function(pos)
-        replace_in_inv(minetest.get_meta(pos):get_inventory())
-    end
-})
+dofile(modpath .. "/batteries.lua")

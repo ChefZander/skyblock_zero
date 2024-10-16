@@ -89,7 +89,7 @@ minetest.register_node("sbz_power:reactor_builder", {
 -- dont remove maybe idk
 --]]
 
-local offset = vector.new({ x = 3, y = 3, z = 3 })
+local offset = vector.new(3, 3, 3)
 
 local function try_linking(pos, meta)
     local nodes = minetest.find_nodes_in_area(vector.subtract(pos, offset), vector.add(pos, offset),
@@ -305,6 +305,8 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
             end
             return
         end
+
+        ---@diagnostic disable-next-line: cast-local-type
         linkedname = linkedname.name
         if linkedname ~= "sbz_power:reactor_core_on" and linkedname ~= "sbz_power:reactor_core_off" then
             if not try_linking(pos, meta) then
@@ -453,7 +455,8 @@ local function explode(pos)
                 --although this is very random
                 if wear > wear_max then break end
                 if not minetest.is_protected(pointed.under, owner) then
-                    minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+                    minetest.set_node(pointed.under,
+                        { name = (minetest.registered_nodes[nodename] or {})._exploded or "air" })
                 end
             end
         end
