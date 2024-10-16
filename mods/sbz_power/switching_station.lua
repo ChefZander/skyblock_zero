@@ -99,6 +99,11 @@ function sbz_api.assemble_network(start_pos, seen)
 end
 
 function sbz_api.switching_station_tick(start_pos)
+    if touched_nodes[hash(start_pos)] and os.time() - touched_nodes[hash(start_pos)] < 1 then
+        minetest.get_meta(start_pos):set_string("infotext", "Inactive (connected to another network)")
+        return
+    end
+
     local meta = minetest.get_meta(start_pos)
     local network_before = sbz_api.switching_station_networks[hash(start_pos)]
 
