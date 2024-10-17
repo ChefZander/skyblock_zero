@@ -84,7 +84,7 @@ local function liquid_inv_add_item(inv, stack, on_update, pos)
             end
             stack.count = leftover
             if inv_stack.name == "any" then inv_stack.name = stack.name end
-            on_update(pos, inv)
+            if on_update then on_update(pos, inv) end
             if stack.count == 0 then
                 break
             end
@@ -121,6 +121,7 @@ function sbz_api.pump(start_pos, liquid_stack, frompos)
             end
             meta:set_string("liquid_inv", minetest.serialize(liquid_inventory))
         end
+        if abort then break end
 
         if is_conducting then
             iterate_around_pos(current_pos, function(pos)
@@ -215,8 +216,12 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
                 return 0
             end
 
-
-            meta:set_string("infotext", "Running")
+            if minetest.registered_nodes[fromnode].on_liquid_inv_update then
+                minetest.registered_nodes[fromnode].on_liquid_inv_update(
+                    frompos,
+                    minetest.deserialize(minetest.get_meta(frompos):get_string("liquid_inv")))
+                meta:set_string("infotext", "Running")
+            end
             return pump_consumbtion
         end
     end
@@ -269,6 +274,7 @@ minetest.register_node("sbz_power:fluid_tank", {
         local def = minetest.registered_nodes[lqinv[1].name]
         local desc = string.gsub(def.short_description or def.description or lqinv[1].name, " Source", "")
         meta:set_string("infotext", ("Storing %s : %s/%s"):format(desc, lqinv[1].count, lqinv.max_count_in_each_stack))
+        meta:set_string("formspec", sbz_power.liquid_storage_fs(lqinv[1].count, lqinv.max_count_in_each_stack))
     end
 })
 

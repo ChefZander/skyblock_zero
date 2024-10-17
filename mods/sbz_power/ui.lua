@@ -91,3 +91,12 @@ function sbz_power.battery_fs(consumed, max)
             0, 0, 5, 5, "Storage", "CjH = \"The amount of Cj that can be sustained for 1 hour.\""
         )
 end
+
+function sbz_power.liquid_storage_fs(has, max)
+    return "formspec_version[7]size[5,5]" ..
+        bar(
+            { n = has, text = has .. " source blocks" },
+            { n = max, text = max .. " source blocks" },
+            0, 0, 5, 5, "Liquid Storage", ""
+        )
+end

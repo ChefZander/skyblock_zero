@@ -615,7 +615,7 @@ end
 
 unifieddyes.palettes = {
 	["colorfacedir"] = "unifieddyes_palette_colorfacedir.png",
-	["wallmounted"] = "unifieddyes_palette_colorwallmounted.png",
+	["colorwallmounted"] = "unifieddyes_palette_colorwallmounted.png",
 	["color"] = "unifieddyes_palette_extended.png",
 }
 

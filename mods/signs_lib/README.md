@@ -1,4 +1,5 @@
 # signs_lib
+(modified)
 
 This is kaeza's and my signs library mod, originally forked from PilzAdam's version and rewritten mostly by kaeza to include a number of new features, then rewritten again a couple more times (finding its way into my  [street_signs](https://forum.minetest.net/viewtopic.php?t=20866) mod for a while, where it developed nicely 🙂).
 

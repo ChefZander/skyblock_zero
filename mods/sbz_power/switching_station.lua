@@ -58,7 +58,6 @@ function sbz_api.assemble_network(start_pos, seen)
         local nn = (sbz_api.get_node_force(current_pos) or {}).name -- node name
         local is_conducting = IG(nn, "pipe_conducts") == 1
 
-
         local is_generator = IG(nn, "sbz_generator") == 1
         local is_machine = IG(nn, "sbz_machine") == 1
         local is_battery = IG(nn, "sbz_battery") == 1
@@ -72,11 +71,11 @@ function sbz_api.assemble_network(start_pos, seen)
                 switching_stations[#switching_stations + 1] = current_pos
             end
         elseif is_battery then
-            batteries[#batteries + 1] = { current_pos, nn }
+            batteries[#batteries + 1] = { current_pos, nn, dir }
         elseif is_generator then
-            generators[#generators + 1] = { current_pos, nn }
+            generators[#generators + 1] = { current_pos, nn, dir }
         elseif is_machine then
-            machines[#machines + 1] = { current_pos, nn }
+            machines[#machines + 1] = { current_pos, nn, dir }
         elseif is_connector then
             minetest.registered_nodes[nn].assemble(current_pos, sbz_api.vm_get_node(current_pos), dir, network, seen)
         end
@@ -108,6 +107,7 @@ function sbz_api.switching_station_tick(start_pos)
     local network_before = sbz_api.switching_station_networks[hash(start_pos)]
 
     if network_before ~= nil then
+        -- ah batteries
         local excess = (network_before.supply - network_before.battery_supply_only) - network_before.demand
         local supply = network_before.supply
         local demand = network_before.demand
@@ -115,9 +115,15 @@ function sbz_api.switching_station_tick(start_pos)
             if excess == 0 then break end
             local position = v[1]
             local node = v[2]
-            local max = v[3]
-            local current = v[4]
-            local meta = v[5]
+            local dir = v[3]
+            local max = v[4]
+            local current = v[5]
+            local meta = minetest.get_meta(position)
+
+            local set_power = node_defs[node].set_power or
+                function(pos, node, meta, current_power, supplied_power, dir)
+                    meta:set_int("power", supplied_power)
+                end
 
             if excess > 0 then -- charging
                 local power_add = max - current
@@ -125,22 +131,22 @@ function sbz_api.switching_station_tick(start_pos)
                     power_add = excess
                 end
                 excess = excess - power_add
-                meta:set_int("power", current + power_add)
+                set_power(position, node, meta, current, current + power_add, dir)
             elseif excess < 0 then -- discharging
                 local power_remove = current
                 if power_remove > -excess then
                     power_remove = -excess
                 end
                 excess = excess + power_remove
-                meta:set_int("power", current - power_remove)
+                set_power(position, node, meta, current, current - power_remove, dir)
             end
         end
 
         for k, v in ipairs(network_before.batteries) do
             local position = v[1]
             local node = v[2]
-            local meta = v[5]
-            node_defs[node].action(position, node, meta, supply, demand)
+            local dir = v[3]
+            node_defs[node].action(position, node, minetest.get_meta(position), supply, demand, dir)
         end
 
         local network_size = #network_before.generators + #network_before.machines + #network_before.batteries
@@ -190,16 +196,21 @@ function sbz_api.switching_station_tick(start_pos)
         local node = v[2]
         local meta = minetest.get_meta(position)
         if meta:get_int("force_off") == 1 then
-            batteries[k] = nil
+            table.remove(batteries, k)
         else
             touched_nodes[hash(position)] = os.time()
 
-            v[3] = node_defs[node].battery_max
-            v[4] = meta:get_int("power")
-            v[5] = meta
+            local d = node_defs[node]
+            v[4] = d.battery_max
 
-            battery_max = battery_max + v[3]
-            supply = supply + v[4]
+            if d.get_power then
+                v[5] = d.get_power(position, node, meta, supply, demand, v[3])
+            else
+                v[5] = meta:get_int("power")
+            end
+
+            battery_max = battery_max + v[4]
+            supply = supply + v[5]
         end
     end
 

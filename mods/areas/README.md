@@ -1,4 +1,4 @@
-Areas mod for Minetest
+Areas mod for Minetest (modified)
 ======================
 
 Dependencies
