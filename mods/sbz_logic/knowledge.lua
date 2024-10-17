@@ -12,6 +12,7 @@ sbz_api.help_pages_by_index = {
     [7] = "Disks and Mem",
     [8] = "Lua Builder",
     [9] = "Object Detector",
+    [10] = "Formspec Screen",
 }
 
 local function edit_text(t)

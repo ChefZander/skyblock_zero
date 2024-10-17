@@ -30,6 +30,8 @@ minetest.register_node("sbz_logic_devices:formspec_screen", {
         if #msg > max then return end
         if msg == "subscribe" then
             minetest.get_meta(pos):set_string("linked", vector.to_string(from_pos))
+        elseif msg == "unsubscribe" then
+            minetest.get_meta(pos):set_string("linked", "")
         else
             minetest.get_meta(pos):set_string("formspec", msg)
         end
@@ -49,6 +51,6 @@ minetest.register_craft {
     recipe = {
         { "",                      "sbz_resources:luanium",     "", },
         { "sbz_resources:luanium", "sbz_resources:matter_blob", "sbz_resources:luanium" },
-        { "",                      "sbz_resources:luanium",     "", }
+        { "",                      "sbz_logic:data_disk",       "", }
     }
 }
