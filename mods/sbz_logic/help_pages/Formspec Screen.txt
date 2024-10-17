@@ -1,0 +1,13 @@
+<big>Formspec Screen</big>
+
+A really simple component... but at the same time a really complicated component for newbies to luanti (minetest)
+
+If you send a string to it, it will render it as a formspec, see <action name=url url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md#formspec>https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md#formspec</action>
+
+But how do you get the fields from it when someone clicks??
+Well, if you send specifically the string "subscribe", the luacontroller will be subscribed to the formspec screen (only 1 luacontroller per formspec screen), you can send it "unsubscribe" to get unsubscribed
+
+Soo... when someone clicks something and the luac is subscribed, it will receive a message containing the fields (Again, documented in minetest docs under "on_player_receive_fields")
+But, it will add on a "sender" field with the name of the person that clicked
+
+And yeah, that's it :D

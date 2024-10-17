@@ -1,4 +1,4 @@
-Minetest Game mod: creative
+Minetest Game mod: creative (HEAVILY MODIFIED)
 ===========================
 See license.txt for license information.
 

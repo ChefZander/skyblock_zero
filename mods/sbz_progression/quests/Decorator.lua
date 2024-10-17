@@ -37,9 +37,10 @@ Make sure the Charged Particle is properly encased in antimatter, or it'll escap
     {
         type = "quest",
         title = "Screwdriver",
-        text = "Screwdriver rotates blocks when you click on one with it.",
+        text = "Screwdriver rotates blocks when you click on one with it. Same as mtg screwdriver.",
         requires = { "Antimatter", "Introduction" }
     },
+    --[[
     {
         type = "quest",
         title = "Matter Stairs",
@@ -50,10 +51,24 @@ Instead, we have these absurd vertical obstacles that defy both gravity and logi
 Not just any stairway, but one that seems to stretch endlessly between levels of the ship. You’re floating in zero-g, and your only choice is to awkwardly flail your way up or down, hoping you don’t collide with the bulkheads.
 And what’s with the handrails? They’re always placed at just the wrong height, making it feel like they’re mocking you as you drift by. Oh, you wanted support? Too bad, space cadet!
 I swear, every time I encounter these space stairs, I wonder if the game developers just had a sadistic streak. Let’s see how they handle these! We’ve mastered faster-than-light travel, but let’s make sure their biggest challenge is a staircase that defies the laws of physics!
-Next time you’re floating through the cosmos and stumble upon these absurd contraptions, just remember: they’re not there to help you—they’re there to remind you that even in the boundless universe, the real challenge is mastering the art of interstellar stair-climbing.]],
+Next time you’re floating through the cosmos and stumble upon these absurd contraptions, just remember: they’re not there to help you—they’re there to remind you that even in the boundless universe, the real challenge is mastering the art of interstellar stair-climbing.]] --[[,
         requires = { "A bigger platform" }
     },
+    --]]
+    {
+        type = "quest",
+        title = "CNC Machines",
+        text = [[
+Do you want shapes that aren't... blocks? Like... stairs?
+Oh do i have the machine for you!
 
+With a CNC machine you can make all sorts of stairs and slabs....
+Craft one, put in the block of your choosing*, and boom!
+
+*The block needs to be compatible with the CNC machine, it usually will have a grey "You can make stairs with it!" text.
+]],
+        requires = { "Emittrium Circuits" }
+    },
     {
         type = "quest",
         title = "Factory Flooring",
@@ -119,6 +134,25 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         title = "Signs",
         text =
         "Do you want to write something.... that's like... visible in the world? You should consider crafting a sign.",
-        requires = { "More Antimatter" }
+        requires = { "Antimatter" }
+    },
+    {
+        type = "quest",
+        title = "Powered Lights",
+        text =
+        "Do you want to light up an area, cheaply? Powered lamps are the way to do it.... if you find something cheaper its a bug.\nOr do you want to light up a huge area, the Super powered lamp is for you, it fills up a 12x12x12 cube with invisible lights for somewhat low power consumbtion!",
+        requires = { "Switching Station", "More Antimatter", "Emittrium Glass" }
+    },
+    {
+        type = "quest",
+        title = "Coloring Tool",
+        text = [[
+Yeah, if you actually want to color nodes, use that.
+It requires 1 colorium per each node you are coloring.
+
+You extract colorium dust from colorium leaves, then you put it in the furnace.
+With that colorium, you make your tool.
+        ]],
+        requires = { "Colorium Trees" }
     }
 }

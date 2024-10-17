@@ -74,7 +74,7 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
                 logic.override_code(target, source)
             end
         end,
-
+        stack_max = 1
     }
     minetest.register_craftitem(name, def)
     minetest.register_craft(craft)

@@ -106,6 +106,10 @@ local achievment_table = {
 
     ["sbz_decor:matter_sign"] = "Signs",
     ["sbz_decor:antimatter_sign"] = "Signs",
+    ["sbz_decor:cnc"] = "CNC Machines",
+    ["sbz_power:powered_lamp_off"] = "Powered Lights",
+    ["sbz_power:super_powered_lamp_off"] = "Powered Lights",
+    ["unifieddyes:coloring_tool"] = "Coloring Tool",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

@@ -37,8 +37,8 @@ sbz_api.register_stateful_machine("sbz_chem:high_power_electric_furnace", {
 
 
         minetest.sound_play("machine_build", {
-            to_player = player_name,
             gain = 1.0,
+            pos = pos
         })
     end,
     after_place_node = pipeworks.after_place,

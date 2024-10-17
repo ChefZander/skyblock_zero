@@ -1,0 +1,91 @@
+# textdomain: unifieddyes
+
+# Translation by Xanthin
+
+Lime Dye=Gelbgruener Farbstoff (Gelbgruen)
+Aqua Dye=Aqua Farbstoff 
+Sky-blue Dye=Himmelblauer Farbstoff 
+Red-violet Dye=Rotvioletter Farbstoff 
+Light Grey Dye=Hellgrauer Farbstoff 
+
+Dark Red Dye (low saturation)=Dunkelroter Farbstoff (geringe Saettigung)
+Dark Orange Dye (low saturation)=Dunkeloranger Farbstoff (geringe Saettigung)
+Dark Yellow Dye (low saturation)=Dunkelgelber Farbstoff (geringe Saettigung)
+Dark Lime Dye (low saturation)=Gelbgruenerlime Farbstoff (geringe Saettigung)
+Dark Green Dye (low saturation)=Dunkelgruener Farbstoff (geringe Saettigung)
+Dark Aqua Dye (low saturation)=Dunkelaqua Farbstoff (geringe Saettigung)
+Dark Cyan Dye (low saturation)=Dunkeltuerkiser Farbstoff (geringe Saettigung)
+Dark Sky-blue Dye (low saturation)=Dunkelhimmelblauer Farbstoff (geringe Saettigung)
+Dark Blue Dye (low saturation)=Dunkelblauer Farbstoff (geringe Saettigung)
+Dark Violet Dye (low saturation)=Dunkelvioletter Farbstoff (geringe Saettigung)
+Dark Magenta Dye (low saturation)=Dunkelmagenta Farbstoff (geringe Saettigung)
+Dark Red-violet Dye (low saturation)=Dunkelrotvioletter Farbstoff (geringe Saettigung)
+
+Dark Red Dye=Dunkelroter Farbstoff 
+Dark Orange Dye=Dunkeloranger Farbstoff 
+Dark Yellow Dye=Dunkelgelber Farbstoff 
+Dark Lime Dye=Dunkelgelbgruener Farbstoff 
+Dark Green Dye=Dunkelgruener Farbstoff 
+Dark Aqua Dye=Dunkelaqua Farbstoff 
+Dark Cyan Dye=Dunkeltuerkiser Farbstoff 
+Dark Sky-blue Dye=Dunkelhimmelblauer Farbstoff 
+Dark Blue Dye=Dunkelblauer Farbstoff 
+Dark Violet Dye=Dunkelvioletter Farbstoff 
+Dark Magenta Dye=Dunkelmagenta Farbstoff 
+Dark Red-violet Dye=Dunkelrotvioletter Farbstoff 
+
+Medium Red Dye (low saturation)=Mittelroter Farbstoff (geringe Saettigung)
+Medium Orange Dye (low saturation)=Mitteloranger Farbstoff (geringe Saettigung)
+Medium Yellow Dye (low saturation)=Mittelgelber Farbstoff (geringe Saettigung)
+Medium Lime Dye (low saturation)=Mittelgelbgruener Farbstoff (geringe Saettigung)
+Medium Green Dye (low saturation)=Mittelgruener Farbstoff (geringe Saettigung)
+Medium Aqua Dye (low saturation)=Mittelaqua Farbstoff (geringe Saettigung)
+Medium Cyan Dye (low saturation)=Mitteltuerkiser Farbstoff (geringe Saettigung)
+Medium Sky-blue Dye (low saturation)=Mittelhimmelblauer Farbstoff (geringe Saettigung)
+Medium Blue Dye (low saturation)=Mittelblauer Farbstoff (geringe Saettigung)
+Medium Violet Dye (low saturation)=Mittelvioletter Farbstoff (geringe Saettigung)
+Medium Magenta Dye (low saturation)=Mittelmagenta Farbstoff (geringe Saettigung)
+Medium Red-violet Dye (low saturation)=Mittelrotvioletter Farbstoff (geringe Saettigung)
+
+Medium Red Dye=Mittelroter Farbstoff
+Medium Orange Dye=Mitteloranger Farbstoff 
+Medium Yellow Dye=Mittelgelber Farbstoff
+Medium Lime Dye=Mittelgelbgruener Farbstoff
+Medium Green Dye=Mittelgruener Farbstoff
+Medium Aqua Dye=Mittelaqua Farbstoff
+Medium Cyan Dye=Mitteltuerkiser Farbstoff
+Medium Sky-blue=Mittelhimmelblauer Farbstoff
+Medium Blue Dye=Mittelblauer Farbstoff 
+Medium Violet Dye=Mittelvioletter Farbstoff
+Medium Magenta Dye=Mittelmagenta Farbstoff
+Medium Red-violet Dye=Mittelrotvioletter Farbstoff
+
+Red Dye (low saturation)=Roter Farbstoff (geringe Saettigung)
+Orange Dye (low saturation)=Oranger Farbstoff (geringe Saettigung)
+Yellow Dye (low saturation)=Gelber Farbstoff (geringe Saettigung)
+Lime Dye (low saturation)=Gelbgruener Farbstoff (geringe Saettigung)
+Green Dye (low saturation)=Gruener Farbstoff (geringe Saettigung)
+Aqua Dye (low saturation)=Aqua Farbstoff (geringe Saettigung)
+Cyan Dye (low saturation)=Tuerkiser Farbstoff (geringe Saettigung)
+Sky-blue Dye (low saturation)=Himmelblauer Farbstoff (geringe Saettigung)
+Blue Dye (low saturation)=Blauer Farbstoff (geringe Saettigung)
+Violet Dye (low saturation)=Violetter Farbstoff (geringe Saettigung)
+Magenta Dye (low saturation)=Magenta Farbstoff (geringe Saettigung) lila
+Red-violet Dye (low saturation)=Rotvioletter Farbstoff (geringe Saettigung)
+
+[UnifiedDyes] Loaded!=[UnifiedDyes] geladen!
+
+Dye Airbrush=Farbstroff Airbrush
+
+Select a color:=Wähle eine Farbe
+(Right-clicked a node that supports all 256 colors, showing them all)=(Angeklickter Block unterstützt alle 256 Farben, zeige alle)
+(Right-clicked a node not supported by the Airbrush, showing all colors)=(Angeklickter Block unterstützt kein Airbrush, zeige alle Farben)
+Dyes=Farbstoffe
+Your selection=Deine Auswahl
+Your selection:=Deine Auswahl:
+Cancel=Abbrechen
+Accept=Übernehmen
+Show Available=Zeige verfügbare
+(Currently showing all 256 colors)=(Zeige alle 256 Farben)
+Show All Colors=Zeige alle Farben
+(Currently only showing what the right-clicked node can use)=(Zeige alle, die der angeklickte Block verwenden kann)

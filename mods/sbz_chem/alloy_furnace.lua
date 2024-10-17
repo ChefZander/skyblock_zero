@@ -33,7 +33,6 @@ sbz_api.register_stateful_machine("sbz_chem:simple_alloy_furnace", {
 
 
         minetest.sound_play("machine_build", {
-            to_player = player_name,
             gain = 1.0,
             pos = pos,
         })

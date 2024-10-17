@@ -151,6 +151,7 @@ minetest.register_chatcommand("find_areas", {
 
 		-- Check expression for validity
 		local function testRegExp()
+			---@diagnostic disable-next-line: discard-returns
 			("Test [1]: Player (0,0,0) (0,0,0)"):find(param)
 		end
 		if not pcall(testRegExp) then

@@ -1,0 +1,17 @@
+{
+    "Lua.diagnostics.globals": [
+        "minetest",
+        "PcgRandom",
+        "PerlinNoise",
+        "vector",
+        "ItemStack",
+        "table",
+        "dump",
+        "VoxelArea",
+        "factions",
+        "dbg"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global",
+    ]
+}

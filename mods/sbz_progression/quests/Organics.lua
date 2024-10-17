@@ -1,9 +1,38 @@
 return {
-    { type = "text",  title = "Questline: Organics", text = "Grow plants and fungi to craft more things and also make your base look really cool." },
-    { type = "quest", title = "Liquid Water",        text = "Crushing pebbles squeezes out a bit of water. You can take advantage of this by crafting some fluid cells and putting them in the crusher output to collect it. Once you've done that, go build a little pool or something. :)", requires = { "Crusher" } },
-    { type = "quest", title = "Emittrium Glass",     text = "The other preliminary we need before we can start growing plants is glass. Thankfully it's really easy to craft, it only needs emittrium and antimatter and crafts a lot of glass.",                                             requires = { "Antimatter", "Obtain Emittrium" } },
-    { type = "quest", title = "Dirt",                text = "If you've followed my instructions and built a pool, you should notice moss beginning to grow around it, and algae on top of it, if there's enough light. Take some of that moss and craft it into dirt.",                       requires = { "Liquid Water" } },
-    { type = "quest", title = "Sprouting Plants",    text = "You'll also need to craft the algae on your pool into fertilizer. This is useful for speeding up plant growth, or for forcing dormant seeds in the dirt to germinate.",                                                          requires = { "Liquid Water" } },
+    {
+        type = "text",
+        title = "Questline: Organics",
+        text =
+        "Grow plants and fungi to craft more things and also make your base look really cool."
+    },
+    {
+        type = "quest",
+        title = "Liquid Water",
+        text =
+        "Crushing pebbles squeezes out a bit of water. You can take advantage of this by crafting some fluid cells and putting them in the crusher output to collect it. Once you've done that, go build a little pool or something. :)",
+        requires = { "Crusher" }
+    },
+    {
+        type = "quest",
+        title = "Emittrium Glass",
+        text =
+        "The other preliminary we need before we can start growing plants is glass. Thankfully it's really easy to craft, it only needs emittrium and antimatter and crafts a lot of glass.",
+        requires = { "Antimatter", "Obtain Emittrium" }
+    },
+    {
+        type = "quest",
+        title = "Dirt",
+        text =
+        "If you've followed my instructions and built a pool, you should notice moss beginning to grow around it, and algae on top of it, if there's enough light. Take some of that moss and craft it into dirt.",
+        requires = { "Liquid Water" }
+    },
+    {
+        type = "quest",
+        title = "Sprouting Plants",
+        text =
+        "You'll also need to craft the algae on your pool into fertilizer. This is useful for speeding up plant growth, or for forcing dormant seeds in the dirt to germinate.",
+        requires = { "Liquid Water" }
+    },
     {
         type = "quest",
         title = "Growing Plants",
@@ -23,8 +52,46 @@ So now that you have a habitat, all you've got to do is use some fertilizer on s
 There is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary. Some items are better than others, try out a few and see what works best!]],
         requires = { "Growing Plants", "Annihilator" }
     },
-    { type = "quest",  title = "Stemfruit",        text = "The only other plant you can get from fertilizing dirt is Stemfruit; you won't need to grow much of these, but due to their unusual genetic instability you can craft them with stuff to make new types of plant. Try out some combinations and see what you get!",                                                    requires = { "Carbon Dioxide" } },
-    { type = "quest",  title = "Fiberweed",        text = "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.", requires = { "Stemfruit" } },
-    { type = "quest",  title = "Airlocks",         text = "Tired of breaking a hole in the wall whenever you want to enter a habitat? Introducing the Airlock: a node which holds in the atmosphere while letting you effortlessly walk through.",                                                                                                                                requires = { "Growing Plants", "Emittrium Glass", "Neutronium" } },
-    { type = "secret", title = "Not Chorus Fruit", text = "So apparently Warpshrooms make you teleport randomly when you eat them. Dunno if that makes up for how long they take to grow." },
+    {
+        type = "quest",
+        title = "Stemfruit",
+        text =
+        "The only other plant you can get from fertilizing dirt is Stemfruit; you won't need to grow much of these, but due to their unusual genetic instability you can craft them with stuff to make new types of plant. Try out some combinations and see what you get!",
+        requires = { "Carbon Dioxide" }
+    },
+    {
+        type = "quest",
+        title = "Fiberweed",
+        text =
+        "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.",
+        requires = { "Stemfruit" }
+    },
+    {
+        type = "quest",
+        title = "Airlocks",
+        text =
+        "Tired of breaking a hole in the wall whenever you want to enter a habitat? Introducing the Airlock: a node which holds in the atmosphere while letting you effortlessly walk through.",
+        requires = { "Growing Plants", "Emittrium Glass", "Neutronium" }
+    },
+    {
+        type = "secret",
+        title = "Not Chorus Fruit",
+        text =
+        "So apparently Warpshrooms make you teleport randomly when you eat them. Dunno if that makes up for how long they take to grow."
+    },
+    {
+        type = "quest",
+        title = "Colorium Trees",
+        text = [[
+Have you dreamed of like... coloring... nodes... or like... having some trees? Yea, you can do those now.
+So, how do you grow them:
+1) Obtain the sapling
+2) Put a strong light source next to it
+3) Wait or use fertilizer on it
+
+Unlike plants, it does not need to be inside a habitat regulator.
+Achievment will unlock when your tree grows.
+]],
+        requires = { "Neutronium" },
+    },
 }

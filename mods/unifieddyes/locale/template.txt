@@ -1,0 +1,104 @@
+# textdomain: unifieddyes
+
+# Template
+
+Lime Dye=
+Aqua Dye=
+Sky-blue Dye=
+Red-violet Dye=
+Light Grey Dye=
+
+Dark Red Dye (low saturation)=
+Dark Orange Dye (low saturation)=
+Dark Yellow Dye (low saturation)=
+Dark Lime Dye (low saturation)=
+Dark Green Dye (low saturation)=
+Dark Aqua Dye (low saturation)=
+Dark Cyan Dye (low saturation)=
+Dark Sky-blue Dye (low saturation)=
+Dark Blue Dye (low saturation)=
+Dark Violet Dye (low saturation)=
+Dark Magenta Dye (low saturation)=
+Dark Red-violet Dye (low saturation)=
+
+Dark Red Dye=
+Dark Orange Dye=
+Dark Yellow Dye=
+Dark Lime Dye=
+Dark Green Dye=
+Dark Aqua Dye=
+Dark Cyan Dye=
+Dark Sky-blue Dye=
+Dark Blue Dye=
+Dark Violet Dye=
+Dark Magenta Dye=
+Dark Red-violet Dye=
+
+Medium Red Dye (low saturation)=
+Medium Orange Dye (low saturation)=
+Medium Yellow Dye (low saturation)=
+Medium Lime Dye (low saturation)=
+Medium Green Dye (low saturation)=
+Medium Aqua Dye (low saturation)=
+Medium Cyan Dye (low saturation)=
+Medium Sky-blue Dye (low saturation)=
+Medium Blue Dye (low saturation)=
+Medium Violet Dye (low saturation)=
+Medium Magenta Dye (low saturation)=
+Medium Red-violet Dye (low saturation)=
+
+Medium Red Dye=
+Medium Orange Dye=
+Medium Yellow Dye=
+Medium Lime Dye=
+Medium Green Dye=
+Medium Aqua Dye=
+Medium Cyan Dye=
+Medium Sky-blue=
+Medium Blue Dye=
+Medium Violet Dye=
+Medium Magenta Dye=
+Medium Red-violet Dye=
+
+Red Dye (low saturation)=
+Orange Dye (low saturation)=
+Yellow Dye (low saturation)=
+Lime Dye (low saturation)=
+Green Dye (low saturation)=
+Aqua Dye (low saturation)=
+Cyan Dye (low saturation)=
+Sky-blue Dye (low saturation)=
+Blue Dye (low saturation)=
+Violet Dye (low saturation)=
+Magenta Dye (low saturation)=
+Red-violet Dye (low saturation)=
+
+Red Dye=
+Orange Dye=
+Yellow Dye=
+Lime Dye=
+Green Dye=
+Aqua Dye=
+Cyan Dye=
+Sky-blue Dye=
+Blue Dye=
+Violet Dye=
+Magenta Dye=
+Red-violet Dye=
+
+[UnifiedDyes] Loaded!=
+
+Dye Airbrush=
+
+Select a color:=
+(Right-clicked a node that supports all 256 colors, showing them all)=
+(Right-clicked a node not supported by the Airbrush, showing all colors)=
+Dyes=
+Your selection=
+Your selection:=
+Cancel=
+Accept=
+Show Available=
+(Currently showing all 256 colors)=
+Show All Colors=
+(Currently only showing what the right-clicked node can use)=

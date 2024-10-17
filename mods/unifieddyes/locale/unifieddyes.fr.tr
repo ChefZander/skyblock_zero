@@ -1,0 +1,104 @@
+# textdomain: unifieddyes
+
+# Template
+
+Lime Dye=Teinture citron-vert
+Aqua Dye=Teinture aqua
+Sky-blue Dye=Teinture bleu ciel
+Red-violet Dye=Teinture rouge-violet
+Light Grey Dye=Teinture gris clair
+
+Dark Red Dye (low saturation)=Teinture rouge foncé (basse saturation)
+Dark Orange Dye (low saturation)=Teinture orange foncé (basse saturation)
+Dark Yellow Dye (low saturation)=Teinture jaune foncé (basse saturation)
+Dark Lime Dye (low saturation)=Teinture citron-vert foncé (basse saturation)
+Dark Green Dye (low saturation)=Teinture vert foncé (basse saturation)
+Dark Aqua Dye (low saturation)=Teinture aqua foncé (basse saturation)
+Dark Cyan Dye (low saturation)=Teinture cyan foncé (basse saturation)
+Dark Sky-blue Dye (low saturation)=Teinture bleu ciel foncé (basse saturation)
+Dark Blue Dye (low saturation)=Teinture bleu foncé (basse saturation)
+Dark Violet Dye (low saturation)=Teinture violet foncé (basse saturation)
+Dark Magenta Dye (low saturation)=Teinture magenta foncé (basse saturation)
+Dark Red-violet Dye (low saturation)=Teinture rouge-violet foncé (basse saturation)
+
+Dark Red Dye=Teinture rouge foncé
+Dark Orange Dye=Teinture orange foncé
+Dark Yellow Dye=Teinture jaune foncé
+Dark Lime Dye=Teinture citron-vert foncé
+Dark Green Dye=Teinture vert foncé
+Dark Aqua Dye=Teinture aqua foncé
+Dark Cyan Dye=Teinture cyan foncé
+Dark Sky-blue Dye=Teinture bleu ciel foncé
+Dark Blue Dye=Teinture bleu foncé
+Dark Violet Dye=Teinture violet foncé
+Dark Magenta Dye=Teinture magenta foncé
+Dark Red-violet Dye=Teinture rouge-violet foncé
+
+Medium Red Dye (low saturation)=Teinture rouge moyen (basse saturation)
+Medium Orange Dye (low saturation)=Teinture orange moyen (basse saturation)
+Medium Yellow Dye (low saturation)=Teinture jaune moyen (basse saturation)
+Medium Lime Dye (low saturation)=Teinture citron-vert moyen (basse saturation)
+Medium Green Dye (low saturation)=Teinture vert moyen (basse saturation)
+Medium Aqua Dye (low saturation)=Teinture aqua moyen (basse saturation)
+Medium Cyan Dye (low saturation)=Teinture cyan moyen (basse saturation)
+Medium Sky-blue Dye (low saturation)=Teinture bleu ciel moyen (basse saturation)
+Medium Blue Dye (low saturation)=Teinture bleu moyen (basse saturation)
+Medium Violet Dye (low saturation)=Teinture violet moyen (basse saturation)
+Medium Magenta Dye (low saturation)=Teinture magenta moyen (basse saturation)
+Medium Red-violet Dye (low saturation)=Teinture rouge-violet moyen (basse saturation)
+
+Medium Red Dye=Teinture rouge moyen
+Medium Orange Dye=Teinture orange moyen
+Medium Yellow Dye=Teinture jaune moyen
+Medium Lime Dye=Teinture citron-vert moyen
+Medium Green Dye=Teinture vert moyen
+Medium Aqua Dye=Teinture aqua moyen
+Medium Cyan Dye=Teinture cyan moyen
+Medium Sky-blue=Teinture bleu ciel moyen
+Medium Blue Dye=Teinture bleu moyen
+Medium Violet Dye=Teinture violet moyen
+Medium Magenta Dye=Teinture magenta moyen
+Medium Red-violet Dye=Teinture rouge-violet moyen
+
+Red Dye (low saturation)=Teinture rouge (basse saturation)
+Orange Dye (low saturation)=Teinture orange (basse saturation)
+Yellow Dye (low saturation)=Teinture jaune (basse saturation)
+Lime Dye (low saturation)=Teinture citron-vert (basse saturation)
+Green Dye (low saturation)=Teinture vert (basse saturation)
+Aqua Dye (low saturation)=Teinture aqua (basse saturation)
+Cyan Dye (low saturation)=Teinture cyan (basse saturation)
+Sky-blue Dye (low saturation)=Teinture bleu ciel (basse saturation)
+Blue Dye (low saturation)=Teinture bleu (basse saturation)
+Violet Dye (low saturation)=Teinture violet (basse saturation)
+Magenta Dye (low saturation)=Teinture magenta (basse saturation)
+Red-violet Dye (low saturation)=Teinture rouge-violet (basse saturation)
+
+Red Dye=Teinture rouge
+Orange Dye=Teinture orange
+Yellow Dye=Teinture jaune
+Lime Dye=Teinture citron-vert
+Green Dye=Teinture vert
+Aqua Dye=Teinture aqua
+Cyan Dye=Teinture cyan
+Sky-blue Dye=Teinture bleu ciel
+Blue Dye=Teinture bleu
+Violet Dye=Teinture violet
+Magenta Dye=Teinture magenta
+Red-violet Dye=Teinture rouge-violet
+
+[UnifiedDyes] Loaded!=[UnifiedDyes] chargé !
+
+Dye Airbrush=Aérographe à colorants
+
+Select a color:=Choisissez une couleur
+(Right-clicked a node that supports all 256 colors, showing them all)=(Le bloc supporte toutes les 256 couleurs, affichage de toutes celles-ci)
+(Right-clicked a node not supported by the Airbrush, showing all colors)=(Le bloc n’est pas supporté par l’aérographe, affichage de toutes les couleurs)
+Dyes=Teintures
+Your selection=Votre sélection
+Your selection:=Votre sélection :
+Cancel=Annuler
+Accept=Valider
+Show Available=Voir dispo.
+(Currently showing all 256 colors)=(Actuellement en train d’afficher toutes les 256 couleurs)
+Show All Colors=Voir toutes
+(Currently only showing what the right-clicked node can use)=(Actuellement en train d’afficher uniquement ce que le bloc peut utiliser)

@@ -1,4 +1,6 @@
 sbz_api.logic = {}
+sbz_logic = sbz_api.logic
+
 local MP = minetest.get_modpath("sbz_logic")
 
 local logic = sbz_api.logic
@@ -80,7 +82,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         logic.send_event_to_sandbox(pos, { type = "subtick", supply = supply, demand = demand })
         return 0
     end,
-    action_subticking = true,
+
     on_logic_send = function(pos, msg, from_pos)
         logic.send_event_to_sandbox(pos, {
             type = "receive",
@@ -94,7 +96,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     after_dig_node = logic.on_turn_off,
     on_receive_fields = logic.on_receive_fields,
     groups = {
-        sbz_luacontroller = 1, matter = 1, ui_logic = 1, tubedevice = 1, tubedevice_receiver = 1
+        sbz_luacontroller = 1, matter = 1, ui_logic = 1, tubedevice = 1, tubedevice_receiver = 1, sbz_machine_subticking = 1
     },
     tube = {
         input_inventory = "disks",
