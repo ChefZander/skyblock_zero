@@ -1,4 +1,6 @@
 sbz_api.logic = {}
+sbz_logic = sbz_api.logic
+
 local MP = minetest.get_modpath("sbz_logic")
 
 local logic = sbz_api.logic

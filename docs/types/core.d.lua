@@ -28,7 +28,7 @@ function vector.zero() end
 function vector.copy(v) end
 
 ---@return vector
----@param init integer
+---@param init integer?
 ---@param s string
 function vector.from_string(s, init) end
 

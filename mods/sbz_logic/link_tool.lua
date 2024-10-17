@@ -221,7 +221,8 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
         end
         return stack
     end,
-    groups = { ui_logic = 1 }
+    groups = { ui_logic = 1 },
+    stack_max = 1,
 })
 
 minetest.register_craft {
