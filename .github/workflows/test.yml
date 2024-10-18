@@ -10,10 +10,7 @@ jobs:
       with:
         test_mode: game
         enable_coverage: "true"
-        enable_benchmarks: true
-        additional_config: |
-          secure.trusted_mods = mtt, libox
-          mg_name = v7
+        mapgen: v7
+        additional_config: secure.trusted_mods = mtt, libox
+        git_game_repo: https://github.com/TheEt1234/skyblock_zero
     - uses: coverallsapp/github-action@v1
-      verbose: true
-
