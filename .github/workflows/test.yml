@@ -9,7 +9,7 @@ jobs:
       with:
         test_mode: game
         enable_coverage: "true"
-        mtt_filter: skyblock_zero
+        mtt_filter: sbz_base
         git_dependencies: |
           https://github.com/BuckarooBanzay/mtt
           https://github.com/TheEt1234/skyblock_zero
