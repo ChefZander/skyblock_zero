@@ -2,6 +2,7 @@ name: test
 on: [push, pull_request]
 jobs:
   test:
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -9,8 +10,10 @@ jobs:
       with:
         test_mode: game
         enable_coverage: "true"
-        mtt_filter: sbz_base
+        enable_benchmarks: true
         additional_config: |
           secure.trusted_mods = mtt, libox
           mg_name = v7
     - uses: coverallsapp/github-action@v1
+      verbose: true
+
