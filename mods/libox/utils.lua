@@ -5,8 +5,8 @@ function libox.get_default_hook(max_time)
     return function()
         if time() - start_time > max_time then
             debug.sethook()
-            error(
-                "Code timed out! Reason: Time limit exceeded, the limit:" ..
+
+            error("Code timed out! Reason: Time limit exceeded, the limit:" ..
                 tostring(max_time / 1000) .. "ms, the program took:" .. ((time() - start_time) / 1000), 2)
         end
     end

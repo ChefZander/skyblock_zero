@@ -1,8 +1,5 @@
 local BYTECODE_CHAR = 27
 
-
-
-
 local function wrap(f, obj)
     return function(...)
         return f(obj, ...)
