@@ -1,0 +1,17 @@
+name: test
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: buckaroobanzay/mtt@main
+      with:
+        test_mode: game
+        enable_coverage: "true"
+        git_dependencies: |
+          https://github.com/BuckarooBanzay/mtt
+        additional_config: |
+          secure.trusted_mods = libox
+          mg_name = v7
+    - uses: coverallsapp/github-action@v1
