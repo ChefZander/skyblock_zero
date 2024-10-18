@@ -12,6 +12,6 @@ jobs:
         git_dependencies: |
           https://github.com/BuckarooBanzay/mtt
         additional_config: |
-          secure.trusted_mods = libox
+          secure.trusted_mods = mtt, libox
           mg_name = v7
     - uses: coverallsapp/github-action@v1
