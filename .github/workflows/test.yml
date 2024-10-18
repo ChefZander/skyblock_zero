@@ -16,3 +16,4 @@ jobs:
       uses: coverallsapp/github-action@v1
       with:
         verbose: true
+        base-path: ./coverage/lcov.info
