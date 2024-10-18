@@ -12,7 +12,6 @@ jobs:
         mtt_filter: sbz_base
         git_dependencies: |
           https://github.com/BuckarooBanzay/mtt
-          https://github.com/TheEt1234/skyblock_zero
         additional_config: |
           secure.trusted_mods = mtt, libox
           mg_name = v7
