@@ -13,4 +13,8 @@ jobs:
         mapgen: v7
         additional_config: secure.trusted_mods = mtt, libox
         git_game_repo: https://github.com/TheEt1234/skyblock_zero
+    - name: debug
+      run: |
+        ls .
+        cat ./coverage/lcov.info
     - uses: coverallsapp/github-action@v1
