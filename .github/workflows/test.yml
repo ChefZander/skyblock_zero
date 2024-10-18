@@ -10,8 +10,6 @@ jobs:
         test_mode: game
         enable_coverage: "true"
         mtt_filter: sbz_base
-        git_dependencies: |
-          https://github.com/BuckarooBanzay/mtt
         additional_config: |
           secure.trusted_mods = mtt, libox
           mg_name = v7
