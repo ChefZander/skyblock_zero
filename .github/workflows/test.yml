@@ -9,8 +9,10 @@ jobs:
       with:
         test_mode: game
         enable_coverage: "true"
+        mtt_filter: skyblock_zero
         git_dependencies: |
           https://github.com/BuckarooBanzay/mtt
+          https://github.com/TheEt1234/skyblock_zero
         additional_config: |
           secure.trusted_mods = mtt, libox
           mg_name = v7
