@@ -15,5 +15,5 @@ jobs:
     - name: Coveralls
       uses: coverallsapp/github-action@v1
       with:
-        verbose: true
+        debug: true
         base-path: ./coverage/lcov.info
