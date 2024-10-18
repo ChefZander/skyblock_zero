@@ -12,5 +12,7 @@ jobs:
         enable_coverage: "true"
         mapgen: v7
         additional_config: secure.trusted_mods = mtt, libox
-        git_game_repo: https://github.com/TheEt1234/skyblock_zero
-    - uses: coverallsapp/github-action@v1
+    - name: Coveralls
+      uses: coverallsapp/github-action@v1
+      with:
+        verbose: true
