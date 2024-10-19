@@ -108,7 +108,7 @@ end
 
 
 
-local function use(pos, owner, def_item, inv, index)
+local function use(pos, owner, item_def, inv, index)
     if not item_def.on_use then return end
     local player = fakelib.create_player {
         name = owner,
@@ -130,6 +130,19 @@ local function use(pos, owner, def_item, inv, index)
     player:set_wielded_item(stack)
 
     dont_wear_out(stack, old_stack, player.def_item)
+end
+
+local function see(pos, lc_from_pos, builder_from_pos)
+    local result = {}
+    local node = sbz_api.get_node_force(pos)
+    result.node = node
+
+    local meta = minetest.get_meta(pos):to_table()
+
+    result.fields = meta.fields
+    result.inventory = sbz_logic.kill_itemstacks(meta.inventory)
+
+    sbz_logic.send(lc_from_pos, result, builder_from_pos)
 end
 
 sbz_api.register_machine("sbz_logic_devices:builder", {
@@ -183,37 +196,42 @@ listring[]
             local ok = libox.type_check(e, {
                 type = libox.type("string"),
                 pos = libox.type_vector,
-                item = libox.type("string"),
-                param2 = function(x) return x == nil and true or libox.type("number")(x) end
+                item = function(x) return x == nil or libox.type("string")(x) end,
+                param2 = function(x) return x == nil and true or libox.type("number")(x) end,
+                from_pos = libox.type_vector
             })
             if not ok then return end -- ha see, continue statement, lua has continue statements...!!!!
-
+            e.item = e.item or ""
             local item = ItemStack(e.item)
             -- prepare for comparing
             item:set_count(1)
             item:set_wear(1)
             local index = get_index(inv, item)
-            if not index then return end
+            if not index and e.type ~= "see" then return end
             local abs_pos = vector.add(e.pos, pos)
             if not sbz_api.logic.in_square_radius(pos, abs_pos, range) then return end
             if minetest.is_protected(abs_pos, owner) then return end
 
-            local node_at_pos = sbz_api.get_node_force(abs_pos)
-            if node_at_pos == nil then return end
-            local def_node = ndef[node_at_pos.name]
-            if def_node == nil then return end
+            if e.type ~= "see" then
+                local node_at_pos = sbz_api.get_node_force(abs_pos)
+                if node_at_pos == nil then return end
+                local def_node = ndef[node_at_pos.name]
+                if def_node == nil then return end
 
-            local def_item = idef[item:get_name()]
-            if def_item == nil then return end
+                local def_item = idef[item:get_name()]
+                if def_item == nil then return end
 
-            if e.type == "build" then
-                build(abs_pos, owner, item_def, e.param2, inv, index)
-            elseif e.type == "dig" then
-                dig(abs_pos, owner, def_node, def_item, inv, index, node_at_pos)
-            elseif e.type == "punch" then
-                punch(abs_pos, owner, def_node, inv, index, node_at_pos)
-            elseif e.type == "use" then
-                use(abs_pos, owner, def_item, inv, index)
+                if e.type == "build" then
+                    build(abs_pos, owner, def_item, e.param2, inv, index)
+                elseif e.type == "dig" then
+                    dig(abs_pos, owner, def_node, def_item, inv, index, node_at_pos)
+                elseif e.type == "punch" then
+                    punch(abs_pos, owner, def_node, inv, index, node_at_pos)
+                elseif e.type == "use" then
+                    use(abs_pos, owner, def_item, inv, index)
+                end
+            else
+                see(abs_pos, e.from_pos, pos)
             end
         end
         for i = 1, queue_can_handle do
@@ -230,6 +248,7 @@ listring[]
         local meta = minetest.get_meta(pos)
         local queued_events = minetest.deserialize(meta:get_string("queued_events")) or {}
         queued_events[#queued_events + 1] = msg
+        msg.from_pos = from_pos
         meta:set_string("queued_events", minetest.serialize(queued_events))
     end
 })

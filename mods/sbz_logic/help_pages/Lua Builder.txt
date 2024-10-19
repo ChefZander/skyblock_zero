@@ -38,3 +38,19 @@ $C1    type = "use",
 $C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
 $C1    item = "sbz_resources:robotic_arm" -- needs to be an item that is inside the builder's inventory
 })</mono>
+
+<big>Seeing</big>
+So, if you want to see inside, for example, a container, you can yea, do this: (warning: can be an absurd amount of data if there are data disks in there)
+<mono>send_to(links.builder,{
+$C1    type = "see",
+$C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+})</mono>
+
+The event that you receive will look something like this:
+<mono>
+$C1... = {
+$C1    node = { name = "any node name", param2 = 0-255, param1 = 0-255 },
+$C1    fields = { --[[ node meta fields as described in minetest documentation, this one may hold insane amounts of data, be aware ]] },
+$C1    inventory = {some_epic_list = { stack_in_table_form1, stack_in_table_form2, ... }}
+$C1}
+</mono>

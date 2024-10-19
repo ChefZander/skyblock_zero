@@ -1,0 +1,19 @@
+name: test
+on: [push, pull_request]
+jobs:
+  test:
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: buckaroobanzay/mtt@main
+      with:
+        test_mode: game
+        enable_coverage: "true"
+        mapgen: v7
+        additional_config: secure.trusted_mods = mtt, libox
+    - name: Coveralls
+      uses: coverallsapp/github-action@v1
+      with:
+        debug: true
+        base-path: ~
