@@ -1,4 +1,3 @@
-[![Coverage Status](https://coveralls.io/repos/github/TheEt1234/skyblock_zero/badge.svg?branch=master)](https://coveralls.io/github/TheEt1234/skyblock_zero?branch=master)
 # Skyblock: Zero
 Start from absolutely nothing in a skyblock world. Time is your resource. Get lost in the ambiance. Space is your canvas.<br>
 
