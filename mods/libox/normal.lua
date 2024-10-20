@@ -36,9 +36,8 @@ function libox.normal_sandbox(def)
         return error_handler(...)
     end)
     debug.sethook( --[[unpack(old_hook)--]])
-
-
     getmetatable("").__index = string
+
     if not ok then
         return false, ret
     else

@@ -30,14 +30,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <http://unlicense.org/>
 ]]
 
--- debugging
-local function bytes(str)
-    local r = ""
-    for i = 1, #str do
-        r = r .. string.byte(str, i) .. " "
-    end
-    return r
-end
 
 local DISP_MAX_RESOLUTION = 32
 local function remove_entity(pos)
@@ -195,11 +187,15 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
             return
         end
 
-        if type(msg) ~= "table" then return end
+        if type(msg) ~= "table" then
+            return
+        end
         local data = {}
 
-        local size
-        size = #msg; if size == 0 then return end
+        local size = #msg;
+        if size == 0 then
+            return
+        end
 
         for y = 1, size do
             data[y] = {}
