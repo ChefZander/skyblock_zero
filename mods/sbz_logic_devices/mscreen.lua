@@ -39,17 +39,6 @@ local function bytes(str)
     return r
 end
 
---[[
-local B = "black"
-local W = "white
-
-{
-    {B,W,B,W,B,W},
-    {B,W,W,W,B,W},
-    {B,W,B,W,B,W},
-}
-]]
-
 local DISP_MAX_RESOLUTION = 32
 local function remove_entity(pos)
     local entitiesNearby = minetest.get_objects_inside_radius(pos, 0.5)
@@ -123,7 +112,7 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
 
 minetest.register_node("sbz_logic_devices:matrix_screen", {
     description = "Matrix Screen",
-    info_extra = "Named that because it accepts a 2D matrix.",
+    info_extra = { "Named that because it accepts a 2D matrix.", "Ok i just realised that techage had the exact same name, for a very similar thing... lol, but yea, this is forked from digiscreen. (But made better :>)" },
     tiles = {
         "blank.png^[invert:rgba^[colorize:grey"
     },

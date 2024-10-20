@@ -1,0 +1,3 @@
+<big>Signs</big>
+Yeah, signs support logic!
+Simply link them, and send them some text, in form of a string, they will display it.

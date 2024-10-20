@@ -27,7 +27,7 @@ minetest.register_node("sbz_logic_devices:noteblock", {
 
                 for _, i in ipairs({ "pitch", "speed", "volume", "gain", }) do
                     if t(cmd[i]) == "string" then
-                        cmd[i] = tonumber(cmd[i]) or 0
+                        cmd[i] = tonumber(cmd[i])
                     end
                 end
 
