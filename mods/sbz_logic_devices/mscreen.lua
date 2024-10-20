@@ -112,7 +112,7 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
 
 minetest.register_node("sbz_logic_devices:matrix_screen", {
     description = "Matrix Screen",
-    info_extra = { "Named that because it accepts a 2D matrix.", "Ok i just realised that techage had the exact same name, for a very similar thing... lol, but yea, this is forked from digiscreen. (But made better :>)" },
+    info_extra = { "Named that because it accepts a 2D matrix.", "Ok i just realised that techage had the exact same name, for a very similar thing... lol,\n but yea, this was forked from digiscreen. (But made better :>)" },
     tiles = {
         "blank.png^[invert:rgba^[colorize:grey"
     },
@@ -226,3 +226,16 @@ minetest.register_lbm({
     run_at_every_load = true,
     action = update_display,
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_resources:lua_chip 2",
+        "unifieddyes:colorium 32",
+        "sbz_resources:emittrium_circuit 8",
+        "sbz_resources:matter_plate 10"
+    },
+    output = "sbz_logic_devices:matrix_screen",
+    width = 2,
+    height = 2,
+}

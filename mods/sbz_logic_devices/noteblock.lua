@@ -62,3 +62,16 @@ minetest.register_node("sbz_logic_devices:noteblock", {
         end
     end
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_resources:lua_chip 2",
+        "sbz_chem:silicon_ingot 4",          -- quartz
+        "sbz_resources:emittrium_circuit 8", -- lore: emittrium circuit makes sound
+        ""
+    },
+    output = "sbz_logic_devices:noteblock",
+    width = 2,
+    height = 2,
+}

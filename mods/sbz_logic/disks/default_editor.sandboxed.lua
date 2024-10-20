@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 --[[
     Hello, if you are seeing this, go make your own editor
 ]]
@@ -20,6 +21,7 @@ local function render_formspec_edit()
 
     return string.format(prepend, 1) .. string.format([[
 hypertext[0,0.3;20,1;;<center><big>Super basic editor, YOU can make a better one :)]
+style_type[textarea;font=mono;textcolor=black]
 textarea[0.2,2;19.6,10;code;The code...;%s]
 %s
 label[4,12.5;%s]
