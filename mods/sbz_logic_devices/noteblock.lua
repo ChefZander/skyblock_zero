@@ -8,8 +8,10 @@ minetest.register_node("sbz_logic_devices:noteblock", {
     tiles = {
         "noteblock_top.png",
         "noteblock_top.png",
-        "noteblock_front.png",
         "noteblock_side.png",
+        "noteblock_side.png",
+        "noteblock_side.png",
+        "noteblock_front.png",
     },
     paramtype2 = "4dir",
     groups = { matter = 1, ui_logic = 1 },
