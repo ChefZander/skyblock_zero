@@ -40,7 +40,7 @@ Also, for each milisecond you take, you get billed 4 power. If you consumed too 
 So, if you are used to the mesecons luacontroller, temporarily forget *everything* about how the code is executed, this is <b>very</b> different.
 
 The main code gets executed inside a coroutine, and you can *yield* it, in fact that is how you obtain events.
-so <mono>event = yield()</mono>
+so <mono>event = yield(...)</mono>
 
 You can yield <big>ANYWHERE*!!</big>
 Example: <mono>
