@@ -77,7 +77,7 @@ local function generate_texture(pos, serdata)
         return
     end
 
-    return "[png:" .. minetest.encode_base64(img)
+    return "blank.png^[invert:a[png:" .. minetest.encode_base64(img)
 end
 
 local function update_display(pos)
@@ -98,7 +98,7 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
         visual = "upright_sprite",
         physical = false,
         collisionbox = { 0, 0, 0, 0, 0, 0, },
-        textures = { "blank.png^[invert:a", },
+        textures = { { name = "blank.png^[invert:a", backface_culling = false } },
     },
 })
 
@@ -106,8 +106,14 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
     description = "Matrix Screen",
     info_extra = { "Named that because it accepts a 2D matrix.", "Ok i just realised that techage had the exact same name, for a very similar thing... lol,\n but yea, this was forked from digiscreen. (But made better :>)" },
     tiles = {
-        "blank.png^[invert:rgba^[colorize:grey"
+        "blank.png^[invert:rgba^[colorize:grey",
+        "blank.png^[invert:rgba^[colorize:grey",
+        "blank.png^[invert:rgba^[colorize:grey",
+        "blank.png^[invert:rgba^[colorize:grey",
+        "blank.png^[invert:rgba^[colorize:grey",
+        --        { name = "blank.png", backface_culling = true }, -- todo: find a way to have alpha nicely
     },
+    use_texture_alpha = "clip",
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "4dir",
@@ -157,10 +163,12 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         elseif fourdir.z < 0 then
             hitpos.x = -1 * hitpos.x
         end
+        vector.add(hitpos, vector.multiply(fourdir, 0.39))
         hitpos.y = -1 * hitpos.y
         local hitpixel = {}
-        hitpixel.x = math.round((hitpos.x + 0.5) * size) + 1
+        hitpixel.x = math.floor((hitpos.x + 0.5) * size) + 1
         hitpixel.y = math.round((hitpos.y + 0.5 - (5 / 32)) * size) + 1
+        -- dont ask why this is math.round and the other one is math.floor, its more accurate somehoww
         if hitpixel.x < 1 or hitpixel.x > size or hitpixel.y < 1 or hitpixel.y > size then return end
         local message = {
             x = hitpixel.x,
@@ -179,7 +187,7 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         minetest.after(0, update_display, pos)
         return ret
     end,
-    groups = { matter = 1, ui_logic = 1 },
+    groups = { matter = 3, ui_logic = 1 },
     on_logic_send = function(pos, msg, from_pos)
         local meta = minetest.get_meta(pos)
         if msg == "subscribe" then
