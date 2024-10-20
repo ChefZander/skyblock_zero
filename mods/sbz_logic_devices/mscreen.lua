@@ -77,7 +77,7 @@ local function generate_texture(pos, serdata)
         return
     end
 
-    return "blank.png^[invert:a[png:" .. minetest.encode_base64(img)
+    return "blank.png^[invert:a^[png:" .. minetest.encode_base64(img)
 end
 
 local function update_display(pos)
@@ -98,7 +98,7 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
         visual = "upright_sprite",
         physical = false,
         collisionbox = { 0, 0, 0, 0, 0, 0, },
-        textures = { { name = "blank.png^[invert:a", backface_culling = false } },
+        textures = { "blank.png^[invert:a" },
     },
 })
 
@@ -106,6 +106,7 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
     description = "Matrix Screen",
     info_extra = { "Named that because it accepts a 2D matrix.", "Ok i just realised that techage had the exact same name, for a very similar thing... lol,\n but yea, this was forked from digiscreen. (But made better :>)" },
     tiles = {
+        "blank.png^[invert:rgba^[colorize:grey",
         "blank.png^[invert:rgba^[colorize:grey",
         "blank.png^[invert:rgba^[colorize:grey",
         "blank.png^[invert:rgba^[colorize:grey",
