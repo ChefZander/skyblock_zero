@@ -1,7 +1,7 @@
+-- This work by frogTheSecond is marked with CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/ .
 ---@diagnostic disable: undefined-global
---[[
-    Hello, if you are seeing this, go make your own editor
-]]
+-- Hello, if you are seeing this, go make your own editor, you can base it off this one
+
 
 local is_on = coroutine_env ~= nil
 local current_tab = mem.current_tab or 1
