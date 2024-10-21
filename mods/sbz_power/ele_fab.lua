@@ -93,18 +93,7 @@ unified_inventory.register_craft {
     height = 1
 }
 
-unified_inventory.register_craft {
-    type = "ele_fab",
-    output = "sbz_logic_devices:builder",
-    items = {
-        "pipeworks:puncher 4",
-        "pipeworks:deployer 4",
-        "pipeworks:nodebreaker 4",
-        "sbz_resources:luanium 32"
-    },
-    width = 2,
-    height = 2,
-}
+
 
 local power_needed = 30
 

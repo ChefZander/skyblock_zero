@@ -1,0 +1,30 @@
+<big>Note Blocks</big>
+Almost exactly the same as digistuff noteblocks but improved a little, see... wait they dont document it lol
+
+Ok, so you can send them a string, and it would just play the sound.
+But that's boring, what if you wanted to control the volume or pitch?
+
+well...<mono>
+$C1{
+$C1    sound = "some sound", -- example: digistuff_sine.ogg, yes, i told you this is basically the digistuff noteblock
+$C1    cut = integer|nil, -- after this amount of seconds, it will stop the sound
+$C1    
+$C1    volume = number|nil, -- the volume, by default 1
+$C1    gain = volume, -- same as volume
+$C1    
+$C1    pitch = number|nil,
+$C1    speed = pitch, -- same as pitch
+$C1
+$C1    start_time = number|nil, -- the time that the audio starts at, for example if its 1, it will start it from 1 second
+$C1
+$C1    fadestep = number|nil,
+$C1    fadegain = number|nil,
+$C1    fadestart = number|nil,
+$C1}
+</mono>
+
+Now... where it really differs (not really), you can play multiple sounds at once
+
+so, for example, {"tpr_warp","trash"} will play both the unified inventory trash sound and the tpr warp sound at the same time,
+Or {{sound = "tpr_warp", pitch = 1.2}, "trash"}
+

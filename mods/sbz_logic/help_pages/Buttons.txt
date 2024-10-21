@@ -1,0 +1,9 @@
+<big>Buttons and Toggles</big>
+
+Ok so, a button... yea
+
+You can send it "subscribe" or "unsubscribe" depending on what you want, to receive events from the button
+
+they will take in the form of a boolean saying true, always, and yeah.
+
+As for toggles, if you send them ANYTHING they will send over their status (either true or nil). And the player can yea, toggle them.

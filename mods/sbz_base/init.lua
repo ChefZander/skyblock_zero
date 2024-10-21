@@ -145,21 +145,45 @@ local bgm_lengths = {
     121,
     151,
 }
-local function playRandomBGM(player_name)
+
+local handles = {}
+
+local function playRandomBGM(player)
+    local player_name = player:get_player_name()
+    if player:get_meta():get_int("hates_bgm") == 1 then return end
     local random_index = math.random(1, #bgm_sounds)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
-    minetest.sound_play(sound_name, {
+    if handles[player_name] then minetest.sound_stop(handles[player_name]) end
+    handles[player_name] = minetest.sound_play(sound_name, {
         to_player = player_name,
         gain = 1.0,
     })
     minetest.after(sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
-            playRandomBGM(player_name)
+            playRandomBGM(player)
         end)
 end
 
+minetest.register_chatcommand("toggle_bgm", {
+    description = "Toggles background music",
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name or "")
+        if not player then return end
+        local meta = player:get_meta()
+        local status = meta:get_int("hates_bgm")
+        if status == 0 then
+            if handles[name] then minetest.sound_stop(handles[name]) end
+            meta:set_int("hates_bgm", 1)
+            minetest.chat_send_player(name, "You have disabled the background music.")
+        else
+            meta:set_int("hates_bgm", 0)
+            playRandomBGM(player)
+            minetest.chat_send_player(name, "You have enabled the background music.")
+        end
+    end
 
+})
 
 local function table_length(tbl)
     local count = 0
@@ -185,7 +209,7 @@ minetest.register_on_joinplayer(function(player)
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
 
     -- play bgm
-    playRandomBGM(player:get_player_name())
+    playRandomBGM(player)
 
     -- disable the sun, moon, clouds, stars and sky
     player:set_sky({

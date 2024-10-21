@@ -13,6 +13,11 @@ sbz_api.help_pages_by_index = {
     [8] = "Lua Builder",
     [9] = "Object Detector",
     [10] = "Formspec Screen",
+    [11] = "Matrix Screen",
+    [12] = "Signs",
+    [13] = "Note Blocks",
+    [14] = "Buttons",
+    [15] = "Nic"
 }
 
 local function edit_text(t)

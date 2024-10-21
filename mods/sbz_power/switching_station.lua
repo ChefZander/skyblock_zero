@@ -346,7 +346,10 @@ local dtime_accum_fulltick = 0
 sbz_api.power_tick = 1
 sbz_api.power_subtick = 0.25
 
+local enable_globalstep = true
+
 sbz_api.switching_station_globalstep = function(dtime)
+    if not enable_globalstep then return end
     local getnode = minetest.get_node
     local getmeta = minetest.get_meta
     dtime_accum_subtick = dtime_accum_subtick + dtime

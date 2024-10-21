@@ -1,0 +1,3 @@
+`sbz_logic_devices/sounds/*`
+- License: LGPLv3 or later
+- from: https://github.com/mt-mods/digistuff/tree/master

@@ -1,6 +1,6 @@
 local logic = sbz_api.logic
 
-local send_max_cost = 10 * 1024 -- idk 10 kilobytes??
+local send_max_cost = 50 * 1024 -- idk 50 kilobytes??
 
 function logic.send_l(pos, thing, from_pos)
     -- used for the luacontroller, dont use anywhere else it wont work
@@ -12,6 +12,7 @@ function logic.send_l(pos, thing, from_pos)
     if not range_allowed then
         return false, "The position you are sending to is too far away or is protected."
     end
+
 
     if not pos.x then
         for _, v in pairs(pos) do

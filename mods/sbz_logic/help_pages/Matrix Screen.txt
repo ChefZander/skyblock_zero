@@ -1,0 +1,36 @@
+<big>Matrix Screen</big>
+
+Called that because it accepts a 2D matrix.
+It has a variable resolution ranging from 1x1 to 32x32.
+Can detect "clicks".
+This is almost exactly the same as digiscreens, even shares code. (but mine is slightly better :>)
+
+So, you can send it a 2D matrix like this:
+<mono>
+$C1{
+$C1    {<any colorspec>, <any colorspec>, ... (up to 32 times), <any colorspec>},
+$C1    {<any colorspec>, ..., <any colorspec>},
+$C1    ... <up to 32 times>
+$C1    {<any colorspec>, ..., <any colorspec>}
+$C1} 
+</mono>
+
+Colorspec = string or integer or table color, just any color format you can think of, even saying "lime" works 
+
+There may be holes in the sub-tables but there can't be in the main table.
+Resolution is determined by how many sub-tables there are in the main table.
+
+You send it the string "subscribe" for the luacontroller to be notified when someone clicks the screen.
+The event will look like this:
+<mono>
+$C1{
+$C1    x = <integer>, -- with this being the x coordinate on the screen that the player clicked on
+$C1    y = <integer>, -- with this being the y coordinate...
+$C1    player = <player name: string>
+$C1}
+</mono>
+
+Ideas for what you can make with this:
+- Bad apple
+- Conways game of life
+- some REALLY COOL in-world ui
