@@ -1,0 +1,29 @@
+<big>Nic</big>
+
+The same thing as the digistuff nic.
+<b>By default, it is not avaliable, to enable it, please add sbz_logic_devices to your secure.http_mods setting!</b>
+<b>By default, it is locked to the nic_user priv, if you wish for it to be avaliable to anyone, you can disable it in the settings</b>
+
+So... with that out of the way... how to actually use it...
+
+You can send it:
+A: a string, it will just request that url
+B: a table with the field <mono>url</mono> and optionally a boolean <mono>parse_json</mono> field. If parse_json is enabled it will try to parse it.
+
+You will receive a result...
+<mono>
+{
+$C1    completed = bool,
+$C1    succeeded = bool,
+$C1    data = string|table, -- depending if you specified parse_json
+$C1    timeout = bool,
+$C1    code = integer,
+}
+</mono>
+
+And yea, that's it
+
+Ideas for you (duable even if you are in some server and you have the privs):
+- use it to offload computations from your luacontroller to your own server (you can set it up for free with playit and your computer)
+- use it with some API
+- modify <action url=https://github.com/TheEt1234/minetest-virt>minetest-virt</action> to send the formspec over to your server, get the formspec with nic, and serve that on a formspec screen

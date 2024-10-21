@@ -113,3 +113,27 @@ sbz_api.register_stateful("sbz_logic_devices:toggle", {
         "toggle_on.png",
     }
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_chem:bronze_ingot 1",
+        "sbz_chem:silicon_ingot 1",
+        "sbz_resources:matter_plate 1"
+    },
+    output = "sbz_logic_devices:button 4",
+    width = 2,
+    height = 2,
+}
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_chem:nickel_ingot 1",
+        "sbz_chem:silicon_ingot 1",
+        "sbz_resources:matter_plate 1"
+    },
+    output = "sbz_logic_devices:toggle 4",
+    width = 2,
+    height = 2,
+}

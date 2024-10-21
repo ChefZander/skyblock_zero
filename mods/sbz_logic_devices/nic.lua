@@ -7,13 +7,13 @@ local is_priv_locked = settings:get_bool("sbz_nic_priv_locked", true)
 
 minetest.register_privilege("nic_user", {
     description = "If the server has priv locked the NIC, this priv makes you able to place the thing.",
-    give_to_admin = false,
-    give_to_singleplayer = false,
+    give_to_admin = true,
+    give_to_singleplayer = true,
 })
 
 minetest.register_node("sbz_logic_devices:nic", {
     description = "Logic NIC",
-    info_extra = "[Server setting] Priv Locked: " .. (is_priv_locked and "yes" or "no"),
+    info_extra = "<Server setting> Priv Locked: " .. (is_priv_locked and "yes" or "no"),
 
     groups = { cracky = 3, matter = 1, ui_logic = 1 },
     is_ground_content = false,
@@ -83,3 +83,15 @@ minetest.register_node("sbz_logic_devices:nic", {
             end)
     end
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_bio:warpshroom 12 ",
+        "sbz_resources:lua_chip 5",
+        "sbz_chem:silicon_ingot 3",
+        "sbz_chem:invar_ingot 20"
+    },
+    width = 2, height = 2,
+    output = "sbz_logic_devices:nic"
+}
