@@ -66,7 +66,7 @@ local function generate_texture(pos, serdata)
             index = index + 1
         end
     end
-    --error(dump { bytes(table.concat(bincolors, " ")) })
+
     local img
     local ok, errmsg = pcall(function()
         img = minetest.encode_png(size, size, table.concat(bincolors), 1)

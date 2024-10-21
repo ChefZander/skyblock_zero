@@ -27,17 +27,21 @@ function libox.normal_sandbox(def)
 
     f = function_wrap(f)
 
-    --    local old_hook = { debug.gethook() }
+    --local old_hook = { debug.gethook() }
 
-    debug.sethook(in_hook, "", def.hook_time or libox.default_hook_time)
-    getmetatable("").__index = env.string
-    local ok, ret = xpcall(f, function(...)
-        debug.sethook() -- fix a potential bug where someone can trigger a debug hook at just the right time for luanti to crash
-        return error_handler(...)
+    local ok, ret = false, "Something wrong happened"
+
+    pcall(function()
+        debug.sethook(in_hook, "", def.hook_time or libox.default_hook_time)
+        getmetatable("").__index = env.string
+        ok, ret = xpcall(f, function(...)
+            debug.sethook() -- try to fix a potential bug where someone can trigger a debug hook at just the right time for luanti to crash
+            return error_handler(...)
+        end)
+        debug.sethook()
+        getmetatable("").__index = string
     end)
-    debug.sethook( --[[unpack(old_hook)--]])
-    getmetatable("").__index = string
-
+    debug.sethook()
     if not ok then
         return false, ret
     else
