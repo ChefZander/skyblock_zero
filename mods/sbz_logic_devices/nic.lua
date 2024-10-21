@@ -5,90 +5,81 @@ local http = ...
 local settings = minetest.settings
 local is_priv_locked = settings:get_bool("sbz_nic_priv_locked", true)
 
-minetest.register_node("digistuff:nic", {
-    description = "Digilines NIC",
-    groups = { cracky = 3 },
+minetest.register_privilege("nic_user", {
+    description = "If the server has priv locked the NIC, this priv makes you able to place the thing.",
+    give_to_admin = false,
+    give_to_singleplayer = false,
+})
+
+minetest.register_node("sbz_logic_devices:nic", {
+    description = "Logic NIC",
+    info_extra = "[Server setting] Priv Locked: " .. (is_priv_locked and "yes" or "no"),
+
+    groups = { cracky = 3, matter = 1, ui_logic = 1 },
     is_ground_content = false,
-    on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
-        meta:set_string("formspec", "field[channel;Channel;${channel}")
-    end,
     tiles = {
-        "digistuff_nic_top.png",
-        "jeija_microcontroller_bottom.png",
-        "jeija_microcontroller_sides.png",
-        "jeija_microcontroller_sides.png",
-        "jeija_microcontroller_sides.png",
-        "jeija_microcontroller_sides.png"
+        "nic_top.png",
+        "nic_bottom.png",
+        "nic_side.png",
+        "nic_side.png",
+        "nic_side.png",
+        "nic_side.png"
     },
-    inventory_image = "digistuff_nic_top.png",
     drawtype = "nodebox",
-    selection_box = {
-        --From luacontroller
-        type = "fixed",
-        fixed = { -8 / 16, -8 / 16, -8 / 16, 8 / 16, -5 / 16, 8 / 16 },
-    },
-    _digistuff_channelcopier_fieldname = "channel",
     node_box = {
-        --From Luacontroller
         type = "fixed",
         fixed = {
-            { -8 / 16, -8 / 16, -8 / 16, 8 / 16, -7 / 16, 8 / 16 }, -- Bottom slab
-            { -5 / 16, -7 / 16, -5 / 16, 5 / 16, -6 / 16, 5 / 16 }, -- Circuit board
-            { -3 / 16, -6 / 16, -3 / 16, 3 / 16, -5 / 16, 3 / 16 }, -- IC
+            { -0.5,    -0.5,   -0.5,    0.5,     -0.3125, 0.5 },     -- NodeBox1
+            { -0.4375, -0.5,   0.3125,  -0.3125, 0.4375,  0.4375 },  -- NodeBox2
+            { -0.4375, -0.5,   -0.4375, -0.3125, 0.4375,  -0.3125 }, -- NodeBox6
+            { 0.3125,  -0.5,   -0.4375, 0.4375,  0.4375,  -0.3125 }, -- NodeBox8
+            { 0.3125,  -0.5,   0.3125,  0.4375,  0.4375,  0.4375 },  -- NodeBox11
+            { -0.5,    0.3125, 0.25,    -0.25,   0.5,     0.5 },     -- NodeBox14
+            { 0.25,    0.3125, 0.25,    0.5,     0.5,     0.5 },     -- NodeBox16
+            { 0.25,    0.3125, -0.5,    0.5,     0.5,     -0.25 },   -- NodeBox18
+            { -0.5,    0.3125, -0.5,    -0.25,   0.5,     -0.25 },   -- NodeBox19
         }
     },
     paramtype = "light",
     sunlight_propagates = true,
-    on_receive_fields = function(pos, formname, fields, sender)
-        local name = sender:get_player_name()
-        if minetest.is_protected(pos, name) and not minetest.check_player_privs(name, { protection_bypass = true }) then
-            minetest.record_protection_violation(pos, name)
+
+    after_place_node = function(pos, placer, stack, pointed)
+        if is_priv_locked then -- not perfect priv locking but whatever
+            if minetest.check_player_privs(placer, "nic_user") == false then
+                minetest.remove_node(pos)
+                minetest.chat_send_player(placer:get_player_name(), "You don't have the nic_user priv!")
+            end
+        end
+    end,
+
+    on_logic_send = function(pos, msg, from_pos)
+        local url
+        local parse_json = false
+        -- parse message
+        if type(msg) == "string" then
+            -- simple string data
+            url = msg
+        elseif type(msg) == "table" and type(msg.url) == "string" then
+            -- config object
+            url = msg.url
+            parse_json = msg.parse_json
+        else
+            -- not supported
             return
         end
-        local meta = minetest.get_meta(pos)
-        if fields.channel then meta:set_string("channel", fields.channel) end
-    end,
-    digiline = {
-        receptor = {},
-        effector = {
-            action = function(pos, node, channel, msg)
-                local meta = minetest.get_meta(pos)
-                if meta:get_string("channel") ~= channel then return end
-                local url
-                local parse_json = false
-                -- parse message
-                if type(msg) == "string" then
-                    -- simple string data
-                    url = msg
-                elseif type(msg) == "table" and type(msg.url) == "string" then
-                    -- config object
-                    url = msg.url
-                    parse_json = msg.parse_json
-                else
-                    -- not supported
-                    return
+        if type(url) ~= "string" then return end
+
+        http.fetch({
+                url = url,
+                timeout = 5,
+                user_agent = "Minetest Digilines Modem" -- keep the digistuff user agent
+            },
+            function(res)
+                if type(res.data) == "string" and parse_json then
+                    -- parse json data and replace payload
+                    res.data = minetest.parse_json(res.data)
                 end
-                http.fetch({
-                        url = url,
-                        timeout = 5,
-                        user_agent = "Minetest Digilines Modem"
-                    },
-                    function(res)
-                        if type(res.data) == "string" and parse_json then
-                            -- parse json data and replace payload
-                            res.data = minetest.parse_json(res.data)
-                        end
-                        digilines.receptor_send(pos, digilines.rules.default, channel, res)
-                    end)
-            end
-        },
-    },
-})
-minetest.register_craft({
-    output = "digistuff:nic",
-    recipe = {
-        { "",                            "",                                         "mesecons:wire_00000000_off" },
-        { "digilines:wire_std_00000000", "mesecons_luacontroller:luacontroller0000", "mesecons:wire_00000000_off" }
-    }
+                sbz_logic.send(from_pos, res, pos)
+            end)
+    end
 })
