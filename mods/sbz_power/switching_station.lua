@@ -344,7 +344,7 @@ local dtime_accum_fulltick = 0
 sbz_api.power_tick = 1
 sbz_api.power_subtick = 0.25
 
-local enable_globalstep = false
+local enable_globalstep = true
 
 sbz_api.switching_station_globalstep = function(dtime)
     if not enable_globalstep then return end
