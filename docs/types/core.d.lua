@@ -255,7 +255,7 @@ function core.get_item_group(itemname, groupname) end
 ---        colorspec = 0xFF00FF00
 ---    string form: A ColorString (defined above):
 ---        colorspec = "green"
----@alias ColorSpec string|table
+---@alias ColorSpec string|table|integer
 
 
 ---@param color ColorString
@@ -692,12 +692,12 @@ function core.sha1(data, raw) end
 ---@param raw boolean?
 function core.sha256(data, raw) end
 
----@param colorspec ColorSpec
----@return ColorString
+---@param colorspec ColorSpec|any
+---@return ColorString?
 function core.colorspec_to_colorstring(colorspec) end
 
----@param colorspec ColorSpec
----@return string[]
+---@param colorspec ColorSpec|any
+---@return string?
 function core.colorspec_to_bytes(colorspec) end
 
 ---@return string

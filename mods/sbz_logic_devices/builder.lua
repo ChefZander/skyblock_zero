@@ -252,3 +252,16 @@ listring[]
         meta:set_string("queued_events", minetest.serialize(queued_events))
     end
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    output = "sbz_logic_devices:builder",
+    items = {
+        "pipeworks:puncher 4",
+        "pipeworks:deployer 4",
+        "pipeworks:nodebreaker 4",
+        "sbz_resources:luanium 32"
+    },
+    width = 2,
+    height = 2,
+}

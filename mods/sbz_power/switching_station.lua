@@ -53,6 +53,7 @@ function sbz_api.assemble_network(start_pos, seen)
     sbz_api.vm_begin()
 
     -- inspired by https://github.com/minetest-mods/digilines/blob/7d4895d5d4a093041e3e6c8a8676f3b99bb477b7/internal.lua#L99
+
     while not queue:is_empty() do
         local current_pos, dir = unpack(queue:dequeue())
         local nn = (sbz_api.get_node_force(current_pos) or {}).name -- node name
@@ -93,6 +94,7 @@ function sbz_api.assemble_network(start_pos, seen)
             end)
         end
     end
+
     network.lag = minetest.get_us_time() - t0
     return network
 end
@@ -239,8 +241,6 @@ function sbz_api.switching_station_tick(start_pos)
         end
     end
 
-
-
     local t1 = minetest.get_us_time()
     local lag = t1 - t0
     network.lag = network.lag + lag
@@ -261,10 +261,8 @@ function sbz_api.switching_station_sub_tick(start_pos)
     if network == nil then return end
 
     local machines = network.subticking_machines or {}
-
     local supply = network.supply
     local demand = network.demand
-
 
     for k, v in ipairs(machines) do
         local position = v[1]
@@ -346,7 +344,10 @@ local dtime_accum_fulltick = 0
 sbz_api.power_tick = 1
 sbz_api.power_subtick = 0.25
 
+local enable_globalstep = true
+
 sbz_api.switching_station_globalstep = function(dtime)
+    if not enable_globalstep then return end
     local getnode = minetest.get_node
     local getmeta = minetest.get_meta
     dtime_accum_subtick = dtime_accum_subtick + dtime
