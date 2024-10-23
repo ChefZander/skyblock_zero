@@ -6,6 +6,7 @@ dofile(MP .. "/mscreen.lua")
 dofile(MP .. "/signs_compat.lua")
 dofile(MP .. "/noteblock.lua")
 dofile(MP .. "/button.lua")
+dofile(MP .. "/explosive.lua")
 
 local HTTPApiTable = minetest.request_http_api()
 if HTTPApiTable ~= nil then

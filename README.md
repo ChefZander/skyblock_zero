@@ -13,7 +13,7 @@ I have included a CHANGELOG.md with the download for those interested.
 Code: Zander (content db: @zanderdev) GPL-3.0<br>
 Textures: Zander (content db: @zanderdev) CC BY-SA 4.0<br>
 See LICENSE.txt (for code) and LICENSE-TEXTURES.txt for more information.
-IMPORTANT: Part of the code may be licensed diffrently. Make sure to check if there are any other notices.
+IMPORTANT: Part of the code may be licensed differently. Make sure to check if there are any other notices.
 This Game uses part of the code of Mesecons, Minetest Game, and potentially others. Their licenses can be found inside the repository.
 
 ## Soundtrack & SFX
