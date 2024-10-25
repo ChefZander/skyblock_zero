@@ -31,7 +31,7 @@ function libox.normal_sandbox(def)
 
     local ok, ret = false, "Something wrong happened"
 
-    pcall(function()
+    pcall(function() -- this is cursed because of a cursed bug
         debug.sethook(in_hook, "", def.hook_time or libox.default_hook_time)
         getmetatable("").__index = env.string
         ok, ret = xpcall(f, function(...)
@@ -42,6 +42,7 @@ function libox.normal_sandbox(def)
         getmetatable("").__index = string
     end)
     debug.sethook()
+    getmetatable("").__index = string -- OK HOPEFULLY FIX THAT BUG
     if not ok then
         return false, ret
     else

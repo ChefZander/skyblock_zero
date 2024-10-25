@@ -104,7 +104,10 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
 
 minetest.register_node("sbz_logic_devices:matrix_screen", {
     description = "Matrix Screen",
-    info_extra = { "Named that because it accepts a 2D matrix.", "Ok i just realised that techage had the exact same name, for a very similar thing... lol,\n but yea, this was forked from digiscreen. (But made better :>)" },
+    info_extra = {
+        "Named that because it accepts a 2D matrix.",
+        "Ok i just realised that techage had the exact same name, for a very similar thing... lol,\n but yea, this was forked from digiscreen. (But made better :>)",
+        "You can put a backlight behind... to... yea... have the screen be brighter" },
     tiles = {
         "blank.png^[invert:rgba^[colorize:grey",
         "blank.png^[invert:rgba^[colorize:grey",
@@ -119,7 +122,6 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
     paramtype = "light",
     paramtype2 = "4dir",
     sunlight_propagates = true,
-    light_source = 10,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local disp = { [1] = { [1] = minetest.colorspec_to_bytes("black") } }

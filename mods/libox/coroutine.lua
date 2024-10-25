@@ -106,6 +106,8 @@ function api.locals(val, f_thread)
         _U = {}  -- Upvalues
     }
 
+    print("Locals called")
+
     local getinfo, getlocal, getupvalue = debug.getinfo, debug.getlocal, debug.getupvalue
 
     local index
@@ -219,6 +221,7 @@ function api.get_size(env, seen, thread, recursed)
         end
     end
 
+    print("Completed!")
     return retv
 end
 

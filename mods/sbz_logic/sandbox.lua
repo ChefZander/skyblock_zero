@@ -123,7 +123,7 @@ function logic.initialize_env(meta, env, pos)
 end
 
 function logic.save_disks_and_mem(meta, env)
-    meta:set_int("force_off", 0) -- hehe!
+    meta:set_int("force_off", 0)
     local disk_array = env.disks
     local inv = meta:get_inventory()
     local disk_list = inv:get_list("disks") or {}
