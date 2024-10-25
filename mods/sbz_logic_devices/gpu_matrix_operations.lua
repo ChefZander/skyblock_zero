@@ -63,13 +63,6 @@ local function transform_buffer(buffer, matrix, x1, y1, x2, y2, mx1, my1, mx2, m
     end
 end
 
-local function convolve(l1, l2)
-    for i = 1, #l1 do
-        l1[i] = l1 * l2[i]
-    end
-    return l1
-end
-
 -- https://www.youtube.com/watch?v=KuXjwB4LzSA
 -- (didnt use any code from it, just used it to understand the concept)
 local function convolution_matrix(buffer, matrix, x1, y1, x2, y2)

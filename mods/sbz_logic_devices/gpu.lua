@@ -605,6 +605,11 @@ local commands = {
             if type(command.matrix[1]) ~= "table" then return end
             local matrix_xsize = #command.matrix[1]
 
+            if matrix_ysize > 5 then return end
+            if matrix_xsize > 5 then return end
+            if matrix_xsize < 2 then return end
+            if matrix_ysize < 2 then return end
+
             for y = 1, matrix_ysize do
                 if type(command.matrix[y]) ~= "table" then return end
                 matrix_copy[y] = {}
@@ -617,7 +622,7 @@ local commands = {
 
             convolution_matrix(b, matrix_copy, x1, y1, x2, y2)
         end
-    }
+    },
 
 }
 
