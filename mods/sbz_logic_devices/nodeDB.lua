@@ -2,7 +2,7 @@
 -- https://github.com/dennisjenkins75/digiline_craftdb/
 
 
-local MAX_RESULTS = 100
+local MAX_RESULTS = 200
 
 core.register_node("sbz_logic_devices:node_db", {
     description = "Node DB",
