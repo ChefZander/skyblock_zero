@@ -13,3 +13,4 @@ if HTTPApiTable ~= nil then
 end
 
 dofile(MP .. "/gpu.lua")
+dofile(MP .. "/nodeDB.lua")

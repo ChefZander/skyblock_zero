@@ -671,7 +671,7 @@ end
 core.register_node("sbz_logic_devices:gpu", {
     description = "GPU",
 
-    groups = { cracky = 3, matter = 1, ui_logic = 1 },
+    groups = { matter = 1, ui_logic = 1 },
     is_ground_content = false,
     tiles = {
         "gpu_bottom.png",
@@ -682,8 +682,6 @@ core.register_node("sbz_logic_devices:gpu", {
         "gpu_side.png"
     },
 
-    paramtype = "light",
-    sunlight_propagates = true,
 
     on_logic_send = function(pos, msg, from_pos)
         if type(msg) ~= "table" then return end

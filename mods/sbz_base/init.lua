@@ -37,6 +37,7 @@ table.foreach = function(t, f, key_last)
             f(k, v)
         end
     end
+    return t
 end
 
 ---@param key_last boolean
@@ -49,6 +50,7 @@ table.foreachi = function(t, f, key_last)
             f(k, v)
         end
     end
+    return t
 end
 
 function iterate_around_pos(pos, func)
