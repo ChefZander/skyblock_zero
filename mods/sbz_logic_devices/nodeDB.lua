@@ -113,3 +113,12 @@ core.register_node("sbz_logic_devices:node_db", {
         end
     end
 })
+
+core.register_craft {
+    output = "sbz_logic_devices:node_db",
+    recipe = {
+        { "sbz_resources:stone", "sbz_resources:lua_chip",      "sbz_resources:stone" },
+        { "sbz_chem:gold_ingot", "sbz_logic:knowledge_station", "sbz_chem:gold_ingot" },
+        { "sbz_resources:stone", "sbz_resources:lua_chip",      "sbz_resources:stone" }
+    }
+}
