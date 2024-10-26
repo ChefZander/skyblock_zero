@@ -3,7 +3,7 @@ local function spawn_meteorite(pos)
     if #players == 0 then return end
     local player = players[math.random(#players)]
     if not pos then
-        player_pos = player:get_pos()
+        local player_pos = player:get_pos()
         local attempts = 0
         repeat
             pos = player_pos + vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
