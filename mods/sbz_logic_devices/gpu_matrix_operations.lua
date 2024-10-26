@@ -92,18 +92,22 @@ local function convolution_matrix(buffer, matrix, x1, y1, x2, y2)
 
     local buffer_modifications = {}
 
+
+    local halfy = math.floor(matrix_sizey / 2)
+    local halfx = math.floor(matrix_sizex / 2)
+
     for y = y1, y2 do
         for x = x1, x2 do
             -- ok now this is going to get funny
             local sum = { r = 0, g = 0, b = 0 }
-            for y_off = 1, matrix_sizey do
-                for x_off = 1, matrix_sizex do
+            for y_off = -halfy, halfy do
+                for x_off = -halfx, halfx do
                     local target_x = x + x_off
                     local target_y = y + y_off
                     local pixel = real_buffer[(target_y - 1) * buffer_sizex + target_x]
                     if pixel ~= nil then
                         pixel = color2table(pixel)
-                        local multiply_by = matrix[y_off][x_off]
+                        local multiply_by = matrix[halfy + 1 + y_off][halfx + 1 + x_off]
                         sum.r = sum.r + pixel.r * multiply_by
                         sum.g = sum.g + pixel.g * multiply_by
                         sum.b = sum.b + pixel.b * multiply_by
@@ -114,7 +118,7 @@ local function convolution_matrix(buffer, matrix, x1, y1, x2, y2)
             sum.g = math.min(255, math.abs(sum.g))
             sum.b = math.min(255, math.abs(sum.b))
             buffer_modifications[#buffer_modifications + 1] = {
-                (y - 1) * buffer_sizex + x, core.colorspec_to_bytes(sum)
+                (y - 1) * buffer_sizex + x, core.colorspec_to_bytes(sum):sub(1, 3)
             }
         end
     end
