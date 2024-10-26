@@ -94,7 +94,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         physical = false --so they enter unloaded chunks properly
     },
     on_activate = function(self, staticdata, dtime)
-        if dtime and dtime > 60 then self.object:remove() return end
+        if dtime and dtime > 600 then self.object:remove() return end
         self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
@@ -142,8 +142,6 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             end
         end
         --the stopping moving bug seems to be it hitting unloaded chunks
-        --if vector:length(self.object:get_velocity()) < 1.4 then self.object:remove() return end
-        minetest.log(dump(self.object:get_velocity()))
         minetest.add_particlespawner({
             time = dtime,
             amount = 1,
