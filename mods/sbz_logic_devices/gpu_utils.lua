@@ -1,3 +1,8 @@
+local function format_color(c)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return string.sub(core.colorspec_to_bytes(c) or core.colorspec_to_bytes("black"), 1, 3)
+end
+
 local function explodebits(input, count)
     local output = {}
     count = count or 8
@@ -91,7 +96,7 @@ local function rgbtohsv(r, g, b)
     if max > 0 then
         sat = delta / max
     end
-    return math.floor(hue * 255), math.floor(sat * 255), math.floor(max * 255)
+    return { r = math.floor(hue * 255), g = math.floor(sat * 255), b = math.floor(max * 255) }
 end
 
 local function hsvtorgb(h, s, v)
@@ -128,7 +133,7 @@ local function hsvtorgb(h, s, v)
     r = r + m
     g = g + m
     b = b + m
-    return math.floor(r * 255), math.floor(g * 255), math.floor(b * 255)
+    return { r = math.floor(r * 255), g = math.floor(g * 255), b = math.floor(b * 255) }
 end
 
 local function bitwiseblend(srcr, dstr, srcg, dstg, srcb, dstb, mode)
@@ -169,17 +174,18 @@ local function bitwiseblend(srcr, dstr, srcg, dstg, srcb, dstb, mode)
             dbbits[i] = not (sbbits[i] or dbbits[i])
         end
     end
-    return string.format("%02X%02X%02X",
-        implodebits(drbits), implodebits(dgbits), implodebits(dbbits))
+    return {
+        r = implodebits(drbits), g = implodebits(dgbits), b = implodebits(dbbits)
+    }
 end
 
 local function blend(src, dst, mode, transparent)
-    local srcr = tonumber(string.sub(src, 1, 2), 16)
-    local srcg = tonumber(string.sub(src, 3, 4), 16)
-    local srcb = tonumber(string.sub(src, 5, 6), 16)
-    local dstr = tonumber(string.sub(dst, 1, 2), 16)
-    local dstg = tonumber(string.sub(dst, 3, 4), 16)
-    local dstb = tonumber(string.sub(dst, 5, 6), 16)
+    local srcr = src:byte(1)
+    local srcg = src:byte(2)
+    local srcb = src:byte(3)
+    local dstr = dst:byte(1)
+    local dstg = dst:byte(2)
+    local dstb = dst:byte(3)
     local op = "normal"
     if type(mode) == "string" then
         op = string.lower(mode)
@@ -194,22 +200,22 @@ local function blend(src, dst, mode, transparent)
         local r = math.min(255, srcr + dstr)
         local g = math.min(255, srcg + dstg)
         local b = math.min(255, srcb + dstb)
-        return string.format("%02X%02X%02X", r, g, b)
+        return format_color({ r = r, g = g, b = b })
     elseif op == "sub" then
         local r = math.max(0, dstr - srcr)
         local g = math.max(0, dstg - srcg)
         local b = math.max(0, dstb - srcb)
-        return string.format("%02X%02X%02X", r, g, b)
+        return format_color({ r = r, g = g, b = b })
     elseif op == "isub" then
         local r = math.max(0, srcr - dstr)
         local g = math.max(0, srcg - dstg)
         local b = math.max(0, srcb - dstb)
-        return string.format("%02X%02X%02X", r, g, b)
+        return format_color({ r = r, g = g, b = b })
     elseif op == "average" then
         local r = math.min(255, (srcr + dstr) / 2)
         local g = math.min(255, (srcg + dstg) / 2)
         local b = math.min(255, (srcb + dstb) / 2)
-        return string.format("%02X%02X%02X", r, g, b)
+        return format_color({ r = r, g = g, b = b })
     elseif op == "and"
         or op == "or"
         or op == "xor"
@@ -218,15 +224,15 @@ local function blend(src, dst, mode, transparent)
         or op == "nand"
         or op == "nor"
     then
-        return bitwiseblend(srcr, dstr, srcg, dstg, srcb, dstb, op)
+        return format_color(bitwiseblend(srcr, dstr, srcg, dstg, srcb, dstb, op))
     elseif op == "tohsv"
         or op == "rgbtohsv"
     then
-        return string.format("%02X%02X%02X", rgbtohsv(srcr, srcg, srcb))
+        return format_color(rgbtohsv(srcr, srcg, srcb))
     elseif op == "torgb"
         or op == "hsvtorgb"
     then
-        return string.format("%02X%02X%02X", hsvtorgb(srcr, srcg, srcb))
+        return format_color(hsvtorgb(srcr, srcg, srcb))
     end
 
     return src

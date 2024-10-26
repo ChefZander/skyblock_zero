@@ -181,16 +181,20 @@ local commands = {
             local x1, y1, x2, y2 = validate_area(buf_t, command.x1, command.y1, command.x2, command.y2)
             if x1 == nil then return end
 
-            command.edge = command.edge or command.fill
 
+            local should_fill = command.fill ~= nil
+            command.edge = command.edge or command.fill
             local edge = transform_color(command.edge)
             local fill = transform_color(command.fill)
 
             local buffer = buf_t.buffer
             local size_x = buf_t.xsize
-            for y = y1, y2 do
-                for x = x1, x2 do
-                    buffer[((y - 1) * size_x) + x] = fill
+
+            if should_fill then
+                for y = y1, y2 do
+                    for x = x1, x2 do
+                        buffer[((y - 1) * size_x) + x] = fill
+                    end
                 end
             end
 
@@ -245,7 +249,7 @@ local commands = {
             local buf_t = buffers[command.index]
             if buf_t == nil then return end
 
-            local x1, y1 = validate_area(buf_t, command.x1, command.y1, command.x1, command.y1)
+            local x1, y1 = validate_area(buf_t, command.x, command.y, command.x, command.y)
             if x1 == nil then return end
 
             buf_t.buffer[((y1 - 1) * buf_t.xsize) + x1] = transform_color(command.color)
@@ -276,13 +280,16 @@ local commands = {
             local src_buf = buffers[command.src]
             local dst_buf = buffers[command.dst]
             if src_buf == nil or dst_buf == nil then return end
+            local sx1, sy1, sx2, sy2 = validate_area(src_buf,
+                command.srcx, command.srcy,
 
-            local sx1, sy1, sx2, sy2 = validate_area(src_buf, command.srcx, command.srcy,
                 command.srcx + command.xsize,
                 command.srcy + command.ysize
             )
 
-            local dx1, dy1, dx2, dy2 = validate_area(dst_buf, command.dstx, command.dsty,
+            local dx1, dy1, dx2, dy2 = validate_area(dst_buf,
+                command.dstx, command.dsty,
+
                 command.dstx + command.xsize,
                 command.dsty + command.ysize
             )
@@ -290,7 +297,6 @@ local commands = {
             if (sx1 == nil) or (dx1 == nil) then
                 return
             end
-
             local px1, px2
 
             local src_buf_real = src_buf.buffer
@@ -299,31 +305,35 @@ local commands = {
                 for x = 1, command.xsize do
                     px1 = src_buf_real[((sx1 + y - 1) * src_buf.xsize) + (sy1 + x)]
                     px2 = dst_buf_real[((dy1 + y - 1) * dst_buf.xsize) + (dy1 + x)]
-                    dst_buf_real[(dy1 + y - 1) * src_buf.xsize + (dy1 + x)] = blend(px1, px2, blend_mode,
-                        transparent_color)
+
+                    if px1 ~= nil and px2 ~= nil then
+                        dst_buf_real[(dy1 + y - 1) * dst_buf.xsize + (dy1 + x)] =
+                            blend(px1, px2, blend_mode, transparent_color)
+                    end
                 end
             end
         end
     },
     ["load"] = {
-        type_check = {
+        type_checks = {
             index = type_index,
-            buffer_in_form_any = libox.type("table")
+            buffer = libox.type("table")
         },
         f = function(buffers, command)
-            local xsize = min(#command.buffer_in_form_any, max_buffer_size)
-            if type(command.buffer_in_form_any[1] ~= "table") then return end
-            if xsize == 0 then return end
-            local ysize = min(#command.buffer_in_form_any[1], max_buffer_size)
+            local ysize = min(#command.buffer, max_buffer_size)
+            if type(command.buffer[1]) ~= "table" then return end
+            if ysize == 0 then return end
+            local xsize = min(#command.buffer[1], max_buffer_size)
 
             buffers[command.index] = {
-                xsize = xsize,
                 ysize = ysize,
+                xsize = xsize,
                 buffer = {}
             }
+
             local buffer = buffers[command.index].buffer
 
-            local src_buf = command.buffer_in_form_any
+            local src_buf = command.buffer
             local i = 0
             for y = 1, ysize do
                 for x = 1, xsize do
@@ -334,7 +344,7 @@ local commands = {
         end,
     },
     ["sendpacked"] = {
-        type_check = {
+        type_checks = {
             index = type_index,
             to_pos = libox.type("table"),
         },
@@ -356,9 +366,9 @@ local commands = {
         end
     },
     ["send_png"] = { -- i guess this would be "send extra packed but yea good luck unpacking it"
-        type_check = {
+        type_checks = {
             index = type_index,
-            to_pos = libox.type("table"),
+            to_pos = type_any,
         },
         f = function(buffers, command, pos, from_pos)
             if not libox.type_vector(command.to_pos) then
@@ -368,17 +378,17 @@ local commands = {
             if b ~= nil then
                 local real_buf = b.buffer
                 local data = {}
-                for i = 1, b.xsize * b.ysize do
-                    data[#data + 1] = real_buf[i]
+                for i = 1, (b.xsize * b.ysize) do
+                    data[#data + 1] = real_buf[i] .. string.char(0xFF)
                 end
 
-                local png = core.encode_png(b.xsize, b.ysize, data, 1)
+                local png = core.encode_png(b.xsize, b.ysize, table.concat(data), 1)
                 sbz_logic.send_l(command.to_pos, minetest.encode_base64(png), from_pos) -- send as if logic sent it
             end
         end
     },
     ["loadpacked"] = {
-        type = {
+        type_checks = {
             index = type_index,
             packed = libox.type("string"),
             x1 = type_int,
@@ -485,25 +495,32 @@ local commands = {
                 { x = 0,  y = 1 },
                 { x = 0,  y = -1 }
             }
-            local hash = core.hash_node_position
+
+            local hash = function(x1, y1)
+                return y1 * max_buffer_size + x1
+            end
+
             while not queue:is_empty() do
                 local pos = queue:dequeue()
                 if not real_buffer[idx(pos.x, pos.y)] then
                     return
                 end
+
                 local col = color2table(real_buffer[idx(pos.x, pos.y)])
+
                 if similar(col, checking_color, tolerance) then
                     real_buffer[idx(pos.x, pos.y)] = color
+
                     for k, v in pairs(ruleset_4dir) do
                         local nx, ny = math.max(0, pos.x + v.x), math.max(0, pos.y + v.y)
-                        if not seen[hash(vector.new(nx, ny, 0))] then
-                            if (nx <= b.xsize) and (ny <= b.ysize) then
+                        if not seen[hash(nx, ny)] then
+                            if (nx <= b.xsize) and (ny <= b.ysize) and (ny > 0) and (nx > 0) then
                                 queue:enqueue({ x = nx, y = ny })
                             end
+                            seen[hash(nx, ny)] = true
                         end
                     end
                 end
-                seen[hash(vector.new(pos.x, pos.y, 0))] = true
             end
         end
     },
@@ -556,8 +573,8 @@ local commands = {
             y2 = type_int,
 
             min_x = type_int,
-            max_x = type_int,
             min_y = type_int,
+            max_x = type_int,
             max_y = type_int,
 
             transparent_color = type_any,
@@ -691,7 +708,9 @@ core.register_node("sbz_logic_devices:gpu", {
         local buffers = pos_buffers[h(pos)]
 
         for i = 1, math.min(#msg, max_commands_in_one_message) do
+            local t0 = minetest.get_us_time()
             exec_command(buffers, msg[i], pos, from_pos)
+            minetest.log(msg[i].type .. " : " .. minetest.get_us_time() - t0)
         end
 
         local lag = (minetest.get_us_time() - t0) / 1000

@@ -26,7 +26,7 @@ local function xiaolin_wu(buf_t, x1, y1, x2, y2, color)
 
     local function plot(x, y, c)
         local r, g, b = brightness(r, g, b, c)
-        buf[((y - 1) * sizex) + x] = minetest.colorspec_to_bytes({ r = r, g = g, b = b })
+        buf[((y - 1) * sizex) + x] = string.sub(minetest.colorspec_to_bytes({ r = r, g = g, b = b }), 1, 3)
     end
 
     if steep then
