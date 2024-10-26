@@ -674,12 +674,12 @@ core.register_node("sbz_logic_devices:gpu", {
     groups = { cracky = 3, matter = 1, ui_logic = 1 },
     is_ground_content = false,
     tiles = {
-        "nic_top.png",
-        "nic_bottom.png",
-        "nic_side.png",
-        "nic_side.png",
-        "nic_side.png",
-        "nic_side.png"
+        "gpu_bottom.png",
+        "gpu_bottom.png",
+        "gpu_side.png",
+        "gpu_side.png",
+        "gpu_side.png",
+        "gpu_side.png"
     },
 
     paramtype = "light",
