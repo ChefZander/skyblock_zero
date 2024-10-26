@@ -91,13 +91,10 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         visual_size = { x = 2, y = 2 },
         automatic_rotate = 0.2,
         glow = 14,
-        physical = true
+        physical = false --so they enter unloaded chunks properly
     },
     on_activate = function(self, staticdata, dtime)
-        if dtime and dtime > 60 then
-            self.object:remove()
-            return
-        end
+        if dtime and dtime > 600 then self.object:remove() return end
         self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
@@ -107,9 +104,8 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target then return self.object:remove() end
-            local velocity = 3.5 * vector.normalize(target:get_pos() - pos + offset + vector.new(1, 1, 1))
-            self.object:set_velocity(velocity)
+            if not target then self.object:remove() return end
+            self.object:set_velocity(1.5 * vector.normalize(target:get_pos() - pos + offset))
         end
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
@@ -128,10 +124,24 @@ minetest.register_entity("sbz_meteorites:meteorite", {
     get_staticdata = function(self)
         return self.type
     end,
-    on_step = function(self, dtime, moveresult)
+    on_step = function(self, dtime)
         if not self.type then return end
         local pos = self.object:get_pos()
         local diag = vector.new(1, 1, 1)
+        for x = -1, 1 do
+            for y = -1, 1 do
+                for z = -1, 1 do
+                    local node = minetest.get_node(pos+vector.new(x, y, z)).name
+                    if node ~= "ignore" and node ~= "air" then --colliding with something, should explode
+                        self.object:remove()
+                        meteorite_explode(pos, self.type)
+                        minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
+                        return
+                    end
+                end
+            end
+        end
+        --the stopping moving bug seems to be it hitting unloaded chunks
         minetest.add_particlespawner({
             time = dtime,
             amount = 1,
@@ -144,12 +154,6 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             texture = "meteorite_trail_" .. self.type .. ".png",
             animation = { type = "vertical_frames", aspect_width = 4, aspect_height = 4, length = -1 }
         })
-        if moveresult and moveresult.collisions[1] then --colliding with something, should explode
-            self.object:remove()
-            meteorite_explode(pos, self.type)
-            minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
-            return
-        end
         self.time_since = (self.time_since or 0) + dtime
         if self.waypoint and self.time_since >= 2 then
             sbz_api.remove_waypoint(self.waypoint)

@@ -1,14 +1,14 @@
 local function spawn_meteorite(pos)
     local players = minetest.get_connected_players()
+    if #players == 0 then return end
     local player = players[math.random(#players)]
     if not pos then
-        pos = vector.zero()
-        while vector.length(pos) < 80 or vector.length(pos) > 100 or minetest.get_node(pos).name == "ignore" do
-            pos = vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
-        end
-        if player then
-            pos = player:get_pos() + pos
-        end
+        player_pos = player:get_pos()
+        local attempts = 0
+        repeat
+            pos = player_pos+vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
+            attempts = attempts+1
+        until attempts >= 64 or vector.length(pos) > 80 and vector.length(pos) < 100 and minetest.get_node(pos).name ~= "ignore"
     end
     return minetest.add_entity(pos, "sbz_meteorites:meteorite")
 end
@@ -41,14 +41,13 @@ local function meteorite_globalstep(dtime)
     time_since = time_since + dtime
     if time_since > 120 then
         time_since = 0
-        local spawns = math.random() < 0.25 and 1 or 0
+        if math.random() < 0.25 then spawn_meteorite() end
         --        for _, obj in ipairs(minetest.object_refs) do
         --            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 0.2 then
         --                spawns = spawns + obj:get_luaentity().type
         --            end
         --        end
         -- the above is a horrible idea that should never had entered production
-        if spawns > 0 then for _ = 1, spawns do spawn_meteorite() end end
     end
     storage:set_float("time_since_last_spawn", time_since)
 end
