@@ -106,8 +106,6 @@ function api.locals(val, f_thread)
         _U = {}  -- Upvalues
     }
 
-    print("Locals called")
-
     local getinfo, getlocal, getupvalue = debug.getinfo, debug.getlocal, debug.getupvalue
 
     local index
@@ -214,14 +212,15 @@ function api.get_size(env, seen, thread, recursed)
     if debug.getlocal ~= nil and debug.getupvalue ~= nil then
         for i = 1, #deferred_weigh_locals do
             local v = deferred_weigh_locals[i]
-            local their_locals = api.locals(v, thread)
+            if not seen[v] then
+                local their_locals = api.locals(v, thread)
 
-            local size = api.get_size(their_locals, seen, thread, true)
-            retv = retv + size
+                local size = api.get_size(their_locals, seen, thread, true)
+                retv = retv + size
+            end
         end
     end
 
-    print("Completed!")
     return retv
 end
 

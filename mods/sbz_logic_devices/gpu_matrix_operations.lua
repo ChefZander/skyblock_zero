@@ -1,7 +1,17 @@
 -- 2x2 mat
-local function matrix_transform(mat, x, y)
-    return mat[1][1] * x + mat[1][2] * y, mat[2][1] * x + mat[2][2] * y
+local function matrix_transform_2x2(mat, x, y)
+    return mat[1][1] * x + mat[1][2] * y,
+        mat[2][1] * x + mat[2][2] * y
 end
+
+local function matrix_transform_3x3(mat, x, y)
+    local z = mat[3][1] * x + mat[3][2] * y + mat[3][3]
+    if z == 0 then z = 1 end
+
+    return (mat[1][1] * x + mat[1][2] * y + mat[1][3]) / z,
+        (mat[2][1] * x + mat[2][2] * y + mat[2][3]) / z
+end
+
 
 local rounding_function = math.round
 
@@ -12,13 +22,17 @@ local default_color = minetest.colorspec_to_bytes("black"):sub(1, 3)
 -- but in this case, mx1 = smallest newx
 -- and mx2 = biggest newx
 -- basically mx* is a square definining the extent of the operation
-local function transform_buffer(buffer, matrix, x1, y1, x2, y2, mx1, my1, mx2, my2, transparent_color, origin_x, origin_y)
+local function transform_buffer(
+    buffer, matrix, x1, y1, x2, y2, mx1, my1, mx2, my2, transparent_color, origin_x, origin_y, is_matrix_2x2
+)
     local transformations = {}
     local xsize = buffer.xsize
 
+    local transform_function = is_matrix_2x2 and matrix_transform_2x2 or matrix_transform_3x3
+
     for y = y1, y2 do
         for x = x1, x2 do
-            local nx, ny = matrix_transform(matrix, x - origin_x, y - origin_y)
+            local nx, ny = transform_function(matrix, x - origin_x, y - origin_y)
             nx = rounding_function(nx) + origin_x
             ny = rounding_function(ny) + origin_y
             transformations[#transformations + 1] = {

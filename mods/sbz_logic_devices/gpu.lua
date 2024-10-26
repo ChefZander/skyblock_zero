@@ -561,16 +561,7 @@ local commands = {
             max_y = type_int,
 
             transparent_color = type_any,
-            matrix = {
-                [1] = {
-                    [1] = libox.type("number"),
-                    [2] = libox.type("number"),
-                },
-                [2] = {
-                    [1] = libox.type("number"),
-                    [2] = libox.type("number"),
-                }
-            },
+            matrix = libox.type("table"), -- either a 2x2 matrix (linear transform) or a 3x3 matrix (affine transform)
             origin_x = type_int,
             origin_y = type_int,
         },
@@ -581,8 +572,44 @@ local commands = {
             local mx1, my1, mx2, my2 = validate_area(b, command.min_x, command.min_y, command.max_x, command.max_y)
             if not x1 then return end
             if not mx1 then return end
+
+            local is_3x3_matrix = false
+            local is_2x2_matrix = false
+            if libox.type_check(command.matrix, {
+                    [1] = {
+                        [1] = libox.type("number"),
+                        [2] = libox.type("number"),
+                    },
+                    [2] = {
+                        [1] = libox.type("number"),
+                        [2] = libox.type("number"),
+                    }
+                }) == true then
+                is_2x2_matrix = true
+            elseif libox.type_check(command.matrix, {
+                    [1] = {
+                        [1] = libox.type("number"),
+                        [2] = libox.type("number"),
+                        [3] = libox.type("number"),
+                    },
+                    [2] = {
+                        [1] = libox.type("number"),
+                        [2] = libox.type("number"),
+                        [3] = libox.type("number"),
+                    },
+                    [3] = {
+                        [1] = libox.type("number"),
+                        [2] = libox.type("number"),
+                        [3] = libox.type("number"),
+                    }
+                }) == true then
+                is_3x3_matrix = true
+            end
+
+            if not (is_3x3_matrix or is_2x2_matrix) then return end
+
             transform_buffer(b, command.matrix, x1, y1, x2, y2, mx1, my1, mx2, my2,
-                transform_color(command.transparent_color), command.origin_x, command.origin_y)
+                transform_color(command.transparent_color), command.origin_x, command.origin_y, is_2x2_matrix)
         end
     },
     ["convolution_matrix"] = {
@@ -662,10 +689,25 @@ core.register_node("sbz_logic_devices:gpu", {
         if type(msg) ~= "table" then return end
         if type(msg[1]) ~= "table" then msg = { msg } end
 
+        local t0 = minetest.get_us_time()
         local buffers = pos_buffers[h(pos)]
 
         for i = 1, math.min(#msg, max_commands_in_one_message) do
             exec_command(buffers, msg[i], pos, from_pos)
         end
+
+        local lag = (minetest.get_us_time() - t0) / 1000
+        local meta = minetest.get_meta(pos)
+
+        local old_lag = meta:get_int("lag")
+        local last_measured = meta:get_int("last_measured")
+        if last_measured ~= os.time() then
+            meta:set_string("infotext", "Lag: " .. old_lag .. "ms")
+            meta:set_int("lag", 0)
+            old_lag = 0
+            meta:set_int("last_measured", os.time())
+        end
+        local lag = old_lag + lag
+        meta:set_int("lag", lag)
     end
 })
