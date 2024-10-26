@@ -304,6 +304,7 @@ local function after_recipe_change(pos, inventory)
     local output_item = craft.output.item
     local description, name = get_item_info(output_item)
     inventory:set_stack("output", 1, output_item)
+    reserve_slots(meta)
 end
 
 -- clean out unknown items and groups, which would be handled like unknown
@@ -550,7 +551,6 @@ minetest.register_node("pipeworks:autocrafter", {
             meta:set_string("infotext", "Not enough power")
             return 0
         end
-        reserve_slots(meta)
 
         local max_crafts = (supply - demand)
         max_crafts = math.min(max_crafts, meta:get_int("maxpow"))
@@ -575,7 +575,33 @@ minetest.register_node("pipeworks:autocrafter", {
         meta:set_string("infotext", "Active, consuming: " .. i .. " power")
         return i
     end,
+    on_logic_send = function(pos, msg, from_pos)
+        local ok, faulty = libox.type_check(msg, {
+            { libox.type("string"), libox.type("string"), libox.type("string") },
+            { libox.type("string"), libox.type("string"), libox.type("string") },
+            { libox.type("string"), libox.type("string"), libox.type("string") },
+        })
+        if not ok then return end
 
+
+        local list = {}
+        -- validate
+        for y = 1, 3 do
+            for x = 1, 3 do
+                local target = ItemStack(msg[y][x])
+                if not target then return end
+                if not target:is_known() then return end
+                target:set_count(1)
+                list[#list + 1] = target
+            end
+        end
+
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_list("recipe", list)
+        after_recipe_change(pos, inv)
+        update_meta(meta)
+    end
 })
 
 minetest.register_craft({
