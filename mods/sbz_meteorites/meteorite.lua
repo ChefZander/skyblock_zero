@@ -94,10 +94,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         physical = true
     },
     on_activate = function(self, staticdata, dtime)
-        if dtime and dtime > 60 then
-            self.object:remove()
-            return
-        end
+        if dtime and dtime > 60 then self.object:remove() return end
         self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
@@ -107,7 +104,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target then return self.object:remove() end
+            if not target then self.object:remove() return end
             self.object:set_velocity(1.5 * vector.normalize(target:get_pos() - pos + offset))
         end
         local texture = self.type .. ".png^meteorite.png"
