@@ -554,26 +554,28 @@ minetest.register_node("pipeworks:autocrafter", {
 
         local max_crafts = (supply - demand)
         max_crafts = math.min(max_crafts, meta:get_int("maxpow"))
-        local is_max_crafts_forced = max_crafts ~= meta:get_int("maxpow")
         local result
         if max_crafts == 0 then
             return 0
         end
 
         local gi
+        local broken = false
         for i = 1, max_crafts do
             gi = i
             result = run_autocrafter(pos)
-            if result == false then break end
+            if result == false then
+                broken = true
+                break
+            end
         end
-        local i = gi
-        if i == 1 and is_max_crafts_forced then -- means that it just immiadedly failed
+        if (gi == 1 and (not max_crafts == 1)) or (gi == 1 and broken) then
             meta:set_string("infotext", "Can't craft")
             return 0
         end
 
-        meta:set_string("infotext", "Active, consuming: " .. i .. " power")
-        return i
+        meta:set_string("infotext", "Active, consuming: " .. gi .. " power")
+        return gi
     end,
     on_logic_send = function(pos, msg, from_pos)
         local ok, faulty = libox.type_check(msg, {
