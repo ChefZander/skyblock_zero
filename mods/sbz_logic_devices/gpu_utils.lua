@@ -3,6 +3,7 @@ local function format_color(c)
     return string.sub(core.colorspec_to_bytes(c) or core.colorspec_to_bytes("black"), 1, 3)
 end
 
+
 local function explodebits(input, count)
     local output = {}
     count = count or 8
@@ -38,7 +39,10 @@ packtable[63] = "/"
 unpacktable["+"] = 62
 unpacktable["/"] = 63
 
+-- employ memoization
+local memo = {}
 local function packpixel(pixel)
+    if memo[pixel] then return memo[pixel] end
     pixel = tonumber(pixel, 16)
     if not pixel then
         return "AAAA"
@@ -59,7 +63,9 @@ local function packpixel(pixel)
     local char2 = packtable[implodebits(block2, 6)] or "A"
     local char3 = packtable[implodebits(block3, 6)] or "A"
     local char4 = packtable[implodebits(block4, 6)] or "A"
-    return char1 .. char2 .. char3 .. char4
+    local result = table.concat({ char1, char2, char3, char4 })
+    memo[pixel] = result
+    return result
 end
 
 local function unpackpixel(pack)

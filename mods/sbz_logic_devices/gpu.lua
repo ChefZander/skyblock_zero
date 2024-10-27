@@ -343,26 +343,27 @@ local commands = {
             end
         end,
     },
-    ["sendpacked"] = {
+    ["send_packed"] = {
         type_checks = {
             index = type_index,
-            to_pos = libox.type("table"),
+            to_pos = type_any,
         },
         f = function(buffers, command, pos, from_pos)
             if not libox.type_vector(command.to_pos) then
                 command.to_pos = from_pos
             end
             local b = buffers[command.index]
-            if b ~= nil then
-                local result = export(b, 1, 1, b.xsize, b.ysize)
-                local packed_data = {}
-                for y = 1, #result[1] do
-                    for x = 1, #result do
-                        packed_data[#packed_data + 1] = packpixel(string.sub(result[y][x], 2)) -- dont do the for i=1,1000 do x = x .. y end
-                    end
+            if b == nil then return end
+            local buf = b.buffer
+            local packed_data = {}
+            for y = 1, b.ysize do
+                for x = 1, b.xsize do
+                    local r = buf[(y - 1) * b.xsize + x]
+                    packed_data[#packed_data + 1] =
+                        packpixel((r:byte(1) * 0x10000) + (r:byte(2) * 0x100) + r:byte(3)) -- dont do the for i=1,1000 do x = x .. y end
                 end
-                sbz_logic.send_l(command.to_pos, table.concat(packed_data), from_pos) -- send as if logic sent it
             end
+            sbz_logic.send_l(command.to_pos, table.concat(packed_data), from_pos) -- send as if logic sent it
         end
     },
     ["send_png"] = { -- i guess this would be "send extra packed but yea good luck unpacking it"
@@ -387,7 +388,7 @@ local commands = {
             end
         end
     },
-    ["loadpacked"] = {
+    ["load_packed"] = {
         type_checks = {
             index = type_index,
             packed = libox.type("string"),
