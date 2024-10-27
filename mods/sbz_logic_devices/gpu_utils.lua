@@ -73,8 +73,8 @@ local function unpackpixel(pack)
     local block2 = unpacktable[pack:sub(2, 2)] or 0
     local block3 = unpacktable[pack:sub(3, 3)] or 0
     local block4 = unpacktable[pack:sub(4, 4)] or 0
-    local out = block1 + (2 ^ 6 * block2) + (2 ^ 12 * block3) + (2 ^ 18 * block4)
-    return string.format("%06X", out)
+    local out    = block1 + (2 ^ 6 * block2) + (2 ^ 12 * block3) + (2 ^ 18 * block4)
+    return out
 end
 
 local function rgbtohsv(r, g, b)

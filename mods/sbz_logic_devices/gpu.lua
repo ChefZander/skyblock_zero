@@ -344,9 +344,11 @@ local commands = {
         end,
     },
     ["send_packed"] = {
+        -- this packing works a little differently, and should be like a lot faster
         type_checks = {
             index = type_index,
             to_pos = type_any,
+            base64 = libox.type("boolean")
         },
         f = function(buffers, command, pos, from_pos)
             if not libox.type_vector(command.to_pos) then
@@ -354,16 +356,21 @@ local commands = {
             end
             local b = buffers[command.index]
             if b == nil then return end
+
             local buf = b.buffer
             local packed_data = {}
             for y = 1, b.ysize do
                 for x = 1, b.xsize do
-                    local r = buf[(y - 1) * b.xsize + x]
-                    packed_data[#packed_data + 1] =
-                        packpixel((r:byte(1) * 0x10000) + (r:byte(2) * 0x100) + r:byte(3)) -- dont do the for i=1,1000 do x = x .. y end
+                    local px = buf[(y - 1) * b.xsize + x]
+                    packed_data[#packed_data + 1] = px
+                    -- 3 bytes, in the form of rgb, such that px:byte(1) == r, px:byte(2) == g, px:byte(3) == b
                 end
             end
-            sbz_logic.send_l(command.to_pos, table.concat(packed_data), from_pos) -- send as if logic sent it
+            local result = table.concat(packed_data)
+            if command.base64 then
+                result = minetest.encode_base64(result)
+            end
+            sbz_logic.send_l(command.to_pos, result, from_pos) -- send as if logic sent it
         end
     },
     ["send_png"] = { -- i guess this would be "send extra packed but yea good luck unpacking it"
@@ -391,24 +398,35 @@ local commands = {
     ["load_packed"] = {
         type_checks = {
             index = type_index,
-            packed = libox.type("string"),
+            data = libox.type("string"),
             x1 = type_int,
             y1 = type_int,
             x2 = type_int,
             y2 = type_int,
+            base64 = libox.type("boolean"),
         },
         f = function(buffers, command)
             local b = buffers[command.index]
             if b == nil then return end
+
             local x1, y1, x2, y2 = validate_area(b, command.x1, command.y1, command.x2, command.y2)
             if not x1 then return end
 
+            local data = command.data
+            if command.base64 then
+                data = minetest.decode_base64(command.data)
+            end
+            if data == nil then return end -- can happen with base64
+
             local real_buf = b.buffer
+            local idx = 1
             for y = y1, y2 do
                 for x = x1, x2 do
-                    local packed_idx = (y * command.xsize + x) * 4 + 1
-                    local packed_data = string.sub(command.data, packed_idx, packed_idx + 3)
-                    real_buf[((y * real_buf.xsize) - 1) + x] = transform_color(unpackpixel(packed_data))
+                    local packed_data = string.sub(data, idx, idx + 2)
+                    if packed_data and #packed_data == 3 then
+                        real_buf[(y - 1) * b.xsize + x] = packed_data
+                    end
+                    idx = idx + 3
                 end
             end
         end

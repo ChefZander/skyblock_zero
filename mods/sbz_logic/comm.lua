@@ -1,6 +1,10 @@
 local logic = sbz_api.logic
 
-local send_max_cost = 50 * 1024 -- idk 50 kilobytes??
+local send_max_cost = 65536 + 25 + 1000
+-- > "why is it like this"
+-- Ok so, 65536 is the maximum string length that the gpu command "send_packed" can send, ok? sounds great
+-- now, we add 25 because strings
+-- and we add 1000 because idk its a failsafe
 
 function logic.send_l(pos, thing, from_pos)
     -- used for the luacontroller, dont use anywhere else it wont work
