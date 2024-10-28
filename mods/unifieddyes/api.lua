@@ -622,5 +622,6 @@ unifieddyes.palettes = {
 function unifieddyes.def(d)
 	d.paramtype2 = d.paramtype2 or "color"
 	d.palette = unifieddyes.palettes[d.paramtype2]
+	d.on_dig = node_dig_without_color
 	return d
 end

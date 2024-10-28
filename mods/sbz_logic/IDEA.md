@@ -1,3 +1,7 @@
+# Ok, this is me, frog, before you read this document
+This was written a long time ago
+You can see my ideas in here, some did not make it
+
 # This is me (frog) writing down ideas for the logic
 
 
