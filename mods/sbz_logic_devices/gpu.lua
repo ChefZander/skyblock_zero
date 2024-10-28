@@ -27,6 +27,33 @@ local pos_buffers = setmetatable({}, {
 })
 local h = minetest.hash_node_position
 
+
+local a = 30
+minetest.register_privilege("place_gpus_unlimited", {
+    description = string.format("Place gpus closer than %s blocks from one another", a),
+    give_to_admin = false,
+    give_to_singleplayer = false,
+})
+
+
+local area_vec = vector.new(a, a, a)
+
+local function after_place_node(pos, placer)
+    if not placer then return end
+    if minetest.check_player_privs(placer, "place_gpus_unlimited") then return end
+
+    local nodes = minetest.find_nodes_in_area(vector.subtract(pos, area_vec), vector.add(pos, area_vec),
+        "sbz_logic_devices:gpu")
+
+    if #(nodes) > 1 then
+        core.chat_send_player(placer:get_player_name(),
+            ("2 Gpus can't be near eachother, they need to be %s blocks apart, or you have to have the place_gpus_unlimited privledge")
+            :format(a))
+        core.remove_node(pos)
+        return true
+    end
+end
+
 local max_buffers = 8
 local max_buffer_size = 128
 local max_commands_in_one_message = 32
@@ -751,5 +778,6 @@ core.register_node("sbz_logic_devices:gpu", {
             meta:set_int("last_measured", os.time())
         end
         meta:set_int("lag", lag)
-    end
+    end,
+    after_place_node = after_place_node
 })
