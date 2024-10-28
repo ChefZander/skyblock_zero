@@ -781,3 +781,17 @@ core.register_node("sbz_logic_devices:gpu", {
     end,
     after_place_node = after_place_node
 })
+
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_resources:lua_chip 8",
+        "unifieddyes:colorium 64",
+        "sbz_resources:ram_stick_1kb 16",
+        "sbz_resources:emittrium_circuit 3"
+    },
+    output = "sbz_logic_devices:gpu",
+    width = 2,
+    height = 2,
+}
