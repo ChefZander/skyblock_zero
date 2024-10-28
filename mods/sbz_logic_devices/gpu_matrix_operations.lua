@@ -1,4 +1,3 @@
--- 2x2 mat
 local function matrix_transform_2x2(mat, x, y)
     return mat[1][1] * x + mat[1][2] * y,
         mat[2][1] * x + mat[2][2] * y
@@ -80,10 +79,6 @@ end
 -- https://www.youtube.com/watch?v=KuXjwB4LzSA
 -- (didnt use any code from it, just used it to understand the concept)
 local function convolution_matrix(buffer, matrix, x1, y1, x2, y2)
-    local function color2table(c)
-        return { r = c:byte(1), g = c:byte(2), b = c:byte(3) }
-    end
-
     local matrix_sizex         = #matrix
     local matrix_sizey         = #matrix[1]
     local buffer_sizex         = buffer.xsize
@@ -99,26 +94,25 @@ local function convolution_matrix(buffer, matrix, x1, y1, x2, y2)
     for y = y1, y2 do
         for x = x1, x2 do
             -- ok now this is going to get funny
-            local sum = { r = 0, g = 0, b = 0 }
+            local r, g, b = 0, 0, 0
             for y_off = -halfy, halfy do
                 for x_off = -halfx, halfx do
                     local target_x = x + x_off
                     local target_y = y + y_off
                     local pixel = real_buffer[(target_y - 1) * buffer_sizex + target_x]
                     if pixel ~= nil then
-                        pixel = color2table(pixel)
                         local multiply_by = matrix[halfy + 1 + y_off][halfx + 1 + x_off]
-                        sum.r = sum.r + pixel.r * multiply_by
-                        sum.g = sum.g + pixel.g * multiply_by
-                        sum.b = sum.b + pixel.b * multiply_by
+                        r = r + pixel:byte(1) * multiply_by
+                        g = g + pixel:byte(2) * multiply_by
+                        b = b + pixel:byte(3) * multiply_by
                     end
                 end
             end
-            sum.r = math.min(255, math.abs(sum.r))
-            sum.g = math.min(255, math.abs(sum.g))
-            sum.b = math.min(255, math.abs(sum.b))
+            r = math.min(255, math.abs(r))
+            g = math.min(255, math.abs(g))
+            b = math.min(255, math.abs(b))
             buffer_modifications[#buffer_modifications + 1] = {
-                (y - 1) * buffer_sizex + x, core.colorspec_to_bytes(sum):sub(1, 3)
+                (y - 1) * buffer_sizex + x, string.char(r) .. string.char(g) .. string.char(b)
             }
         end
     end

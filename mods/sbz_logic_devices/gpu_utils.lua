@@ -22,61 +22,6 @@ local function implodebits(input, count)
     return output
 end
 
-local packtable = {}
-local unpacktable = {}
-for i = 0, 25 do
-    packtable[i] = string.char(i + 65)
-    packtable[i + 26] = string.char(i + 97)
-    unpacktable[string.char(i + 65)] = i
-    unpacktable[string.char(i + 97)] = i + 26
-end
-for i = 0, 9 do
-    packtable[i + 52] = tostring(i)
-    unpacktable[tostring(i)] = i + 52
-end
-packtable[62] = "+"
-packtable[63] = "/"
-unpacktable["+"] = 62
-unpacktable["/"] = 63
-
--- employ memoization
-local memo = {}
-local function packpixel(pixel)
-    if memo[pixel] then return memo[pixel] end
-    pixel = tonumber(pixel, 16)
-    if not pixel then
-        return "AAAA"
-    end
-
-    local bits = explodebits(pixel, 24)
-    local block1 = {}
-    local block2 = {}
-    local block3 = {}
-    local block4 = {}
-    for i = 0, 5 do
-        block1[i] = bits[i]
-        block2[i] = bits[i + 6]
-        block3[i] = bits[i + 12]
-        block4[i] = bits[i + 18]
-    end
-    local char1 = packtable[implodebits(block1, 6)] or "A"
-    local char2 = packtable[implodebits(block2, 6)] or "A"
-    local char3 = packtable[implodebits(block3, 6)] or "A"
-    local char4 = packtable[implodebits(block4, 6)] or "A"
-    local result = table.concat({ char1, char2, char3, char4 })
-    memo[pixel] = result
-    return result
-end
-
-local function unpackpixel(pack)
-    local block1 = unpacktable[pack:sub(1, 1)] or 0
-    local block2 = unpacktable[pack:sub(2, 2)] or 0
-    local block3 = unpacktable[pack:sub(3, 3)] or 0
-    local block4 = unpacktable[pack:sub(4, 4)] or 0
-    local out    = block1 + (2 ^ 6 * block2) + (2 ^ 12 * block3) + (2 ^ 18 * block4)
-    return out
-end
-
 local function rgbtohsv(r, g, b)
     r = r / 255
     g = g / 255
@@ -244,4 +189,4 @@ local function blend(src, dst, mode, transparent)
     return src
 end
 
-return explodebits, implodebits, packpixel, unpackpixel, rgbtohsv, hsvtorgb, bitwiseblend, blend
+return blend

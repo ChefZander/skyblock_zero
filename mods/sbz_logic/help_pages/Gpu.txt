@@ -1,0 +1,290 @@
+<bigger>Gpu</bigger>
+Probably the most complicated block i will need to introduce here
+It is based off of the digistuff gpu
+<big>What is it used for</big>
+So, say you are in a situation where you are rendering something, like lines for example, or you need to fill an area,
+in a luacontroller, that would be very slow because of the strict limit and the fact that you don't have luajit optimizations.
+
+Introducing: gpu
+It lets you do that and fast
+
+<b>Definitions: Buffer</b> 
+- an area ranging from 1x1 to 128x128, doesn't have to be a square
+- a gpu can hold 8 buffers
+- unlike the digistuff gpu, once minetest restarts, the buffers will be gone
+- unlike the digistuff gpu, buffer indexing is from 1 to 8 instead of 0 to 7
+
+<big>The way you enter commands</big>
+
+1)
+<mono>send_to(links.gpu, {
+$C1    type = "blabla",
+$C1    ...
+})</mono>
+
+2)
+<mono>send_to(links.gpu,{
+$C1    {
+$C1        type = "blabla",
+$C1    },
+$C1    {
+$C1        type = "blabla" -- multiple commands!
+$C1    },
+$C1    ...
+})</mono>
+
+<big>The limits</big>
+- 32 commands in 1 message
+- max use is 100ms per second, if you go above this, it will just cut off your commands, you can see the lag in the infotext
+
+<big> Noww... the commands </big>
+<b>create_buffer</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "create_buffer",
+$C1    index = 1, -- a number between 1 and 8
+$C1    xsize = 128, -- a number between 1 and 128
+$C1    ysize = 128, -- a number between 1 and 128
+$C1    fill = color, -- any colorspec, if omitted, it's black
+$C1})</mono>
+Creates a buffer, a buffer is required for every command
+
+<b>send</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "send",
+$C1    index = 1,
+$C1    to_pos = vector.add(pos, links.matrix_screen[1][1]) -- an absolute position, if it's nil it will send to the luacontroller
+$C1})</mono>
+Sends a buffer to to_pos, the buffer is a table indexed by x[y][x], the color is in format "#RRGGBB"
+
+<b>send_region</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "send_region",
+$C1    index = 1,
+$C1    x1 = 1,
+$C1    y1 = 1,
+$C1    x2 = 128,
+$C1    y2 = 128,
+$C1    to_pos = vector.add(pos, links.matrix_screen[1][1]) -- an absolute position, if it's nil it will send to the luacontroller
+$C1})</mono>
+Sends a region of the buffer
+
+<b>draw_rect</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "draw_rect",
+$C1    index = 1,
+$C1    x1 = 1,
+$C1    y1 = 1,
+$C1    x2 = 128,
+$C1    y2 = 128,
+$C1
+$C1    fill = <color or nil>,
+$C1    edge = <color or nil>,
+$C1})</mono>
+
+Draws a rectangle
+If fill == nil then it will just draw the edges of the rectangle,
+if edge == nil then edge = fill
+end :>
+
+<b>draw_line</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "draw_line",
+$C1    index = 1,
+$C1    x1 = 1,
+$C1    y1 = 1,
+$C1    x2 = 128,
+$C1    y2 = 128,
+$C1
+$C1    color = color,
+$C1    antialias = true,
+$C1})</mono>
+Draws a line from x1 y1 to x2 y2
+
+<b>draw_point</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "draw_point",
+$C1    index = 1,
+$C1    x = 1,
+$C1    y = 1,
+$C1
+$C1    color = color,
+$C1})</mono>
+
+<b>copy</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "copy",
+$C1    src = 1, -- a buffer index
+$C1    dst = 2, -- a buffer index, can be equal to src
+$C1    xsize = 1, -- the size of the area
+$C1    ysize = 1, -- the size of the area
+$C1
+$C1    dstx = 1,
+$C1    dsty = 1,
+$C1
+$C1    srcx = 1,
+$C1    srcy = 1,
+$C1
+$C1    transparent_color = <color> -- the color used if blend_mode == "overlay",
+$C1    blend_mode = "normal", 
+$C1})</mono>
+
+Copies a section from src to dst
+Blend modes:
+- normal - puts everything from src to dst
+- nop - does nothing
+- overlay - puts everything that's not the transparent color
+- add - adds the colors of both buffers
+- sub - subtracts the destination color from the source color
+- isub - subtracts the source color from the destination color
+- average - takes the average of the color
+- and/or/xor/xnor/not/nand/nor - does funny bitwise blending stuff
+- tohsv/rgbtohsv (they do the same thing) - they put the hue in red, saturation in green, and value in blue
+- torgb/hsvtorgb (they do the same thing) - they undo the tohsv operation
+- anything else is same as normal
+
+They all put their values into dst
+
+<b>load</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "load",
+$C1    index = 1,
+$C1    buffer = <buffer>,
+$C1})</mono>
+Similar to createbuffer, puts the buffer in the command (indexed x[y][x]) into the gpu, at buffer index described in the command
+
+<b>send_packed</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "send_packed",
+$C1    index = 1,
+$C1    to_pos = <ABSOLUTE pos or nil>,
+$C1    base64 = true,
+$C1})</mono>
+This is very different to the digistuff gpu's sendpacked command
+The format is something like "rgbrgbrgbrgbrgbrgbrgb" where rgb is string.byte(r)..string.byte(g)..string.byte(b)
+
+im not that good at explaining
+if this helps, its colorspec_to_bytes(color) .. colorspec_to_bytes(color) and so on
+You can index it by doing:
+<mono>
+local base_idx = (((y-1)*xsize + x)*3)-2
+local packed_color = string.sub(packed_data,base_idx, base_idx + 2)
+local r, g, b = packed_color:byte(1), packed_color:byte(2), packed_color:byte(3)
+</mono>
+
+If base64 is enabled, it just uses core.encode_base64 to encode it
+
+<b>send_png</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "send_png",
+$C1    index = 1,
+$C1    to_pos = <ABSOLUTE pos or nil>,
+$C1})</mono>
+Encodes the buffer as a png, then base64s that, and applies a very small amount of compression
+
+Can be directly used with the [png: texture modifier
+
+<b>load_packed</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "load_packed",
+$C1    index = 1,
+$C1    data = "heh",
+$C1    x1 = 1,
+$C1    y1 = 1,
+$C1    x2 = 128,
+$C1    y2 = 128,
+$C1    base64 = true,
+$C1})</mono>
+
+Loads packed data into a Buffer
+
+<b>circle</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "circle",
+$C1    index = 1,
+$C1    r = 5,
+$C1    x = 6,
+$C1    y = 10,
+$C1    hollow = false,
+$C1    color = <color>
+$C1})</mono>
+
+Makes a circle, with r being the radius
+
+<b>fill</b>
+Warning: has the potential to be kinda laggy, when used on a 128x128 buffer, it took like on average 30ms, if you have any ideas on how to improve this, please let me (frog :>) know
+$C1<mono>send_to(links.gpu,{
+$C1    type = "fill",
+$C1    index = 1,
+$C1    tolerance = 5,
+$C1    x = 6,
+$C1    y = 10,
+$C1    color = <color>
+$C1})</mono>
+
+Performs a flood fill starting from x,y
+
+<b>text</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "text",
+$C1    index = 1,
+$C1    x = 6,
+$C1    y = 10,
+$C1    text = "hi :3",
+$C1    font = nil, -- currently unused, but by default, it's "default"
+$C1})</mono>
+
+Draws text starting from y, x, if you want to suggest a new font let me know, you can make a pull request
+
+<b>transform</b>
+Warning: can be kinda laggy
+$C1<mono>send_to(links.gpu,{
+$C1    type = "transform",
+$C1    index = 1,
+$C1    x1 = 1,
+$C1    y1 = 1,
+$C1    x2 = 128,
+$C1    y2 = 128,
+$C1    min_x = 1,
+$C1    max_x = 128,
+$C1    min_y = 1,
+$C1    max_y = 128,
+$C1    transparent_color = "black",
+$C1    matrix = { -- 2x2 linear transformation, this matrix specifically doesn't do anything
+$C1        {1, 0},
+$C1        {0, 1}
+$C1    },
+$C1    matrix = { -- 3x3 matrix for affine transformation, this matrix specifically doesn't do anything
+$C1        {1, 0, 0},
+$C1        {0, 1, 0},
+$C1        {0, 0, 1}
+$C1    },
+$C1    origin_x = 128/2,
+$C1    origin_y = 128/2,
+$C1})</mono>
+
+Can perform an affine or linear transformation
+If you don't know what those are, they allow you to rotate and scale stuff, here are some resources for learning:
+<action name=url url=https://en.wikipedia.org/wiki/Transformation_matrix>https://en.wikipedia.org/wiki/Transformation_matrix</action> - most useful to me was "examples in 2 dimensions"
+<action name=url url=https://en.wikipedia.org/wiki/Affine_transformation>https://en.wikipedia.org/wiki/Affine_transformation</action> - most useful to me was "image transformation" section, also you can do some funny perspective stuff if you use the bottom row
+
+min_x max_x min_y max_y will limit it to that region *forcefully*
+
+
+<b>Convolution matrix</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "convolution_matrix",
+$C1    index = 1,
+$C1    x1 = 1,
+$C1    y1 = 1,
+$C1    x2 = 128,
+$C1    y2 = 128,
+$C1    matrix = { -- can be a 5x5 matrix or a 3x3 matrix, this one does a box blur
+$C1        {-1/9,-1/9,-1/9},
+$C1        {-1/9,-1/9,-1/9},
+$C1        {-1/9,-1/9,-1/9},
+$C1    }
+$C1})</mono>
+
+See <action name=url url=https://en.wikipedia.org/wiki/Kernel_(image_processing)>https://en.wikipedia.org/wiki/Kernel_(image_processing)</action>
+Can be laggy
+
