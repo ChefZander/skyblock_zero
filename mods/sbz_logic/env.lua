@@ -1,6 +1,5 @@
 local logic = sbz_api.logic
 
-
 local valid_keys = { ["formspec"] = 1, ["editor_code"] = 1, ["code"] = 1, ["error"] = 1 }
 local function get_editor_table(meta)
     return setmetatable({}, {
@@ -27,7 +26,6 @@ end
 
 local libf = libox.sandbox_lib_f
 
-
 function logic.get_the_get_node_function(start_pos)
     return libf(function(pos)
         if not libox.type_vector(pos) then
@@ -43,6 +41,7 @@ function logic.get_the_get_node_function(start_pos)
 end
 
 function logic.get_env(pos, meta)
+    ---@type table
     local base = libox.create_basic_environment()
 
     local function wait_for_event_type(event_type)
@@ -95,6 +94,7 @@ function logic.get_env(pos, meta)
             if not logic.range_check(pos, abs_pos) then return false, "Can't turn off that, outside of linking range" end
             return sbz_api.force_turn_off(abs_pos, minetest.get_meta(abs_pos))
         end,
+
     } do
         base[k] = v
     end

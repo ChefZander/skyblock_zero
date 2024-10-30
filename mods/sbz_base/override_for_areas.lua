@@ -21,6 +21,8 @@ minetest.register_on_mods_loaded(function()
             local move, put, take, receive_fields = v.allow_metadata_inventory_move or nop1,
                 v.allow_metadata_inventory_put or nop2,
                 v.allow_metadata_inventory_take or nop2, v.on_receive_fields or function(...) end
+
+            local is_put_nop = v.allow_metadata_inventory_put == nil
             minetest.override_item(k, {
                 allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
                     if prot(pos, player) then
@@ -36,6 +38,7 @@ minetest.register_on_mods_loaded(function()
                         return put(pos, listname, index, stack, player)
                     end
                 end,
+                allow_metadata_inventory_put_was_nop = is_put_nop,
                 allow_metadata_inventory_take = function(pos, listname, index, stack, player)
                     if prot(pos, player) then
                         return 0

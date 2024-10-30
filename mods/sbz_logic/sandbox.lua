@@ -200,6 +200,12 @@ function logic.can_run(pos, meta, editor)
     return true
 end
 
+-- yield logic
+-- stuff that happens after the run
+
+---@type function, function
+local transport_items = loadfile(minetest.get_modpath("sbz_logic") .. "/item_transport.lua")()
+
 logic.post_runs = {
     ["wait"] = {
         typedef = {
@@ -216,6 +222,17 @@ logic.post_runs = {
                 sbz_api.queue:add_action(pos, "logic_wait", {}, response.time)
             end
         end
+    },
+    ["transport_items"] = {
+        typedef = {
+            type = libox.type("string"),
+            from = libox.type("table"),
+            to = libox.type("table"),
+            filters = libox.type("table"),
+            inv_list_inputs = function(x) return x == nil or type(x) == "string" end,
+            inv_list_outputs = function(x) return x == nil or type(x) == "string" end,
+        },
+        f = transport_items,
     }
 }
 
