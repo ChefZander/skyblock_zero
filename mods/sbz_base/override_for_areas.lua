@@ -54,6 +54,10 @@ minetest.register_on_mods_loaded(function()
                     end
                 end
             })
+        else
+            minetest.override_item(k, {
+                allow_metadata_inventory_put_was_nop = v.allow_metadata_inventory_put == nil,
+            })
         end
     end
 end)

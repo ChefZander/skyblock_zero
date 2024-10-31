@@ -365,8 +365,8 @@ minetest.register_alias("mapgen_river_water_source", "air")
 
 local MP = minetest.get_modpath("sbz_base")
 
-dofile(MP .. "/override_descriptions.lua")
 dofile(MP .. "/override_for_areas.lua")
+dofile(MP .. "/override_descriptions.lua")
 dofile(MP .. "/vm.lua")
 dofile(MP .. "/queue.lua")
 

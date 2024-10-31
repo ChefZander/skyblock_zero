@@ -184,7 +184,6 @@ local function get_put_to(pos)
         -- by default, tries to distribute all the items evenly accross containers
         -- and thats the only like default yea
 
-
         local position_index = 1
         local cache = {}
         local hash = minetest.hash_node_position
@@ -200,7 +199,6 @@ local function get_put_to(pos)
             if target_item[1]:is_empty() then
                 target_item = table.remove(items)
             end
-
 
             if cache[hash(v)] == nil then
                 local node = core.get_node(v)
@@ -231,7 +229,6 @@ local function transport_items(original_pos, t)
         local handle = get_take_from(original_pos)(table.copy(t.from), t.filters, t.inv_list_inputs)
         get_put_to(original_pos)(table.copy(t.to), handle, t.inv_list_outputs)
     end)
-    if errmsg then minetest.log(dump(errmsg)) end
 end
 
 
