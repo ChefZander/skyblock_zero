@@ -287,12 +287,14 @@ end)
 
 -- everything pitch dark always
 
+sbz_api.players_with_temporarily_hidden_trails = {}
+
 minetest.register_globalstep(function(_)
     minetest.set_timeofday(0)
 
     for _, player in ipairs(minetest.get_connected_players()) do
         -- let the trail indicate that like yeah a globalstep happened
-        if player:get_meta():get_int("trailHidden") == 0 then
+        if player:get_meta():get_int("trailHidden") == 0 and not sbz_api.players_with_temporarily_hidden_trails[player:get_player_name()] then
             local pos = player:get_pos()
             minetest.add_particlespawner({
                 amount = 1,

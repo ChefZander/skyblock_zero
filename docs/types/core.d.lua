@@ -144,7 +144,7 @@ core = {}
 ---@deprecated
 minetest = core
 
----@alias alias "mapgen_stone" | "mapgen_water_source" | "mapgen_river_water_source" | "mapgen_lava_source" | "mapgen_cobble" | "mapgen_singlenode"
+---@alias alias "mapgen_stone" | "mapgen_water_source" | "mapgen_river_water_source" | "mapgen_lava_source" | "mapgen_cobble" | "mapgen_singlenode" | string
 
 ---@param alias alias
 ---@param original_name string

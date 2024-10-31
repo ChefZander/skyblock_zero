@@ -4,6 +4,8 @@ local jetpack_durability_s = 60 * 5           -- jetpack durability, in seconds
 local jetpack_velocity = vector.new(0, 15, 0) -- multiplied by dtime
 local jetpack_full_charge = 1000
 local jetpack_durability_save_during_sneak_flight = 2
+local default_number_of_particles = 20
+
 
 local jetpack_users = {}
 local jetpack_charge_per_1_wear = math.floor(65535 / jetpack_full_charge)
@@ -87,6 +89,7 @@ minetest.register_globalstep(function(dtime)
 
         local controls = real_player:get_player_control()
 
+        local num_particles = 0
         if (controls.sneak or controls.aux1) and controls.jump and jetpack_users[player] then
             speed:add_change(real_player, 2, "sbz_resources:2x_speed_when_flying")
             real_player:add_velocity((jetpack_velocity / 2) * dtime)
@@ -95,14 +98,41 @@ minetest.register_globalstep(function(dtime)
                 65535 *
                 ((jetpack_durability_s * (1 / jetpack_durability_save_during_sneak_flight)) ^ -1)
                 * dtime)) -- this works, do not question it
+            num_particles = default_number_of_particles / 2
         elseif controls.jump and jetpack_users[player] then
             speed:add_change(real_player, 2, "sbz_resources:2x_speed_when_flying")
             real_player:add_velocity(jetpack_velocity * dtime)
             wield_item:set_wear(math.min(65535, wield_item:get_wear() + ((65535 * (jetpack_durability_s ^ -1))) * dtime)) -- this works, do not question it
+            num_particles = default_number_of_particles
         else
             speed:del_change(real_player, "sbz_resources:2x_speed_when_flying")
         end
         edit_stack_image(player, wield_item)
         real_player:set_wielded_item(wield_item)
+        if num_particles ~= 0 then
+            -- make a effect
+            local vel = real_player:get_velocity()
+            vel = vector.subtract(vector.zero(), vel)
+
+            minetest.add_particlespawner({
+                amount = num_particles,
+                time = dtime,
+                texture = "star.png",
+                texpool = {
+                    "star.png^[colorize:red",
+                    "star.png^[colorize:blue",
+                    "star.png^[colorize:green",
+                },
+                exptime = { min = 1, max = 2 },
+                vel = { min = vector.new(-2, -2, -2), max = vector.new(2, 2, 2) },
+                acc = { min = vel, max = vel * 5 },
+                radius = { min = 0.1, max = 0.3, bias = 1 },
+                glow = 14,
+                pos = real_player:get_pos()
+            })
+            sbz_api.players_with_temporarily_hidden_trails[player] = true
+        else
+            sbz_api.players_with_temporarily_hidden_trails[player] = nil
+        end
     end
 end)
