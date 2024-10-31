@@ -21,6 +21,7 @@ sbz_api.help_pages_by_index = {
     [16] = "NodeDB",
     [17] = "Autocrafter",
     [18] = "Gpu",
+    [19] = "Transferring Items with Logic",
 }
 
 local function edit_text(t)

@@ -1,0 +1,28 @@
+<bigger>Transferring Items with Logic</bigger>
+
+It is done like this
+<mono>
+$C1any_event = yield({
+$C1    type = "transport_items",
+$C1    from = links.input, -- a vector array, like { [1] = { x = num, y = num, z = num}, [2] = { x = num, y = num, z = num}, ..., [n] = { x = num, y = num, z = num}}
+$C1    to = links.output, -- a vector array    
+$C1    filter = filter, -- will be discussed later
+$C1    inv_list_inputs = "main", -- optional
+$C1    inv_list_outputs = "main", -- optional
+$C1})
+</mono>
+it transports items evenly from the <mono>from</mono> table, to the <mono>to</mono> table,
+
+Filter is like this (all values are optional)
+<mono>
+$C1filters = {
+$C1     [1] = {
+$C1          count = 5,
+$C1          wear = 0,
+$C1          count_exact_match = false,
+$C1          slot_index = 0,
+$C1          name = 0,
+$C1          groups = { ingot = 1 }, -- can be a string, string array, or string->integer array
+$C1     }, -- there can be up to 20 filters
+$C1}
+</mono>
