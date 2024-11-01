@@ -15,7 +15,37 @@ return {
     { type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = { "Simple Alloy Furnace", "Emittrium Circuits" } },
 
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
+    {
+        type = "quest",
+        title = "Jetpack",
+        text = [[
+Have you wished to fly? Do i have the tool for you...
 
-    { type = "quest", title = "Bear Arms", text = "Craft the robotic arm.", requires = { "Furnace" } },
+The controls:
+
+Left clicking an un-activated jetpack (you can see with the red lighgt on the texture) will activate it.
+Left clicking an activated jetpack (the light becomes green) will de-activate it
+
+When a jetpack is activated:
+If you press jump:
+- jetpack applies upwards velocity to you
+- jetpack wears down a bit
+- you get 2x faster
+- 20 particles spawn
+If you press both jump and shift or aux1:
+- jetpack applies half as much upwards velocity as when you jump
+- jetpack wears down 2x less
+- you still get 2x faster
+- 4 particles spawn
+
+The wear is setup such that it lasts you 3 minutes of constant flying
+
+You can re-fuel your jetpack by clicking on a battery, full repair costs 1000 Cj
+
+Jetpack gets automatically de-activated when you stop having it in your hand or it runs out of wear
+]],
+        requires = { "Neutronium" }
+    },
+    { type = "quest", title = "Bear Arms",             text = "Craft the robotic arm.",                                                                                                                                        requires = { "Furnace" } },
     { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
 }

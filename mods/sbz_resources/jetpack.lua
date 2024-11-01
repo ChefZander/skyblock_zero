@@ -31,7 +31,7 @@ minetest.register_tool("sbz_resources:jetpack", {
             [0] = "lime"
         }
     },
-    on_place = function(itemstack, user, pointed_thing)
+    on_use = function(itemstack, user, pointed_thing)
         -- Check if user is valid
         if not user or user.is_fake_player then
             return itemstack
@@ -50,9 +50,12 @@ minetest.register_tool("sbz_resources:jetpack", {
         edit_stack_image(username, itemstack)
         return itemstack
     end,
-    on_use = function(stack, user, pointed)
+    on_place = function(stack, user, pointed)
         if pointed.type ~= "node" then return end
         local target = pointed.under
+        if core.is_protected(target, user:get_player_name()) then
+            core.record_protection_violation(target, user:get_player_name())
+        end
         local target_node_name = minetest.get_node(target).name
         if minetest.get_item_group(target_node_name, "sbz_battery") == 0 then return end
 
@@ -98,7 +101,7 @@ minetest.register_globalstep(function(dtime)
                 65535 *
                 ((jetpack_durability_s * (1 / jetpack_durability_save_during_sneak_flight)) ^ -1)
                 * dtime)) -- this works, do not question it
-            num_particles = default_number_of_particles / 2
+            num_particles = default_number_of_particles / 5
         elseif controls.jump and jetpack_users[player] then
             speed:add_change(real_player, 2, "sbz_resources:2x_speed_when_flying")
             real_player:add_velocity(jetpack_velocity * dtime)
@@ -135,4 +138,19 @@ minetest.register_globalstep(function(dtime)
             sbz_api.players_with_temporarily_hidden_trails[player] = nil
         end
     end
+    for k, v in ipairs(minetest.get_connected_players()) do
+        if not jetpack_users[v:get_player_name()] then
+            speed:del_change(v, "sbz_resources:2x_speed_when_flying")
+        end
+    end
 end)
+
+
+minetest.register_craft {
+    output = "sbz_resources:jetpack",
+    recipe = {
+        { "sbz_resources:emittrium_circuit", "sbz_power:battery",         "sbz_resources:emittrium_circuit" },
+        { "sbz_resources:angels_wing",       "sbz_meteorites:neutronium", "sbz_resources:angels_wing" },
+        { "sbz_resources:emittrium_circuit", "",                          "sbz_resources:emittrium_circuit" }
+    }
+}

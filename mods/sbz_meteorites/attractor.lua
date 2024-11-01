@@ -105,7 +105,6 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
         minetest.sound_play({ name = "machine_build" }, { pos = pos })
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
-    info_extra = "Made of antimatter; please do not place near matter",
 })
 
 minetest.register_craft({
