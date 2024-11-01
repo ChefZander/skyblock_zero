@@ -5,7 +5,7 @@ local jetpack_velocity = vector.new(0, 15, 0) -- multiplied by dtime
 local jetpack_full_charge = 1000
 local jetpack_durability_save_during_sneak_flight = 2
 local default_number_of_particles = 20
-
+local jetpack_boost = 3
 
 local jetpack_users = {}
 local jetpack_charge_per_1_wear = math.floor(65535 / jetpack_full_charge)
@@ -94,7 +94,7 @@ minetest.register_globalstep(function(dtime)
 
         local num_particles = 0
         if (controls.sneak or controls.aux1) and controls.jump and jetpack_users[player] then
-            speed:add_change(real_player, 2, "sbz_resources:2x_speed_when_flying")
+            speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
             real_player:add_velocity((jetpack_velocity / 2) * dtime)
             wield_item:set_wear(math.min(65535,
                 wield_item:get_wear() +
@@ -103,12 +103,12 @@ minetest.register_globalstep(function(dtime)
                 * dtime)) -- this works, do not question it
             num_particles = default_number_of_particles / 5
         elseif controls.jump and jetpack_users[player] then
-            speed:add_change(real_player, 2, "sbz_resources:2x_speed_when_flying")
+            speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
             real_player:add_velocity(jetpack_velocity * dtime)
             wield_item:set_wear(math.min(65535, wield_item:get_wear() + ((65535 * (jetpack_durability_s ^ -1))) * dtime)) -- this works, do not question it
             num_particles = default_number_of_particles
         else
-            speed:del_change(real_player, "sbz_resources:2x_speed_when_flying")
+            speed:del_change(real_player, "sbz_resources:jetpack_boost")
         end
         edit_stack_image(player, wield_item)
         real_player:set_wielded_item(wield_item)
@@ -140,7 +140,7 @@ minetest.register_globalstep(function(dtime)
     end
     for k, v in ipairs(minetest.get_connected_players()) do
         if not jetpack_users[v:get_player_name()] then
-            speed:del_change(v, "sbz_resources:2x_speed_when_flying")
+            speed:del_change(v, "sbz_resources:jetpack_boost")
         end
     end
 end)
