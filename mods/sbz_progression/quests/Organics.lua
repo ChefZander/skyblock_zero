@@ -71,7 +71,7 @@ There is one more thing which almost all plants except Pyrograss need: CO2, whic
         title = "Airlocks",
         text =
         "Tired of breaking a hole in the wall whenever you want to enter a habitat? Introducing the Airlock: a node which holds in the atmosphere while letting you effortlessly walk through.",
-        requires = { "Growing Plants", "Emittrium Glass", "Neutronium" }
+        requires = { "Growing Plants", "Emittrium Glass" }
     },
     {
         type = "secret",

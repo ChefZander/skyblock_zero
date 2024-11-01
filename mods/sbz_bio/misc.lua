@@ -56,7 +56,7 @@ minetest.register_craft({
     output = "sbz_bio:airlock",
     recipe = {
         { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass" },
-        { "sbz_meteorites:neutronium",     "sbz_meteorites:neutronium",     "sbz_meteorites:neutronium" },
+        { "sbz_chem:titanium_ingot",       "sbz_chem:titanium_ingot",       "sbz_chem:titanium_ingot" },
         { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass" }
     }
 })
