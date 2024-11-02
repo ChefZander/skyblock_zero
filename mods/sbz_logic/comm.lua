@@ -10,7 +10,7 @@ function logic.send_l(pos, thing, from_pos)
     -- used for the luacontroller, dont use anywhere else it wont work
     local msg, cost = libox.digiline_sanitize(thing, false)
     if cost > send_max_cost then
-        return false, "Whatever you are sending is way too large"
+        return false, ("Whatever you are sending is way too large (%s/%s bytes)"):format(cost, send_max_cost)
     end
     local range_allowed = logic.range_check(from_pos, pos)
     if not range_allowed then

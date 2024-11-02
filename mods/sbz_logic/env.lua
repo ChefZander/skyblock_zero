@@ -94,7 +94,6 @@ function logic.get_env(pos, meta)
             if not logic.range_check(pos, abs_pos) then return false, "Can't turn off that, outside of linking range" end
             return sbz_api.force_turn_off(abs_pos, minetest.get_meta(abs_pos))
         end,
-
     } do
         base[k] = v
     end
