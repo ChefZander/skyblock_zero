@@ -788,7 +788,7 @@ unified_inventory.register_craft {
     items = {
         "sbz_resources:lua_chip 8",
         "unifieddyes:colorium 64",
-        "sbz_resources:ram_stick_1kb 16",
+        "sbz_resources:ram_stick_1mb 16",
         "sbz_resources:emittrium_circuit 3"
     },
     output = "sbz_logic_devices:gpu",

@@ -123,7 +123,7 @@ minetest.register_craft {
     output = "sbz_logic:lua_controller",
     recipe = {
         { "sbz_resources:lua_chip", "sbz_logic:data_disk",         "sbz_resources:lua_chip" },
-        { "sbz_resources:lua_chip", "sbz_resources:ram_stick_1kb", "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_resources:ram_stick_1mb", "sbz_resources:lua_chip" },
         { "sbz_resources:lua_chip", "sbz_resources:storinator",    "sbz_resources:lua_chip" },
     }
 }
