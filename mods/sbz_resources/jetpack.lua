@@ -31,6 +31,7 @@ minetest.register_tool("sbz_resources:jetpack", {
             [0] = "lime"
         }
     },
+    groups = { no_repair = 1 },
     on_use = function(itemstack, user, pointed_thing)
         -- Check if user is valid
         if not user or user.is_fake_player then
@@ -54,7 +55,7 @@ minetest.register_tool("sbz_resources:jetpack", {
         if pointed.type ~= "node" then return end
         local target = pointed.under
         if core.is_protected(target, user:get_player_name()) then
-            core.record_protection_violation(target, user:get_player_name())
+            return core.record_protection_violation(target, user:get_player_name())
         end
         local target_node_name = minetest.get_node(target).name
         if minetest.get_item_group(target_node_name, "sbz_battery") == 0 then return end
