@@ -5,6 +5,9 @@ sbz_api = {
     debug = minetest.settings:get_bool("debug", false)
 }
 
+sbz_api.deg2rad = math.pi / 180
+sbz_api.rad2deg = 180 / math.pi
+
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
 
