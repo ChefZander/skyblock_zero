@@ -91,7 +91,7 @@ minetest.register_craft {
 
 local drill_times = { [1] = 1.50 / 2, [2] = 0.30 / 2, [3] = 0.10 / 2 }
 local drill_max_wear = 500
-local drill_power_per_1_use = 10
+local drill_power_per_1_use = 1
 
 local tool_caps = {
     full_punch_interval = 0.1,
@@ -138,7 +138,7 @@ minetest.register_tool("sbz_resources:drill", {
         if minetest.get_item_group(target_node.name, "sbz_battery") == 0 then return end
         local meta = minetest.get_meta(target)
         local power = meta:get_int("power")
-        local current_wear = stack:get_wear()
+        local current_wear = math.floor((stack:get_wear() / 65535) * drill_max_wear)
         local wear_repaired = math.min(current_wear, math.floor(power / drill_power_per_1_use))
         local power_charged = wear_repaired * drill_power_per_1_use
         local new_power = power - power_charged
@@ -146,26 +146,15 @@ minetest.register_tool("sbz_resources:drill", {
         meta:set_int("power", new_power)
         minetest.registered_nodes[target_node.name].action(target, target_node.name, meta, 0, power_charged)
 
-        stack:set_wear(current_wear - wear_repaired)
+        stack:set_wear(((current_wear - wear_repaired) / drill_max_wear) * 65535)
         if stack:get_wear() < 65535 then
             stack:get_meta():set_tool_capabilities(tool_caps)
         end
         return stack
     end,
 
-    wear_color = {
-        blend = "constant",
-        color_stops = {
-            [0] = "lime"
-        }
-    },
-
-    sound = {
-        punch_use = {
-            name = "drill_dig",
-        }
-    },
-
+    wear_color = { color_stops = { [0] = "lime" } },
+    sound = { punch_use = { name = "drill_dig", } },
 })
 
 minetest.register_craft {

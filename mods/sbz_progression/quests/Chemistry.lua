@@ -47,5 +47,22 @@ Jetpack gets automatically de-activated when you stop having it in your hand or 
         requires = { "Neutronium" }
     },
     { type = "quest", title = "Bear Arms",             text = "Craft the robotic arm.",                                                                                                                                        requires = { "Furnace" } },
+    {
+        type = "quest",
+        title = "Electric drill",
+        requires = { "Bear Arms" },
+        text = [[
+Do you think that the robotic arm is too fragile, or do you want to like.. dig... and like yea have your tool not break as easily, and like... yea... umm...
+Electric drill is the tool for you!!!
+
+It has 500 uses and powered by electricity!
+What does that mean?
+
+If you "place" it on a battery (sneak+left click/tap), it will take power from the battery and charge the drill! (Just like the jetpack)
+It needs 1 power per 1 use.
+
+It also digs 2x faster than the robotic arm.
+]]
+    },
     { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
 }
