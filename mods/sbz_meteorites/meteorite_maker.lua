@@ -47,7 +47,7 @@ local function get_meteorite_maker_formspec(pos, meta, counts)
     else
         choose_type = choose_type .. [[
         container[0.2,0.2]
-            box[0,0;4,3.4;#111111]
+            box[0,0;6,3.4;#111111]
             button[0.2,0.2;3.6,1;type_matter;Matter]
             button[0.2,1.2;3.6,1;type_antimatter;Antimatter]
             button[0.2,2.2;3.6,1;type_emitter;Emitter]
@@ -125,6 +125,23 @@ core.register_entity("sbz_meteorites:emerging_meteorite", {
         self.object:remove()
     end
 })
+
+local function split_stack_to_correct_items(stack)
+    local result = {}
+    if stack:get_count() <= stack:get_stack_max() then
+        result[#result + 1] = stack
+    else
+        local count = stack:get_count()
+        local max = stack:get_stack_max()
+        local stacks_that_have_max = math.floor(count / max)
+        local rest = count - (stacks_that_have_max * max)
+        result[#result + 1] = stack:take_item(rest)
+        for i = 1, stacks_that_have_max do
+            result[#result + 1] = stack:take_item(max)
+        end
+    end
+    return result
+end
 
 sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
     tiles = {
@@ -332,12 +349,15 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
                 local center_pos = vector.add(pos, vector.new(0, 4, 0))
                 local counts = minetest.deserialize(meta:get_string("counts"))
                 for item, v in pairs(counts) do
-                    minetest.item_drop(ItemStack(item .. " " .. v.current), fakelib.create_player({
-                        name = "",
-                        direction = {
-                            x = 0, y = 1, z = 0
-                        }
-                    }), center_pos)
+                    local items = split_stack_to_correct_items(ItemStack(item .. " " .. v.current))
+                    for k, v in pairs(items) do
+                        minetest.item_drop(v, fakelib.create_player({
+                            name = "",
+                            direction = {
+                                x = 0, y = 1, z = 0
+                            }
+                        }), center_pos)
+                    end
                 end
                 meta:set_string("type", "")
                 meta:set_string("counts", minetest.serialize {})
