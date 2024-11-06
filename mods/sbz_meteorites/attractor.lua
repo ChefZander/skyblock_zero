@@ -3,7 +3,7 @@ local elapsed = 0
 local function attract_meteorites(pos, dtime, t)
     elapsed = elapsed + dtime
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
-        if not obj:is_player() and obj:get_luaentity().name == "sbz_meteorites:meteorite" then
+        if not obj:is_player() and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:meteorite" then
             obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos))
             if elapsed > 1 then
                 minetest.add_particlespawner({
@@ -105,7 +105,6 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
         minetest.sound_play({ name = "machine_build" }, { pos = pos })
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
-    info_extra = "Made of antimatter; please do not place near matter",
 })
 
 minetest.register_craft({

@@ -88,7 +88,7 @@ sbz_api.register_element("calcium", "#F5F5DC", "Calcium %s (Ca)", true)
 sbz_api.register_element("sodium", "#F4F4F4", "Sodium %s (Na)", true)
 sbz_api.register_element("lithium", "#c8a4db", "Lithium %s (Li)")
 sbz_api.register_element("silicon", "#5ba082", "Silicon %s (Si)")
-
+-- sbz_api.register_element("uranium", "#00FF00", "Uranium %s (0.7% U-238)") -- this is a todo, someone pls make technic style uranium, with 3-6% being for reactors, 70-90% being for weapons
 
 -- alloys
 

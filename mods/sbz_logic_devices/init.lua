@@ -11,3 +11,6 @@ local HTTPApiTable = minetest.request_http_api()
 if HTTPApiTable ~= nil then
     loadfile(MP .. "/nic.lua")(HTTPApiTable)
 end
+
+dofile(MP .. "/gpu.lua")
+dofile(MP .. "/nodeDB.lua")

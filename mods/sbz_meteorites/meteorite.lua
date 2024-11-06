@@ -23,8 +23,10 @@ local function meteorite_explode(pos, type)
     end
     --placing nodes
     local protected = minetest.is_protected(pos, ".meteorite")
-    if not protected then minetest.set_node(pos,
-            { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" }) end
+    if not protected then
+        minetest.set_node(pos,
+            { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
+    end
     local node_types = {
         matter_blob = { "sbz_meteorites:meteoric_matter", "sbz_meteorites:meteoric_metal" },
         emitter = { "sbz_meteorites:meteoric_emittrium", "sbz_meteorites:meteoric_metal" },
@@ -94,7 +96,10 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         physical = false --so they enter unloaded chunks properly
     },
     on_activate = function(self, staticdata, dtime)
-        if dtime and dtime > 600 then self.object:remove() return end
+        if dtime and dtime > 600 then
+            self.object:remove()
+            return
+        end
         self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
@@ -104,7 +109,10 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
             local target = get_nearby_player(pos)
-            if not target then self.object:remove() return end
+            if not target then
+                self.object:remove()
+                return
+            end
             self.object:set_velocity(1.5 * vector.normalize(target:get_pos() - pos + offset))
         end
         local texture = self.type .. ".png^meteorite.png"
@@ -131,7 +139,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         for x = -1, 1 do
             for y = -1, 1 do
                 for z = -1, 1 do
-                    local node = minetest.get_node(pos+vector.new(x, y, z)).name
+                    local node = minetest.get_node(pos + vector.new(x, y, z)).name
                     if node ~= "ignore" and node ~= "air" then --colliding with something, should explode
                         self.object:remove()
                         meteorite_explode(pos, self.type)

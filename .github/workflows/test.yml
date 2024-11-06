@@ -10,4 +10,6 @@ jobs:
       with:
         test_mode: game
         mapgen: v7
-        additional_config: secure.trusted_mods = mtt, libox
+        additional_config: |
+         secure.trusted_mods = mtt, libox
+         secure.http_mods = sbz_logic_devices

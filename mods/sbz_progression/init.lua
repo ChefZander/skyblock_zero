@@ -24,6 +24,7 @@ displayDialougeLine = displayDialogueLine
 displayGlobalDialougeLine = displayGlobalDialogueLine
 
 
+-- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
 local achievment_table = {
     ["sbz_resources:matter_blob"] = "A bigger platform",
     ["sbz_resources:matter_stair"] = "Matter Stairs",
@@ -110,6 +111,9 @@ local achievment_table = {
     ["sbz_power:powered_lamp_off"] = "Powered Lights",
     ["sbz_power:super_powered_lamp_off"] = "Powered Lights",
     ["unifieddyes:coloring_tool"] = "Coloring Tool",
+    ["sbz_resources:jetpack"] = "Jetpack",
+    ["sbz_resources:drill"] = "Electric Drill",
+    ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

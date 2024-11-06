@@ -3,11 +3,11 @@ local function spawn_meteorite(pos)
     if #players == 0 then return end
     local player = players[math.random(#players)]
     if not pos then
-        player_pos = player:get_pos()
+        local player_pos = player:get_pos()
         local attempts = 0
         repeat
-            pos = player_pos+vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
-            attempts = attempts+1
+            pos = player_pos + vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
+            attempts = attempts + 1
         until attempts >= 64 or vector.length(pos) > 80 and vector.length(pos) < 100 and minetest.get_node(pos).name ~= "ignore"
     end
     return minetest.add_entity(pos, "sbz_meteorites:meteorite")
@@ -61,3 +61,4 @@ dofile(modpath .. "/nodes.lua")
 dofile(modpath .. "/attractor.lua")
 dofile(modpath .. "/waypoints.lua")
 dofile(modpath .. "/visualiser.lua")
+dofile(modpath .. "/meteorite_maker.lua")

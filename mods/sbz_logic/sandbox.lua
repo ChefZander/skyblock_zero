@@ -123,7 +123,7 @@ function logic.initialize_env(meta, env, pos)
 end
 
 function logic.save_disks_and_mem(meta, env)
-    meta:set_int("force_off", 0) -- hehe!
+    meta:set_int("force_off", 0)
     local disk_array = env.disks
     local inv = meta:get_inventory()
     local disk_list = inv:get_list("disks") or {}
@@ -200,6 +200,12 @@ function logic.can_run(pos, meta, editor)
     return true
 end
 
+-- yield logic
+-- stuff that happens after the run
+
+---@type function, function
+local transport_items = loadfile(minetest.get_modpath("sbz_logic") .. "/item_transport.lua")()
+
 logic.post_runs = {
     ["wait"] = {
         typedef = {
@@ -216,6 +222,17 @@ logic.post_runs = {
                 sbz_api.queue:add_action(pos, "logic_wait", {}, response.time)
             end
         end
+    },
+    ["transport_items"] = {
+        typedef = {
+            type = libox.type("string"),
+            from = libox.type("table"),
+            to = libox.type("table"),
+            filters = libox.type("table"),
+            inv_list_inputs = function(x) return x == nil or type(x) == "string" end,
+            inv_list_outputs = function(x) return x == nil or type(x) == "string" end,
+        },
+        f = transport_items,
     }
 }
 
@@ -283,6 +300,7 @@ function logic.turn_on(pos)
     meta:set_string("ID", id)
     meta:mark_as_private("ID")
     local ok = logic.send_event_to_sandbox(pos, { type = "program" })
+
     if not ok then
         return false
     end
@@ -310,7 +328,6 @@ function logic.send_event_to_sandbox(pos, event)
     logic.initialize_env(meta, env, pos)
 
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
-
     meta:set_float("microseconds_taken_main_sandbox",
         meta:get_float("microseconds_taken_main_sandbox") + (minetest.get_us_time() - t0))
 

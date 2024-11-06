@@ -1,0 +1,51 @@
+<bigger>NodeDB</bigger>
+Very similar to digiline_craftdb, but a lot simpler
+<big>Searching</big>
+<mono>
+$C1send_to(links.nodedb,{
+$C1    type = "search",
+$C1    give_basic_def = true, -- boolean, optional, if true, the result will also have the image of the node and its short and normal description, 
+$C1    max_results = 10, -- number, optional, cannot be above 200, by default 200
+$C1    exclude_groups = { "cracky" }, -- optional, table of groups you dont want
+$C1    text = "group:cracky,ui_logic,ui_bio" -- if it starts with group:<G1>,<G2>,<G3>,...,<Gn> or just group:<G> it will search for those groups, if it's just normal text, it will search through names, descriptions, and short descriptions
+$C1})
+</mono>
+
+Result is an array of strings, if give_basic_def = false
+If give_basic_def = true, it will give you an array of:
+<mono>
+{
+$C1    name = "modname:blabla",
+$C1    description = "BLABLA!",
+$C1    short_description = "BLABLABLA!",
+$C1    image = "blabla.png"
+}
+</mono>
+
+<big>get def</big>
+<mono>
+$C1send_to(links.nodedb, {
+$C1    type = "get_def",
+$C1    item = "sbz_resources:blabla"
+$C1})
+</mono>
+
+Gets the item/node/tool definition of that item name (assuming it exists)
+Can get really big.
+
+<big>recipes and uses</big>
+<mono>
+$C1send_to(links.nodedb, {
+$C1    type = "recipes",
+$C1    item = "sbz_resources:blabla"
+$C1})
+</mono>
+Result: Every recipe for that item
+
+<mono>
+$C1send_to(links.nodedb, {
+$C1    type = "uses",
+$C1    item = "sbz_resources:blabla"
+$C1})
+</mono>
+Result: every recipe that uses that item

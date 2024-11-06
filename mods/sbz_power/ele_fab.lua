@@ -84,7 +84,7 @@ unified_inventory.register_craft {
 
 unified_inventory.register_craft {
     type = "ele_fab",
-    output = "sbz_resources:ram_stick_1kb",
+    output = "sbz_resources:ram_stick_1mb",
     items = {
         "sbz_chem:gold_ingot 2",
         "sbz_chem:silicon_ingot 2"
