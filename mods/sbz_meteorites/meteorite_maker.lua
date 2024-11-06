@@ -19,6 +19,7 @@ local meteorite_recipes = {
             -- now... my reasoning
             -- i decided that emittrium should be a lot denser than matter blobs
             -- so like, 1 emittrium = 3 matter blobs
+            -- emitter meteorites are by far THE FASTEST to manifacture
             "sbz_resources:raw_emittrium 297", -- 891 matter blobs
             "sbz_resources:matter_blob 109"    -- the rest, to be exactly 1000
         }
@@ -386,7 +387,9 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
 
         meta:set_string("formspec",
             get_meteorite_maker_formspec(pos, meta, minetest.deserialize(meta:get_string("counts"))))
-    end
+    end,
+    output_inv = "main",
+    input_inv = "main",
 }, {
     light_source = 14,
     tiles = {
@@ -398,3 +401,13 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         { name = "meteorite_maker_on_side.png", animation = { type = "vertical_frames", length = 1 } },
     },
 })
+
+
+core.register_craft {
+    output = "sbz_meteorites:meteorite_maker",
+    recipe = {
+        { "sbz_resources:robotic_arm", "sbz_resources:emittrium_circuit", "sbz_resources:robotic_arm" },
+        { "sbz_meteorites:neutronium", "sbz_meteorites:neutronium",       "sbz_meteorites:neutronium" },
+        { "pipeworks:autocrafter",     "sbz_resources:storinator",        "pipeworks:autocrafter" }
+    }
+}
