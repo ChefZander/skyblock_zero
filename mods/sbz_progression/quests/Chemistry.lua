@@ -65,4 +65,14 @@ It also digs 2x faster than the robotic arm.
 ]]
     },
     { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
+    {
+        type = "quest",
+        title = "Meteorite Maker",
+        text = [[
+Makes... meteorites... yeeeah, also it needs some space on top of it.
+
+Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.
+]],
+        requires = { "Autocrafters", "Neutronium" }
+    }
 }
