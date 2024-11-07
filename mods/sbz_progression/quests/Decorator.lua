@@ -14,9 +14,7 @@ Compress it! Compressed Core Dust can be used as a building material, a way to e
         title = "More Antimatter",
         text =
         [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
-You can even make antimatter versions of some decorational blocks! Just be careful when placing them; if antimatter and matter come in contact then they will annihilate and create a violent explosion.
-
-TIP: You can use compressed core dust as a buffer when dealing with antimatter.]],
+You can even make antimatter versions of some decorational blocks! Isn't that cool?]],
         requires = { "Antimatter" }
     },
     {
