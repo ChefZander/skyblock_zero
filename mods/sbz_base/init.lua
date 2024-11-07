@@ -5,6 +5,9 @@ sbz_api = {
     debug = minetest.settings:get_bool("debug", false)
 }
 
+sbz_api.deg2rad = math.pi / 180
+sbz_api.rad2deg = 180 / math.pi
+
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
 
@@ -37,6 +40,7 @@ table.foreach = function(t, f, key_last)
             f(k, v)
         end
     end
+    return t
 end
 
 ---@param key_last boolean
@@ -49,6 +53,7 @@ table.foreachi = function(t, f, key_last)
             f(k, v)
         end
     end
+    return t
 end
 
 function iterate_around_pos(pos, func)
@@ -285,12 +290,14 @@ end)
 
 -- everything pitch dark always
 
+sbz_api.players_with_temporarily_hidden_trails = {}
+
 minetest.register_globalstep(function(_)
     minetest.set_timeofday(0)
 
     for _, player in ipairs(minetest.get_connected_players()) do
         -- let the trail indicate that like yeah a globalstep happened
-        if player:get_meta():get_int("trailHidden") == 0 then
+        if player:get_meta():get_int("trailHidden") == 0 and not sbz_api.players_with_temporarily_hidden_trails[player:get_player_name()] then
             local pos = player:get_pos()
             minetest.add_particlespawner({
                 amount = 1,
@@ -363,8 +370,8 @@ minetest.register_alias("mapgen_river_water_source", "air")
 
 local MP = minetest.get_modpath("sbz_base")
 
-dofile(MP .. "/override_descriptions.lua")
 dofile(MP .. "/override_for_areas.lua")
+dofile(MP .. "/override_descriptions.lua")
 dofile(MP .. "/vm.lua")
 dofile(MP .. "/queue.lua")
 

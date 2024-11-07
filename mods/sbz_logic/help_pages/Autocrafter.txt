@@ -1,0 +1,11 @@
+<big>Autocrafter logic support</big>
+
+yea, so as of now you can only set the recipe in the autocrafter with the luacontroller:
+<mono>
+$C1local m = "sbz_resources:matter_dust"
+$C1send_to(links.autocrafter, {
+$C1    {M, M, M},
+$C1    {M, M, M},
+$C1    {M, M, M}
+$C1})
+</mono>

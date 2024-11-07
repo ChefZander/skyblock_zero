@@ -124,3 +124,59 @@ minetest.register_craft({
 local MP = minetest.get_modpath("sbz_decor")
 dofile(MP .. "/signs.lua")
 dofile(MP .. "/cnc.lua")
+
+-- now... Ladders
+-- inspired by what i saw from mtg ladders
+local ladder_autoplace_limit = 16
+
+core.register_node("sbz_decor:ladder", unifieddyes.def {
+    description = "Matter Ladder",
+    info_extra = "Yup, no antimatter ladders",
+    drawtype = "nodebox",
+    node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
+        type = "fixed",
+        fixed = {
+            { -0.5,   -0.5,    0.375, -0.375, 0.5,     0.5 }, -- NodeBox1
+            { 0.375,  -0.5,    0.375, 0.5,    0.5,     0.5 }, -- NodeBox3
+            { -0.375, 0.3125,  0.375, 0.375,  0.4375,  0.5 }, -- NodeBox5
+            { -0.375, 0.0625,  0.375, 0.375,  0.1875,  0.5 }, -- NodeBox8
+            { -0.375, -0.1875, 0.375, 0.375,  -0.0625, 0.5 }, -- NodeBox9
+            { -0.375, -0.4375, 0.375, 0.375,  -0.3125, 0.5 }, -- NodeBox10
+        }
+    },
+    selection_box = {
+        type = "fixed",
+        fixed = {
+            -8 / 16, -8 / 16, 3 / 16, 8 / 16, 8 / 16, 8 / 16
+        }
+    },
+    tiles = { "matter_blob.png" },
+    groups = { matter = 1, explody = 3 },
+    paramtype = "light",
+    paramtype2 = "wallmounted",
+    sunlight_propagates = true,
+    on_place = function(stack, placer, pointed, recursed)
+        if (recursed or 0) > ladder_autoplace_limit then return end
+        if pointed.type == "node" then
+            local target = pointed.under
+            local node = core.get_node(target)
+            if node.name == "sbz_decor:ladder" then
+                local dir = minetest.wallmounted_to_dir(node.param2)
+                if dir == nil then return end
+                dir.y = math.abs(dir.y)
+
+                pointed.under = vector.add(pointed.under, dir)
+                pointed.above = vector.add(pointed.above, dir)
+                if minetest.get_node(pointed.under).name == "sbz_decor:ladder" then
+                    local result = minetest.registered_nodes["sbz_decor:ladder"].on_place(stack, placer, pointed,
+                        (recursed or 0) + 1)
+                    return result
+                end
+                return minetest.item_place_node(stack, placer, pointed, node.param2)
+            end
+        end
+        return minetest.item_place_node(stack, placer, pointed)
+    end,
+    node_placement_prediction = "", -- REQUIRED
+    climbable = true,
+})

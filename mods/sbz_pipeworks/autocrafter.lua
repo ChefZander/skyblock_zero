@@ -304,6 +304,7 @@ local function after_recipe_change(pos, inventory)
     local output_item = craft.output.item
     local description, name = get_item_info(output_item)
     inventory:set_stack("output", 1, output_item)
+    reserve_slots(meta)
 end
 
 -- clean out unknown items and groups, which would be handled like unknown
@@ -550,32 +551,59 @@ minetest.register_node("pipeworks:autocrafter", {
             meta:set_string("infotext", "Not enough power")
             return 0
         end
-        reserve_slots(meta)
 
         local max_crafts = (supply - demand)
         max_crafts = math.min(max_crafts, meta:get_int("maxpow"))
-        local is_max_crafts_forced = max_crafts ~= meta:get_int("maxpow")
         local result
         if max_crafts == 0 then
             return 0
         end
 
         local gi
+        local broken = false
         for i = 1, max_crafts do
             gi = i
             result = run_autocrafter(pos)
-            if result == false then break end
+            if result == false then
+                broken = true
+                break
+            end
         end
-        local i = gi
-        if i == 1 and is_max_crafts_forced then -- means that it just immiadedly failed
+        if (gi == 1 and (not max_crafts == 1)) or (gi == 1 and broken) then
             meta:set_string("infotext", "Can't craft")
             return 0
         end
 
-        meta:set_string("infotext", "Active, consuming: " .. i .. " power")
-        return i
+        meta:set_string("infotext", "Active, consuming: " .. gi .. " power")
+        return gi
     end,
+    on_logic_send = function(pos, msg, from_pos)
+        local ok, faulty = libox.type_check(msg, {
+            { libox.type("string"), libox.type("string"), libox.type("string") },
+            { libox.type("string"), libox.type("string"), libox.type("string") },
+            { libox.type("string"), libox.type("string"), libox.type("string") },
+        })
+        if not ok then return end
 
+
+        local list = {}
+        -- validate
+        for y = 1, 3 do
+            for x = 1, 3 do
+                local target = ItemStack(msg[y][x])
+                if not target then return end
+                if not target:is_known() then return end
+                target:set_count(1)
+                list[#list + 1] = target
+            end
+        end
+
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_list("recipe", list)
+        after_recipe_change(pos, inv)
+        update_meta(meta)
+    end
 })
 
 minetest.register_craft({

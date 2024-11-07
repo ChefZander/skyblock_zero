@@ -20,13 +20,13 @@ function vector.new(x, y, z) end
 ---@return vector
 function vector.zero() end
 
----Returns v, np, where v is a vector read from the given string s and np is the next position in the string after the vector.
----Returns nil on failure.
---- s: Has to begin with a substring of the form "(x, y, z)". Additional spaces, leaving away commas and adding an additional comma to the end is allowed.
 ---@param v vector
 ---@return vector
 function vector.copy(v) end
 
+---Returns v, np, where v is a vector read from the given string s and np is the next position in the string after the vector.
+---Returns nil on failure.
+--- s: Has to begin with a substring of the form "(x, y, z)". Additional spaces, leaving away commas and adding an additional comma to the end is allowed.
 ---@return vector
 ---@param init integer?
 ---@param s string
@@ -144,7 +144,7 @@ core = {}
 ---@deprecated
 minetest = core
 
----@alias alias "mapgen_stone" | "mapgen_water_source" | "mapgen_river_water_source" | "mapgen_lava_source" | "mapgen_cobble" | "mapgen_singlenode"
+---@alias alias "mapgen_stone" | "mapgen_water_source" | "mapgen_river_water_source" | "mapgen_lava_source" | "mapgen_cobble" | "mapgen_singlenode" | string
 
 ---@param alias alias
 ---@param original_name string
@@ -818,4 +818,5 @@ function core.unregister_chatcommand(name, redef) end
 function core.register_privilege(name, def) end
 
 --- this function is so absurdly uncommon im not going to bother
+---@param auth_handler_def table
 function core.register_authentication_handler(auth_handler_def) end

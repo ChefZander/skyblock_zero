@@ -52,6 +52,10 @@ minetest.register_on_mods_loaded(function()
         end
 
 
+        if not v.allow_metadata_inventory_put_was_nop and v.type == "node" then
+            new_desc[#new_desc + 1] = "Logic can't put items to this node."
+        end
+
         if #new_desc > 1 then
             for i = 2, #new_desc do
                 new_desc[i] = minetest.colorize("#333333", new_desc[i])
