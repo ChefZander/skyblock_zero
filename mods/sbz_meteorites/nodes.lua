@@ -89,13 +89,13 @@ minetest.register_node("sbz_meteorites:neutronium", {
     description = "Neutronium",
     tiles = { "neutronium.png" },
     paramtype = "light",
-    light_source = 14,
+    light_source = 4,
     groups = { gravity = 300, matter = 1 }
 })
 minetest.register_node("sbz_meteorites:antineutronium", {
     description = "Antineutronium",
-    tiles = { "antineutronium.png" },
+    tiles = { "neutronium.png^[invert:rgb" },
     paramtype = "light",
-    light_source = 10,
+    light_source = 8,
     groups = { antigravity = 300, antimatter = 1 }
 })

@@ -51,7 +51,7 @@ minetest.register_entity("sbz_meteorites:gravitational_attractor_entity", {
             self.object:remove()
             return
         end
-        local t = self.type < 0 and "antineutronium.png" or "neutronium.png"
+        local t = self.type < 0 and "neutronium.png^[invert:rgb" or "neutronium.png"
         self.object:set_properties({ textures = { t, t, t, t, t, t } })
         self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
     end,

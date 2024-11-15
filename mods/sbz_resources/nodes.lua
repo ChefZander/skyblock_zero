@@ -282,19 +282,20 @@ minetest.register_craft({
     }
 })
 
-local water_image = "water.png^[opacity:127"
+
+local water_color = "#576ee180"
 
 minetest.register_node("sbz_resources:water_source", {
     description = "Water Source",
     drawtype = "liquid",
     tiles = {
-        { name = water_image, backface_culling = false },
-        { name = water_image, backface_culling = true }
+        { name = "water.png", backface_culling = false },
+        { name = "water.png", backface_culling = true }
     },
     inventory_image = minetest.inventorycube "water.png",
     use_texture_alpha = "blend",
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 1 },
-    post_effect_color = "#4000ff80",
+    post_effect_color = water_color,
     paramtype = "light",
     walkable = false,
     pointable = false,
@@ -306,18 +307,32 @@ minetest.register_node("sbz_resources:water_source", {
     liquid_viscosity = 1,
 })
 
+local animation = {
+    type = "vertical_frames",
+    aspect_w = 16,
+    aspect_h = 16,
+    length = 0.5,
+}
+
 minetest.register_node("sbz_resources:water_flowing", {
     description = "Flowing Water",
     drawtype = "flowingliquid",
-    tiles = {
-        { name = water_image, backface_culling = false },
-        { name = water_image, backface_culling = true },
+    tiles = { "water.png" },
+    special_tiles = {
+        {
+            name = "flowing_water.png",
+            backface_culling = false,
+            animation = animation
+        },
+        {
+            name = "flowing_water.png",
+            backface_culling = true,
+            animation = animation
+        }
     },
-    special_tiles = { water_image, water_image },
-    inventory_image = water_image,
     use_texture_alpha = "blend",
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
-    post_effect_color = "#4000ff80",
+    post_effect_color = water_color,
     paramtype = "light",
     paramtype2 = "flowingliquid",
     walkable = false,
@@ -328,7 +343,6 @@ minetest.register_node("sbz_resources:water_flowing", {
     liquid_alternative_flowing = "sbz_resources:water_flowing",
     drop = "",
     liquid_viscosity = 1,
-
 })
 
 minetest.register_node("sbz_resources:compressed_core_dust", {
