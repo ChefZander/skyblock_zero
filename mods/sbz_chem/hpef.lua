@@ -35,17 +35,6 @@ sbz_api.register_stateful_machine("sbz_chem:high_power_electric_furnace", {
         inv:set_size("src", 4)
         inv:set_size("dst", 4)
 
-
-        minetest.sound_play("machine_build", {
-            gain = 1.0,
-            pos = pos
-        })
-    end,
-    after_place_node = pipeworks.after_place,
-    on_rightclick = function(pos, node, player, pointed_thing)
-        local player_name = player:get_player_name()
-        local meta = minetest.get_meta(pos)
-
         meta:set_string("formspec", [[
 formspec_version[7]
 size[8.2,9]
@@ -57,12 +46,8 @@ list[context;dst;4.5,1;2,2;]
 listring[current_player;main]
 listring[context;dst]
     ]])
-        minetest.sound_play("machine_open", {
-            to_player = player_name,
-            gain = 1.0,
-        })
     end,
-
+    after_place_node = pipeworks.after_place,
     autostate = true,
     action = function(pos, node, meta, supply, demand)
         local power_needed = 15

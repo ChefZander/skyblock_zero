@@ -24,15 +24,6 @@ sbz_api.register_stateful_machine("sbz_chem:crusher", {
         inv:set_size("input", 1)
         inv:set_size("output", 16)
 
-
-        minetest.sound_play("machine_build", {
-            gain = 1.0,
-            pos = pos,
-        })
-    end,
-    on_rightclick = function(pos, node, player, pointed_thing)
-        local player_name = player:get_player_name()
-        local meta = minetest.get_meta(pos)
         meta:set_string("formspec", [[
 formspec_version[7]
 size[8.2,9]
@@ -42,14 +33,7 @@ list[context;input;1,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
 listring[current_player;main]listring[context;input]listring[current_player;main]listring[context;output]listring[current_player;main]
 ]])
-
-        minetest.sound_play("machine_open", {
-            to_player = player_name,
-            gain = 1.0,
-            pos = pos
-        })
     end,
-
     info_power_consume = 5,
     autostate = true,
     action = function(pos, node, meta, supply, demand)

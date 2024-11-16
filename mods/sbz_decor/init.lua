@@ -34,9 +34,7 @@ minetest.register_node("sbz_decor:factory_floor", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -64,9 +62,7 @@ minetest.register_node("sbz_decor:factory_floor_tiling", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -88,9 +84,7 @@ minetest.register_node("sbz_decor:factory_ventilator", {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -107,9 +101,7 @@ minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,

@@ -5,9 +5,7 @@ minetest.register_node("sbz_resources:matter_blob", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -37,9 +35,7 @@ minetest.register_node("sbz_resources:matter_platform", {
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -62,9 +58,7 @@ minetest.register_node("sbz_resources:antimatter_blob", unifieddyes.def {
     sunlight_propagates = true,
     walkable = true,
     light_source = 3,
-    sounds = {
-        footstep = { name = "invertedstep", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.antimatter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("invertedstep", { pos = pos, gain = 1.0 })
     end,
@@ -96,9 +90,7 @@ minetest.register_node("sbz_resources:antimatter_platform", {
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "invertedstep", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.antimatter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("invertedstep", { pos = pos, gain = 1.0 })
     end
@@ -157,6 +149,7 @@ minetest.register_node("sbz_resources:stone", unifieddyes.def {
     groups = { matter = 1, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
+    sounds = sbz_api.sounds.matter(),
 })
 
 stairs.register("sbz_resources:stone")

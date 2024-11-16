@@ -391,6 +391,8 @@ if not vector.random_direction then
     end
 end
 
+-- yeah you actually have to do this
+-- definition copied from mtg
 minetest.override_item("", {
     --    wield_scale = { x = 1, y = 1, z = 2.5 },
     tool_capabilities = {
@@ -404,3 +406,15 @@ minetest.override_item("", {
         damage_groups = { fleshy = 1 },
     }
 })
+
+
+function table.override(x, y)
+    if y == nil then return x end
+    x = table.copy(x)
+    for k, v in pairs(y) do
+        x[k] = v
+    end
+    return x
+end
+
+dofile(MP .. "/sound_api.lua")

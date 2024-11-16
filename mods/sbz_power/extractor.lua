@@ -14,23 +14,11 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
             "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;3.5,2;1,1;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
-
-
-        minetest.sound_play("machine_open", {
-            gain = 1.0,
-            pos = pos,
-        })
     end,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 1)
-
-
-        minetest.sound_play("machine_build", {
-            gain = 1.0,
-            pos = pos,
-        })
     end,
     action = function(pos, node, meta, supply, demand)
         local inv = meta:get_inventory()
@@ -92,23 +80,11 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
             "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;2.5,2;3,1;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]")
-
-
-        minetest.sound_play("machine_open", {
-            to_player = player_name,
-            gain = 1.0,
-            pos = pos,
-        })
     end,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 3)
-
-        minetest.sound_play("machine_build", {
-            gain = 1.0,
-            pos = pos,
-        })
     end,
     action = function(pos, node, meta)
         local inv = meta:get_inventory()
