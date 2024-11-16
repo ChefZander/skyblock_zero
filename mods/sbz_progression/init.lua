@@ -9,14 +9,14 @@ function displayDialogueLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
         to_player = player_name,
-        gain = 1.0,
+        gain = 1,
     })
 end
 
 function displayGlobalDialogueLine(text)
     minetest.chat_send_all("⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
-        gain = 1.0,
+        gain = 1,
     })
 end
 

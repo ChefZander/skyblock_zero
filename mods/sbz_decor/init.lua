@@ -35,9 +35,6 @@ minetest.register_node("sbz_decor:factory_floor", unifieddyes.def {
     sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
 })
 minetest.register_craft({
     output = "sbz_decor:factory_floor 2",
@@ -63,9 +60,6 @@ minetest.register_node("sbz_decor:factory_floor_tiling", unifieddyes.def {
     sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
 })
 
 stairs.register("sbz_decor:factory_floor_tiling")
@@ -85,9 +79,6 @@ minetest.register_node("sbz_decor:factory_ventilator", {
     sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
 })
 minetest.register_craft({
     output = "sbz_decor:factory_ventilator",
@@ -102,9 +93,6 @@ minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {
     sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
 })
 stairs.register("sbz_decor:factory_warning")
 minetest.register_craft({

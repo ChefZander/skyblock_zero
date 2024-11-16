@@ -149,7 +149,7 @@ local function get_questbook_formspec(selected_quest_index, player_name)
 
     minetest.sound_play("questbook", {
         to_player = player_name,
-        gain = 1.0,
+        gain = 1,
     })
 
     return formspec

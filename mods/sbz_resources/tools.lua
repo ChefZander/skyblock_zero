@@ -16,7 +16,7 @@ minetest.register_tool("sbz_resources:matter_annihilator", {
     sound = {
         punch_use = {
             name = "block_annihilated",
-            gain = 1.0,
+            gain = 1,
         }
     },
 })
@@ -45,7 +45,7 @@ minetest.register_tool("sbz_resources:antimatter_annihilator", {
     sound = {
         punch_use = {
             name = "block_annihilated",
-            gain = 1.0,
+            gain = 1,
         }
     },
 })
@@ -74,7 +74,7 @@ minetest.register_tool("sbz_resources:robotic_arm", {
     sound = {
         punch_use = {
             name = "block_annihilated",
-            gain = 1.0,
+            gain = 1,
         }
     },
 })
