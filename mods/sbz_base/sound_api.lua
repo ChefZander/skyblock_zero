@@ -20,9 +20,29 @@ register_sound_function("matter", { -- also could be node_stone_defaults
     place = g1("step"),
 })
 
+register_sound_function("glass", { -- temporary
+    -- footstep = g1("step"),
+    -- place = g1("step"),
+})
+
+register_sound_function("dirt", { -- temporary
+    -- footstep = g1("step"),
+    -- place = g1("step"),
+})
+
+register_sound_function("tree", { -- temporary
+    -- footstep = g1("step"),
+    -- place = g1("step"),
+})
+
+register_sound_function("leaves", { -- temporary
+    -- footstep = g1("step"),
+    -- place = g1("step"),
+})
+
 register_sound_function("antimatter", {
     footstep = g1("antistep"),
-    place = g1("step"),
+    place = g1("antistep"),
 })
 
 register_sound_function("machine", {

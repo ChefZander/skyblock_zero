@@ -271,7 +271,8 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", {
         "colorium_tree_top.png",
         "colorium_tree_side.png"
     },
-    leaves = "sbz_bio:colorium_leaves"
+    leaves = "sbz_bio:colorium_leaves",
+    sounds = sbz_api.sounds.tree(),
 
 })
 sbz_api.register_leaves("sbz_bio:colorium_leaves", {
@@ -309,7 +310,8 @@ sbz_api.register_leaves("sbz_bio:colorium_leaves", {
                 items = { "sbz_bio:colorium_leaves" },
             }
         }
-    }
+    },
+    sounds = sbz_api.sounds.leaves(),
 })
 
 minetest.register_craft {

@@ -175,6 +175,7 @@ minetest.register_node("sbz_resources:reinforced_matter", {
     groups = { matter = 1, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft({
     output = "sbz_resources:reinforced_matter",
@@ -192,6 +193,7 @@ minetest.register_node("sbz_resources:reinforced_antimatter", {
     light_source = 5,
     sunlight_propagates = true,
     walkable = true,
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_craft({
@@ -263,7 +265,8 @@ minetest.register_node("sbz_resources:emittrium_glass", {
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
-    groups = { matter = 1, transparent = 1, explody = 100 }
+    groups = { matter = 1, transparent = 1, explody = 100 },
+    sounds = sbz_api.sounds.glass(),
 })
 
 minetest.register_craft({
@@ -345,6 +348,7 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
     },
     info_extra = { "You can use this to protect against antimatter" },
     groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 5 },
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_craft({

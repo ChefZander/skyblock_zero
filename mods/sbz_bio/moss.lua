@@ -70,7 +70,8 @@ minetest.register_node("sbz_bio:dirt", {
         moss_growable = 1,
         soil = 1,
         oddly_breakable_by_hand = 2,
-    }
+    },
+    sounds = sbz_api.sounds.dirt(),
 })
 
 minetest.register_craft({

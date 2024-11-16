@@ -17,7 +17,8 @@ minetest.register_node("sbz_meteorites:meteoric_matter", {
             { rarity = 2, items = { "sbz_resources:matter_dust" } },
             { rarity = 2, items = { "sbz_resources:matter_dust" } }
         }
-    }
+    },
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_node("sbz_meteorites:meteoric_antimatter", {
@@ -39,7 +40,8 @@ minetest.register_node("sbz_meteorites:meteoric_antimatter", {
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } },
             { rarity = 2, items = { "sbz_resources:antimatter_dust" } }
         }
-    }
+    },
+    sounds = sbz_api.sounds.antimatter(),
 })
 
 minetest.register_node("sbz_meteorites:meteoric_emittrium", {
@@ -61,7 +63,8 @@ minetest.register_node("sbz_meteorites:meteoric_emittrium", {
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } },
             { rarity = 2, items = { "sbz_resources:raw_emittrium" } }
         }
-    }
+    },
+    sounds = sbz_api.sounds.matter(),
 })
 
 local drops = sbz_api.crusher_drops
@@ -82,7 +85,8 @@ minetest.register_node("sbz_meteorites:meteoric_metal", {
     drop = {
         max_items = 9,
         items = processed_drops
-    }
+    },
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_node("sbz_meteorites:neutronium", {
@@ -90,12 +94,14 @@ minetest.register_node("sbz_meteorites:neutronium", {
     tiles = { "neutronium.png" },
     paramtype = "light",
     light_source = 4,
-    groups = { gravity = 300, matter = 1 }
+    groups = { gravity = 300, matter = 1 },
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_node("sbz_meteorites:antineutronium", {
     description = "Antineutronium",
     tiles = { "neutronium.png^[invert:rgb" },
     paramtype = "light",
     light_source = 8,
-    groups = { antigravity = 300, antimatter = 1 }
+    groups = { antigravity = 300, antimatter = 1 },
+    sounds = sbz_api.sounds.antimatter(),
 })

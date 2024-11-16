@@ -82,7 +82,8 @@ minetest.register_node("sbz_logic:knowledge_station", {
     end,
     on_receive_fields = on_receive_fields,
     groups = { matter = 1, ui_logic = 1 },
-    tiles = { "knowledge_station.png" }
+    tiles = { "knowledge_station.png" },
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_craft {

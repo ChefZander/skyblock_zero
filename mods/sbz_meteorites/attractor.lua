@@ -77,9 +77,9 @@ minetest.register_node("sbz_meteorites:gravitational_attractor", {
     light_source = 7,
     groups = { gravity = 100, matter = 1, cracky = 3 },
     on_construct = function(pos)
-        minetest.sound_play({ name = "machine_build" }, { pos = pos })
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
+    sounds = sbz_api.sounds.machine(),
 })
 
 minetest.register_craft({
@@ -102,9 +102,9 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
     light_source = 7,
     groups = { antigravity = 1, antimatter = 1, cracky = 3 },
     on_construct = function(pos)
-        minetest.sound_play({ name = "machine_build" }, { pos = pos })
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
+    sounds = sbz_api.sounds.machine(),
 })
 
 minetest.register_craft({
