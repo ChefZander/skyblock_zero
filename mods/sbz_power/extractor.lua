@@ -6,14 +6,14 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
-        local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_power:simple_matter_extractor_formspec",
-            "formspec_version[7]" ..
-            "size[8.2,9]" ..
-            "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;3.5,2;1,1;]" ..
-            "list[current_player;main;0.2,5;8,4;]" ..
-            "listring[]")
+        minetest.get_meta(pos):set_string("formspec", [[
+        formspec_version[7]
+        size[8.2,9]
+        style_type[list;spacing=.2;size=.8]
+        list[context;main;3.5,2;1,1;]
+        list[current_player;main;0.2,5;8,4;]
+        listring[]
+    ]])
     end,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
@@ -72,14 +72,14 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
-        local player_name = player:get_player_name()
-        minetest.show_formspec(player_name, "sbz_power:advanced_matter_extractor_formspec",
-            "formspec_version[7]" ..
-            "size[8.2,9]" ..
-            "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;2.5,2;3,1;]" ..
-            "list[current_player;main;0.2,5;8,4;]" ..
-            "listring[]")
+        minetest.get_meta(pos):set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+list[context;main;2.5,2;3,1;]
+list[current_player;main;0.2,5;8,4;]
+listring[]
+    ]])
     end,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
