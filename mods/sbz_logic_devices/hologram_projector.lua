@@ -1,22 +1,4 @@
--- inspired by https://github.com/BuckarooBanzay/holoemitter/ though should be completely different in implementation
-
---[[
-    So...
-    First i think its a good idea to come up with limits:
-    So maybe entities could be only spawned and walk in a r=15 area
-    Then, particles could be limited to a r=20 area, but they need to be SPAWNED in a r=15 area
-        This involves calculating a particle's maximum trajectory.... :/
-    It could also spawn a voxelmodel with the same limits as entities
-
-    Now.... textures...
-    They should be described in a table form like: { type = "concat", tex1 = { texmod = "blabla"}, tex2 .... you get the idea
-    And everything would be checked to prevent crashes
-    As for initial properties... they should be checked so that nothing sussy is going on
-
-    Also voxelmodel type should give you the exact position of the box that the player clicked, and should also give you some utilities like a 3d matrix as the texture
-    Edit: no thats PRACTICALLY not possible
-
-]]
+-- inspired by https://github.com/BuckarooBanzay/holoemitter/ though should be completely different in implementation (i havent looked at the code of holoemitter)
 
 local function transform_texture_name(tex, is_incomplete)
     local addon = ""
@@ -37,13 +19,11 @@ end
 
 local projectors = {}
 local h = core.hash_node_position
-local uh = core.get_position_from_hash
 
 local range = 15
 local range_max = 20
 
 local range_vec = vector.new(range, range, range)
-local range_max_vec = vector.new(range_max, range_max, range_max)
 local objects_max_limit = 15
 
 local function type_or_nil(t)
@@ -461,6 +441,8 @@ local function exec_command(pos, cmd, from_pos)
             texture_mod = obj:get_texture_mod(),
             name = obj:get_luaentity().name,
         }
+        --[[
+        -- IF ANYONE WANTS TO REVIVE THIS FEEL FREE!!!
     elseif cmd.type == "make_texture_for_voxelmodel" then
         -- i know it feels like it doesnt belong here but it returns a png texmod, should be useful, also async
         minetest.handle_async(function(cmd)
@@ -469,7 +451,6 @@ local function exec_command(pos, cmd, from_pos)
                 return nil,
                     "3D Screen must be in format of <r><g><b><r><g><b>.... where <r>, <g>, <b> are byte representations of them..."
             end
-            minetest.debug("GOT HERE")
             ---@type string[]
             local image_result = {} -- colorspec2bytes[]
             -- size is 48x272
@@ -491,20 +472,33 @@ local function exec_command(pos, cmd, from_pos)
                 for y = 1, 16 do
                     for z = 1, 16 do
                         local color = get(hash3d(x, y, z))
-                        image_result[hash2d(z, x * 16 + y)] = color
-                        image_result[hash2d(16 + z, z * 16 + y)] = color
-                        image_result[hash2d(16 * 2 + z, x * 16 + y)] = color
+                        if #color == 4 and string.sub(color, 4) ~= "\0" then
+                            -- -Y
+                            image_result[hash2d((16 * 2) + (x - 1), (math.abs(16 - (y - 1)) * 16) + z)] = color
+                            -- +Y
+                            image_result[hash2d((16 * 2) + (x - 1), (math.abs(16 - (y - 1)) * 16) - 16 + z)] = color
+
+                            -- -X
+                            image_result[hash2d(math.abs(16 - (z - 1)), math.abs(16 - (x - 1)) * 16 + math.abs(16 - (y - 1)))] =
+                                color
+                            -- +X
+
+                            image_result[hash2d(math.abs(16 - (z - 1)), math.abs(16 - (x - 1)) * 16 + 16 + math.abs(16 - (y - 1)))] =
+                                color
+
+                            -- -Z
+                            image_result[hash2d(16 + math.abs(16 - (x - 1)), math.abs(16 - (z - 1)) * 16 + math.abs(16 - (y - 1)))] =
+                                color
+                        end
                     end
                 end
             end
 
-            minetest.debug("GOT PAST THIS")
-            for i = 1, (16 * 16 * 17 * 3) + 3 do
+            for i = 1, (16 * 16 * 17 * 3) do
                 image_result[i] = image_result[i] or minetest.colorspec_to_bytes("#00000000")
             end
             local png = minetest.encode_png(48, 272, table.concat(image_result), 1)
             png = minetest.encode_base64(png)
-            minetest.debug("IN FACT, I SENT IT")
             return png
         end, function(png_data, error)
             if not error then
@@ -519,6 +513,7 @@ local function exec_command(pos, cmd, from_pos)
                 }
             end
         end, cmd)
+        --]]
     elseif cmd.type == "particle" then
         -- cant do spawner sorry
         local t = libox.type
@@ -573,6 +568,7 @@ end
 
 core.register_node("sbz_logic_devices:hologram_projector", {
     description = "Hologram Projector",
+    info_extra = "Inspired by the holoemitter mod.",
     groups = { ui_logic = 1, matter = 1 },
     sonuds = sbz_api.sounds.matter(),
     on_logic_send = exec_command,
