@@ -38,7 +38,7 @@ minetest.register_on_mods_loaded(function()
 
 
         if v.type == "node" and not explody then
-            new_desc[#new_desc + 1] = "Immune to explosions"
+            new_desc[#new_desc + 1] = "Immune to explosions."
         end
 
         if v.info_extra then
