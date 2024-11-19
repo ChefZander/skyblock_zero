@@ -18,6 +18,7 @@ minetest.register_node("sbz_logic_devices:formspec_screen", {
             0.5, -3 / 16, 0.5
         },
     },
+    sounds = sbz_api.sounds.machine(),
     paramtype2 = "wallmounted",
     paramtype = "light",
     light_source = 5,

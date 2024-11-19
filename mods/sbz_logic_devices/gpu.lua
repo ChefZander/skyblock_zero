@@ -748,7 +748,7 @@ core.register_node("sbz_logic_devices:gpu", {
         "gpu_side.png",
         "gpu_side.png"
     },
-
+    sounds = sbz_api.sounds.machine(),
 
     on_logic_send = function(pos, msg, from_pos)
         if type(msg) ~= "table" then return end

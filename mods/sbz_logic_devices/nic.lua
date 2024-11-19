@@ -16,6 +16,7 @@ minetest.register_node("sbz_logic_devices:nic", {
     info_extra = "<Server setting> Priv Locked: " .. (is_priv_locked and "yes" or "no"),
 
     groups = { cracky = 3, matter = 1, ui_logic = 1 },
+    sounds = sbz_api.sounds.machine(),
     is_ground_content = false,
     tiles = {
         "nic_top.png",

@@ -154,6 +154,7 @@ sbz_api.register_machine("sbz_logic_devices:builder", {
         "lua_builder.png"
     },
     groups = { matter = 1, ui_logic = 1, sbz_machine_subticking = 1 },
+    sounds = sbz_api.sounds.machine(),
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:get_inventory():set_size("main", 32)
