@@ -111,7 +111,7 @@ local ladder_autoplace_limit = 16
 
 core.register_node("sbz_decor:ladder", unifieddyes.def {
     description = "Matter Ladder",
-    info_extra = "Yup, no antimatter ladders",
+    info_extra = "", -- idk if this is required but leaving it here anyway
     drawtype = "nodebox",
     node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
         type = "fixed",

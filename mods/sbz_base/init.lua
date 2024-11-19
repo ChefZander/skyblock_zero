@@ -104,21 +104,21 @@ minetest.register_on_newplayer(function(player)
     local name = player:get_player_name()
     if inv then
         if inv:contains_item("main", "sbz_progression:questbook") then
-            displayDialougeLine(name, "How tf did you manage to get a questbook before spawning as a new player??")
+            displayDialougeLine(name, "You already had a questbook before joining.")
         else
             if inv:room_for_item("main", "sbz_progression:questbook") then
                 inv:add_item("main", "sbz_progression:questbook")
                 -- displayDialougeLine(name, "You have been given a Quest Book.")
             else
                 displayDialougeLine(name,
-                    "How tf did you manage to fill your inventory before spawning as a new player??")
+                    "Your inventory is full. Can't give you a questbook. Use /qb")
             end
         end
     end
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
-    assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
+    -- We are not forcing MT versions on people in this way: assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
         home = true,
         tp = true

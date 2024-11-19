@@ -244,7 +244,7 @@ function stairs.register(name, reg_def)
 		to_override_info_extra = {}
 	end
 
-	to_override_info_extra[#to_override_info_extra + 1] = "You can make stairs with it!"
+	to_override_info_extra[#to_override_info_extra + 1] = "This node can be cut into stairs."
 
 	local g = def.groups
 	for k, v in pairs { cnc = 1, cnc_leveled = reg_def.leveled and 1 or 0 } do g[k] = v end
