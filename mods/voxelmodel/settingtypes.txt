@@ -1,0 +1,1 @@
+voxelmodel_override_bookshelf (Override the default bookshelf to use the Voxelmodel mesh; requires default) bool true
