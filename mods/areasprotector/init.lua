@@ -357,7 +357,8 @@ minetest.register_node("areasprotector:display_node_large", {
 	},
 	paramtype = "light",
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
-	drop = ""
+	drop = "",
+	sounds = sbz_api.sounds.machine(),
 })
 
 minetest.register_node("areasprotector:display_node_small", {
@@ -373,7 +374,8 @@ minetest.register_node("areasprotector:display_node_small", {
 	},
 	paramtype = "light",
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
-	drop = ""
+	drop = "",
+	sounds = sbz_api.sounds.machine(),
 })
 
 minetest.register_craft({

@@ -133,7 +133,7 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
                 minetest.remove_node(pos)
 
                 -- prepare
-                local xh, zh = size.x / 2, size.z / 2
+                local xh, zh = math.floor(size.x / 2), math.floor(size.z / 2)
                 for x = -xh, xh do
                     for y = 0, size.y do
                         for z = -zh, zh do
@@ -145,9 +145,7 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
                     end
                 end
                 -- do
-                minetest.place_schematic(
-                    { x = pos.x - (size.x / 2), y = pos.y, z = pos.z - (size.z / 2) },
-                    schem_path, "random", nil, false)
+                minetest.place_schematic({ x = pos.x - xh, y = pos.y, z = pos.z - zh }, schem_path, "random", nil, false)
             end
         end,
     } do
@@ -156,7 +154,7 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
     minetest.register_node(sapling_name, sapling_def)
 end
 
--- leafdecay, again,
+-- leafdecay, again, for this function
 --[[
 GNU Lesser General Public License, version 2.1
 Copyright (C) 2011-2018 celeron55, Perttu Ahola <celeron55@gmail.com>
@@ -273,7 +271,8 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", {
         "colorium_tree_top.png",
         "colorium_tree_side.png"
     },
-    leaves = "sbz_bio:colorium_leaves"
+    leaves = "sbz_bio:colorium_leaves",
+    sounds = sbz_api.sounds.tree(),
 
 })
 sbz_api.register_leaves("sbz_bio:colorium_leaves", {
@@ -311,7 +310,8 @@ sbz_api.register_leaves("sbz_bio:colorium_leaves", {
                 items = { "sbz_bio:colorium_leaves" },
             }
         }
-    }
+    },
+    sounds = sbz_api.sounds.leaves(),
 })
 
 minetest.register_craft {

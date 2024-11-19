@@ -162,7 +162,7 @@ local function playRandomBGM(player)
     if handles[player_name] then minetest.sound_stop(handles[player_name]) end
     handles[player_name] = minetest.sound_play(sound_name, {
         to_player = player_name,
-        gain = 1.0,
+        gain = 1,
     })
     minetest.after(sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
@@ -390,3 +390,31 @@ if not vector.random_direction then
         return vector.new(x / l, y / l, z / l)
     end
 end
+
+-- yeah you actually have to do this
+-- definition copied from mtg
+minetest.override_item("", {
+    --    wield_scale = { x = 1, y = 1, z = 2.5 },
+    tool_capabilities = {
+        full_punch_interval = 0.9,
+        max_drop_level = 0,
+        groupcaps = {
+            crumbly = { times = { [2] = 3.00, [3] = 0.70 }, uses = 0, maxlevel = 1 },
+            snappy = { times = { [3] = 0.40 }, uses = 0, maxlevel = 1 },
+            oddly_breakable_by_hand = { times = { [1] = 3.50, [2] = 2.00, [3] = 0.70 }, uses = 0 }
+        },
+        damage_groups = { fleshy = 1 },
+    }
+})
+
+
+function table.override(x, y)
+    if y == nil then return x end
+    x = table.copy(x)
+    for k, v in pairs(y) do
+        x[k] = v
+    end
+    return x
+end
+
+dofile(MP .. "/sound_api.lua")

@@ -5,9 +5,7 @@ minetest.register_node("sbz_resources:matter_blob", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -37,9 +35,7 @@ minetest.register_node("sbz_resources:matter_platform", {
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
@@ -62,9 +58,7 @@ minetest.register_node("sbz_resources:antimatter_blob", unifieddyes.def {
     sunlight_propagates = true,
     walkable = true,
     light_source = 3,
-    sounds = {
-        footstep = { name = "invertedstep", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.antimatter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("invertedstep", { pos = pos, gain = 1.0 })
     end,
@@ -96,9 +90,7 @@ minetest.register_node("sbz_resources:antimatter_platform", {
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "invertedstep", gain = 1.0 },
-    },
+    sounds = sbz_api.sounds.antimatter(),
     on_punch = function(pos, node, puncher)
         minetest.sound_play("invertedstep", { pos = pos, gain = 1.0 })
     end
@@ -157,6 +149,7 @@ minetest.register_node("sbz_resources:stone", unifieddyes.def {
     groups = { matter = 1, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
+    sounds = sbz_api.sounds.matter(),
 })
 
 stairs.register("sbz_resources:stone")
@@ -182,6 +175,7 @@ minetest.register_node("sbz_resources:reinforced_matter", {
     groups = { matter = 1, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft({
     output = "sbz_resources:reinforced_matter",
@@ -199,6 +193,7 @@ minetest.register_node("sbz_resources:reinforced_antimatter", {
     light_source = 5,
     sunlight_propagates = true,
     walkable = true,
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_craft({
@@ -270,7 +265,8 @@ minetest.register_node("sbz_resources:emittrium_glass", {
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
-    groups = { matter = 1, transparent = 1, explody = 100 }
+    groups = { matter = 1, transparent = 1, explody = 100 },
+    sounds = sbz_api.sounds.glass(),
 })
 
 minetest.register_craft({
@@ -282,19 +278,20 @@ minetest.register_craft({
     }
 })
 
-local water_image = "water.png^[opacity:127"
+
+local water_color = "#576ee180"
 
 minetest.register_node("sbz_resources:water_source", {
     description = "Water Source",
     drawtype = "liquid",
     tiles = {
-        { name = water_image, backface_culling = false },
-        { name = water_image, backface_culling = true }
+        { name = "water.png", backface_culling = false },
+        { name = "water.png", backface_culling = true }
     },
     inventory_image = minetest.inventorycube "water.png",
     use_texture_alpha = "blend",
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 1 },
-    post_effect_color = "#4000ff80",
+    post_effect_color = water_color,
     paramtype = "light",
     walkable = false,
     pointable = false,
@@ -306,18 +303,32 @@ minetest.register_node("sbz_resources:water_source", {
     liquid_viscosity = 1,
 })
 
+local animation = {
+    type = "vertical_frames",
+    aspect_w = 16,
+    aspect_h = 16,
+    length = 0.5,
+}
+
 minetest.register_node("sbz_resources:water_flowing", {
     description = "Flowing Water",
     drawtype = "flowingliquid",
-    tiles = {
-        { name = water_image, backface_culling = false },
-        { name = water_image, backface_culling = true },
+    tiles = { "water.png" },
+    special_tiles = {
+        {
+            name = "flowing_water.png",
+            backface_culling = false,
+            animation = animation
+        },
+        {
+            name = "flowing_water.png",
+            backface_culling = true,
+            animation = animation
+        }
     },
-    special_tiles = { water_image, water_image },
-    inventory_image = water_image,
     use_texture_alpha = "blend",
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
-    post_effect_color = "#4000ff80",
+    post_effect_color = water_color,
     paramtype = "light",
     paramtype2 = "flowingliquid",
     walkable = false,
@@ -328,7 +339,6 @@ minetest.register_node("sbz_resources:water_flowing", {
     liquid_alternative_flowing = "sbz_resources:water_flowing",
     drop = "",
     liquid_viscosity = 1,
-
 })
 
 minetest.register_node("sbz_resources:compressed_core_dust", {
@@ -337,7 +347,8 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
         "compressed_core_dust.png"
     },
     info_extra = { "You can use this to protect against antimatter" },
-    groups = { dig_immediate = 2, explody = 5 },
+    groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 5 },
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_craft({

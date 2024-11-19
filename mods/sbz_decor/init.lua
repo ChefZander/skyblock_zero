@@ -34,12 +34,7 @@ minetest.register_node("sbz_decor:factory_floor", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft({
     output = "sbz_decor:factory_floor 2",
@@ -64,12 +59,7 @@ minetest.register_node("sbz_decor:factory_floor_tiling", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 
 stairs.register("sbz_decor:factory_floor_tiling")
@@ -88,12 +78,7 @@ minetest.register_node("sbz_decor:factory_ventilator", {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft({
     output = "sbz_decor:factory_ventilator",
@@ -107,12 +92,7 @@ minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 stairs.register("sbz_decor:factory_warning")
 minetest.register_craft({

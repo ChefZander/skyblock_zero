@@ -116,7 +116,8 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, s
             minetest.swap_node(pos, { name = "pipeworks:broken_tube_1" })
             pipeworks.scan_for_tube_objects(pos)
         end,
-        tubenumber = tonumber(tname)
+        tubenumber = tonumber(tname),
+        sounds = sbz_api.sounds.matter()
     }
 
     if special == nil then special = {} end

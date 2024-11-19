@@ -103,7 +103,8 @@ for k, v in ipairs({
         after_dig_node = pipeworks.after_dig,
         after_place_node = pipeworks.after_place,
         input_inv = "main",
-        output_inv = "main"
+        output_inv = "main",
+        sounds = sbz_api.sounds.machine(),
     }
     local public_def = table.copy(def)
 
