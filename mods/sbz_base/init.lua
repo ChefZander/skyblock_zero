@@ -118,7 +118,9 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
-    -- We are not forcing MT versions on people in this way: assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
+
+    -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
+    assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
         home = true,
         tp = true
