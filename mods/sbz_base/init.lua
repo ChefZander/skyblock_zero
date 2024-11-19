@@ -420,3 +420,4 @@ end
 dofile(MP .. "/sound_api.lua")
 
 -- force enable_damage=false
+--minetest.settings:set_bool("enable_damage", false)
