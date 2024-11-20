@@ -33,7 +33,7 @@ local function type_or_nil(t)
 end
 
 local function all_in_range(t, min, max)
-    for k, v in ipairs(t) do
+    for k, v in pairs(t) do
         if type(v) == "number" then
             if math.abs(v) < min or math.abs(v) > max and not minetest.is_nan(v) then
                 return false
@@ -142,7 +142,7 @@ local function validate_object_properties(props, not_strict)
                 and (type(x.x) == "number" or x.x == nil)
                 and (type(x.y) == "number" or x.y == nil)
                 and (type(x.z) == "number" or x.z == nil)
-                and all_in_range(x, 0, 5)
+                and all_in_range(x, 0, 20)
             )
         end,
         mesh = ton "string",
@@ -180,7 +180,7 @@ local function validate_object_properties(props, not_strict)
         nametag_bgcolor = type_any,
         infotext = ton "string",
         static_save = function(x) return x == false end,
-        damage_texture_modifier = function(x) return x == nil or type(x) == "table" or type(x) == "string" end,
+        damage_texture_modifier = function(x) return x == nil or type(x) == "string" end,
         shaded = ton "boolean",
         -- no show_on_minimap
     }
@@ -339,12 +339,6 @@ local function exec_command(pos, cmd, from_pos)
         end
 
         stuff.objects[cmd.id] = obj
-        notify {
-            type = "success",
-            id = cmd.id,
-        }
-    elseif cmd.type == "particle_spawner" then
-
     elseif cmd.type == "reset" then
         for k, v in pairs(stuff.objects) do
             if v.remove then v:remove() end
@@ -395,7 +389,7 @@ local function exec_command(pos, cmd, from_pos)
 
         if libox.type_vector(cmd.pos) then -- it will be relative
             local abs_pos = vector.add(pos, cmd.pos)
-            if not vector.in_area(abs_pos, -range_vec, range_vec) then
+            if not vector.in_area(cmd.pos, -range_vec, range_vec) then
                 return notify {
                     type = "error",
                     msg = "The object is out of range"
@@ -579,3 +573,16 @@ core.register_node("sbz_logic_devices:hologram_projector", {
         minetest.get_meta(pos):set_string("infotext", "Object Detector")
     end,
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_resources:lua_chip 15",
+        "sbz_logic_devices:matrix_screen 15",
+        "sbz_logic_devices:object_detector",
+        "unifieddyes:colorium_blob 10",
+    },
+    output = "sbz_logic_devices:hologram_projector",
+    width = 2,
+    height = 2,
+}

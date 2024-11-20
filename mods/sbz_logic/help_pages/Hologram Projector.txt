@@ -1,0 +1,132 @@
+<bigger>Hologram Projector</bigger>
+
+One of the more powerful logic components, allows you to spawn entities and particles.
+
+You can send it a "subscribe" to be able to receive stuff from the hologram projector.
+(and "unsubcribe" to stop)
+
+Ok... now the actual commands... 
+
+
+If something goes wrong, at any point, the hologram projector may notify you with a <mono>{ type = "error", msg = "<the error message>" }</mono>
+
+<big>object</big>
+<mono>
+send_to(links.hologram_projector,{
+$C1    type = "object",
+$C1    pos = vector.new(0,1,0), -- relative to the hologram projector
+$C1    id = "my_object",
+$C1
+$C1    -- valid fields, see <action type=url, url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md>lua_api.md</action> specifilly the Object properties section:
+$C1    -- any other fields will be rejected
+$C1    -- they are all optional
+$C1    physical = false,
+$C1    collide_with_objects = false,
+$C1    collisionbox = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5},
+$C1    selectionbox = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, rotate = false},
+$C1    pointable = true,
+$C1    visual = "cube",
+$C1    visual_size = { x = 1, y = 1 }, -- limited to x=20, y=20,z=20
+$C1    mesh = "", -- see voxelmodel section if you want to make a custom "mesh"
+$C1    textures = {}, -- normal textures, its just that they get validated so they dont crash the game
+$C1    use_texture_alpha = false,
+$C1    spridediv = {x=1,y=1}, -- limited to x=100, y=100,and minimum of x=1,y=1
+$C1    initial_sprite_basepos = nil, -- limited to x=100, y=100
+$C1    is_visible = true,
+$C1    makes_footstep_sound = false,
+$C1    automatic_rotate = 0,
+$C1    stepheight = 0,
+$C1    automatic_face_movement_dir = false, -- or number
+$C1    automatic_face_movement_max_rotation_per_sec = 0,
+$C1    backface_culling = false,
+$C1    glow = 14,
+$C1    nametag = "",
+$C1    nametag_color = "Anything, any type allowed",
+$C1    nametag_bgcolor = "Anything, any type allowed",
+$C1    infotext = "",
+$C1    static_save = false, -- always set to false, you can't set it to true
+$C1    damage_texture_modifier = "^[brighten", -- validated with modlib
+$C1    shaded = false,
+$C1})
+</mono>
+
+If you got something wrong in the definition, the hologram projector will tell you with an error event.
+The object may despawn if server restarts or the mapblock gets unloaded, be aware of that.
+
+<big>reset</big>
+<mono>send_to(links.hologram_projector, { type = "reset" })</mono>
+Destroys all objects.
+
+<big>remove</big>
+<mono>send_to(links.hologram_projector, { type = "reset", id = "my_object" })</mono>
+Removes one object, the id is the id you specified in the <mono>object</mono> command.
+
+<big>get_object</big>
+<mono>send_to(links.hologram_projector, { type = "get_object", id = "my_object" })</mono>
+Gets you all the properties that an object detector would, in the same format.
+
+<big>modify_object</big>
+<mono>
+$C1send_to(links.hologram_projector, {
+$C1    type = "modify_object",
+$C1    id = "my_object",
+$C1    -- all the fields below are optional, and can be mixed togheter
+$C1    set_properties = {...}, -- object properties, exactly the same as the object command but without the "type", "id", and "pos" fields
+$C1    set_nametag_attributes = {
+$C1        text = "",
+$C1        color = any,
+$C1        bgcolor = any,
+$C1    },
+$C1    pos = vector.zero(), -- relative
+$C1    velocity = vector.zero(),
+$C1    rotation = vector.zero(),
+$C1    texture_mod = "^[brighten",
+$C1})
+</mono>
+Modifies an object...
+
+<big>particle</big>
+Adds a particle...
+<mono>
+$C1send_to(links.hologram_projector, {
+$C1    type = "particle",
+$C1    pos = vector.zero(),
+$C1    -- optional, any other field isnt allowed
+$C1    velocity = vector.zero(), -- limited to -10 to 10
+$C1    acceleration = vector.zero(), -- same limit
+$C1    expirationtime = 0, -- 0 to 10
+$C1    size = 20, -- 0 to 20
+$C1    collisiondetection = false,
+$C1    collision_removal = false,
+$C1    object_collision = false,
+$C1    vertical = false,
+$C1    texture = "",
+$C1    playername = "",
+$C1    glow = vector.zero(), -- 0 to 14
+$C1    drag = vector.zero(), -- -3 to 100
+$C1    jitter = 0, -- -5 or 5
+$C1    bounce = 0, -- 0 to 1.5
+$C1})
+</mono>
+
+
+<bigger>Things that it sends back</bigger>
+
+<big>When an object gets punched...</big>
+$C1<mono>{
+$C1    type = "punch",
+$C1    puncher = puncher:get_player_name(),
+$C1    time_from_last_punch = time_from_last_punch,
+$C1    tool_capabilities = tool_capabilities,
+$C1    dir = dir,
+$C1    damage = damage,
+$C1    id = self.id
+$C1}
+</mono>
+
+<big>When an object gets right clicked</big>
+$C1<mono>{
+$C1    type = "right_click",
+$C1    clicker = clicker:get_player_name(),
+$C1    id = self.id
+$C1}</mono>
