@@ -17,7 +17,7 @@ $C1    type = "object",
 $C1    pos = vector.new(0,1,0), -- relative to the hologram projector
 $C1    id = "my_object",
 $C1
-$C1    -- valid fields, see <action type=url, url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md>lua_api.md</action> specifilly the Object properties section:
+$C1    -- valid fields, see <action name=lua_api, url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md>lua_api.md</action> specifilly the Object properties section:
 $C1    -- any other fields will be rejected
 $C1    -- they are all optional
 $C1    physical = false,
@@ -130,3 +130,7 @@ $C1    type = "right_click",
 $C1    clicker = clicker:get_player_name(),
 $C1    id = self.id
 $C1}</mono>
+
+<bigger>Voxelmodel</bigger>
+You may use voxelmodel.obj as your mesh, and be able to create custom models just from textures, read more about it at <action name=voxelmodel url=https://github.com/Noodlemire/voxelmodel/tree/master>the voxelmodel's github</action>
+Good luck.
