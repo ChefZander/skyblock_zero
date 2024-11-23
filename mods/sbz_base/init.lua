@@ -118,7 +118,6 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
-
     -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
     assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
@@ -420,3 +419,23 @@ function table.override(x, y)
 end
 
 dofile(MP .. "/sound_api.lua")
+
+sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, break_after_one_result)
+    local returning = {}
+    for x = -radius, radius do
+        for y = -radius, radius do
+            for z = -radius, radius do
+                local pos = vector.add(start_pos, vector.new(x, y, z))
+                local filter_results = { filtering_function(pos) }
+
+                if #filter_results == 1 then
+                    returning[#returning + 1] = filter_results[1]
+                elseif #filter_results ~= 0 then
+                    returning[#returning + 1] = filter_results
+                end
+                if break_after_one_result and #filter_results > 0 then return returning end
+            end
+        end
+    end
+    return returning
+end

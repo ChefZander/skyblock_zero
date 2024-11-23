@@ -75,7 +75,7 @@ minetest.register_node("sbz_meteorites:gravitational_attractor", {
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 7,
-    groups = { gravity = 100, matter = 1, cracky = 3 },
+    groups = { gravity = 100, matter = 1, cracky = 3, charged = 1 },
     on_construct = function(pos)
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
@@ -100,7 +100,7 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 7,
-    groups = { antigravity = 1, antimatter = 1, cracky = 3 },
+    groups = { antigravity = 1, antimatter = 1, cracky = 3, charged = 1 },
     on_construct = function(pos)
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
