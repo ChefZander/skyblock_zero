@@ -45,7 +45,7 @@ Jetpack gets automatically de-activated when you stop having it in your hand or 
 ]],
         requires = { "Neutronium" }
     },
-    { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                                                                                                        requires = { "Furnace" } },
+    { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                              requires = { "Furnace" } },
     {
         type = "quest",
         title = "Electric drill",
@@ -69,9 +69,22 @@ It also digs 2x faster than the robotic arm.
         title = "Meteorite Maker",
         text = [[
 Makes... meteorites... (no way), also it needs some space on top of it.
+But it cannot make strange matter meteorites.
 
 Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.
 ]],
         requires = { "Autocrafters", "Neutronium" }
-    }
+    }, {
+    type = "quest",
+    title = "It's strange...",
+    text = [[
+Be aware, strange matter can... spread... to both matter and antimatter...
+
+Strange matter won't spread to "charged" nodes or machines, or protected areas.
+So it's best to protect your area, even if you are in singleplayer, to defend against strange matter.
+
+Strange matter meteorites spawn if you are 100 nodes away from the core.
+]],
+    requires = { "Neutronium" }
+}
 }

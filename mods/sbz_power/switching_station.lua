@@ -307,6 +307,7 @@ minetest.register_abm({
     nodenames = { "sbz_power:switching_station" },
     interval = 1,
     chance = 1,
+    catch_up = false,
     action = function(pos)
         local poshash = hash(pos)
         if not all_switching_stations_reverse[poshash] then
