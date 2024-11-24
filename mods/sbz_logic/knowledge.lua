@@ -71,11 +71,16 @@ local function on_receive_fields(pos, formname, fields, sender)
     meta:set_int("index", tonumber(textlist.index) or meta:get_int("index"))
     meta:mark_as_private("index")
     meta:set_string("formspec", gen_page(meta))
+
+    minetest.sound_play("questbook", {
+        to_player = player_name,
+        gain = 1,
+    })
 end
 
 minetest.register_node("sbz_logic:knowledge_station", {
     description = "Knowledge Station",
-    info_extra = "Explains (mostly... ehh... tries to...) all of logic.",
+    info_extra = "Explains logic.",
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec", gen_page(meta))
@@ -84,6 +89,13 @@ minetest.register_node("sbz_logic:knowledge_station", {
     groups = { matter = 1, ui_logic = 1 },
     tiles = { "knowledge_station.png" },
     sounds = sbz_api.sounds.matter(),
+    on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+        local player_name = clicker:get_player_name()
+        minetest.sound_play("questbook", {
+            to_player = player_name,
+            gain = 1,
+        }) 
+    end
 })
 
 minetest.register_craft {
