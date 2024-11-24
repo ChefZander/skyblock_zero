@@ -1,8 +1,7 @@
 <bigger>Editor Environment</bigger>
 
-<mono>editor</mono> - same as main sandbox
-<mono>turn_off()</mono> - turns off main sandbox
-<mono>turn_on()</mono> - turns on main sandbox
-<mono>coroutine_env</mono> - if turned on, the editor can access the entire main sandbox environment with this table
-<mono>event</mono> - instead of doing that yielding stuff, the code is re-executed every time an event happens
-
+<mono>editor</mono> - This is same as main sandbox
+<mono>turn_off()</mono> - Turns off main sandbox
+<mono>turn_on()</mono> - Turns on main sandbox
+<mono>coroutine_env</mono> - If turned on, the editor can access the entire main sandbox environment with this table
+<mono>event</mono> - Instead of yielding, the code is re-executed every time an event happens

@@ -11,6 +11,15 @@ sbz_api.rad2deg = 180 / math.pi
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
 
+-- apply forced game settings
+core.settings:set("enable_damage", "false")
+core.settings:set("enable_pvp", "false")
+
+-- extra darkness, the current isnt enough
+minetest.override_item("air", {
+    sunlight_propagates = false,
+})
+
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then

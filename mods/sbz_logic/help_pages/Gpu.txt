@@ -1,12 +1,13 @@
 <bigger>Gpu</bigger>
-Probably the most complicated block i will need to introduce here
-It is based off of the digistuff gpu
+Probably the most complicated node i will need to introduce here
+TIP: It is based off of the digistuff gpu
+
 <big>What is it used for</big>
 So, say you are in a situation where you are rendering something, like lines for example, or you need to fill an area,
 in a luacontroller, that would be very slow because of the strict limit and the fact that you don't have luajit optimizations.
 
-Introducing: gpu
-It lets you do that and fast
+Introducing: the gpu
+It lets you do these things, and fast
 
 <b>Definitions: Buffer</b> 
 - an area ranging from 1x1 to 128x128, doesn't have to be a square
@@ -22,6 +23,8 @@ $C1    type = "blabla",
 $C1    ...
 })</mono>
 
+You can also send multiple commands at once.
+
 2)
 <mono>send_to(links.gpu,{
 $C1    {
@@ -33,11 +36,11 @@ $C1    },
 $C1    ...
 })</mono>
 
-<big>The limits</big>
+<big>Limits</big>
 - 32 commands in 1 message
 - max use is 100ms per second, if you go above this, it will just cut off your commands, you can see the lag in the infotext
 
-<big> Noww... the commands </big>
+<big>Commands</big>
 <b>create_buffer</b>
 $C1<mono>send_to(links.gpu,{
 $C1    type = "create_buffer",
@@ -46,7 +49,7 @@ $C1    xsize = 128, -- a number between 1 and 128
 $C1    ysize = 128, -- a number between 1 and 128
 $C1    fill = color, -- any colorspec, if omitted, it's black
 $C1})</mono>
-Creates a buffer, a buffer is required for every command
+Creates a buffer, a buffer is required for every command.
 
 <b>send</b>
 $C1<mono>send_to(links.gpu,{
@@ -66,7 +69,7 @@ $C1    x2 = 128,
 $C1    y2 = 128,
 $C1    to_pos = vector.add(pos, links.matrix_screen[1][1]) -- an absolute position, if it's nil it will send to the luacontroller
 $C1})</mono>
-Sends a region of the buffer
+Sends a region of the buffer.
 
 <b>draw_rect</b>
 $C1<mono>send_to(links.gpu,{
@@ -82,9 +85,8 @@ $C1    edge = <color or nil>,
 $C1})</mono>
 
 Draws a rectangle
-If fill == nil then it will just draw the edges of the rectangle,
-if edge == nil then edge = fill
-end :>
+If <mono>fill</mono> is <mono>nil</mono> then it will just draw the edges of the rectangle,
+if <mono>edge</mono> is <mono>nil</mono> then <mono>edge</mono> will be set to the value of <mono>fill</mono>
 
 <b>draw_line</b>
 $C1<mono>send_to(links.gpu,{
@@ -98,7 +100,7 @@ $C1
 $C1    color = color,
 $C1    antialias = true,
 $C1})</mono>
-Draws a line from x1 y1 to x2 y2
+Draws a line from x1 y1 to x2 y2.
 
 <b>draw_point</b>
 $C1<mono>send_to(links.gpu,{
@@ -109,6 +111,7 @@ $C1    y = 1,
 $C1
 $C1    color = color,
 $C1})</mono>
+Sets a single pixel at the given coordinates to the given color.
 
 <b>copy</b>
 $C1<mono>send_to(links.gpu,{
@@ -137,7 +140,7 @@ Blend modes:
 - sub - subtracts the destination color from the source color
 - isub - subtracts the source color from the destination color
 - average - takes the average of the color
-- and/or/xor/xnor/not/nand/nor - does funny bitwise blending stuff
+- and/or/xor/xnor/not/nand/nor - bitwise blending
 - tohsv/rgbtohsv (they do the same thing) - they put the hue in red, saturation in green, and value in blue
 - torgb/hsvtorgb (they do the same thing) - they undo the tohsv operation
 - anything else is same as normal
@@ -150,7 +153,7 @@ $C1    type = "load",
 $C1    index = 1,
 $C1    buffer = <buffer>,
 $C1})</mono>
-Similar to createbuffer, puts the buffer in the command (indexed x[y][x]) into the gpu, at buffer index described in the command
+Similar to createbuffer, puts the buffer in the command (indexed x[y][x]) into the gpu, at buffer index described in the command.
 
 <b>send_packed</b>
 $C1<mono>send_to(links.gpu,{
@@ -159,11 +162,10 @@ $C1    index = 1,
 $C1    to_pos = <ABSOLUTE pos or nil>,
 $C1    base64 = true,
 $C1})</mono>
-This is very different to the digistuff gpu's sendpacked command
+This is very different to the digistuff gpu's sendpacked command.
 The format is something like "rgbrgbrgbrgbrgbrgbrgb" where rgb is string.byte(r)..string.byte(g)..string.byte(b)
 
-im not that good at explaining
-if this helps, its colorspec_to_bytes(color) .. colorspec_to_bytes(color) and so on
+It's colorspec_to_bytes(color) .. colorspec_to_bytes(color) and so on
 You can index it by doing:
 <mono>
 local base_idx = (((y-1)*xsize + x)*3)-2
@@ -208,10 +210,9 @@ $C1    hollow = false,
 $C1    color = <color>
 $C1})</mono>
 
-Makes a circle, with r being the radius
+Draws a circle, with r being the radius
 
 <b>fill</b>
-Warning: has the potential to be kinda laggy, when used on a 128x128 buffer, it took like on average 30ms, if you have any ideas on how to improve this, please let me (frog :>) know
 $C1<mono>send_to(links.gpu,{
 $C1    type = "fill",
 $C1    index = 1,
@@ -222,6 +223,8 @@ $C1    color = <color>
 $C1})</mono>
 
 Performs a flood fill starting from x,y
+Warning: has the potential to be laggy, when used on a 128x128 buffer, it took like on average 30ms
+If you have any ideas on how to improve this, please let me (frog :>) know (or contribute to Skyblock Zero yourself)
 
 <b>text</b>
 $C1<mono>send_to(links.gpu,{
@@ -233,7 +236,8 @@ $C1    text = "hi :3",
 $C1    font = nil, -- currently unused, but by default, it's "default"
 $C1})</mono>
 
-Draws text starting from y, x, if you want to suggest a new font let me know, you can make a pull request
+Draws text starting from y, x.
+If you want to suggest a new font, you can make a pull request
 
 <b>transform</b>
 Warning: can be kinda laggy
