@@ -74,10 +74,11 @@ But it cannot make strange matter meteorites.
 Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.
 ]],
         requires = { "Autocrafters", "Neutronium" }
-    }, {
-    type = "quest",
-    title = "It's strange...",
-    text = [[
+    },
+    {
+        type = "quest",
+        title = "It's strange...",
+        text = [[
 Be aware, strange matter can... spread... to both matter and antimatter...
 
 Strange matter won't spread to "charged" nodes or machines, or protected areas.
@@ -85,6 +86,14 @@ So it's best to protect your area, even if you are in singleplayer, to defend ag
 
 Strange matter meteorites spawn if you are 100 nodes away from the core.
 ]],
-    requires = { "Neutronium" }
-}
+        requires = { "Neutronium" }
+    },
+    {
+        type = "quest",
+        requires = { "It's strange..." },
+        title = "Strange Blob Cleaner",
+        text = [[
+Restores what was destroyed by strange blobs.
+        ]],
+    }
 }

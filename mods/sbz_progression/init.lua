@@ -114,6 +114,7 @@ local achievment_table = {
     ["sbz_resources:jetpack"] = "Jetpack",
     ["sbz_resources:drill"] = "Electric Drill",
     ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
+    ["sbz_resources:strange_cleaner"] = "Strange Blob Cleaner",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
