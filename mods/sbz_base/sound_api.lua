@@ -14,30 +14,33 @@ end
 local function g1(x)
     return { name = x, gain = 1 }
 end
+local function csound(x, g)
+    return { name = x, gain = g }
+end
 
 register_sound_function("matter", { -- also could be node_stone_defaults
-    footstep = g1("step"),
-    place = g1("step"),
+    footstep = csound("step", 2),
+    place = csound("step", 2),
 })
 
-register_sound_function("glass", { -- temporary
-    -- footstep = g1("step"),
-    -- place = g1("step"),
+register_sound_function("glass", { 
+    footstep = csound("step", 2),
+    place = csound("step", 2),
 })
 
-register_sound_function("dirt", { -- temporary
-    -- footstep = g1("step"),
-    -- place = g1("step"),
+register_sound_function("dirt", { 
+    footstep = csound("step", 2),
+    place = csound("step", 2),
 })
 
-register_sound_function("tree", { -- temporary
-    -- footstep = g1("step"),
-    -- place = g1("step"),
+register_sound_function("tree", { 
+    footstep = csound("step", 2),
+    place = csound("step", 2),
 })
 
-register_sound_function("leaves", { -- temporary
-    -- footstep = g1("step"),
-    -- place = g1("step"),
+register_sound_function("leaves", { 
+    footstep = csound("step", 2),
+    place = csound("step", 2),
 })
 
 register_sound_function("antimatter", {
@@ -46,7 +49,7 @@ register_sound_function("antimatter", {
 })
 
 register_sound_function("machine", {
-    footstep = g1("step"),
+    footstep = csound("step", 2),
     place = g1("machine_build"),
     rightclick = g1("machine_open"),
 })

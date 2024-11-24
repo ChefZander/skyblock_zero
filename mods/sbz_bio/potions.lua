@@ -10,10 +10,9 @@ minetest.register_craftitem("sbz_bio:screen_inverter_potion", {
         return stack
     end,
     info_extra = {
-        "Doesn't actually invert your entire minetest... just changes saturations",
-        "Drink twice to negate the effects. (mostly :3)",
-        "Effects reset after re-join!",
-        "!!!EPILEPSY WARNING!!! IF YOU DRINK TOO MUCH (very slowly gets worse)",
+        "Doesn't actually invert your entire minetest, just changes saturation.",
+        "Drink twice to negate the effects. Effects reset after re-join.",
+        "Epilepsy Warning: Don't spam click, don't drink too often without rejoining.",
     },
     groups = { ui_bio = 1 },
     inventory_image = "screen_inverter_potion.png"

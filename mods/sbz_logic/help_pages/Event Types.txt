@@ -1,6 +1,6 @@
 <big>Event Types</big>
 
-So yeah there are many many different event types
+Here is a list of the many event types.
 
 <big>Subtick</big>
 <mono>
@@ -32,8 +32,8 @@ $C1 fields = fields, -- table
 $C1 clicker = sender:get_player_name(), -- string
 }
 </mono>
-Sent when a player clicks something in the editor, fields are documented here: <action name=url url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md?plain=1#L5827>in minetest docs</action>
-Sent BOTH to editor and the main sandbox.
+Sent when a player clicks something in the editor, fields are documented here: <action name=url url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md?plain=1#L5827> in the minetest documentation.</action>
+Sent both to editor and the main sandbox.
 
 <big>Receive</big>
 <mono>
