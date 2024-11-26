@@ -15,11 +15,6 @@ local storage = minetest.get_mod_storage()
 core.settings:set("enable_damage", "false")
 core.settings:set("enable_pvp", "false")
 
--- extra darkness, the current isnt enough
-minetest.override_item("air", {
-    sunlight_propagates = false,
-})
-
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then
@@ -127,13 +122,13 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
-
     -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
     assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
         home = true,
         tp = true
     })
+    ref:override_day_night_ratio(0)
 end)
 
 -- also allow /core
@@ -165,6 +160,10 @@ local bgm_lengths = {
 local handles = {}
 
 local function playRandomBGM(player)
+    if not player then return end
+    if player:is_valid() == false then return end
+    if player:get_meta() == nil then return end
+
     local player_name = player:get_player_name()
     if player:get_meta():get_int("hates_bgm") == 1 then return end
     local random_index = math.random(1, #bgm_sounds)
@@ -429,3 +428,23 @@ function table.override(x, y)
 end
 
 dofile(MP .. "/sound_api.lua")
+
+sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, break_after_one_result)
+    local returning = {}
+    for x = -radius, radius do
+        for y = -radius, radius do
+            for z = -radius, radius do
+                local pos = vector.add(start_pos, vector.new(x, y, z))
+                local filter_results = { filtering_function(pos) }
+
+                if #filter_results == 1 then
+                    returning[#returning + 1] = filter_results[1]
+                elseif #filter_results ~= 0 then
+                    returning[#returning + 1] = filter_results
+                end
+                if break_after_one_result and #filter_results > 0 then return returning end
+            end
+        end
+    end
+    return returning
+end

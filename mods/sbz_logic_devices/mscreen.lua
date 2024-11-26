@@ -191,6 +191,7 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         return ret
     end,
     groups = { matter = 3, ui_logic = 1 },
+    sounds = sbz_api.sounds.machine(),
     on_logic_send = function(pos, msg, from_pos)
         local meta = minetest.get_meta(pos)
         if msg == "subscribe" then

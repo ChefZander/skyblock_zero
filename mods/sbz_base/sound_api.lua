@@ -48,6 +48,11 @@ register_sound_function("antimatter", {
     place = g1("antistep"),
 })
 
+register_sound_function("strange", {
+    footstep = g1("antistep"),
+    place = g1("antistep"),
+})
+
 register_sound_function("machine", {
     footstep = csound("step", 2),
     place = g1("machine_build"),
