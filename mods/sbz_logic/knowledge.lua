@@ -75,7 +75,7 @@ local function on_receive_fields(pos, formname, fields, sender)
     meta:set_string("formspec", gen_page(meta))
 
     minetest.sound_play("questbook", {
-        to_player = player_name,
+        to_player = sender:get_player_name(),
         gain = 1,
     })
 end
@@ -96,7 +96,7 @@ minetest.register_node("sbz_logic:knowledge_station", {
         minetest.sound_play("questbook", {
             to_player = player_name,
             gain = 1,
-        }) 
+        })
     end
 })
 

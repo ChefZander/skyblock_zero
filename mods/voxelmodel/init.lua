@@ -206,8 +206,8 @@ minetest.register_craftitem("voxelmodel:cat", {
 
 --A very basic voxelnode with a very easily "readable" texture. If you study this first, it shouldn't be too hard to picture how its texture works.
 
-minetest.register_node("voxelmodel:table", {
-	description = "Voxelmodel Table - used for testing...",
+minetest.register_node("voxelmodel:voxel", {
+	description = "Test voxel",
 
 	groups = { oddly_breakable_by_hand = 1, not_in_creative_inventory = 1 },
 
@@ -216,9 +216,7 @@ minetest.register_node("voxelmodel:table", {
 	use_texture_alpha = "clip",
 	drawtype = "mesh",
 	mesh = "voxelmodel.obj",
-	tiles = { "voxelmodel_table.png" },
-	inventory_image = "voxelmodel_table_inv.png",
-	wield_image = "voxelmodel_table_inv.png",
+	tiles = { "voxelmodel_voxel_example.png" },
 })
 
 
