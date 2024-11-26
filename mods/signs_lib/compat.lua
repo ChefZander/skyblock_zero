@@ -26,19 +26,18 @@ if minetest.get_modpath("prefab_redo") then
 	minetest.override_item("prefab_redo:concrete_railing", {
 		check_for_pole = true,
 		selection_box = {
-			type = "connected",
-			connect_right = { -0.125, -0.5, -0.125, 0.5,   0.375, 0.125 },
-			connect_left  = { -0.5,   -0.5, -0.125, 0.125, 0.375, 0.125 },
-			connect_back  = { -0.125, -0.5, -0.125, 0.125, 0.375, 0.5   },
-			connect_front = { -0.125, -0.5, -0.5,   0.125, 0.375, 0.125 },
-			disconnected  = { -0.125, -0.5, -0.125, 0.125, 0.25,  0.125 },
-			fixed = {}
+			type          = "connected",
+			connect_right = { -0.125, -0.5, -0.125, 0.5, 0.375, 0.125 },
+			connect_left  = { -0.5, -0.5, -0.125, 0.125, 0.375, 0.125 },
+			connect_back  = { -0.125, -0.5, -0.125, 0.125, 0.375, 0.5 },
+			connect_front = { -0.125, -0.5, -0.5, 0.125, 0.375, 0.125 },
+			disconnected  = { -0.125, -0.5, -0.125, 0.125, 0.25, 0.125 },
+			fixed         = {}
 		}
 	})
 end
 
 if minetest.get_modpath("streetspoles") then
-
 	local htj_north = {
 		[1] = true,
 		[3] = true,
@@ -114,8 +113,8 @@ if minetest.get_modpath("streetspoles") then
 	minetest.override_item("streets:bigpole", {
 		check_for_pole = function(pos, node, def, ppos, pnode, pdef)
 			if pnode.param2 < 4
-			  or (pnode.param2 > 19 and pnode.param2 < 24)
-			  and (pos.x ~= ppos.x or pos.z ~= ppos.z) then
+				or (pnode.param2 > 19 and pnode.param2 < 24)
+				and (pos.x ~= ppos.x or pos.z ~= ppos.z) then
 				return true
 			end
 		end,
@@ -124,11 +123,13 @@ if minetest.get_modpath("streetspoles") then
 			if pnode.param2 > 3 and pnode.param2 < 12 then
 				if def.paramtype2 == "wallmounted" then
 					if node.param2 == 2 or node.param2 == 3 -- E/W
-						then return true
+					then
+						return true
 					end
 				else
 					if node.param2 == 1 or node.param2 == 3 -- E/W
-						then return true
+					then
+						return true
 					end
 				end
 			elseif pnode.param2 > 11 and pnode.param2 < 20 then
@@ -148,17 +149,17 @@ if minetest.get_modpath("streetspoles") then
 	minetest.override_item("streets:bigpole_tjunction", {
 		check_for_pole = function(pos, node, def, ppos, pnode, pdef)
 			if def.paramtype2 == "wallmounted" then
-				if   (node.param2 == 4 and vtj_north[pnode.param2])
-				  or (node.param2 == 2 and vtj_east[pnode.param2])
-				  or (node.param2 == 5 and vtj_south[pnode.param2])
-				  or (node.param2 == 3 and vtj_west[pnode.param2]) then
+				if (node.param2 == 4 and vtj_north[pnode.param2])
+					or (node.param2 == 2 and vtj_east[pnode.param2])
+					or (node.param2 == 5 and vtj_south[pnode.param2])
+					or (node.param2 == 3 and vtj_west[pnode.param2]) then
 					return true
 				end
 			else
-				if   (node.param2 == 0 and vtj_north[pnode.param2])
-				  or (node.param2 == 1 and vtj_east[pnode.param2])
-				  or (node.param2 == 2 and vtj_south[pnode.param2])
-				  or (node.param2 == 3 and vtj_west[pnode.param2]) then
+				if (node.param2 == 0 and vtj_north[pnode.param2])
+					or (node.param2 == 1 and vtj_east[pnode.param2])
+					or (node.param2 == 2 and vtj_south[pnode.param2])
+					or (node.param2 == 3 and vtj_west[pnode.param2]) then
 					return true
 				end
 			end
@@ -166,23 +167,22 @@ if minetest.get_modpath("streetspoles") then
 
 		check_for_horiz_pole = function(pos, node, def, ppos, pnode, pdef)
 			if def.paramtype2 == "wallmounted" then
-				if   (node.param2 == 4 and htj_north[pnode.param2])
-				  or (node.param2 == 2 and htj_east[pnode.param2])
-				  or (node.param2 == 5 and htj_south[pnode.param2])
-				  or (node.param2 == 3 and htj_west[pnode.param2]) then
+				if (node.param2 == 4 and htj_north[pnode.param2])
+					or (node.param2 == 2 and htj_east[pnode.param2])
+					or (node.param2 == 5 and htj_south[pnode.param2])
+					or (node.param2 == 3 and htj_west[pnode.param2]) then
 					return true
 				end
 			else
-				if   (node.param2 == 0 and htj_north[pnode.param2])
-				  or (node.param2 == 1 and htj_east[pnode.param2])
-				  or (node.param2 == 2 and htj_south[pnode.param2])
-				  or (node.param2 == 3 and htj_west[pnode.param2]) then
+				if (node.param2 == 0 and htj_north[pnode.param2])
+					or (node.param2 == 1 and htj_east[pnode.param2])
+					or (node.param2 == 2 and htj_south[pnode.param2])
+					or (node.param2 == 3 and htj_west[pnode.param2]) then
 					return true
 				end
 			end
 		end
 	})
-
 end
 
 if minetest.get_modpath("streetlamps") then
@@ -190,9 +190,9 @@ if minetest.get_modpath("streetlamps") then
 		selection_box = {
 			type = "fixed",
 			fixed = {
-				{-0.3,-0.4,-0.3,0.3,0.5,0.3},
-				{-0.15,-0.4,-0.15,0.15,-1.55,0.15},
-				{-0.18,-1.55,-0.18,0.18,-2.5,0.18},
+				{ -0.3,  -0.4,  -0.3,  0.3,  0.5,   0.3 },
+				{ -0.15, -0.4,  -0.15, 0.15, -1.55, 0.15 },
+				{ -0.18, -1.55, -0.18, 0.18, -2.5,  0.18 },
 			}
 		},
 		check_for_pole = true

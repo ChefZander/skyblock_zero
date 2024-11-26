@@ -160,6 +160,10 @@ local bgm_lengths = {
 local handles = {}
 
 local function playRandomBGM(player)
+    if not player then return end
+    if player:is_valid() == false then return end
+    if player:get_meta() == nil then return end
+
     local player_name = player:get_player_name()
     if player:get_meta():get_int("hates_bgm") == 1 then return end
     local random_index = math.random(1, #bgm_sounds)
