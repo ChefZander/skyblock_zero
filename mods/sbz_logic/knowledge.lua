@@ -74,6 +74,7 @@ local function on_receive_fields(pos, formname, fields, sender)
     meta:mark_as_private("index")
     meta:set_string("formspec", gen_page(meta))
 
+    local player_name = sender:get_player_name()
     minetest.sound_play("questbook", {
         to_player = player_name,
         gain = 1,
