@@ -448,3 +448,25 @@ sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, 
     end
     return returning
 end
+
+--- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
+---@param pos vector
+---@param power number
+---@param r number
+---@param async boolean
+sbz_api.explode = function(pos, r, power, async)
+    for _ = 1, 360 do
+        local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false)
+        local wear = 0
+        for pointed in raycast do
+            if pointed.type == "node" then
+                local nodename = minetest.get_node(pointed.under).name
+                wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
+                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
+                --although this is very random
+                if wear > power or minetest.is_protected(pointed.under, ".meteorite") then break end
+                minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+            end
+        end
+    end
+end

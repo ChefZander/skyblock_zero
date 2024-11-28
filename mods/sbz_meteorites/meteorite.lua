@@ -123,7 +123,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
         self.object:set_armor_groups({ immortal = 1 })
-        self.sound = minetest.sound_play("rocket-loop-99748", { loop = true, gain = 0.15, fade = 0.1  })
+        self.sound = minetest.sound_play("rocket-loop-99748", { loop = true, gain = 0.15, fade = 0.1 })
         self.waypoint = nil
         self.time_since = 100
     end,

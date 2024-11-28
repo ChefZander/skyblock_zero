@@ -569,9 +569,10 @@ local function core_tick(pos)
         sbz_api.turn_off(pos)
         return
     end
+    local emittrium_stack, emittriummeta
     if nodes.emittrium then
-        local emittriummeta = minetest.get_meta(nodes.emittrium)
-        local emittrium_stack = emittriummeta:get_inventory():get_stack("main", 1)
+        emittriummeta = minetest.get_meta(nodes.emittrium)
+        emittrium_stack = emittriummeta:get_inventory():get_stack("main", 1)
 
         if tickcount == 0 then
             local newcount = emittrium_stack:get_count() - 16
