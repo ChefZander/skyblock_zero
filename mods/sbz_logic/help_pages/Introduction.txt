@@ -1,6 +1,4 @@
 <bigger> Luacontroller Basics </bigger>
-(this will just be a really shallow overview)
-
 Luacontrollers execute <big>SANDBOXED and LIMITED</big> lua code, they can be used for controlling machines or logic devices.
 
 Skyblock Zero's luacontrollers are <b>EXTREMELY</b> different than mesecon's luacontrollers. (But everything possible with mesecon's luacontrollers is possible with skyblock zero's luacontrollers)

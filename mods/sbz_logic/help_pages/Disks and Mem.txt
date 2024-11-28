@@ -1,14 +1,14 @@
-<bigger>Disks and Mem</bigger>
+<bigger>Disks and Memory</bigger>
 
 <big><mono>mem</mono></big>
 It is persistant storage. Present in both editor and main.
 In the editor sandbox, it can be used to store data accross events. Can only store 1024 bytes.
-can't store types:
-- function
-- userdata
-- thread
+Can't store types:
+- Functions
+- Userdata
+- Threads
 
-<big><mono>disk</mono></big>
+<big><mono>Disk</mono></big>
 If set to nil, both mem and disks won't save.
 <mono>
 $C1disks = {

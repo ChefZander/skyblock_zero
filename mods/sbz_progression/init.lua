@@ -9,14 +9,14 @@ function displayDialogueLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
         to_player = player_name,
-        gain = 1.0,
+        gain = 1,
     })
 end
 
 function displayGlobalDialogueLine(text)
     minetest.chat_send_all("⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
-        gain = 1.0,
+        gain = 1,
     })
 end
 
@@ -114,6 +114,7 @@ local achievment_table = {
     ["sbz_resources:jetpack"] = "Jetpack",
     ["sbz_resources:drill"] = "Electric Drill",
     ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
+    ["sbz_resources:strange_cleaner"] = "Strange Blob Cleaner",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -136,6 +137,18 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
+local achievment_in_inventory_table = {
+    ["sbz_chem:gold_powder"] = "It's fake",
+    ["sbz_chem:bronze_powder"] = "Bronze Age",
+    ["sbz_chem:water_fluid_cell"] = "Liquid Water",
+    ["sbz_bio:stemfruit"] = "Stemfruit",
+}
+
+local achievment_on_dig_table = {
+    ["sbz_meteorites:antineutronium"] = "Antineutronium",
+    ["sbz_resources:strange_blob"] = "It's strange..."
+}
+
 minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)
     local itemstack
     if action == "move" then
@@ -145,15 +158,15 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
     end
     local player_name = player:get_player_name()
     local itemname = itemstack:get_name()
-    if itemname == "sbz_chem:gold_powder" then
-        unlock_achievement(player_name, "It's fake")
-    elseif itemname == "sbz_chem:bronze_powder" then
-        unlock_achievement(player_name, "Bronze Age")
-    elseif itemstack:get_name() == "sbz_meteorites:antineutronium" then
-        unlock_achievement(player_name, "Antineutronium")
-    elseif itemname == "sbz_chem:water_fluid_cell" then
-        unlock_achievement(player_name, "Liquid Water")
-    elseif itemname == "sbz_bio:stemfruit" then
-        unlock_achievement(player_name, "Stemfruit")
+    if achievment_in_inventory_table[itemname] then
+        unlock_achievement(player_name, achievment_in_inventory_table[itemname])
+    end
+end)
+
+minetest.register_on_dignode(function(pos, oldnode, digger)
+    local player_name = digger:get_player_name()
+    local itemname = oldnode.name
+    if achievment_on_dig_table[itemname] then
+        unlock_achievement(player_name, achievment_on_dig_table[itemname])
     end
 end)

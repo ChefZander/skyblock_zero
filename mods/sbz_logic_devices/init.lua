@@ -15,3 +15,5 @@ end
 
 dofile(MP .. "/gpu.lua")
 dofile(MP .. "/nodeDB.lua")
+dofile(MP .. "/hologram_projector.lua")
+dofile(MP .. "/meteorite_attractor.lua")

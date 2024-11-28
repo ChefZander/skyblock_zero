@@ -30,14 +30,13 @@ When a jetpack is activated:
 If you press jump:
 - jetpack applies upwards velocity to you
 - jetpack wears down a bit
-- you get 2x faster
-- 20 particles spawn
+- you become 2x faster
 If you press both jump and shift or aux1:
 - jetpack applies half as much upwards velocity as when you jump
 - jetpack wears down 2x less
-- you still get 2x faster
-- 4 particles spawn
+- you still become 2x faster
 
+The mode you are flying in can also be seen by how many particles are getting spawned.
 The wear is setup such that it lasts you 3 minutes of constant flying
 
 You can re-fuel your jetpack by clicking on a battery, full repair costs 1000 Cj
@@ -46,13 +45,13 @@ Jetpack gets automatically de-activated when you stop having it in your hand or 
 ]],
         requires = { "Neutronium" }
     },
-    { type = "quest", title = "Bear Arms",             text = "Craft the robotic arm.",                                                                                                                                        requires = { "Furnace" } },
+    { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                              requires = { "Furnace" } },
     {
         type = "quest",
         title = "Electric drill",
         requires = { "Bear Arms" },
         text = [[
-Do you think that the robotic arm is too fragile, or do you want to like.. dig... and like yea have your tool not break as easily, and like... yea... umm...
+Do you think that the robotic arm is too fragile, or do you want to  dig and have your tool not break as easily?
 Electric drill is the tool for you!!!
 
 It has 500 uses and powered by electricity!
@@ -69,10 +68,32 @@ It also digs 2x faster than the robotic arm.
         type = "quest",
         title = "Meteorite Maker",
         text = [[
-Makes... meteorites... yeeeah, also it needs some space on top of it.
+Makes... meteorites... (no way), also it needs some space on top of it.
+But it cannot make strange matter meteorites.
 
 Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.
 ]],
         requires = { "Autocrafters", "Neutronium" }
+    },
+    {
+        type = "quest",
+        title = "It's strange...",
+        text = [[
+Be aware, strange matter can... spread... to both matter and antimatter...
+
+Strange matter won't spread to "charged" nodes or machines, or protected areas.
+So it's best to protect your area, even if you are in singleplayer, to defend against strange matter.
+
+Strange matter meteorites spawn if you are 100 nodes away from the core.
+]],
+        requires = { "Neutronium" }
+    },
+    {
+        type = "quest",
+        requires = { "It's strange..." },
+        title = "Strange Blob Cleaner",
+        text = [[
+Restores what was destroyed by strange blobs.
+        ]],
     }
 }

@@ -63,7 +63,15 @@ minetest.register_abm({
 minetest.register_node("sbz_bio:dirt", {
     description = "Dirt",
     tiles = { "dirt.png" },
-    groups = { matter = 1, cracky = 3, moss_growable = 1, soil = 1, explody = 10 }
+    groups = {
+        explody = 10,
+        matter = 2,
+        crumbly = 1,
+        moss_growable = 1,
+        soil = 1,
+        oddly_breakable_by_hand = 2,
+    },
+    sounds = sbz_api.sounds.dirt(),
 })
 
 minetest.register_craft({

@@ -81,6 +81,7 @@ sbz_api.register_stateful("sbz_logic_devices:toggle", {
             { -0.375, -0.375, 0.3125, 0.375, 0.375, 0.5 }, -- NodeBox1
         }
     },
+    sounds = sbz_api.sounds.machine(),
     paramtype2 = "facedir",
     paramtype = "light",
     light_source = 10,

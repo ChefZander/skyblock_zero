@@ -8,6 +8,12 @@ sbz_api.register_stateful_generator("sbz_power:simple_charge_generator", {
     on_rightclick = function(pos, node, player, pointed_thing)
         local player_name = player:get_player_name()
         local meta = minetest.get_meta(pos)
+    end,
+
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_size("main", 1)
         meta:set_string("formspec", [[
 formspec_version[7]
 size[8.2,9]
@@ -17,23 +23,6 @@ list[context;main;3.5,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
 listring[]
 ]])
-        minetest.sound_play("machine_open", {
-            to_player = player_name,
-            gain = 1.0,
-            pos = pos,
-        })
-    end,
-
-    on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
-        local inv = meta:get_inventory()
-        inv:set_size("main", 1)
-
-
-        minetest.sound_play("machine_build", {
-            gain = 1.0,
-            pos = pos,
-        })
     end,
     action_interval = 10,
     action = function(pos, node, meta)
@@ -115,7 +104,7 @@ sbz_api.register_generator("sbz_power:simple_charged_field", {
     description = "Simple Charged Field",
     drawtype = "glasslike",
     tiles = { "simple_charged_field.png" },
-    groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5 },
+    groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1 },
     sunlight_propagates = true,
     walkable = false,
     power_generated = 3,

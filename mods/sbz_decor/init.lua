@@ -34,12 +34,7 @@ minetest.register_node("sbz_decor:factory_floor", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft({
     output = "sbz_decor:factory_floor 2",
@@ -64,12 +59,7 @@ minetest.register_node("sbz_decor:factory_floor_tiling", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 
 stairs.register("sbz_decor:factory_floor_tiling")
@@ -88,12 +78,7 @@ minetest.register_node("sbz_decor:factory_ventilator", {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft({
     output = "sbz_decor:factory_ventilator",
@@ -107,12 +92,7 @@ minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = {
-        footstep = { name = "step", gain = 1.0 },
-    },
-    on_punch = function(pos, node, puncher)
-        minetest.sound_play("step", { pos = pos, gain = 1.0 })
-    end,
+    sounds = sbz_api.sounds.matter(),
 })
 stairs.register("sbz_decor:factory_warning")
 minetest.register_craft({
@@ -131,7 +111,7 @@ local ladder_autoplace_limit = 16
 
 core.register_node("sbz_decor:ladder", unifieddyes.def {
     description = "Matter Ladder",
-    info_extra = "Yup, no antimatter ladders",
+    info_extra = "", -- idk if this is required but leaving it here anyway
     drawtype = "nodebox",
     node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
         type = "fixed",
@@ -151,7 +131,8 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
         }
     },
     tiles = { "matter_blob.png" },
-    groups = { matter = 1, explody = 3 },
+    inventory_image = "ladder.png",
+    groups = { matter = 3, explody = 3 },
     paramtype = "light",
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
@@ -167,16 +148,25 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
 
                 pointed.under = vector.add(pointed.under, dir)
                 pointed.above = vector.add(pointed.above, dir)
-                if minetest.get_node(pointed.under).name == "sbz_decor:ladder" then
+                if core.get_node(pointed.under).name == "sbz_decor:ladder" then
                     local result = minetest.registered_nodes["sbz_decor:ladder"].on_place(stack, placer, pointed,
                         (recursed or 0) + 1)
                     return result
                 end
-                return minetest.item_place_node(stack, placer, pointed, node.param2)
+                return core.item_place_node(stack, placer, pointed, node.param2)
             end
         end
-        return minetest.item_place_node(stack, placer, pointed)
+        return core.item_place_node(stack, placer, pointed)
     end,
     node_placement_prediction = "", -- REQUIRED
     climbable = true,
 })
+
+core.register_craft {
+    output = "sbz_decor:ladder 12",
+    recipe = {
+        { "sbz_resources:matter_blob", "",                          "sbz_resources:matter_blob", },
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob", },
+        { "sbz_resources:matter_blob", "",                          "sbz_resources:matter_blob", },
+    }
+}

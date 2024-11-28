@@ -125,6 +125,7 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
         "compressed_core_dust.png"
     },
     groups = { matter = 1, explody = 10 },
+    sounds = sbz_api.sounds.matter(),
 })
 
 minetest.register_craft({

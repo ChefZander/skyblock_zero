@@ -11,6 +11,10 @@ sbz_api.rad2deg = 180 / math.pi
 local modpath = minetest.get_modpath("sbz_base")
 local storage = minetest.get_mod_storage()
 
+-- apply forced game settings
+core.settings:set("enable_damage", "false")
+core.settings:set("enable_pvp", "false")
+
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then
@@ -104,25 +108,27 @@ minetest.register_on_newplayer(function(player)
     local name = player:get_player_name()
     if inv then
         if inv:contains_item("main", "sbz_progression:questbook") then
-            displayDialougeLine(name, "How tf did you manage to get a questbook before spawning as a new player??")
+            displayDialougeLine(name, "You already had a questbook before joining.")
         else
             if inv:room_for_item("main", "sbz_progression:questbook") then
                 inv:add_item("main", "sbz_progression:questbook")
                 -- displayDialougeLine(name, "You have been given a Quest Book.")
             else
                 displayDialougeLine(name,
-                    "How tf did you manage to fill your inventory before spawning as a new player??")
+                    "Your inventory is full. Can't give you a questbook. Use /qb")
             end
         end
     end
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
+    -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
     assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
         home = true,
         tp = true
     })
+    ref:override_day_night_ratio(0)
 end)
 
 -- also allow /core
@@ -154,6 +160,10 @@ local bgm_lengths = {
 local handles = {}
 
 local function playRandomBGM(player)
+    if not player then return end
+    if player:is_valid() == false then return end
+    if player:get_meta() == nil then return end
+
     local player_name = player:get_player_name()
     if player:get_meta():get_int("hates_bgm") == 1 then return end
     local random_index = math.random(1, #bgm_sounds)
@@ -162,7 +172,7 @@ local function playRandomBGM(player)
     if handles[player_name] then minetest.sound_stop(handles[player_name]) end
     handles[player_name] = minetest.sound_play(sound_name, {
         to_player = player_name,
-        gain = 1.0,
+        gain = 1,
     })
     minetest.after(sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
@@ -389,4 +399,52 @@ if not vector.random_direction then
         local l = math.sqrt(l2)
         return vector.new(x / l, y / l, z / l)
     end
+end
+
+-- yeah you actually have to do this
+-- definition copied from mtg
+minetest.override_item("", {
+    --    wield_scale = { x = 1, y = 1, z = 2.5 },
+    tool_capabilities = {
+        full_punch_interval = 0.9,
+        max_drop_level = 0,
+        groupcaps = {
+            crumbly = { times = { [2] = 3.00, [3] = 0.70 }, uses = 0, maxlevel = 1 },
+            snappy = { times = { [3] = 0.40 }, uses = 0, maxlevel = 1 },
+            oddly_breakable_by_hand = { times = { [1] = 3.50, [2] = 2.00, [3] = 0.70 }, uses = 0 }
+        },
+        damage_groups = { fleshy = 1 },
+    }
+})
+
+
+function table.override(x, y)
+    if y == nil then return x end
+    x = table.copy(x)
+    for k, v in pairs(y) do
+        x[k] = v
+    end
+    return x
+end
+
+dofile(MP .. "/sound_api.lua")
+
+sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, break_after_one_result)
+    local returning = {}
+    for x = -radius, radius do
+        for y = -radius, radius do
+            for z = -radius, radius do
+                local pos = vector.add(start_pos, vector.new(x, y, z))
+                local filter_results = { filtering_function(pos) }
+
+                if #filter_results == 1 then
+                    returning[#returning + 1] = filter_results[1]
+                elseif #filter_results ~= 0 then
+                    returning[#returning + 1] = filter_results
+                end
+                if break_after_one_result and #filter_results > 0 then return returning end
+            end
+        end
+    end
+    return returning
 end

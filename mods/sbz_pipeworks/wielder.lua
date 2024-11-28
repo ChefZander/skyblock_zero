@@ -169,7 +169,8 @@ function pipeworks.register_wielder(def)
             meta:set_string("infotext", "Working")
             wielder_action(def, pos, minetest.get_node(pos))
             return def.cost
-        end
+        end,
+        sounds = sbz_api.sounds.matter(),
     })
 end
 
