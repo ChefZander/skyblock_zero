@@ -1,6 +1,7 @@
 local logic = sbz_api.logic
 
-local send_max_cost = 65536 + 25 + 1000
+local send_max_cost = 70016 -- number is very specific but works
+
 -- > "why is it like this"
 -- Ok so, 65536 is the maximum string length that the gpu command "send_packed" can send, ok? sounds great
 -- now, we add 25 because strings
@@ -41,3 +42,10 @@ sbz_api.queue:add_function("logic_send", function(pos, msg, from_pos)
         ndef.on_logic_send(pos, msg, from_pos)
     end
 end)
+
+function logic.get_notify(to_pos, from_pos)
+    if to_pos == nil then return function() return false end end
+    return function(msg)
+        return logic.send(to_pos, msg, from_pos)
+    end
+end

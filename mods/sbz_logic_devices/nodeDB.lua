@@ -8,7 +8,7 @@ core.register_node("sbz_logic_devices:node_db", {
     description = "Node DB",
     info_extra = { "Similar to the craftDB, use it to lookup node definitions and recipes" },
     groups = { matter = 1, ui_logic = 1 },
-
+    sounds = sbz_api.sounds.machine(),
     tiles = {
         "gpu_bottom.png",
         "gpu_bottom.png",

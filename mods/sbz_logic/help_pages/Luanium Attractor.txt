@@ -1,0 +1,5 @@
+<bigger>Luanium Attractor</bigger>
+
+It attracts/repels meteorites depending on the value its given.
+You can send it <mono>{ attraction = 10 }</mono> (with the attraction value being -10 to 10) to attract meteorites 10x the force of a normal attractor
+You can send it <mono>{ type = "auto", attraction = 10 }</mono> to automatically attract the meteorites, though it needs to be connected to a power network.

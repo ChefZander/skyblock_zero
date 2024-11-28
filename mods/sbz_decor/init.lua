@@ -131,7 +131,8 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
         }
     },
     tiles = { "matter_blob.png" },
-    groups = { matter = 1, explody = 3 },
+    inventory_image = "ladder.png",
+    groups = { matter = 3, explody = 3 },
     paramtype = "light",
     paramtype2 = "wallmounted",
     sunlight_propagates = true,
@@ -147,16 +148,25 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
 
                 pointed.under = vector.add(pointed.under, dir)
                 pointed.above = vector.add(pointed.above, dir)
-                if minetest.get_node(pointed.under).name == "sbz_decor:ladder" then
+                if core.get_node(pointed.under).name == "sbz_decor:ladder" then
                     local result = minetest.registered_nodes["sbz_decor:ladder"].on_place(stack, placer, pointed,
                         (recursed or 0) + 1)
                     return result
                 end
-                return minetest.item_place_node(stack, placer, pointed, node.param2)
+                return core.item_place_node(stack, placer, pointed, node.param2)
             end
         end
-        return minetest.item_place_node(stack, placer, pointed)
+        return core.item_place_node(stack, placer, pointed)
     end,
     node_placement_prediction = "", -- REQUIRED
     climbable = true,
 })
+
+core.register_craft {
+    output = "sbz_decor:ladder 12",
+    recipe = {
+        { "sbz_resources:matter_blob", "",                          "sbz_resources:matter_blob", },
+        { "sbz_resources:matter_blob", "sbz_resources:matter_blob", "sbz_resources:matter_blob", },
+        { "sbz_resources:matter_blob", "",                          "sbz_resources:matter_blob", },
+    }
+}

@@ -30,7 +30,8 @@ local function meteorite_explode(pos, type)
     local node_types = {
         matter_blob = { "sbz_meteorites:meteoric_matter", "sbz_meteorites:meteoric_metal" },
         emitter = { "sbz_meteorites:meteoric_emittrium", "sbz_meteorites:meteoric_metal" },
-        antimatter_blob = { "sbz_meteorites:meteoric_antimatter", "sbz_meteorites:meteoric_antimatter" }
+        antimatter_blob = { "sbz_meteorites:meteoric_antimatter", "sbz_meteorites:meteoric_antimatter" },
+        strange_blob = { "sbz_resources:strange_blob", "sbz_resources:strange_blob" },
     }
     if not protected then
         for _ = 1, 16 do
@@ -104,7 +105,11 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         if staticdata and staticdata ~= "" then --not new, just unpack staticdata
             self.type = staticdata
         else                                    --new entity, initialise stuff
-            local types = { "matter_blob", "emitter", "antimatter_blob" }
+            local types = { "matter_blob", "emitter", "antimatter_blob", "strange_blob" }
+            local pos = self.object:get_pos()
+            if vector.in_area(pos, vector.new(-100, -100, -100), vector.new(100, 100, 100)) then
+                types[4] = nil -- dont want strange meteorites spawning to some noob who wont know what to do
+            end
             self.type = types[math.random(#types)]
             local offset = vector.new(math.random(-48, 48), math.random(-48, 48), math.random(-48, 48))
             local pos = self.object:get_pos()
@@ -118,7 +123,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
         self.object:set_armor_groups({ immortal = 1 })
-        self.sound = minetest.sound_play({ name = "rocket-loop-99748", gain = 0.15, fade = 0.1 }, { loop = true })
+        self.sound = minetest.sound_play("rocket-loop-99748", { loop = true, gain = 0.15, fade = 0.1  })
         self.waypoint = nil
         self.time_since = 100
     end,

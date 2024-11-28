@@ -569,18 +569,19 @@ local function core_tick(pos)
         sbz_api.turn_off(pos)
         return
     end
+    if nodes.emittrium then
+        local emittriummeta = minetest.get_meta(nodes.emittrium)
+        local emittrium_stack = emittriummeta:get_inventory():get_stack("main", 1)
 
-    local emittriummeta = minetest.get_meta(nodes.emittrium)
-    local emittrium_stack = emittriummeta:get_inventory():get_stack("main", 1)
-
-    if tickcount == 0 then
-        local newcount = emittrium_stack:get_count() - 16
-        if newcount < 0 then
-            err = "Not enough emittrium"
-            meta:set_int("tickcount", CONSUME_EMITTRIUM_EVERY_X_SEC) -- resets
-        else
-            emittrium_stack:set_count(emittrium_stack:get_count() - 16)
-            emittriummeta:get_inventory():set_stack("main", 1, emittrium_stack)
+        if tickcount == 0 then
+            local newcount = emittrium_stack:get_count() - 16
+            if newcount < 0 then
+                err = "Not enough emittrium"
+                meta:set_int("tickcount", CONSUME_EMITTRIUM_EVERY_X_SEC) -- resets
+            else
+                emittrium_stack:set_count(emittrium_stack:get_count() - 16)
+                emittriummeta:get_inventory():set_stack("main", 1, emittrium_stack)
+            end
         end
     end
     local infometa = minetest.get_meta(nodes.info)
