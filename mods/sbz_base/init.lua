@@ -454,8 +454,9 @@ end
 ---@param power number
 ---@param r number
 ---@param async boolean
-sbz_api.explode = function(pos, r, power, async)
-    for _ = 1, 360 do
+sbz_api.explode = function(pos, r, power, async, owner)
+    owner = owner or ""
+    for _ = 1, 500 do
         local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false)
         local wear = 0
         for pointed in raycast do
@@ -464,9 +465,15 @@ sbz_api.explode = function(pos, r, power, async)
                 wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
                 --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                 --although this is very random
-                if wear > power or minetest.is_protected(pointed.under, ".meteorite") then break end
+                if wear > power or minetest.is_protected(pointed.under, owner) then break end
                 minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
             end
+        end
+    end
+    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, r)) do
+        if obj:is_player() then
+            local dir = obj:get_pos() - pos
+            obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 0.5 * (r - vector.length(dir)))
         end
     end
 end

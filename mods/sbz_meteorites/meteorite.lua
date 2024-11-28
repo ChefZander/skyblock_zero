@@ -7,20 +7,7 @@ end
 
 local function meteorite_explode(pos, type)
     --breaking nodes
-    for _ = 1, 100 do
-        local raycast = minetest.raycast(pos, pos + vector.random_direction() * 8, false)
-        local wear = 0
-        for pointed in raycast do
-            if pointed.type == "node" then
-                local nodename = minetest.get_node(pointed.under).name
-                wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
-                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
-                --although this is very random
-                if wear > 1 or minetest.is_protected(pointed.under, ".meteorite") then break end
-                minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
-            end
-        end
-    end
+    sbz_api.explode(pos, 8, 0.9, false)
     --placing nodes
     local protected = minetest.is_protected(pos, ".meteorite")
     if not protected then
