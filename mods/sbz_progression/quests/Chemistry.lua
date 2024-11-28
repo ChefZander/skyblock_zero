@@ -57,7 +57,7 @@ Electric drill is the tool for you!!!
 It has 500 uses and powered by electricity!
 What does that mean?
 
-If you "place" it on a battery (sneak+left click/tap), it will take power from the battery and charge the drill! (Just like the jetpack)
+If you "place" it on a battery (sneak+right click), it will take power from the battery and charge the drill! (Just like the jetpack)
 It needs 1 power per 1 use.
 
 It also digs 2x faster than the robotic arm.
