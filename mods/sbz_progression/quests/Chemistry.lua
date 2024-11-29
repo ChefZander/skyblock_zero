@@ -48,7 +48,7 @@ Jetpack gets automatically de-activated when you stop having it in your hand or 
     { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                              requires = { "Furnace" } },
     {
         type = "quest",
-        title = "Electric drill",
+        title = "Electric Drill",
         requires = { "Bear Arms" },
         text = [[
 Do you think that the robotic arm is too fragile, or do you want to  dig and have your tool not break as easily?
