@@ -71,6 +71,7 @@ minetest.register_node("sbz_bio:dirt", {
         soil = 1,
         oddly_breakable_by_hand = 2,
     },
+    paramtype = "light", -- if you leave this out, fertilizer wont work
     sounds = sbz_api.sounds.dirt(),
 })
 

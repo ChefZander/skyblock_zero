@@ -116,7 +116,7 @@ minetest.register_tool("sbz_resources:drill", {
     info_extra = {
         "Powered by electricity. Wear bar indicates the amount of charge left.",
         ("%s uses"):format(drill_max_wear),
-        "\"Place\" it on a battery to re-charge it."
+        "Shift+\"Place\" it on a battery to re-charge it."
     },
     groups = { core_drop_multi = 3, disable_repair = 1 },
     -- Tool properties

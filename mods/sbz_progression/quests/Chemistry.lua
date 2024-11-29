@@ -12,7 +12,13 @@ return {
 
     { type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = { "Simple Alloy Furnace", "Crusher" } },
 
-    { type = "quest", title = "Meteorites", text = "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well, including some you can't get from crushing pebbles - if you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.", requires = { "Simple Alloy Furnace", "Emittrium Circuits" } },
+    {
+        type = "quest",
+        title = "Meteorites",
+        text =
+        "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.",
+        requires = { "Simple Alloy Furnace", "Emittrium Circuits" }
+    },
 
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
     {
@@ -45,10 +51,10 @@ Jetpack gets automatically de-activated when you stop having it in your hand or 
 ]],
         requires = { "Neutronium" }
     },
-    { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                              requires = { "Furnace" } },
+    { type = "quest", title = "Bear Arms",  text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                                                                                                                                                              requires = { "Furnace" } },
     {
         type = "quest",
-        title = "Electric drill",
+        title = "Electric Drill",
         requires = { "Bear Arms" },
         text = [[
 Do you think that the robotic arm is too fragile, or do you want to  dig and have your tool not break as easily?
@@ -57,7 +63,7 @@ Electric drill is the tool for you!!!
 It has 500 uses and powered by electricity!
 What does that mean?
 
-If you "place" it on a battery (sneak+left click/tap), it will take power from the battery and charge the drill! (Just like the jetpack)
+If you "place" it on a battery (sneak+right click), it will take power from the battery and charge the drill! (Just like the jetpack)
 It needs 1 power per 1 use.
 
 It also digs 2x faster than the robotic arm.
