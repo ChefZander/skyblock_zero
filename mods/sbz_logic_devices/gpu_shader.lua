@@ -97,7 +97,7 @@ local function apply_shader(buffer, shader, pos, from_pos)
                 local xsize, ysize, rbuf = buffer.xsize, buffer.ysize, buffer.buffer
 
                 local string_meta = getmetatable("")
-                string_meta.__index = { format = string.format }
+                string_meta.__index = {}
 
                 local segment = math.ceil(ysize / max_threads)
                 local ystart = ((thread - 1) * segment) + 1
