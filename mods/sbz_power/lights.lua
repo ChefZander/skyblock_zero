@@ -1,4 +1,4 @@
-local cost = 10
+local cost = 4
 sbz_api.register_stateful_machine("sbz_power:powered_lamp", {
     description = "Powered Lamp",
     tiles = { "power_lamp_off.png^[colorize:black:50" },

@@ -13,7 +13,6 @@ local fert_use = function(itemstack, user, pointed)
     local node = minetest.get_node(pos)
     local name = node.name
     local def = minetest.registered_nodes[node.name] or {}
-    
     if not (sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos)) then return end
 
     if minetest.get_item_group(name, "soil") > 0
