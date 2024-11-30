@@ -332,43 +332,13 @@ minetest.register_globalstep(function(_)
 end)
 
 -- inter-mod utils
-function is_node_within_radius(pos, itemstring, radius)
-    for dx = -radius, radius do
-        for dy = -radius, radius do
-            for dz = -radius, radius do
-                local current_pos = {
-                    x = pos.x + dx,
-                    y = pos.y + dy,
-                    z = pos.z + dz
-                }
-                local node = minetest.get_node(current_pos)
-                if node.name == itemstring then
-                    return true
-                end
-            end
-        end
-    end
-    return false
+function count_nodes_within_radius(pos, nodenames, radius)
+    local radius_vector = vector.new(radius, radius, radius)
+    return #core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)
 end
 
-function count_nodes_within_radius(pos, itemstring, radius)
-    local count = 0
-    for dx = -radius, radius do
-        for dy = -radius, radius do
-            for dz = -radius, radius do
-                local current_pos = {
-                    x = pos.x + dx,
-                    y = pos.y + dy,
-                    z = pos.z + dz
-                }
-                local node = minetest.get_node(current_pos)
-                if node.name == itemstring then
-                    count = count + 1
-                end
-            end
-        end
-    end
-    return count
+function is_node_within_radius(pos, nodenames, radius)
+    return count_nodes_within_radius(pos, nodenames, radius) > 0
 end
 
 -- mapgen aliases

@@ -83,6 +83,7 @@ sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
     info_extra = "Lights up a 12x12x12 square around itself!",
     autostate = true,
     action = function(pos, _, meta, supply, demand)
+        meta:set_string("infotext", "")
         if sbz_api.is_on(pos) then
             illuminate(pos)
         else

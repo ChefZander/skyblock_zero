@@ -30,7 +30,7 @@ minetest.register_abm({
     interval = 10,
     chance = 20,
     nodenames = { "group:moss_growable" },
-    neighbors = { "sbz_resources:water_source", "sbz_resources:water_flowing" },
+    neighbors = { "group:water" },
     action = function(pos, node)
         local i = math.random(0, 5)
         local dir = minetest.wallmounted_to_dir(i)
@@ -69,7 +69,7 @@ minetest.register_node("sbz_bio:dirt", {
         crumbly = 1,
         moss_growable = 1,
         soil = 1,
-        oddly_breakable_by_hand = 2,
+        oddly_breakable_by_hand = 1,
     },
     paramtype = "light", -- if you leave this out, fertilizer wont work
     sounds = sbz_api.sounds.dirt(),

@@ -290,7 +290,7 @@ minetest.register_node("sbz_resources:water_source", {
     },
     inventory_image = minetest.inventorycube "water.png",
     use_texture_alpha = "blend",
-    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 1 },
+    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 1, water = 1 },
     post_effect_color = water_color,
     paramtype = "light",
     walkable = false,
@@ -327,7 +327,7 @@ minetest.register_node("sbz_resources:water_flowing", {
         }
     },
     use_texture_alpha = "blend",
-    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
+    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, water = 1 },
     post_effect_color = water_color,
     paramtype = "light",
     paramtype2 = "flowingliquid",

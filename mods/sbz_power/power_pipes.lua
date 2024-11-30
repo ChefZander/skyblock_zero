@@ -31,7 +31,7 @@ minetest.register_node("sbz_power:power_pipe", {
     paramtype = "light",
     sunlight_propagates = true,
 
-    groups = { matter = 1, cracky = 3, pipe_connects = 1, pipe_conducts = 1 },
+    groups = { matter = 1, cracky = 3, pipe_connects = 1, pipe_conducts = 1, habitat_conducts = 1, explody = 100 },
 
     node_box = {
         type = "connected",
@@ -53,3 +53,31 @@ minetest.register_craft({
     output = "sbz_power:power_pipe",
     recipe = { "sbz_resources:raw_emittrium", "sbz_resources:matter_plate" }
 })
+
+
+minetest.register_node("sbz_power:airtight_power_cable", {
+    description = "Airtight Emittrium Power Cable",
+    connects_to = { "group:pipe_connects" },
+    connect_sides = { "top", "bottom", "front", "left", "back", "right" },
+
+    tiles = { "airtight_power_cable.png" },
+
+    drawtype = "mesh",
+    mesh = "voxelmodel.obj",
+    light_source = 3,
+    paramtype = "light",
+    paramtype2 = "wallmounted",
+    sunlight_propagates = true,
+
+    groups = { matter = 1, cracky = 3, pipe_connects = 1, pipe_conducts = 1, habitat_conducts = 0, explody = 100, },
+
+    use_texture_alpha = "clip",
+})
+
+minetest.register_craft {
+    output = "sbz_power:airtight_power_cable",
+    type = "shapeless",
+    recipe = {
+        "sbz_power:power_pipe", "sbz_resources:emittrium_glass",
+    }
+}

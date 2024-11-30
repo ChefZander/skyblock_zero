@@ -14,6 +14,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     local demand = 0
     local plants = {}
     local co2_sources = {}
+
     sbz_api.vm_begin()
 
     while not queue:is_empty() and size < habitat_max_size do
@@ -42,7 +43,23 @@ function sbz_api.assemble_habitat(start_pos, seen)
         end
     end
 
-    if not queue:is_empty() then return end
+    if not queue:is_empty() then
+        core.add_particlespawner {
+            amount = 20,
+            time = 1,
+            collisiondetection = true,
+            texture = "star.png^[colorize:red",
+            glow = 14,
+            pos = start_pos,
+            attract = {
+                kind = "point",
+                origin = start_pos,
+                strength = -2,
+            },
+            radius = (math.sqrt(2) + 0.1) / 2
+        }
+        return
+    end
     if (size - 1) == 0 then return end
     return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand }
 end
@@ -52,7 +69,11 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
     local habitat = sbz_api.assemble_habitat(start_pos)
     if not habitat then
         meta:set_string("infotext",
-            ("Habitat unenclosed or too large (max size is %s nodes) or there are multiple habitat regulators in the same habitat.\nMake sure the habitat is fully sealed.")
+            (
+                [[
+Habitat unenclosed or too large (max size is %s nodes) or there are multiple habitat regulators in the same habitat.
+Make sure the habitat is fully sealed. And make sure things like slabs or non-airtight power wires aren't in the walls.
+]])
             :format(
                 habitat_max_size))
         return
