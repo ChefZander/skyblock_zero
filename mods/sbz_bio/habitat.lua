@@ -95,8 +95,8 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
             end
             touched_nodes[hash(pos)] = time
         end
-        local co2_supply_temp = meta:get_int("co2_supply_temp") + co2
-        local co2_supply = meta:get_int("co2_supply")
+        co2_supply_temp = meta:get_int("co2_supply_temp") + co2
+        co2_supply = meta:get_int("co2_supply")
         if stage == 0 then
             co2_supply = co2_supply_temp
             meta:set_int("co2_supply", co2_supply)
