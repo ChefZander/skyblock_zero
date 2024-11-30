@@ -30,7 +30,7 @@ return {
         type = "quest",
         title = "Sprouting Plants",
         text =
-        "You'll also need to craft the algae on your pool into fertilizer. This is useful for speeding up plant growth, or for forcing dormant seeds in the dirt to germinate.",
+        "You'll also need to craft the algae on your pool into fertilizer. This is useful for forcing dormant seeds in the non-fertilized dirt to germinate.",
         requires = { "Liquid Water" }
     },
     {
@@ -45,6 +45,18 @@ Plants also need three things: water next to the node they're on, heat from near
 Also, you can use the airtight power cable to deliver power to the switching station. And also make sure to not put things like slabs or stairs in the walls.
 ]],
         requires = { "Switching Station", "Emittrium Glass", "Dirt", "Sprouting Plants" }
+    },
+    {
+        type = "quest",
+        title = "Fertilized Dirt",
+        text = [[
+I'm guessing you want to grow plants faster now, don't worry, there is a solution!
+
+You can craft fertilized dirt with 4 algae and 1 dirt, and boom, you have 3x faster dirt.
+But there is a catch, the growth will be 3x faster, but so will the co2 consumbtion.
+And you also can't fertilize the dirt, to germinate the dormant seeds, you have to manually place your plant.
+]],
+        requires = { "Growing Plants" }
     },
     {
         type = "quest",
