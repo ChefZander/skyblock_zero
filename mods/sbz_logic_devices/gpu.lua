@@ -38,7 +38,6 @@ minetest.register_privilege("place_gpus_unlimited", {
     give_to_singleplayer = false,
 })
 
-
 local area_vec = vector.new(a, a, a)
 
 local function after_place_node(pos, placer)

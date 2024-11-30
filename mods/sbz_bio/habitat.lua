@@ -59,22 +59,26 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
     end
 
     local co2 = 0
-    for _, v in ipairs(habitat.co2_sources) do
-        local pos, node = unpack(v)
-        if stage == PcgRandom(hash(pos)):next(0, 9) then
-            co2 = co2 +
-                minetest.registered_nodes[node.name].co2_action(pos, node)
+    local co2_supply_temp = 0
+    local co2_supply = 0
+    if meta:get_int("atmospheric_co2") < habitat.size then
+        for _, v in ipairs(habitat.co2_sources) do
+            local pos, node = unpack(v)
+            if stage == PcgRandom(hash(pos)):next(0, 9) then
+                co2 = co2 +
+                    minetest.registered_nodes[node.name].co2_action(pos, node)
+            end
+            touched_nodes[hash(pos)] = time
         end
-        touched_nodes[hash(pos)] = time
-    end
-    local co2_supply_temp = meta:get_int("co2_supply_temp") + co2
-    local co2_supply = meta:get_int("co2_supply")
-    if stage == 0 then
-        co2_supply = co2_supply_temp
-        meta:set_int("co2_supply", co2_supply)
-        meta:set_int("co2_supply_temp", 0)
-    else
-        meta:set_int("co2_supply_temp", co2_supply_temp)
+        local co2_supply_temp = meta:get_int("co2_supply_temp") + co2
+        local co2_supply = meta:get_int("co2_supply")
+        if stage == 0 then
+            co2_supply = co2_supply_temp
+            meta:set_int("co2_supply", co2_supply)
+            meta:set_int("co2_supply_temp", 0)
+        else
+            meta:set_int("co2_supply_temp", co2_supply_temp)
+        end
     end
 
     co2 = co2 + meta:get_int("atmospheric_co2")
@@ -96,10 +100,10 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
 
     meta:set_string("infotext", table.concat({
         "CO2 supply: ", math.max(co2_supply, co2_supply_temp),
-        "CO2 demand: ", habitat.demand,
-        "Habitat CO2: ", co2 .. "/" .. habitat.size,
-        "Habitat size: ", habitat.size
-    }, "\n"))
+        "\nCO2 demand: ", habitat.demand,
+        "\nHabitat CO2: ", co2 .. "/" .. habitat.size,
+        "\nHabitat size: ", habitat.size
+    }))
 end
 
 sbz_api.register_machine("sbz_bio:habitat_regulator", {
