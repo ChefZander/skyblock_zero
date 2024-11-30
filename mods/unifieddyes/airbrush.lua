@@ -18,7 +18,7 @@ minetest.register_node("unifieddyes:colorium_blob", unifieddyes.def {
 		"blank.png^[invert:rgba"
 	},
 	light_source = 14,
-	info_extra = "A pure white node, similar to neutronium.",
+	info_extra = "A pure white colorable node.",
 	groups = { matter = 1, antimatter = 1 }
 })
 minetest.register_craft {
