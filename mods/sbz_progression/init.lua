@@ -1,9 +1,14 @@
+sbz_progression = {}
+
 minetest.log("action", "sbz progression: init")
 local modpath = minetest.get_modpath("sbz_progression")
 
 dofile(modpath .. "/quests.lua")
 dofile(modpath .. "/questbook.lua")
 dofile(modpath .. "/annoy.lua")
+
+local mod_storage = core.get_mod_storage()
+sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
 
 function displayDialogueLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
@@ -25,7 +30,7 @@ displayGlobalDialougeLine = displayGlobalDialogueLine
 
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
-local achievment_table = {
+local achievement_table = {
     ["sbz_resources:matter_blob"] = "A bigger platform",
     ["sbz_resources:matter_stair"] = "Matter Stairs",
     ["sbz_resources:antimatter_dust"] = "Antimatter",
@@ -114,12 +119,11 @@ local achievment_table = {
     ["sbz_resources:jetpack"] = "Jetpack",
     ["sbz_resources:drill"] = "Electric Drill",
     ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
-    ["sbz_resources:strange_cleaner"] = "Strange Blob Cleaner",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-    if achievment_table[itemstack:get_name()] then
-        unlock_achievement(player:get_player_name(), achievment_table[itemstack:get_name()])
+    if achievement_table[itemstack:get_name()] then
+        unlock_achievement(player:get_player_name(), achievement_table[itemstack:get_name()])
     end
 end)
 
@@ -127,27 +131,15 @@ minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
         -- pos stuff
         local pos = player:get_pos()
-        if pos.y < -100 then
+        if pos.y < sbz_progression.lowest_node - 100 then
             unlock_achievement(player:get_player_name(), "Emptiness")
         end
-        if pos.y < -110 then
+        if pos.y < sbz_progression.lowest_node - 110 then
             displayDialougeLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({ x = 0, y = 1, z = 0 })
         end
     end
 end)
-
-local achievment_in_inventory_table = {
-    ["sbz_chem:gold_powder"] = "It's fake",
-    ["sbz_chem:bronze_powder"] = "Bronze Age",
-    ["sbz_chem:water_fluid_cell"] = "Liquid Water",
-    ["sbz_bio:stemfruit"] = "Stemfruit",
-}
-
-local achievment_on_dig_table = {
-    ["sbz_meteorites:antineutronium"] = "Antineutronium",
-    ["sbz_resources:strange_blob"] = "It's strange..."
-}
 
 minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)
     local itemstack
@@ -158,15 +150,22 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
     end
     local player_name = player:get_player_name()
     local itemname = itemstack:get_name()
-    if achievment_in_inventory_table[itemname] then
-        unlock_achievement(player_name, achievment_in_inventory_table[itemname])
+    if itemname == "sbz_chem:gold_powder" then
+        unlock_achievement(player_name, "It's fake")
+    elseif itemname == "sbz_chem:bronze_powder" then
+        unlock_achievement(player_name, "Bronze Age")
+    elseif itemstack:get_name() == "sbz_meteorites:antineutronium" then
+        unlock_achievement(player_name, "Antineutronium")
+    elseif itemname == "sbz_chem:water_fluid_cell" then
+        unlock_achievement(player_name, "Liquid Water")
+    elseif itemname == "sbz_bio:stemfruit" then
+        unlock_achievement(player_name, "Stemfruit")
     end
 end)
 
-minetest.register_on_dignode(function(pos, oldnode, digger)
-    local player_name = digger:get_player_name()
-    local itemname = oldnode.name
-    if achievment_on_dig_table[itemname] then
-        unlock_achievement(player_name, achievment_on_dig_table[itemname])
-    end
+core.register_on_placenode(function(pos, newnode, _, _, _, _)
+    if newnode.name == "sbz_resources:emitter" then return end
+    if pos.y >= sbz_progression.lowest_node then return end
+    sbz_progression.lowest_node = pos.y
+    mod_storage:set_int("lowest_node", pos.y)
 end)
