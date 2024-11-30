@@ -153,7 +153,7 @@ sbz_api.register_plant("pyrograss", {
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
-    groups = { burn = 10 },
+    groups = { burn = 30 },
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", { "group:soil" })
 })
 

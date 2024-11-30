@@ -43,6 +43,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     end
 
     if not queue:is_empty() then return end
+    if (size - 1) == 0 then return end
     return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand }
 end
 
@@ -95,10 +96,10 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
 
     meta:set_string("infotext", table.concat({
         "CO2 supply: ", math.max(co2_supply, co2_supply_temp),
-        "\nCO2 demand: ", habitat.demand,
-        "\nAtmospheric CO2: ", co2,
-        "\nHabitat size: ", habitat.size
-    }))
+        "CO2 demand: ", habitat.demand,
+        "Habitat CO2: ", co2 .. "/" .. habitat.size,
+        "Habitat size: ", habitat.size
+    }, "\n"))
 end
 
 sbz_api.register_machine("sbz_bio:habitat_regulator", {

@@ -49,7 +49,11 @@ Plants also need three things: water next to the node they're on, heat from near
         text = [[
 So now that you have a habitat, all you've got to do is use some fertilizer on some dirt inside it. Keep trying until you get a sort of purple grass - this is Pyrograss, a hardy yet very flammable monocotyledon. Wait for it to grow to full height and then harvest it.
 	
-There is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary. Some items are better than others, try out a few and see what works best!]],
+There is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary. Some items are better than others, try out a few and see what works best!
+Keep in mind, the excess co2 produced by the burner will stay in the habitat, so this means you can have a burner running, and it would build up co2 in the habitat.
+
+The size of the habitat determines how much co2 it can hold.
+]],
         requires = { "Growing Plants", "Annihilator" }
     },
     {
@@ -91,6 +95,7 @@ So, how do you grow them:
 
 Unlike plants, it does not need to be inside a habitat regulator.
 Achievment will unlock when your tree grows.
+And also, colorium trunks can be used in the burner.
 ]],
         requires = { "Neutronium" },
     },
