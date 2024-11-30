@@ -17,12 +17,16 @@ local fert_use = function(itemstack, user, pointed)
     if not (sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos)) then return end
 
     if minetest.get_item_group(name, "soil") > 0
-        and minetest.registered_nodes[minetest.get_node(pos + up).name].buildable_to then
+        and minetest.registered_nodes[minetest.get_node(pos + up).name].buildable_to
+        and name ~= "sbz_bio:fertilized_dirt"
+    then
         minetest.set_node(pos + up, { name = sprouts[math.random(#sprouts)] })
-    elseif minetest.get_item_group(name, "plant") > 0 and def.grow then
-        def.grow(pointed.under, node)
+        --   elseif minetest.get_item_group(name, "plant") > 0 and def.grow then
+        --        def.grow(pos, node)
     elseif minetest.get_item_group(name, "sapling") > 0 then
-        def.grow(pointed.under)
+        def.grow(pos)
+    elseif def.spread then
+        if def.spread(pos) == false then return end
     else
         return
     end
@@ -59,7 +63,13 @@ function sbz_api.plant_growth_tick(num_ticks)
         if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos) then
             local meta = minetest.get_meta(pos)
             local count = meta:get_int("count") + 1
-            if count >= num_ticks then
+
+            local under = vector.copy(pos)
+            under.y = under.y - 1
+
+            local soil = core.get_item_group((sbz_api.get_node_force(under) or { name = "lol" }).name, "soil")
+
+            if count >= (num_ticks / soil) then
                 count = 0
                 minetest.registered_nodes[node.name].grow(pos, node)
             end
@@ -172,7 +182,7 @@ sbz_api.register_plant("stemfruit_plant", {
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
-    groups = { burn = 6 },
+    groups = { burn = 12 },
     on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
 })
 

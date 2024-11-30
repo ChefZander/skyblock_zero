@@ -337,8 +337,10 @@ function count_nodes_within_radius(pos, nodenames, radius)
     return #core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)
 end
 
+-- returns the first node pos
 function is_node_within_radius(pos, nodenames, radius)
-    return count_nodes_within_radius(pos, nodenames, radius) > 0
+    local radius_vector = vector.new(radius, radius, radius)
+    return core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)[1]
 end
 
 -- mapgen aliases

@@ -23,6 +23,9 @@ function sbz_api.assemble_habitat(start_pos, seen)
         local name = node.name
         if minetest.get_item_group(name, "plant") > 0 then
             local d = minetest.get_item_group(name, "needs_co2")
+            local under = vector.subtract(pos, vector.new(0, 1, 0))
+            local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "invalid" }).name, "soil")
+            d = math.ceil(d * (1.5 * soil))
             table.insert(plants, { pos, node, d })
             demand = demand + d
         elseif minetest.get_item_group(name, "co2_source") > 0 then
@@ -61,6 +64,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
         return
     end
     if (size - 1) == 0 then return end
+
     return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand }
 end
 
@@ -105,7 +109,10 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
     co2 = co2 + meta:get_int("atmospheric_co2")
     for _, v in ipairs(habitat.plants) do
         local pos, node, d = unpack(v)
-        if stage == PcgRandom(hash(pos)):next(0, 9) then
+        local under = vector.subtract(pos, vector.new(0, 1, 0))
+        local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "invalid" }).name, "soil")
+
+        if (stage == PcgRandom(hash(pos)):next(0, 9)) then
             if co2 - d >= 0 then
                 co2 = co2 - d
                 local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
