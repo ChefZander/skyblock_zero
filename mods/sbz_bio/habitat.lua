@@ -97,13 +97,13 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
         end
         co2_supply_temp = meta:get_int("co2_supply_temp") + co2
         co2_supply = meta:get_int("co2_supply")
-        if stage == 0 then
-            co2_supply = co2_supply_temp
-            meta:set_int("co2_supply", co2_supply)
-            meta:set_int("co2_supply_temp", 0)
-        else
-            meta:set_int("co2_supply_temp", co2_supply_temp)
-        end
+    end
+    if stage == 0 then
+        co2_supply = co2_supply_temp
+        meta:set_int("co2_supply", co2_supply)
+        meta:set_int("co2_supply_temp", 0)
+    else
+        meta:set_int("co2_supply_temp", co2_supply_temp)
     end
 
     co2 = co2 + meta:get_int("atmospheric_co2")
