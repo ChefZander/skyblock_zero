@@ -102,6 +102,7 @@ function stairs.register(name, reg_def)
 		local def_copy = table.copy(def)
 		def_copy.groups[v] = 1
 		def_copy.groups.not_in_creative_inventory = 1
+		def_copy.groups.habitat_conducts = 1
 		for k, v in pairs(unifieddyes.def {
 			description = def_copy.description .. " " .. internal2human(v),
 			drawtype = "nodebox",
@@ -173,7 +174,7 @@ function stairs.register(name, reg_def)
 				type = "leveled",
 				fixed = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 }
 			},
-			tiles = set_textures(c.tiles, reg_def.align)
+			tiles = set_textures(c.tiles, reg_def.align),
 		} do
 			c[k] = v
 		end

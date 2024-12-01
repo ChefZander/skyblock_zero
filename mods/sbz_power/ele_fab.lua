@@ -149,6 +149,8 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
         return power_needed
     end,
+    input_inv = "input",
+    output_inv = "output",
     groups = {
         matter = 1,
     }

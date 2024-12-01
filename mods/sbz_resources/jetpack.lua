@@ -12,10 +12,12 @@ local jetpack_charge_per_1_wear = math.floor(65535 / jetpack_full_charge)
 
 
 local function edit_stack_image(user, stack)
-    if jetpack_users[user] then
-        stack:get_meta():set_string("inventory_image", "jetpack_on.png")
-    else
-        stack:get_meta():set_string("inventory_image", "jetpack_off.png")
+    if stack:get_name() == "sbz_resources:jetpack" then
+        if jetpack_users[user] then
+            stack:get_meta():set_string("inventory_image", "jetpack_on.png")
+        else
+            stack:get_meta():set_string("inventory_image", "jetpack_off.png")
+        end
     end
 end
 

@@ -6,7 +6,10 @@ minetest.register_node("sbz_decor:photonlamp", {
     drawtype = "mesh",
     mesh = "photonlamp.obj",
     tiles = { "photonlamp.png" },
-    groups = { matter = 1 },
+    groups = {
+        matter = 1,
+        habitat_conducts = 1,
+    },
     light_source = 14,
     selection_box = {
         type = "fixed",
@@ -113,7 +116,7 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
     description = "Matter Ladder",
     info_extra = "", -- idk if this is required but leaving it here anyway
     drawtype = "nodebox",
-    node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
+    node_box = {     -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
         type = "fixed",
         fixed = {
             { -0.5,   -0.5,    0.375, -0.375, 0.5,     0.5 }, -- NodeBox1
@@ -132,7 +135,11 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
     },
     tiles = { "matter_blob.png" },
     inventory_image = "ladder.png",
-    groups = { matter = 3, explody = 3 },
+    groups = {
+        matter = 3,
+        explody = 3,
+        habitat_conducts = 1,
+    },
     paramtype = "light",
     paramtype2 = "wallmounted",
     sunlight_propagates = true,

@@ -20,8 +20,7 @@ end
 
 function sbz_api.is_hydrated(pos)
     pos = pos - vector.new(0, 1, 0)
-    return is_node_within_radius(pos, "sbz_resources:water_source", 2) or
-        is_node_within_radius(pos, "sbz_resources:water_flowing", 2)
+    return is_node_within_radius(pos, "group:water", 2)
 end
 
 local modpath = minetest.get_modpath("sbz_bio")

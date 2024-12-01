@@ -12,7 +12,7 @@ function sbz_api.add_tube_support(def)
     if (def.input_inv or def.output_inv) and not def.disallow_pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
-        if def.input_inv and def.output_inv then
+        if def.input_inv or def.output_inv then
             def.tube = def.tube or {
                 insert_object = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)

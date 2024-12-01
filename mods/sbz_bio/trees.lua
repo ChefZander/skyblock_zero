@@ -258,7 +258,6 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", {
         matter = 3,
         oddly_breakable_by_hand = 3,
         burn = 10,
-        habitat_conducts = 1,
         transparent = 1,
         explody = 10,
         tree = 1,
