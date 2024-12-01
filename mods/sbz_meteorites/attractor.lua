@@ -1,11 +1,17 @@
 local elapsed = 0
-local attractiveItem = "sbz_meteorites:neutronium" -- temporary and subject to change
 
 local function attract_meteorites(pos, dtime, t)
     elapsed = elapsed + dtime
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
-        if (obj:is_player() and obj:get_wielded_item():to_string() == attractiveItem) or (obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:meteorite") then
-            obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos))
+        if (obj:is_player() and obj:get_wielded_item()) or (obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:meteorite") then
+            local magnitude = 256
+            if obj:is_player() then
+                local wielded_item = obj:get_wielded_item()
+                if wielded_item:is_empty() then return end
+                magnitude = wielded_item:get_definition().groups.attraction
+                if not magnitude then return end
+            end
+            obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
             if elapsed > 1 then
                 minetest.add_particlespawner({
                     time = 1,
@@ -76,7 +82,7 @@ minetest.register_node("sbz_meteorites:gravitational_attractor", {
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 7,
-    groups = { gravity = 100, matter = 1, cracky = 3, charged = 1 },
+    groups = { gravity = 100, matter = 1, cracky = 3, charged = 1,  attraction = 512 },
     on_construct = function(pos)
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
@@ -101,7 +107,7 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 7,
-    groups = { antigravity = 1, antimatter = 1, cracky = 3, charged = 1 },
+    groups = { antigravity = 1, antimatter = 1, cracky = 3, charged = 1, attraction = -512 },
     on_construct = function(pos)
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
@@ -120,5 +126,5 @@ minetest.register_craft({
 function sbz_api.get_attraction(pos1, pos2)
     local dir = pos2 - pos1
     local length = vector.length(dir)
-    return vector.normalize(dir) * (length ~= 0 and (16 / length) or 0) ^ 2
+    return vector.normalize(dir) * (length ~= 0 and (length^(-2)) or 0)
 end
