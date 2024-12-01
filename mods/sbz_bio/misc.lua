@@ -18,7 +18,8 @@ minetest.register_node("sbz_bio:burner", sbz_api.add_tube_support({
         )
     end,
     co2_action = function(pos)
-        local inv = minetest.get_meta(pos):get_inventory()
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
         local itemstack = inv:get_stack("main", 1)
         if itemstack:is_empty() then return 0 end
         local output = minetest.get_item_group(itemstack:get_name(), "burn")

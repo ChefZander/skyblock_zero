@@ -233,7 +233,7 @@ pipeworks.register_wielder({
             fakeplayer:set_wielded_item("")
         end
     end,
-    cost = 40
+    cost = 20
 })
 
 pipeworks.register_wielder({
@@ -263,7 +263,7 @@ pipeworks.register_wielder({
             end
         end
     end,
-    cost = 40
+    cost = 20
 })
 
 pipeworks.register_wielder({

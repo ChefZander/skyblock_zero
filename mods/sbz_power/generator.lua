@@ -285,6 +285,7 @@ sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
         "antimatter_gen_side.png"
     },
     input_inv = "input",
+    output_inv = "input",
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()

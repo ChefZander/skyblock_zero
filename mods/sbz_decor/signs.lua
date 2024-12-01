@@ -6,7 +6,13 @@ signs_lib.register_sign("sbz_decor:antimatter_sign", {
         "antimatter_sign_edges.png",
     },
     entity_info = "standard",
-    groups = { matter = 1, antimatter = 1, explody = 5, sign_logic_compatible = 1 },
+    groups = {
+        matter = 1,
+        antimatter = 1,
+        explody = 5,
+        sign_logic_compatible = 1,
+        habitat_conducts = 1,
+    },
     locked = true,
 
     allow_widefont = true,
@@ -21,7 +27,13 @@ signs_lib.register_sign("sbz_decor:matter_sign", {
         "antimatter_sign_edges.png^[invert:rgb",
     },
     entity_info = "standard",
-    groups = { matter = 1, antimatter = 1, explody = 5, sign_logic_compatible = 1 },
+    groups = {
+        matter = 1,
+        antimatter = 1,
+        explody = 5,
+        sign_logic_compatible = 1,
+        habitat_conducts = 1,
+    },
     locked = true,
     default_color = "f",
 

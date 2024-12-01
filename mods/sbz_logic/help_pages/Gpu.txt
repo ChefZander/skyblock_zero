@@ -292,3 +292,34 @@ $C1})</mono>
 See <action name=url url=https://en.wikipedia.org/wiki/Kernel_(image_processing)>https://en.wikipedia.org/wiki/Kernel_(image_processing)</action>
 Can be laggy
 
+<b>Shaders</b>
+$C1<mono>send_to(links.gpu,{
+$C1    type = "shader",
+$C1    index = 1,
+$C1    shader = "return {r=0,g=0,b=0}"
+$C1})</mono>
+
+They apply a shader... now this one is a little complicated....
+It iterates the lua code over all the pixels in that buffer.
+The lua code must return a table of {r=int,g=int,b=int} and must not have any strings (or blocky comments) because i didn't want to deal with them.
+The code is limited to 500 instructions
+
+The environment is immutable, and very simple:
+- math.* - includes everything from math.* but without math.randomseed
+- buffer[index(x,y)] - gives you the pixel at coordinates x, y
+- index(x,y) - helps you index the buffer
+
+Use local variables when trying to do anything
+Shaders are async, so if you do something like:
+1) create buffer at index 1 with color "black"
+2) apply shader
+3) send_png
+
+then it will not do what you would expect... it will just give you a black png
+
+To solve this, you need to do something like this:
+
+1) Create buffer at index 1 with color "black"
+2) apply shader
+3) wait 0.5 seconds or listen for a { type = "shader_complete", err = string[]|nil } message
+4) send_png

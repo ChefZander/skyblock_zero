@@ -332,43 +332,15 @@ minetest.register_globalstep(function(_)
 end)
 
 -- inter-mod utils
-function is_node_within_radius(pos, itemstring, radius)
-    for dx = -radius, radius do
-        for dy = -radius, radius do
-            for dz = -radius, radius do
-                local current_pos = {
-                    x = pos.x + dx,
-                    y = pos.y + dy,
-                    z = pos.z + dz
-                }
-                local node = minetest.get_node(current_pos)
-                if node.name == itemstring then
-                    return true
-                end
-            end
-        end
-    end
-    return false
+function count_nodes_within_radius(pos, nodenames, radius)
+    local radius_vector = vector.new(radius, radius, radius)
+    return #core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)
 end
 
-function count_nodes_within_radius(pos, itemstring, radius)
-    local count = 0
-    for dx = -radius, radius do
-        for dy = -radius, radius do
-            for dz = -radius, radius do
-                local current_pos = {
-                    x = pos.x + dx,
-                    y = pos.y + dy,
-                    z = pos.z + dz
-                }
-                local node = minetest.get_node(current_pos)
-                if node.name == itemstring then
-                    count = count + 1
-                end
-            end
-        end
-    end
-    return count
+-- returns the first node pos
+function is_node_within_radius(pos, nodenames, radius)
+    local radius_vector = vector.new(radius, radius, radius)
+    return core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)[1]
 end
 
 -- mapgen aliases
@@ -447,4 +419,33 @@ sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, 
         end
     end
     return returning
+end
+
+--- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
+---@param pos vector
+---@param power number
+---@param r number
+---@param async boolean
+sbz_api.explode = function(pos, r, power, async, owner)
+    owner = owner or ""
+    for _ = 1, 500 do
+        local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false)
+        local wear = 0
+        for pointed in raycast do
+            if pointed.type == "node" then
+                local nodename = minetest.get_node(pointed.under).name
+                wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
+                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
+                --although this is very random
+                if wear > power or minetest.is_protected(pointed.under, owner) then break end
+                minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+            end
+        end
+    end
+    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, r)) do
+        if obj:is_player() then
+            local dir = obj:get_pos() - pos
+            obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 0.5 * (r - vector.length(dir)))
+        end
+    end
 end

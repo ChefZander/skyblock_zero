@@ -46,12 +46,12 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, s
         outimgs[vti[v]] = ends[v]
     end
 
-    local tgroups = { matter = 2, snappy = 3, tube = 1, tubedevice = 1, not_in_creative_inventory = 1, dig_generic = 4, axey = 1, handy = 1, pickaxey = 1 }
+    local tgroups = { matter = 2, snappy = 3, tube = 1, tubedevice = 1, not_in_creative_inventory = 1, dig_generic = 4, axey = 1, handy = 1, pickaxey = 1, habitat_conducts = 1 }
     local tubedesc = string.format("%s %s", desc, dump(connects))
     local wscale = { x = 1, y = 1, z = 1 }
 
     if #connects == 0 then
-        tgroups = { matter = 2, snappy = 3, tube = 1, tubedevice = 1, dig_generic = 4, axey = 1, handy = 1, pickaxey = 1 }
+        tgroups = { matter = 2, snappy = 3, tube = 1, tubedevice = 1, dig_generic = 4, axey = 1, handy = 1, pickaxey = 1, habitat_conducts = 1 }
         tubedesc = desc
         outboxes = pipeworks.tube_short
         outimgs = {

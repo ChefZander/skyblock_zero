@@ -33,6 +33,9 @@ minetest.register_on_mods_loaded(function()
                 new_desc[#new_desc + 1] =
                 "This chemical is disabled.\nThis means that you won't be able to obtain it anymore, but it may receive a use in the future."
             end
+            if v.groups.burn ~= nil then
+                new_desc[#new_desc + 1] = "Burn power: " .. v.groups.burn .. " co2"
+            end
             if v.groups.explody then explody = true end
         end
 

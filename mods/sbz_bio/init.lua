@@ -3,6 +3,7 @@ function sbz_api.get_node_heat(pos)
 end
 
 function sbz_api.is_sky_exposed(pos)
+    --[[
     local dir = vector.random_direction()
     dir.y = math.abs(dir.y) --not downwards
     local ray = minetest.raycast(pos, pos + 200 * dir, false, true)
@@ -13,12 +14,13 @@ function sbz_api.is_sky_exposed(pos)
         end
     end
     return true
+    --]]
+    return true -- i think this is just stupid, why would they need to be exposed to the sky, for what? the sun? we dont have that here theidealist....
 end
 
 function sbz_api.is_hydrated(pos)
     pos = pos - vector.new(0, 1, 0)
-    return is_node_within_radius(pos, "sbz_resources:water_source", 1) or
-        is_node_within_radius(pos, "sbz_resources:water_flowing", 1)
+    return is_node_within_radius(pos, "group:water", 2)
 end
 
 local modpath = minetest.get_modpath("sbz_bio")

@@ -56,10 +56,8 @@ local function register_automatic_categorization()
 		local group = def.groups or {}
 		if not group.not_in_creative_inventory then
 			if group.plant or
-				group.habitat_conducts or
 				group.burn or
 				group.ui_bio or
-				group.habitat_conducts or
 				group.co2_source or
 				group.soil or
 				group.needs_co2
