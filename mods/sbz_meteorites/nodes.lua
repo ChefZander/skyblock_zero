@@ -105,3 +105,23 @@ minetest.register_node("sbz_meteorites:antineutronium", {
     groups = { antigravity = 300, antimatter = 1, charged = 1 },
     sounds = sbz_api.sounds.antimatter(),
 })
+
+
+local core_blob = "sbz_resources:compressed_core_dust"
+minetest.register_craft {
+    output = "sbz_meteorites:neutronium",
+    recipe = {
+        { core_blob, core_blob,                       core_blob },
+        { core_blob, "sbz_meteorites:antineutronium", core_blob },
+        { core_blob, core_blob,                       core_blob },
+    }
+}
+
+minetest.register_craft {
+    output = "sbz_meteorites:antineutronium",
+    recipe = {
+        { core_blob, core_blob,                   core_blob },
+        { core_blob, "sbz_meteorites:neutronium", core_blob },
+        { core_blob, core_blob,                   core_blob },
+    }
+}

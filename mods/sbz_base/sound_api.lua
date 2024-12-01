@@ -23,22 +23,22 @@ register_sound_function("matter", { -- also could be node_stone_defaults
     place = csound("step", 2),
 })
 
-register_sound_function("glass", { 
+register_sound_function("glass", {
     footstep = csound("step", 2),
     place = csound("step", 2),
 })
 
-register_sound_function("dirt", { 
+register_sound_function("dirt", {
     footstep = csound("step", 2),
     place = csound("step", 2),
 })
 
-register_sound_function("tree", { 
+register_sound_function("tree", {
     footstep = csound("step", 2),
     place = csound("step", 2),
 })
 
-register_sound_function("leaves", { 
+register_sound_function("leaves", {
     footstep = csound("step", 2),
     place = csound("step", 2),
 })
