@@ -59,10 +59,10 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
             for _ = 1, 500 do
                 pos = pos + vel * 0.2
                 for _, attractor in ipairs(attractors) do
-                    vel = vel + 0.2 * sbz_api.get_attraction(pos, attractor)
+                    vel = vel + 51.2 * sbz_api.get_attraction(pos, attractor)
                 end
                 for _, repulsor in ipairs(repulsors) do
-                    vel = vel - 0.2 * sbz_api.get_attraction(pos, repulsor)
+                    vel = vel - 51.2 * sbz_api.get_attraction(pos, repulsor)
                 end
                 local collides = minetest.registered_nodes[minetest.get_node(vector.round(pos)).name].walkable
                 for _, player in ipairs(players) do
