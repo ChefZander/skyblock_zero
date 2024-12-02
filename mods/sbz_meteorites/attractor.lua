@@ -8,10 +8,11 @@ local function attract_meteorites(pos, dtime, t)
             if obj:is_player() then
                 local wielded_item = obj:get_wielded_item()
                 if wielded_item:is_empty() then return end
-                magnitude = wielded_item:get_definition().groups.attraction
+                magnitude = (wielded_item:get_definition().groups or {}).attraction
                 if not magnitude then return end
                 magnitude = magnitude * wielded_item:get_count()
             end
+            minetest.debug("GOt here, adding that velocity HELL YAAAA!")
             obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
             if elapsed > 1 then
                 minetest.add_particlespawner({
@@ -39,6 +40,7 @@ local function attract_meteorites(pos, dtime, t)
     end
     if elapsed > 1 then elapsed = 0 end
 end
+
 sbz_api.attract_meteorites = attract_meteorites
 
 minetest.register_entity("sbz_meteorites:gravitational_attractor_entity", {
@@ -83,7 +85,7 @@ minetest.register_node("sbz_meteorites:gravitational_attractor", {
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 7,
-    groups = { gravity = 100, matter = 1, cracky = 3, charged = 1,  attraction = 512 },
+    groups = { gravity = 100, matter = 1, cracky = 3, charged = 1, attraction = 512 },
     on_construct = function(pos)
         minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
     end,
@@ -127,5 +129,5 @@ minetest.register_craft({
 function sbz_api.get_attraction(pos1, pos2)
     local dir = pos2 - pos1
     local length = vector.length(dir)
-    return vector.normalize(dir) * (length ~= 0 and (length^(-2)) or 0)
+    return vector.normalize(dir) * (length ~= 0 and (length ^ (-2)) or 0)
 end
