@@ -3,7 +3,7 @@ core.register_on_mods_loaded(function()
     for k, v in pairs(core.registered_items) do
         local overrides = {}
         if v.type == "node" then
-            local old_after_dig = overrides.after_dig_node or function() end
+            local old_after_dig = v.after_dig_node or function(...) end
             overrides.after_dig_node = function(pos, oldnode, oldmetadata, digger)
                 if oldmetadata.inventory then
                     -- i dont want duping with filter injectors
