@@ -13,6 +13,8 @@ function sbz_api.add_tube_support(def)
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
         if def.input_inv or def.output_inv then
+            def.input_inv = def.input_inv or def.output_inv
+            def.output_inv = def.output_inv or def.input_inv
             def.tube = def.tube or {
                 insert_object = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
@@ -26,7 +28,7 @@ function sbz_api.add_tube_support(def)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
 
-                    if inv:get_list(def.input_inv) then
+                    if inv:get_list(def.input_inv or "") then
                         stack:peek_item(1)
                         return inv:room_for_item(def.input_inv, stack)
                     end
