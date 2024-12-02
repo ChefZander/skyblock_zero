@@ -132,15 +132,30 @@ minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
         -- pos stuff
         local pos = player:get_pos()
-        if pos.y < sbz_progression.lowest_node - 100 then
+        local safetynet_low = (player:get_meta():get_int("dynamic_safetynet") == 1) and sbz_progression.lowest_node or 0
+        if pos.y < safetynet_low - 100 then
             unlock_achievement(player:get_player_name(), "Emptiness")
         end
-        if pos.y < sbz_progression.lowest_node - 110 then
+        if pos.y < safetynet_low - 110 then
             displayDialougeLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({ x = 0, y = 1, z = 0 })
         end
     end
 end)
+
+core.register_chatcommand("dynamic_safetynet", {
+
+    params = "static | dynamic",
+
+    description = "Define threshold for teleporting to core\n(static: y < 110m below core, dynamic: y < 110m below lowest placed node)",
+
+    func = function(name, params)
+        local meta = core.get_player_by_name(name):get_meta()
+        if params == "dynamic" then meta:set_int("dynamic_safetynet", 1); return true, "Successfully changed return threshold.\nYou can reverse this behavior with \"/dynamic_safetynet static\"." end
+        if params == "static" then meta:set_int("dynamic_safetynet", 0); return true, "Successfully changed return threshold." end
+        return false
+    end,
+})
 
 local achievement_in_inventory_table = {
     ["sbz_chem:gold_powder"] = "It's fake",
