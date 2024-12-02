@@ -11,7 +11,7 @@ sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
         if msg.attract ~= msg.attract then return end
         msg.attract = math.max(-max_attract, math.min(max_attract, msg.attract))
         if msg.type == nil or msg.type == "manual" then
-            sbz_api.attract_meteorites(pos, 1, msg.attract)
+            sbz_api.attract_meteorites(pos, 1, msg.attract * 256)
         else
             minetest.get_meta(pos):set_float("attract", msg.attract)
         end
