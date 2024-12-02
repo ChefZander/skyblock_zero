@@ -29,7 +29,7 @@ minetest.register_node("sbz_power:funny_air", {
     -- drops = "" -- nope, intentionally commented out hehehehe, technic did the same thing, i mean this isnt a mod soup so you probably wont be able to obtain it but like yea, heheheheehe
     light_source = 14,
     diggable = false,
-    groups = { not_in_creative_inventory = 1 },
+    groups = { not_in_creative_inventory = 1, habitat_conducts = 1 },
     sunlight_propagates = true,
     walkable = false,
     buildable_to = true,
