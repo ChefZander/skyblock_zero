@@ -31,12 +31,12 @@ sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
             return 0
         else
             if supply > demand + (attract * 10) then
-                meta:set_string("infotext", "Working, power use: " .. attract * 10 .. "Cj")
+                meta:set_string("infotext", "Working, power use: " .. math.abs(attract * 10) .. "Cj")
                 sbz_api.attract_meteorites(pos, dtime, attract * 256)
             else
                 meta:set_string("infotext", "Not enough power")
             end
-            return math.floor(attract * 10)
+            return math.floor(math.abs(attract * 10))
         end
     end,
     action = function() return 0 end,
