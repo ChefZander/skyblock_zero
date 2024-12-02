@@ -131,7 +131,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             for y = -1, 1 do
                 for z = -1, 1 do
                     local node = minetest.get_node(pos + vector.new(x, y, z)).name
-                    if node ~= "ignore" and node ~= "air" then --colliding with something, should explode
+                    if node ~= "ignore" and node ~= "air" and node ~= "sbz_power:funny_air" then --colliding with something, should explode
                         self.object:remove()
                         meteorite_explode(pos, self.type)
                         minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
