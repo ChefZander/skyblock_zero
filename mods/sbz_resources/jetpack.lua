@@ -45,7 +45,7 @@ minetest.register_tool("sbz_resources:jetpack", {
             if jetpack_users[username] then
                 jetpack_users[username] = nil
             else
-                jetpack_users[username] = true
+                jetpack_users[username] = user:get_wield_index()
             end
         else
             minetest.chat_send_player(user:get_player_name(), "Jetpack ran out of charge")
@@ -85,11 +85,12 @@ local speed = player_monoids.speed
 minetest.register_globalstep(function(dtime)
     for player in pairs(jetpack_users) do
         local real_player = minetest.get_player_by_name(player)
-        local wield_item = real_player:get_wielded_item()
-        if wield_item:get_name() ~= "sbz_resources:jetpack" then
+        local slot = jetpack_users[player]
+        local jetpack_item = real_player:get_inventory():get_stack("main", slot)
+        if jetpack_item:get_name() ~= "sbz_resources:jetpack" then
             jetpack_users[player] = nil
         end
-        if wield_item:get_wear() >= 65535 then
+        if jetpack_item:get_wear() >= 65535 then
             jetpack_users[player] = nil
         end
 
@@ -99,8 +100,8 @@ minetest.register_globalstep(function(dtime)
         if (controls.sneak or controls.aux1) and controls.jump and jetpack_users[player] then
             speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
             real_player:add_velocity((jetpack_velocity / 2) * dtime)
-            wield_item:set_wear(math.min(65535,
-                wield_item:get_wear() +
+            jetpack_item:set_wear(math.min(65535,
+                jetpack_item:get_wear() +
                 65535 *
                 ((jetpack_durability_s * (1 / jetpack_durability_save_during_sneak_flight)) ^ -1)
                 * dtime)) -- this works, do not question it
@@ -108,13 +109,14 @@ minetest.register_globalstep(function(dtime)
         elseif controls.jump and jetpack_users[player] then
             speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
             real_player:add_velocity(jetpack_velocity * dtime)
-            wield_item:set_wear(math.min(65535, wield_item:get_wear() + ((65535 * (jetpack_durability_s ^ -1))) * dtime)) -- this works, do not question it
+            jetpack_item:set_wear(math.min(65535,
+                jetpack_item:get_wear() + ((65535 * (jetpack_durability_s ^ -1))) * dtime)) -- this works, do not question it
             num_particles = default_number_of_particles
         else
             speed:del_change(real_player, "sbz_resources:jetpack_boost")
         end
-        edit_stack_image(player, wield_item)
-        real_player:set_wielded_item(wield_item)
+        edit_stack_image(player, jetpack_item)
+        real_player:get_inventory():set_stack("main", slot, jetpack_item)
         if num_particles ~= 0 then
             -- make a effect
             local vel = real_player:get_velocity()

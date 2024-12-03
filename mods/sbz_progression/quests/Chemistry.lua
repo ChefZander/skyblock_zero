@@ -47,7 +47,10 @@ The wear is setup such that it lasts you 3 minutes of constant flying
 
 You can re-fuel your jetpack by clicking on a battery, full repair costs 1000 Cj
 
-Jetpack gets automatically de-activated when you stop having it in your hand or it runs out of wear
+Jetpack gets de-activated when you move it in your inventory during flight, or when it runs out of charge.
+
+Jetpack, originally, used to get automatically de-activated when you stop having it in your hand.
+But that is no longer the case.
 ]],
         requires = { "Neutronium" }
     },

@@ -356,6 +356,7 @@ dofile(MP .. "/override_for_areas.lua")
 dofile(MP .. "/override_descriptions.lua")
 dofile(MP .. "/vm.lua")
 dofile(MP .. "/queue.lua")
+dofile(MP .. "/override_for_other.lua")
 
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev

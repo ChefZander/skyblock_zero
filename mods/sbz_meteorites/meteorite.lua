@@ -1,4 +1,3 @@
---
 local function get_nearby_player(pos)
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
         if obj:is_player() then return obj end
@@ -132,7 +131,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
             for y = -1, 1 do
                 for z = -1, 1 do
                     local node = minetest.get_node(pos + vector.new(x, y, z)).name
-                    if node ~= "ignore" and node ~= "air" then --colliding with something, should explode
+                    if node ~= "ignore" and node ~= "air" and node ~= "sbz_power:funny_air" then --colliding with something, should explode
                         self.object:remove()
                         meteorite_explode(pos, self.type)
                         minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
