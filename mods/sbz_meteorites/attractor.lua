@@ -2,41 +2,47 @@ local elapsed = 0
 
 local function attract_meteorites(pos, dtime, t)
     elapsed = elapsed + dtime
-    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
-        if (obj:is_player() and obj:get_wielded_item()) or (obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:meteorite") then
-            local magnitude = 256
-            if obj:is_player() then
-                local wielded_item = obj:get_wielded_item()
-                if wielded_item:is_empty() then return end
-                magnitude = (wielded_item:get_definition().groups or {}).attraction
-                if not magnitude then return end
-                magnitude = magnitude * wielded_item:get_count()
-            end
-            minetest.debug("GOt here, adding that velocity HELL YAAAA!")
-            obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
-            if elapsed > 1 then
-                minetest.add_particlespawner({
-                    time = 1,
-                    amount = math.floor(vector.distance(pos, obj:get_pos()) / 2),
-                    exptime = 2,
-                    size = { min = 2, max = 4 },
-                    drag = 3,
-                    pos = { min = pos, max = obj:get_pos() },
-                    texture = "meteorite_trail_emitter.png" ..
-                        (t < 0 and "^[colorize:#ffcccc:alpha" or "^[colorize:#888888:alpha"),
-                    animation = { type = "vertical_frames", aspect_width = 4, aspect_height = 4, length = -1 },
-                    glow = 7,
-                    attract = {
-                        kind = "line",
-                        origin = vector.zero(),
-                        origin_attached = obj,
-                        direction = pos - obj:get_pos(),
-                        strength = 3,
-                        die_on_contact = false
-                    }
-                })
-            end
+
+    local function inner_loop(obj)
+        if not ((obj:is_player() and obj:get_wielded_item()) or
+                (obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:meteorite")) then
+            return
         end
+
+        local magnitude = 256
+        if obj:is_player() then
+            local wielded_item = obj:get_wielded_item()
+            if wielded_item:is_empty() then return end
+            magnitude = (wielded_item:get_definition().groups or {}).attraction
+            if not magnitude then return end
+            magnitude = magnitude * wielded_item:get_count()
+        end
+        obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
+        if elapsed > 1 then
+            minetest.add_particlespawner({
+                time = 1,
+                amount = math.floor(vector.distance(pos, obj:get_pos()) / 2),
+                exptime = 2,
+                size = { min = 2, max = 4 },
+                drag = 3,
+                pos = { min = pos, max = obj:get_pos() },
+                texture = "meteorite_trail_emitter.png" ..
+                    (t < 0 and "^[colorize:#ffcccc:alpha" or "^[colorize:#888888:alpha"),
+                animation = { type = "vertical_frames", aspect_width = 4, aspect_height = 4, length = -1 },
+                glow = 7,
+                attract = {
+                    kind = "line",
+                    origin = vector.zero(),
+                    origin_attached = obj,
+                    direction = pos - obj:get_pos(),
+                    strength = 3,
+                    die_on_contact = false
+                }
+            })
+        end
+    end
+    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
+        inner_loop(obj)
     end
     if elapsed > 1 then elapsed = 0 end
 end
