@@ -47,6 +47,13 @@ local ruleset_chars = {
     ["d"] = 6,
 }
 
+local set_node = function(pos, node)
+    local node_at_pos = minetest.get_node(pos)
+    if minetest.registered_nodes[node_at_pos.name].buildable_to then
+        minetest.set_node(pos, node)
+    end
+end
+
 -- not exactly up to spec but good enough
 local function interpret_dna(start_pos, dna)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
@@ -58,36 +65,36 @@ local function interpret_dna(start_pos, dna)
     if type(dna.trunk) == "string" then dna.trunk = { name = dna.trunk } end
     if type(dna.leaves) == "string" then dna.leaves = { name = dna.leaves } end
     local function spawn_leaves(pos)
-        minetest.set_node(pos, dna.leaves)
+        set_node(pos, dna.leaves)
     end
 
     local function spawn_trunk(pos, branches)
         if dna.thin_branches and branches == false then
-            minetest.set_node(pos, dna.branch or dna.trunk)
+            set_node(pos, dna.branch or dna.trunk)
         else
             if not trunk_type or trunk_type == "single" then
-                minetest.set_node(pos, dna.trunk)
+                set_node(pos, dna.trunk)
             elseif trunk_type == "double" then
                 local tmppos = vector.copy(pos)
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.z = tmppos.z + 1
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.x = tmppos.x + 1
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.z = tmppos.z - 1
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
             elseif trunk_type == "crossed" then
                 local tmppos = vector.copy(pos)
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.x = tmppos.x - 1
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.x = tmppos.x + 2
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.x = tmppos.x - 1
                 tmppos.z = tmppos.z - 1
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
                 tmppos.z = tmppos.z + 2
-                minetest.set_node(tmppos, dna.trunk)
+                set_node(tmppos, dna.trunk)
             end
         end
 
