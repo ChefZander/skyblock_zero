@@ -9,20 +9,24 @@ local ruleset_chars = {
     ["d"] = 6,
 }
 
-local set_node = function(pos, node, leafnode)
-    local node_at_pos = minetest.get_node(pos)
-    if minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode then
-        minetest.set_node(vector.round(pos), node)
-    end
-end
 
 -- not exactly up to spec but good enough
-local function lsystem(start_pos, dna)
+local function lsystem(start_pos, dna, owner)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
     local angle, trunk_type = dna.angle, dna.trunk_type
 
     dna = table.copy(dna)
     local stack_info = {}
+
+
+    local set_node = function(pos, node, leafnode)
+        pos = vector.round(pos)
+        local node_at_pos = minetest.get_node(pos)
+        if minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode
+            and (not minetest.is_protected(pos, owner or "")) then
+            minetest.set_node(pos, node)
+        end
+    end
 
     if type(dna.trunk) == "string" then dna.trunk = { name = dna.trunk } end
     if type(dna.leaves) == "string" then dna.leaves = { name = dna.leaves } end

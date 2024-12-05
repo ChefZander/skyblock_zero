@@ -67,14 +67,16 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
             if not sbz_api.can_tree_grow(pos) then
                 return true -- re-run
             else
-                unlock_achievement(minetest.get_meta(pos):get_string("owner"), "Colorium Trees")
-                local dna = minetest.deserialize(minetest.get_meta(pos):get_string("dna")) or
+                local meta = minetest.get_meta(pos)
+                local owner = meta:get_string("owner")
+                unlock_achievement(owner, "Colorium Trees")
+                local dna = minetest.deserialize(meta:get_string("dna")) or
                     core.registered_items[sapling_name].dna
-                if not minetest.get_meta(pos):get_int("immutable") == 1 then
+                if not meta:get_int("immutable") == 1 then
                     sbz_api.mutate_dna(dna, nil, 100)
                 end
                 minetest.remove_node(pos)
-                sbz_api.spawn_tree(pos, dna)
+                sbz_api.spawn_tree(pos, dna, owner)
             end
         end,
         preserve_metadata = function(pos, oldnode, oldmeta, drops)
@@ -136,7 +138,8 @@ function sbz_api.register_leaves(name, def)
             local node = minetest.get_node(pos)
             local drops = def.tree_drop
             for _, item in ipairs(drops) do
-                if math.random() <= 1 / drops.rarity then
+                if math.random() <= 1 / item.rarity then
+                    item = item.item
                     if minetest.get_item_group(item, "sapling") then
                         local stack = ItemStack(item)
                         local own_dna = minetest.get_meta(pos):get_string("dna")
