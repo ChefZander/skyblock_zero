@@ -73,7 +73,7 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
                 local dna = minetest.deserialize(meta:get_string("dna")) or
                     core.registered_items[sapling_name].dna
                 if not meta:get_int("immutable") == 1 then
-                    sbz_api.mutate_dna(dna, nil, 100)
+                    sbz_api.mutate_dna(dna, nil, 20)
                 end
                 minetest.remove_node(pos)
                 sbz_api.spawn_tree(pos, dna, owner)
