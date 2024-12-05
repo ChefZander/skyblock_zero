@@ -54,12 +54,14 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
             minetest.get_node_timer(pos):start(math.random(300, 1500))
         end,
         after_place_node = function(pos, placer, stack)
-            minetest.get_meta(pos):set_string("owner", placer:get_player_name())
-            minetest.get_meta(pos):set_string("dna",
-                stack:get_meta():get_string("dna") or minetest.serialize(core.registered_items[sapling_name].dna)
-            )
+            local meta = minetest.get_meta(pos)
+            meta:set_string("owner", placer:get_player_name())
+            meta:set_int("immutable", stack:get_meta():get_int("immutable"))
+            local dna = minetest.deserialize(stack:get_meta():get_string("dna")) or
+                core.registered_items[sapling_name].dna
+            meta:set_string("dna", minetest.serialize(dna))
+            meta:set_string("item_meta", core.serialize(stack:get_meta():to_table()))
         end,
-
         on_timer = sbz_api.grow_sapling,
         grow = function(pos)
             if not sbz_api.can_tree_grow(pos) then
@@ -68,11 +70,16 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
                 unlock_achievement(minetest.get_meta(pos):get_string("owner"), "Colorium Trees")
                 local dna = minetest.deserialize(minetest.get_meta(pos):get_string("dna")) or
                     core.registered_items[sapling_name].dna
-                sbz_api.mutate_dna(dna, nil, 100)
+                if not minetest.get_meta(pos):get_int("immutable") == 1 then
+                    sbz_api.mutate_dna(dna, nil, 100)
+                end
                 minetest.remove_node(pos)
                 sbz_api.spawn_tree(pos, dna)
             end
         end,
+        preserve_metadata = function(pos, oldnode, oldmeta, drops)
+            drops[1]:get_meta():from_table(minetest.deserialize(oldmeta.item_meta or ""))
+        end
     } do
         sapling_def[k] = v
     end
@@ -132,7 +139,11 @@ function sbz_api.register_leaves(name, def)
                 if math.random() <= 1 / drops.rarity then
                     if minetest.get_item_group(item, "sapling") then
                         local stack = ItemStack(item)
-                        stack:get_meta():set_string("dna", minetest.get_meta(pos):get_string("dna"))
+                        local own_dna = minetest.get_meta(pos):get_string("dna")
+                        local stack_meta = stack:get_meta()
+                        stack_meta:set_string("dna", own_dna)
+                        stack_meta:set_string("description",
+                            stack:get_description() .. "\nStack DNA hash: " .. sbz_api.hash_dna(own_dna))
                         item = stack:to_string()
                     else
                         local stack = ItemStack(item)
@@ -176,7 +187,11 @@ function sbz_api.register_leaves(name, def)
                 if math.random() <= 1 / item.rarity then
                     local stack = ItemStack(item.item)
                     if minetest.get_item_group(item.item, "sapling") > 0 then
-                        stack:get_meta():set_string("dna", minetest.get_meta(pos):get_string("dna"))
+                        local own_dna = minetest.get_meta(pos):get_string("dna")
+                        local stack_meta = stack:get_meta()
+                        stack_meta:set_string("dna", own_dna)
+                        stack_meta:set_string("description",
+                            stack:get_description() .. "\nStack DNA hash: " .. sbz_api.hash_dna(own_dna))
                         item = stack:to_string()
                     else
                         item = stack:get_name() -- nuke meta

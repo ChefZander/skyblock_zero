@@ -278,5 +278,11 @@ local function mutate_dna(dna, random, rate)
     end
 end
 
+local function hash_dna(dna)
+    return minetest.sha1(dna)
+end
+
+
 sbz_api.spawn_tree = lsystem
 sbz_api.mutate_dna = mutate_dna
+sbz_api.hash_dna = hash_dna
