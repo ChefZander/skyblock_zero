@@ -20,6 +20,17 @@ return {
         requires = { "Simple Alloy Furnace", "Emittrium Circuits" }
     },
 
+    {
+        type = "quest",
+        title = "Laser",
+        text = [[
+Soo... i'm guessing you would have a lot of trouble getting to the meteorites by bridging...
+Well don't fear, there is the laser now...
+
+To charge the laser, "place it" into a battery. (shift+place to battery)
+]],
+        requires = { "Simple Alloy Furnace", "Emittrium Circuits" },
+    },
     { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
     {
         type = "quest",
@@ -99,8 +110,8 @@ Strange matter meteorites spawn if you are 100 nodes away from the core.
     },
     {
         type = "quest",
-        requires = { "It's strange..." },
         title = "Strange Blob Cleaner",
+        requires = { "It's strange..." },
         text = [[
 Restores what was destroyed by strange blobs.
         ]],
