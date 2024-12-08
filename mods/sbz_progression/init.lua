@@ -120,7 +120,8 @@ local achievement_table = {
     ["sbz_resources:drill"] = "Electric Drill",
     ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
     ["sbz_resources:strange_cleaner"] = "Strange Blob Cleaner",
-    ["sbz_bio:fertilized_dirt"] = "Fertilized Dirt"
+    ["sbz_bio:fertilized_dirt"] = "Fertilized Dirt",
+    ["sbz_resources:laser"] = "Laser",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -148,12 +149,18 @@ core.register_chatcommand("dynamic_safetynet", {
 
     params = "static | dynamic",
 
-    description = "Define threshold for teleporting to core\n(static: y < 110m below core, dynamic: y < 110m below lowest placed node)",
+    description =
+    "Define threshold for teleporting to core\n(static: y < 110m below core, dynamic: y < 110m below lowest placed node)",
 
     func = function(name, params)
         local meta = core.get_player_by_name(name):get_meta()
-        if params == "dynamic" then meta:set_int("dynamic_safetynet", 1); return true, "Successfully changed return threshold.\nYou can reverse this behavior with \"/dynamic_safetynet static\"." end
-        if params == "static" then meta:set_int("dynamic_safetynet", 0); return true, "Successfully changed return threshold." end
+        if params == "dynamic" then
+            meta:set_int("dynamic_safetynet", 1); return true,
+                "Successfully changed return threshold.\nYou can reverse this behavior with \"/dynamic_safetynet static\"."
+        end
+        if params == "static" then
+            meta:set_int("dynamic_safetynet", 0); return true, "Successfully changed return threshold."
+        end
         return false
     end,
 })

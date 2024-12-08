@@ -39,8 +39,8 @@ register_sound_function("tree", {
 })
 
 register_sound_function("leaves", {
-    footstep = csound("step", 2),
-    place = csound("step", 2),
+    --    footstep = csound("step", 2),
+    --    place = csound("step", 2),
 })
 
 register_sound_function("antimatter", {
