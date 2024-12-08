@@ -67,6 +67,19 @@ function iterate_around_pos(pos, func)
     end
 end
 
+function iterate_around_radius(pos, func, rad)
+    rad = rad or 1
+    for x = -rad, rad do
+        for y = -rad, rad do
+            for z = -rad, rad do
+                local vec = vector.new(x, y, z)
+                vec = vec + pos
+                func(vec)
+            end
+        end
+    end
+end
+
 -- generate an empty world with only the core block
 minetest.log("action", "sbz base: register mapgen")
 minetest.register_on_generated(function(minp, maxp, seed)
