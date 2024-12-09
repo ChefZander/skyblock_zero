@@ -64,10 +64,19 @@ minetest.register_node("sbz_bio:dirt_with_grass", {
     paramtype = "light",
     sounds = sbz_api.sounds.dirt(),
     info_extra = "Spreads",
+    on_burn = function(pos)
+        if is_air(vector.add(pos, vector.new(0, 1, 0))) then
+            core.set_node(pos, { name = "sbz_bio:dirt" })
+            core.set_node(vector.add(pos, vector.new(0, 1, 0)), { name = "sbz_bio:fire" })
+            core.get_meta(vector.add(pos, vector.new(0, 1, 0))):set_int("co2", 5) -- burn=5
+            minetest.get_node_timer(vector.add(pos, vector.new(0, 1, 0))):start(math.random(30, 60))
+        end
+    end,
 })
 
 
 
+-- yes i get it, boo, happens outside of the habitat regulator, oh well, i actually like abms
 local get_grass_spread_action = function(require_water)
     return function(start_pos)
         local delayed = {}
@@ -91,13 +100,13 @@ local get_grass_spread_action = function(require_water)
     end
 end
 
--- water makes it faster
+-- water makes it WAY faster
 core.register_abm({
     label = "Grass spread - water",
     nodenames = { "sbz_bio:dirt_with_grass" },
     neighbors = { "group:water", "group:soil" },
-    interval = 10,
-    chance = 2,
+    interval = 10 / 3,
+    chance = 3,
     action = get_grass_spread_action(true)
 })
 

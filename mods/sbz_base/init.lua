@@ -356,6 +356,12 @@ function is_node_within_radius(pos, nodenames, radius)
     return core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)[1]
 end
 
+function is_air(pos)
+    local node = core.get_node(pos).name
+    local reg = minetest.registered_nodes[node]
+    return reg.air or reg.air_equivalent or node == "air"
+end
+
 -- mapgen aliases
 
 
