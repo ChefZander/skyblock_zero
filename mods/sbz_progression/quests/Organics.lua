@@ -111,7 +111,10 @@ So, how do you grow them:
 Unlike plants, it does not need to be inside a habitat regulator.
 Achievment will unlock when your tree grows.
 And also, colorium trunks can be used in the burner.
+
+Oh yeah also..... trees may mutate.... take 1 sapling from your tree, grow it, take that sapling, grow it, take that sapling.. and you get the idea.... if you do that, you will see the tree be different.
 ]],
         requires = { "Neutronium" },
     },
+
 }

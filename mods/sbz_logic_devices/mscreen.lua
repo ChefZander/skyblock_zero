@@ -141,7 +141,9 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         local subscribed = vector.from_string(m:get_string("subscribed"))
         if subscribed == nil then return end
 
-        local eyepos = vector.add(player:get_pos(), vector.add(player:get_eye_offset(), vector.new(0, 1.5, 0)))
+        local eyepos = vector.add(player:get_pos(),
+            vector.add(player:get_eye_offset(), vector.new(0, 1.5, --[[player:get_properties().eye_height]] 0))
+        )
         local lookdir = player:get_look_dir()
         local distance = vector.distance(eyepos, screenpos)
         local endpos = vector.add(eyepos, vector.multiply(lookdir, distance + 1))
