@@ -285,7 +285,7 @@ function drawers.register_drawer(name, def)
 	def.selection_box = { type = "fixed", fixed = drawers.node_box_simple }
 	def.paramtype = "light"
 	def.paramtype2 = "facedir"
-	def.light_source = 3
+	def.light_source = 10
 	def.groups = def.groups or {}
 	def.is_ground_content = false
 

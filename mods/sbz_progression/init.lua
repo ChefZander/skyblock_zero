@@ -121,7 +121,15 @@ local achievement_table = {
     ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
     ["sbz_resources:strange_cleaner"] = "Strange Blob Cleaner",
     ["sbz_bio:fertilized_dirt"] = "Fertilized Dirt",
-    ["sbz_resources:laser"] = "Laser",
+    ["sbz_resources:laser_weapon"] = "Laser",
+
+    ["sbz_resources:storinator_bronze"] = "Better Storinators",
+    ["sbz_resources:storinator_neutronium"] = "Best Storinators",
+    ["drawers:drawer1"] = "Drawers",
+    ["drawers:drawer2"] = "Drawers",
+    ["drawers:drawer4"] = "Drawers",
+    ["drawers:upgrade_template"] = "Drawer Upgrades",
+    ["drawers:controller"] = "Drawer Controller",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

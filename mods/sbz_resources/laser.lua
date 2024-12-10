@@ -75,3 +75,12 @@ minetest.register_tool("sbz_resources:laser_weapon", {
 
     wear_color = { color_stops = { [0] = "lime" } },
 })
+
+minetest.register_craft {
+    output = "sbz_resources:laser_weapon",
+    recipe = {
+        { "sbz_resources:emittrium_circuit" },
+        { "sbz_power:advanced_battery" },
+        { "sbz_resources:reinforced_matter" }
+    }
+}
