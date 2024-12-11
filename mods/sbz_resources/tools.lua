@@ -67,7 +67,7 @@ minetest.register_tool("sbz_resources:robotic_arm", {
         full_punch_interval = 0.5,
         max_drop_level = 1,
         groupcaps = {
-            matter = { times = { [1] = 1.50, [2] = 0.30, [3] = 0.10 }, uses = 60, maxlevel = 1 },
+            matter = { times = { [1] = 1.50, [2] = 0.30, [3] = 0.10 }, uses = 60, leveldiff = 2, maxlevel = 2 },
         },
     },
 
@@ -100,12 +100,12 @@ local tool_caps = {
         matter = {
             times = drill_times,
             --uses = 30,
-            maxlevel = 1
+            maxlevel = 4
         },
         antimatter = {
             times = drill_times,
             --uses = 30,
-            maxlevel = 1
+            maxlevel = 4
         },
     },
 }

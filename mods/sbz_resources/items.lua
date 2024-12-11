@@ -143,3 +143,17 @@ minetest.register_craft {
         { "sbz_resources:compressed_core_dust" }
     }
 }
+
+core.register_craftitem("sbz_resources:warp_crystal", {
+    description = "Warp Crystal",
+    inventory_image = "warp_crystal.png",
+})
+
+minetest.register_craft {
+    output = "sbz_resources:warp_crystal",
+    recipe = {
+        { "sbz_bio:warpshroom", "sbz_bio:warpshroom",       "sbz_bio:warpshroom" },
+        { "sbz_bio:warpshroom", "sbz_resources:neutronium", "sbz_bio:warpshroom" },
+        { "sbz_bio:warpshroom", "sbz_bio:warpshroom",       "sbz_bio:warpshroom" }
+    }
+}

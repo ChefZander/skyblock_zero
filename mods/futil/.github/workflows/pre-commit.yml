@@ -1,0 +1,34 @@
+name: pre-commit
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: update
+        run: sudo apt-get update -y
+
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@master
+
+      - name: install luarocks
+        run: sudo apt-get install -y luarocks
+
+      - name: add luarocks path
+        run: echo "$HOME/.luarocks/bin" >> $GITHUB_PATH
+
+      - name: luacheck install
+        run: luarocks install --local luacheck
+
+      - name: install cargo
+        run: sudo apt-get install -y cargo
+
+      - name: install stylua
+        run: cargo install stylua
+
+      - name: Install pre-commit
+        run: pip3 install pre-commit
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files

@@ -1,0 +1,11 @@
+{
+    "type": "MOD",
+    "name": "fmod",
+    "title": "fmod",
+    "license": "LGPL-3.0-or-later",
+    "media_license": "CC-BY-SA-4.0",
+    "repo": "https://github.com/fluxionary/minetest-fmod.git",
+    "website": "https://github.com/fluxionary/minetest-fmod",
+    "issue_tracker": "https://github.com/fluxionary/minetest-fmod/issues",
+    "short_description": "flux's mod boilerplate"
+}

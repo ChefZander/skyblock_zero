@@ -40,7 +40,7 @@ local M = minetest.get_meta
 local slots_per_1_power = 8
 
 sbz_api.register_machine("sbz_power:infinite_storinator", {
-    description = "Infinite Storinator",
+    description = "Infinite Storinator (deprecated)",
     info_extra = {
         "If you loose power you will need to re-power it to get your items back",
         "For one power you can get " .. slots_per_1_power .. " slots"
@@ -61,7 +61,7 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
         meta:set_int("visible_slots", 0)
         meta:set_int("slots_set", 8)
     end,
-    groups = { matter = 1 },
+    groups = { matter = 1, not_in_creative_inventory = 1 },
     action = function(pos, node, meta, supply, demand)
         -- time to nuke supply :D
         if supply <= demand then return 0 end
@@ -141,6 +141,7 @@ sbz_api.register_machine("sbz_power:infinite_storinator", {
     disallow_pipeworks = false,
 })
 
+--[[
 minetest.register_craft({
     output = "sbz_power:infinite_storinator",
     recipe = {
@@ -149,3 +150,4 @@ minetest.register_craft({
         { "sbz_resources:storinator", "sbz_resources:emittrium_circuit", "sbz_resources:storinator" }
     }
 })
+--]]

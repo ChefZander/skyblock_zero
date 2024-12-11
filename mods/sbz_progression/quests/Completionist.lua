@@ -32,13 +32,6 @@ Unwanted people won't be able to take items from machines or modify filter injec
         text = "Large protectors are like the small protectors but bigger.",
         requires = { "Small Protectors" }
     },
-    {
-        type = "quest",
-        title = "Public Storinators",
-        text =
-        "Public storinators are like regular storinators but accessible to ANYONE, regardless of protections.",
-        requires = { "Storinators" }
-    },
 
     -- [[ SECRETS ]]
     {

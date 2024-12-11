@@ -120,19 +120,6 @@ The list of materials is as follows: one Simple Circuit, one charged particle an
 Unlike Simple Circuits, this will only craft one Retaining Circuit.]],
         requires = { "Antimatter", "Circuitry" }
     },
-
-    {
-        type = "quest",
-        title = "Storinators",
-        text =
-        [[Storinators are the solution to clogged up inventories. They have 30 slots of inventory, and function like a chest.
-
-The more red/green dots the front of a storinator displays, the more full/empty it is.
-
-You will need one simple charged field, one Simple Circuit, four matter plates and three Retaining Circuits to craft one Storinator.]],
-        requires = { "Matter Plates", "Charged Field", "Retaining Circuits" }
-    },
-
     {
         type = "quest",
         title = "Pretty Pebbles",
