@@ -13,6 +13,17 @@ return {
     { type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = { "Simple Alloy Furnace", "Crusher" } },
     {
         type = "quest",
+        title = "Compressor",
+        text = [[
+Have you ever wanted to turn your metals into nodes? Now you can!
+Craft this wonderful compressor, insert in 9 powder, or 9 ingots, and watch as it makes your blocks.
+Also, blocks made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.
+        ]],
+        requires = { "Crusher" }
+    },
+
+    {
+        type = "quest",
         title = "Jetpack",
         text = [[
 Have you wished to fly? Do i have the tool for you...

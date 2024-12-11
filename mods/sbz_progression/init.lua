@@ -130,6 +130,7 @@ local achievement_table = {
     ["drawers:drawer4"] = "Drawers",
     ["drawers:upgrade_template"] = "Drawer Upgrades",
     ["drawers:controller"] = "Drawer Controller",
+    ["sbz_chem:compressor"] = "Comprsesor"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

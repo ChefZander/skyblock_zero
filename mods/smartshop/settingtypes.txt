@@ -1,0 +1,27 @@
+# limit the number of entries in the purchase history (0 disables history, -1 is unlimited)
+smartshop.history_max (shop history max size) int 60 0 -1
+
+# maximum distance between a shop and a linked storage. 0 disables the behavior.
+smartshop.storage_max_distance (max from shop to storage) int 30 1 0
+
+# time allowed to link storage after initiating the process
+smartshop.storage_link_time (time given to link storage) int 30 1 3600
+
+# automatically make change for currency, if currency is present
+smartshop.change_currency (automatically change currency) bool true
+
+# whether to refund the pay/give line of "old" shops. if you are not upgrading from the old version, set this to false
+# to disable an LBM that otherwise has to run on every load.
+smartshop.enable_refund (refund old-style shops) bool true
+
+# privilege of a shop admin user, who may use the owner interface of any shop, and may set up shops which allow for
+# unlimited exchanges without need for stock
+smartshop.admin_shop_priv (name of the shop admin priv) string smartshop_admin
+
+# behavior on serious errors which wouldn't normally crash, such as not being able to properly remove or add an item
+# to an inventory, resulting in possible lost items.
+smartshop.error_behavior (behavior on non-fatal serious error) enum announce crash,announce,log
+
+# enable if you want to run the testing suite. do not enable in general, and do not use on a real world, as it is
+# destructive
+smartshop.enable_tests (enable test mode - dangerous!) bool false

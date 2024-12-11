@@ -2,7 +2,7 @@ return {
     {
         type = "text",
         title = "Questline: Meteorites",
-        text = [[]],
+        text = "",
     },
     {
         type = "quest",
