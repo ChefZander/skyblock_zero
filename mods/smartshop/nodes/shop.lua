@@ -13,6 +13,7 @@ local smartshop_def = {
 		choppy = 2,
 		oddly_breakable_by_hand = 1,
 		smartshop = 1,
+		not_in_creative_inventory = minetest.is_singleplayer(),
 	},
 	drawtype = "nodebox",
 	node_box = {
