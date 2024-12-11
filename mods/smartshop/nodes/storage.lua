@@ -14,7 +14,7 @@ local storage_def = {
 		choppy = 2,
 		oddly_breakable_by_hand = 1,
 		smartshop_storage = 1,
-		not_in_creative_inventory = minetest.is_singleplayer(),
+		not_in_creative_inventory = minetest.is_singleplayer() and 1 or 0,
 	},
 	paramtype = "light",
 	sunlight_propagates = true,
