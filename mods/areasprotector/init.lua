@@ -271,7 +271,7 @@ minetest.register_node("areasprotector:protector_large", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		return on_receive_fields(pos, formname, fields, sender, radius_large, height_large)
 	end,
-	groups = { cracky = 1, matter = 1 },
+	groups = { cracky = 1, matter = 1, protector = 1 },
 	tiles = {
 		"areasprotector_big.png",
 		"areasprotector_big.png",
@@ -291,12 +291,13 @@ minetest.register_node("areasprotector:protector_large", {
 	end
 })
 
+
 minetest.register_node("areasprotector:protector_small", {
 	description = "Small Protector Block",
 	on_receive_fields = function(pos, formname, fields, sender)
 		return on_receive_fields(pos, formname, fields, sender, radius_small, height_small)
 	end,
-	groups = { cracky = 1, matter = 1 },
+	groups = { cracky = 1, matter = 1, protector = 1 },
 	tiles = {
 		"areasprotector_small.png",
 		"areasprotector_small.png",
@@ -315,6 +316,29 @@ minetest.register_node("areasprotector:protector_small", {
 		on_punch(pos, node, puncher, "small")
 	end
 })
+
+mesecon.register_on_mvps_move(function(moved)
+	local performed_area_operations = false
+	for i = 1, #moved do
+		local moved_node = moved[i]
+		if core.get_item_group(moved_node.node.name, "protector") > 0 then
+			local meta = core.get_meta(moved_node.node.name)
+			local id = meta:get_int("area_id")
+			local owners_area_id = minetest.deserialize(meta:get_string("owners_area_id")) or {}
+			areas:move(id, areas.areas[id],
+				vector.add(vector.subtract(areas.areas[id].pos1, moved_node.oldpos), moved_node.pos),
+				vector.add(vector.subtract(areas.areas[id].pos2, moved_node.oldpos), moved_node.pos))
+			for k, area_id in pairs(owners_area_id) do
+				areas:move(area_id, areas.areas[area_id],
+					vector.add(vector.subtract(areas.areas[area_id].pos1, moved_node.oldpos), moved_node.pos),
+					vector.add(vector.subtract(areas.areas[area_id].pos2, moved_node.oldpos), moved_node.pos))
+			end
+
+			performed_area_operations = true
+		end
+	end
+	if performed_area_operations then areas:save() end
+end)
 
 -- entities code below (and above) mostly copied-pasted from Zeg9's protector mod
 

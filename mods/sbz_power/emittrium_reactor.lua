@@ -468,6 +468,7 @@ end
 sbz_api.reactor_explode = explode
 
 local CONSUME_EMITTRIUM_EVERY_X_SEC = 30
+
 local function core_tick(pos)
     local meta = minetest.get_meta(pos)
     local tickcount = meta:get_int("tickcount") or 0
@@ -602,5 +603,22 @@ minetest.register_abm({
     action = core_tick,
     interval = 1,
     chance = 1,
-
 })
+
+
+mesecon.register_on_mvps_move(function(moved_nodes)
+    for i = 1, #moved_nodes do
+        local moved_node = moved_nodes[i]
+        if moved_node.node.name == "sbz_power:reactor_power_port" then
+            local meta = minetest.get_meta(moved_node.pos)
+            local linked_coords = vector.from_string(meta:get_string("linked_coords"))
+            linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
+            meta:set_string("linked_coords", vecotr.to_string(linked_coords))
+        elseif moved_node.node.name == "sbz_power:reactor_infoscreen" then
+            local meta = minetest.get_meta(moved_node.pos)
+            local linked_coords = vector.from_string(meta:get_string("linked_pos"))
+            linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
+            meta:set_string("linked_pos", vecotr.to_string(linked_coords))
+        end
+    end
+end)

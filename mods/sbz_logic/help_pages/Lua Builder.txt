@@ -54,3 +54,12 @@ $C1    fields = { --[[ node meta fields as described in minetest documentation, 
 $C1    inventory = {some_epic_list = { stack_in_table_form1, stack_in_table_form2, ... }}
 $C1}
 </mono>
+
+<big>Moving</big>
+<mono>send_to(links.builder,{
+$C1    type = "move",
+$C1    pos = {x = 0, y = 1, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+$C1    pos2 = {x = 0, y = 2, z = 0}, -- needs to be a vector, that is relative to THE BUILDER
+})</mono>
+
+Moves a node from pos to pos2, can be almost any node :D

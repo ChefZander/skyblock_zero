@@ -59,6 +59,10 @@ minetest.register_on_mods_loaded(function()
             new_desc[#new_desc + 1] = "Logic can't put items to this node."
         end
 
+        if sbz_api.mvps_stoppers[k] == true then
+            new_desc[#new_desc + 1] = "Logic builders cannot move this node."
+        end
+
         if #new_desc > 1 then
             for i = 2, #new_desc do
                 new_desc[i] = minetest.colorize("#333333", new_desc[i])

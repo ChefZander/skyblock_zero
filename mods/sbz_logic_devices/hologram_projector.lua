@@ -560,6 +560,16 @@ local function exec_command(pos, cmd, from_pos)
     end
 end
 
+mesecon.register_on_mvps_move(function(moved_nodes)
+    for i = 1, #moved_nodes do
+        local moved_node = moved_nodes[i]
+        if rawget(projectors, h(moved_node.oldpos)) then
+            projectors[h(moved_node.pos)] = projectors[h(moved_node.oldpos)]
+            projectors[h(moved_node.oldpos)] = nil
+        end
+    end
+end)
+
 core.register_node("sbz_logic_devices:hologram_projector", {
     description = "Hologram Projector",
     info_extra = "Inspired by the holoemitter mod.",

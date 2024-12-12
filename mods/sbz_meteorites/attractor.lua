@@ -123,6 +123,15 @@ minetest.register_node("sbz_meteorites:gravitational_repulsor", {
     sounds = sbz_api.sounds.machine(),
 })
 
+mesecon.register_on_mvps_move(function(moved)
+    for i = 1, #moved do
+        local moved_node = moved[i]
+        if moved_node.name == "sbz_meteorites:gravitational_repulsor" or moved_node.name == "sbz_meteorites:gravitational_attractor" then
+            minetest.registered_nodes[moved_node.name].on_construct(moved_node.pos)
+        end
+    end
+end)
+
 minetest.register_craft({
     output = "sbz_meteorites:gravitational_repulsor",
     recipe = {

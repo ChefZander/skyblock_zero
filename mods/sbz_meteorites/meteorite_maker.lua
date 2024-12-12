@@ -402,6 +402,8 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
     },
 })
 
+mesecon.register_mvps_stopper("sbz_meteorites:meteorite_maker")
+
 
 core.register_craft {
     output = "sbz_meteorites:meteorite_maker",
