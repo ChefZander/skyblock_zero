@@ -34,7 +34,7 @@ return {
         type = "quest",
         title = "Node Breakers",
         text =
-        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 1 power and run every second.",
+        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 20 power for each node dug. To make \"caveman automation\" (non lua automation) more powerful, plants that haven't finished growing cannot be dug by the node breaker.",
         requires = { "Automatic Filter-Injectors" }
     },
     {

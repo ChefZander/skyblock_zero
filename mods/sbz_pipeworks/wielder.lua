@@ -60,7 +60,7 @@ local function wielder_action(def, pos, node, index)
         under = vector.subtract(pos, dir),
         above = vector.subtract(pos, vector.multiply(dir, 2)),
     }
-    def.action(fakeplayer, pointed)
+    local retval = def.action(fakeplayer, pointed)
     if def.eject_drops then
         for i, stack in ipairs(inv:get_list("main")) do
             if not stack:is_empty() then
@@ -69,6 +69,7 @@ local function wielder_action(def, pos, node, index)
             end
         end
     end
+    return retval
 end
 
 
@@ -167,7 +168,10 @@ function pipeworks.register_wielder(def)
                 return def.cost
             end
             meta:set_string("infotext", "Working")
-            wielder_action(def, pos, minetest.get_node(pos))
+            if wielder_action(def, pos, minetest.get_node(pos)) == false then
+                meta:set_string("infotext", "Idle")
+                return 0
+            end
             return def.cost
         end,
         sounds = sbz_api.sounds.matter(),
@@ -200,7 +204,11 @@ pipeworks.register_wielder({
             local node = minetest.get_node(pointed.under)
             local node_def = minetest.registered_nodes[node.name]
             if not node_def or not node_def.on_dig then
-                return
+                return false
+            end
+
+            if minetest.get_item_group(node.name, "nb_nodig") > 0 then -- DO NOT USE THIS TO LIMIT WHAT CAVEMAN AUTOMATION CAN DO, ONLY USE IT TO STRENGHTEN IT (like making growing plants not breakable)
+                return false
             end
             -- Check if the tool can dig the node
             local tool = stack:get_tool_capabilities()
@@ -208,12 +216,12 @@ pipeworks.register_wielder({
                 -- Try using hand if tool can't dig the node
                 local hand = ItemStack():get_tool_capabilities()
                 if not minetest.get_dig_params(node_def.groups, hand).diggable then
-                    return
+                    return false
                 end
             end
             -- This must only check for false, because `on_dig` returning nil is the same as returning true.
             if node_def.on_dig(pointed.under, node, fakeplayer) == false then
-                return
+                return false
             end
             local sound = node_def.sounds and node_def.sounds.dug
             if sound then
@@ -261,6 +269,8 @@ pipeworks.register_wielder({
             if sound and name ~= "" then
                 minetest.sound_play(sound, { pos = placed_pos, to_player = name }, true)
             end
+        else
+            return false
         end
     end,
     cost = 20
@@ -286,11 +296,11 @@ pipeworks.register_wielder({
         local node_def = minetest.registered_nodes[node.name]
 
         if not node_def then
-            return
+            return false
         end
 
         if not node_def.on_punch then
-            return
+            return false
         end
 
         node_def.on_punch(fakeplayer:get_pos(), node, fakeplayer, pointed)
