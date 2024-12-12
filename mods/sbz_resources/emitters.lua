@@ -220,3 +220,6 @@ minetest.register_abm({
         })
     end,
 })
+
+mesecon.register_mvps_stopper("sbz_resources:the_core")
+mesecon.register_mvps_stopper("sbz_resources:emitter")
