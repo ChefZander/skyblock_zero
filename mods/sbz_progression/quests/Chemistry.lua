@@ -21,6 +21,15 @@ Also, blocks made from chemicals cannot be dug with matter annihilators, you mus
         ]],
         requires = { "Crusher" }
     },
+    {
+        type = "quest",
+        title = "Crystal Grower",
+        text = [[
+Do you want to grow some.... crystals...... No wait not those ones....
+Well now you can! If you put in 9 warpshrooms, you will get some warp crystals, which you use for anything teleportation-related.
+        ]],
+        requires = { "Compressor", "Neutronium" }
+    },
 
     {
         type = "quest",

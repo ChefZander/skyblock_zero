@@ -140,7 +140,7 @@ minetest.register_craft {
     recipe = {
         { "sbz_resources:lua_chip", "sbz_logic:data_disk",         "sbz_resources:lua_chip" },
         { "sbz_resources:lua_chip", "sbz_resources:ram_stick_1mb", "sbz_resources:lua_chip" },
-        { "sbz_resources:lua_chip", "sbz_resources:storinator",    "sbz_resources:lua_chip" },
+        { "sbz_resources:lua_chip", "sbz_resources:warp_crystal",  "sbz_resources:lua_chip" },
     }
 }
 

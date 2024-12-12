@@ -22,6 +22,14 @@ unified_inventory.register_craft_type("compressing", {
     uses_crafting_grid = false,
 })
 
+unified_inventory.register_craft_type("crystal_growing", {
+    description = "(Crystal) Growing",
+    icon = "crystal_grower.png^[verticalframe:17:1",
+    width = 1,
+    height = 1,
+    uses_crafting_grid = false,
+})
+
 sbz_api.crusher_drops = {}
 sbz_api.unused_chem = {}
 

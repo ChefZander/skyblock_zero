@@ -197,3 +197,18 @@ minetest.register_chatcommand("dev_light", {
         player:override_day_night_ratio(1)
     end
 })
+
+minetest.register_chatcommand("dev_craft", {
+    description = "Fake a craft, used for quest testing",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then
+            return false, "Player not found!"
+        end
+
+        for k, v in pairs(minetest.registered_on_crafts) do
+            v(ItemStack(param), player)
+        end
+    end
+})
