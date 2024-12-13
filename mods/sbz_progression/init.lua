@@ -155,6 +155,7 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
+--[[
 core.register_chatcommand("dynamic_safetynet", {
 
     params = "static | dynamic",
@@ -173,7 +174,7 @@ core.register_chatcommand("dynamic_safetynet", {
         end
         return false
     end,
-})
+})--]]
 
 local achievement_in_inventory_table = {
     ["sbz_chem:gold_powder"] = "It's fake",
