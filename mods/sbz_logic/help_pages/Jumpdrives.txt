@@ -1,0 +1,207 @@
+<bigger>Jumpdrives</bigger>
+
+<big>get</big>
+<mono>
+$C1send_to(links.jumpdrive, {
+$C1	command = "get"
+$C1})
+</mono>
+response:<mono>
+$C1{
+$C1    powerstorage = 200000,
+$C1    radius = 5,
+$C1    position = {x=0, y=0, z=0},
+$C1    target = {x=0, y=0, z=0},
+$C1    distance = 100,
+$C1    power_req = 150000
+$C1}
+</mono>
+
+<big>reset</big>
+<mono>
+$C1send_to(links.jumpdrive, {
+$C1	command = "reset"
+$C1})
+</mono>
+Resets the cordinates
+
+<big>set</big>
+
+<mono>send_to(links.jumpdrive, { command = "set", x = 1024, y = 1024, z = 2048, r = 15, formupdate = false })</mono>
+
+If formupdate is true, it will update the coordinates in the ui.
+Every value is optional.
+
+
+<big>simulate</big>
+
+<mono>
+send_to(links.jumpdrive, {
+$C1    command = "simulate"
+})
+</mono>
+Checks if it's possible to jump to the target position
+response:
+<mono>
+$C1{
+$C1    success = false, -- true if successful
+$C1    msg = "Some error message"
+$C1}
+</mono>
+
+<big>jump</big>
+
+<mono>send_to(links.jumpdrive, {
+$C1	command = "jump"
+$C1})
+</mono>
+response:
+<mono>{
+$C1    success = true,
+$C1    time = 1234 -- time used in microseconds
+$C1}</mono>
+
+
+<bigger>Fleet controllers</bigger>
+
+<big>get</big>
+
+<mono>
+$C1send_to(links.fleetcontroller, {
+$C1	command = "get"
+$C1})</mono>
+$C1Response:
+$C1<mono>
+$C1{
+$C1    active = true,
+$C1    engines = {
+$C1        {
+$C1            power_req = 10000,
+$C1            powerstorage = 125000,
+$C1            radius = 10,
+$C1            position = { x=0, y=0, z=0 },
+$C1            target = { x=0, y=0, z=0 },
+$C1            distance = 2500,
+$C1        },
+$C1        {
+$C1        -- etc
+$C1        }
+$C1    },
+$C1    max_power_req = 100000, -- max power of an engine
+$C1    total_power_req = 12500000, -- total power of all engines
+$C1    position = { x=0, y=0, z=0 },
+$C1    target = { x=0, y=0, z=0 },
+$C1    distance = 2500,
+$C1}
+$C1</mono>
+
+<big>reset</big>
+$C1send_to(links.fleetcontroller, {
+$C1	command = "reset"
+$C1})
+
+response:
+<mono>
+$C1-- sent if the jump is still in progress
+$C1{
+$C1    success = false,
+$C1    msg = "Operation not completed"
+$C1}
+</mono>
+
+<big>set</big>
+
+<mono>send_to(links.jumpdrive, { command = "set", x = 1024, y = 1024, z = 2048, r = 15, formupdate = false })</mono>
+
+If formupdate is true, it will update the coordinates in the ui.
+Every value is optional.
+
+Response:
+<mono>
+$C1-- sent if the jump is still in progress
+$C1{
+$C1    success = false,
+$C1    msg = "Operation not completed"
+$C1}
+</mono>
+
+
+<big>simulate</big>
+Always make sure you do this before jumping!
+
+<mono>
+send_to(links.fleetcontroller, {
+$C1	command = "simulate"
+})
+</mono>
+Responses:
+<mono>
+$C1-- sent if the jump is still in progress
+$C1{
+$C1    success = false,
+$C1    msg = "Operation not completed"
+$C1}
+$C1
+$C1-- sent on abort
+$C1{
+$C1    success = false,
+$C1    index = 1,
+$C1    count = 10,
+$C1    msg = "simulation aborted"
+$C1}
+$C1
+$C1-- sent if an error occured
+$C1{
+$C1    success = false,
+$C1    pos = { x=0, y=0, z=0 },
+$C1    msg = "Protected by xyz!"
+$C1}
+$C1
+$C1-- sent on success
+$C1{
+$C1    success = true,
+$C1    count = 10,
+$C1    msgs = {
+$C1        -- possible warning messages
+$C1    }
+$C1}
+</mono>
+
+<big>jump</big>
+
+<mono>send_to(links.fleetcontroller, {
+$C1	command = "jump"
+})</mono>
+responses:
+<mono>
+$C1-- sent if the jump is still in progress
+$C1{
+$C1    success = false,
+$C1    msg = "Operation not completed"	
+$C1}
+$C1-- sent on abort
+$C1{
+$C1    success = false,
+$C1    index = 1,
+$C1    count = 10,
+$C1    msg = "jump aborted"
+$C1}
+$C1-- sent if an error occured
+$C1{
+$C1    success = false,
+$C1    count = 1,
+$C1    msg = "Protected by xyz!",
+$C1    msgs = {
+$C1        -- messages
+$C1    }
+$C1}
+$C1-- sent on success
+$C1{
+$C1    success = true,
+$C1    count = 10,
+$C1    msgs = {
+$C1        -- messages
+$C1    },
+$C1    time = 1234 -- microseconds used
+$C1}
+</mono>
