@@ -1,4 +1,4 @@
-Minetest jumpdrive
+Minetest jumpdrive (modified in sbz)
 ======
 
 ![](https://github.com/mt-mods/jumpdrive/workflows/luacheck/badge.svg)
@@ -53,12 +53,12 @@ Power items are one of the following
 
 # Energy requirements
 
-The energy requirements formula looks like this: **10 x radius x distance**
+The energy requirements formula looks like this: **radius^2 x distance**
 
 For example:
 * Distance: 100 blocks
 * Radius: 5 blocks
-* Required energy: 10 x 5 x 100 = 5000
+* Required energy: 5^2 x 100 = 2500
 
 # Upgrades
 
@@ -187,3 +187,4 @@ end)
 # Attributions
 * `textures/jumpdrive.png`/`textures/jumpdrive_backbone.png`/`textures/jumpdrive_fleet_controller.png`/`textures/jumpdrive_warpdevice.png`
  * Jeremy#2233 / Purple#2916
+ * Modified by frogTheSecond

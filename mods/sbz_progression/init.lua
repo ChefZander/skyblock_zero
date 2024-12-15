@@ -133,6 +133,11 @@ local achievement_table = {
     ["sbz_chem:compressor_off"] = "Compressor",
     ["sbz_chem:crystal_grower_off"] = "Crystal Grower",
     ["sbz_power:very_advanced_battery"] = "Very Advanced Batteries",
+
+    ["jumpdrive:backbone"] = "Jumpdrive Backbone",
+    ["jumpdrive:fleet_controller"] = "Jumpdrive Fleet Controller",
+    ["jumpdrive:engine"] = "The Jumpdrive (engine)",
+    ["jumpdrive:warp_device"] = "Warp Device",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

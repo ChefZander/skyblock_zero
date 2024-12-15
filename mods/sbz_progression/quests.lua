@@ -14,6 +14,7 @@ local quest_files = {
     "Decorator",
     "Pipeworks_and_fluid_transport",
     "Reactor",
+    "Jumpdrive",
     "Completionist",
 }
 

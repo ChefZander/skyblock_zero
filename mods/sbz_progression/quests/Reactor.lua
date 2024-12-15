@@ -10,14 +10,14 @@ If it doesn't have enough coolant (water), it heats up, and bad things happen if
         type = "quest",
         title = "Reactor Shells",
         text =
-        "Reactor Shells are needed in crafting the emittrium reactor parts, and construction of the emittrium reactor.",
+        "Reactor Shells are needed in crafting the emittrium reactor parts, and construction of the emittrium reactor.\nYou can also use them for a nice decoration block that won't explode to meteorites.",
         requires = { "Obtain Emittrium" }
     },
     {
         type = "quest",
         title = "Reactor Glass",
         text =
-        "Reactor Glass is needed in crafting recipes, and optionally can be used as a replacement for the reactor shell in the construction of the emittrium reactor.",
+        "Reactor Glass is needed in crafting recipes, and optionally can be used as a replacement for the reactor shell in the construction of the emittrium reactor.\nYou can also use it as a nice decoration block that won't explode to meteorites.",
         requires = { "Emittrium Glass", "Reactor Shells" }
     },
     {

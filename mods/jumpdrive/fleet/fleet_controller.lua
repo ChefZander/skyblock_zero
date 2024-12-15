@@ -1,5 +1,5 @@
 minetest.register_node("jumpdrive:fleet_controller", {
-	description = "Jumpdrive Fleet controller",
+	description = "Jumpdrive Fleet Controller",
 
 	tiles = { "jumpdrive_fleet_controller.png" },
 	groups = { oddly_breakable_by_hand = 3, matter = 1 },

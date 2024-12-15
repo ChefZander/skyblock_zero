@@ -10,18 +10,18 @@ minetest.register_craft({
 minetest.register_craft({
     output = 'jumpdrive:backbone',
     recipe = {
-        { 'sbz_chem:titaium_block',  'sbz_power:reactor_shell', 'sbz_chem:titaium_block' },
+        { 'sbz_chem:titanium_block', 'sbz_power:reactor_shell', 'sbz_chem:titanium_block' },
         { 'sbz_power:reactor_shell', 'sbz_power:reactor_shell', 'sbz_power:reactor_shell' },
-        { 'sbz_chem:titaium_block',  'sbz_power:reactor_shell', 'sbz_chem:titaium_block' }
+        { 'sbz_chem:titanium_block', 'sbz_power:reactor_shell', 'sbz_chem:titanium_block' }
     }
 })
 
 minetest.register_craft({
     output = 'jumpdrive:warp_device',
     recipe = {
-        { 'sbz_resources:warp_crystal', 'sbz_resources:warp_crystal',            'sbz_resources:warp_crystal' },
-        { 'sbz_resources:warp_crystal', 'sbz_resources:warp_crystal',            'sbz_resources:warp_crystal' },
-        { 'sbz_resources:warp_crystal', 'sbz_power:simple_charge_generator_off', 'sbz_resources:warp_crystal' }
+        { 'sbz_resources:warp_crystal', 'sbz_resources:warp_crystal',         'sbz_resources:warp_crystal' },
+        { 'sbz_resources:warp_crystal', 'sbz_power:antimatter_generator_off', 'sbz_resources:warp_crystal' },
+        { 'sbz_resources:warp_crystal', 'sbz_resources:warp_crystal',         'sbz_resources:warp_crystal' }
     }
 })
 
