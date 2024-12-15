@@ -98,7 +98,6 @@ player_monoids.fly = monoid({
 		end
 
 		minetest.set_player_privs(p_name, privs)
-
 	end,
 })
 
@@ -124,17 +123,16 @@ player_monoids.noclip = monoid({
 		end
 
 		minetest.set_player_privs(p_name, privs)
-
 	end,
 })
 
-local def_col_scale = { x=0.3, y=1, z=0.3 }
+local def_col_scale = { x = 0.3, y = 1, z = 0.3 }
 
 -- Collisionbox scaling factor. Values are a vector of x, y, z multipliers.
 player_monoids.collisionbox = monoid({
 	combine = v_mult,
-	fold = v_mult_fold({x=1, y=1, z=1}),
-	identity = {x=1, y=1, z=1},
+	fold = v_mult_fold({ x = 1, y = 1, z = 1 }),
+	identity = { x = 1, y = 1, z = 1 },
 	apply = function(multiplier, player)
 		local v = vector.multiply(def_col_scale, multiplier)
 
@@ -146,8 +144,8 @@ player_monoids.collisionbox = monoid({
 
 player_monoids.visual_size = monoid({
 	combine = v_mult,
-	fold = v_mult_fold({x=1, y=1}),
-	identity = {x=1, y=1},
+	fold = v_mult_fold({ x = 1, y = 1 }),
+	identity = { x = 1, y = 1 },
 	apply = function(multiplier, player)
 		player:set_properties({
 			visual_size = multiplier

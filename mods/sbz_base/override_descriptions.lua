@@ -12,7 +12,7 @@ minetest.register_on_mods_loaded(function()
         end
 
         if v.battery_max then
-            new_desc[#new_desc + 1] = "Stores " .. v.battery_max .. " power"
+            new_desc[#new_desc + 1] = "Stores " .. sbz_api.format_power(v.battery_max)
         end
 
         if v.tube then

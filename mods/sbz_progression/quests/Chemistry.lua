@@ -23,6 +23,23 @@ Also, blocks made from chemicals cannot be dug with matter annihilators, you mus
     },
     {
         type = "quest",
+        title = "Advanced Batteries",
+        text = [[
+A battery made with metals. Significantly better than the basic battery.
+        ]],
+        requires = { "Batteries", "Furnace" }
+    },
+    {
+        type = "quest",
+        title = "Very Advanced Batteries",
+        text = [[
+If you have lots of metals to waste... this is the battery for you!
+10 Times better than the advanced battery!
+        ]],
+        requires = { "Batteries", "Furnace" }
+    },
+    {
+        type = "quest",
         title = "Crystal Grower",
         text = [[
 Do you want to grow some.... crystals...... No wait not those ones....

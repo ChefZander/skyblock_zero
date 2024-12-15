@@ -31,12 +31,12 @@ core.register_entity("drawers:visual", {
 		hp_max = 1,
 		physical = false,
 		collide_with_objects = false,
-		collisionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0}, -- for param2 0, 2
-		visual = "upright_sprite", -- "wielditem" for items without inv img?
-		visual_size = {x = 0.6, y = 0.6},
-		textures = {"blank.png"},
-		spritediv = {x = 1, y = 1},
-		initial_sprite_basepos = {x = 0, y = 0},
+		collisionbox = { -0.4374, -0.4374, 0, 0.4374, 0.4374, 0 }, -- for param2 0, 2
+		visual = "upright_sprite",                           -- "wielditem" for items without inv img?
+		visual_size = { x = 0.6, y = 0.6 },
+		textures = { "blank.png" },
+		spritediv = { x = 1, y = 1 },
+		initial_sprite_basepos = { x = 0, y = 0 },
 		is_visible = true,
 	},
 
@@ -89,7 +89,7 @@ core.register_entity("drawers:visual", {
 		if vId == "" then vId = 1 end
 		local posstr = core.hash_node_position(self.drawer_pos)
 		if not drawers.drawer_visuals[posstr] then
-			drawers.drawer_visuals[posstr] = {[vId] = self}
+			drawers.drawer_visuals[posstr] = { [vId] = self }
 		else
 			drawers.drawer_visuals[posstr][vId] = self
 		end
@@ -102,52 +102,52 @@ core.register_entity("drawers:visual", {
 		local colbox
 		if self.drawerType ~= 2 then
 			if node.param2 == 1 or node.param2 == 3 then
-				colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
+				colbox = { 0, -0.4374, -0.4374, 0, 0.4374, 0.4374 }
 			else
-				colbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0} -- for param2 = 0 or 2
+				colbox = { -0.4374, -0.4374, 0, 0.4374, 0.4374, 0 } -- for param2 = 0 or 2
 			end
 			-- only half the size if it's a small drawer
 			if self.drawerType > 1 then
-				for i,j in pairs(colbox) do
+				for i, j in pairs(colbox) do
 					colbox[i] = j * 0.5
 				end
 			end
 		else
 			if node.param2 == 1 or node.param2 == 3 then
-				colbox = {0, -0.2187, -0.4374,  0, 0.2187, 0.4374}
+				colbox = { 0, -0.2187, -0.4374, 0, 0.2187, 0.4374 }
 			else
-				colbox = {-0.4374, -0.2187, 0,  0.4374, 0.2187, 0} -- for param2 = 0 or 2
+				colbox = { -0.4374, -0.2187, 0, 0.4374, 0.2187, 0 } -- for param2 = 0 or 2
 			end
 		end
 
 		-- visual size
-		local visual_size = {x = 0.6, y = 0.6}
+		local visual_size = { x = 0.6, y = 0.6 }
 		if self.drawerType >= 2 then
-			visual_size = {x = 0.3, y = 0.3}
+			visual_size = { x = 0.3, y = 0.3 }
 		end
 
 
 		-- drawer values
 		local vid = self.visualId
-		self.count = self.meta:get_int("count"..vid)
-		self.itemName = self.meta:get_string("name"..vid)
-		self.maxCount = self.meta:get_int("max_count"..vid)
-		self.itemStackMax = self.meta:get_int("base_stack_max"..vid)
-		self.stackMaxFactor = self.meta:get_int("stack_max_factor"..vid)
+		self.count = self.meta:get_int("count" .. vid)
+		self.itemName = self.meta:get_string("name" .. vid)
+		self.maxCount = self.meta:get_int("max_count" .. vid)
+		self.itemStackMax = self.meta:get_int("base_stack_max" .. vid)
+		self.stackMaxFactor = self.meta:get_int("stack_max_factor" .. vid)
 
 
 		-- infotext
-		local infotext = self.meta:get_string("entity_infotext"..vid) .. "\n\n\n\n\n"
+		local infotext = self.meta:get_string("entity_infotext" .. vid) .. "\n\n\n\n\n"
 
 		self.object:set_properties({
 			collisionbox = colbox,
 			infotext = infotext,
-			textures = {self.texture},
+			textures = { self.texture },
 			visual_size = visual_size
 		})
 
 		-- make entity undestroyable
-		self.object:set_armor_groups({immortal = 1})
+		self.object:set_armor_groups({ immortal = 1 })
 	end,
 
 	on_rightclick = function(self, clicker)
@@ -162,8 +162,8 @@ core.register_entity("drawers:visual", {
 		-- When the player uses the drawer with their bare hand all
 		-- stacks from the inventory will be added to the drawer.
 		if self.itemName ~= "" and
-		   clicker:get_wielded_item():get_name() == "" and
-		   not clicker:get_player_control().sneak then
+			clicker:get_wielded_item():get_name() == "" and
+			not clicker:get_player_control().sneak then
 			-- try to insert all items from inventory
 			local i = 0
 			local inv = clicker:get_inventory()
@@ -215,8 +215,8 @@ core.register_entity("drawers:visual", {
 		end
 		local add_stack = not puncher:get_player_control().sneak
 		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
-		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
-		   return
+			core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
+			return
 		end
 		local inv = puncher:get_inventory()
 		if inv == nil then
@@ -345,14 +345,14 @@ core.register_entity("drawers:visual", {
 
 		if self.count <= 0 then
 			self.itemName = ""
-			self.meta:set_string("name"..self.visualId, self.itemName)
+			self.meta:set_string("name" .. self.visualId, self.itemName)
 			self.texture = "blank.png"
 			itemDescription = S("Empty")
 		end
 
 		local infotext = drawers.gen_info_text(itemDescription,
 			self.count, self.stackMaxFactor, self.itemStackMax)
-		self.meta:set_string("entity_infotext"..self.visualId, infotext)
+		self.meta:set_string("entity_infotext" .. self.visualId, infotext)
 
 		self.object:set_properties({
 			infotext = infotext .. "\n\n\n\n\n"
@@ -364,7 +364,7 @@ core.register_entity("drawers:visual", {
 		self.texture = drawers.get_inv_image(self.itemName)
 
 		self.object:set_properties({
-			textures = {self.texture}
+			textures = { self.texture }
 		})
 	end,
 
@@ -374,7 +374,7 @@ core.register_entity("drawers:visual", {
 			core.log("warning", "[drawers] Dropping item stack with higher count than allowed")
 		end
 		-- find a position containing air
-		local dropPos = core.find_node_near(self.drawer_pos, 1, {"air"}, false)
+		local dropPos = core.find_node_near(self.drawer_pos, 1, { "air" }, false)
 		-- if no pos found then drop on the top of the drawer
 		if not dropPos then
 			dropPos = self.object:get_pos()
@@ -425,19 +425,21 @@ core.register_entity("drawers:visual", {
 	end,
 
 	saveMetaData = function(self, meta)
-		self.meta:set_int("count"..self.visualId, self.count)
-		self.meta:set_string("name"..self.visualId, self.itemName)
-		self.meta:set_int("max_count"..self.visualId, self.maxCount)
-		self.meta:set_int("base_stack_max"..self.visualId, self.itemStackMax)
-		self.meta:set_int("stack_max_factor"..self.visualId, self.stackMaxFactor)
+		self.meta:set_int("count" .. self.visualId, self.count)
+		self.meta:set_string("name" .. self.visualId, self.itemName)
+		self.meta:set_int("max_count" .. self.visualId, self.maxCount)
+		self.meta:set_int("base_stack_max" .. self.visualId, self.itemStackMax)
+		self.meta:set_int("stack_max_factor" .. self.visualId, self.stackMaxFactor)
 	end
 })
 
+mesecon.register_mvps_kill("drawers:visual")
+
 core.register_lbm({
-	name = "drawers:restore_visual",
-	nodenames = {"group:drawer"},
+	name              = "drawers:restore_visual",
+	nodenames         = { "group:drawer" },
 	run_at_every_load = true,
-	action  = function(pos, node)
+	action            = function(pos, node)
 		local meta = core.get_meta(pos)
 		-- create drawer upgrade inventory
 		meta:get_inventory():set_size("upgrades", 5)
@@ -451,7 +453,7 @@ core.register_lbm({
 		if objs then
 			for _, obj in pairs(objs) do
 				if obj and obj:get_luaentity() and
-						obj:get_luaentity().name == "drawers:visual" then
+					obj:get_luaentity().name == "drawers:visual" then
 					foundVisuals = foundVisuals + 1
 				end
 			end

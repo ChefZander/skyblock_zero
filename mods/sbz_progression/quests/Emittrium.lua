@@ -31,8 +31,6 @@ Also, if you put a machine next to another machine, it will conduct power to tha
 
     { type = "quest", title = "Batteries",            text = "Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 1 CJh (Cosmic Joule Hour) of energy. You can craft it by surrounding a Emittrium Circuit with matter blobs.",                                                                         requires = { "Emittrium Circuits" } },
 
-    { type = "quest", title = "Advanced Batteries",   text = "Sometimes, you'll need to temporarily buffer lots of energy. Ah, you know what this is for. It stores up to 5 CJh, it's for when your factory needs to be compact. Yadda yadda.",                                                                                                               requires = { "Batteries", "Furnace" } },
-
     { type = "quest", title = "Connectors",           text = "If you want to turn machines on and off, you can use Connectors. They join two networks together, and you can click on them to turn them on and off.\nIMPORTANT: Make sure that only one of the two or more joined networks has a switching station, or they will blow up until reaching one.", requires = { "Emittrium Circuits", "Reinforced Matter" } },
 
     --{ type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators", "Meteorites" } },

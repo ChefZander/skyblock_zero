@@ -132,6 +132,7 @@ local achievement_table = {
     ["drawers:controller"] = "Drawer Controller",
     ["sbz_chem:compressor_off"] = "Compressor",
     ["sbz_chem:crystal_grower_off"] = "Crystal Grower",
+    ["sbz_power:very_advanced_battery"] = "Very Advanced Batteries",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

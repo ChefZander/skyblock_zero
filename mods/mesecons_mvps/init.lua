@@ -173,10 +173,27 @@ permanent authorization for you to choose that version for the
 Library.
 ]]
 
-mesecon = {}
-function mesecon.register_mvps_unmov() end
+mesecon = {
+    mvps_unmov = {},
+    mvps_kill = {},
+}
 
-function mesecon.is_mvps_unmov() return false end
+--- Objects (entities) that cannot be moved
+function mesecon.register_mvps_unmov(objectname)
+    mesecon.mvps_unmov[objectname] = true;
+end
+
+function mesecon.is_mvps_unmov(objectname)
+    return mesecon.mvps_unmov[objectname or ""]
+end
+
+function mesecon.register_mvps_kill(objectname)
+    mesecon.mvps_kill[objectname] = true;
+end
+
+function mesecon.is_mvps_kill(objectname)
+    return mesecon.mvps_kill[objectname or ""]
+end
 
 function mesecon.is_mvps_stopper(node, oldpos, pos)
     local stopper = sbz_api.mvps_stoppers[node.name]
@@ -221,17 +238,29 @@ sbz_api.move_node = function(A, B)
     local nodeAtimer = core.get_node_timer(A)
 
     core.set_node(B, nodeA)
-    core.get_meta(B):from_table(nodeAmeta:to_table())
+    local nodeBmeta = core.get_meta(B)
+    nodeBmeta:from_table(nodeAmeta:to_table())
     if nodeAtimer:is_started() then
         core.get_node_timer(B):set(nodeAtimer:get_timeout(), nodeAtimer:get_elapsed())
     end
     core.remove_node(A)
 
+    local objects = core.get_objects_inside_radius(A, 1.5) -- TODO: **WAIT** for luanti to have more sane get_objects_inside_radius, then remove this comment saying: THIS IS LAGGY
+    for id, obj in pairs(objects) do
+        local pos = obj:get_pos()
+        local luaentity = obj:get_luaentity() or {}
+        if mesecon.is_mvps_kill(luaentity.name) then
+            obj:remove()
+        elseif not mesecon.is_mvps_unmov(luaentity.name) then
+            obj:set_pos((vector.copy(pos) - vector.copy(A)) + vector.copy(B))
+        end
+    end
+
     on_mvps_move({
         {
             oldpos = A,
             pos = B,
-            node = nodeA
+            node = nodeA,
         }
     })
 end
@@ -240,16 +269,21 @@ end
 -- TODO: load blocks instead, as with wires.
 mesecon.register_mvps_stopper("ignore")
 mesecon.register_on_mvps_move(function(moved_nodes)
-    for i = 1, #moved_nodes do
-        local moved_node = moved_nodes[i]
-        minetest.after(0, function()
-            minetest.check_for_falling(moved_node.oldpos)
-            minetest.check_for_falling(moved_node.pos)
-        end)
-        local node_def = minetest.registered_nodes[moved_node.node.name]
-        if node_def and node_def.mesecon and node_def.mesecon.on_mvps_move then
-            node_def.mesecon.on_mvps_move(moved_node.pos, moved_node.node,
-                moved_node.oldpos, moved_node.meta)
+    if #moved_nodes == 1 then
+        for i = 1, #moved_nodes do
+            local moved_node = moved_nodes[i]
+            minetest.after(0, function()
+                minetest.check_for_falling(moved_node.oldpos)
+                minetest.check_for_falling(moved_node.pos)
+            end)
+            local node_def = minetest.registered_nodes[moved_node.node.name]
+            if node_def and node_def.mesecon and node_def.mesecon.on_mvps_move then
+                node_def.mesecon.on_mvps_move(moved_node.pos, moved_node.node,
+                    moved_node.oldpos, moved_node.meta)
+            end
+            if node_def.on_movenode then
+                node_def.on_movenode(moved_node.oldpos, moved_node.pos)
+            end
         end
     end
 end)

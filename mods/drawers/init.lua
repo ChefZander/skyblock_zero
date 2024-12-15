@@ -117,9 +117,9 @@ drawers.register_drawer_upgrade("drawers:neutronium_upgrade", { -- neutronium is
 })
 
 drawers.register_drawer_upgrade("drawers:infinite_upgrade", {
-	description = S("Creative Drawer Upgrade (3200x)"),
+	description = S("Creative Drawer Upgrade (1000000x)"),
 	inventory_image = "drawers_upgrade_infinite.png",
-	groups = { drawer_upgrade = 3100000 },
+	groups = { drawer_upgrade = 1000100, creative = 1 },
 	no_craft = true,
 })
 

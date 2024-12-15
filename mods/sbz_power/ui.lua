@@ -1,24 +1,49 @@
-local t = sbz_api.power_tick -- ticks/second
-local tph = t * 60 * 60      -- ticks/hour
-
 function sbz_power.round_power(n)
     return math.round(n * 100) / 100
 end
 
---- Converts cj into cjh (kinda like kwh irl)
---- NOT PRECISE, you can make precise functions if you need them
----@param cj number
----@return number
-function sbz_power.cj2cjh(cj)
-    return sbz_power.round_power(cj / tph)
+local prefixes = {
+    ["k"] = 10 ^ 3,
+    ["M"] = 10 ^ 6,
+    ["G"] = 10 ^ 9,
+    ["T"] = 10 ^ 12,
+    -- alright... now no matter how much you stack your power sources, with unmodified skyblock zero, no one should be able to reach these
+    ["P (Congratulations i guess you learned how to mod)"] = 10 ^ 15,
+    ["E (WTF?)"] = 10 ^ 18,
+    ["Z"] = 10 ^ 21,
+    ["Y"] = 10 ^ 24,
+    -- ok enough thats too big
+}
+
+local function get_prefix_and_divider(n)
+    local prefix = ""
+    local divider = 1
+    for k, v in pairs(prefixes) do
+        if v > divider then
+            if (n / v) >= 1 then
+                divider = v
+                prefix = k
+            end
+        end
+    end
+    return prefix, divider
 end
 
---- Converts cjh into cj (kinda like kwh irl)
---- NOT PRECISE, you can make precise functions if you need them
----@param cjh number
----@return number
-function sbz_power.cjh2cj(cjh)
-    return sbz_power.round_power(cjh * tph)
+function sbz_api.format_power(n, n2)
+    local prefix, divider = get_prefix_and_divider(n)
+    local prefix_to_use = prefix -- use whichever is larger
+    local divider_to_use = divider
+    if n2 then
+        local prefix2, divider2 = get_prefix_and_divider(n2)
+        if divider2 > divider then
+            prefix_to_use = prefix2
+            divider_to_use = divider2
+        end
+    end
+    prefix_to_use = prefix_to_use .. "Cj"
+
+    return (sbz_power.round_power(n / divider_to_use) .. " " .. prefix_to_use) ..
+        (n2 and (" / " .. sbz_power.round_power(n2 / divider_to_use) .. " " .. prefix_to_use) or "")
 end
 
 ---@param consumed { n:number, text: string }
@@ -86,9 +111,9 @@ end
 function sbz_power.battery_fs(consumed, max)
     return "formspec_version[7]size[5,5]" ..
         bar(
-            { n = consumed, text = ("%s CjH (%s Cj)"):format(sbz_power.cj2cjh(consumed), consumed) },
-            { n = max, text = ("%s CjH (%s Cj)"):format(sbz_power.cj2cjh(max), max) },
-            0, 0, 5, 5, "Storage", "CjH = \"The amount of Cj that can be sustained for 1 hour.\""
+            { n = consumed, text = sbz_api.format_power(consumed) },
+            { n = max, text = sbz_api.format_power(max) },
+            0, 0, 5, 5, "Storage", ""
         )
 end
 
