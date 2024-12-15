@@ -35,6 +35,7 @@ The jumpdrive also acts as a battery, storing 200 kCj, this also means it can be
 
 If you punch the jumpdrive with an empty hand, you will see an outline of what nodes it will teleport.
 
+You can transport emitters with the jumpdrive.
 Also, emitters stop spawning after y=1000, so you can transport stuff more easily there, since no emitters will intefere with you.
         ]],
         requires = { "Jumpdrive Backbone", "Warp Device", "Very Advanced Batteries" },
