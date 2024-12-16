@@ -42,6 +42,16 @@ Also, emitters stop spawning after y=1000, so you can transport stuff more easil
     },
     {
         type = "quest",
+        title = "Jumpdrive Stations",
+        text = [[
+Soo i imagine you'd like to travel huge distances with the jumpdrive, well.... this will allow you to do that
+
+Simply place one down in your target destination. Now you can teleport to it with the jumpdrive.
+        ]],
+        requires = { "The Jumpdrive (engine)" },
+    },
+    {
+        type = "quest",
         title = "Jumpdrive Fleet Controller",
         text = [[
 So... i imagine you want to move multiple jumpdrives at once... well you are lucky, this is the node for you!

@@ -138,6 +138,7 @@ local achievement_table = {
     ["jumpdrive:fleet_controller"] = "Jumpdrive Fleet Controller",
     ["jumpdrive:engine"] = "The Jumpdrive (engine)",
     ["jumpdrive:warp_device"] = "Warp Device",
+    ["jumpdrive:station"] = "Jumpdrive Stations"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
