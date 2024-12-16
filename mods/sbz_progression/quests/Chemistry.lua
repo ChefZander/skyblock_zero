@@ -11,16 +11,43 @@ return {
     { type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
 
     { type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = { "Simple Alloy Furnace", "Crusher" } },
-
     {
         type = "quest",
-        title = "Meteorites",
-        text =
-        "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.",
-        requires = { "Simple Alloy Furnace", "Emittrium Circuits" }
+        title = "Compressor",
+        text = [[
+Have you ever wanted to turn your metals into nodes? Now you can!
+Craft this wonderful compressor, insert in 9 powder, or 9 ingots, and watch as it makes your blocks.
+Also, blocks made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.
+        ]],
+        requires = { "Crusher" }
+    },
+    {
+        type = "quest",
+        title = "Advanced Batteries",
+        text = [[
+A battery made with metals. Significantly better than the basic battery.
+        ]],
+        requires = { "Batteries", "Furnace" }
+    },
+    {
+        type = "quest",
+        title = "Very Advanced Batteries",
+        text = [[
+If you have lots of metals to waste... this is the battery for you!
+10 Times better than the advanced battery!
+        ]],
+        requires = { "Batteries", "Furnace" }
+    },
+    {
+        type = "quest",
+        title = "Crystal Grower",
+        text = [[
+Do you want to grow some.... crystals...... No wait not those ones....
+Well now you can! If you put in 9 warpshrooms, you will get some warp crystals, which you use for anything teleportation-related.
+        ]],
+        requires = { "Compressor", "Neutronium" }
     },
 
-    { type = "quest", title = "Neutronium", text = "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.", requires = { "Meteorites" } },
     {
         type = "quest",
         title = "Jetpack",
@@ -54,7 +81,7 @@ But that is no longer the case.
 ]],
         requires = { "Neutronium" }
     },
-    { type = "quest", title = "Bear Arms",  text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                                                                                                                                                              requires = { "Furnace" } },
+    { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                              requires = { "Furnace" } },
     {
         type = "quest",
         title = "Electric Drill",
@@ -73,36 +100,4 @@ It also digs 2x faster than the robotic arm.
 ]]
     },
     { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
-    {
-        type = "quest",
-        title = "Meteorite Maker",
-        text = [[
-Makes... meteorites... (no way), also it needs some space on top of it.
-But it cannot make strange matter meteorites.
-
-Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.
-]],
-        requires = { "Autocrafters", "Neutronium" }
-    },
-    {
-        type = "quest",
-        title = "It's strange...",
-        text = [[
-Be aware, strange matter can... spread... to both matter and antimatter...
-
-Strange matter won't spread to "charged" nodes or machines, or protected areas.
-So it's best to protect your area, even if you are in singleplayer, to defend against strange matter.
-
-Strange matter meteorites spawn if you are 100 nodes away from the core.
-]],
-        requires = { "Neutronium" }
-    },
-    {
-        type = "quest",
-        requires = { "It's strange..." },
-        title = "Strange Blob Cleaner",
-        text = [[
-Restores what was destroyed by strange blobs.
-        ]],
-    }
 }

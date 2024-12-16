@@ -24,22 +24,24 @@ end
 local function read_entities()
 	local t = read_file()
 	for _, entity in pairs(t) do
-		local x = entity.start_pos.x
-		local y = entity.start_pos.y
-		local z = entity.start_pos.z
+		if entity.start_pos ~= nil then
+			local x = entity.start_pos.x
+			local y = entity.start_pos.y
+			local z = entity.start_pos.z
 
-		x = math.max(-30912, x)
-		y = math.max(-30912, y)
-		z = math.max(-30912, z)
-		x = math.min(30927, x)
-		y = math.min(30927, y)
-		z = math.min(30927, z)
+			x = math.max(-30912, x)
+			y = math.max(-30912, y)
+			z = math.max(-30912, z)
+			x = math.min(30927, x)
+			y = math.min(30927, y)
+			z = math.min(30927, z)
 
-		entity.start_pos.x = x
-		entity.start_pos.y = y
-		entity.start_pos.z = z
+			entity.start_pos.x = x
+			entity.start_pos.y = y
+			entity.start_pos.z = z
 
-		setmetatable(entity, luaentity.registered_entities[entity.name])
+			setmetatable(entity, luaentity.registered_entities[entity.name])
+		end
 	end
 	return t
 end

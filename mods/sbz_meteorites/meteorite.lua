@@ -74,12 +74,15 @@ local function meteorite_explode(pos, type)
     end
 end
 
+sbz_api.meteorite_explode = meteorite_explode
+
 minetest.register_entity("sbz_meteorites:meteorite", {
     initial_properties = {
         visual = "cube",
         visual_size = { x = 2, y = 2 },
         automatic_rotate = 0.2,
         glow = 14,
+        selectionbox = { -1, -1, -1, 1, 1, 1 },
         physical = false --so they enter unloaded chunks properly
     },
     on_activate = function(self, staticdata, dtime)

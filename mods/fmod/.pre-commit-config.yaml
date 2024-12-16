@@ -1,0 +1,41 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.3.0
+    hooks:
+      - id: fix-byte-order-marker
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+        args: [ --fix=lf ]
+
+  - repo: local
+    hooks:
+      - id: detect_debug
+        name: detect debug
+        language: pygrep
+        entry: DEBUG
+        pass_filenames: true
+        exclude: .pre-commit-config.yaml
+        fail_fast: true
+      - id: date_version
+        name: date version
+        language: script
+        entry: .check_date.sh
+        files: mod.conf
+        always_run: true
+        fail_fast: true
+      - id: stylua
+        name: stylua
+        language: system
+        entry: stylua
+        pass_filenames: true
+        types: [ file, lua ]
+        fail_fast: true
+      - id: luacheck
+        name: luacheck
+        language: system
+        entry: luacheck
+        pass_filenames: true
+        types: [ file, lua ]
+        args: [ -q ]
+        fail_fast: true

@@ -184,3 +184,34 @@ minetest.register_chatcommand("dev_disable_libox", {
         return true, "Status: " .. dump(libox.disabled)
     end
 })
+
+minetest.register_chatcommand("dev_light", {
+    description = "Makes it day only for you",
+    privs = { ["server"] = true },
+    func = function(name)
+        local player = minetest.get_player_by_name(name)
+        if not player then
+            return false, "Player not found!"
+        end
+
+        player:override_day_night_ratio(1)
+    end
+})
+
+minetest.register_chatcommand("dev_craft", {
+    description =
+    "Fake a craft, used for quest testing, param should be an item name or \"item\" to specify wielded item's name",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then
+            return false, "Player not found!"
+        end
+
+        if param == "item" then param = player:get_wielded_item():get_name() end
+
+        for k, v in pairs(minetest.registered_on_crafts) do
+            v(ItemStack(param), player)
+        end
+    end
+})

@@ -145,6 +145,11 @@ local function see(pos, lc_from_pos, builder_from_pos)
     sbz_logic.send(lc_from_pos, result, builder_from_pos)
 end
 
+local function move(pos, pos2)
+    if pos2 == nil then return end
+    sbz_api.move_node(pos, pos2) -- how simple :D (NO DONT LOOK INSIDE, DONT LOOK AT THE COMPATIBILITY AROUND IT)
+end
+
 sbz_api.register_machine("sbz_logic_devices:builder", {
     description = "Lua Builder",
     info_extra = {
@@ -197,6 +202,7 @@ listring[]
             local ok = libox.type_check(e, {
                 type = libox.type("string"),
                 pos = libox.type_vector,
+                pos2 = function(x) return x == nil or libox.type_vector(x) end,
                 item = function(x) return x == nil or libox.type("string")(x) end,
                 param2 = function(x) return x == nil and true or libox.type("number")(x) end,
                 from_pos = libox.type_vector
@@ -208,12 +214,18 @@ listring[]
             item:set_count(1)
             item:set_wear(1)
             local index = get_index(inv, item)
-            if not index and e.type ~= "see" then return end
+            if not index and e.type ~= "see" and e.type ~= "move" then return end
             local abs_pos = vector.add(e.pos, pos)
+            local abs_pos2 = nil
+            if e.pos2 then
+                abs_pos2 = vector.add(e.pos2, pos)
+                if not sbz_api.logic.in_square_radius(pos, abs_pos2, range) then return end
+                if minetest.is_protected(abs_pos2, owner) then return end
+            end
             if not sbz_api.logic.in_square_radius(pos, abs_pos, range) then return end
             if minetest.is_protected(abs_pos, owner) then return end
 
-            if e.type ~= "see" then
+            if e.type ~= "see" and e.type ~= "move" then
                 local node_at_pos = sbz_api.get_node_force(abs_pos)
                 if node_at_pos == nil then return end
                 local def_node = ndef[node_at_pos.name]
@@ -232,7 +244,11 @@ listring[]
                     use(abs_pos, owner, def_item, inv, index)
                 end
             else
-                see(abs_pos, e.from_pos, pos)
+                if e.type == "see" then
+                    see(abs_pos, e.from_pos, pos)
+                elseif e.type == "move" then
+                    move(abs_pos, abs_pos2)
+                end
             end
         end
         for i = 1, queue_can_handle do

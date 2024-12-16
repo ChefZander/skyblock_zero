@@ -1,0 +1,11 @@
+{
+    "type": "MOD",
+    "name": "futil",
+    "title": "futil",
+    "short_description": "flux's utility mod",
+    "repo": "https://github.com/fluxionary/minetest-futil.git",
+    "website": "https://github.com/fluxionary/minetest-futil",
+    "issue_tracker": "https://github.com/fluxionary/minetest-futil/issues",
+    "license": "LGPL-3.0-or-later",
+    "media_license": "CC-BY-SA-4.0"
+}

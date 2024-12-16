@@ -112,8 +112,8 @@ minetest.register_ore({
     clust_scarcity = 80 * 80 * 80,
     clust_num_ores = 1,
     clust_size = 1,
-    _min = -31000,
-    y_max = 31000,
+    y_min = -300,
+    y_max = 1000,
 })
 
 -- Emitter Resources
@@ -220,3 +220,6 @@ minetest.register_abm({
         })
     end,
 })
+
+mesecon.register_mvps_stopper("sbz_resources:the_core")
+-- mesecon.register_mvps_stopper("sbz_resources:emitter") -- :3

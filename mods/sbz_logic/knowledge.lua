@@ -24,6 +24,7 @@ sbz_api.help_pages_by_index = {
     [19] = "Transferring Items with Logic",
     [20] = "Hologram Projector",
     [21] = "Luanium Attractor",
+    [22] = "Jumpdrives",
 }
 
 local function edit_text(t)

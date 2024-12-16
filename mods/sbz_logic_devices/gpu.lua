@@ -795,6 +795,16 @@ core.register_node("sbz_logic_devices:gpu", {
     after_place_node = after_place_node
 })
 
+mesecon.register_on_mvps_move(function(moved_nodes)
+    for i = 1, #moved_nodes do
+        local moved_node = moved_nodes[i]
+        if rawget(pos_buffers, h(moved_node.oldpos)) then
+            pos_buffers[h(moved_node.pos)] = pos_buffers[h(moved_node.oldpos)]
+            pos_buffers[h(moved_node.oldpos)] = nil
+        end
+    end
+end)
+
 
 unified_inventory.register_craft {
     type = "ele_fab",

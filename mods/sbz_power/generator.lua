@@ -388,3 +388,12 @@ minetest.register_craft({
         { "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter", "sbz_resources:reinforced_matter" }
     }
 })
+
+sbz_api.register_generator("sbz_power:creative_generator", {
+    description = "Creative Generator",
+    drawtype = "glasslike",
+    tiles = { { name = "creative_battery_power_gen.png^[colorize:purple:100", animation = { type = "vertical_frames", length = 0.5 } } },
+    groups = { creative = 1 },
+    power_generated = 10 ^ 9,
+    disable_pipeworks = true,
+})

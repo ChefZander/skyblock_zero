@@ -143,3 +143,8 @@ minetest.register_craft {
         { "sbz_resources:compressed_core_dust" }
     }
 }
+
+core.register_craftitem("sbz_resources:warp_crystal", {
+    description = "Warp Crystal",
+    inventory_image = "warp_crystal.png",
+})

@@ -12,7 +12,7 @@ minetest.register_on_mods_loaded(function()
         end
 
         if v.battery_max then
-            new_desc[#new_desc + 1] = "Stores " .. v.battery_max .. " power"
+            new_desc[#new_desc + 1] = "Stores " .. sbz_api.format_power(v.battery_max)
         end
 
         if v.tube then
@@ -57,6 +57,10 @@ minetest.register_on_mods_loaded(function()
 
         if not v.allow_metadata_inventory_put_was_nop and v.type == "node" then
             new_desc[#new_desc + 1] = "Logic can't put items to this node."
+        end
+
+        if sbz_api.mvps_stoppers[k] == true then
+            new_desc[#new_desc + 1] = "Logic builders cannot move this node."
         end
 
         if #new_desc > 1 then

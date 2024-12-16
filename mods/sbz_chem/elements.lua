@@ -14,6 +14,22 @@ unified_inventory.register_craft_type("alloying", {
     uses_crafting_grid = false,
 })
 
+unified_inventory.register_craft_type("compressing", {
+    description = "Compressing",
+    icon = "compressor.png^[verticalframe:11:1",
+    width = 1,
+    height = 1,
+    uses_crafting_grid = false,
+})
+
+unified_inventory.register_craft_type("crystal_growing", {
+    description = "(Crystal) Growing",
+    icon = "crystal_grower.png^[verticalframe:17:1",
+    width = 1,
+    height = 1,
+    uses_crafting_grid = false,
+})
+
 sbz_api.crusher_drops = {}
 sbz_api.unused_chem = {}
 
@@ -28,9 +44,26 @@ sbz_api.register_element = function(name, color, description, disabled, part_of_
     minetest.register_craftitem("sbz_chem:" .. name .. "_ingot", {
         groups = { chem_element = 1, ingot = 1, not_in_creative_inventory = disabled_group, chem_disabled = disabled_group },
         description = string.format(description, "Ingot"),
-        inventory_image = "ingot.png^[colorize:" .. color .. ":150"
+        inventory_image = "ingot.png^[colorize:" .. color .. ":150",
+
+    })
+    minetest.register_node("sbz_chem:" .. name .. "_block", unifieddyes.def {
+        groups = {
+            chem_element = 1,
+            chem_block = 1,
+            not_in_creative_inventory = disabled_group,
+            chem_disabled = disabled_group,
+            matter = 1,
+            level = 2,
+            explody = 100
+        },
+        description = string.format(description, "Block"),
+        tiles = { "block.png^[colorize:" .. color .. ":150" },
+        sounds = sbz_api.sounds.metal()
+
     })
     if not disabled then
+        stairs.register("sbz_chem:" .. name .. "_block")
         minetest.register_craft({
             type = "cooking",
             output = "sbz_chem:" .. name .. "_ingot",
@@ -41,6 +74,24 @@ sbz_api.register_element = function(name, color, description, disabled, part_of_
             output = "sbz_chem:" .. name .. "_powder",
             items = { "sbz_chem:" .. name .. "_ingot" }
         }
+
+        unified_inventory.register_craft {
+            type = "compressing",
+            output = "sbz_chem:" .. name .. "_block",
+            items = { "sbz_chem:" .. name .. "_powder 9" }
+        }
+        unified_inventory.register_craft {
+            type = "compressing",
+            output = "sbz_chem:" .. name .. "_block",
+            items = { "sbz_chem:" .. name .. "_ingot 9" }
+        }
+
+        unified_inventory.register_craft {
+            type = "crushing",
+            output = "sbz_chem:" .. name .. "_powder 9",
+            items = { "sbz_chem:" .. name .. "_block" }
+        }
+
         if part_of_crusher_drops == nil or part_of_crusher_drops == true then
             sbz_api.crusher_drops[#sbz_api.crusher_drops + 1] = "sbz_chem:" .. name .. "_powder"
         end

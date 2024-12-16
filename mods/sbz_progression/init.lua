@@ -120,7 +120,25 @@ local achievement_table = {
     ["sbz_resources:drill"] = "Electric Drill",
     ["sbz_meteorites:meteorite_maker_off"] = "Meteorite Maker",
     ["sbz_resources:strange_cleaner"] = "Strange Blob Cleaner",
-    ["sbz_bio:fertilized_dirt"] = "Fertilized Dirt"
+    ["sbz_bio:fertilized_dirt"] = "Fertilized Dirt",
+    ["sbz_resources:laser_weapon"] = "Laser",
+
+    ["sbz_resources:storinator_bronze"] = "Better Storinators",
+    ["sbz_resources:storinator_neutronium"] = "Best Storinators",
+    ["drawers:drawer1"] = "Drawers",
+    ["drawers:drawer2"] = "Drawers",
+    ["drawers:drawer4"] = "Drawers",
+    ["drawers:upgrade_template"] = "Drawer Upgrades",
+    ["drawers:controller"] = "Drawer Controller",
+    ["sbz_chem:compressor_off"] = "Compressor",
+    ["sbz_chem:crystal_grower_off"] = "Crystal Grower",
+    ["sbz_power:very_advanced_battery"] = "Very Advanced Batteries",
+
+    ["jumpdrive:backbone"] = "Jumpdrive Backbone",
+    ["jumpdrive:fleet_controller"] = "Jumpdrive Fleet Controller",
+    ["jumpdrive:engine"] = "The Jumpdrive (engine)",
+    ["jumpdrive:warp_device"] = "Warp Device",
+    ["jumpdrive:station"] = "Jumpdrive Stations"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -144,19 +162,26 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
+--[[
 core.register_chatcommand("dynamic_safetynet", {
 
     params = "static | dynamic",
 
-    description = "Define threshold for teleporting to core\n(static: y < 110m below core, dynamic: y < 110m below lowest placed node)",
+    description =
+    "Define threshold for teleporting to core\n(static: y < 110m below core, dynamic: y < 110m below lowest placed node)",
 
     func = function(name, params)
         local meta = core.get_player_by_name(name):get_meta()
-        if params == "dynamic" then meta:set_int("dynamic_safetynet", 1); return true, "Successfully changed return threshold.\nYou can reverse this behavior with \"/dynamic_safetynet static\"." end
-        if params == "static" then meta:set_int("dynamic_safetynet", 0); return true, "Successfully changed return threshold." end
+        if params == "dynamic" then
+            meta:set_int("dynamic_safetynet", 1); return true,
+                "Successfully changed return threshold.\nYou can reverse this behavior with \"/dynamic_safetynet static\"."
+        end
+        if params == "static" then
+            meta:set_int("dynamic_safetynet", 0); return true, "Successfully changed return threshold."
+        end
         return false
     end,
-})
+})--]]
 
 local achievement_in_inventory_table = {
     ["sbz_chem:gold_powder"] = "It's fake",

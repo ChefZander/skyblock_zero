@@ -1,5 +1,4 @@
-local all_switching_stations = {}
-local all_switching_stations_reverse = {}
+local all_switching_stations = {} -- h(pos) = true|nil
 
 sbz_api.switching_station_networks = {}
 
@@ -155,9 +154,10 @@ function sbz_api.switching_station_tick(start_pos)
 
         meta:set_string("infotext",
             string.format(
-                "Supply: %s\nDemand: %s\nBattery capacity: %s/%s\nLag: %sms\nNetwork Size: %s",
-                network_before.supply - network_before.battery_supply_only,
-                network_before.demand, network_before.battery_supply_only, network_before.battery_max,
+                "Supply: %s\nDemand: %s\nBattery capacity: %s\nLag: %sms\nNetwork Size: %s",
+                sbz_api.format_power(network_before.supply - network_before.battery_supply_only),
+                sbz_api.format_power(network_before.demand),
+                sbz_api.format_power(network_before.battery_supply_only, network_before.battery_max),
                 network_before.lag / 1000, network_size
             )
         )
@@ -310,9 +310,8 @@ minetest.register_abm({
     catch_up = false,
     action = function(pos)
         local poshash = hash(pos)
-        if not all_switching_stations_reverse[poshash] then
-            all_switching_stations[#all_switching_stations + 1] = hash(pos)
-            all_switching_stations_reverse[poshash] = true
+        if not all_switching_stations[poshash] then
+            all_switching_stations[hash(pos)] = true
         end
     end
 })
@@ -357,13 +356,12 @@ sbz_api.switching_station_globalstep = function(dtime)
     if dtime_accum_subtick >= sbz_api.power_subtick then
         dtime_accum_subtick = 0
         dtime_accum_fulltick = dtime_accum_fulltick + sbz_api.power_subtick
-        for k, v in ipairs(all_switching_stations) do
-            local pos = unhash(v)
+        for k, v in pairs(all_switching_stations) do
+            local pos = unhash(k)
             if getnode(pos).name ~= "sbz_power:switching_station" then
                 getmeta(pos):set_string("infotext", "Inactive")
-                table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right, yes
-                all_switching_stations_reverse[v] = nil
-                sbz_api.switching_station_networks[v] = nil
+                all_switching_stations[k] = nil
+                sbz_api.switching_station_networks[k] = nil
             else
                 sbz_api.switching_station_sub_tick(pos)
             end
@@ -373,12 +371,12 @@ sbz_api.switching_station_globalstep = function(dtime)
     -- tick
     if dtime_accum_fulltick >= sbz_api.power_tick then
         dtime_accum_fulltick = 0
-        for k, v in ipairs(all_switching_stations) do
-            local pos = unhash(v)
+        for k, v in pairs(all_switching_stations) do
+            local pos = unhash(k)
             if getnode(pos).name ~= "sbz_power:switching_station" then
                 getmeta(pos):set_string("infotext", "Inactive")
                 table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right
-                all_switching_stations_reverse[v] = nil
+                all_switching_stations[k] = nil
                 sbz_api.switching_station_networks[v] = nil
             else
                 sbz_api.switching_station_tick(pos)
@@ -387,5 +385,23 @@ sbz_api.switching_station_globalstep = function(dtime)
     end
 end
 
-
 minetest.register_globalstep(sbz_api.switching_station_globalstep)
+
+mesecon.register_on_mvps_move(function(moved_nodes)
+    for i = 1, #moved_nodes do
+        local moved_node = moved_nodes[i]
+        local oldpos = moved_node.oldpos
+        local pos = moved_node.pos
+        local node = moved_node.node
+
+        if node.name == "sbz_power:switching_station" then
+            all_switching_stations[hash(oldpos)] = nil
+            all_switching_stations[hash(pos)] = true
+            sbz_api.switching_station_networks[hash(pos)] = sbz_api.switching_station_networks[hash(oldpos)]
+            sbz_api.switching_station_networks[hash(pos)] = nil
+        elseif touched_nodes[hash(oldpos)] then
+            touched_nodes[hash(pos)] = touched_nodes[hash(oldpos)]
+            touched_nodes[hash(oldpos)] = nil
+        end
+    end
+end)

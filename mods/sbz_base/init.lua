@@ -67,6 +67,19 @@ function iterate_around_pos(pos, func)
     end
 end
 
+function iterate_around_radius(pos, func, rad)
+    rad = rad or 1
+    for x = -rad, rad do
+        for y = -rad, rad do
+            for z = -rad, rad do
+                local vec = vector.new(x, y, z)
+                vec = vec + pos
+                func(vec)
+            end
+        end
+    end
+end
+
 -- generate an empty world with only the core block
 minetest.log("action", "sbz base: register mapgen")
 minetest.register_on_generated(function(minp, maxp, seed)
@@ -277,7 +290,6 @@ minetest.register_on_joinplayer(function(player)
 
     -- space gravity yeeeah
     player:set_physics_override({
-        gravity = 0.5,
         sneak_glitch = true, -- sneak glitch is super based
     })
 
@@ -341,6 +353,12 @@ end
 function is_node_within_radius(pos, nodenames, radius)
     local radius_vector = vector.new(radius, radius, radius)
     return core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)[1]
+end
+
+function is_air(pos)
+    local node = core.get_node(pos).name
+    local reg = minetest.registered_nodes[node]
+    return reg.air or reg.air_equivalent or node == "air"
 end
 
 -- mapgen aliases

@@ -14,12 +14,12 @@ local fert_use = function(itemstack, user, pointed)
     local name = node.name
     local def = minetest.registered_nodes[node.name] or {}
 
-    if not (sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos)) then return end
 
     if minetest.get_item_group(name, "soil") > 0
         and minetest.registered_nodes[minetest.get_node(pos + up).name].buildable_to
         and name ~= "sbz_bio:fertilized_dirt"
     then
+        if not (sbz_api.get_node_heat(pos) > 7 and sbz_api.is_sky_exposed(pos) and sbz_api.is_hydrated(pos)) then return end
         minetest.set_node(pos + up, { name = sprouts[math.random(#sprouts)] })
         --   elseif minetest.get_item_group(name, "plant") > 0 and def.grow then
         --        def.grow(pos, node)
@@ -126,7 +126,7 @@ function sbz_api.register_plant(name, defs)
             paramtype2 = "color",
             palette = "wilting_palette.png",
             walkable = false,
-            groups = { dig_immediate = 2, attached_node = 1, plant = 1, needs_co2 = defs.co2_demand, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
+            groups = { dig_immediate = 2, attached_node = 1, plant = 1, needs_co2 = defs.co2_demand, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, burn = 1, nb_nodig = 1 },
             drop = {},
             growth_tick = sbz_api.plant_growth_tick(defs.growth_rate),
             grow = sbz_api.plant_grow("sbz_bio:" .. name .. "_" .. (i + 1)),
@@ -144,7 +144,7 @@ function sbz_api.register_plant(name, defs)
         paramtype2 = "color",
         palette = "wilting_palette.png",
         walkable = false,
-        groups = { matter = 3, oddly_breakable_by_hand = 3, attached_node = 1, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1 },
+        groups = { matter = 3, oddly_breakable_by_hand = 3, attached_node = 1, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, burn = 1 },
         drop = defs.drop
     })
 end

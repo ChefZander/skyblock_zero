@@ -1,6 +1,8 @@
 local S = minetest.get_translator("unified_inventory")
 local ui = unified_inventory
 
+unified_inventory.registered_group_items = {}
+
 function unified_inventory.extract_groupnames(groupname)
 	local specname = ItemStack(groupname):get_name()
 	if specname:sub(1, 6) ~= "group:" then
@@ -9,7 +11,6 @@ function unified_inventory.extract_groupnames(groupname)
 	local group_names = specname:sub(7):split(",")
 	return table.concat(group_names, S(" and ")), #group_names
 end
-
 
 -- This is used when displaying craft recipes, where an ingredient is
 -- specified by group rather than as a specific item.  A single-item group
@@ -44,9 +45,9 @@ local function compute_group_item(group_name_list)
 	end
 	local num_candidates = #candidate_items
 	if num_candidates == 0 then
-		return {sole = true}
+		return { sole = true }
 	elseif num_candidates == 1 then
-		return {item = candidate_items[1], sole = true}
+		return { item = candidate_items[1], sole = true }
 	end
 	local is_group = {}
 	local registered_rep = {}
@@ -73,7 +74,7 @@ local function compute_group_item(group_name_list)
 			bestpref = pref
 		end
 	end
-	return {item = bestitem, sole = false}
+	return { item = bestitem, sole = false }
 end
 
 
@@ -85,7 +86,6 @@ function unified_inventory.get_group_item(group_name)
 	end
 	return group_item_cache[group_name]
 end
-
 
 --[[
 This is for filtering known items by groups
@@ -119,7 +119,7 @@ Output:
 	}
 ]]
 function unified_inventory.get_matching_items(specname)
-	if specname:sub(1,6) ~= "group:" then
+	if specname:sub(1, 6) ~= "group:" then
 		return { [specname] = true }
 	end
 

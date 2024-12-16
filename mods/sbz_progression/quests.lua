@@ -5,14 +5,17 @@ function sbz_api.register_quest(def)
 end
 
 local quest_files = {
-    [1] = "Introduction",
-    [2] = "Emittrium",
-    [3] = "Chemistry",
-    [4] = "Organics",
-    [5] = "Decorator",
-    [6] = "Pipeworks_and_fluid_transport",
-    [7] = "Reactor",
-    [8] = "Completionist"
+    "Introduction",
+    "Emittrium",
+    "Chemistry",
+    "Storage",
+    "Meteorites",
+    "Organics",
+    "Decorator",
+    "Pipeworks_and_fluid_transport",
+    "Reactor",
+    "Jumpdrive",
+    "Completionist",
 }
 
 local function foreach(t, f)
