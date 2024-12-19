@@ -80,40 +80,6 @@ function iterate_around_radius(pos, func, rad)
     end
 end
 
--- generate an empty world with only the core block
-minetest.log("action", "sbz base: register mapgen")
-minetest.register_on_generated(function(minp, maxp, seed)
-    if minp.x <= 0 and maxp.x >= 0 and minp.y <= 0 and maxp.y >= 0 and minp.z <= 0 and maxp.z >= 0 then
-        local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-        local data = vm:get_data()
-
-        local area = VoxelArea:new { MinEdge = emin, MaxEdge = emax }
-        local c_air = minetest.get_content_id("air")
-        local c_stone = minetest.get_content_id("sbz_resources:the_core")
-
-        for z = minp.z, maxp.z do
-            for y = minp.y, maxp.y do
-                for x = minp.x, maxp.x do
-                    local vi = area:index(x, y, z)
-                    data[vi] = c_air
-                end
-            end
-        end
-
-        -- place the core
-        if minp.x <= 0 and maxp.x >= 0 and minp.y <= 0 and maxp.y >= 0 and minp.z <= 0 and maxp.z >= 0 then
-            local vi = area:index(0, 0, 0)
-            data[vi] = c_stone
-        end
-
-        vm:set_data(data)
-        vm:calc_lighting()
-        vm:write_to_map()
-    end
-end)
-
--- new players always spawn on the core
-minetest.log("action", "sbz base: register new player")
 minetest.register_on_newplayer(function(player)
     player:set_pos({ x = 0, y = 1, z = 0 })
 
@@ -136,6 +102,7 @@ end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
     -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
+    -- zander, this crap doesnt matter
     assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
     minetest.change_player_privs(ref:get_player_name(), {
         home = true,
@@ -144,7 +111,6 @@ minetest.register_on_joinplayer(function(ref, last_login)
     ref:override_day_night_ratio(0)
 end)
 
--- also allow /core
 minetest.register_chatcommand("core", {
     description = "Go back to the core, if you fell off.",
     privs = {},
@@ -360,13 +326,6 @@ function is_air(pos)
     local reg = minetest.registered_nodes[node]
     return reg.air or reg.air_equivalent or node == "air"
 end
-
--- mapgen aliases
-
-
-minetest.register_alias("mapgen_stone", "air")
-minetest.register_alias("mapgen_water_source", "air")
-minetest.register_alias("mapgen_river_water_source", "air")
 
 local MP = minetest.get_modpath("sbz_base")
 

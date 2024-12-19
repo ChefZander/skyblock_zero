@@ -146,7 +146,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:stone", unifieddyes.def {
     description = "Stone",
     tiles = { "stone.png" },
-    groups = { matter = 1, moss_growable = 1 },
+    groups = { matter = 1, moss_growable = 1, charged = 1 },
     sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),

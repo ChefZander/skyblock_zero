@@ -20,7 +20,7 @@ function vector.new(x, y, z) end
 ---@return vector
 function vector.zero() end
 
----@param v vector
+---@param v vector|table
 ---@return vector
 function vector.copy(v) end
 

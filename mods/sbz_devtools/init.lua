@@ -215,3 +215,16 @@ minetest.register_chatcommand("dev_craft", {
         end
     end
 })
+
+minetest.register_chatcommand("dev_regen", {
+    description = "Re-generate a mapblock (one that you are standing on)",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then
+            return false, "Player not found!"
+        end
+
+        core.delete_area(player:get_pos(), player:get_pos())
+    end
+})

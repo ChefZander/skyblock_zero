@@ -1,0 +1,1 @@
+this is the sbz mapgen mod, inspired by pandorabox's planetoids
