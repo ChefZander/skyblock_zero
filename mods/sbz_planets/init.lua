@@ -22,25 +22,35 @@ local c_water = c("mapgen_water_source")
 
 local planets = sbz_api.planets
 
+-- stolen from lvm_example, make own later
+local np_terrain = {
+    offset = 0,
+    scale = 20,
+    spread = { x = 384, y = 192, z = 384 },
+    seed = 5900033,
+    octaves = 5,
+    persist = 0.63,
+    lacunarity = 2.0,
+    --flags = ""
+}
+
+local noise = {}
+local noisemap
+
+local data = {}
+
 minetest.register_on_generated(function(minp, maxp, seed)
     local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-    local data = vm:get_data()
+    vm:get_data(data)
     local area = VoxelArea:new { MinEdge = emin, MaxEdge = emax }
-
-    local vi = 0
-    for z = minp.z, maxp.z do
-        for y = minp.y, maxp.y do
-            for x = minp.x, maxp.x do
-                vi = vi + 1
-                data[vi] = c_air
-            end
-        end
-    end
 
     if minp.x == 0 and minp.y == 0 and minp.z == 0 then
         data[area:index(0, 0, 0)] = c_core
     end
 
+    local sidelen = maxp.x - minp.x + 1
+    noisemap = noisemap or core.get_perlin_map(np_terrain, vector.new(sidelen, sidelen, sidelen))
+    noisemap:get_3d_map_flat(minp, noise)
 
     -- ok noww.... generate the PLANETS!!!!!.... crap...
 
@@ -55,16 +65,17 @@ minetest.register_on_generated(function(minp, maxp, seed)
         local ptype_def = planets.types[ptype]
         local pnode = ptype_def.node
 
-        local vi = 0
+        -- noise index
+        local ni = 1
         for z = minp.z, maxp.z do
             for y = minp.y, maxp.y do
+                local vi = area:index(minp.x, y, z)
                 for x = minp.x, maxp.x do
-                    vi = vi + 1
-
-                    -- x^2 + y^2 + z^2 <= r^2
-                    if vector.distance(vector.new(x, y, z), center) <= prad then
+                    if vector.distance(vector.new(x, y, z), center) <= prad - (noise[ni]) then
                         data[vi] = pnode
                     end
+                    vi = vi + 1
+                    ni = ni + 1
                 end
             end
         end

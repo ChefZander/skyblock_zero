@@ -218,6 +218,7 @@ minetest.register_chatcommand("dev_craft", {
 
 minetest.register_chatcommand("dev_regen", {
     description = "Re-generate a mapblock (one that you are standing on)",
+    params = "[radius]",
     privs = { ["server"] = true },
     func = function(name, param)
         local player = minetest.get_player_by_name(name)
@@ -225,6 +226,10 @@ minetest.register_chatcommand("dev_regen", {
             return false, "Player not found!"
         end
 
-        core.delete_area(player:get_pos(), player:get_pos())
+        local radius = tonumber(param) or 1
+
+        core.delete_area(vector.subtract(player:get_pos(), vector.new(radius, radius, radius)),
+            vector.add(player:get_pos(), vector.new(radius, radius, radius)))
+        return true, "Area re-generated!"
     end
 })
