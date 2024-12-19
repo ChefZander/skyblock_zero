@@ -22,15 +22,14 @@ local c_water = c("mapgen_water_source")
 
 local planets = sbz_api.planets
 
--- stolen from lvm_example, make own later
 local np_terrain = {
     offset = 0,
     scale = 20,
-    spread = { x = 384, y = 192, z = 384 },
+    spread = { x = 238, y = 238, z = 238 },
     seed = 5900033,
-    octaves = 5,
-    persist = 0.63,
-    lacunarity = 2.0,
+    octaves = 6,
+    persist = 0.7,
+    lacunarity = 2,
     --flags = ""
 }
 
