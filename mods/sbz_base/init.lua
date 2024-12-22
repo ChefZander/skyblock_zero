@@ -134,7 +134,7 @@ minetest.register_on_joinplayer(function(ref, last_login)
     local privs = minetest.get_player_privs(ref:get_player_name())
     privs.home = true
     privs.tp = true
-    minetest.set_player_privs(playername, privs)
+    minetest.set_player_privs(ref:get_player_name(), privs)
 
     ref:override_day_night_ratio(0)
 end)
