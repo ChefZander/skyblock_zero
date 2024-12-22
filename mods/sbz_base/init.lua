@@ -131,12 +131,11 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
-    -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
-    assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
-    minetest.change_player_privs(ref:get_player_name(), {
-        home = true,
-        tp = true
-    })
+    local privs = minetest.get_player_privs(ref:get_player_name())
+    privs.home = true
+    privs.tp = true
+    minetest.set_player_privs(playername, privs)
+
     ref:override_day_night_ratio(0)
 end)
 
