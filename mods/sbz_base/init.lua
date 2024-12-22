@@ -1,5 +1,3 @@
-minetest.log("action", "sbz base: init")
-
 local modname = minetest.get_current_modname()
 sbz_api = {
     debug = minetest.settings:get_bool("debug", false)
@@ -81,7 +79,6 @@ function iterate_around_radius(pos, func, rad)
 end
 
 -- generate an empty world with only the core block
-minetest.log("action", "sbz base: register mapgen")
 minetest.register_on_generated(function(minp, maxp, seed)
     if minp.x <= 0 and maxp.x >= 0 and minp.y <= 0 and maxp.y >= 0 and minp.z <= 0 and maxp.z >= 0 then
         local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
@@ -113,7 +110,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 end)
 
 -- new players always spawn on the core
-minetest.log("action", "sbz base: register new player")
 minetest.register_on_newplayer(function(player)
     player:set_pos({ x = 0, y = 1, z = 0 })
 
@@ -221,7 +217,6 @@ local function table_length(tbl)
     return count
 end
 
-minetest.log("action", "sbz base: register join player")
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
     minetest.chat_send_player(player:get_player_name(), "SkyBlock: Zero")
@@ -468,3 +463,5 @@ sbz_api.explode = function(pos, r, power, async, owner)
         end
     end
 end
+
+minetest.log("action", "Skyblock: Zero's Base Mod has finished loading.")

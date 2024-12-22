@@ -1,4 +1,3 @@
-minetest.log("action", "sbz resources: init")
 local modpath = minetest.get_modpath("sbz_resources")
 
 -- dofiles
