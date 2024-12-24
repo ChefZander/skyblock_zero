@@ -15,4 +15,4 @@ minetest.register_craftitem("sbz_resources:ram_stick_1mb", {
     groups = { ui_logic = 1 }
 })
 
-minetest.register_alias("sbz_resources:ram_stick_1mb", "sbz_resources:ram_stick_1kb")
+minetest.register_alias("sbz_resources:ram_stick_1kb", "sbz_resources:ram_stick_1mb")

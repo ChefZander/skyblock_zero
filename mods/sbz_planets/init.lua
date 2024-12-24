@@ -1,4 +1,5 @@
--- set up mapgen
+-- THE MAPGEN OF SKYBLOCK ZERO
+-- cave generation is the largest problem somehow???
 
 -- from lvm_example
 core.set_mapgen_setting("mg_name", "singlenode", true)
@@ -10,46 +11,75 @@ core.register_alias("mapgen_river_water_source", "sbz_resources:water_source")
 
 dofile(core.get_modpath("sbz_planets") .. "/planets.lua")
 dofile(core.get_modpath("sbz_planets") .. "/biomes.lua")
+dofile(core.get_modpath("sbz_planets") .. "/player_manager.lua")
 
 local c = core.get_content_id
 
-local c_air = c("air")
 local c_core = c("sbz_resources:the_core")
-local c_emitter = c("sbz_resources:emitter")
-
-local c_stone = c("mapgen_stone")
-local c_water = c("mapgen_water_source")
 
 local planets = sbz_api.planets
 
-local np_terrain = {
-    offset = 0,
-    scale = 20,
-    spread = { x = 238, y = 238, z = 238 },
-    seed = 5900033,
-    octaves = 6,
-    persist = 0.7,
-    lacunarity = 2,
-    --flags = ""
-}
+local noises = {
+    ["shape"] = {
+        np = {
+            offset = 0,
+            scale = 20,
+            spread = { x = 238, y = 238, z = 238 },
+            seed = 5900033,
+            octaves = 6,
+            persist = 0.7,
+            lacunarity = 2,
+            --flags = ""
+        },
+        noise = {},
 
-local noise = {}
-local noisemap
+    },
+
+    -- cave1 and cave2 noises are from https://github.com/gaelysam/valleys_mapgen/blob/9a672a7a2beca2baf9f4bc99a1fb2707c02a90f7/mapgen.lua#L532
+    ["cave1"] = {
+        np = {
+            offset = 0,
+            scale = 1,
+            seed = -8402,
+            spread = { x = 64, y = 64, z = 64 },
+            octaves = 3,
+            persist = 0.5,
+            lacunarity = 2
+        },
+        noise = {}
+    },
+    ["cave2"] = {
+        np = {
+            offset = 0,
+            scale = 1,
+            seed = 3944,
+            spread = { x = 64, y = 64, z = 64 },
+            octaves = 3,
+            persist = 0.5,
+            lacunarity = 2
+        },
+        noise = {},
+    }
+}
 
 local data = {}
 
 minetest.register_on_generated(function(minp, maxp, seed)
-    local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+    local vm, emin, emax = core.get_mapgen_object("voxelmanip")
     vm:get_data(data)
     local area = VoxelArea:new { MinEdge = emin, MaxEdge = emax }
 
-    if minp.x == 0 and minp.y == 0 and minp.z == 0 then
+    if area:contains(0, 0, 0) then
         data[area:index(0, 0, 0)] = c_core
     end
 
+    -- do the noise!!
     local sidelen = maxp.x - minp.x + 1
-    noisemap = noisemap or core.get_perlin_map(np_terrain, vector.new(sidelen, sidelen, sidelen))
-    noisemap:get_3d_map_flat(minp, noise)
+    local sidelen_vec = vector.new(sidelen, sidelen, sidelen)
+    for name, def in pairs(noises) do
+        def.map = def.map or core.get_perlin_map(def.np, sidelen_vec)
+        def.map:get_3d_map_flat(minp, def.noise)
+    end
 
     -- ok noww.... generate the PLANETS!!!!!.... crap...
 
@@ -58,26 +88,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
     for _, planet in pairs(planets_in_area) do
         local center = (vector.subtract(planet.max, planet.min) / 2) + planet.min
         local pdata = core.deserialize(planet.data)
-        -- definitely not named like this so it looks "cool", i definitely couldn't have to call it planet_data, planet_type...
         local ptype = pdata[1]
-        local prad = pdata[2]
         local ptype_def = planets.types[ptype]
-        local pnode = ptype_def.node
-
-        -- noise index
-        local ni = 1
-        for z = minp.z, maxp.z do
-            for y = minp.y, maxp.y do
-                local vi = area:index(minp.x, y, z)
-                for x = minp.x, maxp.x do
-                    if vector.distance(vector.new(x, y, z), center) <= prad - (noise[ni]) then
-                        data[vi] = pnode
-                    end
-                    vi = vi + 1
-                    ni = ni + 1
-                end
-            end
-        end
+        ptype_def.mapgen(area, minp, maxp, seed, noises, data, pdata, center)
     end
 
     biomegen.generate_all(data, area, vm, minp, maxp, seed)

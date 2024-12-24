@@ -7,6 +7,7 @@ minetest.register_tool("sbz_resources:matter_annihilator", {
     -- Tool properties
     tool_capabilities = {
         full_punch_interval = 2.5,
+        damage_groups = { matter = 2 },
         max_drop_level = 1,
         groupcaps = {
             matter = { times = { [1] = 3.00, [2] = 1.60, [3] = 0.90 }, uses = 10, maxlevel = 1 },
@@ -36,6 +37,7 @@ minetest.register_tool("sbz_resources:antimatter_annihilator", {
     groups = { core_drop_multi = 1 },
     tool_capabilities = {
         full_punch_interval = 2.5,
+        damage_groups = { antimatter = 2 },
         max_drop_level = 1,
         groupcaps = {
             antimatter = { times = { [1] = 3.00, [2] = 1.60, [3] = 0.90 }, uses = 10, maxlevel = 1 },
@@ -65,6 +67,7 @@ minetest.register_tool("sbz_resources:robotic_arm", {
     -- Tool properties
     tool_capabilities = {
         full_punch_interval = 0.5,
+        damage_groups = { matter = 1, antimatter = 1 },
         max_drop_level = 1,
         groupcaps = {
             matter = { times = { [1] = 1.50, [2] = 0.30, [3] = 0.10 }, uses = 60, leveldiff = 2, maxlevel = 2 },
@@ -95,6 +98,11 @@ local drill_power_per_1_use = 1
 
 local tool_caps = {
     full_punch_interval = 0.1,
+    damage_groups = { -- yeaa slightly deadly
+        matter = 3,
+        antimatter = 3,
+    },
+    punch_attack_uses = max_wear,
     max_drop_level = 1,
     groupcaps = {
         matter = {

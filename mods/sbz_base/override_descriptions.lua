@@ -36,13 +36,22 @@ minetest.register_on_mods_loaded(function()
             if v.groups.burn ~= nil then
                 new_desc[#new_desc + 1] = "Burn power: " .. v.groups.burn .. " co2"
             end
+            if v.groups.eat then
+                local sign = "+"
+                if v.groups.eat < 0 then sign = "-" end
+                new_desc[#new_desc + 1] = ("Can be eaten. %s HP"):format(sign .. v.groups.eat)
+            end
+
             if v.groups.explody then explody = true end
         end
 
 
         if v.type == "node" and not explody then
             new_desc[#new_desc + 1] = "Immune to explosions."
+        elseif v.type == "node" and explody == 1 then
+            new_desc[#new_desc + 1] = "Immune to meteorite explosions. (But not stronger ones)"
         end
+
 
         if v.info_extra then
             if type(v.info_extra) == "string" then
@@ -56,7 +65,7 @@ minetest.register_on_mods_loaded(function()
 
 
         if not v.allow_metadata_inventory_put_was_nop and v.type == "node" then
-            new_desc[#new_desc + 1] = "Logic can't put items to this node."
+            new_desc[#new_desc + 1] = "Logic can't put items to this node. (But pipeworks probably can.)"
         end
 
         if sbz_api.mvps_stoppers[k] == true then

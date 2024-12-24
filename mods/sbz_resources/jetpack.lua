@@ -138,9 +138,6 @@ minetest.register_globalstep(function(dtime)
                 glow = 14,
                 pos = real_player:get_pos()
             })
-            sbz_api.players_with_temporarily_hidden_trails[player] = true
-        else
-            sbz_api.players_with_temporarily_hidden_trails[player] = nil
         end
     end
     for k, v in ipairs(minetest.get_connected_players()) do

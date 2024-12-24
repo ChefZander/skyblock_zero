@@ -513,6 +513,15 @@ function VoxelManip:get_emerged_area() end
 VoxelArea = {}
 ---@operator call:fun(pmin, pmax):VoxelArea|fun(edges: { MinEdge: vector, MaxEdge: vector }):VoxelArea
 
+---@param pmin vector
+---@param pmax vector
+---@return VoxelArea
+function VoxelArea:new(pmin, pmax) end
+
+---@param t { MinEdge: vector, MaxEdge: vector }
+---@return VoxelArea
+function VoxelArea:new(t) end
+
 ---@return vector
 function VoxelArea:getExtent() end
 

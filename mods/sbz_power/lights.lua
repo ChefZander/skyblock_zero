@@ -37,6 +37,7 @@ minetest.register_node("sbz_power:funny_air", {
     is_ground_content = true,
     air = true,
     air_equivalent = true, -- deprecated
+    floodable = true,
 })
 
 local size = {

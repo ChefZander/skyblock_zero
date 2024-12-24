@@ -1,0 +1,63 @@
+= Simple Armor
+:toc: left
+:author: BigBear
+:title: Simple Armor (Minetest)
+Simple armor designed to be flexible and dependancy free. 
+
+== Usage 
+
+*Equip* - Right click with it in your hand. +
+*UnEquip* - Right click with empty hand. 
+
+[CAUTION]
+you must not be pointing at an object. 
+
+=== Slots 
+
+It uses 'slots' essentially an armor cannot be equipped in a slot that is
+already occupied. The 'standard' slots are head, torso, arms, legs, feet, but
+you are not contrained to this. A slot can be anything, for example 'earings'
+will work just fine for, say, magic earings of protection.
+
+=== Texture
+
+Texture is optional, so you can use it for magic items like say a magic
+talisman of protection. If you need a texture, just use the traditional model
+layout (see character.png). It will overlay the texture over whatever texture
+you already have mapped to your player model.
+
+=== Creating armor
+
+Creating armor is like creating a craft item, except there is an aditional property 'armor' 
+
+[source,lua]
+----
+simple_armor.register("titanium:boots", {
+
+	description = "Titanium Boots",
+
+	inventory_image = "titanium_boots_item.png",
+
+	armor = {
+		slot = "feet",             
+		groups = { fleshy = 15 },     -- this gives 15% protection. 
+		texture = "titanium_boots.png", -- this is overlay on player model
+	},
+})
+
+----
+
+Thats it! 
+
+== Dependancies and support of other mods
+
+There are no real dependancies on other mods. It has been tested with both
+https://content.minetest.net/packages/bell07/skinsdb/[skinsDB] and
+https://content.minetest.net/packages/TenPlus1/simple_skins[simple_skins]
+
+== Upcoming features (possibly!) 
+* Support for sfinv and other inventories
+* 
+
+== License
+Licensed under https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html[LGPL 2.1+]

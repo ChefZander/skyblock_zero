@@ -16,7 +16,7 @@ minetest.register_tool("sbz_resources:laser_weapon", {
                 vector.add(player:get_eye_offset(), vector.new(0, 1.5, 0)))
             local lookdir = player:get_look_dir()
             local endpos = vector.add(eyepos, vector.multiply(lookdir, laser_range))
-            local ray = minetest.raycast(eyepos, endpos, true, false)
+            local ray = minetest.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
 
             repeat
                 local pointed = ray:next()
@@ -25,14 +25,25 @@ minetest.register_tool("sbz_resources:laser_weapon", {
                     local luaentity = ref:get_luaentity()
                     if luaentity and luaentity.name == "sbz_meteorites:meteorite" then
                         minetest.after(0.1, function()
-                            sbz_api.meteorite_explode(ref:get_pos(), luaentity.type)
+                            if ref and ref:is_valid() then
+                                sbz_api.meteorite_explode(ref:get_pos(), luaentity.type)
+                            end
+                        end)
+                    end
+                    if ref:is_player() then
+                        minetest.after(0.1, function()
+                            if ref and ref:is_player() then
+                                -- kinda deadly if thrown at you at 6cps, you would be dead by... 1 seconds?
+                                local armor = ref:get_armor_groups().light / 100
+                                ref:set_hp(ref:get_hp() - (3 * armor), "light")
+                            end
                         end)
                     end
                 end
             until not pointed
 
             core.add_particlespawner {
-                pos     = vector.subtract(eyepos, vector.new(0, 0.25, 0)),
+                pos     = vector.subtract(eyepos, vector.new(0, 0.25, 0)) + lookdir * 2,
                 texture = "star.png^[colorize:red:255",
                 time    = 0.2,
                 size    = 3,
@@ -72,7 +83,8 @@ minetest.register_tool("sbz_resources:laser_weapon", {
         stack:set_wear(((current_wear - wear_repaired) / max_wear) * 65535)
         return stack
     end,
-
+    wield_scale = { x = 1, y = 1, z = 2.5 },
+    wield_image = "laser_wield.png",
     wear_color = { color_stops = { [0] = "lime" } },
 })
 

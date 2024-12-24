@@ -2,18 +2,16 @@ minetest.log("action", "sbz base: init")
 
 local modname = minetest.get_current_modname()
 sbz_api = {
-    debug = minetest.settings:get_bool("debug", false)
+    debug = minetest.settings:get_bool("debug", false),
+    version = 27,
+    gravity = 9.8 / 2,
+    delay_function = core.delay_function
 }
 
 sbz_api.deg2rad = math.pi / 180
 sbz_api.rad2deg = 180 / math.pi
 
 local modpath = minetest.get_modpath("sbz_base")
-local storage = minetest.get_mod_storage()
-
--- apply forced game settings
-core.settings:set("enable_damage", "false")
-core.settings:set("enable_pvp", "false")
 
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
@@ -109,6 +107,12 @@ minetest.register_on_joinplayer(function(ref, last_login)
         tp = true
     })
     ref:override_day_night_ratio(0)
+    -- matter weaponery: standard swords n crap
+    -- light weaponery: lasers, fairly easy to make them not effective, hard to completely get rid of
+    -- antimatter weaponery: more powerful than matter, get your armor
+    -- strange weaponery: either it kills you instantly, or it does no damage
+    -- force: explosions or charges
+    ref:set_armor_groups { fall_damage_add_percent = -100, matter = 100, light = 100, antimatter = 200, strange = 100, force = 100 }
 end)
 
 minetest.register_chatcommand("core", {
@@ -190,14 +194,7 @@ end
 minetest.log("action", "sbz base: register join player")
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
-    minetest.chat_send_player(player:get_player_name(), "SkyBlock: Zero")
-    minetest.chat_send_player(player:get_player_name(), "          by Zander (@zanderdev)")
-
-    local num_nodes = table_length(minetest.registered_nodes)
-    local num_items = table_length(minetest.registered_craftitems)
-    minetest.chat_send_player(player:get_player_name(),
-        "✔ Loaded " .. num_nodes .. " Nodes, " .. num_items .. " Items and " .. #quests .. " Quests.")
-
+    minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Version %s)"):format(sbz_api.version))
     minetest.chat_send_player(player:get_player_name(),
         "‼ reminder: If you fall off, use /core to teleport back to the core.")
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
@@ -242,21 +239,15 @@ minetest.register_on_joinplayer(function(player)
 
     -- make player invisible
     player:set_properties({
-        visual = "sprite",
-        visual_size = { x = 1, y = 2 },
-        textures = { "transparent16.png", "transparent16.png" },
-
         zoom_fov = 15, -- allow zooming
     })
 
     -- set hotbar
-    -- player:hud_set_hotbar_itemcount(32) -- nerds only
     player:hud_set_hotbar_image("hotbar.png")
     player:hud_set_hotbar_selected_image("hotbar_selected.png")
 
-    -- space gravity yeeeah
     player:set_physics_override({
-        sneak_glitch = true, -- sneak glitch is super based
+        sneak_glitch = true,
     })
 
     player:set_formspec_prepend([[
@@ -265,6 +256,21 @@ minetest.register_on_joinplayer(function(player)
         listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
     ]])
 end)
+
+core.register_on_respawnplayer(function(ref)
+    ref:set_pos({ x = 0, y = 2, z = 0 })
+    return true
+end)
+
+core.register_chatcommand("killme", {
+    description = "Kills you, like in mtg",
+    privs = { ["interact"] = true },
+    func = function(name)
+        local player = core.get_player_by_name(name)
+        if not player then return false, "No player?" end
+        player:set_hp(0, "/killme")
+    end
+})
 
 -- for the immersion
 minetest.register_on_chat_message(function(name, message)
@@ -276,37 +282,8 @@ minetest.register_on_chat_message(function(name, message)
     return false
 end)
 
--- everything pitch dark always
-
-sbz_api.players_with_temporarily_hidden_trails = {}
-
 minetest.register_globalstep(function(_)
     minetest.set_timeofday(0)
-
-    for _, player in ipairs(minetest.get_connected_players()) do
-        -- let the trail indicate that like yeah a globalstep happened
-        if player:get_meta():get_int("trailHidden") == 0 and not sbz_api.players_with_temporarily_hidden_trails[player:get_player_name()] then
-            local pos = player:get_pos()
-            minetest.add_particlespawner({
-                amount = 1,
-                time = 1,
-                minpos = { x = pos.x - 0, y = pos.y - 0, z = pos.z - 0 },
-                maxpos = { x = pos.x + 0, y = pos.y + 0, z = pos.z + 0 },
-                minvel = { x = 0, y = 0, z = 0 },
-                maxvel = { x = 0, y = 0, z = 0 },
-                minacc = { x = 0, y = 0, z = 0 },
-                maxacc = { x = 0, y = 0, z = 0 },
-                minexptime = 1,
-                maxexptime = 1,
-                minsize = 1.0,
-                maxsize = 1.0,
-                collisiondetection = true,
-                vertical = false,
-                texture = "star.png",
-                glow = 10
-            })
-        end
-    end
 end)
 
 -- inter-mod utils
@@ -334,6 +311,7 @@ dofile(MP .. "/override_descriptions.lua")
 dofile(MP .. "/vm.lua")
 dofile(MP .. "/queue.lua")
 dofile(MP .. "/override_for_other.lua")
+dofile(MP .. "/lag_delayer.lua")
 
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev
@@ -399,31 +377,94 @@ sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, 
     return returning
 end
 
+-- for funny_air
+function sbz_api.line_of_sight(p1, p2, iters)
+    iters = iters or 0
+    if iters > 128 then
+        return false -- we probably entered an infinite loop.... so yea now we wont
+    end
+    if vector.equals(p1:apply(math.floor), p2:apply(math.floor)) then return true end
+    local success, pos = core.line_of_sight(p1, p2)
+    if success then return true end
+    local nodename = core.get_node(pos).name
+    local ndef = core.registered_nodes[nodename]
+    if ndef.air then
+        -- we need to somehow advance pos to like the next node..
+        -- p1 -> pos -> p2
+        -- yeah i dont knoww, oh wait vector.direction is that isnt it?
+        local dir = vector.direction(p1, p2)
+        local newpos = pos + dir
+        return sbz_api.line_of_sight(newpos, p2, iters + 1)
+    else
+        return false
+    end
+end
+
 --- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
 ---@param pos vector
 ---@param power number
 ---@param r number
 ---@param async boolean
-sbz_api.explode = function(pos, r, power, async, owner)
+sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_strength, sound)
+    if async then
+        sbz_api.delay_if_laggy(function()
+            sbz_api.explode(pos, r, power, false, owner, extra_damage, knockback_strength, sound)
+        end)
+        return
+    end
+    extra_damage = extra_damage or power
+    knockback_strength = knockback_strength or 1
     owner = owner or ""
+
     for _ = 1, 500 do
-        local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false)
+        local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false, true)
         local wear = 0
         for pointed in raycast do
             if pointed.type == "node" then
-                local nodename = minetest.get_node(pointed.under).name
+                local target_pos = pointed.under
+                local nodename = minetest.get_node(target_pos).name
+                local ndef = core.registered_nodes[nodename]
+                if not ndef then break end
                 wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
                 --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                 --although this is very random
-                if wear > power or minetest.is_protected(pointed.under, owner) then break end
-                minetest.set_node(pointed.under, { name = minetest.registered_nodes[nodename]._exploded or "air" })
+                if wear > power or minetest.is_protected(target_pos, owner) then break end
+                if ndef.on_blast then
+                    ndef.on_blast(target_pos, power, pos, owner, r)
+                else
+                    minetest.set_node(target_pos, { name = ndef._exploded or "air" })
+                end
             end
         end
     end
     for _, obj in ipairs(minetest.get_objects_inside_radius(pos, r)) do
-        if obj:is_player() then
-            local dir = obj:get_pos() - pos
-            obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 0.5 * (r - vector.length(dir)))
+        -- this is all messed up
+        -- TODO: improve
+        local dir = obj:get_pos() - pos
+        obj:add_velocity(vector.normalize(dir) * (r - vector.length(dir)) * knockback_strength +
+            vector.new(0, sbz_api.gravity, 0))
+
+        -- this is intentional. HP is only removed when there is line of sight, but velocity is added anyway
+        if sbz_api.line_of_sight(pos, obj:get_pos()) == true then
+            local armor_force = (obj:get_armor_groups().force or 0) / 100
+            obj:set_hp(obj:get_hp() - math.abs(
+                vector.length(vector.normalize(dir) * (r - vector.length(dir))) * extra_damage
+                * armor_force
+            ), "explosion")
         end
     end
+    if sound then
+        core.sound_play("tnt_explode", {
+            gain = 2.5,
+            max_hear_distance = 128,
+            pos = pos,
+        }, true)
+    end
+end
+
+local old_handler = core.error_handler
+
+core.error_handler = function(error, stack_level)
+    return (old_handler(error, stack_level) or "") ..
+        ("\n==============\nSkyblock: Zero (Version %s)\n=============="):format(sbz_api.version)
 end

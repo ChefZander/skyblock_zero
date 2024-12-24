@@ -20,6 +20,7 @@ Soo... i'm guessing you would have a lot of trouble getting to the meteorites by
 Well don't fear, there is the laser now...
 
 To charge the laser, "place it" into a battery. (shift+place to battery)
+It also does some damage to other players.
 ]],
         requires = { "Simple Alloy Furnace", "Emittrium Circuits" },
     },

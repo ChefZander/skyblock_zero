@@ -81,19 +81,6 @@ minetest.register_chatcommand("dev_platform", {
     end
 })
 
-minetest.register_chatcommand("dev_trail", {
-    description = "Enable/Disable particle trail - for debugging only",
-    params = '',
-    privs = { ["server"] = true },
-
-    func = function(name, param)
-        local player = minetest.get_player_by_name(name)
-        local state = ((player:get_meta():get_int("trailHidden") == 1) and 0 or 1)
-        player:get_meta():set_int("trailHidden", state)
-        return true, "Trail state is " .. state
-    end
-})
-
 minetest.register_chatcommand("dev_close", {
     description = "Get the 8 closest unique nodes within a distance of 32 and receive them as items - for debugging only",
     privs = { ["server"] = true },
@@ -185,6 +172,7 @@ minetest.register_chatcommand("dev_disable_libox", {
     end
 })
 
+sbz_api.forced_light = {}
 minetest.register_chatcommand("dev_light", {
     description = "Makes it day only for you",
     privs = { ["server"] = true },
@@ -193,7 +181,7 @@ minetest.register_chatcommand("dev_light", {
         if not player then
             return false, "Player not found!"
         end
-
+        sbz_api.forced_light[name] = true
         player:override_day_night_ratio(1)
     end
 })
@@ -231,5 +219,14 @@ minetest.register_chatcommand("dev_regen", {
         core.delete_area(vector.subtract(player:get_pos(), vector.new(radius, radius, radius)),
             vector.add(player:get_pos(), vector.new(radius, radius, radius)))
         return true, "Area re-generated!"
+    end
+})
+
+core.register_chatcommand("toggle_pvp", {
+    description = "Toggle pvp",
+    params = "<enable>",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        core.settings:set("enable_pvp", core.is_yes(param) and "true" or "false")
     end
 })

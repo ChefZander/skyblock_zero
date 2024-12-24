@@ -1,0 +1,42 @@
+#Sprint speed multiplier
+sprint_speed (Sprint speed multiplier) float 1.3
+
+#Sprint jump multiplier
+sprint_jump (Sprint jump multiplier) float 1.1
+
+#Require player to move forward only to be able to sprint
+sprint_forward_only (Sprint forward only) bool true
+
+#The amount of particles to spawn behind a sprinting player
+sprint_particles (Particles) float 2
+
+#Drain stamina while sprinting
+sprint_stamina (Stamina) bool true
+
+#The amount of stamina to drain while sprinting
+sprint_stamina_drain (Stamina drain) float 2
+
+#The amount of stamina to heal while not sprinting
+sprint_stamina_heal (Stamina heal) float 2
+
+#The amount of stamina to heal while not moving or taking any actions
+sprint_stamina_standing (Stamina heal) float 2.5
+
+#The amount of seconds before starting to replenish stamina
+sprint_stamina_replenish (Stamina replenish) float 2
+
+#Drain satiation while sprinting
+sprint_starve (Starve) bool true
+
+#The amount of satiation to drain while sprinting
+sprint_starve_drain (Starve drain) float 0.5
+
+#Drain air while sprinting under water
+sprint_breath (Breath) bool true
+
+#The amount of air to drain while sprinting under water
+sprint_breath_drain (Breath drain) float 1
+
+#If enabled (default), the stamina indicators in the HUD will be automatically hidden shortly
+#after stamina has filled up. Otherwise, stamina will always be displayed.
+hudbars_autohide_stamina (Automatically hide staminal indicator) bool true
