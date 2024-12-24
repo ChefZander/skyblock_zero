@@ -1,5 +1,3 @@
-minetest.log("action", "sbz base: init")
-
 local modname = minetest.get_current_modname()
 sbz_api = {
     debug = minetest.settings:get_bool("debug", false),
@@ -99,13 +97,11 @@ minetest.register_on_newplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(ref, last_login)
-    -- TODO: REWRITE NOT TO USE THIS FUNCTION!!
-    -- zander, this crap doesnt matter
-    assert(minetest.change_player_privs, "You have an outdated version of minetest, please update!")
-    minetest.change_player_privs(ref:get_player_name(), {
-        home = true,
-        tp = true
-    })
+    local privs = minetest.get_player_privs(ref:get_player_name())
+    privs.home = true
+    privs.tp = true
+    minetest.set_player_privs(ref:get_player_name(), privs)
+
     ref:override_day_night_ratio(0)
     -- matter weaponery: standard swords n crap
     -- light weaponery: lasers, fairly easy to make them not effective, hard to completely get rid of
@@ -191,7 +187,6 @@ local function table_length(tbl)
     return count
 end
 
-minetest.log("action", "sbz base: register join player")
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
     minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Version %s)"):format(sbz_api.version))
@@ -468,3 +463,5 @@ core.error_handler = function(error, stack_level)
     return (old_handler(error, stack_level) or "") ..
         ("\n==============\nSkyblock: Zero (Version %s)\n=============="):format(sbz_api.version)
 end
+
+minetest.log("action", "Skyblock: Zero's Base Mod has finished loading.")
