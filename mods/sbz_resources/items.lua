@@ -148,3 +148,10 @@ core.register_craftitem("sbz_resources:warp_crystal", {
     description = "Warp Crystal",
     inventory_image = "warp_crystal.png",
 })
+
+
+core.register_craftitem("sbz_resources:phlogiston", {
+    description = "Phlogiston",
+    info_extra = "Good luck spelling, and pronouncing it!",
+    inventory_image = "phlogiston.png"
+})
