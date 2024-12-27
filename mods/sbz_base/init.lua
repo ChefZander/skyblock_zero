@@ -103,12 +103,6 @@ minetest.register_on_joinplayer(function(ref, last_login)
     minetest.set_player_privs(ref:get_player_name(), privs)
 
     ref:override_day_night_ratio(0)
-    -- matter weaponery: standard swords n crap
-    -- light weaponery: lasers, fairly easy to make them not effective, hard to completely get rid of
-    -- antimatter weaponery: more powerful than matter, get your armor
-    -- strange weaponery: either it kills you instantly, or it does no damage
-    -- force: explosions or charges
-    ref:set_armor_groups { fall_damage_add_percent = -100, matter = 100, light = 100, antimatter = 200, strange = 100, force = 100 }
 end)
 
 minetest.register_chatcommand("core", {
@@ -432,7 +426,7 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
             end
         end
     end
-    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, r)) do
+    for _, obj in ipairs(core.get_objects_inside_radius(pos, r)) do
         -- this is all messed up
         -- TODO: improve
         local dir = obj:get_pos() - pos
@@ -441,11 +435,21 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
 
         -- this is intentional. HP is only removed when there is line of sight, but velocity is added anyway
         if sbz_api.line_of_sight(pos, obj:get_pos()) == true then
-            local armor_force = (obj:get_armor_groups().force or 0) / 100
-            obj:set_hp(obj:get_hp() - math.abs(
-                vector.length(vector.normalize(dir) * (r - vector.length(dir))) * extra_damage
-                * armor_force
-            ), "explosion")
+            local dmg = math.abs(vector.length(vector.normalize(dir) * (r - vector.length(dir))) * extra_damage)
+            local groups = obj:get_armor_groups()
+            local tool_caps = {
+                full_punch_interval = 0,
+                damage_groups = {},
+            }
+
+            -- pick whichever damage group is more protected
+            if (groups.matter or 0) <= (groups.antimatter or 0) then
+                tool_caps.damage_groups.matter = dmg
+            else
+                tool_caps.damage_groups.antimatter = dmg
+            end
+
+            obj:punch(nil, nil, tool_caps, dir)
         end
     end
     if sound then
@@ -464,4 +468,4 @@ core.error_handler = function(error, stack_level)
         ("\n==============\nSkyblock: Zero (Version %s)\n=============="):format(sbz_api.version)
 end
 
-minetest.log("action", "Skyblock: Zero's Base Mod has finished loading.")
+core.log("action", "Skyblock: Zero's Base Mod has finished loading.")

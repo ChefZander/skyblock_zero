@@ -21,7 +21,7 @@ core.register_entity("sbz_resources:bomb_stick_entity", {
     },
     on_activate = function(self, staticdata, dtime_s)
         staticdata = core.deserialize(staticdata)
-        self.object:set_armor_groups { matter = 100, antimatter = 100, light = 100, force = 0 }
+        self.object:set_armor_groups { matter = 0, antimatter = 100 }
         self.owner = staticdata.owner
         self.direction = staticdata.direction
         self.object:set_acceleration(vector.new(0, -sbz_api.gravity, 0))
@@ -76,7 +76,7 @@ local friction = 0.9
 core.register_entity("sbz_resources:bomb_entity", {
     initial_properties = {
         physical = true,
-        collide_with_objects = true,
+        collide_with_objects = false,
         visual = "cube",
         textures = {
             "bomb_top.png^[brighten",
@@ -136,15 +136,6 @@ core.register_node("sbz_resources:bomb", {
         end
 
         core.remove_node(pos)
-        local dir = pos - original_pos
-        local e = core.add_entity(pos, "sbz_resources:bomb_entity", owner)
-        if e then
-            e:add_velocity(vector.normalize(dir) * (r - vector.length(dir)) +
-                vector.new(0, sbz_api.gravity, 0))
-            core.sound_play("tnt_ignite", {
-                pos = pos,
-                gain = 2.5,
-            }, true)
-        end
+        core.add_entity(pos, "sbz_resources:bomb_entity", owner)
     end
 })
