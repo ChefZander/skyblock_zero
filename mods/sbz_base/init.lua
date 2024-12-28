@@ -461,6 +461,39 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
     end
 end
 
+
+sbz_api.on_place_recharge = function(charge_per_1_wear, after)
+    return function(stack, user, pointed)
+        if pointed.type ~= "node" then return end
+        local target = pointed.under
+        if core.is_protected(target, user:get_player_name()) then
+            return core.record_protection_violation(target, user:get_player_name())
+        end
+
+        local target_node_name = minetest.get_node(target).name
+        if minetest.get_item_group(target_node_name, "sbz_battery") == 0 then return end
+
+        local target_meta = minetest.get_meta(target)
+        local targets_power = target_meta:get_int("power")
+
+        local wear = stack:get_wear()
+        -- wear repaired = min(wear calculation (may return bigger than wear), the entire wear)
+        -- ok this is confusing i knoww, but just remember that wear_repaired is subtracted
+        local wear_repaired = math.min(math.floor(targets_power / charge_per_1_wear), wear)
+        targets_power = targets_power - (wear_repaired * charge_per_1_wear)
+        local targes_def = minetest.registered_nodes[target_node_name]
+
+        target_meta:set_int("power", targets_power)
+        targes_def.action(target, target_node_name, target_meta, 0, wear_repaired * charge_per_1_wear)
+
+        stack:set_wear((wear - wear_repaired))
+        if after then
+            after(stack, user, pointed)
+        end
+        return stack
+    end
+end
+
 local old_handler = core.error_handler
 
 core.error_handler = function(error, stack_level)

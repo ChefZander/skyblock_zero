@@ -86,12 +86,20 @@ listring[]
     light_source = 14,
 })
 
+minetest.register_craft({
+    output = "sbz_power:phlogiston_fuser",
+    recipe = {
+        { "sbz_resources:phlogiston", "",                        "sbz_resources:phlogiston" },
+        { "sbz_resources:phlogiston", "sbz_chem:crystal_grower", "sbz_resources:phlogiston" },
+        { "sbz_resources:phlogiston", "",                        "sbz_resources:phlogiston" },
+    }
+})
 
 minetest.register_craft({
-    output = "sbz_chem:crystal_grower",
+    output = "sbz_power:phlogiston_fuser",
     recipe = {
-        { "sbz_resources:stone",             "sbz_meteorites:antineutronium", "sbz_resources:stone" },
-        { "sbz_resources:reinforced_matter", "sbz_meteorites:neutronium",     "sbz_resources:reinforced_matter" },
-        { "sbz_resources:stone",             "sbz_chem:titanium_block",       "sbz_resources:stone" },
+        { "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery" },
+        { "sbz_meteorites:neutronium",       "sbz_chem:crystal_grower",         "sbz_meteorites:antineutronium" },
+        { "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery" },
     }
 })

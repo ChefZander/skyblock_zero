@@ -60,13 +60,16 @@ armor.load_armor_pieces = function(ref, data)
         else
             groups = def.armor_groups
         end
+        if groups ~= nil then
+            for groupname, groupval in pairs(groups) do
+                armor_groups[groupname] = (armor_groups[groupname] or 0) - groupval
+            end
 
-        for groupname, groupval in pairs(groups) do
-            armor_groups[groupname] = (armor_groups[groupname] or 0) - groupval
+            -- texture...
+            texture_mod = texture_mod .. "^" .. def.armor_texture
+        else
+            data[k] = nil -- empty stacks
         end
-
-        -- texture...
-        texture_mod = texture_mod .. "^" .. def.armor_texture
     end
     local name = ref:get_player_name()
     local props = ref:get_properties()
@@ -221,7 +224,8 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
         local def = stack:get_definition()
         if def.on_punched then
             no_damage = no_damage or
-                def.on_punched(data, player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+                def.on_punched(stack, data, player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+            data[k] = stack:to_string()
         end
     end
 
@@ -235,7 +239,28 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
         end
     end
 
+    -- re-evaluate the armor groups
+
+    local armor_groups = table.copy(armor.armor_groups)
+
+    for k, v in pairs(data) do
+        local stack = ItemStack(v)
+        local def = stack:get_definition()
+        if def.armor_groups then
+            if type(def.armor_groups) == "function" then
+                groups = def.armor_groups(player, stack)
+            else
+                groups = def.armor_groups
+            end
+
+            for groupname, groupval in pairs(groups) do
+                armor_groups[groupname] = (armor_groups[groupname] or 0) - groupval
+            end
+        end
+    end
+
     armor.set_armor_pieces(player, data)
+    player:set_armor_groups(armor_groups)
 end)
 
 

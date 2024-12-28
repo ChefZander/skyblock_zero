@@ -2,13 +2,13 @@
 
 local jetpack_durability_s = 60 * 5           -- jetpack durability, in seconds
 local jetpack_velocity = vector.new(0, 15, 0) -- multiplied by dtime
-local jetpack_full_charge = 1000
+local jetpack_full_charge = 20000             -- 20kcj power needed for a jetpack
 local jetpack_durability_save_during_sneak_flight = 2
 local default_number_of_particles = 20
 local jetpack_boost = 3
 
 local jetpack_users = {}
-local jetpack_charge_per_1_wear = math.floor(65535 / jetpack_full_charge)
+local jetpack_charge_per_1_wear = (jetpack_full_charge / 65535)
 
 
 local function edit_stack_image(user, stack)
@@ -53,30 +53,9 @@ minetest.register_tool("sbz_resources:jetpack", {
         edit_stack_image(username, itemstack)
         return itemstack
     end,
-    on_place = function(stack, user, pointed)
-        if pointed.type ~= "node" then return end
-        local target = pointed.under
-        if core.is_protected(target, user:get_player_name()) then
-            return core.record_protection_violation(target, user:get_player_name())
-        end
-        local target_node_name = minetest.get_node(target).name
-        if minetest.get_item_group(target_node_name, "sbz_battery") == 0 then return end
-
-        local target_meta = minetest.get_meta(target)
-        local targets_power = target_meta:get_int("power")
-
-        local wear = stack:get_wear()
-        local wear_repaired = math.min(math.floor(targets_power * jetpack_charge_per_1_wear), wear)
-        targets_power = targets_power - (wear_repaired / jetpack_charge_per_1_wear)
-        local targes_def = minetest.registered_nodes[target_node_name]
-
-        target_meta:set_int("power", targets_power)
-        targes_def.action(target, target_node_name, target_meta, 0, wear_repaired * jetpack_charge_per_1_wear)
-
-        stack:set_wear(wear - wear_repaired)
-        edit_stack_image(user:get_player_name(), stack)
-        return stack
-    end
+    on_place = sbz_api.on_place_recharge(jetpack_charge_per_1_wear, function(stack, player, pointed)
+        edit_stack_image(player:get_player_name(), stack)
+    end),
 })
 
 

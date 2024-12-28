@@ -82,11 +82,11 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
     end
 })
 
-minetest.register_craft({
+core.register_craft {
     output = "sbz_meteorites:meteorite_radar",
     recipe = {
-        { "",                          "sbz_chem:titanium_alloy_ingot",  "" },
-        { "",                          "sbz_chem:titanium_alloy_ingot",  "" },
-        { "sbz_resources:matter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" }
+        { "",                                "sbz_chem:titanium_alloy_ingot",    "" },
+        { "",                                "sbz_chem:titanium_alloy_ingot",    "" },
+        { "sbz_resources:reinforced_matter", "sbz_resources:prediction_circuit", "sbz_resources:reinforced_matter" }
     }
-})
+}

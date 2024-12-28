@@ -152,6 +152,36 @@ core.register_craftitem("sbz_resources:warp_crystal", {
 
 core.register_craftitem("sbz_resources:phlogiston", {
     description = "Phlogiston",
-    info_extra = "Good luck spelling, and pronouncing it!",
+    info_extra = "Good luck spelling it lol.",
     inventory_image = "phlogiston.png"
 })
+
+core.register_craftitem("sbz_resources:phlogiston_circuit", {
+    description = "Phlogiston Circuit",
+    inventory_image = "phlogiston_circuit.png"
+})
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_resources:phlogiston_circuit 4",
+    recipe = {
+        "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:phlogiston",
+        "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:phlogiston",
+        "sbz_power:simple_charged_field", "sbz_resources:antimatter_blob", "sbz_resources:compressed_core_dust",
+    }
+}
+
+-- used in meteorite radars and weapons
+core.register_craftitem("sbz_resources:prediction_circuit", {
+    description = "Prediction Circuit",
+    inventory_image = "prediction_circuit.png",
+})
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_resources:prediction_circuit",
+    recipe = {
+        "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_chem:titanium_alloy_ingot",
+        "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium"
+    }
+}

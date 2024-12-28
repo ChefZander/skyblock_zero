@@ -39,7 +39,7 @@ local function make_armor(
         armor_texture = ("(armor_%s_body.png^[multiply:%s)"):format(armor_name:lower(), color),
         armor_groups = recipes.get_protection(armor_groups, armor_name:lower()),
         custom_wear = false,
-        durability = durability, -- 100 damage that can be handled by this armor
+        durability = durability,
     })
     core.register_craft {
         output = armor_internal_prefix .. armor_name:lower(),
@@ -84,4 +84,36 @@ for armor_type, armor_name in pairs(armor_types_to_names) do
         antimatter = 90,
         light = 99,
     }, 8000, "sbz_meteorites:antineutronium")
+
+
+    -- phlogiston armor
+
+    armor.register("sbz_armor:phlogiston_" .. armor_name:lower(), {
+        description = "Phlogiston " .. armor_name,
+        armor_type = armor_type,
+        inventory_image = ("(armor_%s_inv.png^[multiply:%s)"):format(armor_name:lower(), "#fe620b"),
+        armor_texture = ("(armor_%s_body.png^[multiply:%s)"):format(armor_name:lower(), "#fe620b"),
+        armor_groups = function(player, stack)
+            if stack:get_wear() == 65535 then
+                return {}
+            end
+            return recipes.get_protection({
+                matter = 85,
+                antimatter = 85,
+                light = 100,
+            }, armor_name:lower())
+        end,
+        on_punched = function(stack, data, player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+            stack:set_wear(math.min(65535, stack:get_wear() + ((65535 / 16000 --[[def.durability]]) * damage)))
+        end,
+        -- 0.5 power/damage resisted
+        on_place = sbz_api.on_place_recharge((16000 / 65535) * 0.5),
+        custom_wear = true,
+        durability = 16000, -- 16000 damage that can be handled by this armor, not used
+    })
+
+    core.register_craft {
+        output = "sbz_armor:phlogiston_" .. armor_name:lower(),
+        recipe = recipes[armor_name:lower()]("sbz_resources:phlogiston")
+    }
 end

@@ -62,27 +62,7 @@ minetest.register_tool("sbz_resources:laser_weapon", {
 
         return stack
     end,
-    on_place = function(stack, user, pointed)
-        if pointed.type ~= "node" then return end
-        local target = pointed.under
-        if core.is_protected(target, user:get_player_name()) then
-            return core.record_protection_violation(target, user:get_player_name())
-        end
-        local target_node = minetest.get_node(target)
-        if minetest.get_item_group(target_node.name, "sbz_battery") == 0 then return end
-        local meta = minetest.get_meta(target)
-        local power = meta:get_int("power")
-        local current_wear = math.floor((stack:get_wear() / 65535) * max_wear)
-        local wear_repaired = math.min(current_wear, math.floor(power / power_per_1_use))
-        local power_charged = wear_repaired * power_per_1_use
-        local new_power = power - power_charged
-
-        meta:set_int("power", new_power)
-        minetest.registered_nodes[target_node.name].action(target, target_node.name, meta, 0, power_charged)
-
-        stack:set_wear(((current_wear - wear_repaired) / max_wear) * 65535)
-        return stack
-    end,
+    on_place = sbz_api.on_place_recharge((max_wear / 65535) * power_per_1_use),
     wield_scale = { x = 1, y = 1, z = 2.5 },
     wield_image = "laser_wield.png",
     wear_color = { color_stops = { [0] = "lime" } },
