@@ -26,7 +26,7 @@ local function update_node_texture(pos)
 
     local node = minetest.get_node(pos)
 
-    if storinator_upgrades[node.name] and #storinator_upgrades[node.name] == 0 then
+    if storinator_upgrades[node.name] and #storinator_upgrades[node.name] ~= 0 then
         new_texture = new_texture .. "_" .. storinator_upgrades[node.name]
     end
 
