@@ -247,6 +247,7 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
         local stack = ItemStack(v)
         local def = stack:get_definition()
         if def.armor_groups then
+            local groups
             if type(def.armor_groups) == "function" then
                 groups = def.armor_groups(player, stack)
             else

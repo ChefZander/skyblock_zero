@@ -222,7 +222,7 @@ function sbz_api.register_leaves(name, def)
             minetest.remove_node(pos)
             minetest.check_for_falling(pos)
         end,
-        drops = "",
+        drop = "",
     } do
         def[k] = v
     end
