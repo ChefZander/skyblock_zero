@@ -1,2 +1,0 @@
-debug (Debug Mode) bool false
-sbz_nic_priv_locked (Priv Lock the NIC) bool true

@@ -46,6 +46,7 @@ minetest.register_abm({
                 minetest.get_item_group(name, "antimatter") == 0 then
                 return
             end
+            if minetest.get_item_group(name, "no_spread") ~= 0 then return end
             if minetest.get_item_group(name, "charged") ~= 0 then return end
             if minetest.is_protected(filtering_pos, "") then return end
             return filtering_pos

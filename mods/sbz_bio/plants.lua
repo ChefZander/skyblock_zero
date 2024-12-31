@@ -157,13 +157,13 @@ sbz_api.register_plant("pyrograss", {
     growth_rate = 4,
     width = 0.25,
     height_min = -0.375,
-    height_max = 0
+    height_max = 0,
 })
 
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
-    groups = { burn = 30 },
+    groups = { burn = 30, eat = -1 },
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", { "group:soil" })
 })
 
@@ -182,7 +182,7 @@ sbz_api.register_plant("stemfruit_plant", {
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
-    groups = { burn = 12 },
+    groups = { burn = 12, eat = 5 },
     on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
 })
 
@@ -211,17 +211,17 @@ local function teleport_randomly(user)
     end
 end
 
+local eat = core.item_eat(6)
 minetest.register_craftitem("sbz_bio:warpshroom", {
     description = "Warpshroom",
     inventory_image = "warpshroom_4.png",
     on_place = sbz_api.plant_plant("sbz_bio:warpshroom_1", { "group:matter" }),
-    on_use = function(itemstack, user)
+    on_use = function(itemstack, user, pointed)
         teleport_randomly(user)
         unlock_achievement(user:get_player_name(), "Not Chorus Fruit")
-        itemstack:take_item()
-        return itemstack
+        return eat(itemstack, user, pointed)
     end,
-    groups = { ui_bio = 1 }
+    groups = { ui_bio = 1, eat = 6 }
 })
 
 minetest.register_craft({

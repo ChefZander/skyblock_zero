@@ -293,7 +293,7 @@ end
 
 local function controller_on_blast(pos)
 	local drops = {}
-	default.get_inventory_drops(pos, "src", drops)
+	--	default.get_inventory_drops(pos, "src", drops)
 	drops[#drops + 1] = "drawers:controller"
 	core.remove_node(pos)
 	return drops

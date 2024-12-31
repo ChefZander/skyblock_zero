@@ -36,18 +36,18 @@ sbz_api.unused_chem = {}
 sbz_api.register_element = function(name, color, description, disabled, part_of_crusher_drops)
     if disabled == nil then disabled = false end
     local disabled_group = disabled and 1 or nil
-    minetest.register_craftitem("sbz_chem:" .. name .. "_powder", {
+    core.register_craftitem("sbz_chem:" .. name .. "_powder", {
         groups = { chem_element = 1, powder = 1, not_in_creative_inventory = disabled_group, chem_disabled = disabled_group },
         description = string.format(description, "Powder"),
         inventory_image = "powder.png^[colorize:" .. color .. ":150"
     })
-    minetest.register_craftitem("sbz_chem:" .. name .. "_ingot", {
+    core.register_craftitem("sbz_chem:" .. name .. "_ingot", {
         groups = { chem_element = 1, ingot = 1, not_in_creative_inventory = disabled_group, chem_disabled = disabled_group },
         description = string.format(description, "Ingot"),
         inventory_image = "ingot.png^[colorize:" .. color .. ":150",
 
     })
-    minetest.register_node("sbz_chem:" .. name .. "_block", unifieddyes.def {
+    core.register_node("sbz_chem:" .. name .. "_block", unifieddyes.def {
         groups = {
             chem_element = 1,
             chem_block = 1,
@@ -60,8 +60,111 @@ sbz_api.register_element = function(name, color, description, disabled, part_of_
         description = string.format(description, "Block"),
         tiles = { "block.png^[colorize:" .. color .. ":150" },
         sounds = sbz_api.sounds.metal()
-
     })
+
+
+    -- fluid
+
+    core.register_node(("sbz_chem:%s_fluid_source"):format(name), {
+        description = description:format("Fluid Source"),
+        drawtype = "liquid",
+        tiles = {
+            { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = false, },
+            { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = true, }
+        },
+        inventory_image = minetest.inventorycube(("flowing_chemical_source.png^[multiply:%s"):format(color)),
+        use_texture_alpha = "blend",
+        groups = {
+            liquid = 3,
+            habitat_conducts = 1,
+            transparent = 1,
+            liquid_capturable = 1,
+            water = 0,
+            not_in_creative_inventory = disabled_group,
+            chem_disabled = disabled_group,
+            chem_fluid = 1,
+            chem_fluid_source = 1,
+            chem_element = 1,
+        },
+        post_effect_color = color,
+        paramtype = "light",
+        walkable = false,
+        pointable = false,
+        buildable_to = true,
+        liquidtype = "source",
+        liquid_alternative_source = ("sbz_chem:%s_fluid_source"):format(name),
+        liquid_alternative_flowing = ("sbz_chem:%s_fluid_flowing"):format(name),
+        drop = "",
+        liquid_viscosity = 7,
+        drowning = 4,
+        damage_per_second = 8,
+        liquid_renewable = false,
+        light_source = 14,
+        liquid_range = 2,
+    })
+
+    local animation = {
+        type = "vertical_frames",
+        aspect_w = 16,
+        aspect_h = 16,
+        length = 8,
+    }
+
+    minetest.register_node(("sbz_chem:%s_fluid_flowing"):format(name), {
+        description = description:format("Fluid Flowing"),
+        drawtype = "flowingliquid",
+        tiles = { { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), } },
+        special_tiles = {
+            {
+                name = ("flowing_chemical.png^[multiply:%s"):format(color),
+                backface_culling = false,
+                animation = animation,
+            },
+            {
+                name = ("flowing_chemical.png^[multiply:%s"):format(color),
+                backface_culling = true,
+                animation = animation,
+            }
+        },
+        use_texture_alpha = "blend",
+        groups = {
+            liquid = 3,
+            habitat_conducts = 1,
+            transparent = 1,
+            not_in_creative_inventory = 1,
+            water = 0,
+            chem_disabled = disabled_group,
+            chem_fluid = 1,
+            chem_fluid_source = 0,
+        },
+        post_effect_color = color,
+        paramtype = "light",
+        paramtype2 = "flowingliquid",
+        walkable = false,
+        pointable = false,
+        buildable_to = true,
+        liquidtype = "flowing",
+        liquid_alternative_source = ("sbz_chem:%s_fluid_source"):format(name),
+        liquid_alternative_flowing = ("sbz_chem:%s_fluid_flowing"):format(name),
+        drop = "",
+        liquid_viscosity = 7,
+        drowning = 4,
+        damage_per_second = 8,
+        liquid_renewable = false,
+        light_source = 14,
+        liquid_range = 2,
+    })
+
+    sbz_api.register_fluid_cell(("sbz_chem:%s_fluid_cell"):format(name), {
+        description = description:format("Fluid Cell"),
+        groups = {
+            chem_disabled = disabled_group,
+            chem_fluid = 1,
+            chem_fluid_source = 0,
+            not_in_creative_inventory = disabled_group,
+        }
+    }, ("sbz_chem:%s_fluid_source"):format(name), color)
+
     if not disabled then
         stairs.register("sbz_chem:" .. name .. "_block")
         minetest.register_craft({

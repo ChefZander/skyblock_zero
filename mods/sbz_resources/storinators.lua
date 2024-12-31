@@ -36,7 +36,6 @@ local function update_node_texture(pos)
 
     node.name = "sbz_resources:" .. new_texture
 
-
     minetest.swap_node(pos, node)
 end
 

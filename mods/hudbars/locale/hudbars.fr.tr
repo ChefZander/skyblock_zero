@@ -1,0 +1,4 @@
+# textdomain: hudbars
+Health=Santé
+Breath=Respiration
+@1: @2/@3=@1 : @2/@3

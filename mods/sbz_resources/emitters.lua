@@ -105,17 +105,6 @@ minetest.register_abm({
     end,
 })
 
-minetest.register_ore({
-    ore_type = "scatter",
-    ore = "sbz_resources:emitter",
-    wherein = "air",
-    clust_scarcity = 80 * 80 * 80,
-    clust_num_ores = 1,
-    clust_size = 1,
-    y_min = -300,
-    y_max = 1000,
-})
-
 -- Emitter Resources
 minetest.register_craftitem("sbz_resources:raw_emittrium", {
     description = "Raw Emittrium",

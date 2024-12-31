@@ -229,7 +229,7 @@ signs_lib.register_sign("basic_signs:sign_wall_glass", {
 	default_color = "c",
 	locked = true,
 	entity_info = "standard",
-	sounds = default.node_sound_glass_defaults(),
+	sounds = sbz_api.sounds.node_sound_glass_defaults(),
 	groups = {cracky = 3, oddly_breakable_by_hand = 3},
 	allow_hanging = true,
 	allow_widefont = true,

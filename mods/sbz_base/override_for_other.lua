@@ -26,6 +26,11 @@ core.register_on_mods_loaded(function()
                 return old_after_dig(pos, oldnode, oldmetadata, digger)
             end
         end
+        if v.groups and v.groups.eat then
+            if not v.on_use then
+                overrides.on_use = core.item_eat(v.groups.eat)
+            end
+        end
         core.override_item(k, overrides)
     end
 end)

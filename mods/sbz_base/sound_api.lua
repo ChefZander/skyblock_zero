@@ -1,7 +1,11 @@
 -- very similar to xcompat's sound api
 -- sbz_api.sounds.node_sound_x_defaults(inp)
 
-local sounds = {}
+local sounds = setmetatable({}, {
+    __index = function(t, k)
+        return rawget(t, k) or function(input) return table.override({}, input) end
+    end
+})
 ---@type fun(inp:table?)[]
 sbz_api.sounds = sounds
 
