@@ -28,11 +28,13 @@ local planets = sbz_api.planets
 function getplanet(id, filter)
     local a = sbz_api.planets.area
     local area = a:get_area(id, true, true)
-
+    if not area then
+        return core.debug("not found")
+    end
     local deserialized_data = core.deserialize(area.data)
     if filter then
         if filter(unpack(deserialized_data)) == false then
-            if id + 1 == 1000 then return core.debug("Not found") end
+            if id + 1 == sbz_api.num_planets then return core.debug("Not found") end
             return getplanet(id + 1, filter)
         end
     end

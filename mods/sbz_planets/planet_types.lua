@@ -94,6 +94,7 @@ sbz_api.planets.register_type {
     radius = { min = 50, max = 100 },
     gravity = 1,
     light = 2,
+    num_planets = 500,
     mapgen = function(area, minp, maxp, seed, noises, data, pdata, center)
         local shapenoise = noises.shape.noise
         local cave1noise = noises.cave1.noise
@@ -127,6 +128,7 @@ sbz_api.planets.register_type {
     gravity = 1,
     light = 6,
     ring_chance = 10, -- 1 in 10
+    num_planets = 250,
     mapgen = function(area, minp, maxp, seed, noises, data, pdata, center)
         local shapenoise = noises.shape.noise
         local cave1noise = noises.cave1.noise
@@ -240,6 +242,7 @@ sbz_api.planets.register_type {
     gravity = 1,
     light = 8,
     ring_chance = 3, -- 1 in 3
+    num_planets = 250,
     mapgen = function(area, minp, maxp, seed, noises, data, pdata, center, vm)
         local shapenoise = noises.shape.noise
         local cave1noise = noises.cave1.noise
@@ -393,6 +396,7 @@ sbz_api.planets.register_type {
     gravity = 1,
     light = 12,
     ring_chance = 12,
+    num_planets = 250,
     mapgen = function(area, minp, maxp, seed, noises, data, pdata, center)
         local shapenoise = noises.shape.noise
         local cave1noise = noises.cave1.noise
