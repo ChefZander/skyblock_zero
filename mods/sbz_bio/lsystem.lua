@@ -11,7 +11,7 @@ local ruleset_chars = {
 
 
 -- not exactly up to spec but good enough
-local function lsystem(start_pos, dna, owner)
+local function lsystem(start_pos, dna, owner, starting_angle)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
     local angle, trunk_type = dna.angle, dna.trunk_type
 
@@ -33,7 +33,9 @@ local function lsystem(start_pos, dna, owner)
     local serialized_dna = minetest.serialize(dna)
     local function spawn_leaves(pos)
         set_node(pos, dna.leaves, dna.leaves.name)
-        minetest.get_meta(pos):set_string("dna", serialized_dna)
+        local meta = core.get_meta(pos)
+        meta:set_string("dna", serialized_dna)
+        meta:mark_as_private("dna")
     end
 
     local function spawn_trunk(pos, branches)
@@ -115,7 +117,7 @@ local function lsystem(start_pos, dna, owner)
 
     local pos = vector.copy(start_pos)
 
-    local rotation = { x = 0, y = 0, z = 0 }
+    local rotation = starting_angle or { x = 0, y = 0, z = 0 }
     angle = angle
 
     local function foward()

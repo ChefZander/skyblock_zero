@@ -365,7 +365,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:sand", unifieddyes.def {
     description = "Sand",
     tiles = { "sand.png" },
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1 },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 80 },
 
     walkable = true,
     sounds = sbz_api.sounds.sand(),
@@ -375,7 +375,7 @@ minetest.register_node("sbz_resources:sand", unifieddyes.def {
 minetest.register_node("sbz_resources:red_sand", {
     description = "Red Sand",
     tiles = { "sand.png^[colorize:red:128" },
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1 },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
     walkable = true,
     sounds = sbz_api.sounds.sand(),
     light_source = 3,
@@ -384,7 +384,7 @@ minetest.register_node("sbz_resources:red_sand", {
 minetest.register_node("sbz_resources:gravel", {
     description = "Gravel",
     tiles = { "gravel.png" },
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1 },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
     sounds = sbz_api.sounds.sand(),
     light_source = 3,
@@ -393,7 +393,7 @@ minetest.register_node("sbz_resources:gravel", {
 core.register_node("sbz_resources:dark_sand", {
     description = "Dark Sand",
     tiles = { "sand.png^[colorizehsl:0:0:-50" },
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0 },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
     walkable = true,
     sounds = sbz_api.sounds.sand(),
@@ -403,7 +403,7 @@ core.register_node("sbz_resources:dark_sand", {
 core.register_node("sbz_resources:black_sand", {
     description = "Black Sand",
     tiles = { "sand.png^[colorizehsl:0:0:-80" },
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1 },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
 
     walkable = true,
     sounds = sbz_api.sounds.sand(),
@@ -413,7 +413,7 @@ core.register_node("sbz_resources:black_sand", {
 core.register_node("sbz_resources:white_sand", {
     description = "White Sand",
     tiles = { "sand.png^[colorizehsl:0:0" },
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0 },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
     walkable = true,
     sounds = sbz_api.sounds.sand(),

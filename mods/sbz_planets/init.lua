@@ -2,6 +2,7 @@
 -- cave generation is the largest problem somehow???
 
 -- from lvm_example
+core.log("action", "Loading planets")
 core.set_mapgen_setting("mg_name", "singlenode", true)
 core.set_mapgen_setting("mg_flags", "nolight", true)
 
@@ -21,6 +22,8 @@ dofile(mp .. "/player_manager.lua")
 dofile(mp .. "/planets.lua")
 core.register_mapgen_script(mp .. "/planets.lua")
 core.register_mapgen_script(mp .. "/mapgen.lua")
+
+local planets = sbz_api.planets
 
 function getplanet(id, filter)
     local a = sbz_api.planets.area
@@ -52,3 +55,5 @@ rings: %s
         dump { sbz_api.planets.has_rings(deserialized_data[1], deserialized_data[2]) }
     ))
 end
+
+core.log("action", "Finished loading planets")

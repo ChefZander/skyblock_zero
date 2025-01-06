@@ -112,7 +112,7 @@ core.register_on_generated(function(vm, minp, maxp, seed)
         local pdata = core.deserialize(planet.data)
         local ptype = pdata[1]
         local ptype_def = planets.types[ptype]
-        ptype_def.mapgen(area, minp, maxp, seed, noises, data, pdata, center)
+        ptype_def.mapgen(area, minp, maxp, seed, noises, data, pdata, center, vm)
     end
 
     vm:set_data(data)
@@ -120,7 +120,7 @@ core.register_on_generated(function(vm, minp, maxp, seed)
     vm:set_data(data)
     vm:calc_lighting()
 
-    -- core.debug("Mapgen took: " .. (os.clock() - t0) .. "s")
+    core.debug("Mapgen took: " .. (os.clock() - t0) .. "s")
     -- Average: 1~2 seconds
     -- on frog's laptop, on power save mode
 end)

@@ -81,8 +81,10 @@ end
 
 function sbz_api.plant_wilt(stages)
     return function(pos, node)
-        node.param2 = node.param2 + 1
-        minetest.swap_node(pos, node.param2 >= stages and { name = "air" } or node)
+        if core.get_item_group(node.name, "no_wilt") == 0 then
+            node.param2 = node.param2 + 1
+            minetest.swap_node(pos, node.param2 >= stages and { name = "air" } or node)
+        end
     end
 end
 
@@ -126,7 +128,7 @@ function sbz_api.register_plant(name, defs)
             paramtype2 = "color",
             palette = "wilting_palette.png",
             walkable = false,
-            groups = { dig_immediate = 2, attached_node = 1, plant = 1, needs_co2 = defs.co2_demand, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, burn = 1, nb_nodig = 1 },
+            groups = { dig_immediate = 2, attached_node = 1, plant = 1, needs_co2 = defs.co2_demand, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, burn = 1, nb_nodig = 1, no_wilt = defs.no_wilt and 1 or 0 },
             drop = {},
             growth_tick = sbz_api.plant_growth_tick(defs.growth_rate),
             grow = sbz_api.plant_grow("sbz_bio:" .. name .. "_" .. (i + 1)),
@@ -158,6 +160,7 @@ sbz_api.register_plant("pyrograss", {
     width = 0.25,
     height_min = -0.375,
     height_max = 0,
+    no_wilt = true,
 })
 
 minetest.register_craftitem("sbz_bio:pyrograss", {

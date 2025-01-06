@@ -1,3 +1,4 @@
+core.log("action", "Generating planets!")
 local planets = sbz_api.planets
 planets.area = AreaStore()
 
@@ -12,8 +13,9 @@ local area = planets.area
 area:reserve(num_planets)
 
 local random = PcgRandom(core.get_mapgen_setting("seed"))
+
 for _ = 1, num_planets do
-    local pos1, pos2, center
+    local pos1, pos2, center, areas_result
     local planet_type = random:next(1, #planets.types)
     local planet_def = planets.types[planet_type]
 
@@ -28,8 +30,10 @@ for _ = 1, num_planets do
         end
         pos1 = center - vector.new(size, size, size)
         pos2 = center + vector.new(size, size, size)
-    until #area:get_areas_in_area(pos1, pos2, false, false, false) == 0
+        areas_result = area:get_areas_in_area(pos1, pos2, true, false, false)
+    until areas_result == nil or next(areas_result) == nil
     area:insert_area(pos1, pos2, core.serialize { planet_type, radius })
 end
 
 core.ipc_set("sbz_planets:store", planets.area:to_string())
+core.log("action", "Finished generating planets!")

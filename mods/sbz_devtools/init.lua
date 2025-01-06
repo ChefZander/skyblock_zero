@@ -222,6 +222,31 @@ minetest.register_chatcommand("dev_regen", {
     end
 })
 
+minetest.register_chatcommand("dev_mapblocks", {
+    description =
+    "Sends you all the mapblocks in the radius. RADIUS IS IN MAPBLOCKS!! may not work... in singleplayer at least",
+    params = "[radius]",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then
+            return false, "Player not found!"
+        end
+
+        local radius = tonumber(param) or 1
+        local playerpos = vector.apply(player:get_pos() / 16, math.floor)
+        for x = 1, radius do
+            for y = 1, radius do
+                for z = 1, radius do
+                    player:send_mapblock(playerpos + vector.new(x, y, z))
+                end
+            end
+        end
+
+        return true, "Area sent!"
+    end
+})
+
 core.register_chatcommand("toggle_pvp", {
     description = "Toggle pvp",
     params = "<enable>",
