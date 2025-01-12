@@ -22,6 +22,24 @@ minetest.register_craft({
     }
 })
 
+unified_inventory.register_craft {
+    type = "centrifugeing",
+    output = "sbz_resources:sand",
+    items = { "sbz_bio:dirt" }
+}
+
+unified_inventory.register_craft {
+    type = "centrifugeing",
+    output = "sbz_bio:moss 3",
+    items = { "sbz_bio:dirt" }
+}
+
+unified_inventory.register_craft {
+    type = "centrifugeing",
+    output = "sbz_resources:pebble 4",
+    items = { "sbz_bio:dirt" }
+}
+
 minetest.register_node("sbz_bio:fertilized_dirt", {
     description = "Fertilized Dirt",
     tiles = { "fertilized_dirt.png" },

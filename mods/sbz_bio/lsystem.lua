@@ -30,12 +30,9 @@ local function lsystem(start_pos, dna, owner, starting_angle)
 
     if type(dna.trunk) == "string" then dna.trunk = { name = dna.trunk } end
     if type(dna.leaves) == "string" then dna.leaves = { name = dna.leaves } end
-    local serialized_dna = minetest.serialize(dna)
     local function spawn_leaves(pos)
         set_node(pos, dna.leaves, dna.leaves.name)
-        local meta = core.get_meta(pos)
-        meta:set_string("dna", serialized_dna)
-        meta:mark_as_private("dna")
+        -- now, no need to do the meta crap :D
     end
 
     local function spawn_trunk(pos, branches)
@@ -160,6 +157,15 @@ local function lsystem(start_pos, dna, owner, starting_angle)
         elseif char == "]" then
             pos, rotation = unpack(table.remove(stack_info) or { pos, rotation })
         end
+    end
+
+    if dna.tree_core then
+        core.set_node(start_pos, {
+            name = dna.tree_core
+        })
+        local meta = core.get_meta(start_pos)
+        meta:set_string("dna", core.serialize(dna))
+        meta:mark_as_private("dna")
     end
 end
 

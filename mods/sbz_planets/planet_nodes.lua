@@ -196,9 +196,9 @@ core.register_node("sbz_planets:water_source_nofall", {
 })
 
 core.register_node("sbz_planets:colorium_mapgen_sapling", {
-    description = "Mapgen Sapling (you hacker you!)",
+    description = "Mapgen Sapling (i guess you just got an insant sapling lol)",
     -- drop = "",
-    groups = { matter = 3, level = 3, not_in_creative_inventory = 1 },
+    groups = { not_in_creative_inventory = 1 },
     drawtype = "allfaces",
     tiles = {
         { name = "colorium_sapling.png", backface_culling = false }
@@ -268,7 +268,8 @@ local function make_treedef(rand)
         trunk_type = ({ "single", "single", "single", "double", "crossed" })[rand:next(1, 5)],
         thin_branches = true,
         fruit_chance = 0,
-        seed = rand:next()
+        seed = rand:next(),
+        tree_core = "sbz_bio:colorium_tree_core"
     }
 end
 
