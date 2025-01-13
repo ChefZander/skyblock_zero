@@ -10,6 +10,7 @@ minetest.register_node("sbz_resources:matter_blob", unifieddyes.def {
         minetest.sound_play("step", { pos = pos, gain = 1.0 })
     end,
 })
+
 minetest.register_craft({
     output = "sbz_resources:matter_blob",
     recipe = {
