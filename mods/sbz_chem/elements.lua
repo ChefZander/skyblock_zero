@@ -44,7 +44,7 @@ sbz_api.register_element = function(name, color, description, disabled, part_of_
     core.register_craftitem("sbz_chem:" .. name .. "_ingot", {
         groups = { chem_element = 1, ingot = 1, not_in_creative_inventory = disabled_group, chem_disabled = disabled_group },
         description = string.format(description, "Ingot"),
-        inventory_image = "ingot.png^[colorize:" .. color .. ":150",
+        inventory_image = "ingot.png^[multiply:" .. color --[[.. ":150"]],
 
     })
     core.register_node("sbz_chem:" .. name .. "_block", unifieddyes.def {
