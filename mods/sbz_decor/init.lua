@@ -86,7 +86,7 @@ minetest.register_node("sbz_decor:factory_ventilator", {
 minetest.register_craft({
     output = "sbz_decor:factory_ventilator",
     type = "shapeless",
-    recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:lithium_powder", "sbz_chem:lead_powder" }
+    recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:lithium_powder", "sbz_chem:aluminum_powder" }
 })
 
 minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {
