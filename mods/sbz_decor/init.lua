@@ -2,7 +2,7 @@ local modpath = minetest.get_modpath("sbz_decor")
 
 
 minetest.register_node("sbz_decor:photonlamp", {
-    description = "Photon Lamp\n\nLight Source Only. Strength: 14,",
+    description = "Photon Lamp",
     drawtype = "mesh",
     mesh = "photonlamp.obj",
     tiles = { "photonlamp.png" },
@@ -86,7 +86,7 @@ minetest.register_node("sbz_decor:factory_ventilator", {
 minetest.register_craft({
     output = "sbz_decor:factory_ventilator",
     type = "shapeless",
-    recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:lithium_powder", "sbz_chem:lead_powder" }
+    recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:lithium_powder", "sbz_chem:cobalt_powder" }
 })
 
 minetest.register_node("sbz_decor:factory_warning", unifieddyes.def {

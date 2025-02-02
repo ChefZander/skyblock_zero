@@ -11,29 +11,37 @@ local ruleset_chars = {
 
 
 -- not exactly up to spec but good enough
-local function lsystem(start_pos, dna, owner)
+local function lsystem(start_pos, dna, owner, starting_angle)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
     local angle, trunk_type = dna.angle, dna.trunk_type
-
+    if type(dna) ~= "table" then
+        core.log("error",
+            string.format(
+                "DNA is somehow supplied in %s form, this should not happen, my code is probably too messy to track this down. Not growing tree @%s. The malformed DNA: %s",
+                type(dna), vector.to_string(start_pos), dna))
+        return false
+    end
     dna = table.copy(dna)
     local stack_info = {}
 
+    sbz_api.vm_begin()
 
     local set_node = function(pos, node, leafnode)
         pos = vector.round(pos)
-        local node_at_pos = minetest.get_node(pos)
-        if minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode
-            and (not minetest.is_protected(pos, owner or "")) then
-            minetest.set_node(pos, node)
+        local node_at_pos = sbz_api.vm_get_node(pos)
+        if node_at_pos then
+            if minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode
+                and (not minetest.is_protected(pos, owner or "")) then
+                sbz_api.vm_swap_node(pos, node.name, true)
+            end
         end
     end
 
     if type(dna.trunk) == "string" then dna.trunk = { name = dna.trunk } end
     if type(dna.leaves) == "string" then dna.leaves = { name = dna.leaves } end
-    local serialized_dna = minetest.serialize(dna)
     local function spawn_leaves(pos)
         set_node(pos, dna.leaves, dna.leaves.name)
-        minetest.get_meta(pos):set_string("dna", serialized_dna)
+        -- now, no need to do the meta crap :D
     end
 
     local function spawn_trunk(pos, branches)
@@ -115,7 +123,7 @@ local function lsystem(start_pos, dna, owner)
 
     local pos = vector.copy(start_pos)
 
-    local rotation = { x = 0, y = 0, z = 0 }
+    local rotation = starting_angle or { x = 0, y = 0, z = 0 }
     angle = angle
 
     local function foward()
@@ -154,10 +162,20 @@ local function lsystem(start_pos, dna, owner)
         elseif char == "*" then
             rotation.z = rotation.z - angle
         elseif char == "[" then
-            table.insert(stack_info, { table.copy(rotation), table.copy(pos) })
+            table.insert(stack_info, { table.copy(pos), table.copy(rotation) })
         elseif char == "]" then
             pos, rotation = unpack(table.remove(stack_info) or { pos, rotation })
         end
+    end
+
+    sbz_api.vm_commit()
+    if dna.tree_core then
+        core.set_node(start_pos, {
+            name = dna.tree_core
+        })
+        local meta = core.get_meta(start_pos)
+        meta:set_string("dna", core.serialize(dna))
+        meta:mark_as_private("dna")
     end
 end
 

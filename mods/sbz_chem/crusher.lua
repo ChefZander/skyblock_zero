@@ -1,6 +1,4 @@
-local output_items = sbz_api.crusher_drops
-
-for k, v in pairs(output_items) do
+for k, v in pairs(sbz_api.crusher_drops) do
     unified_inventory.register_craft {
         output = v,
         type = "crushing",
@@ -9,6 +7,40 @@ for k, v in pairs(output_items) do
         }
     }
 end
+
+core.register_craftitem("sbz_chem:enhanced_pebble", {
+    description = "Enhanced Pebble",
+    inventory_image = "enhanced_pebble.png",
+})
+
+for k, v in pairs(sbz_api.crusher_drops_enhanced) do
+    unified_inventory.register_craft {
+        output = v,
+        type = "crushing",
+        items = {
+            "sbz_chem:enhanced_pebble"
+        }
+    }
+end
+
+-- stone -> 2 gravel
+-- gravel -> 2 sand
+-- centrifuging sand: 90% chance of 4 Silicon, 10% chance of 1 gold
+unified_inventory.register_craft {
+    output = "sbz_resources:gravel 2",
+    type = "crushing",
+    items = {
+        "sbz_resources:stone"
+    }
+}
+
+unified_inventory.register_craft {
+    output = "sbz_resources:sand 2",
+    type = "crushing",
+    items = {
+        "sbz_resources:gravel"
+    }
+}
 
 sbz_api.register_stateful_machine("sbz_chem:crusher", {
     description = "Crusher",

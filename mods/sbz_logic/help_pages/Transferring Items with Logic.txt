@@ -6,7 +6,7 @@ $C1any_event = yield({
 $C1    type = "transport_items",
 $C1    from = links.input, -- a vector array, like { [1] = { x = num, y = num, z = num}, [2] = { x = num, y = num, z = num}, ..., [n] = { x = num, y = num, z = num}}
 $C1    to = links.output, -- a vector array    
-$C1    filter = filter, -- will be discussed later
+$C1    filters = filters, -- will be discussed later
 $C1    inv_list_inputs = "main", -- optional
 $C1    inv_list_outputs = "main", -- optional
 $C1})

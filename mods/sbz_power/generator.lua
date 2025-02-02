@@ -104,7 +104,7 @@ sbz_api.register_generator("sbz_power:simple_charged_field", {
     description = "Simple Charged Field",
     drawtype = "glasslike",
     tiles = { "simple_charged_field.png" },
-    groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1 },
+    groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1, charged_field = 1, },
     sunlight_propagates = true,
     walkable = false,
     power_generated = 3,
@@ -192,7 +192,7 @@ minetest.register_node("sbz_power:charged_field_residue", {
     description = "Charged Field Residue",
     drawtype = "glasslike",
     tiles = { "charged_field_residue.png" },
-    groups = { unbreakable = 1 },
+    groups = { unbreakable = 1, charged_field = 1, },
     sunlight_propagates = true,
     walkable = true,
     on_punch = function(pos, node, puncher, pointed_thing)
@@ -213,6 +213,29 @@ minetest.register_abm({
         minetest.sound_play("decay", { pos = pos, gain = 1.0 })
     end,
 })
+
+core.register_node("sbz_power:solid_charged_field", {
+    description = "Solid Charged Field",
+    info_extra = "Used for protecting against radiation.",
+    drawtype = "glasslike",
+    tiles = { "solid_charged_field.png" },
+    groups = { dig_immediate = 2, matter = 1, explody = 5, charged = 1, charged_field = 1 },
+    sunlight_propagates = true,
+    on_dig = function(pos, node, digger)
+        minetest.sound_play("charged_field_shutdown", {
+            gain = 5.0,
+            max_hear_distance = 32,
+            pos = pos,
+        })
+        minetest.node_dig(pos, node, digger)
+    end,
+})
+
+unified_inventory.register_craft {
+    type = "compressing",
+    output = "sbz_power:solid_charged_field",
+    items = { "sbz_power:simple_charged_field 9" }
+}
 
 -- Starlight Collector
 sbz_api.register_generator("sbz_power:starlight_collector", {

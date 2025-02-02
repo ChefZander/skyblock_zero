@@ -202,7 +202,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         for k, v in ipairs(positions) do
             local def = minetest.registered_nodes[minetest.get_node(vector.add(pos, v)).name]
             if not def or not def.buildable_to then
-                meta:set_string("infotext", "Can't summon/feed meteorite, it needs some space, come on")
+                meta:set_string("infotext", "Can't summon/feed meteorite, it needs some space.")
                 return 0
             end
         end
@@ -264,8 +264,6 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         if size_to_apply == 2 then -- full
             our_meteorite:remove()
             local m = minetest.add_entity(center_pos, "sbz_meteorites:meteorite", meta:get_string("type"))
-            m:set_velocity(1.5 * vector.random_direction())
-
             for k, v in pairs(counts) do
                 v.current = 0
             end

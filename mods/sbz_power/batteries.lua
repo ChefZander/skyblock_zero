@@ -9,7 +9,7 @@ function sbz_power.register_battery(name, def)
         meta:set_string("infotext",
             string.format("Battery: %s power", sbz_api.format_power(current_power, max)))
         meta:set_string("formspec",
-            sbz_power.battery_fs(sbz_power.round_power(current_power), sbz_power.round_power(max)))
+            sbz_api.battery_fs(sbz_power.round_power(current_power), sbz_power.round_power(max)))
     end
     minetest.register_node(name, def)
 end

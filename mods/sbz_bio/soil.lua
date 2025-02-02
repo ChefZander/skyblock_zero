@@ -8,6 +8,7 @@ minetest.register_node("sbz_bio:dirt", {
         moss_growable = 1,
         soil = 1,
         oddly_breakable_by_hand = 1,
+        charged = 1,
     },
     paramtype = "light", -- if you leave this out, fertilizer wont work
     sounds = sbz_api.sounds.dirt(),
@@ -20,6 +21,24 @@ minetest.register_craft({
         { "sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss" }
     }
 })
+
+unified_inventory.register_craft {
+    type = "centrifugeing",
+    output = "sbz_resources:sand",
+    items = { "sbz_bio:dirt" }
+}
+
+unified_inventory.register_craft {
+    type = "centrifugeing",
+    output = "sbz_bio:moss 3",
+    items = { "sbz_bio:dirt" }
+}
+
+unified_inventory.register_craft {
+    type = "centrifugeing",
+    output = "sbz_resources:pebble 4",
+    items = { "sbz_bio:dirt" }
+}
 
 minetest.register_node("sbz_bio:fertilized_dirt", {
     description = "Fertilized Dirt",
@@ -51,7 +70,6 @@ minetest.register_node("sbz_bio:dirt_with_grass", {
         "dirt_with_grass_y.png",
         "dirt.png",
         "dirt_with_grass_xz.png",
-
     },
     groups = {
         explody = 10,
@@ -60,6 +78,7 @@ minetest.register_node("sbz_bio:dirt_with_grass", {
         soil = 2,
         oddly_breakable_by_hand = 1,
         burn = 5,
+        charged = 1
     },
     paramtype = "light",
     sounds = sbz_api.sounds.dirt(),
@@ -105,8 +124,8 @@ core.register_abm({
     label = "Grass spread - water",
     nodenames = { "sbz_bio:dirt_with_grass" },
     neighbors = { "group:water", "group:soil" },
-    interval = 10 / 3,
-    chance = 3,
+    interval = 30,
+    chance = 5,
     action = get_grass_spread_action(true)
 })
 
@@ -115,8 +134,8 @@ core.register_abm({
     nodenames = { "sbz_bio:dirt_with_grass" },
     neighbors = { "group:soil" },
     without_neighbors = { "group:water" },
-    interval = 30,
-    chance = 50,
+    interval = 100,
+    chance = 20,
     action = get_grass_spread_action(false)
 })
 

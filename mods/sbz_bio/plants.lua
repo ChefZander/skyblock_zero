@@ -81,8 +81,10 @@ end
 
 function sbz_api.plant_wilt(stages)
     return function(pos, node)
-        node.param2 = node.param2 + 1
-        minetest.swap_node(pos, node.param2 >= stages and { name = "air" } or node)
+        if core.get_item_group(node.name, "no_wilt") == 0 then
+            node.param2 = node.param2 + 1
+            minetest.swap_node(pos, node.param2 >= stages and { name = "air" } or node)
+        end
     end
 end
 
@@ -126,7 +128,7 @@ function sbz_api.register_plant(name, defs)
             paramtype2 = "color",
             palette = "wilting_palette.png",
             walkable = false,
-            groups = { dig_immediate = 2, attached_node = 1, plant = 1, needs_co2 = defs.co2_demand, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, burn = 1, nb_nodig = 1 },
+            groups = { dig_immediate = 2, attached_node = 1, plant = 1, needs_co2 = defs.co2_demand, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, burn = 1, nb_nodig = 1, no_wilt = defs.no_wilt and 1 or 0 },
             drop = {},
             growth_tick = sbz_api.plant_growth_tick(defs.growth_rate),
             grow = sbz_api.plant_grow("sbz_bio:" .. name .. "_" .. (i + 1)),
@@ -157,13 +159,14 @@ sbz_api.register_plant("pyrograss", {
     growth_rate = 4,
     width = 0.25,
     height_min = -0.375,
-    height_max = 0
+    height_max = 0,
+    no_wilt = true,
 })
 
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
-    groups = { burn = 30 },
+    groups = { burn = 30, eat = -1 },
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", { "group:soil" })
 })
 
@@ -182,7 +185,7 @@ sbz_api.register_plant("stemfruit_plant", {
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
-    groups = { burn = 12 },
+    groups = { burn = 12, eat = 5 },
     on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
 })
 
@@ -211,17 +214,17 @@ local function teleport_randomly(user)
     end
 end
 
+local eat = core.item_eat(6)
 minetest.register_craftitem("sbz_bio:warpshroom", {
     description = "Warpshroom",
     inventory_image = "warpshroom_4.png",
     on_place = sbz_api.plant_plant("sbz_bio:warpshroom_1", { "group:matter" }),
-    on_use = function(itemstack, user)
+    on_use = function(itemstack, user, pointed)
         teleport_randomly(user)
         unlock_achievement(user:get_player_name(), "Not Chorus Fruit")
-        itemstack:take_item()
-        return itemstack
+        return eat(itemstack, user, pointed)
     end,
-    groups = { ui_bio = 1 }
+    groups = { ui_bio = 1, eat = 6 }
 })
 
 minetest.register_craft({

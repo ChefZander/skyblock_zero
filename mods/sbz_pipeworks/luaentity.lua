@@ -356,39 +356,41 @@ local move_entities_globalstep_part2 = function(dtime)
 		luaentity.entities = read_entities()
 	end
 	for _, entity in pairs(luaentity.entities) do
-		local master = entity._attached_entities_master
-		local master_def = master and entity._attached_entities[master]
-		local master_entity = master_def and master_def.entity
-		local master_entity_pos = master_entity and master_entity:get_pos()
-		if master_entity_pos then
-			entity._pos = vector.subtract(master_entity_pos, master_def.offset)
-			entity._velocity = master_entity:get_velocity()
-			entity._acceleration = master_entity:get_acceleration()
-		else
-			entity._velocity = entity._velocity or vector.new(0, 0, 0)
-			entity._acceleration = entity._acceleration or vector.new(0, 0, 0)
-			entity._pos = vector.add(vector.add(
-					entity._pos,
-					vector.multiply(entity._velocity, dtime)),
-				vector.multiply(entity._acceleration, 0.5 * dtime * dtime))
-			entity._velocity = vector.add(
-				entity._velocity,
-				vector.multiply(entity._acceleration, dtime))
-		end
-		if master and not master_entity_pos then -- The entity has somehow been cleared
-			if pipeworks.delete_item_on_clearobject then
-				entity:remove()
+		if entity._pos ~= nil then
+			local master = entity._attached_entities_master
+			local master_def = master and entity._attached_entities[master]
+			local master_entity = master_def and master_def.entity
+			local master_entity_pos = master_entity and master_entity:get_pos()
+			if master_entity_pos then
+				entity._pos = vector.subtract(master_entity_pos, master_def.offset)
+				entity._velocity = master_entity:get_velocity()
+				entity._acceleration = master_entity:get_acceleration()
 			else
-				entity:_remove_attached(master)
+				entity._velocity = entity._velocity or vector.new(0, 0, 0)
+				entity._acceleration = entity._acceleration or vector.new(0, 0, 0)
+				entity._pos = vector.add(vector.add(
+						entity._pos,
+						vector.multiply(entity._velocity, dtime)),
+					vector.multiply(entity._acceleration, 0.5 * dtime * dtime))
+				entity._velocity = vector.add(
+					entity._velocity,
+					vector.multiply(entity._acceleration, dtime))
+			end
+			if master and not master_entity_pos then -- The entity has somehow been cleared
+				if pipeworks.delete_item_on_clearobject then
+					entity:remove()
+				else
+					entity:_remove_attached(master)
+					entity:_add_loaded()
+					if entity.on_step then
+						entity:on_step(dtime)
+					end
+				end
+			else
 				entity:_add_loaded()
 				if entity.on_step then
 					entity:on_step(dtime)
 				end
-			end
-		else
-			entity:_add_loaded()
-			if entity.on_step then
-				entity:on_step(dtime)
 			end
 		end
 	end

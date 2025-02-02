@@ -1,7 +1,15 @@
 return {
     { type = "text", title = "Questline: Chemistry", text = "Good luck." },
 
-    { type = "quest", title = "Crusher", text = "This one's very simple :)\nIt's just pebbles in, metals out. Consumes 5 Power when running.", requires = { "Concrete Plan", "Antimatter", "Charged Field" } },
+    {
+        type = "quest",
+        title = "Crusher",
+        text = [[
+You can put in some pebbles to get some metals, also it will turn 1 stone into 2 gravel, and 1 gravel to 2 sand.
+With enhanced pebbles, you can get rare metals.
+]],
+        requires = { "Concrete Plan", "Antimatter", "Charged Field" }
+    },
 
     { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
@@ -23,11 +31,19 @@ Also, blocks made from chemicals cannot be dug with matter annihilators, you mus
     },
     {
         type = "quest",
+        title = "Centrifuge",
+        text = [[
+With this, you can get gold, silicon and white sand from normal sand, silver from some sand shades, and rare metals (titanium, lithium and cobalt) from gravel.
+        ]],
+        requires = { "Crusher" }
+    },
+    {
+        type = "quest",
         title = "Advanced Batteries",
         text = [[
 A battery made with metals. Significantly better than the basic battery.
         ]],
-        requires = { "Batteries", "Furnace" }
+        requires = { "Batteries", "Furnace", "Centrifuge" }
     },
     {
         type = "quest",
@@ -36,7 +52,7 @@ A battery made with metals. Significantly better than the basic battery.
 If you have lots of metals to waste... this is the battery for you!
 10 Times better than the advanced battery!
         ]],
-        requires = { "Batteries", "Furnace" }
+        requires = { "Batteries", "Furnace", "Advanced Batteries" }
     },
     {
         type = "quest",
@@ -100,4 +116,71 @@ It also digs 2x faster than the robotic arm.
 ]]
     },
     { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter per second for 120 power/s.", requires = { "Furnace" } },
+    {
+        type = "quest",
+        title = "Phlogiston Fuser",
+        text = [[
+Chemistry is booring.... what about alchemy :D
+To make phlogiston, you'll need lots of power for a very long time, be aware of that.
+You can also make some armor from phlogiston, once it is low on durability, you can charge that armor like you would charge your jetpack.
+]],
+        requires = { "Crystal Grower", "Very Advanced Batteries" }
+    },
+    {
+        type = "quest",
+        title = "Planet Teleporter",
+        text =
+        [[Right-click it with a warp crystal, and see what will happen... Also there may be multiple types of planets, and they may have rings.]],
+        requires = { "Neutronium", "Phlogiston Fuser" }
+    },
+    {
+        type = "quest",
+        title = "Planet Ores",
+        text = [[
+At the center of planets, there is usually some core material.
+In blue stone, there is uranium ore, blue stone is only in ice planets.
+In red stone, there is thorium ore, red stone is in dead and colorium planets.
+To get this achievement, you will need to get uranium or thorium powder in your inventory, and move it around.
+]],
+        requires = { "Planet Teleporter" }
+    },
+    {
+        type = "quest",
+        title = "Pebble Enhancer",
+        text = [[
+So... i imagine you want to get thorium and uranium automatically now, no worries, it's possible.
+Enhanced pebbles can also get you lithium, cobalt, titanium, silicon and silver. (+ uranium and thorium)
+Simply put a pebble into the pebble enhancer, it will become enhanced.
+]],
+        requires = { "Planet Ores" }
+    },
+    {
+        type = "quest",
+        title = "Decay Accelerator",
+        text = [[
+In later updates, this node will be able to transform regular materials.
+Currently, it is used to obtain plutonium from uranium, simply insert uranium powder to it.
+        ]],
+        requires = { "Planet Ores" }
+    },
+    {
+        type = "quest",
+        title = "Radiation Shielding",
+        text = [[Solid charged field shields against radiation.]],
+        requires = { "Planet Ores" },
+    },
+    {
+        type = "quest",
+        title = "Nuclear Reactor",
+        text = [[
+So you probably want more power.... Nuclear reactors can help you with that.
+
+Types of fuel rods:
+- thorium: doesn't explode, lowest power,
+- uranium: explodes, medium power
+- plutonium: must have *non-radioactive* water ***sources*** around the reactor, explodes, highest power
+]],
+        requires = { "Planet Ores", "Radiation Shielding" }
+    },
+
 }

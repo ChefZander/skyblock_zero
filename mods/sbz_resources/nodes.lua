@@ -3,7 +3,6 @@ minetest.register_node("sbz_resources:matter_blob", unifieddyes.def {
     drawtype = "glasslike",
     tiles = { "matter_blob.png" },
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
-    sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
     on_punch = function(pos, node, puncher)
@@ -55,7 +54,6 @@ minetest.register_node("sbz_resources:antimatter_blob", unifieddyes.def {
     drawtype = "glasslike",
     tiles = { "antimatter_blob.png" },
     groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767, },
-    sunlight_propagates = true,
     walkable = true,
     light_source = 3,
     sounds = sbz_api.sounds.antimatter(),
@@ -103,11 +101,10 @@ minetest.register_craft({
     }
 })
 minetest.register_node("sbz_resources:emitter_imitator", {
-    description = "Emitter Immitator\n\nLight Source Only. Strength: 10.",
+    description = "Emitter Immitator",
     drawtype = "glasslike",
     tiles = { "emitter_imitator.png" },
     groups = { matter = 1, explody = 3 },
-    sunlight_propagates = true,
     paramtype = "light",
     light_source = 10,
     walkable = true,
@@ -146,8 +143,7 @@ minetest.register_craft({
 minetest.register_node("sbz_resources:stone", unifieddyes.def {
     description = "Stone",
     tiles = { "stone.png" },
-    groups = { matter = 1, moss_growable = 1 },
-    sunlight_propagates = true,
+    groups = { matter = 1, moss_growable = 1, charged = 1 },
     walkable = true,
     sounds = sbz_api.sounds.matter(),
 })
@@ -173,7 +169,6 @@ minetest.register_node("sbz_resources:reinforced_matter", {
     description = "Reinforced Matter",
     tiles = { "reinforced_matter.png" },
     groups = { matter = 1, moss_growable = 1 },
-    sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
 })
@@ -191,7 +186,6 @@ minetest.register_node("sbz_resources:reinforced_antimatter", {
     tiles = { "reinforced_antimatter.png" },
     groups = { antimatter = 1 },
     light_source = 5,
-    sunlight_propagates = true,
     walkable = true,
     sounds = sbz_api.sounds.matter(),
 })
@@ -286,7 +280,7 @@ minetest.register_node("sbz_resources:water_source", {
     drawtype = "liquid",
     tiles = {
         { name = "water.png", backface_culling = false },
-        { name = "water.png", backface_culling = true }
+        { name = "water.png", backface_culling = true },
     },
     inventory_image = minetest.inventorycube "water.png",
     use_texture_alpha = "blend",
@@ -301,6 +295,7 @@ minetest.register_node("sbz_resources:water_source", {
     liquid_alternative_flowing = "sbz_resources:water_flowing",
     drop = "",
     liquid_viscosity = 1,
+    drowning = 1,
 })
 
 local animation = {
@@ -339,6 +334,7 @@ minetest.register_node("sbz_resources:water_flowing", {
     liquid_alternative_flowing = "sbz_resources:water_flowing",
     drop = "",
     liquid_viscosity = 1,
+    drowning = 1,
 })
 
 minetest.register_node("sbz_resources:compressed_core_dust", {
@@ -363,4 +359,63 @@ minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:core_dust 9",
     recipe = { "sbz_resources:compressed_core_dust" }
+})
+
+-- sands
+minetest.register_node("sbz_resources:sand", unifieddyes.def {
+    description = "Sand",
+    tiles = { "sand.png" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 80 },
+
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+minetest.register_node("sbz_resources:red_sand", {
+    description = "Red Sand",
+    tiles = { "sand.png^[colorize:red:128" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+minetest.register_node("sbz_resources:gravel", {
+    description = "Gravel",
+    tiles = { "gravel.png" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+core.register_node("sbz_resources:dark_sand", {
+    description = "Dark Sand",
+    tiles = { "sand.png^[colorizehsl:0:0:-50" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
+
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+core.register_node("sbz_resources:black_sand", {
+    description = "Black Sand",
+    tiles = { "sand.png^[colorizehsl:0:0:-80" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
+
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+core.register_node("sbz_resources:white_sand", {
+    description = "White Sand",
+    tiles = { "sand.png^[colorizehsl:0:0" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
+
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
 })

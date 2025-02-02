@@ -140,23 +140,6 @@ function sbz_api.register_leaves(name, def)
             for _, item in ipairs(drops) do
                 if math.random() <= 1 / item.rarity then
                     item = item.item
-                    if minetest.get_item_group(item, "sapling") then
-                        local stack = ItemStack(item)
-                        local own_dna = minetest.get_meta(pos):get_string("dna")
-                        local stack_meta = stack:get_meta()
-                        stack_meta:set_string("dna", own_dna)
-                        stack_meta:set_string("description",
-                            stack:get_description() .. "\nStack DNA hash: " .. sbz_api.hash_dna(own_dna))
-                        item = stack:to_string()
-                    else
-                        local stack = ItemStack(item)
-                        item = stack:get_name() -- nuke meta
-                    end
-                    if minetest.get_item_group(item, "sapling") then
-                        local stack = ItemStack(item)
-                        stack:get_meta():set_string("dna", minetest.serialize(minetest.get_meta(pos):get_string("dna")))
-                        item = stack:to_string()
-                    end
                     minetest.add_item({
                         x = pos.x - 0.5 + math.random(),
                         y = pos.y - 0.5 + math.random(),
@@ -188,17 +171,6 @@ function sbz_api.register_leaves(name, def)
             local drops = def.tree_drop
             for _, item in ipairs(drops) do
                 if math.random() <= 1 / item.rarity then
-                    local stack = ItemStack(item.item)
-                    if minetest.get_item_group(item.item, "sapling") > 0 then
-                        local own_dna = minetest.get_meta(pos):get_string("dna")
-                        local stack_meta = stack:get_meta()
-                        stack_meta:set_string("dna", own_dna)
-                        stack_meta:set_string("description",
-                            stack:get_description() .. "\nStack DNA hash: " .. sbz_api.hash_dna(own_dna))
-                        item = stack:to_string()
-                    else
-                        item = stack:get_name() -- nuke meta
-                    end
                     if digger and digger:is_player() then
                         local leftover = digger:get_inventory():add_item("main", item)
                         if leftover then
@@ -222,7 +194,7 @@ function sbz_api.register_leaves(name, def)
             minetest.remove_node(pos)
             minetest.check_for_falling(pos)
         end,
-        drops = "",
+        drop = "",
     } do
         def[k] = v
     end
@@ -323,6 +295,7 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
     floodable = true,
     tree = "sbz_bio:colorium_tree",
     leaves = "sbz_bio:colorium_leaves",
+    core = "sbz_bio:colorium_tree_core",
     dna = {
         axiom = "TTTTcccccccccc[B]",
         trunk = "sbz_bio:colorium_tree",
@@ -336,10 +309,84 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
         rules_d = "",
         angle = 25,
         max_size = 30 ^ 3, -- dont know if this is a good idea
+        tree_core = "sbz_bio:colorium_tree_core"
     },
 }
---,schems .. "colorium_tree.mts", { x = 5, y = 7, z = 5 }
 )
+
+local vowels = "aeiyou"                        -- 6
+local everything_else = "bcdfghjklmnpqrstvwxz" -- 20
+local function get_hash_name(string)
+    -- string of any size => human readable word
+    local sha = core.sha1(string, true)
+    -- 20 bytes... => 20 letters? lol
+    -- ok ill cut it to 8
+    sha = sha:sub(1, 8)
+    -- now...
+    local do_vowels = false
+    local name = ""
+    for i = 1, #sha do
+        if do_vowels then
+            local index = string.byte(string.sub(sha, i, i)) % #vowels
+            name = name .. string.sub(vowels, index, index)
+        else
+            local index = string.byte(string.sub(sha, i, i)) % #everything_else
+            name = name .. string.sub(everything_else, index, index)
+        end
+        do_vowels = not do_vowels
+    end
+    return name
+end
+
+core.register_node("sbz_bio:colorium_tree_core", {
+    description = "Colorium Tree Core",
+    info_extra = "Contains the tree's dna.",
+    groups = {
+        matter = 3,
+        oddly_breakable_by_hand = 3,
+        burn = 10,
+        transparent = 1,
+        explody = 10,
+        tree = 1,
+        ui_bio = 1,
+        tree_core = 1,
+    },
+    radius = 3,
+    paramtype2 = "wallmounted",
+    tiles = {
+        "colorium_tree_top.png",
+        "colorium_tree_top.png",
+        { name = "colorium_tree_core_side.png", animation = { type = "vertical_frames", length = 12 } }
+    },
+    sounds = sbz_api.sounds.tree(),
+    drop = "",
+    on_dig = function(pos, node, digger)
+        local item = "sbz_bio:colorium_tree_core"
+        item = ItemStack(item)
+        item:get_meta():set_string("dna", core.get_meta(pos):get_string("dna"))
+        item:get_meta():set_string("description",
+            item:get_description() .. "\nName: " .. get_hash_name(core.get_meta(pos):get_string("dna")))
+        if digger and digger:is_player() then
+            local leftover = digger:get_inventory():add_item("main", item)
+            if leftover then
+                minetest.add_item({
+                    x = pos.x - 0.5 + math.random(),
+                    y = pos.y - 0.5 + math.random(),
+                    z = pos.z - 0.5 + math.random(),
+                }, leftover)
+            end
+        else
+            minetest.add_item({
+                x = pos.x - 0.5 + math.random(),
+                y = pos.y - 0.5 + math.random(),
+                z = pos.z - 0.5 + math.random(),
+            }, item)
+        end
+
+        minetest.remove_node(pos)
+        minetest.check_for_falling(pos)
+    end,
+})
 
 
 unified_inventory.register_craft {
@@ -352,4 +399,113 @@ unified_inventory.register_craft {
     type = "crushing",
     output = "sbz_bio:colorium_leaves 4",
     items = { "sbz_bio:colorium_tree" }
+}
+
+local power_needed = 85
+sbz_api.register_stateful_machine("sbz_bio:dna_extractor", {
+    description = "DNA extractor",
+    info_extra = "Copies DNA from tree cores, puts it into saplings",
+    paramtype2 = "facedir",
+    tiles = {
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor.png",
+    },
+    groups = { matter = 1 },
+    on_construct = function(pos)
+        local meta = core.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_size("input", 2)
+        inv:set_size("output", 1)
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+list[context;output;6,2;1,1;]
+list[context;input;1,2;2,1;]
+list[current_player;main;0.2,5;8,4;]
+listring[current_player;main]listring[context;input]listring[current_player;main]listring[context;output]listring[current_player;main]
+]])
+    end,
+    input_inv = "input",
+    output_inv = "output",
+    action = function(pos, node, meta, supply, demand)
+        if supply < demand + power_needed then
+            meta:set_string("infotext", "Not enough power")
+            return power_needed, false
+        end
+
+        local inv = meta:get_inventory()
+        local input_list = inv:get_list("input")
+        local dna
+        local num_tree_cores = 0
+        local num_saplings = 0
+        local sapling_stack, sapling_index
+        for i = 1, #input_list do
+            local stack = ItemStack(input_list[i])
+            if core.get_item_group(stack:get_name(), "tree_core") ~= 0 then
+                num_tree_cores = num_tree_cores + 1
+                dna = stack:get_meta():get_string("dna")
+            elseif core.get_item_group(stack:get_name(), "sapling") ~= 0 then
+                num_saplings = num_saplings + 1
+                sapling_stack = stack
+                sapling_index = i
+            end
+        end
+        if num_tree_cores > 1 then
+            meta:set_string("infotext", "Too many unique tree cores")
+            return 0, false
+        end
+        if num_tree_cores == 0 then
+            meta:set_string("infotext", "Need 1 tree core")
+            return 0, false
+        end
+        if num_saplings == 0 then
+            meta:set_string("infotext", "Need saplings")
+            return 0, false
+        end
+        local deserialized_dna = core.deserialize(dna)
+        if not deserialized_dna then
+            meta:set_string("infotext", "Corrupted dna (how did you do this?)")
+            return 0, false
+        end
+        local new_sapling_stack = ItemStack(sapling_stack)
+        new_sapling_stack:get_meta():set_string("dna", dna)
+        new_sapling_stack:get_meta():set_string("description", "")
+        new_sapling_stack:get_meta():set_string("description",
+            new_sapling_stack:get_description() ..
+            "\nName: " .. get_hash_name(new_sapling_stack:get_meta():get_string("dna")))
+        new_sapling_stack:set_count(1)
+        if not inv:room_for_item("output", new_sapling_stack) then
+            meta:set_string("infotext", "No room in output.")
+            return 0, false
+        end
+        -- ok... enough checks
+        sapling_stack:set_count(sapling_stack:get_count() - new_sapling_stack:get_count())
+        inv:set_stack("input", sapling_index, sapling_stack)
+        inv:add_item("output", new_sapling_stack)
+        meta:set_string("infotext", "Working")
+        return power_needed, true
+    end,
+}, {
+    light_source = 14,
+    tiles = {
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        "dna_extractor_side.png",
+        { name = "dna_extractor_on.png", animation = { type = "vertical_frames", length = 1 } },
+    },
+})
+core.register_craft {
+    output = "sbz_bio:dna_extractor",
+    recipe = {
+        { "sbz_bio:colorium_tree",              "sbz_bio:colorium_tree",           "sbz_bio:colorium_tree" },
+        { "sbz_resources:storinator_stemfruit", "sbz_resources:emittrium_circuit", "sbz_resources:storinator_stemfruit" },
+        { "sbz_bio:colorium_tree",              "sbz_bio:colorium_tree",           "sbz_bio:colorium_tree" }
+    }
 }

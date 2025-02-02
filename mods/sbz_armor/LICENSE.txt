@@ -1,0 +1,6 @@
+
+Copyright (C) 2017-2023 davidthecreator - CC-BY-SA 3.0
+- textures/*_helmet_body.png - modified https://github.com/minetest-mods/3d_armor/blob/master/armor_admin/textures/3d_armor_helmet_admin.png
+- textures/*_boots_body.png - modified https://github.com/minetest-mods/3d_armor/blob/master/armor_admin/textures/3d_armor_boots_admin.png
+- textures/*_chestplate_body.png - modified https://github.com/minetest-mods/3d_armor/blob/master/armor_admin/textures/3d_armor_chestplate_admin.png
+- textures/*_helmet_body.png - modified https://github.com/minetest-mods/3d_armor/blob/master/armor_admin/textures/3d_armor_helmet_admin.png

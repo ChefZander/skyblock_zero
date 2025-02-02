@@ -94,8 +94,10 @@ listring[context;dst]
     tiles = {
         "hpef_top.png",
         "hpef_top.png",
-        { name = "hpef_front.png", animation = { type = "vertical_frames", length = 0.7 } },
         "hpef_top.png",
+        "hpef_top.png",
+        "hpef_top.png",
+        { name = "hpef_front.png", animation = { type = "vertical_frames", length = 0.7 } },
     },
     light_source = 10,
 })

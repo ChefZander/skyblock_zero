@@ -20,7 +20,7 @@ function vector.new(x, y, z) end
 ---@return vector
 function vector.zero() end
 
----@param v vector
+---@param v vector|table
 ---@return vector
 function vector.copy(v) end
 
@@ -512,6 +512,15 @@ function VoxelManip:get_emerged_area() end
 ---@class VoxelArea
 VoxelArea = {}
 ---@operator call:fun(pmin, pmax):VoxelArea|fun(edges: { MinEdge: vector, MaxEdge: vector }):VoxelArea
+
+---@param pmin vector
+---@param pmax vector
+---@return VoxelArea
+function VoxelArea:new(pmin, pmax) end
+
+---@param t { MinEdge: vector, MaxEdge: vector }
+---@return VoxelArea
+function VoxelArea:new(t) end
 
 ---@return vector
 function VoxelArea:getExtent() end

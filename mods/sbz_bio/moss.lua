@@ -6,6 +6,7 @@ minetest.register_node("sbz_bio:moss", {
     selection_box = { type = "fixed", fixed = { -0.5, -0.5, -0.5, 0.5, -0.375, 0.5 } },
     paramtype = "light",
     sunlight_propagates = true,
+    floodable = true,
     paramtype2 = "wallmounted",
     walkable = false,
     buildable_to = true,
@@ -35,6 +36,7 @@ minetest.register_node("sbz_bio:moss", {
 
 minetest.register_node("sbz_bio:algae", {
     description = "Algae",
+    floodable = true,
     drawtype = "signlike",
     tiles = { "algae.png" },
     inventory_image = "algae.png",
@@ -90,7 +92,7 @@ minetest.register_abm({
         pos.y = pos.y + 1
         if sbz_api.get_node_heat(pos) > 7 then
             local defs = minetest.registered_nodes[minetest.get_node(pos).name]
-            if defs.liquidtype == "none" and defs.buildable_to then
+            if defs.liquidtype == "none" and defs.buildable_to and defs.drawtype == "airlike" then
                 minetest.set_node(pos, { name = "sbz_bio:algae", param2 = 1 })
             end
         end
