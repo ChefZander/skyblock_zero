@@ -22,6 +22,7 @@ dofile(mp .. "/player_manager.lua")
 dofile(mp .. "/planets.lua")
 core.register_mapgen_script(mp .. "/planets.lua")
 core.register_mapgen_script(mp .. "/mapgen.lua")
+dofile(mp .. "/planet_teleporter.lua")
 
 local planets = sbz_api.planets
 

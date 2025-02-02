@@ -23,10 +23,12 @@ minetest.register_node("sbz_power:connector_off", {
         "switch_off.png"
     },
     connects_to = { "sbz_power:power_pipe", "group:sbz_machine" },
-    on_rightclick = function(pos, node)
-        node.name = "sbz_power:connector_on"
-        minetest.swap_node(pos, node)
-        minetest.sound_play({ name = "door-lock-43124" }, { pos = pos }, true)
+    on_rightclick = function(pos, node, person)
+        if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
+            node.name = "sbz_power:connector_on"
+            minetest.swap_node(pos, node)
+            minetest.sound_play({ name = "door-lock-43124" }, { pos = pos }, true)
+        end
     end,
     use_texture_alpha = "clip",
 })

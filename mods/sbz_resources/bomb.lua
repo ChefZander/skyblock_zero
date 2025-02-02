@@ -1,7 +1,7 @@
 -- can be stacked in water for extra... bad....
 
 local function detonate(obj, owner)
-    sbz_api.explode(obj:get_pos(), 4, 0.9, true, owner or "", 2.5, 5, true)
+    sbz_api.explode(obj:get_pos(), 4, 0.9, true, owner or "", 2.5, nil, true)
     obj:remove()
 end
 
@@ -25,7 +25,7 @@ core.register_entity("sbz_resources:bomb_stick_entity", {
         self.owner = staticdata.owner
         self.direction = staticdata.direction
         self.object:set_acceleration(vector.new(0, -sbz_api.gravity, 0))
-        self.object:set_velocity(vector.multiply(speed_vec, self.direction))
+        self.object:set_velocity(vector.multiply(vector.add(speed_vec, staticdata.vel), self.direction))
     end,
     on_punch = function(self)
         -- use to defend yourself i guess idk lmfao good luck!
@@ -50,9 +50,9 @@ core.register_craftitem("sbz_resources:bomb_stick", {
         local look_dir = placer:get_look_dir()
         local name = placer:get_player_name()
         core.add_entity(
-            vector.add(placer:get_pos(), vector.multiply(look_dir, 0.05)),
+            vector.add(sbz_api.get_pos_with_eye_height(placer), vector.multiply(look_dir, 0.05)),
             "sbz_resources:bomb_stick_entity",
-            core.serialize { owner = name, direction = look_dir })
+            core.serialize { owner = name, direction = look_dir, vel = placer:get_velocity() })
         stack:set_count(stack:get_count() - 1)
         return stack
     end
@@ -63,12 +63,17 @@ unified_inventory.register_craft {
     output = "sbz_resources:bomb",
     items = { "sbz_resources:bomb_stick 9" }
 }
+unified_inventory.register_craft {
+    type = "compressing",
+    output = "sbz_resources:bomb_stick",
+    items = { "sbz_bio:pyrograss 9" }
+}
 
 local time = 3
 -- now... the radius.... since its crafted from 9 bomb sticks
 -- the radius works to be around 8.32, dont trust me with math but ill go with r=9
 local function bomb_detonate(obj, owner)
-    sbz_api.explode(obj:get_pos(), 9, 0.9, true, owner or "", 2.5, 5, true)
+    sbz_api.explode(obj:get_pos(), 9, 0.9, true, owner or "", 2.5, nil, true)
     obj:remove()
 end
 

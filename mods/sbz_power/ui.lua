@@ -103,12 +103,12 @@ end
 ---@param postfix string
 ---@param title string
 ---@return formspec
-function sbz_power.bar(consumed, max, x, y, postfix, title, tooltip_text)
+function sbz_api.bar(consumed, max, x, y, postfix, title, tooltip_text)
     return bar({ n = consumed, text = consumed .. " " .. postfix }, { n = max, text = max .. " " .. postfix }, x, y, 5, 5,
         title, tooltip_text)
 end
 
-function sbz_power.battery_fs(consumed, max)
+function sbz_api.battery_fs(consumed, max)
     return "formspec_version[7]size[5,5]" ..
         bar(
             { n = consumed, text = sbz_api.format_power(consumed) },
@@ -117,7 +117,7 @@ function sbz_power.battery_fs(consumed, max)
         )
 end
 
-function sbz_power.liquid_storage_fs(has, max)
+function sbz_api.liquid_storage_fs(has, max)
     return "formspec_version[7]size[5,5]" ..
         bar(
             { n = has, text = has .. " source blocks" },

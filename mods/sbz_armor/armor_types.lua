@@ -62,6 +62,7 @@ for armor_type, armor_name in pairs(armor_types_to_names) do
         antimatter = 8,
         matter = 8,
         light = 12,
+        strange = 100,
     }, 120, "sbz_resources:compressed_core_dust")
 
     -- NOW... the late game armor i guess(?) yeah sorry, not balanced
@@ -70,6 +71,7 @@ for armor_type, armor_name in pairs(armor_types_to_names) do
         matter = 40,
         antimatter = 40,
         light = 80,
+        strange = 100,
     }, 8000, "sbz_power:reactor_shell")
 
     -- the extreme armors
@@ -77,12 +79,14 @@ for armor_type, armor_name in pairs(armor_types_to_names) do
         matter = 90,
         antimatter = 0,
         light = 99,
+        strange = 100,
     }, 8000, "sbz_meteorites:neutronium")
 
     make_armor(armor_type, armor_name, "sbz_armor:antineutronium_", "Antineutronium ", "#c2ccd1^[invert:rgb", {
         matter = 0,
         antimatter = 90,
         light = 99,
+        strange = 100,
     }, 8000, "sbz_meteorites:antineutronium")
 
 
@@ -101,6 +105,7 @@ for armor_type, armor_name in pairs(armor_types_to_names) do
                 matter = 85,
                 antimatter = 85,
                 light = 100,
+                strange = 100,
             }, armor_name:lower())
         end,
         on_punched = function(stack, data, player, hitter, time_from_last_punch, tool_capabilities, dir, damage)

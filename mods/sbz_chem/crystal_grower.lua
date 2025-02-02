@@ -4,6 +4,26 @@ unified_inventory.register_craft {
     items = { "sbz_bio:warpshroom 9" }
 }
 
+core.register_craftitem("sbz_chem:uranium_crystal", {
+    description = "Uranium Crystal",
+    inventory_image = "uranium_crystal.png",
+})
+unified_inventory.register_craft {
+    type = "crystal_growing",
+    output = "sbz_resources:uranium_crystal",
+    items = { "sbz_chem:uranium_ingot 4" }
+}
+
+core.register_craftitem("sbz_chem:thorium_crystal", {
+    description = "Thorium Crystal",
+    inventory_image = "thorium_crystal.png",
+})
+unified_inventory.register_craft {
+    type = "crystal_growing",
+    output = "sbz_resources:thorium_crystal",
+    items = { "sbz_chem:thorium_ingot 4" }
+}
+
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
     if listname == "dst" then
         return 0

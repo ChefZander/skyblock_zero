@@ -1,0 +1,27 @@
+
+travelnet.MAX_STATIONS_PER_NETWORK (max stations on a network, 0 for unlimited) int 24
+travelnet.travelnet_effect_enabled (simulated beam effect) bool false
+travelnet.travelnet_sound_enabled (sound played on travelnet use) bool true
+travelnet.travelnet_enabled (enable/disable travelnets) bool true
+travelnet.travelnet_cleanup_lbm (enable/disable cleanup lbm) bool false
+travelnet.elevator_enabled (enable/disable elevators) bool true
+travelnet.doors_enabled (enable/disable travelnet doors) bool true
+travelnet.abm_enabled (abm solution for load travelnet network back from meta) bool false
+
+#    Other users may not add stations to a user's network unless this setting is enabled.
+#    A user may have the "travelnet_attach" privilege. In that case, the user may
+#    attach boxes to any network, too - and this setting is not needed.
+travelnet.allow_attach (allow anyone to add a travelnet to any network) bool false
+
+#    Allows foreign users to remove a travelnet station from a network.
+#    The "travelnet_remove" privilege can be handed out instead.
+travelnet.allow_dig (allow anyone to remove travelnets from any network) bool false
+
+#    Determines if a user may use the travel network created by another user.
+travelnet.allow_travel (allow players to use other networks) bool true
+
+#   Allows a custom attach priv
+travelnet.attach_priv (set a custom 'travelnet_attach' priv) string travelnet_attach
+
+#   Allows a custom remove priv
+travelnet.remove_priv (set a custom 'travelnet_remove' priv) string travelnet_remove

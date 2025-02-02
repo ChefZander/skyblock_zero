@@ -23,8 +23,7 @@ core.register_node("sbz_planets:dwarf_orb_ore", {
 core.register_node("sbz_planets:dwarf_stone", {
     description = "Stone",
     tiles = { "stone.png" },
-    groups = { matter = 1, charged = 1, moss_growable = 1 },
-    walkable = true,
+    groups = { matter = 1, charged = 1, moss_growable = 1, not_in_creative_inventory = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
     drop = "sbz_resources:stone"
 })

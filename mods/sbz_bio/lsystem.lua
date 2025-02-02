@@ -14,17 +14,26 @@ local ruleset_chars = {
 local function lsystem(start_pos, dna, owner, starting_angle)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
     local angle, trunk_type = dna.angle, dna.trunk_type
-
+    if type(dna) ~= "table" then
+        core.log("error",
+            string.format(
+                "DNA is somehow supplied in %s form, this should not happen, my code is probably too messy to track this down. Not growing tree @%s. The malformed DNA: %s",
+                type(dna), vector.to_string(start_pos), dna))
+        return false
+    end
     dna = table.copy(dna)
     local stack_info = {}
 
+    sbz_api.vm_begin()
 
     local set_node = function(pos, node, leafnode)
         pos = vector.round(pos)
-        local node_at_pos = minetest.get_node(pos)
-        if minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode
-            and (not minetest.is_protected(pos, owner or "")) then
-            minetest.set_node(pos, node)
+        local node_at_pos = sbz_api.vm_get_node(pos)
+        if node_at_pos then
+            if minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode
+                and (not minetest.is_protected(pos, owner or "")) then
+                sbz_api.vm_swap_node(pos, node.name, true)
+            end
         end
     end
 
@@ -153,12 +162,13 @@ local function lsystem(start_pos, dna, owner, starting_angle)
         elseif char == "*" then
             rotation.z = rotation.z - angle
         elseif char == "[" then
-            table.insert(stack_info, { table.copy(rotation), table.copy(pos) })
+            table.insert(stack_info, { table.copy(pos), table.copy(rotation) })
         elseif char == "]" then
             pos, rotation = unpack(table.remove(stack_info) or { pos, rotation })
         end
     end
 
+    sbz_api.vm_commit()
     if dna.tree_core then
         core.set_node(start_pos, {
             name = dna.tree_core

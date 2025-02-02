@@ -74,12 +74,12 @@ local achievement_table = {
     ["sbz_resources:robotic_arm"] = "Bear Arms",
     ["pipeworks:automatic_filter_injector"] = "Automatic Filter-Injectors",
     ["pipeworks:tube_1"] = "Tubes",
-    ["pipeworks:node_breaker"] = "Node Breakers",
+    ["pipeworks:nodebreaker"] = "Node Breakers",
     ["pipeworks:deployer"] = "Deployers",
     ["pipeworks:puncher"] = "Punchers",
     ["pipeworks:autocrafter"] = "Autocrafters",
     ["pipeworks:item_void"] = "Item Voids",
-    ["pipeworks:item_vacuum"] = "Item Vacuums",
+    ["sbz_power:item_vacuum"] = "Item Vacuums",
     ["screwdriver:screwdriver"] = "Screwdriver",
     ["sbz_chem:high_power_electric_furnace_off"] = "Furnace",
     ["areasprotector:protector_small"] = "Small Protectors",
@@ -137,7 +137,16 @@ local achievement_table = {
     ["jumpdrive:fleet_controller"] = "Jumpdrive Fleet Controller",
     ["jumpdrive:engine"] = "The Jumpdrive (engine)",
     ["jumpdrive:warp_device"] = "Warp Device",
-    ["jumpdrive:station"] = "Jumpdrive Stations"
+    ["jumpdrive:station"] = "Jumpdrive Stations",
+
+    ["sbz_bio:dna_extractor_off"] = "Dna Extractor",
+    ["sbz_chem:centrifuge_off"] = "Centrifuge",
+    ["sbz_power:phlogiston_fuser_off"] = "Phlogiston Fuser",
+    ["sbz_planets:planet_teleporter"] = "Planet Teleporter",
+    ["sbz_chem:pebble_enhancer_off"] = "Pebble Enhancer",
+    ["sbz_chem:nuclear_reactor_off"] = "Nuclear Reactor",
+    ["sbz_power:solid_charged_field"] = "Radiation Shielding",
+    ["sbz_resources:bomb"] = "TNT",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -187,6 +196,8 @@ local achievement_in_inventory_table = {
     ["sbz_chem:bronze_powder"] = "Bronze Age",
     ["sbz_chem:water_fluid_cell"] = "Liquid Water",
     ["sbz_bio:stemfruit"] = "Stemfruit",
+    ["sbz_chem:uranium_powder"] = "Planet Ores",
+    ["sbz_chem:thorium_powder"] = "Planet Ores",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",

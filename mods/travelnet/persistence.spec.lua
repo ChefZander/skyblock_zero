@@ -1,0 +1,15 @@
+mtt.register("migration", function(callback)
+    local travelnets = travelnet.get_travelnets("singleplayer")
+    assert(type(travelnets) == "table")
+    assert(type(travelnets["net1"]) == "table")
+    assert(type(travelnets["net1"]["station1"]) == "table")
+    assert(type(travelnets["net1"]["station1"].pos) == "table")
+    assert(travelnets["net1"]["station1"].timestamp == 1663767532)
+    assert(travelnets["net1"]["station1"].pos.x == 1022)
+    assert(travelnets["net1"]["station1"].pos.y == 100)
+    assert(travelnets["net1"]["station1"].pos.z == -856)
+
+    travelnet.set_travelnets("singleplayer", travelnets)
+
+    callback()
+end)

@@ -499,6 +499,13 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         "dna_extractor_side.png",
         "dna_extractor_side.png",
         { name = "dna_extractor_on.png", animation = { type = "vertical_frames", length = 1 } },
-
     },
 })
+core.register_craft {
+    output = "sbz_bio:dna_extractor",
+    recipe = {
+        { "sbz_bio:colorium_tree",              "sbz_bio:colorium_tree",           "sbz_bio:colorium_tree" },
+        { "sbz_resources:storinator_stemfruit", "sbz_resources:emittrium_circuit", "sbz_resources:storinator_stemfruit" },
+        { "sbz_bio:colorium_tree",              "sbz_bio:colorium_tree",           "sbz_bio:colorium_tree" }
+    }
+}

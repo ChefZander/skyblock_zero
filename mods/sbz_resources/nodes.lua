@@ -280,7 +280,7 @@ minetest.register_node("sbz_resources:water_source", {
     drawtype = "liquid",
     tiles = {
         { name = "water.png", backface_culling = false },
-        { name = "water.png", backface_culling = true }
+        { name = "water.png", backface_culling = true },
     },
     inventory_image = minetest.inventorycube "water.png",
     use_texture_alpha = "blend",

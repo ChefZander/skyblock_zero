@@ -64,59 +64,63 @@ local speed = player_monoids.speed
 minetest.register_globalstep(function(dtime)
     for player in pairs(jetpack_users) do
         local real_player = minetest.get_player_by_name(player)
-        local slot = jetpack_users[player]
-        local jetpack_item = real_player:get_inventory():get_stack("main", slot)
-        if jetpack_item:get_name() ~= "sbz_resources:jetpack" then
-            jetpack_users[player] = nil
-        end
-        if jetpack_item:get_wear() >= 65535 then
-            jetpack_users[player] = nil
-        end
+        if real_player:is_valid() then
+            local slot = jetpack_users[player]
+            local jetpack_item = real_player:get_inventory():get_stack("main", slot)
+            if jetpack_item:get_name() ~= "sbz_resources:jetpack" then
+                jetpack_users[player] = nil
+            end
+            if jetpack_item:get_wear() >= 65535 then
+                jetpack_users[player] = nil
+            end
 
-        local controls = real_player:get_player_control()
+            local controls = real_player:get_player_control()
 
-        local num_particles = 0
-        if (controls.sneak or controls.aux1) and controls.jump and jetpack_users[player] then
-            speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
-            real_player:add_velocity((jetpack_velocity / 2) * dtime)
-            jetpack_item:set_wear(math.min(65535,
-                jetpack_item:get_wear() +
-                65535 *
-                ((jetpack_durability_s * (1 / jetpack_durability_save_during_sneak_flight)) ^ -1)
-                * dtime)) -- this works, do not question it
-            num_particles = default_number_of_particles / 5
-        elseif controls.jump and jetpack_users[player] then
-            speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
-            real_player:add_velocity(jetpack_velocity * dtime)
-            jetpack_item:set_wear(math.min(65535,
-                jetpack_item:get_wear() + ((65535 * (jetpack_durability_s ^ -1))) * dtime)) -- this works, do not question it
-            num_particles = default_number_of_particles
+            local num_particles = 0
+            if (controls.sneak or controls.aux1) and controls.jump and jetpack_users[player] then
+                speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
+                real_player:add_velocity((jetpack_velocity / 2) * dtime)
+                jetpack_item:set_wear(math.min(65535,
+                    jetpack_item:get_wear() +
+                    65535 *
+                    ((jetpack_durability_s * (1 / jetpack_durability_save_during_sneak_flight)) ^ -1)
+                    * dtime)) -- this works, do not question it
+                num_particles = default_number_of_particles / 5
+            elseif controls.jump and jetpack_users[player] then
+                speed:add_change(real_player, jetpack_boost, "sbz_resources:jetpack_boost")
+                real_player:add_velocity(jetpack_velocity * dtime)
+                jetpack_item:set_wear(math.min(65535,
+                    jetpack_item:get_wear() + ((65535 * (jetpack_durability_s ^ -1))) * dtime)) -- this works, do not question it
+                num_particles = default_number_of_particles
+            else
+                speed:del_change(real_player, "sbz_resources:jetpack_boost")
+            end
+            edit_stack_image(player, jetpack_item)
+            real_player:get_inventory():set_stack("main", slot, jetpack_item)
+            if num_particles ~= 0 then
+                -- make a effect
+                local vel = real_player:get_velocity()
+                vel = vector.subtract(vector.zero(), vel)
+
+                minetest.add_particlespawner({
+                    amount = num_particles,
+                    time = dtime,
+                    texture = "star.png",
+                    texpool = {
+                        "star.png^[colorize:red",
+                        "star.png^[colorize:blue",
+                        "star.png^[colorize:green",
+                    },
+                    exptime = { min = 1, max = 2 },
+                    vel = { min = vector.new(-2, -2, -2), max = vector.new(2, 2, 2) },
+                    acc = { min = vel, max = vel * 5 },
+                    radius = { min = 0.1, max = 0.3, bias = 1 },
+                    glow = 14,
+                    pos = real_player:get_pos()
+                })
+            end
         else
-            speed:del_change(real_player, "sbz_resources:jetpack_boost")
-        end
-        edit_stack_image(player, jetpack_item)
-        real_player:get_inventory():set_stack("main", slot, jetpack_item)
-        if num_particles ~= 0 then
-            -- make a effect
-            local vel = real_player:get_velocity()
-            vel = vector.subtract(vector.zero(), vel)
-
-            minetest.add_particlespawner({
-                amount = num_particles,
-                time = dtime,
-                texture = "star.png",
-                texpool = {
-                    "star.png^[colorize:red",
-                    "star.png^[colorize:blue",
-                    "star.png^[colorize:green",
-                },
-                exptime = { min = 1, max = 2 },
-                vel = { min = vector.new(-2, -2, -2), max = vector.new(2, 2, 2) },
-                acc = { min = vel, max = vel * 5 },
-                radius = { min = 0.1, max = 0.3, bias = 1 },
-                glow = 14,
-                pos = real_player:get_pos()
-            })
+            jetpack_users[player] = nil
         end
     end
     for k, v in ipairs(minetest.get_connected_players()) do

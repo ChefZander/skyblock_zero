@@ -117,10 +117,9 @@ core.register_on_generated(function(vm, minp, maxp, seed)
 
     vm:set_data(data)
     core.generate_ores(vm, minp, maxp)
-    vm:set_data(data)
     vm:calc_lighting()
 
-    core.debug("Mapgen took: " .. (os.clock() - t0) .. "s")
+    --core.debug("Mapgen took: " .. (os.clock() - t0) .. "s")
     -- Average: 1~2 seconds
     -- on frog's laptop, on power save mode
 end)

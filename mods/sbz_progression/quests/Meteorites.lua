@@ -8,7 +8,7 @@ return {
         type = "quest",
         title = "Meteorites",
         text =
-        "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.",
+        "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.\nAlso, meteorites don't spawn near the core.",
         requires = { "Simple Alloy Furnace", "Emittrium Circuits" }
     },
 
@@ -39,6 +39,7 @@ Makes... meteorites... (no way), also it needs some space on top of it.
 But it cannot make strange matter meteorites.
 
 Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.
+Tip: Meteorites don't really explode in protected areas, you'll have to lure it into an open or unprotected area.
 ]],
         requires = { "Autocrafters", "Neutronium" }
     },

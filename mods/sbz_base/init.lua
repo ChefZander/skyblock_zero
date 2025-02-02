@@ -351,15 +351,17 @@ sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, 
     for x = -radius, radius do
         for y = -radius, radius do
             for z = -radius, radius do
-                local pos = vector.add(start_pos, vector.new(x, y, z))
-                local filter_results = { filtering_function(pos) }
+                if not (x == 0 and y == 0 and z == 0) then
+                    local pos = vector.add(start_pos, vector.new(x, y, z))
+                    local filter_results = { filtering_function(pos) }
 
-                if #filter_results == 1 then
-                    returning[#returning + 1] = filter_results[1]
-                elseif #filter_results ~= 0 then
-                    returning[#returning + 1] = filter_results
+                    if #filter_results == 1 then
+                        returning[#returning + 1] = filter_results[1]
+                    elseif #filter_results ~= 0 then
+                        returning[#returning + 1] = filter_results
+                    end
+                    if break_after_one_result and #filter_results > 0 then return returning end
                 end
-                if break_after_one_result and #filter_results > 0 then return returning end
             end
         end
     end
@@ -402,7 +404,7 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
         return
     end
     extra_damage = extra_damage or power
-    knockback_strength = knockback_strength or 1
+    knockback_strength = knockback_strength or 2.5
     owner = owner or ""
 
     for _ = 1, 500 do
@@ -430,9 +432,10 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
         -- this is all messed up
         -- TODO: improve
         local dir = obj:get_pos() - pos
-        obj:add_velocity(vector.normalize(dir) * (r - vector.length(dir)) * knockback_strength +
-            vector.new(0, sbz_api.gravity, 0))
-
+        local len = vector.length(dir)
+        if sbz_api.can_move_object(obj:get_armor_groups()) then
+            obj:add_velocity(vector.normalize(dir) * (r - vector.length(dir)) * knockback_strength)
+        end
         -- this is intentional. HP is only removed when there is line of sight, but velocity is added anyway
         if sbz_api.line_of_sight(pos, obj:get_pos()) == true then
             local dmg = math.abs(vector.length(vector.normalize(dir) * (r - vector.length(dir))) * extra_damage)
@@ -494,6 +497,18 @@ sbz_api.on_place_recharge = function(charge_per_1_wear, after)
     end
 end
 
+function sbz_api.can_move_object(armor_groups)
+    if armor_groups.no_move then return false end
+    --    if armor_groups.immortal then return false end -- tnt is broken
+    return true
+end
+
+function sbz_api.get_pos_with_eye_height(placer)
+    local p = placer:get_pos()
+    p.y = p.y + (placer:get_properties().eye_height or 0)
+    return p
+end
+
 local old_handler = core.error_handler
 
 core.error_handler = function(error, stack_level)
@@ -502,3 +517,5 @@ core.error_handler = function(error, stack_level)
 end
 
 core.log("action", "Skyblock: Zero's Base Mod has finished loading.")
+core.log("info",
+    "If you see warnings about ABMs taking a long time, don't worry, its most likely just trees being generated.")

@@ -61,18 +61,63 @@ stairs.register("sbz_planets:basalt")
 
 core.register_node("sbz_planets:red_stone", {
     description = "Red Stone",
-    tiles = { { name = "stone.png^[colorize:red:128", } },
+    tiles = { { name = "red_stone.png", } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
 stairs.register("sbz_planets:red_stone")
 
+core.register_node("sbz_planets:red_stone", {
+    description = "Red Stone",
+    tiles = { { name = "red_stone.png", } },
+    groups = { matter = 1, charged = 1, explody = 10 },
+    sounds = sbz_api.sounds.matter(),
+})
+
+core.register_node("sbz_planets:thorium_ore", {
+    description = "Thorium Ore",
+    tiles = { { name = "thorium_ore.png", } },
+    groups = { matter = 1, charged = 1, explody = 10, silktouch = 1, level = 2, ore = 1, radioactive = 1 },
+    sounds = sbz_api.sounds.matter(),
+    drop = "sbz_chem:thorium_powder",
+
+})
+core.register_ore {
+    ore_type = "scatter",
+    ore = "sbz_planets:thorium_ore",
+    wherein = "sbz_planets:red_stone",
+    clust_scarcity = 12 ^ 3,
+    clust_num_ores = 8,
+    clust_size = 3,
+    y_min = 2000,
+}
 core.register_node("sbz_planets:blue_stone", {
     description = "Blue Stone",
     tiles = { { name = "stone.png^[colorize:blue:128", } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
+
+core.register_node("sbz_planets:uranium_ore", {
+    description = "Uranium Ore",
+    tiles = { { name = "uranium_ore.png", } },
+    groups = { matter = 1, charged = 1, explody = 10, silktouch = 1, level = 2, ore = 1, radioactive = 1 },
+    sounds = sbz_api.sounds.matter(),
+    drop = "sbz_chem:uranium_powder",
+    light_source = 8,
+})
+
+core.register_ore {
+    ore_type = "scatter",
+    ore = "sbz_planets:uranium_ore",
+    wherein = "sbz_planets:blue_stone",
+    clust_scarcity = 12 ^ 3,
+    clust_num_ores = 8,
+    clust_size = 3,
+    y_min = 2000,
+}
+
+
 stairs.register("sbz_planets:blue_stone")
 
 core.register_node("sbz_planets:granite", {
@@ -98,7 +143,7 @@ core.register_node("sbz_planets:dead_core", {
 core.register_node("sbz_planets:ice", {
     description = "Ice",
     tiles = { "ice.png" },
-    groups = { matter = 1, water = 1, charged = 1, slippery = 5, explody = 10 },
+    groups = { matter = 1, water = 1, charged = 1, slippery = 5, explody = 20 },
     sounds = sbz_api.sounds.ice(),
     light_source = 1,
 })

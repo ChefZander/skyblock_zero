@@ -89,9 +89,9 @@ listring[]
 minetest.register_craft({
     output = "sbz_power:phlogiston_fuser",
     recipe = {
-        { "sbz_resources:phlogiston", "",                        "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "sbz_chem:crystal_grower", "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "",                        "sbz_resources:phlogiston" },
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" },
+        { "sbz_resources:phlogiston", "sbz_chem:crystal_grower",  "sbz_resources:phlogiston" },
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" },
     }
 })
 

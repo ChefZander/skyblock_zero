@@ -18,6 +18,108 @@ local function allow_metadata_inventory_move(pos, from_list, from_index, to_list
     return count
 end
 
+-- sand recipes
+-- sand => 50% Silicon 2, 10% Gold, 100% white sand
+unified_inventory.register_craft {
+    output = "sbz_chem:silicon_powder 2",
+    type = "centrifugeing",
+    chance = 50, -- 50%
+    items = {
+        "sbz_resources:sand"
+    }
+}
+unified_inventory.register_craft {
+    output = "sbz_chem:gold_powder",
+    type = "centrifugeing",
+    chance = 10, -- 10%
+    items = {
+        "sbz_resources:sand"
+    }
+}
+unified_inventory.register_craft {
+    output = "sbz_resources:white_sand",
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:sand"
+    }
+}
+
+-- white sand => 100% dark sand, 5% silver
+
+unified_inventory.register_craft {
+    output = "sbz_resources:dark_sand",
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:white_sand"
+    }
+}
+
+unified_inventory.register_craft {
+    output = "sbz_chem:silver_powder",
+    chance = 5,
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:white_sand"
+    }
+}
+
+-- dark sand => 100% black sand, 1% silver
+
+unified_inventory.register_craft {
+    output = "sbz_resources:black_sand",
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:dark_sand"
+    }
+}
+
+unified_inventory.register_craft {
+    output = "sbz_chem:silver_powder",
+    chance = 1,
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:dark_sand"
+    }
+}
+
+-- gravel => 10% cobalt, 10% titanium, 10% lithium, 100% 1 pebble, 75% pebble, 50% pebble, 25% pebble, 5% pebble, 1% pebble
+unified_inventory.register_craft {
+    output = "sbz_chem:cobalt_powder",
+    chance = 10,
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:gravel"
+    }
+}
+unified_inventory.register_craft {
+    output = "sbz_chem:lithium_powder",
+    chance = 10,
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:gravel"
+    }
+}
+unified_inventory.register_craft {
+    output = "sbz_chem:titanium_powder",
+    chance = 10,
+    type = "centrifugeing",
+    items = {
+        "sbz_resources:gravel"
+    }
+}
+
+for k, v in ipairs {
+    100, 75, 50, 25, 1
+} do
+    unified_inventory.register_craft {
+        output = "sbz_resources:pebble",
+        chance = v,
+        type = "centrifugeing",
+        items = {
+            "sbz_resources:gravel"
+        }
+    }
+end
 
 sbz_api.register_stateful_machine("sbz_chem:centrifuge", {
     description = "Centrifuge",
@@ -40,18 +142,16 @@ sbz_api.register_stateful_machine("sbz_chem:centrifuge", {
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("src", 1)
-        inv:set_size("dst", 4)
+        inv:set_size("dst", 16)
 
         meta:set_string("formspec", [[
 formspec_version[7]
 size[8.2,9]
 style_type[list;spacing=.2;size=.8]
+list[context;dst;3.5,0.5;4,4;]
+list[context;src;1,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
-list[context;src;1.5,1;1,1;]
-listring[]
-list[context;dst;4.5,1;2,2;]
-listring[current_player;main]
-listring[context;dst]
+listring[current_player;main]listring[context;src]listring[current_player;main]listring[context;dst]listring[current_player;main]
     ]])
     end,
     after_place_node = pipeworks.after_place,
@@ -75,7 +175,9 @@ listring[context;dst]
 
             for _, v in pairs(recipe_outputs or {}) do
                 if v.type == "centrifugeing" then
-                    outputs[#outputs + 1] = ItemStack(v.output)
+                    if not v.chance or math.random() <= v.chance / 100 then
+                        outputs[#outputs + 1] = ItemStack(v.output)
+                    end
                 end
             end
 
@@ -118,3 +220,12 @@ listring[context;dst]
     },
     light_source = 14,
 })
+
+core.register_craft {
+    output = "sbz_chem:centrifuge_off",
+    recipe = {
+        { "sbz_chem:iron_ingot",            "sbz_chem:iron_ingot",             "sbz_chem:iron_ingot" },
+        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_circuit", "sbz_power:simple_charged_field" },
+        { "sbz_chem:copper_ingot",          "sbz_chem:bronze_ingot",           "sbz_chem:copper_ingot" }
+    }
+}
