@@ -69,7 +69,11 @@ minetest.register_on_mods_loaded(function()
         end
 
         if sbz_api.mvps_stoppers[k] == true then
-            new_desc[#new_desc + 1] = "Logic builders cannot move this node."
+            new_desc[#new_desc + 1] = "Logic builders or jumpdrives cannot move this node. (mvps stopper)"
+        end
+
+        if v.light_source and v.light_source ~= 0 then
+            new_desc[#new_desc + 1] = "Light source: " .. v.light_source
         end
 
         if #new_desc > 1 then

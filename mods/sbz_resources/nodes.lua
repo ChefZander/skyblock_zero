@@ -101,7 +101,7 @@ minetest.register_craft({
     }
 })
 minetest.register_node("sbz_resources:emitter_imitator", {
-    description = "Emitter Immitator\n\nLight Source Only. Strength: 10.",
+    description = "Emitter Immitator",
     drawtype = "glasslike",
     tiles = { "emitter_imitator.png" },
     groups = { matter = 1, explody = 3 },

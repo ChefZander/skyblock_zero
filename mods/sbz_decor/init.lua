@@ -2,7 +2,7 @@ local modpath = minetest.get_modpath("sbz_decor")
 
 
 minetest.register_node("sbz_decor:photonlamp", {
-    description = "Photon Lamp\n\nLight Source Only. Strength: 14,",
+    description = "Photon Lamp",
     drawtype = "mesh",
     mesh = "photonlamp.obj",
     tiles = { "photonlamp.png" },
