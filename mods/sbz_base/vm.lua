@@ -139,7 +139,7 @@ function sbz_api.get_node_force(pos)
     if vm_cache then
         return sbz_api.vm_get_node(pos)
     else
-        local node = sbz_api.get_node_or_nil(pos)
+        local node = core.get_node_or_nil(pos)
         if node == nil then
             -- Node is not currently loaded; use a VoxelManipulator to prime
             -- the mapblock cache and try again.
