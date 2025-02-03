@@ -56,7 +56,9 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
             obj:get_luaentity():show_waypoint()
             local pos = obj:get_pos()
             local vel = obj:get_velocity()
-            for _ = 1, 500 do
+            local num_particles = 500
+            if sbz_api.server_optimizations then num_particles = 3 end
+            for _ = 1, num_particles do
                 pos = pos + vel * 0.2
                 for _, attractor in ipairs(attractors) do
                     vel = vel + 51.2 * sbz_api.get_attraction(pos, attractor)
