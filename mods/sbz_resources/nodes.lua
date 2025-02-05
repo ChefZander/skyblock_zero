@@ -100,6 +100,7 @@ minetest.register_craft({
         { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob" }
     }
 })
+
 minetest.register_node("sbz_resources:emitter_imitator", {
     description = "Emitter Immitator",
     drawtype = "glasslike",

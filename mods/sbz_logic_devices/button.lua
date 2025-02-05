@@ -10,6 +10,7 @@ minetest.register_node("sbz_logic_devices:button", {
         "button_side.png",
         "button.png",
     },
+    info_extra = "They are public, anyone can toggle them regardless of protection.",
     drawtype = "nodebox",
     node_box = {
         type = "fixed",
@@ -75,6 +76,7 @@ sbz_api.register_stateful("sbz_logic_devices:toggle", {
         "button.png",
     },
     drawtype = "nodebox",
+    info_extra = "They are public, anyone can toggle them regardless of protection.",
     node_box = {
         type = "fixed",
         fixed = {

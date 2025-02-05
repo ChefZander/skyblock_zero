@@ -1,13 +1,20 @@
 local modname = minetest.get_current_modname()
 sbz_api = {
-    debug = minetest.settings:get_bool("debug", false),
+    debug = minetest.settings:get_bool("sbz_debug", false),
     version = 27,
     gravity = 9.8 / 2,
-    delay_function = core.delay_function
+    delay_function = core.delay_function,
+    server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
+    deg2rad = math.pi / 180,
+    rad2deg = 180 / math.pi,
 }
-
-sbz_api.deg2rad = math.pi / 180
-sbz_api.rad2deg = 180 / math.pi
+if sbz_api.server_optimizations == "auto" then
+    sbz_api.server_optimizations = not core.is_singleplayer()
+elseif sbz_api.server_optimizations == "on" then
+    sbz_api.server_optimizations = true
+elseif sbz_api.server_optimizations == "off" then
+    sbz_api.server_optimizations = false
+end
 
 local modpath = minetest.get_modpath("sbz_base")
 
