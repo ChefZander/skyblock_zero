@@ -86,6 +86,7 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         physical = false --so they enter unloaded chunks properly
     },
     on_activate = function(self, staticdata, dtime)
+        -- the "dtime" variable name is a lie in this case, its meant to be "time that it was unloaded" i believe?
         if dtime and dtime > 600 then
             self.object:remove()
             return

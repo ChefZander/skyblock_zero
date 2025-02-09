@@ -109,7 +109,7 @@ local function leafdecay_after_destruct(pos, _, def)
         local node = minetest.get_node(v)
         local timer = minetest.get_node_timer(v)
         if node.param2 ~= 1 and not timer:is_started() then
-            timer:start(math.random(5, 10) / 10)
+            timer:start(math.random(10, 100))
         end
     end
 end
