@@ -163,7 +163,7 @@ minetest.register_chatcommand("dev_clear", {
     end
 })
 
-minetest.register_chatcommand("dev_disable_libox", {
+minetest.register_chatcommand("dev_toggle_libox", {
     description = "Enables/Disables all lua sandboxing",
     privs = { ["server"] = true },
     func = function()
