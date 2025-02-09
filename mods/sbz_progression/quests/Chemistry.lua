@@ -5,7 +5,7 @@ return {
         type = "quest",
         title = "Crusher",
         text = [[
-You can put in some pebbles to get some metals, also it will turn 1 stone into 2 gravel, and 1 gravel to 2 sand.
+You can put in pebbles to get metals, it will also crush stones into 2 gravel each, and gravel to 2 sand each.
 With enhanced pebbles, you can get rare metals.
 ]],
         requires = { "Concrete Plan", "Antimatter", "Charged Field" }
@@ -13,7 +13,7 @@ With enhanced pebbles, you can get rare metals.
 
     { type = "secret", title = "It's fake", text = "Digital gold? Where have I heard that before..." },
 
-    { type = "quest", title = "Furnace", text = "Craft the high power electric furnace (H.P.E.F for short), allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.", requires = { "Crusher" } },
+    { type = "quest", title = "Furnace", text = "Craft the high power electric furnace (H.P.E.F for short), it allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.", requires = { "Crusher" } },
 
 
     { type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
@@ -120,7 +120,7 @@ It also digs 2x faster than the robotic arm.
         type = "quest",
         title = "Phlogiston Fuser",
         text = [[
-Chemistry is booring.... what about alchemy :D
+Chemistry is boring.... what about alchemy!
 To make phlogiston, you'll need lots of power for a very long time, be aware of that.
 You can also make some armor from phlogiston, once it is low on durability, you can charge that armor like you would charge your jetpack.
 ]],
@@ -130,7 +130,7 @@ You can also make some armor from phlogiston, once it is low on durability, you 
         type = "quest",
         title = "Planet Teleporter",
         text =
-        [[Right-click it with a warp crystal, and see what will happen... Also there may be multiple types of planets, and they may have rings.]],
+        [[Right-click with a warp crystal to use. There are multiple types of planets, with some of them having rings.]],
         requires = { "Neutronium", "Phlogiston Fuser" }
     },
     {
