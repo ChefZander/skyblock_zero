@@ -247,11 +247,19 @@ minetest.register_chatcommand("dev_mapblocks", {
     end
 })
 
-core.register_chatcommand("toggle_pvp", {
+core.register_chatcommand("dev_toggle_pvp", {
     description = "Toggle pvp",
     params = "<enable>",
     privs = { ["server"] = true },
     func = function(name, param)
         core.settings:set("enable_pvp", core.is_yes(param) and "true" or "false")
+    end
+})
+
+core.register_chatcommand("dev_test_rain", {
+    description = "Test rain particles <remove later>",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        
     end
 })
