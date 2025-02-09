@@ -138,8 +138,8 @@ You can also make some armor from phlogiston, once it is low on durability, you 
         title = "Planet Ores",
         text = [[
 At the center of planets, there is usually some core material.
-In blue stone, there is uranium ore, blue stone is only in ice planets.
-In red stone, there is thorium ore, red stone is in dead and colorium planets.
+In blue stone there is uranium ore, blue stone is only found in ice planets.
+In red stone there is thorium ore, red stone is found in dead and colorium planets.
 To get this achievement, you will need to get uranium or thorium powder in your inventory, and move it around.
 ]],
         requires = { "Planet Teleporter" }
