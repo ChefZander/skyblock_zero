@@ -57,7 +57,7 @@ end
 function areas:checkAreaStoreId(sid)
 	if not sid then
 		minetest.log("error", "AreaStore failed to find an ID for an "
-			.."area! Falling back to iterative area checking.")
+			.. "area! Falling back to iterative area checking.")
 		self.store = nil
 		self.store_ids = nil
 	end
@@ -87,7 +87,8 @@ end
 -- Eg: {[1]=false,[4]=true} -> 2
 local function findFirstUnusedIndex(t)
 	local i = 0
-	repeat i = i + 1
+	repeat
+		i = i + 1
 	until t[i] == nil
 	return i
 end
@@ -101,10 +102,10 @@ function areas:add(owner, name, pos1, pos2, parent)
 		pos1 = pos1,
 		pos2 = pos2,
 		owner = owner,
-		parent = parent
+		parent = parent,
 	}
 
-	for i=1, #areas.registered_on_adds do
+	for i = 1, #areas.registered_on_adds do
 		areas.registered_on_adds[i](id, self.areas[id])
 	end
 
@@ -136,11 +137,10 @@ function areas:remove(id, recurse)
 			-- The subarea parent will be niled out if the
 			-- removed area does not have a parent
 			self.areas[cid].parent = parent
-
 		end
 	end
 
-	for i=1, #areas.registered_on_removes do
+	for i = 1, #areas.registered_on_removes do
 		areas.registered_on_removes[i](id)
 	end
 
@@ -159,7 +159,7 @@ function areas:move(id, area, pos1, pos2)
 	area.pos1 = pos1
 	area.pos2 = pos2
 
-	for i=1, #areas.registered_on_moves do
+	for i = 1, #areas.registered_on_moves do
 		areas.registered_on_moves[i](id, area, pos1, pos2)
 	end
 
@@ -185,12 +185,12 @@ function areas:isSubarea(pos1, pos2, id)
 	local p1x, p1y, p1z = pos1.x, pos1.y, pos1.z
 	local p2x, p2y, p2z = pos2.x, pos2.y, pos2.z
 	if
-			(p1x >= ap1x and p1x <= ap2x) and
-			(p2x >= ap1x and p2x <= ap2x) and
-			(p1y >= ap1y and p1y <= ap2y) and
-			(p2y >= ap1y and p2y <= ap2y) and
-			(p1z >= ap1z and p1z <= ap2z) and
-			(p2z >= ap1z and p2z <= ap2z) then
+		(p1x >= ap1x and p1x <= ap2x) and
+		(p2x >= ap1x and p2x <= ap2x) and
+		(p1y >= ap1y and p1y <= ap2y) and
+		(p2y >= ap1y and p2y <= ap2y) and
+		(p1z >= ap1z and p1z <= ap2z) and
+		(p2z >= ap1z and p2z <= ap2z) then
 		return true
 	end
 end
@@ -212,7 +212,7 @@ end
 function areas:canPlayerAddArea(pos1, pos2, name)
 	local allowed = true
 	local errMsg
-	for i=1, #areas.registered_protection_conditions do
+	for i = 1, #areas.registered_protection_conditions do
 		local res, msg = areas.registered_protection_conditions[i](pos1, pos2, name)
 		if res == true then
 			-- always allow to protect, no matter of other conditions
@@ -225,8 +225,8 @@ function areas:canPlayerAddArea(pos1, pos2, name)
 		elseif res ~= nil then
 			local origin = areas.callback_origins[areas.registered_protection_conditions[i]]
 			error("\n[Mod] areas: Invalid api usage from mod '" ..
-					origin.mod .. "' in callback registerProtectionCondition() at " ..
-					origin.source .. ":" .. origin.line)
+				origin.mod .. "' in callback registerProtectionCondition() at " ..
+				origin.source .. ":" .. origin.line)
 		end
 	end
 
@@ -243,9 +243,9 @@ areas:registerProtectionCondition(function(pos1, pos2, name)
 
 	-- Check self protection privilege
 	if not areas.config.self_protection or
-			not privs[areas.config.self_protection_privilege] then
+		not privs[areas.config.self_protection_privilege] then
 		return false, S("Self protection is disabled or you do not have"
-				.." the necessary privilege.")
+			.. " the necessary privilege.")
 	end
 end)
 
@@ -253,12 +253,12 @@ end)
 areas:registerProtectionCondition(function(pos1, pos2, name)
 	local privs = minetest.get_player_privs(name)
 	local max_size = privs.areas_high_limit and
-			areas.config.self_protection_max_size_high or
-			areas.config.self_protection_max_size
+		areas.config.self_protection_max_size_high or
+		areas.config.self_protection_max_size
 	if
-			(pos2.x - pos1.x + 1) > max_size.x or
-			(pos2.y - pos1.y + 1) > max_size.y or
-			(pos2.z - pos1.z + 1) > max_size.z then
+		(pos2.x - pos1.x + 1) > max_size.x or
+		(pos2.y - pos1.y + 1) > max_size.y or
+		(pos2.z - pos1.z + 1) > max_size.z then
 		return false, S("Area is too big.")
 	end
 end)
@@ -273,11 +273,11 @@ areas:registerProtectionCondition(function(pos1, pos2, name)
 		end
 	end
 	local max_areas = privs.areas_high_limit and
-			areas.config.self_protection_max_areas_high or
-			areas.config.self_protection_max_areas
+		areas.config.self_protection_max_areas_high or
+		areas.config.self_protection_max_areas
 	if count >= max_areas then
 		return false, S("You have reached the maximum amount of"
-				.." areas that you are allowed to protect.")
+			.. " areas that you are allowed to protect.")
 	end
 end)
 
@@ -287,7 +287,7 @@ areas:registerProtectionCondition(function(pos1, pos2, name)
 	if not can then
 		local area = areas.areas[id]
 		return false, S("The area intersects with @1 [@2] (@3).",
-				area.name, id, area.owner)
+			area.name, id, area.owner)
 	end
 end)
 
@@ -302,7 +302,7 @@ function areas:toString(id)
 
 	local children = areas:getChildren(id)
 	if #children > 0 then
-		message = message.." -> "..table.concat(children, ", ")
+		message = message .. " -> " .. table.concat(children, ", ")
 	end
 	return message
 end

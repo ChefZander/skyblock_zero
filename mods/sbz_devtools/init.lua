@@ -248,7 +248,7 @@ minetest.register_chatcommand("dev_mapblocks", {
 })
 
 core.register_chatcommand("toggle_pvp", {
-    description = "Toggle pvp",
+    description = "Toggle pvp, probably needs server restart.",
     params = "<enable>",
     privs = { ["server"] = true },
     func = function(name, param)

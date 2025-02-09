@@ -32,10 +32,12 @@ minetest.register_tool("sbz_resources:laser_weapon", {
                     end
                     if ref:is_player() then
                         minetest.after(0.1, function()
-                            if ref and ref:is_player() then
-                                -- kinda deadly if thrown at you at 6cps, you would be dead by... 1 seconds?
-                                local armor = ref:get_armor_groups().light / 100
-                                ref:set_hp(ref:get_hp() - (3 * armor), "light")
+                            if ref and ref:is_player() and player and player:is_player() then
+                                local damage = 3
+                                ref:punch(player, nil, {
+                                    full_punch_interval = 0,
+                                    damage_groups = { light = damage },
+                                }, lookdir)
                             end
                         end)
                     end
