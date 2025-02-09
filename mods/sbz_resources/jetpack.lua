@@ -64,7 +64,7 @@ local speed = player_monoids.speed
 minetest.register_globalstep(function(dtime)
     for player in pairs(jetpack_users) do
         local real_player = minetest.get_player_by_name(player)
-        if real_player:is_valid() then
+        if real_player and real_player:is_valid() then
             local slot = jetpack_users[player]
             local jetpack_item = real_player:get_inventory():get_stack("main", slot)
             if jetpack_item:get_name() ~= "sbz_resources:jetpack" then
