@@ -163,7 +163,7 @@ minetest.register_chatcommand("dev_clear", {
     end
 })
 
-minetest.register_chatcommand("dev_disable_libox", {
+minetest.register_chatcommand("dev_toggle_libox", {
     description = "Enables/Disables all lua sandboxing",
     privs = { ["server"] = true },
     func = function()
@@ -246,12 +246,19 @@ minetest.register_chatcommand("dev_mapblocks", {
         return true, "Area sent!"
     end
 })
-
-core.register_chatcommand("toggle_pvp", {
-    description = "Toggle pvp, probably needs server restart.",
+core.register_chatcommand("dev_toggle_pvp", {
+    description = "Toggle pvp, NEEDS SERVER RESTART, bad idea to use if you aren't a dev",
     params = "<enable>",
     privs = { ["server"] = true },
     func = function(name, param)
         core.settings:set("enable_pvp", core.is_yes(param) and "true" or "false")
+    end
+})
+
+core.register_chatcommand("dev_test_rain", {
+    description = "Test rain particles <remove later>",
+    privs = { ["server"] = true },
+    func = function(name, param)
+
     end
 })
