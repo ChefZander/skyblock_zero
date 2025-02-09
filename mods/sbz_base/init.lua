@@ -259,7 +259,7 @@ core.register_on_respawnplayer(function(ref)
 end)
 
 core.register_chatcommand("killme", {
-    description = "Kills you, like in mtg",
+    description = "Kills you.",
     privs = { ["interact"] = true },
     func = function(name)
         local player = core.get_player_by_name(name)
