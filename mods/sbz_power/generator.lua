@@ -298,7 +298,7 @@ minetest.register_abm({
 sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
     description = "Antimatter generator",
     info_extra = {
-        "Generates 120 power",
+        "Generates 300 power",
         "Needs 1 antimatter/s and 1 matter/s",
     },
     groups = { matter = 1, pipe_connects = 1 },
