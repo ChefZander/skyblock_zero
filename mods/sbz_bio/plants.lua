@@ -91,8 +91,13 @@ end
 function sbz_api.plant_plant(plant, nodes)
     return function(itemstack, user, pointed)
         for _, node in ipairs(nodes) do
-            if string.sub(node, 1, 6) == "group:" and minetest.get_item_group(minetest.get_node(pointed.above - up).name, string.sub(node, 7)) > 0
-                or minetest.get_node(pointed.above - up).name == node then
+            local use_pointed = "above"
+            if pointed.switched then
+                use_pointed = "under"
+            end
+            local soil_node = core.get_node(pointed[use_pointed] - up)
+            if string.sub(node, 1, 6) == "group:" and minetest.get_item_group(soil_node.name, string.sub(node, 7)) > 0
+                or soil_node.name == node then
                 local _, pos = minetest.item_place_node(ItemStack(plant), user, pointed)
                 if pos then
                     itemstack:take_item()

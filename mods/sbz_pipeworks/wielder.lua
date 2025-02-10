@@ -59,6 +59,8 @@ local function wielder_action(def, pos, node, index)
         type = "node",
         under = vector.subtract(pos, dir),
         above = vector.subtract(pos, vector.multiply(dir, 2)),
+        fake = true,
+        switched = true
     }
     local retval = def.action(fakeplayer, pointed)
     if def.eject_drops then
