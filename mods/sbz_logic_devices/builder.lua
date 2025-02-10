@@ -22,7 +22,7 @@ local function get_index(inv, item)
     return false
 end
 
-local function build(pos, owner, def, param2, inv, index)
+local function build(pos, owner, def, param2, inv, index, dir)
     if param2 ~= nil then if param2 < 0 or param2 > 255 then param2 = nil end end
     if not def.on_place then return end
 
@@ -35,15 +35,13 @@ local function build(pos, owner, def, param2, inv, index)
     })
 
     local pointed_thing = {
-        under = pos,
         above = pos,
-        type = "node"
+        under = vector.add(pos, dir),
+        type = "node",
+        fake = true,
+        swapped = false,
     }
-    if def.paramtype2 == "facedir" then
-        pointed_thing.under = vector.add(pos, minetest.facedir_to_dir(param2))
-    elseif def.paramtype2 == "wallmounted" then
-        pointed_thing.under = vector.add(pos, minetest.wallmounted_to_dir(param2))
-    end
+
     local stack = inv:get_stack("main", index)
     local leftover = def.on_place(stack, player, pointed_thing)
     inv:set_stack("main", index, leftover or stack)
@@ -54,7 +52,7 @@ local function build(pos, owner, def, param2, inv, index)
     end
 end
 
-local function punch(pos, owner, def_target, inv, index, node)
+local function punch(pos, owner, def_target, inv, index, node, dir)
     if not def_target.on_punch then return end
     local player = fakelib.create_player {
         name = owner,
@@ -63,12 +61,14 @@ local function punch(pos, owner, def_target, inv, index, node)
         wield_index = index,
         position = pos,
     }
-    local pointed_thing = {
-        under = pos,
-        above = pos,
-        type = "node"
-    }
 
+    local pointed_thing = {
+        above = pos,
+        under = vector.add(pos, dir),
+        type = "node",
+        fake = true,
+        swapped = false,
+    }
     def_target.on_punch(pos, node, player, pointed_thing)
 end
 
@@ -108,7 +108,7 @@ end
 
 
 
-local function use(pos, owner, item_def, inv, index)
+local function use(pos, owner, item_def, inv, index, dir)
     if not item_def.on_use then return end
     local player = fakelib.create_player {
         name = owner,
@@ -119,11 +119,12 @@ local function use(pos, owner, item_def, inv, index)
     }
 
     local pointed_thing = {
-        under = pos,
         above = pos,
-        type = "node"
+        under = vector.add(pos, dir),
+        type = "node",
+        fake = true,
+        swapped = false,
     }
-
     stack = player:get_wielded_item()
     local old_stack = ItemStack(stack)
     stack = item_def.on_use(stack, player, pointed_thing) or stack
@@ -197,6 +198,17 @@ listring[]
         local ndef = minetest.registered_nodes
         local idef = minetest.registered_items
 
+        local vn = vector.new
+        local valid_dirs = {
+            ["up"] = vn(0, 1, 0),
+            ["down"] = vn(0, -1, 0),
+            ["east"] = vn(1, 0, 0),
+            ["west"] = vn(-1, 0, 0),
+            ["south"] = vn(0, 0, -1),
+            ["north"] = vn(0, 0, 1),
+            ["no_dir"] = vn(0, 0, 0),
+        }
+
         local function inner_loop(i)
             local e = queued_events[i]
             local ok = libox.type_check(e, {
@@ -205,9 +217,13 @@ listring[]
                 pos2 = function(x) return x == nil or libox.type_vector(x) end,
                 item = function(x) return x == nil or libox.type("string")(x) end,
                 param2 = function(x) return x == nil and true or libox.type("number")(x) end,
-                from_pos = libox.type_vector
+                from_pos = libox.type_vector,
+                dir = function(x)
+                    if valid_dirs[x] or x == nil then return true else return false end
+                end,
             })
             if not ok then return end -- ha see, continue statement, lua has continue statements...!!!!
+            local dir = valid_dirs[e.dir] or vn(0, 0, 0)
             e.item = e.item or ""
             local item = ItemStack(e.item)
             -- prepare for comparing
@@ -235,13 +251,13 @@ listring[]
                 if def_item == nil then return end
 
                 if e.type == "build" then
-                    build(abs_pos, owner, def_item, e.param2, inv, index)
+                    build(abs_pos, owner, def_item, e.param2, inv, index, dir)
                 elseif e.type == "dig" then
                     dig(abs_pos, owner, def_node, def_item, inv, index, node_at_pos)
                 elseif e.type == "punch" then
-                    punch(abs_pos, owner, def_node, inv, index, node_at_pos)
+                    punch(abs_pos, owner, def_node, inv, index, node_at_pos, dir)
                 elseif e.type == "use" then
-                    use(abs_pos, owner, def_item, inv, index)
+                    use(abs_pos, owner, def_item, inv, index, dir)
                 end
             else
                 if e.type == "see" then

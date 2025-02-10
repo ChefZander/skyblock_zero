@@ -63,3 +63,10 @@ $C1    pos2 = {x = 0, y = 2, z = 0}, -- needs to be a vector, that is relative t
 })</mono>
 
 Moves a node from pos to pos2, can be almost any node :D
+
+<big>dir</big>
+So: using, punching, building all can be supplied a dir property.  
+The dir property modifies how pointed_thing should be.  
+Valid inputs: nil, "up", "down", "south","west","north","east", "no_dir"  
+
+The default is no_dir, and you will rarely need to change this.
