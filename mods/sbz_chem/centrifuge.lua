@@ -158,7 +158,7 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
     after_dig_node = pipeworks.after_dig,
     autostate = true,
     action = function(pos, _, meta, supply, demand)
-        local power_needed = 80
+        local power_needed = 16
         local inv = meta:get_inventory()
 
         if demand + power_needed > supply then
