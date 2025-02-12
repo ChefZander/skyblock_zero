@@ -131,7 +131,7 @@ sbz_api.register_stateful_machine("sbz_chem:centrifuge", {
         "centrifuge_side.png",
         "centrifuge_side.png",
     },
-    groups = { matter = 1, level = 2 },
+    groups = { matter = 1 },
     --    paramtype2 = "4dir",
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
