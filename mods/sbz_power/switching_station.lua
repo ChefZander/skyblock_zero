@@ -405,3 +405,20 @@ mesecon.register_on_mvps_move(function(moved_nodes)
         end
     end
 end)
+
+
+minetest.register_chatcommand("toggle_power", {
+    description = "Toggles if switching stations are enabled or not",
+    params = '<yes/no>',
+
+    privs = { ["server"] = true },
+    func = function(name, param)
+        if core.is_yes(param) then
+            enable_globalstep = true
+            core.chat_send_player(name, "Enabled switching stations")
+        else
+            enable_globalstep = false
+            core.chat_send_player(name, "Temporarily disabled switching stations.")
+        end
+    end
+})
