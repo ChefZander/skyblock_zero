@@ -409,7 +409,7 @@ end)
 
 minetest.register_chatcommand("toggle_power", {
     description = "Toggles if switching stations are enabled or not",
-    params = '<yes/no>"',
+    params = '<yes/no>',
 
     privs = { ["server"] = true },
     func = function(name, param)
