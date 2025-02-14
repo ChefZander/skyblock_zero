@@ -1,0 +1,10 @@
+So, i define a corrupted machine as a machine that has its metadata and inventory lists wiped for any reason
+If you can create a corrupted machine, that's a serious bug and you should report it (duh)
+These machines usually also crash the server
+
+
+How to get rid of corrupted machines:
+- Attempt to identify where they are, if they crash the server, they usually crash only when players get near it
+- Use `/toggle_power false` to disable switching stations, so they can't crash the server
+- Just remove them
+- Enable machines by doing `/toggle_power true`
