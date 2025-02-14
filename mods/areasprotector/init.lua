@@ -322,7 +322,7 @@ mesecon.register_on_mvps_move(function(moved)
 	for i = 1, #moved do
 		local moved_node = moved[i]
 		if core.get_item_group(moved_node.node.name, "protector") > 0 then
-			local meta = core.get_meta(moved_node.node.name)
+			local meta = core.get_meta(moved_node.oldpos)
 			local id = meta:get_int("area_id")
 			local owners_area_id = minetest.deserialize(meta:get_string("owners_area_id")) or {}
 			areas:move(id, areas.areas[id],
