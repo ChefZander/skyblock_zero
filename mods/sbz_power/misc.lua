@@ -47,59 +47,9 @@ sbz_api.register_machine("sbz_power:interactor", {
     drop = "pipeworks:puncher",
     paramtype2 = "wallmounted",
     groups = { matter = 1, cracky = 3, not_in_creative_inventory = 1 },
-    action_interval = 3, --on average, an interactor on a core is barely self-sufficient
-    power_needed = 30,
-    on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
-        local inv = meta:get_inventory()
-        inv:set_size("input", 1)
-        inv:set_size("output", 4)
-        meta:set_string("formspec",
-            "formspec_version[7]" ..
-            "size[8.2,9]" ..
-            "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";input;1.5,2;1,1;]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";output;4.5,1.5;2,2;]" ..
-            "list[current_player;main;0.2,5;8,4;]" ..
-            "listring[]"
-        )
-    end,
     action = function(pos, node, meta, supply, demand)
-        local target = pos - minetest.wallmounted_to_dir(minetest.get_node(pos).param2)
-        local target_node = minetest.get_node(target)
-        local inv = meta:get_inventory()
-        local input_item = inv:get_stack("input", 1)
-        if target_node.name == "sbz_resources:the_core" then
-            local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
-            local item = items[math.random(#items)]
-            if inv:room_for_item("output", item) then
-                inv:add_item("output", item)
-            end
-        elseif target_node.name == "sbz_resources:emitter" and math.random(3) == 1 then
-            local item = "sbz_resources:raw_emittrium"
-            if inv:room_for_item("output", item) then
-                inv:add_item("output", item)
-            end
-        elseif input_item:get_name() == "sbz_resources:matter_annihilator"
-            and minetest.get_item_group(target_node.name, "matter") then
-            minetest.remove_node(target)
-            inv:remove_item("input", input_item)
-            if input_item:add_wear_by_uses(30) then
-                inv:add_item("input", input_item)
-            end
-            local drops = minetest.get_node_drops(target_node, "sbz_resources:matter_annihilator")
-            for _, item in ipairs(drops) do
-                if inv:room_for_item("output", item) then
-                    inv:add_item("output", item)
-                else
-                    minetest.add_item(target, item)
-                end
-            end
-        elseif minetest.registered_nodes[input_item:get_name()] and minetest.registered_nodes[target_node.name].buildable_to then
-            input_item:set_count(1)
-            inv:remove_item("input", input_item)
-            minetest.set_node(target, { name = input_item:get_name() })
-        end
+        meta:set_string("infotext", "Deprecated, get rid of this.")
+        return 0
     end
 })
 
@@ -124,8 +74,12 @@ local function vacuum(pos, radius, inv)
 end
 
 local item_vaccum_power_demand = 20
+
 -- you expected this to be in the pipeworks mod didn't you... well its more convenient to put it here because sbz_api
 -- Couldnt you just make pipeworks depend on the mod that implements register_machine and just call it from there ???
+
+-- frog here: Hey anon, no, this mod depends on pipeworks
+-- frog here: this mod depends on pipeworks to add pipeworks support...
 
 sbz_api.register_machine("sbz_power:item_vacuum", {
     description = "Item Vacuum",
