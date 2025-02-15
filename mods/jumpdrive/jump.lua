@@ -95,15 +95,31 @@ jumpdrive.simulate_jump = function(pos, player, show_marker)
 
 	local power_req = jumpdrive.calculate_power(radius, distance, pos, targetPos)
 	local powerstorage = meta:get_int("power")
-
+	-- now... attempt to get power from network
+	local usable_power = powerstorage
+	local used_network = false
 	if powerstorage < power_req then
-		-- not enough power
-		msg = "Error: Not enough power: required:" ..
-			sbz_api.format_power(power_req) .. " , actual: " .. sbz_api.format_power(powerstorage)
-		success = false
+		used_network = true
+		usable_power = math.min(power_req, powerstorage + (0.25 * sbz_api.get_power_from_batteries(pos)))
 	end
 
-	return success, msg
+	if usable_power < power_req then
+		-- not enough power
+		msg = "Error: Not enough power: required:" ..
+			sbz_api.format_power(power_req) .. ", power storage: " .. sbz_api.format_power(powerstorage)
+		if used_network then
+			msg = msg ..
+				", power from batteries (25% efficency, so actual power use is 4x of this):" ..
+				sbz_api.format_power((usable_power - powerstorage))
+		end
+		success = false
+	elseif used_network and msg == nil then
+		msg = "Info: Has to use " ..
+			sbz_api.format_power((usable_power - powerstorage) * 4) .. " from your batteries. (25% efficency)"
+		--sbz_api.drain_power_from_batteries(pos, (usable_power - powerstorage) * 4)
+	end
+
+	return success, msg, used_network, (usable_power - powerstorage) * 4
 end
 
 
@@ -124,14 +140,18 @@ jumpdrive.execute_jump = function(pos, player)
 	local target_pos1 = vector.subtract(targetPos, radius_vector)
 	local target_pos2 = vector.add(targetPos, radius_vector)
 
-	local success, msg = jumpdrive.simulate_jump(pos, player, false)
+	local success, msg, used_network, used_power = jumpdrive.simulate_jump(pos, player, false)
 	if not success then
 		return false, msg
 	end
-
-	-- consume power from storage
-	local powerstorage = meta:get_int("power")
-	meta:set_int("power", powerstorage - power_req)
+	if used_network then
+		local powerstorage = meta:get_int("power")
+		sbz_api.drain_power_from_batteries(pos, used_power)
+		meta:set_int("power", math.max(0, powerstorage - power_req - used_power))
+	else
+		local powerstorage = meta:get_int("power")
+		meta:set_int("power", math.max(0, powerstorage - power_req))
+	end
 
 	local t0 = minetest.get_us_time()
 

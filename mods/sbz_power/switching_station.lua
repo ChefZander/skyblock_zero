@@ -16,7 +16,7 @@ local node_defs = minetest.registered_nodes
 local IG = minetest.get_item_group
 
 ---@param start_pos vector
----@param seen table
+---@param seen table|nil
 function sbz_api.assemble_network(start_pos, seen)
     local t0 = minetest.get_us_time()
     local by_connector = not not seen
@@ -118,10 +118,17 @@ function sbz_api.switching_station_tick(start_pos)
             local node = v[2]
             local dir = v[3]
             local max = v[4]
-            local current = v[5]
             local meta = minetest.get_meta(position)
 
-            local set_power = node_defs[node].set_power or
+            local def = node_defs[node]
+            local current = 0
+            if def.get_power then
+                current = def.get_power(position, node, meta, supply, demand, v[3])
+            else
+                current = meta:get_int("power")
+            end
+
+            local set_power = def.set_power or
                 function(pos, node, meta, current_power, supplied_power, dir)
                     meta:set_int("power", supplied_power)
                 end
@@ -205,14 +212,15 @@ function sbz_api.switching_station_tick(start_pos)
             local d = node_defs[node]
             v[4] = d.battery_max
 
+            local battery_power = 0
             if d.get_power then
-                v[5] = d.get_power(position, node, meta, supply, demand, v[3])
+                battery_power = d.get_power(position, node, meta, supply, demand, v[3])
             else
-                v[5] = meta:get_int("power")
+                battery_power = meta:get_int("power")
             end
 
             battery_max = battery_max + v[4]
-            supply = supply + v[5]
+            supply = supply + battery_power
         end
     end
 
@@ -422,3 +430,56 @@ minetest.register_chatcommand("toggle_power", {
         end
     end
 })
+
+-- MISC api related to sbz_api.assemble_network
+function sbz_api.get_power_from_batteries(pos)
+    local bat_power = 0
+    local network = sbz_api.assemble_network(pos)
+    for k, v in pairs(network.batteries) do
+        local pos = v[1]
+        local meta = core.get_meta(pos)
+        local name = v[2]
+        local def = node_defs[name]
+        local battery_power = 0
+        if core.get_item_group(name, "limited_battery") == 0 then
+            if def.get_power then
+                battery_power = def.get_power(pos, name, meta, 0, 0, v[3])
+            else
+                battery_power = meta:get_int("power")
+            end
+            bat_power = bat_power + battery_power
+        end
+    end
+    return bat_power
+end
+
+function sbz_api.drain_power_from_batteries(pos, power)
+    local network = sbz_api.assemble_network(pos)
+    for k, v in pairs(network.batteries) do
+        local pos = v[1]
+        local meta = core.get_meta(pos)
+        local name = v[2]
+        local def = node_defs[name]
+
+        if core.get_item_group(name, "limited_battery") == 0 then
+            local set_power = def.set_power or
+                function(pos, node, meta, current_power, supplied_power, dir)
+                    meta:set_int("power", supplied_power)
+                end
+
+            local battery_power = 0
+            if def.get_power then
+                battery_power = def.get_power(pos, name, meta, 0, 0, v[3])
+            else
+                battery_power = meta:get_int("power")
+            end
+            core.debug(dump(power))
+            local taken_away = math.min(power, battery_power)
+            set_power(pos, name, meta, battery_power, battery_power - taken_away, v[3])
+            power = power - taken_away
+            if power <= 0 then
+                break
+            end
+        end
+    end
+end

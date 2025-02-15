@@ -30,20 +30,24 @@ local function get_prefix_and_divider(n)
 end
 
 function sbz_api.format_power(n, n2)
+    if n2 then
+        return sbz_api.format_power(n) .. " / " .. sbz_api.format_power(n2)
+    end
     local prefix, divider = get_prefix_and_divider(n)
     local prefix_to_use = prefix -- use whichever is larger
     local divider_to_use = divider
-    if n2 then
+    --[[    if n2 then
         local prefix2, divider2 = get_prefix_and_divider(n2)
         if divider2 > divider then
             prefix_to_use = prefix2
             divider_to_use = divider2
         end
     end
+    ]]
     prefix_to_use = prefix_to_use .. "Cj"
 
-    return (sbz_power.round_power(n / divider_to_use) .. " " .. prefix_to_use) ..
-        (n2 and (" / " .. sbz_power.round_power(n2 / divider_to_use) .. " " .. prefix_to_use) or "")
+    return (sbz_power.round_power(n / divider_to_use) .. " " .. prefix_to_use) --..
+    --        (n2 and (" / " .. sbz_power.round_power(n2 / divider_to_use) .. " " .. prefix_to_use) or "")
 end
 
 ---@param consumed { n:number, text: string }

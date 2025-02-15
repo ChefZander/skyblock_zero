@@ -16,7 +16,8 @@ core.register_node("jumpdrive:engine", {
 		sbz_battery = 1,
 		sbz_machine = 1,
 		pipe_connects = 1,
-		pipe_conducts = 1
+		pipe_conducts = 1,
+		limited_battery = 1,
 	},
 
 	battery_max = jumpdrive.config.powerstorage,

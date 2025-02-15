@@ -60,11 +60,11 @@ end
 -- preflight check, for overriding
 -- params: source, destination, radius, playername
 function jumpdrive.preflight_check(source, destination, radius, playername)
-	if vector.distance(source, destination) > 120 and not minetest.find_node_near(destination, 120, "jumpdrive:station", true) then
+	if vector.distance(source, destination) > 500 and not is_node_within_radius(destination, "jumpdrive:station", 60) then
 		return { success = false, message = "Traveling too far without a Jumpdrive station." }
 	end
 	if destination.y < -110 then
-		return { success = false, message = "Traveling that deep is not supported **yet :3**..." }
+		return { success = false, message = "Traveling that deep is not supported yet" }
 	end
 	return { success = true }
 end
