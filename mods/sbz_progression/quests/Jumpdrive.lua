@@ -29,7 +29,7 @@ An ingredient in making the jumpdrive engine. May be required for other things i
         text = [[
 Lets you teleport your buildings with you, to any* coordinate....
 
-*Though in skyblock zero, this has been slightly modified: Without a jumpdrive station near the target, you can only travel 120 blocks away from your current position... But if you have a jumpdrive station, near (200~ish blocks away) your target position, you can teleport there.
+*Though in skyblock zero, this has been slightly modified: Without a jumpdrive station near the target, you can only travel 120 blocks away from your current position... But if you have a jumpdrive station, near (50 blocks away) your target position, you can teleport there.
 
 The jumpdrive also acts as a battery, storing 200 kCj, this also means it can be discharged, be aware of that.
 
@@ -37,7 +37,10 @@ If you punch the jumpdrive with an empty hand, you will see an outline of what n
 
 You can transport emitters with the jumpdrive.
 Also, emitters stop spawning after y=1000, so you can transport stuff more easily there, since no emitters will intefere with you.
-        ]],
+
+If your jumpdrive flight takes too much energy, the jumpdrive can also take away power from other batteries, it will do this automatically, but its 4 times less efficent compared to using regular jumpdrive's power.
+It is good practice to use the "show" button before using the "jump" button, to see how much power your flight will consume,
+]],
         requires = { "Jumpdrive Backbone", "Warp Device", "Very Advanced Batteries" },
     },
     {
@@ -46,7 +49,7 @@ Also, emitters stop spawning after y=1000, so you can transport stuff more easil
         text = [[
 Soo i imagine you'd like to travel huge distances with the jumpdrive, well.... this will allow you to do that
 
-Simply place one down in your target destination. Now you can teleport to it with the jumpdrive.
+Simply place one down in your target destination. Now you can teleport near it with the jumpdrive.
         ]],
         requires = { "The Jumpdrive (engine)" },
     },

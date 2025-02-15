@@ -473,7 +473,6 @@ function sbz_api.drain_power_from_batteries(pos, power)
             else
                 battery_power = meta:get_int("power")
             end
-            core.debug(dump(power))
             local taken_away = math.min(power, battery_power)
             set_power(pos, name, meta, battery_power, battery_power - taken_away, v[3])
             power = power - taken_away
