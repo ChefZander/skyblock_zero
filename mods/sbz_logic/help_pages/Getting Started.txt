@@ -1,0 +1,16 @@
+<bigger>Getting Started</bigger>
+Craft:
+1 linking unpgrade
+1 luacontroller linker (or multiple for longer ranges)
+1 lua controller
+1 basic editor disk
+Optional: Any devices that you want to use
+
+Instructions:
+1) Place the luacontroller to a switching station network
+2) Punch the basic editor disk into the luacontroller
+3) Go to the inventory tab, put in your linking upgrade
+4) With your link tool, press aux1+shift+right click to link the luacontroller with the linking tool
+5) From that, if you have any devices that you want the luacontroller to use, right click the devices to give them a name, then click to link them 
+- one name can have multiple links
+- "linking" again will make the link go away
