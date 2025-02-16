@@ -303,7 +303,7 @@ sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
         "Generates 300 power",
         "Needs 1 antimatter/s and 1 matter/s",
     },
-    groups = { matter = 1, pipe_connects = 1 },
+    groups = { matter = 1, pipe_connects = 1, disallow_pipeworks = 1, tubedevice = 1, tubedevice_receiver = 1 },
     tiles = {
         "antimatter_gen_top.png",
         "antimatter_gen_top.png",
@@ -315,7 +315,8 @@ sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
 
-        inv:set_size("input", 2)
+        inv:set_size("antimatter", 1)
+        inv:set_size("matter", 1)
 
         meta:set_string("formspec", [[
 formspec_version[7]
@@ -323,35 +324,22 @@ size[8.2,9]
 style_type[list;spacing=.2;size=.8]
 
 item_image[1.4,1.9;1,1;sbz_resources:matter_dust]
-list[context;input;1.5,2;1,1;]
+list[context;matter;1.5,2;1,1;]
 
 item_image[5.7,1.9;1,1;sbz_resources:antimatter_dust]
-list[context;input;5.8,2;1,1;1]
+list[context;antimatter;5.8,2;1,1;]
 
 list[current_player;main;0.2,5;8,4;]
-listring[]
 ]])
     end,
+
     autostate = true,
     action = function(pos, node, meta, supply, demand)
         local inv = meta:get_inventory()
-        local list = inv:get_list("input")
-        if list[1]:get_name() == "sbz_resources:antimatter_dust" then
-            if list[2]:is_empty() then
-                list[2] = list[1]
-                list[1] = ItemStack("")
-            elseif list[2]:get_name() == "sbz_resources:matter_dust" then
-                local antimatter_stack = list[1]
-                local matter_stack = list[2]
-                list[1] = matter_stack
-                list[2] = antimatter_stack
-            end
-        end
-        inv:set_list("input", list)
 
-        if inv:contains_item("input", "sbz_resources:matter_dust") and inv:contains_item("input", "sbz_resources:antimatter_dust") then
-            inv:remove_item("input", "sbz_resources:matter_dust")
-            inv:remove_item("input", "sbz_resources:antimatter_dust")
+        if inv:contains_item("matter", "sbz_resources:matter_dust") and inv:contains_item("antimatter", "sbz_resources:antimatter_dust") then
+            inv:remove_item("matter", "sbz_resources:matter_dust")
+            inv:remove_item("antimatter", "sbz_resources:antimatter_dust")
             meta:set_string("infotext", "Running")
             local def = {
                 amount = 25,
@@ -376,26 +364,53 @@ listring[]
         return 0
     end,
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-        if to_list == "input" then
-            local stackname = (minetest.get_inventory { type = "player", name = player:get_player_name() }):get_stack(
-                from_list, from_index):get_name() -- beautiful
-            if stackname == "sbz_resources:matter_dust" or stackname == "sbz_resources:antimatter_dust" then
-                return count
-            else
-                return 0
-            end
+        local stackname = (minetest.get_inventory { type = "player", name = player:get_player_name() }):get_stack(
+            from_list, from_index):get_name()
+
+        if to_list == "matter" then
+            if stackname == "sbz_resources:matter_dust" then return count else return 0 end
+        elseif to_list == "antimatter" then
+            if stackname == "sbz_resources:antimatter_dust" then return count else return 0 end
         end
         return count
     end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-        if listname == "input" then
-            if stack:get_name() == "sbz_resources:matter_dust" or stack:get_name() == "sbz_resources:antimatter_dust" then
-                return stack:get_count()
-            end
-            return 0
+        local stackname = stack:get_name()
+        local count = stack:get_count()
+        if listname == "antimatter" then
+            if stackname == "sbz_resources:antimatter_dust" then return count else return 0 end
+        elseif listname == "matter" then
+            if stackname == "sbz_resources:matter_dust" then return count else return 0 end
         end
         return stack:get_count()
-    end
+    end,
+    tube = {
+        insert_object = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            local stackname = stack:get_name()
+            if stackname == "sbz_resources:antimatter_dust" then
+                return inv:add_item("antimatter", stack)
+            elseif stackname == "sbz_resources:matter_dust" then
+                return inv:add_item("matter", stack)
+            end
+            return stack
+        end,
+        can_insert = function(pos, node, stack, direction)
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            stack:peek_item(1)
+            local stackname = stack:get_name()
+            if stackname == "sbz_resources:matter_dust" then
+                return inv:room_for_item("matter", stack)
+            elseif stackname == "sbz_resources:antimatter_dust" then
+                return inv:room_for_item("antimatter", stack)
+            end
+            return false
+        end,
+        connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
+    }
+
 }, {
     tiles = {
         "antimatter_gen_top.png",
@@ -404,6 +419,33 @@ listring[]
     },
     light_source = 14,
 })
+
+core.register_lbm {
+    label = "Upgrade legacy antimatter generator",
+    name = "sbz_power:antimatter_generator_upgrade_v1",
+    nodenames = { "sbz_power:antimatter_generator" },
+    action = function(pos, node, dtime_s)
+        local meta = core.get_meta(pos)
+
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+
+item_image[1.4,1.9;1,1;sbz_resources:matter_dust]
+list[context;matter;1.5,2;1,1;]
+
+item_image[5.7,1.9;1,1;sbz_resources:antimatter_dust]
+list[context;antimatter;5.8,2;1,1;]
+
+list[current_player;main;0.2,5;8,4;]
+]])
+        local inv = meta:get_inventory()
+
+        inv:set_size("antimatter", 1)
+        inv:set_size("matter", 1)
+    end
+}
 
 minetest.register_craft({
     output = "sbz_power:antimatter_generator",
