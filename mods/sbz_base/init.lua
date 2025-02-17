@@ -63,9 +63,23 @@ table.foreachi = function(t, f, key_last)
     return t
 end
 
+-- REASONING BEHIND NOT USING core.wallmounted_to_dir(i)
+-- IT CAUSED A NASTY BUG, NASTY, NASTY, BUG.
+-- BECAUSE SOMETIMES, IT JUST FORGOT THAT THE DOWN DIRECTION WAS A THING
+-- I DONT KNOW WHY
+-- frog
+
+local wallmounted_to_dir_is_fake_bad = {
+    vector.new(0, 1, 0),
+    vector.new(0, -1, 0),
+    vector.new(1, 0, 0),
+    vector.new(-1, 0, 0),
+    vector.new(0, 0, 1),
+    vector.new(0, 0, -1),
+}
 function iterate_around_pos(pos, func)
     for i = 0, 5 do
-        local dir = minetest.wallmounted_to_dir(i)
+        local dir = wallmounted_to_dir_is_fake_bad[i]
         func(pos + dir, dir)
     end
 end
