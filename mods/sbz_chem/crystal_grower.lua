@@ -8,9 +8,10 @@ core.register_craftitem("sbz_chem:uranium_crystal", {
     description = "Uranium Crystal",
     inventory_image = "uranium_crystal.png",
 })
+
 unified_inventory.register_craft {
     type = "crystal_growing",
-    output = "sbz_resources:uranium_crystal",
+    output = "sbz_chem:uranium_crystal",
     items = { "sbz_chem:uranium_ingot 4" }
 }
 
@@ -20,7 +21,7 @@ core.register_craftitem("sbz_chem:thorium_crystal", {
 })
 unified_inventory.register_craft {
     type = "crystal_growing",
-    output = "sbz_resources:thorium_crystal",
+    output = "sbz_chem:thorium_crystal",
     items = { "sbz_chem:thorium_ingot 4" }
 }
 
