@@ -70,12 +70,12 @@ end
 -- frog
 
 local wallmounted_to_dir_is_fake_bad = {
-    vector.new(0, 1, 0),
-    vector.new(0, -1, 0),
-    vector.new(1, 0, 0),
-    vector.new(-1, 0, 0),
-    vector.new(0, 0, 1),
-    vector.new(0, 0, -1),
+    [0] = vector.new(0, 1, 0),
+    [1] = vector.new(0, -1, 0),
+    [2] = vector.new(1, 0, 0),
+    [3] = vector.new(-1, 0, 0),
+    [4] = vector.new(0, 0, 1),
+    [5] = vector.new(0, 0, -1),
 }
 function iterate_around_pos(pos, func)
     for i = 0, 5 do
