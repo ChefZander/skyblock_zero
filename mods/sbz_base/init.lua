@@ -79,7 +79,7 @@ local wallmounted_to_dir_is_fake_bad = {
 }
 function iterate_around_pos(pos, func)
     for i = 0, 5 do
-        local dir = wallmounted_to_dir_is_fake_bad[i]
+        local dir = vector.copy(wallmounted_to_dir_is_fake_bad[i])
         func(pos + dir, dir)
     end
 end
