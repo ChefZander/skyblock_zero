@@ -35,7 +35,6 @@ function sbz_api.assemble_network(start_pos, seen)
     local switching_stations = network.switching_stations
     local batteries = network.batteries
 
-    -- from wikipedia's pseudocode for BFS
     seen = seen or {}
     setmetatable(seen, {
         __index = function(t, k)
@@ -46,7 +45,7 @@ function sbz_api.assemble_network(start_pos, seen)
         end
     })
     local queue = Queue.new()
-    queue:enqueue({ start_pos })
+    queue:enqueue({ start_pos, vector.zero() })
     seen[start_pos] = true
 
     sbz_api.vm_begin()

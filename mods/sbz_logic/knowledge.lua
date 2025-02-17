@@ -26,6 +26,7 @@ sbz_api.help_pages_by_index = {
     "Hologram Projector",
     "Luanium Attractor",
     "Jumpdrives",
+    "Drawer Controller"
 }
 
 local function edit_text(t)
