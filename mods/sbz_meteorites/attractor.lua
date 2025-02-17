@@ -60,6 +60,7 @@ minetest.register_entity("sbz_meteorites:gravitational_attractor_entity", {
     },
     on_activate = function(self)
         local node = minetest.get_node(vector.round(self.object:get_pos())).name
+        self.object:set_armor_groups { no_move = 1 } -- meteorite explosions => gets knocked back and dies
         if node == "sbz_meteorites:gravitational_attractor" then
             self.type = 1
         elseif node == "sbz_meteorites:gravitational_repulsor" then

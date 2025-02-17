@@ -1,0 +1,4 @@
+<bigger>Drawer Controller</bigger>
+
+Currently, the only feature is injecting items from drawers.
+Send it an itemstack in a string form like "sbz_resources:matter_blob 69" and it will send that matter blob stack out of the drawer controller from nearby drawers.
