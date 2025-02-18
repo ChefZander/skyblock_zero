@@ -77,6 +77,7 @@ local wallmounted_to_dir_is_fake_bad = {
     [4] = vector.new(0, 0, 1),
     [5] = vector.new(0, 0, -1),
 }
+
 function iterate_around_pos(pos, func)
     for i = 0, 5 do
         local dir = vector.copy(wallmounted_to_dir_is_fake_bad[i])

@@ -219,10 +219,12 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
 end)
 
 minetest.register_on_dignode(function(pos, oldnode, digger)
-    local player_name = digger:get_player_name()
-    local itemname = oldnode.name
-    if achievement_on_dig_table[itemname] then
-        unlock_achievement(player_name, achievement_on_dig_table[itemname])
+    if type(digger) == "table" and digger:is_valid() then
+        local player_name = digger:get_player_name()
+        local itemname = oldnode.name
+        if achievement_on_dig_table[itemname] then
+            unlock_achievement(player_name, achievement_on_dig_table[itemname])
+        end
     end
 end)
 
