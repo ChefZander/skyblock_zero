@@ -171,7 +171,7 @@ pipeworks.register_tube("pipeworks:broken_tube", {
                     pipeworks.logger(log_msg .. "by hand. It's not very effective.")
                     if minetest.settings:get_bool("enable_damage") then
                         minetest.chat_send_player(playername,
-                            S("Broken tubes may be a bit sharp. Perhaps try with a hammer?"))
+                            ("Broken tubes may be a bit sharp."))
                         puncher:set_hp(puncher:get_hp() - 1)
                     end
                 else
@@ -192,7 +192,7 @@ pipeworks.register_tube("pipeworks:broken_tube", {
                 meta:set_string("the_tube_was", "")
             else
                 pipeworks.logger(log_msg .. " but original node " .. was_node.name .. " is not registered anymore.")
-                minetest.chat_send_player(playername, S("This tube cannot be repaired."))
+                minetest.chat_send_player(playername, ("This tube cannot be repaired."))
             end
         end,
         allow_metadata_inventory_put = function()
