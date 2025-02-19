@@ -9,7 +9,7 @@ core.register_craftitem("sbz_chem:thorium_fuel_rod", {
 unified_inventory.register_craft {
     type = "compressing",
     output = "sbz_chem:thorium_fuel_rod",
-    items = { "sbz_chem:thorium_powder 64" }
+    items = { "sbz_chem:thorium_block 8" }
 }
 
 core.register_craftitem("sbz_chem:uranium_fuel_rod", {
@@ -21,7 +21,7 @@ core.register_craftitem("sbz_chem:uranium_fuel_rod", {
 unified_inventory.register_craft {
     type = "compressing",
     output = "sbz_chem:uranium_fuel_rod",
-    items = { "sbz_chem:uranium_powder 64" }
+    items = { "sbz_chem:uranium_block 8" }
 }
 
 core.register_craftitem("sbz_chem:plutonium_fuel_rod", {
@@ -33,7 +33,7 @@ core.register_craftitem("sbz_chem:plutonium_fuel_rod", {
 unified_inventory.register_craft {
     type = "compressing",
     output = "sbz_chem:plutonium_fuel_rod",
-    items = { "sbz_chem:plutonium_powder 64" }
+    items = { "sbz_chem:plutonium_block 8" }
 }
 
 

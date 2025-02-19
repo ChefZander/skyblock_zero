@@ -2,6 +2,7 @@ core.register_node("sbz_planets:planet_teleporter", {
     info_extra = "Teleports you to a planet. Insert a warp crystal to get teleported.",
     description = "Planet Teleporter",
     tiles = { "planet_teleporter.png" },
+    groups = { matter = 1, level = 2 },
     on_rightclick = function(pos, node, clicker, stack, pointed)
         if clicker.is_fake_player then return stack end
         local clicker_name = clicker:get_player_name()

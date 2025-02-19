@@ -315,6 +315,10 @@ function is_air(pos)
     return reg.air or reg.air_equivalent or node == "air"
 end
 
+function sbz_api.clamp(x, min, max)
+    return math.max(math.min(x, max), min)
+end
+
 local MP = minetest.get_modpath("sbz_base")
 
 dofile(MP .. "/override_for_areas.lua")
@@ -413,6 +417,25 @@ function sbz_api.line_of_sight(p1, p2, iters)
     end
 end
 
+function sbz_api.punch(target, hitter, time_from_last_punch, tool_caps, dir)
+    if target:is_player() or hitter ~= nil then
+        target:punch(hitter, time_from_last_punch, tool_caps, dir)
+    else
+        -- entity damage mechanism, see... uhh... the f#ck@ng lua api xD
+        -- at first i thought "why the hell is this here"
+        -- now i know
+        time_from_last_punch = time_from_last_punch or 0
+        local damage = 0
+        local armor_groups = target:get_armor_groups()
+        for group, damage in pairs(tool_caps.damage_groups or {}) do
+            damage = damage +
+                damage * sbz_api.clamp(time_from_last_punch / (tool_caps.full_punch_interval or 0), 0, 1) *
+                ((armor_groups[group] or 0) / 100)
+        end
+        target:set_hp(math.max(0, target:get_hp() - damage))
+    end
+end
+
 --- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
 ---@param pos vector
 ---@param power number
@@ -474,7 +497,7 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
                 tool_caps.damage_groups.antimatter = dmg
             end
 
-            obj:punch(nil, nil, tool_caps, dir)
+            sbz_api.punch(obj, nil, 100, tool_caps, dir)
         end
     end
     if sound then
@@ -521,7 +544,7 @@ end
 
 function sbz_api.can_move_object(armor_groups)
     if armor_groups.no_move then return false end
-    --    if armor_groups.immortal then return false end -- tnt is broken
+    if armor_groups.immortal and not armor_groups.can_move then return false end
     return true
 end
 

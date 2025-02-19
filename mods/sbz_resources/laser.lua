@@ -34,7 +34,7 @@ minetest.register_tool("sbz_resources:laser_weapon", {
                         minetest.after(0.1, function()
                             if ref and ref:is_player() and player and player:is_player() then
                                 local damage = 3
-                                ref:punch(player, nil, {
+                                ref:punch(player, 200, {
                                     full_punch_interval = 0,
                                     damage_groups = { light = damage },
                                 }, lookdir)
