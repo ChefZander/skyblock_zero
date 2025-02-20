@@ -182,8 +182,8 @@ minetest.register_node("sbz_power:reactor_item_input", {
                 return false
             end
             local inv = minetest.get_meta(pos):get_inventory()
-            stack:peek_item(1)
-            return inv:room_for_item("main", stack)
+            local taken = stack:peek_item(1)
+            return inv:room_for_item("main", taken)
         end,
         connect_sides = { left = 1, right = 1, top = 1, bottom = 1, back = 1, front = 1 }
     },
@@ -610,15 +610,19 @@ mesecon.register_on_mvps_move(function(moved_nodes)
     for i = 1, #moved_nodes do
         local moved_node = moved_nodes[i]
         if moved_node.node.name == "sbz_power:reactor_power_port" then
-            local meta = minetest.get_meta(moved_node.pos)
+            local meta = minetest.get_meta(moved_node.oldpos)
             local linked_coords = vector.from_string(meta:get_string("linked_coords"))
-            linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
-            meta:set_string("linked_coords", vecotr.to_string(linked_coords))
+            if linked_coords then
+                linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
+                meta:set_string("linked_coords", vector.to_string(linked_coords))
+            end
         elseif moved_node.node.name == "sbz_power:reactor_infoscreen" then
-            local meta = minetest.get_meta(moved_node.pos)
+            local meta = minetest.get_meta(moved_node.oldpos)
             local linked_coords = vector.from_string(meta:get_string("linked_pos"))
-            linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
-            meta:set_string("linked_pos", vecotr.to_string(linked_coords))
+            if linked_coords then
+                linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
+                meta:set_string("linked_pos", vector.to_string(linked_coords))
+            end
         end
     end
 end)
