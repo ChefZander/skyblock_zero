@@ -143,6 +143,20 @@ That new sapling, when it grows, it will mutate slightly, so will the tree core.
 You can put that new mutated tree core into the dna extractor, and repeat. After you do this enough times, you will get a tree completely different from the one you started with, you can go sell some tree cores to people too if you got a nice tree (assuming multiplayer) :D
     ]],
         requires = { "Colorium Trees" },
+    },
+    {
+        type = "quest",
+        title = "Colorium Emitters",
+        text = [[
+Tree farms are difficult, and sometimes needlessly laggy, so colorium emitters were made as a solution.
+These cannot be found naturally, they can only be crafted with 8 phlogiston, and one sapling.
+When you place them, don't worry, they can be dug.
+They can also be colored, darker colors look weird, you should try them.
+
+They can drop a sapling, a tree trunk or a leaf.
+You will complete this quest when you manage to extract a resource from the colorium emitter.
+        ]],
+        requires = { "Colorium Trees", "Phlogiston" },
     }
 
 }

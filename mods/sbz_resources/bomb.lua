@@ -21,7 +21,7 @@ core.register_entity("sbz_resources:bomb_stick_entity", {
     },
     on_activate = function(self, staticdata, dtime_s)
         staticdata = core.deserialize(staticdata)
-        self.object:set_armor_groups { matter = 0, antimatter = 100 }
+        self.object:set_armor_groups { matter = 100, antimatter = 100 }
         self.owner = staticdata.owner
         self.direction = staticdata.direction
         self.object:set_acceleration(vector.new(0, -sbz_api.gravity, 0))
@@ -96,7 +96,7 @@ core.register_entity("sbz_resources:bomb_entity", {
     },
 
     on_activate = function(self, staticdata)
-        self.object:set_armor_groups({ immortal = 1 }) -- too late :D
+        self.object:set_armor_groups({ immortal = 1, can_move = 1 })
         self.time = time
         self.owner = staticdata
         self.object:add_velocity(vector.new(0, 1, 0))

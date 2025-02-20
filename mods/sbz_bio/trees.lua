@@ -288,6 +288,7 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
     tiles = {
         "colorium_sapling.png"
     },
+    inventory_image = "colorium_sapling.png",
     use_texture_alpha = "clip",
     walkable = false,
     climbable = true,

@@ -109,7 +109,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
         can_insert = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            stack:peek_item(1)
+            stack = stack:peek_item(1)
             if minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return false end
             return inv:room_for_item("disks", stack)
         end,

@@ -29,7 +29,7 @@ function sbz_api.add_tube_support(def)
                     local inv = meta:get_inventory()
 
                     if inv:get_list(def.input_inv or "") then
-                        stack:peek_item(1)
+                        stack = stack:peek_item(1)
                         return inv:room_for_item(def.input_inv, stack)
                     end
                     return false

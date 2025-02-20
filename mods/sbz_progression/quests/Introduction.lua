@@ -13,6 +13,8 @@ Now, to get started: look down at the core. Punching it will give you some of yo
 
 These quests are in no particular order, but you might need items from one quest for another.
 
+Also, if you need to know a recipe, search the item in the inventory, and click on it, it will bring up what it can be used for or how it can be crafted. (There were way too many people asking me "how to craft antimatter" i needed to include this.)
+
 TIP: If you lose your Quest Book, you can use /qb to get it back.]],
         requires = {}
     },

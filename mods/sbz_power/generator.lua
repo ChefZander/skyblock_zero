@@ -1,4 +1,5 @@
 local generator_power_production = 30
+-- 30*10 => 300 power per core dust
 sbz_api.register_stateful_generator("sbz_power:simple_charge_generator", {
     description = "Simple Charge Generator",
     tiles = { "simple_charge_generator_off.png" },
@@ -300,7 +301,7 @@ end
 sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
     description = "Antimatter generator",
     info_extra = {
-        "Generates 300 power",
+        "Generates 600 power",
         "Needs 1 antimatter/s and 1 matter/s",
     },
     groups = { matter = 1, pipe_connects = 1, disallow_pipeworks = 1, tubedevice = 1, tubedevice_receiver = 1 },
@@ -357,7 +358,7 @@ list[current_player;main;0.2,5;8,4;]
 
             def.texture = "matter_dust.png"
             minetest.add_particlespawner(def)
-            return 300
+            return 600
         end
 
         meta:set_string("infotext", "Can't react")
@@ -399,7 +400,7 @@ list[current_player;main;0.2,5;8,4;]
         can_insert = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            stack:peek_item(1)
+            stack = stack:peek_item(1)
             local stackname = stack:get_name()
             if stackname == "sbz_resources:matter_dust" then
                 return inv:room_for_item("matter", stack)

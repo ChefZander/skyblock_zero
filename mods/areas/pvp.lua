@@ -41,7 +41,7 @@ local function punchplayer_func(player, hitter, time_from_last_punch, tool_capab
         end
     end
     -- Otherwise, it doesn't do damage
-    if not no_dm then
+    if no_dm ~= nil then
         minetest.chat_send_player(hitter:get_player_name(), "PvP is not allowed in this area!")
     end
     return true

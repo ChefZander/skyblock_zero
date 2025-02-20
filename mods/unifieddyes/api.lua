@@ -37,7 +37,7 @@ minetest.register_on_placenode(
 				param2 = newnode.param2 % 32
 			end
 
-			if param2 then
+			if param2 and not (core.get_item_group(newnode.name, "falling_node") == 1) then
 				minetest.swap_node(pos, { name = newnode.name, param2 = param2 })
 				minetest.get_meta(pos):set_int("palette_index", color)
 			end

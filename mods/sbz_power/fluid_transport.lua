@@ -425,7 +425,7 @@ listring[context;input]listring[]
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
 
-            stack:peek_item(1)
+            stack = stack:peek_item(1)
             return inv:room_for_item("input", stack)
         end,
         input_inventory = "output",
