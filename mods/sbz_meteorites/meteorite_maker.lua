@@ -121,6 +121,7 @@ core.register_entity("sbz_meteorites:emerging_meteorite", {
 
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
+        self.object:set_armor_groups({ no_move = 1, matter = 100 })
     end,
     on_punch = function(self)
         self.object:remove()

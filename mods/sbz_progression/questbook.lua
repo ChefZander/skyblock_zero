@@ -103,18 +103,20 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     for i, quest in ipairs(quests_to_show) do
         if quest.type == "quest" then
             if is_achievement_unlocked(player_name, quest.title) then
-                quest_list[#quest_list + 1] = "✓ " .. quest.title
+                quest_list[#quest_list + 1] = "#d4fcd6 ✓ " .. quest.title
             elseif is_quest_available(player_name, quest.title) then
                 quest_list[#quest_list + 1] = "► " .. quest.title
             else
-                quest_list[#quest_list + 1] = " ✕ " .. quest.title
+                quest_list[#quest_list + 1] = "#848484 ✕ " .. quest.title
             end
+        elseif quest.info == true then -- info text
+            quest_list[#quest_list + 1] = "#a9b7fc  !  " .. quest.title
         elseif quest.type == "text" then
-            quest_list[#quest_list + 1] = "≡ " .. quest.title
+            quest_list[#quest_list + 1] = "#a9fcf5 ≡ " .. quest.title
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then
-            quest_list[#quest_list + 1] = "✪ " .. quest.title
+            quest_list[#quest_list + 1] = "#e3a9fc ✪ " .. quest.title
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) == false then
-            quest_list[#quest_list + 1] = "✪ ???"
+            quest_list[#quest_list + 1] = "#e3a9fc ✪ ???"
         end
     end
     ---@diagnostic disable-next-line: cast-local-type
