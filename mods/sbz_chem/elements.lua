@@ -91,8 +91,9 @@ sbz_api.register_element = function(name, color, description, def)
                 chem_fluid_source = 1,
                 chem_element = 1,
                 radioactive = (radioactive or 0) * 2,
+                hot = 50,
             },
-            post_effect_color = color,
+            post_effect_color = color .. "7F",
             paramtype = "light",
             walkable = false,
             pointable = false,
@@ -102,11 +103,13 @@ sbz_api.register_element = function(name, color, description, def)
             liquid_alternative_flowing = ("sbz_chem:%s_fluid_flowing"):format(name),
             drop = "",
             liquid_viscosity = 7,
-            drowning = 4,
-            damage_per_second = 8,
             liquid_renewable = false,
+            sbz_node_damage = {
+                matter = 5, -- 5hp/second
+            },
             light_source = 14,
             liquid_range = 2,
+            chem_block_form = "sbz_chem:" .. name .. "_block"
         })
 
         local animation = {
@@ -139,12 +142,13 @@ sbz_api.register_element = function(name, color, description, def)
                 transparent = 1,
                 not_in_creative_inventory = 1,
                 water = 0,
+                hot = 10,
                 chem_disabled = disabled_group,
                 chem_fluid = 1,
                 chem_fluid_source = 0,
                 radioactive = radioactive
             },
-            post_effect_color = color,
+            post_effect_color = color .. "7F",
             paramtype = "light",
             paramtype2 = "flowingliquid",
             walkable = false,
@@ -155,18 +159,21 @@ sbz_api.register_element = function(name, color, description, def)
             liquid_alternative_flowing = ("sbz_chem:%s_fluid_flowing"):format(name),
             drop = "",
             liquid_viscosity = 7,
-            drowning = 4,
-            damage_per_second = 8,
+            sbz_node_damage = {
+                matter = 3, -- 3hp/second
+            },
             liquid_renewable = false,
             light_source = 14,
             liquid_range = 2,
+            chem_block_form = "sbz_chem:" .. name .. "_block",
+
         })
 
         sbz_api.register_fluid_cell(("sbz_chem:%s_fluid_cell"):format(name), {
             description = description:format("Fluid Cell"),
             groups = {
                 chem_disabled = disabled_group,
-                chem_fluid = 1,
+                chem_fluid_cell = 1,
                 chem_fluid_source = 0,
                 not_in_creative_inventory = disabled_group,
             }
@@ -278,3 +285,19 @@ sbz_api.register_element("sodium", "#F4F4F4", "Sodium %s (Na)", { disabled = tru
 sbz_api.register_element("white_gold", "#E5E4E2", "White Gold %s (AuNi)",
     { disabled = true, part_of_crusher_drops = false })
 sbz_api.register_element("brass", "#B5A642", "Brass %s (CuZn)", { disabled = true, part_of_crusher_drops = false })
+
+core.register_abm {
+    label = "Freeze liquid metals (group:cold>=1 contacting them)",
+    nodenames = { "group:chem_fluid" },
+    neighbors = { "group:cold" },
+    interval = 6,
+    chance = 6,
+    catch_up = false,
+    action = function(pos, node)
+        if core.get_item_group(node.name, "chem_fluid_source") == 0 then
+            core.set_node(pos, { name = "sbz_resources:stone" })
+        elseif core.registered_nodes[node.name].chem_block_form then
+            core.set_node(pos, { name = core.registered_nodes[node.name].chem_block_form })
+        end
+    end,
+}

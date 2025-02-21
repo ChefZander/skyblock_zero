@@ -69,7 +69,7 @@ local c_basalt = c("sbz_planets:basalt")
 local c_marble = c("sbz_planets:marble")
 local c_granite = c("sbz_planets:granite")
 
-local c_ice_core = c("sbz_planets:ice_core")
+local c_ice_core = c("sbz_resources:movable_emitter")
 local c_ice = c("sbz_planets:ice")
 local c_snow = c("sbz_planets:snow")
 local c_snow_layer = c("sbz_planets:snow_layer")
@@ -383,7 +383,7 @@ sbz_api.planets.register_type {
     end
 }
 
-local c_colorium_core = c("sbz_planets:colorium_core")
+local c_colorium_core = c("sbz_bio:colorium_emitter")
 local c_water = c("sbz_planets:water_source_nofall")
 local c_pyrograss_dirt = c("sbz_bio:dirt_with_grass")
 local c_dirt = c("sbz_bio:dirt")

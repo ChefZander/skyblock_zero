@@ -149,13 +149,17 @@ You can put that new mutated tree core into the dna extractor, and repeat. After
         title = "Colorium Emitters",
         text = [[
 Tree farms are difficult, and sometimes needlessly laggy, so colorium emitters were made as a solution.
-These cannot be found naturally, they can only be crafted with 8 phlogiston, and one sapling.
 When you place them, don't worry, they can be dug.
 They can also be colored, darker colors look weird, you should try them.
-
 They can drop a sapling, a tree trunk or a leaf.
-You will complete this quest when you manage to extract a resource from the colorium emitter.
-        ]],
+
+So... how do you get them....
+They are in the cores of "Colorium Planets", those are the planets with trees and pyrograss.
+Colorium emitters are surrounded by molten metal, so you will need some strong armor (neutronium armor works, may be overkill).
+You will get this quest when you obtain one (possibly will need to move it around in the inventory).
+
+You can duplicate colorium emitters with 8 phlogiston.
+]],
         requires = { "Colorium Trees", "Phlogiston" },
     }
 

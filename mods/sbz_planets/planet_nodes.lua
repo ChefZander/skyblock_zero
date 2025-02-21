@@ -143,18 +143,19 @@ core.register_node("sbz_planets:dead_core", {
 core.register_node("sbz_planets:ice", {
     description = "Ice",
     tiles = { "ice.png" },
-    groups = { matter = 1, water = 1, charged = 1, slippery = 5, explody = 20 },
+    groups = { matter = 1, water = 1, cold = 20, charged = 1, slippery = 5, explody = 20 },
     sounds = sbz_api.sounds.ice(),
     light_source = 1,
 })
 stairs.register("sbz_planets:ice")
 
 core.register_node("sbz_planets:ice_core", {
-    description = "Ice Core Piece",
+    description = "Ice Core Piece - deprecatred",
     tiles = { "ice_core_piece.png" },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 10, level = 2 },
     sounds = sbz_api.sounds.ice(),
     light_source = core.LIGHT_MAX,
+    drop = "sbz_resources:movable_emitter"
 })
 
 
@@ -164,7 +165,7 @@ core.register_node("sbz_planets:snow", {
     tiles = { "snow.png" },
     drawtype = "liquid",
     paramtype = "light",
-    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, charged = 1, explody = 100, },
+    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, cold = 10, charged = 1, explody = 100, },
     sounds = sbz_api.sounds.snow(),
     walkable = false,
     climbable = true,
@@ -192,7 +193,7 @@ core.register_node("sbz_planets:snow_layer", {
     drawtype = "nodebox",
     paramtype2 = "wallmounted",
     paramtype = "light",
-    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, charged = 1, explody = 1000, not_in_creative_inventory = 1, attached_node = 1, },
+    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, cold = 1, charged = 1, explody = 1000, not_in_creative_inventory = 1, attached_node = 1, },
     sounds = sbz_api.sounds.snow(),
     node_box = snowbox,
     collision_box = snowbox,
@@ -209,11 +210,12 @@ core.register_craftitem("sbz_planets:snowball", {
 })
 
 core.register_node("sbz_planets:colorium_core", {
-    description = "Colorium Core Piece",
+    description = "Colorium Core Piece - Deprecated",
     tiles = { "blank.png^[invert:rgba" },
-    groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 1, level = 2 },
+    groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 1, level = 2, not_in_creative_inventory = 1 },
     sounds = sbz_api.sounds.matter(),
     light_source = core.LIGHT_MAX,
+    drop = "sbz_bio:colorium_emitter"
 })
 
 local water_color = "#576ee180"

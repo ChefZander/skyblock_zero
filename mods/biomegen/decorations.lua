@@ -42,14 +42,14 @@ local function generate_deco_simple(deco, vm, pr, p, ceiling)
 	if #decos == 0 then
 		return 0
 	end
-	local nodename = decos[pr:next(1,#decos)]
+	local nodename = decos[pr:next(1, #decos)]
 	local height = deco.vary_height and pr:next(deco.height, deco.height_max) or deco.height
 	local param2 = deco.vary_param2 and pr:next(deco.param2, deco.param2_max) or deco.param2
 	local force_placement = deco.flags.force_placement == true
 
 	local direction = ceiling and -1 or 1
-	p = {x=p.x, y=p.y + place_offset_y * direction, z=p.z} -- Deep-copy the table to avoid issues
-	for i=1, height do
+	p = { x = p.x, y = p.y + place_offset_y * direction, z = p.z } -- Deep-copy the table to avoid issues
+	for i = 1, height do
 		p.y = p.y + direction
 		local node = vm:get_node_at(p)
 		if not force_placement and not emptynodes[node.name] then
@@ -69,15 +69,15 @@ local function get_schematic_size(schem)
 	elseif type(schem) == "string" then
 		local mts = io.open(schem)
 		if not mts then
-			return {x=0, y=0, z=0}
+			return { x = 0, y = 0, z = 0 }
 		end
 		mts:seek('set', 6)
 		local sx1, sx2, sy1, sy2, sz1, sz2 = mts:read(6):byte()
 		mts:close()
-		return {x=sx1*256+sx2, y=sy1*256+sy2, z=sz1*256+sz2}
+		return { x = sx1 * 256 + sx2, y = sy1 * 256 + sy2, z = sz1 * 256 + sz2 }
 	end
 
-	return {x=0, y=0, z=0}
+	return { x = 0, y = 0, z = 0 }
 end
 
 local function generate_deco_schematic(deco, vm, pr, p, ceiling)
@@ -92,7 +92,8 @@ local function generate_deco_schematic(deco, vm, pr, p, ceiling)
 		end
 	end
 
-	minetest.place_schematic_on_vmanip(vm, p, deco.schematic, deco.rotation, deco.replacements, force_placement, deco.schem_flags)
+	minetest.place_schematic_on_vmanip(vm, p, deco.schematic, deco.rotation, deco.replacements, force_placement,
+		deco.schem_flags)
 
 	return 1
 end
@@ -103,7 +104,7 @@ local function parse_node_list(raw_list)
 	end
 	local ilist = {}
 	if type(raw_list) == "string" then
-		raw_list = {raw_list}
+		raw_list = { raw_list }
 	end
 
 	for i, node in ipairs(raw_list) do
@@ -135,7 +136,7 @@ local function make_decolist(gennotify_decolist)
 	for _, v in ipairs(gennotify_decolist) do
 		gennotify_decos[v] = true
 	end
-	
+
 	for i, a in pairs(minetest.registered_decorations) do
 		local b = {}
 		decos[i] = b
@@ -177,7 +178,7 @@ local function make_decolist(gennotify_decolist)
 				if type(biomes_raw) == "number" then
 					biomes_raw = minetest.get_biome_name(biomes_raw)
 				end
-				b.biomes = {[biomes_raw] = true}
+				b.biomes = { [biomes_raw] = true }
 			end
 		end
 
@@ -193,8 +194,8 @@ local function make_decolist(gennotify_decolist)
 		for i, flag in ipairs(flags_raw:split()) do
 			flag = flag:trim()
 			local status = true
-			if flag:sub(1,2) == "no" then
-				flag = flag:sub(3,-1)
+			if flag:sub(1, 2) == "no" then
+				flag = flag:sub(3, -1)
 				status = false
 			end
 			flags[flag] = status
@@ -203,7 +204,7 @@ local function make_decolist(gennotify_decolist)
 		if b.deco_type == "simple" then
 			local a_deco = a.decoration
 			if type(a_deco) == "string" then
-				a_deco = {a_deco}
+				a_deco = { a_deco }
 			end
 			local b_deco = {}
 			for _, deco in ipairs(a_deco) do
@@ -227,7 +228,7 @@ local function make_decolist(gennotify_decolist)
 			b.place_offset_y = a.place_offset_y or 0
 
 			local schem_flags = {}
-			for _, flag in ipairs({'place_center_x', 'place_center_y', 'place_center_z'}) do
+			for _, flag in ipairs({ 'place_center_x', 'place_center_y', 'place_center_z' }) do
 				if flags[flag] then
 					table.insert(schem_flags, flag)
 				end
