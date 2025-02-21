@@ -134,6 +134,21 @@ You can also make some armor from phlogiston, once it is low on durability, you 
         requires = { "Neutronium", "Phlogiston Fuser" }
     },
     {
+        type = "text",
+        title = "Inside of planets",
+        text = [[
+In the center of a planet, there is a core, around it is some molten metal.
+
+Molten metal reacts with cold nodes (like water and ice), very slowly, to:
+- if flowing molten metal collides with water, it gets tured into stone
+- if a flowing metal source collides with water, it gets turned into the node that the flowing metal was. For example molten silicon => silicon block
+
+There is currently no way to make molten metal.
+        ]],
+        info = true,
+        requires = { "Planet Teleporter" }
+    },
+    {
         type = "quest",
         title = "Planet Ores",
         text = [[

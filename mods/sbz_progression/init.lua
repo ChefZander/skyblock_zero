@@ -198,10 +198,14 @@ local achievement_in_inventory_table = {
     ["sbz_bio:stemfruit"] = "Stemfruit",
     ["sbz_chem:uranium_powder"] = "Planet Ores",
     ["sbz_chem:thorium_powder"] = "Planet Ores",
+    ["sbz_resources:movable_emitter"] = "Movable Emitters",
+    ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",
-    ["sbz_resources:strange_blob"] = "It's strange..."
+    ["sbz_resources:strange_blob"] = "It's strange...",
+    ["sbz_resources:movable_emitter"] = "Movable Emitters",
+    ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
 }
 
 minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)

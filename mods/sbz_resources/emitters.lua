@@ -77,6 +77,25 @@ minetest.register_node("sbz_resources:emitter", {
     on_rightclick = action
 })
 
+minetest.register_node("sbz_resources:movable_emitter", {
+    description = "Movable Emitter",
+    tiles = { "movable_emitter.png" },
+    groups = { transparent = 1, matter = 1, level = 2 },
+    sunlight_propagates = true,
+    paramtype = "light",
+    light_source = 14,
+    walkable = true,
+    on_punch = action,
+    on_rightclick = action
+})
+core.register_craft {
+    output = "sbz_resources:movable_emitter 2",
+    recipe = {
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston",      "sbz_resources:phlogiston", },
+        { "sbz_resources:phlogiston", "sbz_resources:movable_emitter", "sbz_resources:phlogiston", },
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston",      "sbz_resources:phlogiston", },
+    }
+}
 
 minetest.register_abm({
     label = "Emitter Particles",

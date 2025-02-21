@@ -36,5 +36,18 @@ Also, if you put a machine next to another machine, it will conduct power to tha
     --{ type = "quest", title = "Infinite Storinators", text = "Infinite Storinators are like normal Storinators, except you can store way more items in them. They have customizable storage size and consume 1 power per row of items. The limit of slots on an Infinite Storinator is 5000, that's 4970 more than a normal Storinator!", requires = { "Emittrium Circuits", "Storinators", "Meteorites" } },
     { type = "quest", title = "Ele Fabs",             text = "Used to manifacture various components, especially for logic.",                                                                                                                                                                                                                                 requires = { "Antimatter", "Emittrium Circuits" } },
     { type = "quest", title = "Knowledge Stations",   text = "Teaches you about logic, which is not documented in this questbook but instead in the knowledge station. Good luck.",                                                                                                                                                                           requires = { "Concrete Plan", "Ele Fabs" } },
+    {
+        type = "quest",
+        title = "Movable Emitters",
+        text = [[
+So, i think you are tired of not being able to just... have emitters wherever you want, right? I mean, your factory could use another emitter, no?
+Well... in the core of the ice planets.... there is a fix... but be aware... you must be strong (ideal is neutronium armor, but that might be overkill, experiment yourself)...
+
+(Btw, ice planets are the planets with ice/snow/gravel)
+Movable emitters can also be duplicated with 8 phlogiston.
+You will obtain this quest by obtaining a movable emitter.
+]],
+        requires = { "Planet Teleporter" }
+    }
 
 }

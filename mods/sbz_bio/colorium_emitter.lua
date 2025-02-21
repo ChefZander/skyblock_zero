@@ -45,39 +45,12 @@ minetest.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
     on_punch = action,
     on_rightclick = action
 })
+
 core.register_craft {
-    output = "sbz_bio:colorium_emitter",
+    output = "sbz_bio:colorium_emitter 2",
     recipe = {
         { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "sbz_bio:colorium_sapling", "sbz_resources:phlogiston" },
+        { "sbz_resources:phlogiston", "sbz_bio:colorium_emitter", "sbz_resources:phlogiston" },
         { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" }
     }
 }
-
-
-minetest.register_abm({
-    label = "Colorium Emitter Particles",
-    nodenames = { "sbz_bio:colorium_emitter" },
-    interval = 1,
-    chance = 1,
-    action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.add_particlespawner({
-            amount = 20,
-            time = 1,
-            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-            minvel = { x = -5, y = -5, z = -5 },
-            maxvel = { x = 5, y = 5, z = 5 },
-            minacc = { x = 0, y = 0, z = 0 },
-            maxacc = { x = 0, y = 0, z = 0 },
-            minexptime = 30,
-            maxexptime = 50,
-            minsize = 0.5,
-            maxsize = 1.0,
-            collisiondetection = false,
-            vertical = false,
-            texture = "colorium_emitter.png",
-            glow = 12
-        })
-    end,
-})
