@@ -141,7 +141,7 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
         habitat_conducts = 1,
     },
     paramtype = "light",
-    paramtype2 = "wallmounted",
+    paramtype2 = "facedir",
     sunlight_propagates = true,
     on_place = function(stack, placer, pointed, recursed)
         if (recursed or 0) > ladder_autoplace_limit then return end
@@ -149,7 +149,7 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
             local target = pointed.under
             local node = core.get_node(target)
             if node.name == "sbz_decor:ladder" then
-                local dir = minetest.wallmounted_to_dir(node.param2)
+                local dir = minetest.facedir_to_dir(node.param2)
                 if dir == nil then return end
                 dir.y = math.abs(dir.y)
 
