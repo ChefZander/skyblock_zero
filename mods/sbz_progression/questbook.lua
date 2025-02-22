@@ -124,7 +124,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 
     local formspec = ([[
         formspec_version[7]
-        size[17.25,13.25]
+        size[17.25,12.8]
+        padding[0,0]
         label[0.1,0.3;Quest List]
         textlist[0,0.7;5.8,11.3;quest_list;%s;%s]
         field_close_on_enter[search;false]
@@ -137,21 +138,23 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         if selected_quest.type == "quest" or (selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title)) then
             formspec = formspec .. ([[
             hypertext[6,0.3;69,420;;%s]
-            hypertext[6,1.3;9.8,9.5;;%s]
-            label[6,11.3;%s]
+            hypertext[6,1.3;11.24,10.5;;%s]
+            label[7.35,12.25;%s]
     ]]):format(minetest.formspec_escape("<big>" .. selected_quest.title .. "</big>"),
                 (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."),
-                (is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest.")
+                (is_achievement_unlocked(player_name, selected_quest.title) and "✔️You have completed this Quest." or "You have not completed this Quest.")
             )
         elseif selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title) == false then
             formspec = formspec .. ([[
         hypertext[6,0.3;69,420;;<big>???]
-        textarea[6,1.3;9.8,9.5;;;???]
-        label[6,11.3;%s]
-    ]]):format((is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest."))
+        textarea[6,1.3;11.24,10.5;;;???]
+        label[7.35,12.25;%s]
+    ]]):format((is_achievement_unlocked(player_name, selected_quest.title) and "✔️You have completed this Quest." or "You have not completed this Quest."))
         elseif selected_quest.type == "text" then
             formspec = formspec ..
-                ([[hypertext[6,0.3;9.8,9.5;;%s] ]]):format((is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."))
+                ("hypertext[6,0.3;69,420;;%s]"):format("<style color=#9ab7fc><big>" ..
+                    selected_quest.title .. "</big></style>") ..
+                ([[hypertext[6,1.3;11.24,10.5;;%s] ]]):format((is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."))
         end
     end
 

@@ -31,6 +31,19 @@ return {
         requires = { "Bear Arms", "Tubes" }
     },
     {
+        type = "text",
+        info = true,
+        title = "Matter Factory",
+        text = [[
+Using advanced matter extractors, some automatic filter injectors, tubes, and a storinator, you can make a really good matter factory.
+Advanced matter extractors are crazy fast for their cost, so with like 6 of them, you will get lots of matter in no time.
+
+Here is an example of one:
+<img name=questbook_image_matter_factory.png width=483 height=453>
+        ]],
+        requires = { "Automatic Filter-Injectors", "Tubes" }
+    },
+    {
         type = "quest",
         title = "Node Breakers",
         text =
@@ -72,7 +85,9 @@ return {
         type = "quest",
         title = "Teleport Tubes",
         text =
-        [[So, i think you want to transmit items in long distances, well teleport tubes help in that! They pretty much explain themselvs, soo, good luck!]],
+        [[So, i think you want to transmit items in long distances, well teleport tubes help in that! They pretty much explain themselvs, soo, good luck!
+
+Oh wait, one thing to mention: The items will fall off the receiving tube if you don't use a high priority tube next to it.]],
         requires = { "Tubes", "Crystal Grower" }
     },
     -- ==================================================================================================

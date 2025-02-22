@@ -26,7 +26,9 @@ TIP: If you lose your Quest Book, you can use /qb to get it back.]],
         title = "A bigger platform",
         text = [[Isn't this one node a little too crammed? Let's do something about that.
 
-Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. Place it down :D (Assuming that, you are not playing a multiplayer server, that protects the core, we will talk about that...)]],
+Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. Place it down :D (Assuming that, you are not playing a multiplayer server, that protects the core, we will talk about that...)
+If you are unable to place a matter blob next to the core, try sneaking while placing it.
+]],
         requires = { "Introduction" }
     },
 
@@ -43,7 +45,8 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
         type = "quest",
         title = "Annihilator",
         text =
-        [[Doesn't it feel weird to be holding antimatter? To break nodes you'll need a Matter Annihilator, you should craft it up now since it's used in some other crafts down the line. \nTIP: Half-broken Annihilators can also be used to craft with.]],
+        [[Doesn't it feel weird to be holding antimatter? To break nodes you'll need a Matter Annihilator, you should craft it up now since it's used in some other crafts down the line.
+        TIP: Half-broken Annihilators can also be used to craft with.]],
         requires = { "A bigger platform", "Antimatter" }
     },
     {
