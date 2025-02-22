@@ -13,6 +13,34 @@ local fx = {
         drag = { x = 1 / 10, y = 1 / 10, z = 1 / 10 },
         exptime = { min = 20, max = 50 },
     },
+    {
+        amount = 300,
+        time = 0.5,
+        glow = 14,
+        size = 1,
+        radius = 0.1,
+        attract = {
+            kind = "point",
+            strength = -15,
+            origin = "pls supply pos",
+        },
+        drag = { x = 1 / 10, y = 1 / 10, z = 1 / 10 },
+        exptime = { min = 20, max = 50 },
+    },
+    {
+        amount = 100,
+        time = 0.01,
+        glow = 14,
+        size = 3,
+        radius = 0.1,
+        attract = {
+            kind = "point",
+            strength = -250,
+            origin = "pls supply pos",
+        },
+        drag = { x = 1 / 10, y = 1 / 10, z = 1 / 10 },
+        exptime = { min = 20, max = 50 },
+    },
 
 }
 
@@ -34,6 +62,10 @@ local function make_fx(pos)
         effect.attract.origin = pos
     end
 
+    core.sound_play("firework_explode", {
+        pos = pos,
+        gain = 7.0,
+    }, true)
     core.add_particlespawner(effect)
 end
 
@@ -46,8 +78,17 @@ core.register_craftitem("sbz_resources:firework", {
     on_use = function(stack, user, pointed)
         local pos = pointed.above
         if pos == nil then return end
-        local suspense = 1.5
+
+        local min = 1.10
+        local max = 2.00
+        local suspense = min + math.random() * (max - min)
+
         local velocity = 11
+
+        core.sound_play("firework_launch", {
+            pos = pos,
+            gain = 0.5,
+        }, true)
         core.add_particle {
             pos = pos,
             expirationtime = suspense,
