@@ -13,7 +13,7 @@ Now, to get started: look down at the core. Punching it will give you some of yo
 You can also just right-click the core, it will be easier on you.
 
 These quests are in no particular order, but you might need items from one quest for another.
-It also sometimes is a horrible idea to do quests in order, like making antimatter generators before doing basic automation..
+It also sometimes is a horrible idea to do quests in order, like making antimatter reaction generators before doing basic automation...
 
 Also, if you need to know a recipe, search the item in the inventory, and click on it, it will bring up what it can be used for or how it can be crafted. (There were way too many people asking me "how to craft antimatter" i needed to include this.)
 
@@ -142,9 +142,11 @@ To craft a Simple Circuit, you'll need one core dust and one matter blob. You'll
         text =
         [[Right now, you're probably using simple charged fields to generate your power, but since they decay, they don't last forever, which is not convenient.
 
-To solve that, you can use a generator; it consumes core dust as fuel over time, and provides you with more power than simple charged fields do.
+To solve that, you can use a simple charge generator. It consumes core dust as fuel over time, and provides you with more power than simple charged fields do.
 
-However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.]],
+However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.
+
+]],
         requires = { "Charged Field", "Antimatter" }
     },
 

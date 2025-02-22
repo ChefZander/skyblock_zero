@@ -147,6 +147,7 @@ local achievement_table = {
     ["sbz_chem:nuclear_reactor_off"] = "Nuclear Reactor",
     ["sbz_power:solid_charged_field"] = "Radiation Shielding",
     ["sbz_resources:bomb"] = "TNT",
+    ["pipeworks:teleport_tube_1"] = "Teleport Tubes"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

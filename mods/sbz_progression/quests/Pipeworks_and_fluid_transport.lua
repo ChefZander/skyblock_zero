@@ -68,6 +68,13 @@ return {
         text = "Item Vacuums vacuum up items in a 16 block radius, but they tend to cause lag.",
         requires = { "Neutronium", "Tubes" }
     },
+    {
+        type = "quest",
+        title = "Teleport Tubes",
+        text =
+        [[So, i think you want to transmit items in long distances, well teleport tubes help in that! They pretty much explain themselvs, soo, good luck!]],
+        requires = { "Tubes", "Crystal Grower" }
+    },
     -- ==================================================================================================
 
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },

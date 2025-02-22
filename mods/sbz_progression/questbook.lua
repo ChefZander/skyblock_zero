@@ -151,7 +151,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     ]]):format((is_achievement_unlocked(player_name, selected_quest.title) and "✔️ You have completed this Quest." or "You have not completed this Quest."))
         elseif selected_quest.type == "text" then
             formspec = formspec ..
-                ([[textarea[6,0.3;9.8,9.5;;;%s] ]]):format((is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."))
+                ([[hypertext[6,0.3;9.8,9.5;;%s] ]]):format((is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."))
         end
     end
 
