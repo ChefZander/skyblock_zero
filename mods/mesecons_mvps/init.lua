@@ -266,7 +266,6 @@ sbz_api.move_node = function(A, B)
 end
 
 -- Never push into unloaded blocks. Don’t try to pull from them, either.
--- TODO: load blocks instead, as with wires.
 mesecon.register_mvps_stopper("ignore")
 mesecon.register_on_mvps_move(function(moved_nodes)
     if #moved_nodes == 1 then

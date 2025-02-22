@@ -29,15 +29,16 @@ function jumpdrive.move(source_pos1, source_pos2, target_pos1, target_pos2)
 	local t1 = minetest.get_us_time()
 	minetest.log("action", "[jumpdrive] step I took " .. (t1 - t0) .. " us")
 
-	for k, v in ipairs(sbz_api.on_mvps_move) do
-		v(movenode_list)
-	end
-
 	-- step 2: check meta/timers and copy if needed
 	t0 = minetest.get_us_time()
 	jumpdrive.move_metadata(source_pos1, source_pos2, delta_vector)
 	jumpdrive.move_nodetimers(source_pos1, source_pos2, delta_vector)
 
+	for k, v in ipairs(sbz_api.on_mvps_move) do
+		v(movenode_list)
+	end
+	--[[
+	calling on_mvps_move functions should do that
 	-- move "on_movenode" aware nodes
 	for _, entry in ipairs(movenode_list) do
 		if entry.nodedef then
@@ -46,7 +47,7 @@ function jumpdrive.move(source_pos1, source_pos2, target_pos1, target_pos2)
 			})
 		end
 	end
-
+]]
 	-- print stats
 	t1 = minetest.get_us_time()
 	minetest.log("action", "[jumpdrive] step II took " .. (t1 - t0) .. " us")

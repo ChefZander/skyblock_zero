@@ -1,5 +1,5 @@
 -- can't use sbz_api.register_machine here
--- also holy crap it's so insanely complex... good luck...
+-- also holy crap it's so insanely complex?... good luck..., taken from pipeworks
 
 local fs_helpers = pipeworks.fs_helpers
 
@@ -240,6 +240,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 elseif fromdef.allow_metadata_inventory_take then
                     doRemove = fromdef.allow_metadata_inventory_take(frompos, frominvname, spos, stack, fakeplayer)
                 end
+
                 -- stupid lack of continue statements grumble
                 if doRemove > 0 then
                     if slotseq_mode == 2 then

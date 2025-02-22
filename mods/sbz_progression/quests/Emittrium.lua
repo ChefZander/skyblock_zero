@@ -5,7 +5,7 @@ return {
         type = "quest",
         title = "Obtain Emittrium",
         text =
-        [[Do you see those blue stars in the distance? They're called Emitters. To obtain Emittrium from them, you will have to build a bridge over to one.
+        [[Do you see those blue blocks in the distance? They're called Emitters. To obtain Emittrium from them, you will have to build a bridge over to one.
 I would recommend to choose the closest one to you, but any Emitter works. Next, you'll need a Matter Annihilator. You can't destroy the Emitters, but you can chip away at them.
 
 Punch your Emitter of choice until it yields some 'Raw Emittrium'. We'll refine the Emittrium later, but for now we just need it in its raw state.

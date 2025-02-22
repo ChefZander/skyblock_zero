@@ -9,6 +9,7 @@ if not is_compatible then
 end
 
 function jumpdrive.teleporttube_compat(from, to)
+	--[[
 	if not is_compatible then
 		return
 	end
@@ -39,4 +40,5 @@ function jumpdrive.teleporttube_compat(from, to)
 	-- set target entry
 	db[to_hash] = data
 	pipeworks.tptube.save_tube(to_hash)
+	]]
 end

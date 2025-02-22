@@ -21,7 +21,7 @@ Also used in connecting jumpdrives to a fleet controller.
         text = [[
 An ingredient in making the jumpdrive engine. May be required for other things in the future.
         ]],
-        requires = { "Crystal Grower", "Antimatter Generator" },
+        requires = { "Crystal Grower", "Antimatter Reaction Generator" },
     },
     {
         type = "quest",
@@ -29,7 +29,7 @@ An ingredient in making the jumpdrive engine. May be required for other things i
         text = [[
 Lets you teleport your buildings with you, to any* coordinate....
 
-*Though in skyblock zero, this has been slightly modified: Without a jumpdrive station near the target, you can only travel 120 blocks away from your current position... But if you have a jumpdrive station, near (50 blocks away) your target position, you can teleport there.
+*Though in skyblock zero, this has been slightly modified: Without a jumpdrive station near the target, you can only travel 500 blocks away from your current position... But if you have a jumpdrive station, near (50 blocks away) your target position, you can teleport there.
 
 The jumpdrive also acts as a battery, storing 200 kCj, this also means it can be discharged, be aware of that.
 

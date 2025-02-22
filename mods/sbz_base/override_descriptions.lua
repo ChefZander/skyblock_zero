@@ -23,8 +23,8 @@ minetest.register_on_mods_loaded(function()
 
         local explody = false
         if v.groups ~= nil then
-            if v.groups.core_drop_multi ~= nil then
-                new_desc[#new_desc + 1] = "Yields " .. v.groups.core_drop_multi .. "x core and emittrium drops"
+            if v.groups.core_drop_multi ~= nil and v.groups.core_drop_multi ~= 1 then
+                new_desc[#new_desc + 1] = v.groups.core_drop_multi .. "x effective at getting drops from core"
             end
             if v.groups.moss_growable ~= nil then
                 new_desc[#new_desc + 1] = "Moss can grow on this node."

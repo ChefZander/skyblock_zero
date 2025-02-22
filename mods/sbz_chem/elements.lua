@@ -260,7 +260,7 @@ sbz_api.register_element("silicon", "#5ba082", "Silicon %s (Si)",
     { part_of_crusher_drops = false, part_of_enhanced_drops = true, fluid = 1 })
 -- alloys
 
-sbz_api.register_element("bronze", "#CD7F32", "Bronze %s (CuSn)", { part_of_crusher_drops = false })
+sbz_api.register_element("bronze", "#87461d", "Bronze %s (CuSn)", { part_of_crusher_drops = false })
 sbz_api.register_element("invar", "#808080", "Invar %s (FeNi)", { part_of_crusher_drops = false })
 sbz_api.register_element("titanium_alloy", "#B0C4DE", "Titanium Alloy %s (TiAl)", { part_of_crusher_drops = false })
 
