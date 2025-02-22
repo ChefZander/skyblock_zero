@@ -12,6 +12,8 @@ local fx = {
         },
         drag = { x = 1 / 10, y = 1 / 10, z = 1 / 10 },
         exptime = { min = 20, max = 50 },
+        collisiondetection = true,
+        bounce = 0.5,
     },
     {
         amount = 300,
@@ -26,6 +28,8 @@ local fx = {
         },
         drag = { x = 1 / 10, y = 1 / 10, z = 1 / 10 },
         exptime = { min = 20, max = 50 },
+        collisiondetection = true,
+        bounce = 0.5,
     },
     {
         amount = 100,
@@ -40,6 +44,8 @@ local fx = {
         },
         drag = { x = 1 / 10, y = 1 / 10, z = 1 / 10 },
         exptime = { min = 20, max = 50 },
+        collisiondetection = true,
+        bounce = 0.5,
     },
 
 }
