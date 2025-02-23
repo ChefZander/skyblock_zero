@@ -50,7 +50,7 @@ local fx = {
 
 }
 
-local colors = { "red", "green", "lime", "yellow", "blue", "azure", "cyan", "pink", "magenta" }
+local colors = { "red", "lime", "yellow", "blue", "azure", "cyan", "pink", "magenta" }
 local function random_color()
     return colors[math.random(1, #colors)]
 end
