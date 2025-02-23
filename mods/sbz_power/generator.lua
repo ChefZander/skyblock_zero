@@ -401,7 +401,7 @@ list[current_player;main;0.2,5;8,4;]
         can_insert = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            stack = stack:peek_item(1)
+            stack = stack:peek_item(10) --if can insert 10, then yeah... because 1 results in a mess
             local stackname = stack:get_name()
             if stackname == "sbz_resources:matter_dust" then
                 return inv:room_for_item("matter", stack)
