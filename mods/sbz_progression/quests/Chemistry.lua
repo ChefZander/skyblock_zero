@@ -22,9 +22,9 @@ You can put in pebbles to get metals, it will also crush stones into 2 gravel ea
         type = "quest",
         title = "Compressor",
         text = [[
-Have you ever wanted to turn your metals into nodes? Now you can!
-Craft this wonderful compressor, insert in 9 powder, or 9 ingots, and watch as it makes your nodes.
-Nodes made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.
+Have you ever wanted to turn your metals into blocks? Now you can!
+Craft this wonderful compressor, insert in 9 powder, or 9 ingots, and watch as it makes your blocks.
+Blocks made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.
         ]],
         requires = { "Crusher" }
     },
@@ -143,7 +143,7 @@ In the center of a planet, there is a core, around it is some molten metal.
 
 Molten metal reacts with cold nodes (like water and ice), very slowly, to:
 - if flowing molten metal collides with water, it gets tured into stone
-- if a flowing metal source collides with water, it gets turned into the node that the flowing metal was. For example molten silicon => silicon node
+- if a flowing metal source collides with water, it gets turned into the node that the flowing metal was. For example molten silicon => silicon block
 
 There is currently no way to make molten metal.
         ]],

@@ -13,8 +13,8 @@ Compress it! Compressed Core Dust can be used as a building material.]],
         type = "quest",
         title = "More Antimatter",
         text =
-        [[Did you know that you can also craft Antimatter Blobs? They give off extremely faint light and unlock some lighting nodes to light up your island.
-You can even make antimatter versions of some decorational blocks! Just be careful when placing them; if antimatter and matter come in contact then they will annihilate and create a violent explosion.
+        [[You can also craft Antimatter Blobs. They give off extremely faint light and unlock some lighting nodes to light up your island.
+You can also make antimatter versions of some decorational blocks! Just be careful when placing them; if antimatter and matter come in contact then they will annihilate and create a violent explosion.
 
 TIP: You can use compressed core dust as a buffer when dealing with antimatter.]],
         requires = { "Antimatter" }
@@ -23,9 +23,9 @@ TIP: You can use compressed core dust as a buffer when dealing with antimatter.]
         type = "quest",
         title = "Anti-Annihilator",
         text =
-        [[Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can.
+        [[Unfortunately, you again don't seem to be strong enough to destroy that node once you place it, so let's craft something that can.
 
-Now, to craft an Antimatter Annihilator you'll need a couple things:
+To craft an Antimatter Annihilator you'll need a couple things:
 
 * one Matter Dust
 * one Charged Particle
@@ -37,7 +37,7 @@ Make sure the Charged Particle is properly encased in antimatter, or it'll escap
     {
         type = "quest",
         title = "Screwdriver",
-        text = "Screwdriver rotates blocks when you click on one with it. Same as mtg screwdriver.",
+        text = "Screwdriver rotates nodes when you click on one with it. \nTIP: This acts similarly to the Minetest Game screwdriver.",
         requires = { "Antimatter", "Introduction" }
     },
     --[[
@@ -59,13 +59,13 @@ Next time you’re floating through the cosmos and stumble upon these absurd con
         type = "quest",
         title = "CNC Machines",
         text = [[
-Do you want shapes that aren't... blocks? Like... stairs?
+Do you want shapes that aren't blocks, like stairs or slabs?
 Oh do i have the machine for you!
 
 With a CNC machine you can make all sorts of stairs and slabs....
 Craft one, put in the block of your choosing*, and boom!
 
-*The block needs to be compatible with the CNC machine, it usually will have a grey "You can make stairs with it!" text.
+*The node needs to be compatible with the CNC machine, it usually will have a grey "You can make stairs with it!" text.
 ]],
         requires = { "Emittrium Circuits" }
     },
@@ -79,7 +79,7 @@ Craft one, put in the block of your choosing*, and boom!
     {
         type = "quest",
         title = "Tiled Factory Flooring",
-        text = "A variation of Factory Flooring which add even more tiling!",
+        text = "A variation of Factory Flooring which adds even more tiling!",
         requires = { "A bigger platform", "Factory Flooring" }
     },
 
@@ -94,7 +94,7 @@ Craft one, put in the block of your choosing*, and boom!
         type = "quest",
         title = "Reinforced Matter",
         text =
-        "Normal matter isn't sturdy enough? Try this one. This one won't break, unless you break it, then it breaks. Wait a minute...",
+        "Normal matter isn't sturdy enough? Try this.",
         requires = { "A bigger platform", "Matter Plates" }
     },
 
@@ -114,10 +114,9 @@ TIP: Emitter Immitators spawn a lot of particles when punched, try it!]],
         title = "Photon Lamps",
         text = [[Are Emitter Immitators too dim for you? Introducing: Photon Lamps!
 
-With this revolutionary technology you can light up your world... uhm... the same way... as with Emitter Immitators... just brighter!
-As for getting one, well, we don't sell them yet so you're just going to have to make your own!
+With this revolutionary technology you can light up your world the same way as with Emitter Immitators just brighter!
 
-Here goes: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Immitators.
+To craft: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Immitators.
 Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in darkness! Yay!]],
         requires = { "Emitter Immitators", "Matter Plates" }
     },
@@ -133,21 +132,21 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
         type = "quest",
         title = "Signs",
         text =
-        "Do you want to write something.... that's like... visible in the world? You should consider crafting a sign.",
+        "Do you want to write something that's visible in the world? You should consider crafting a sign.",
         requires = { "Antimatter" }
     },
     {
         type = "quest",
         title = "Powered Lights",
         text =
-        "Do you want to light up an area, cheaply? Powered lamps are the way to do it.... if you find something cheaper its a bug.\nOr do you want to light up a huge area, the Super powered lamp is for you, it fills up a 12x12x12 cube with invisible lights for somewhat low power consumbtion!",
+        "Do you want to light up an area, cheaply? Powered lamps are the way to do it, if you find something cheaper its a bug.\nOr do you want to light up a huge area, the Super powered lamp is for you, it fills up a 12x12x12 cube with invisible lights for somewhat low power consumbtion!",
         requires = { "Switching Station", "More Antimatter", "Emittrium Glass" }
     },
     {
         type = "quest",
         title = "Coloring Tool",
         text = [[
-Yeah, if you actually want to color nodes, use that.
+For coloring nodes.
 It requires 1 colorium per each node you are coloring.
 
 You extract colorium dust from colorium leaves, then you put it in the furnace.
