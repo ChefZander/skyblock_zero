@@ -195,21 +195,14 @@ minetest.register_chatcommand("toggle_bgm", {
 
 })
 
-local function table_length(tbl)
-    local count = 0
-    for _ in pairs(tbl) do
-        count = count + 1
-    end
-    return count
-end
-
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
     minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Version %s)"):format(sbz_api.version))
     minetest.chat_send_player(player:get_player_name(),
         "‼ reminder: If you fall off, use /core to teleport back to the core.")
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
-
+    --    minetest.chat_send_player(player:get_player_name(),
+    --        "‼ Also, you can hold right click on the core, instead of having to spam your mouse, on mobile you might need to just hold tap")
     -- play bgm
     playRandomBGM(player)
 

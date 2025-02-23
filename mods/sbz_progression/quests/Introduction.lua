@@ -1,5 +1,5 @@
 return {
-    { type = "text",  title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
+    { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
 
     {
         type = "quest",
@@ -10,8 +10,10 @@ return {
 You can also just ignore the Quest Book if you are an experienced player.
 			
 Now, to get started: look down at the core. Punching it will give you some of your first resources.
+You can also just right-click the core, it will be easier on you.
 
 These quests are in no particular order, but you might need items from one quest for another.
+It also sometimes is a horrible idea to do quests in order, like making antimatter reaction generators before doing basic automation...
 
 Also, if you need to know a recipe, search the item in the inventory, and click on it, it will bring up what it can be used for or how it can be crafted. (There were way too many people asking me "how to craft antimatter" i needed to include this.)
 
@@ -24,7 +26,9 @@ TIP: If you lose your Quest Book, you can use /qb to get it back.]],
         title = "A bigger platform",
         text = [[Isn't this one node a little too crammed? Let's do something about that.
 
-Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. Place it down, and then check the Quest Book again when you've done that.]],
+Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. Place it down :D (Assuming that, you are not playing a multiplayer server, that protects the core, we will talk about that...)
+If you are unable to place a matter blob next to the core, try sneaking while placing it.
+]],
         requires = { "Introduction" }
     },
 
@@ -33,7 +37,7 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
         type = "quest",
         title = "Antimatter",
         text =
-        "Unfortunately, you don't seem to be strong enough to destroy that node once you place it. That kind of sucks, so let's craft something that can. Craft some 'Antimatter Dust', we'll need it for later.",
+        [[Unfortunately, you don't seem to be strong enough to destroy that node once you place it (Assuming you placed it already). That kind of sucks, so let's craft something that can. Craft some 'Antimatter Dust', we'll need it for later.\nDon't know how to craft it? The search bar in your inventory will help.]],
         requires = { "Introduction" }
     },
 
@@ -41,10 +45,25 @@ Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 
         type = "quest",
         title = "Annihilator",
         text =
-        "Doesn't it feel weird to be holding antimatter? To break nodes you'll need a Matter Annihilator, you should craft it up now since it's used in some other crafts down the line. \nTIP: Half-broken Annihilators can also be used to craft with.",
+        [[Doesn't it feel weird to be holding antimatter? To break nodes you'll need a Matter Annihilator, you should craft it up now since it's used in some other crafts down the line.
+        TIP: Half-broken Annihilators can also be used to craft with.]],
         requires = { "A bigger platform", "Antimatter" }
     },
+    {
+        type = "text",
+        info = true,
+        title = "Bridging out",
+        text = [[
+In multiplayer servers, the spawn, near the core, will often be protected by admins. If you want a place to build, you will need to find your own "core", and that's what emitters are.
+Emitters are these blue blocks scattered around the sky, but don't confuse them with the very similar looking background/skybox.
+You will need an annihilator to extract resources from them, but they will behave exactly the same as a core, but they will sometimes give you emittrium.
+You can craft matter platforms to have cheaper ways of bridging out, though they are more annoying to build with.
 
+If you are on singleplayer, you can afford to stay near the core for a little longer, but you will eventually need to bridge out too.
+Also, this "blue thing in the questbook" cannot be completed, it's just advice.
+]],
+        requires = { "Annihilator" }
+    },
     {
         type = "quest",
         title = "Charged Field",
@@ -62,7 +81,27 @@ You can get four Matter Plates by placing one matter blob into the crafting grid
         requires = { "A bigger platform" }
     },
 
-    { type = "quest", title = "Switching Station",       text = "The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you dont have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world.", requires = { "Matter Plates" } },
+    {
+        type = "quest",
+        title = "Switching Station",
+        text =
+        [[The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you don't have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world.]],
+        requires = { "Matter Plates" }
+    },
+    {
+        type = "text",
+        info = true,
+        title = "What conducts power?",
+        text = [[
+Unlike most power systems, in skyblock zero's power system, almost everything significant conducts power to other machines.
+For example, when you have something like this, (imagine each word in brackets is a block, so they are like... lined up):
+[SWITCHING STATION][GENERATOR 1][MACHINE 1][MACHINE 2]
+Then all of the machines would get powered.
+Wires are only useful when you have 2 factories far apart that you want to connect.
+
+Also, the power unit's name is Cosmic Joules.
+]]
+    },
 
     {
         type = "quest",
@@ -70,6 +109,7 @@ You can get four Matter Plates by placing one matter blob into the crafting grid
         text = [[Finally! Automation! Let's get on that, shall we? Here's what you'll need for a Simple Matter Extractor:
 
 One Matter Annihilator, four matter blobs and four bits of core dust.
+Also, you may need to click 2 times for the UI to show up.
 
 TIP: Machines without power occasionally emit red particles.]],
         requires = { "Annihilator", "Charged Field" }
@@ -105,9 +145,11 @@ To craft a Simple Circuit, you'll need one core dust and one matter blob. You'll
         text =
         [[Right now, you're probably using simple charged fields to generate your power, but since they decay, they don't last forever, which is not convenient.
 
-To solve that, you can use a generator; it consumes core dust as fuel over time, and provides you with more power than simple charged fields do.
+To solve that, you can use a simple charge generator. It consumes core dust as fuel over time, and provides you with more power than simple charged fields do.
 
-However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.]],
+However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.
+
+]],
         requires = { "Charged Field", "Antimatter" }
     },
 

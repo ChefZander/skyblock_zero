@@ -249,7 +249,7 @@ register_storinator("colorium", {
     ui_size = 8.2,
     ui_size_y = 9.5,
     groups = { matter = 1 },
-    material = "sbz_bio:stemfruit",
+    material = "unifieddyes:colorium",
 })
 
 register_storinator("warpshroom", {

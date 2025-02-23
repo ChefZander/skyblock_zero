@@ -97,7 +97,7 @@ But that is no longer the case.
 ]],
         requires = { "Neutronium" }
     },
-    { type = "quest", title = "Bear Arms",             text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.",                                                                         requires = { "Furnace" } },
+    { type = "quest", title = "Bear Arms", text = "Notice the small little pun there? .. it's obvious that it tells you to craft a Robotic Arm? Oh.", requires = { "Furnace" } },
     {
         type = "quest",
         title = "Electric Drill",
@@ -115,7 +115,16 @@ It needs 1 power per 1 use.
 It also digs 2x faster than the robotic arm.
 ]]
     },
-    { type = "quest", title = "Antimatter Generators", text = "Craft the antimatter generator, it is best used with automation or a large array of batteries. It needs 1 matter and 1 antimatter PER SECOND. It's super resource hungy.", requires = { "Furnace" } },
+    {
+        type = "quest",
+        title = "Antimatter Generators",
+        text =
+        [[Craft the antimatter generator, it is best used with automation or a large array of batteries.
+It needs 1 matter and 1 antimatter PER SECOND.
+It's super resource hungy but gives you more power.
+]],
+        requires = { "Furnace" }
+    },
     {
         type = "quest",
         title = "Phlogiston Fuser",
