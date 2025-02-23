@@ -6,7 +6,8 @@ Release 29
 - Added Teleport Tube, and the proper quests for it
 - Changed some stuff about how jumpdrive moves nodes that need special compatibility
   - If this creates any bugs, REPORT THEM!
-
+- Fix bug with the "Radiation shielding" text
+- Fireworks have been improved
 
 Release 10
 - Completely recode energy system to use "Cosmic Joules" instead of "Global Power"
