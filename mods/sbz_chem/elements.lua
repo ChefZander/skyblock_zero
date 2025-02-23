@@ -78,7 +78,7 @@ sbz_api.register_element = function(name, color, description, def)
                 { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = true, }
             },
             inventory_image = minetest.inventorycube(("flowing_chemical_source.png^[multiply:%s"):format(color)),
-            use_texture_alpha = "blend",
+            --       use_texture_alpha = "blend",
             groups = {
                 liquid = 3,
                 habitat_conducts = 1,
@@ -135,7 +135,7 @@ sbz_api.register_element = function(name, color, description, def)
                     animation = animation,
                 }
             },
-            use_texture_alpha = "blend",
+            --          use_texture_alpha = "blend",
             groups = {
                 liquid = 3,
                 habitat_conducts = 1,

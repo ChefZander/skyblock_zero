@@ -148,7 +148,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
 
     minetest.sound_play("punch_core", {
         gain = 1,
-        max_hear_distance = 32,
+        max_hear_distance = 5,
         pos = pos
     })
 
