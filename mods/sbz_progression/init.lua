@@ -199,6 +199,8 @@ local achievement_in_inventory_table = {
     ["sbz_chem:thorium_powder"] = "Planet Ores",
     ["sbz_resources:movable_emitter"] = "Movable Emitters",
     ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
+    ["sbz_power:solid_charged_field"] = "Radiation Shielding",
+    ["sbz_resources:bomb"] = "TNT",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",
