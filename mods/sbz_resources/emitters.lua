@@ -7,7 +7,7 @@ local action = function(pos, _, puncher)
     if not can_extract_from_emitter then
         minetest.sound_play("punch_core", {
             gain = 1,
-            max_hear_distance = 32,
+            max_hear_distance = 6,
             pos = pos
         })
         if puncher.is_fake_player then return end
@@ -18,7 +18,7 @@ local action = function(pos, _, puncher)
             puncher:get_inventory():add_item("main", "sbz_resources:raw_emittrium")
             minetest.sound_play("punch_core", {
                 gain = 1,
-                max_hear_distance = 32,
+                max_hear_distance = 6,
                 pos = pos
             })
             minetest.add_particlespawner({
@@ -43,7 +43,7 @@ local action = function(pos, _, puncher)
         else
             minetest.sound_play("punch_core", {
                 gain = 1,
-                max_hear_distance = 32,
+                max_hear_distance = 6,
                 pos = pos
             })
             local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
@@ -148,7 +148,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
 
     minetest.sound_play("punch_core", {
         gain = 1,
-        max_hear_distance = 5,
+        max_hear_distance = 6,
         pos = pos
     })
 

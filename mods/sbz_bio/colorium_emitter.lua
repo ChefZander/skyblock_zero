@@ -5,7 +5,7 @@ local action = function(pos, _, puncher)
     if not can_extract_from_emitter then
         minetest.sound_play("punch_core", {
             gain = 1,
-            max_hear_distance = 32,
+            max_hear_distance = 6,
             pos = pos
         })
         if puncher.is_fake_player then return end
@@ -14,7 +14,7 @@ local action = function(pos, _, puncher)
     for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
         minetest.sound_play("punch_core", {
             gain = 1,
-            max_hear_distance = 32,
+            max_hear_distance = 6,
             pos = pos
         })
         local items = { "sbz_bio:colorium_sapling", "sbz_bio:colorium_tree", "sbz_bio:colorium_leaves" }
