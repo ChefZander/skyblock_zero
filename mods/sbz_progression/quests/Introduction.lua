@@ -46,7 +46,8 @@ If you are unable to place a matter blob next to the core, try sneaking while pl
         title = "Annihilator",
         text =
         [[Doesn't it feel weird to be holding antimatter? To break nodes you'll need a <b>Matter</b> Annihilator, you should craft it up now since it's used in some other crafts down the line.
-        TIP: Half-broken Annihilators can also be used to craft with.]],
+        TIP: Half-broken Annihilators can also be used to craft with.
+        Also, don't craft the <b>Anti</b>matter annihilator, you won't need it yet.]],
         requires = { "A bigger platform", "Antimatter" }
     },
     {
