@@ -364,6 +364,7 @@ local function update_meta(meta)
         "listring[current_player;main]" ..
         "listring[context;dst]" ..
         "listring[current_player;main]" ..
+        "field_enter_after_edit[maxpow;true]" ..
         string.format("field[0.22,7;7,0.5;maxpow;Crafts/s (consumes more power);%s]",
             meta:get_int("maxpow"))
     meta:set_string("formspec", fs)
@@ -452,6 +453,7 @@ minetest.register_node("pipeworks:autocrafter", {
         if fields.maxpow and tonumber(fields.maxpow) and (tonumber(fields.maxpow) > 0) then
             local meta = minetest.get_meta(pos)
             meta:set_int("maxpow", math.floor(fields.maxpow))
+            update_meta(meta)
         end
     end,
     can_dig = function(pos, player)
