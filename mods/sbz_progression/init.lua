@@ -145,7 +145,6 @@ local achievement_table = {
     ["sbz_planets:planet_teleporter"] = "Planet Teleporter",
     ["sbz_chem:pebble_enhancer_off"] = "Pebble Enhancer",
     ["sbz_chem:nuclear_reactor_off"] = "Nuclear Reactor",
-    ["sbz_resources:bomb"] = "TNT",
     ["pipeworks:teleport_tube_1"] = "Teleport Tubes"
 }
 
@@ -200,6 +199,8 @@ local achievement_in_inventory_table = {
     ["sbz_chem:thorium_powder"] = "Planet Ores",
     ["sbz_resources:movable_emitter"] = "Movable Emitters",
     ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
+    ["sbz_power:solid_charged_field"] = "Radiation Shielding",
+    ["sbz_resources:bomb"] = "TNT",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",
@@ -207,6 +208,7 @@ local achievement_on_dig_table = {
     ["sbz_resources:movable_emitter"] = "Movable Emitters",
     ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
     ["sbz_power:solid_charged_field"] = "Radiation Shielding",
+    ["sbz_resources:bomb"] = "TNT",
 }
 
 minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)
