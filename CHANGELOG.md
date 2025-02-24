@@ -1,13 +1,18 @@
 Release 29
+- Notice: Releases may be really small like this one, or HUGE like release 28
+- Started doing changelogs again
 - Added more "info sections" to the questbook, told people that you can hold right click to the core in the questbook
 - Renamed 'Simple Charge Generator' to 'Core Dust Powered Generator', and renamed 'Antimatter Generator' to 'Antimatter Reaction Generator'
 - Fixed a bug where colorium storinators needed stemfruit... instead of colorium xD
 - Made bronze slightly darker 
 - Added Teleport Tube, and the proper quests for it
 - Changed some stuff about how jumpdrive moves nodes that need special compatibility
-  - If this creates any bugs, REPORT THEM!
+  - If this creates any bugs, please report them!
 - Fix bug with the "Radiation shielding" text
 - Fireworks have been improved
+- Client lag with molten liquids should be reduced
+- Fixed a bug with ladders, where they refused to go in certain directions
+- Compressed images, lossy compressed the background to 200kb
 
 Release 10
 - Completely recode energy system to use "Cosmic Joules" instead of "Global Power"
