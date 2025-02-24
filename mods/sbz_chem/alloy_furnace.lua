@@ -73,10 +73,10 @@ listring[current_player;main]
             meta:set_string("infotext", "Not enough power")
             return power_needed, false
         else
-            meta:set_string("infotext", "Smelting...")
-            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
-
             if inv:room_for_item("output", selected_item) then
+                meta:set_string("infotext", "Smelting...")
+                minetest.sound_play("simple_alloy_furnace_running.ogg", { pos = pos })
+
                 inv:add_item("output", selected_item)
                 inv:remove_item("input", input_1)
                 inv:remove_item("input", input_2)

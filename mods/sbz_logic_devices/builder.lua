@@ -155,6 +155,7 @@ sbz_api.register_machine("sbz_logic_devices:builder", {
     description = "Lua Builder",
     info_extra = {
         "It lets the lua controller... control it... so that... yea... it builds!!! you can build!!!",
+        "Can build 50 nodes every 0.25 seconds... good luck!",
     },
     tiles = {
         "lua_builder.png"

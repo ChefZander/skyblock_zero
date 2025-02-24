@@ -12,7 +12,7 @@ minetest.register_node("sbz_bio:burner", sbz_api.add_tube_support({
             "formspec_version[7]" ..
             "size[8.2,9]" ..
             "style_type[list;spacing=.2;size=.8]" ..
-            "list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";main;3.5,2;1,1;]" ..
+            "list[context;main;3.5,2;1,1;]" ..
             "list[current_player;main;0.2,5;8,4;]" ..
             "listring[]"
         )

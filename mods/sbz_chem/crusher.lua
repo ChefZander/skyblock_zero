@@ -97,7 +97,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
         meta:set_string("infotext", "Crushing...")
         inv:remove_item("input", itemname)
-        minetest.sound_play({ name = "050597_ice-crusher-38522", gain = 0.4 }, { pos = pos })
+        minetest.sound_play({ name = "050597_ice-crusher-38522" }, { pos = pos, max_hear_distance = 8 })
 
         local selected_item = possible_outputs[math.random(1, #possible_outputs)]
 
