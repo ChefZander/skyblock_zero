@@ -1,5 +1,5 @@
 local HEAT_MAX = 30
-local POWER_GEN = 1200
+local POWER_GEN = 800
 --[[
 local ghost_removal_delay = 5
 

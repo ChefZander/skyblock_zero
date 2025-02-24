@@ -3,7 +3,6 @@ local generator_power_production = 30
 sbz_api.register_stateful_generator("sbz_power:simple_charge_generator", {
     description = "Simple Charge Generator",
     tiles = { "simple_charge_generator_off.png" },
-
     groups = { dig_immediate = 2, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
@@ -85,13 +84,14 @@ listring[]
     input_inv = "main",
     output_inv = "main",
     info_generated = 30,
-    info_extra = { "Consumes 1 core dust every 10 seconds" },
+    info_extra = "Consumes 1 core dust/10 seconds",
     autostate = true,
-}, {
+},{
+    tiles = {
+        { name = "simple_charge_generator.png", animation = { type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 1.0 } }
+    },
     light_source = 14,
-    tiles = { "simple_charge_generator.png" }
 })
-
 
 minetest.register_craft({
     output = "sbz_power:simple_charge_generator",
@@ -300,7 +300,7 @@ if not sbz_api.server_optimizations then
 end
 
 sbz_api.register_stateful_generator("sbz_power:antimatter_generator", {
-    description = "Antimatter Generator",
+    description = "Antimatter generator",
     info_extra = {
         "Generates 600 power",
         "Needs 1 antimatter/s and 1 matter/s",

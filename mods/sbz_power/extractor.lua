@@ -1,7 +1,9 @@
 -- Simple Extractor Node
 sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     description = "Simple Matter Extractor",
-    tiles = { "simple_matter_extractor.png" },
+    tiles = {
+        { name = "simple_matter_extractor.png", animation = { type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 1.0 } }
+    },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
