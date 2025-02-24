@@ -28,7 +28,7 @@ It also does some damage to other players.
         type = "quest",
         title = "Neutronium",
         text =
-        "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.",
+        "In the core of a meteorite, you can find a single piece of very dense matter called Neutronium. It's so dense that you can craft it into a Gravitational Attractor, which attracts other passing meteorites and gets you even more metal, or a Gravitational Repulsor which drives them away.\nTo complete this quest, make a gravitational attractor, or a repulsor.",
         requires = { "Meteorites" }
     },
     {
