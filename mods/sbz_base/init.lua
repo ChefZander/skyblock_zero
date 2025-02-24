@@ -1,7 +1,7 @@
 local modname = minetest.get_current_modname()
 sbz_api = {
     debug = minetest.settings:get_bool("sbz_debug", false),
-    version = 28,
+    version = 29,
     gravity = 9.8 / 2,
     delay_function = core.delay_function,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
