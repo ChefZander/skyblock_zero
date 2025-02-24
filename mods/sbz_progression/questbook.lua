@@ -125,7 +125,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     local formspec = ([[
         formspec_version[7]
         size[17.25,12.8]
-        padding[0,0]
+        padding[0.01,0.01]
         label[0.1,0.3;Quest List]
         textlist[0,0.7;5.8,11.3;quest_list;%s;%s]
         field_close_on_enter[search;false]
