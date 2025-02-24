@@ -70,7 +70,11 @@ local function make_fx(pos)
 
     core.sound_play("firework_explode", {
         pos = pos,
-        gain = 7.0,
+        gain = 32.0,
+    }, true)
+    core.sound_play("firework_explode", {
+        pos = pos,
+        gain = 32.0,
     }, true)
     core.add_particlespawner(effect)
 end
