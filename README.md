@@ -46,5 +46,7 @@ Art by StumpyStrust, CC0, https://opengameart.org/content/space-skyboxes-0
 - https://pixabay.com/sound-effects/050597-ice-crusher-38522/ (edited)
 - https://freesound.org/people/dibko/sounds/619103/ -- License: Attribution 4.0 (edited)
 - https://freesound.org/people/newlocknew/sounds/536655/  -- License: Attribution 4.0
+- https://freesound.org/people/MilanKovanda/sounds/624414/  -- License: Attribution 4.0
+- https://freesound.org/people/LukaCafuka/sounds/750684/  -- License: Creative Commons 0
 
 For users on ContentDB: The download of this package includes this information within the README.md file.

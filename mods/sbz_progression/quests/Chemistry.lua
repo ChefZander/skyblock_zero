@@ -6,7 +6,6 @@ return {
         title = "Crusher",
         text = [[
 You can put in pebbles to get metals, it will also crush stones into 2 gravel each, and gravel to 2 sand each.
-With enhanced pebbles, you can get rare metals.
 ]],
         requires = { "Concrete Plan", "Antimatter", "Charged Field" }
     },
@@ -16,16 +15,16 @@ With enhanced pebbles, you can get rare metals.
     { type = "quest", title = "Furnace", text = "Craft the high power electric furnace (H.P.E.F for short), it allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.", requires = { "Crusher" } },
 
 
-    { type = "quest", title = "Simple Alloy Furnace", text = "This one's less simple :)\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
+    { type = "quest", title = "Simple Alloy Furnace", text = "Smelts metals into alloys.\nTry out some combinations of metals to see which ones create alloys. Consumes 10 Power when running.", requires = { "Crusher", "Emittrium Circuits", "Antimatter", "Charged Field" } },
 
     { type = "quest", title = "Bronze Age", text = "Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!", requires = { "Simple Alloy Furnace", "Crusher" } },
     {
         type = "quest",
         title = "Compressor",
         text = [[
-Have you ever wanted to turn your metals into nodes? Now you can!
+Have you ever wanted to turn your metals into blocks? Now you can!
 Craft this wonderful compressor, insert in 9 powder, or 9 ingots, and watch as it makes your blocks.
-Also, blocks made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.
+Blocks made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.
         ]],
         requires = { "Crusher" }
     },
@@ -33,7 +32,7 @@ Also, blocks made from chemicals cannot be dug with matter annihilators, you mus
         type = "quest",
         title = "Centrifuge",
         text = [[
-With this, you can get gold, silicon and white sand from normal sand, silver from some sand shades, and rare metals (titanium, lithium and cobalt) from gravel.
+In the centrifuge you can get gold, silicon and white sand from normal sand, silver from some sand shades, and rare metals (titanium, lithium and cobalt) from gravel.
         ]],
         requires = { "Crusher" }
     },
@@ -49,8 +48,7 @@ A battery made with metals. Significantly better than the basic battery.
         type = "quest",
         title = "Very Advanced Batteries",
         text = [[
-If you have lots of metals to waste... this is the battery for you!
-10 Times better than the advanced battery!
+If you have lots of metals this is the battery for you!
         ]],
         requires = { "Batteries", "Furnace", "Advanced Batteries" }
     },
@@ -58,8 +56,7 @@ If you have lots of metals to waste... this is the battery for you!
         type = "quest",
         title = "Crystal Grower",
         text = [[
-Do you want to grow some.... crystals...... No wait not those ones....
-Well now you can! If you put in 9 warpshrooms, you will get some warp crystals, which you use for anything teleportation-related.
+If you put in 9 warpshrooms, you will get some warp crystals, which you use for anything teleportation-related.
         ]],
         requires = { "Compressor", "Neutronium" }
     },
@@ -92,8 +89,7 @@ You can re-fuel your jetpack by clicking on a battery, full repair costs 1000 Cj
 
 Jetpack gets de-activated when you move it in your inventory during flight, or when it runs out of charge.
 
-Jetpack, originally, used to get automatically de-activated when you stop having it in your hand.
-But that is no longer the case.
+The Jetpack originally used to get automatically de-activated when you stop having it in your hand, but that is no longer the case.
 ]],
         requires = { "Neutronium" }
     },
@@ -101,26 +97,23 @@ But that is no longer the case.
     {
         type = "quest",
         title = "Electric Drill",
-        requires = { "Bear Arms" },
         text = [[
-Do you think that the robotic arm is too fragile, or do you want to  dig and have your tool not break as easily?
-Electric drill is the tool for you!!!
-
-It has 500 uses and powered by electricity!
+The elecric drill has 500 uses and is powered by electricity.
 What does that mean?
 
 If you "place" it on a battery (sneak+right click), it will take power from the battery and charge the drill! (Just like the jetpack)
 It needs 1 power per 1 use.
 
 It also digs 2x faster than the robotic arm.
-]]
+]],
+        requires = { "Bear Arms" }
     },
     {
         type = "quest",
         title = "Antimatter Generators",
         text =
         [[Craft the antimatter generator, it is best used with automation or a large array of batteries.
-It needs 1 matter and 1 antimatter PER SECOND.
+It needs 1 matter and 1 antimatter per second.
 It's super resource hungy but gives you more power.
 ]],
         requires = { "Furnace" }
@@ -163,8 +156,8 @@ There is currently no way to make molten metal.
         text = [[
 At the center of planets, there is usually some core material.
 In blue stone there is uranium ore, blue stone is only found in ice planets.
-In red stone there is thorium ore, red stone is found in dead and colorium planets.
-To get this achievement, you will need to get uranium or thorium powder in your inventory, and move it around.
+In red stone there is thorium ore, red stone is found in dead planets and colorium planets.
+To get this achievement, you will need to put uranium or thorium powder in your inventory.
 ]],
         requires = { "Planet Teleporter" }
     },
@@ -172,8 +165,8 @@ To get this achievement, you will need to get uranium or thorium powder in your 
         type = "quest",
         title = "Pebble Enhancer",
         text = [[
-So... i imagine you want to get thorium and uranium automatically now, no worries, it's possible.
-Enhanced pebbles can also get you lithium, cobalt, titanium, silicon and silver. (+ uranium and thorium)
+You'll probably want to get thorium and uranium automatically now, no worries, it's possible.
+Enhanced pebbles can also get you lithium, cobalt, titanium, silicon and silver.
 Simply put a pebble into the pebble enhancer, it will become enhanced.
 ]],
         requires = { "Planet Ores" }
@@ -197,12 +190,12 @@ Currently, it is used to obtain plutonium from uranium, simply insert uranium po
         type = "quest",
         title = "Nuclear Reactor",
         text = [[
-So you probably want more power.... Nuclear reactors can help you with that.
+If you need even more power, you might want to consider nuclear reactors.
 
 Types of fuel rods:
 - thorium: doesn't explode, lowest power,
 - uranium: explodes, medium power
-- plutonium: must have *non-radioactive* water ***sources*** around the reactor, explodes, highest power
+- plutonium: must have *non-radioactive* water ***sources*** (not flowing water) around the reactor, explodes, highest power
 ]],
         requires = { "Planet Ores", "Radiation Shielding" }
     },

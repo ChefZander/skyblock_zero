@@ -47,7 +47,6 @@ minetest.register_craft({
 
 sbz_power.register_battery("sbz_power:very_advanced_battery", {
     description = "Very Advanced Battery",
-    info_extra = "Description is so original, i am aware.",
     tiles = { "very_advanced_battery.png" },
     groups = { matter = 1, level = 2 },
     battery_max = 200000,

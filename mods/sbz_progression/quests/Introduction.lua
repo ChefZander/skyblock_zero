@@ -13,9 +13,9 @@ Now, to get started: look down at the core. Punching it will give you some of yo
 You can also just right-click the core, it will be easier on you.
 
 These quests are in no particular order, but you might need items from one quest for another.
-It also sometimes is a horrible idea to do quests in order, like making antimatter reaction generators before doing basic automation...
+The Introduction questline is designed to get you started into a couple other questlines, so it is recommended you jump between questlines occasionally.
 
-Also, if you need to know a recipe, search the item in the inventory, and click on it, it will bring up what it can be used for or how it can be crafted. (There were way too many people asking me "how to craft antimatter" i needed to include this.)
+If you need to know a recipe, search the item in the inventory, and click on it, it will bring up what it can be used for or how it can be crafted.
 
 TIP: If you lose your Quest Book, you can use /qb to get it back.]],
         requires = {}
@@ -26,8 +26,8 @@ TIP: If you lose your Quest Book, you can use /qb to get it back.]],
         title = "A bigger platform",
         text = [[Isn't this one node a little too crammed? Let's do something about that.
 
-Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'. Place it down :D (Assuming that, you are not playing a multiplayer server, that protects the core, we will talk about that...)
-If you are unable to place a matter blob next to the core, try sneaking while placing it.
+Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'.
+If you are unable to place a matter blob next to the core, try sneaking while placing it. On multiplayer servers the area around the core may be protected.
 ]],
         requires = { "Introduction" }
     },
@@ -54,13 +54,9 @@ If you are unable to place a matter blob next to the core, try sneaking while pl
         info = true,
         title = "Bridging out",
         text = [[
-In multiplayer servers, the spawn, near the core, will often be protected by admins. If you want a place to build, you will need to find your own "core", and that's what emitters are.
-Emitters are these blue blocks scattered around the sky, but don't confuse them with the very similar looking background/skybox.
-You will need an annihilator to extract resources from them, but they will behave exactly the same as a core, but they will sometimes give you emittrium.
-You can craft matter platforms to have cheaper ways of bridging out, though they are more annoying to build with.
-
-If you are on singleplayer, you can afford to stay near the core for a little longer, but you will eventually need to bridge out too.
-Also, this "blue thing in the questbook" cannot be completed, it's just advice.
+Emitters are these blue nodes scattered around the core, be careful not to confuse them with the very similar looking skybox.
+You will need an annihilator to extract resources from them, they will behave exactly the same as a core, but they will sometimes give you emittrium.
+You can craft matter platforms to have a cheaper way of bridging out.
 ]],
         requires = { "Annihilator" }
     },
@@ -93,13 +89,9 @@ You can get four Matter Plates by placing one matter blob into the crafting grid
         info = true,
         title = "What conducts power?",
         text = [[
-Unlike most power systems, in skyblock zero's power system, almost everything significant conducts power to other machines.
-For example, when you have something like this, (imagine each word in brackets is a block, so they are like... lined up):
-[SWITCHING STATION][GENERATOR 1][MACHINE 1][MACHINE 2]
-Then all of the machines would get powered.
-Wires are only useful when you have 2 factories far apart that you want to connect.
-
-Also, the power unit's name is Cosmic Joules.
+Unlike most power systems, in Skyblock: Zero's power system, almost all machines conducts power to other machines.
+Wires are useful when you have 2 far apart factories that you want to connect, for aesthetics, or for organization.
+The power unit Cosmic Joules is abbreviated to Cj in most interfaces.
 ]]
     },
 
