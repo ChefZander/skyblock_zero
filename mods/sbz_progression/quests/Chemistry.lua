@@ -175,7 +175,7 @@ Simply put a pebble into the pebble enhancer, it will become enhanced.
         type = "quest",
         title = "Decay Accelerator",
         text = [[
-It is used to obtain plutonium or lead from radioactive materials. (Uranium, thorium, plutonium)
+It is used to obtain plutonium or lead from radioactive materials (Uranium, thorium, plutonium). Only works with powders.
         ]],
         requires = { "Planet Ores" }
     },
