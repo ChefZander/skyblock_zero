@@ -59,7 +59,9 @@ Fractional resistance values are permitted.
 
 local rad_resistance_node = {}
 local rad_resistance_group = {
-    charged_field = 512,
+    matter = 512,
+    antimatter = 512,
+    charged_field = 1024,
 }
 
 local cache_radiation_resistance = {}
@@ -76,6 +78,9 @@ local function node_radiation_resistance(node_name)
     end
     resistance = def.radiation_resistance or
         rad_resistance_node[node_name]
+    if resistance == nil and def.groups ~= nil then
+        resistance = def.groups.radiation_resistance
+    end
     if not resistance then
         resistance = 0
         for g, v in pairs(def.groups) do
@@ -332,7 +337,7 @@ core.register_abm({
     end
 })
 
-local water_color = "#6abe3032" --alpha: 0x32
+local water_color = "#6abe3032"
 
 core.register_node("sbz_chem:radioactive_water", {
     description = "bad water, unhealthy even",
