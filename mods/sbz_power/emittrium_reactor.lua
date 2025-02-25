@@ -610,14 +610,14 @@ mesecon.register_on_mvps_move(function(moved_nodes)
     for i = 1, #moved_nodes do
         local moved_node = moved_nodes[i]
         if moved_node.node.name == "sbz_power:reactor_power_port" then
-            local meta = minetest.get_meta(moved_node.oldpos)
+            local meta = minetest.get_meta(moved_node.pos)
             local linked_coords = vector.from_string(meta:get_string("linked_coords"))
             if linked_coords then
                 linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
                 meta:set_string("linked_coords", vector.to_string(linked_coords))
             end
         elseif moved_node.node.name == "sbz_power:reactor_infoscreen" then
-            local meta = minetest.get_meta(moved_node.oldpos)
+            local meta = minetest.get_meta(moved_node.pos)
             local linked_coords = vector.from_string(meta:get_string("linked_pos"))
             if linked_coords then
                 linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)

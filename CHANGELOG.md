@@ -1,3 +1,6 @@
+Release 30
+- Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
+
 Release 29
 - Notice: Releases may be really small like this one, or HUGE like release 28
 - Started doing changelogs again
