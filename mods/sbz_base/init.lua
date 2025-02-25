@@ -1,7 +1,7 @@
 local modname = minetest.get_current_modname()
 sbz_api = {
     debug = minetest.settings:get_bool("sbz_debug", false),
-    version = 29,
+    version = 30,
     gravity = 9.8 / 2,
     delay_function = core.delay_function,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
@@ -197,7 +197,7 @@ minetest.register_chatcommand("toggle_bgm", {
 
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
-    minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Version %s)"):format(sbz_api.version))
+    minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Release %s)"):format(sbz_api.version))
     minetest.chat_send_player(player:get_player_name(),
         "‼ reminder: If you fall off, use /core to teleport back to the core.")
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
