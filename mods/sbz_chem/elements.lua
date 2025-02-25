@@ -50,6 +50,7 @@ sbz_api.register_element = function(name, color, description, def)
         inventory_image = "ingot.png^[multiply:" .. color --[[.. ":150"]],
 
     })
+    local rad_resistance = def.radiation_resistance or 0
 
     core.register_node("sbz_chem:" .. name .. "_block", unifieddyes.def {
         groups = {
@@ -61,6 +62,7 @@ sbz_api.register_element = function(name, color, description, def)
             level = 2,
             explody = 100,
             radioactive = radioactive,
+            radiation_resistance = rad_resistance,
         },
         description = string.format(description, "Block"),
         tiles = { "block.png^[colorize:" .. color .. ":150" },
@@ -92,6 +94,7 @@ sbz_api.register_element = function(name, color, description, def)
                 chem_element = 1,
                 radioactive = (radioactive or 0) * 2,
                 hot = 50,
+                radiation_resistance = rad_resistance * 16,
             },
             post_effect_color = color .. "7F",
             paramtype = "light",
@@ -146,7 +149,8 @@ sbz_api.register_element = function(name, color, description, def)
                 chem_disabled = disabled_group,
                 chem_fluid = 1,
                 chem_fluid_source = 0,
-                radioactive = radioactive
+                radioactive = radioactive,
+                radiation_resistance = rad_resistance,
             },
             post_effect_color = color .. "7F",
             paramtype = "light",
@@ -271,9 +275,10 @@ sbz_api.register_element("thorium", "#d633af", "Thorium %s (Th)",
 sbz_api.register_element("uranium", "#47681e", "Uranium %s (U)",
     { part_of_crusher_drops = false, radioactive = 2, part_of_enhanced_drops = true })
 sbz_api.register_element("plutonium", "#1d2aba", "Plutonium %s (Pu)", { part_of_crusher_drops = false, radioactive = 5 })
+sbz_api.register_element("lead", "#6E6E6E", "Lead %s (Pb)",
+    { part_of_crusher_drops = false, part_of_enhanced_drops = false, radiation_resistance = 8192 })
 
 -- disabled tech
-sbz_api.register_element("lead", "#6E6E6E", "Lead %s (Pb)", { disabled = true })
 sbz_api.register_element("zinc", "#7F7F7F", "Zinc %s (Zn)", { disabled = true })
 sbz_api.register_element("platinum", "#E5E4E2", "Platinum %s (Pt)", { disabled = true })
 sbz_api.register_element("mercury", "#B5B5B5", "Mercury %s (Hg)", { disabled = true })

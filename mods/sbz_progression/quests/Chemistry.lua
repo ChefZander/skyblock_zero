@@ -175,15 +175,15 @@ Simply put a pebble into the pebble enhancer, it will become enhanced.
         type = "quest",
         title = "Decay Accelerator",
         text = [[
-In later updates, this node will be able to transform regular materials.
-Currently, it is used to obtain plutonium from uranium, simply insert uranium powder to it.
+It is used to obtain plutonium or lead from radioactive materials. (Uranium, thorium, plutonium)
         ]],
         requires = { "Planet Ores" }
     },
     {
         type = "quest",
         title = "Radiation Shielding",
-        text = [[Solid charged field shields against radiation.]],
+        text =
+        [[Solid charged field or lead blocks shield against radiation. Craft some shielding to complete this quest.]],
         requires = { "Planet Ores" },
     },
     {
@@ -196,6 +196,8 @@ Types of fuel rods:
 - thorium: doesn't explode, lowest power,
 - uranium: explodes, medium power
 - plutonium: must have *non-radioactive* water ***sources*** (not flowing water) around the reactor, explodes, highest power
+
+You need at least 6 fuel rods for the reactor to power on.
 ]],
         requires = { "Planet Ores", "Radiation Shielding" }
     },

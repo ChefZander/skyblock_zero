@@ -201,6 +201,7 @@ local achievement_in_inventory_table = {
     ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
     ["sbz_power:solid_charged_field"] = "Radiation Shielding",
     ["sbz_resources:bomb"] = "TNT",
+    ["sbz_chem:lead_block"] = "Radiation Shielding"
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",
