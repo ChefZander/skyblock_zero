@@ -4,7 +4,7 @@ local logic = sbz_api.logic
 minetest.register_craftitem("sbz_logic:data_disk", {
     description = "Empty Data Disk",
     info_extra = {
-        "Can hold 1mb of anything.",
+        "Can hold 20 kilobytes.",
         "Can be configured to override editor or normal code on use.",
         "Insert into a luacontroller to configure",
     },

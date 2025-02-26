@@ -1,5 +1,5 @@
 # Player Monoids
-
+# Modified in skyblock zero, added some monoids
 This is a small library for managing global player state, so that changes made
 from different mods do not result in unexpected behavior. The README gives an
 introduction to the mod, but you might want to reference API.md along the way.

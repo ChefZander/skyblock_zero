@@ -201,7 +201,8 @@ local achievement_in_inventory_table = {
     ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
     ["sbz_power:solid_charged_field"] = "Radiation Shielding",
     ["sbz_resources:bomb"] = "TNT",
-    ["sbz_chem:lead_block"] = "Radiation Shielding"
+    ["sbz_chem:lead_block"] = "Radiation Shielding",
+    ["sbz_resources:strange_blob"] = "It's strange...",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",
@@ -227,7 +228,7 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
 end)
 
 minetest.register_on_dignode(function(pos, oldnode, digger)
-    if type(digger) == "table" and digger:is_valid() then
+    if digger ~= nil and digger:is_valid() then
         local player_name = digger:get_player_name()
         local itemname = oldnode.name
         if achievement_on_dig_table[itemname] then

@@ -18,11 +18,9 @@ core.register_node("sbz_planets:planet_teleporter", {
         if sbz_api.planets.has_rings(data[1], data[2]) then
             pos_to_tp_to.y = pos_to_tp_to.y - ((content.max.y - content.min.y) / 2 + sbz_api.planets.ring_size + 10)
         end
-        if sbz_api.can_move_object(clicker:get_armor_groups()) then
-            clicker:set_pos(pos_to_tp_to)
-            core.chat_send_player(clicker_name, "You have been teleported to the planet. Please wait and fall a bit.")
-            stack:take_item(1)
-        end
+        clicker:set_pos(pos_to_tp_to)
+        core.chat_send_player(clicker_name, "You have been teleported to the planet. Please wait and fall a bit.")
+        stack:take_item(1)
         return stack
     end
 })
