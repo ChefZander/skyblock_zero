@@ -12,8 +12,7 @@ minetest.register_tool("sbz_resources:laser_weapon", {
         if stack:get_wear() < (65535) then
             stack:set_wear(math.min(65535, stack:get_wear() + (65535 / max_wear)))
 
-            local eyepos = vector.add(player:get_pos(),
-                vector.add(player:get_eye_offset(), vector.new(0, 1.5, 0)))
+            local eyepos = sbz_api.get_pos_with_eye_height(player)
             local lookdir = player:get_look_dir()
             local endpos = vector.add(eyepos, vector.multiply(lookdir, laser_range))
             local ray = minetest.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
@@ -34,7 +33,7 @@ minetest.register_tool("sbz_resources:laser_weapon", {
                         minetest.after(0.1, function()
                             if ref and ref:is_player() and player and player:is_player() then
                                 local damage = 3
-                                ref:punch(player, 200, {
+                                sbz_api.punch(ref, player, 200, {
                                     full_punch_interval = 0,
                                     damage_groups = { light = damage },
                                 }, lookdir)

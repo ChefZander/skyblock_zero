@@ -399,7 +399,7 @@ function sbz_api.line_of_sight(p1, p2, iters)
     if success then return true end
     local nodename = core.get_node(pos).name
     local ndef = core.registered_nodes[nodename]
-    if ndef.air then
+    if ndef.air or (ndef.groups and ndef.groups.transparent and ndef.groups.transparent >= 1) then
         -- we need to somehow advance pos to like the next node..
         -- p1 -> pos -> p2
         -- yeah i dont knoww, oh wait vector.direction is that isnt it?
@@ -412,7 +412,7 @@ function sbz_api.line_of_sight(p1, p2, iters)
 end
 
 function sbz_api.punch(target, hitter, time_from_last_punch, tool_caps, dir)
-    if target:is_player() or hitter ~= nil then
+    if (target:is_player()) and hitter ~= nil and not hitter.is_fake_player then
         target:punch(hitter, time_from_last_punch, tool_caps, dir)
     else
         -- entity damage mechanism, see... uhh... the f#ck@ng lua api xD
@@ -421,9 +421,9 @@ function sbz_api.punch(target, hitter, time_from_last_punch, tool_caps, dir)
         time_from_last_punch = time_from_last_punch or 0
         local damage = 0
         local armor_groups = target:get_armor_groups()
-        for group, damage in pairs(tool_caps.damage_groups or {}) do
+        for group, gdamage in pairs(tool_caps.damage_groups or {}) do
             damage = damage +
-                damage * sbz_api.clamp(time_from_last_punch / (tool_caps.full_punch_interval or 0), 0, 1) *
+                gdamage * sbz_api.clamp(time_from_last_punch / (tool_caps.full_punch_interval or 0), 0, 1) *
                 ((armor_groups[group] or 0) / 100)
         end
         target:set_hp(math.max(0, target:get_hp() - damage))
@@ -544,7 +544,9 @@ end
 
 function sbz_api.get_pos_with_eye_height(placer)
     local p = placer:get_pos()
-    p.y = p.y + (placer:get_properties().eye_height or 0)
+    if not placer.is_fake_player then
+        p.y = p.y + (placer:get_properties().eye_height or 0)
+    end
     return p
 end
 

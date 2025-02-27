@@ -18,7 +18,7 @@ local function attract_meteorites(pos, dtime, t)
             magnitude = (wielded_item:get_definition().groups or {}).attraction
             if not magnitude then return end
             magnitude = magnitude * wielded_item:get_count()
-            attracted_players[obj:get_player_name()] = 2 -- VERY low gravity for 3 seconds
+            attracted_players[obj:get_player_name()] = 2 -- VERY low gravity for 2 seconds
             player_monoids.gravity:add_change(obj, 0, "sbz_meteorite:attracted")
             player_monoids.speed:add_change(obj, 0, "sbz_meteorite:attracted")
         end
