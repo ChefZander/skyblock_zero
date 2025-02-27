@@ -43,6 +43,7 @@ sbz_api.register_machine("sbz_power:interactor", {
     drop = "pipeworks:puncher",
     groups = { matter = 1, cracky = 3, not_in_creative_inventory = 1 },
     action = function(pos, node, meta, supply, demand)
+        meta:set_string("infotext", "Deprecated, get rid of this.")
         return 0
     end
 })
@@ -68,8 +69,12 @@ local function vacuum(pos, radius, inv)
 end
 
 local item_vaccum_power_demand = 20
+
 -- you expected this to be in the pipeworks mod didn't you... well its more convenient to put it here because sbz_api
 -- Couldnt you just make pipeworks depend on the mod that implements register_machine and just call it from there ???
+
+-- frog here: Hey anon, no, this mod depends on pipeworks
+-- frog here: this mod depends on pipeworks to add pipeworks support...
 
 sbz_api.register_machine("sbz_power:item_vacuum", {
     description = "Item Vacuum",

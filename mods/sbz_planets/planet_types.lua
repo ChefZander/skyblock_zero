@@ -1,47 +1,4 @@
--- yipee
--- TODO: FOR LATER: ADD PROBABILITIES SO P(STAR) ~= P(DWARF PLANET);
-
---[[
-    Types:
-
-    PLANET TYPE - think of <real/fake world example>
-
-    Dwarf planet - pluto
-    Dead planet - mercury/mars
-    Water planet - earth
-    Ice planet - 'anus/neptune
-    Deadly planet - venus
-    Star - Sun
-    Neutron star - couple of blocks of neutronium, and a neutronium orb at the center
-      - they would have immense gravity
-    Black holes - theidealist *really* wanted to make those
-    ]]
-
---[[
-Rock ideas:
-
-dwarfs:
-    - regular stone+caves+randomly distributed dwarf orb+shape noise
-
-dead planets:
-    Crust:
-       - Red Sand
-       - Sand
-       - Limestone
-       - Marble
-       - Basalt
-       - Red Stone
-       - Granite
-       - Shape noise
-       - Mountains - it's okay to use 3D noise for 2D things...
-       - 1/10 chance of having rings
-    Core:
-       - Liquid Iron (flowing)
-       - Liquid Nickel (flowing)
-       - Dead Core (not flowing)
-
-Where liquid chemicals would be registered in sbz_chem
-]]
+-- The PLANET-SPECIFIC MAPGEN FILE!
 
 local c = core.get_content_id
 
@@ -354,16 +311,10 @@ sbz_api.planets.register_type {
                 for y = maxp.y - 1, minp.y, -1 do
                     ni = math.abs(z - minp.z - 1) * sidelen ^ 2 + math.abs(y - minp.y - 1) * sidelen +
                         math.abs(x - minp.x)
-                    --[[
-                    error(dump {
-                        ni,
-                        #shapenoise
-                    })
-                    --]]
                     vi = area:index(x, y, z)
                     local node = data[vi]
 
-                    if node ~= c_air then
+                    if node ~= c_air and shapenoise[ni] ~= nil then
                         local xyzvec = vector.new(x, y, z)
                         local dist_to_center = vector.distance(xyzvec, center)
                         local radius_value = prad - (shapenoise[ni] * 0.5)
