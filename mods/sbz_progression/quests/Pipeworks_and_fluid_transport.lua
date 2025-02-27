@@ -91,6 +91,13 @@ Here is an example of one:
 Oh wait, one thing to mention: The items will fall off the receiving tube if you don't use a high priority tube next to it.]],
         requires = { "Tubes", "Crystal Grower" }
     },
+    {
+        type = "quest",
+        title = "Automatic Turrets",
+        text =
+        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started.",
+        requires = { "Node Breakers", "Neutronium" }
+    },
     -- ==================================================================================================
 
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },

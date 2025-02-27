@@ -70,8 +70,8 @@ sbz_api.register_machine("sbz_power:turret", {
     },
     power_needed = 50,
     tiles = { "gravitational_repulsor.png" },
-    inventory_image = "gravitational_repulsor.png^(([combine:32x32:8,8=turret_front.png)^[invert:rgb^[resize:16x16)",
-    wield_image = "gravitational_repulsor.png^(([combine:32x32:8,8=turret_front.png)^[invert:rgb^[resize:16x16)",
+    inventory_image = "gravitational_repulsor.png^turret_inv.png",
+    wield_image = "gravitational_repulsor.png^turret_inv.png",
     paramtype = "light",
     sunlight_propagates = true,
     light_source = 7,
@@ -181,3 +181,12 @@ sbz_api.shoot_turret = function(pos, dir, owner)
         return false
     end
 end
+
+core.register_craft {
+    output = "sbz_power:turret",
+    recipe = {
+        { "pipeworks:nodebreaker",     "pipeworks:nodebreaker",            "pipeworks:nodebreaker" },
+        { "sbz_resources:matter_blob", "sbz_resources:prediction_circuit", "sbz_resources:matter_blob" },
+        { "sbz_resources:matter_blob", "sbz_meteorites:antineutronium",    "sbz_resources:matter_blob" }
+    }
+}
