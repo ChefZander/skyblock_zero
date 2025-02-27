@@ -1,4 +1,4 @@
-local laser_range = 100 * 10
+local laser_range = 120
 
 local max_wear = 50
 local power_per_1_use = 50
@@ -44,16 +44,16 @@ minetest.register_tool("sbz_resources:laser_weapon", {
             until not pointed
 
             core.add_particlespawner {
-                pos     = vector.subtract(eyepos, vector.new(0, 0.25, 0)) + lookdir * 2,
-                texture = "star.png^[colorize:red:255",
-                time    = 0.2,
+                pos     = eyepos + lookdir * 2,
+                texture = "star.png^[colorize:red",
+                time    = 0.8,
                 size    = 3,
-                exptime = 1,
-                amount  = 3000,
+                amount  = 5000,
+                exptime = 10,
                 attract = {
                     kind = "point",
                     origin = endpos,
-                    strength = 1 / 5,
+                    strength = 0.8,
                     die_on_contact = true,
                 },
                 glow    = 14,

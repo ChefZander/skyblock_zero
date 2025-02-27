@@ -30,19 +30,33 @@ minetest.register_entity("sbz_power:turret_entity", {
 local function set_turret_formspec(meta)
     meta:set_string("formspec", ([[
 formspec_version[7]
-size[8.2,10]
+size[8.2,7]
 tooltip[target_players;Targets all players, excluding you, and if the area is protected, then it excludes all the people
 that can access that area]
 checkbox[0.2,0.5;target_players;Target \"enemy\" players;%s]
 checkbox[0.2,1;target_meteorites;Target meteorites;%s]
 style_type[list;spacing=.2;size=.8]
-list[context;main;0.2,1.4;8,4;]
-list[current_player;main;0.2,5.6;8,4;]
+list[context;main;3.6,1.4;8,4;]
+list[current_player;main;0.2,2.6;8,4;]
 listring[]
 ]]):format(
         meta:get_int("target_players") == 1 and "true" or "false",
         meta:get_int("target_meteorites") == 1 and "true" or "false"
     ))
+end
+
+--- Side effect: creates turret entity when its not found
+local function get_turret_entity(pos)
+    local entities = core.get_objects_inside_radius(pos, 0.5)
+    for k, v in pairs(entities) do
+        if v:get_luaentity() then
+            if v:get_luaentity().name == "sbz_power:turret_entity" then
+                return v
+            end
+        end
+    end
+
+    return minetest.add_entity(pos, "sbz_power:turret_entity")
 end
 
 local range = 120
@@ -65,7 +79,7 @@ sbz_api.register_machine("sbz_power:turret", {
     input_inv = "main",
     output_inv = "main",
     on_construct = function(pos)
-        minetest.add_entity(vector.subtract(pos, vector.new(0, 0.25, 0)), "sbz_power:turret_entity")
+        get_turret_entity(pos)
         local meta = core.get_meta(pos)
         meta:get_inventory():set_size("main", 1)
         set_turret_formspec(meta)
@@ -77,7 +91,7 @@ sbz_api.register_machine("sbz_power:turret", {
             return power_use
         end
         local targets_meteorites = meta:get_int("target_meteorites") == 1
-        local targets_players = meta:get_int("target_meteorites") == 1
+        local targets_players = meta:get_int("target_players") == 1
         local target_list = {}
         for obj in core.objects_inside_radius(pos, range) do
             local is_player = obj:is_player()
@@ -128,21 +142,6 @@ sbz_api.register_machine("sbz_power:turret", {
     end
 })
 
---- Side effect: creates turret entity when its not found
-local function get_turret_entity(pos)
-    local entities = core.get_objects_inside_radius(pos, 0.5)
-    for k, v in pairs(entities) do
-        if v:get_luaentity() then
-            if v:get_luaentity().name == "sbz_power:turret_entity" then
-                return v
-            end
-        end
-    end
-
-    return minetest.add_entity(vector.subtract(pos, vector.new(0, 0.25, 0)), "sbz_power:turret_entity")
-end
-
-
 
 sbz_api.shoot_turret = function(pos, dir, owner)
     local meta = core.get_meta(pos)
@@ -177,9 +176,7 @@ sbz_api.shoot_turret = function(pos, dir, owner)
 
         local turret_entity = get_turret_entity(pos)
         local rot = vector.dir_to_rotation(dir)
-
-
-        turret_entity:set_bone_override("Everything", { rotation = { vec = rot, interpolation = 0.1 } })
+        turret_entity:set_rotation(rot)
     else
         return false
     end

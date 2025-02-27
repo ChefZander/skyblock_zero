@@ -29,7 +29,7 @@ local function punchplayer_func(player, hitter, time_from_last_punch, tool_capab
         return false
     end
     -- Check if the victim is in an area with allowed PvP or in an unprotected area
-    local inAreas = areas:getAreasAtPos(player:getpos()) -- replaced hitter:getpos() with player:getpos(), honestly, would not be surprized if thats a bug on bls still
+    local inAreas = areas:getAreasAtPos(player:get_pos()) -- replaced hitter:getpos() with player:getpos(), honestly, would not be surprized if thats a bug on bls still
     -- If the table is empty, PvP is allowed
     if not next(inAreas) then
         return false
