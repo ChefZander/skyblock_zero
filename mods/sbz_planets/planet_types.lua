@@ -311,12 +311,6 @@ sbz_api.planets.register_type {
                 for y = maxp.y - 1, minp.y, -1 do
                     ni = math.abs(z - minp.z - 1) * sidelen ^ 2 + math.abs(y - minp.y - 1) * sidelen +
                         math.abs(x - minp.x)
-                    --[[
-                    error(dump {
-                        ni,
-                        #shapenoise
-                    })
-                    --]]
                     vi = area:index(x, y, z)
                     local node = data[vi]
 
