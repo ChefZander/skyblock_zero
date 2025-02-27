@@ -14,9 +14,9 @@ core.register_node("sbz_planets:planet_teleporter", {
         local content = sbz_api.planets.area:get_area(id, true, true)
         local data = core.deserialize(content.data)
         local pos_to_tp_to = (vector.subtract(content.max, content.min) / 2) + content.min
-        pos_to_tp_to.y = content.max.y + 50
+        pos_to_tp_to.y = content.max.y + 60
         if sbz_api.planets.has_rings(data[1], data[2]) then
-            pos_to_tp_to.y = pos_to_tp_to.y - ((content.max.y - content.min.y) / 2 + sbz_api.planets.ring_size + 10)
+            pos_to_tp_to.y = pos_to_tp_to.y - (((content.max.y - content.min.y) / 4) + sbz_api.planets.ring_size + 10)
         end
         clicker:set_pos(pos_to_tp_to)
         core.chat_send_player(clicker_name, "You have been teleported to the planet. Please wait and fall a bit.")

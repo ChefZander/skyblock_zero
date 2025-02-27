@@ -145,7 +145,8 @@ local achievement_table = {
     ["sbz_planets:planet_teleporter"] = "Planet Teleporter",
     ["sbz_chem:pebble_enhancer_off"] = "Pebble Enhancer",
     ["sbz_chem:nuclear_reactor_off"] = "Nuclear Reactor",
-    ["pipeworks:teleport_tube_1"] = "Teleport Tubes"
+    ["pipeworks:teleport_tube_1"] = "Teleport Tubes",
+    ["sbz_chem:decay_accel_off"] = "Decay Accelerator"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
