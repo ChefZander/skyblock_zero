@@ -59,7 +59,8 @@ Here is an example of one:
     {
         type = "quest",
         title = "Punchers",
-        text = "Punchers punch stuff, allowing you to automate resource generation even more.",
+        text =
+        "Punchers punch stuff, allowing you to automate resource generation even more. But you need to give them something to punch with.",
         requires = { "Automatic Filter-Injectors", "Bear Arms", "Emittrium Circuits" }
     },
     {

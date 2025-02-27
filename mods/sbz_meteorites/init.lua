@@ -8,34 +8,49 @@ local function spawn_meteorite(pos)
         repeat
             pos = player_pos + vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
             attempts = attempts + 1
-        until attempts >= 256 or vector.length(pos) > 80 and vector.length(pos) < 100 and minetest.get_node(pos).name ~= "ignore"
+        until attempts >= 256 or vector.length(pos) > 80 and vector.length(pos) < 100 and minetest.get_node(pos).name == "air"
     end
     return minetest.add_entity(pos, "sbz_meteorites:meteorite")
 end
 
 minetest.register_chatcommand("spawn_meteorite", {
-    params = "[<x> <y> <z>] | [\"here\"]",
+    params = "([<x> <y> <z>] | [\"here\"]) [number]",
     description = "Attempts to spawn a meteorite somewhere.",
     privs = { give = true },
     func = function(name, param)
-        if param == "here" and minetest.get_player_by_name(name) then
-            param = minetest.get_player_by_name(name):get_pos()
+        local split = string.split(param, " ", false)
+        local num_of_meteorites = 1
+        local pos = nil
+        -- do not read below
+        if type(tonumber(split[1])) == "number" and type(tonumber(split[2])) ~= "number" then
+            num_of_meteorites = math.max(1, tonumber(split[1]))
+        elseif split[1] == "here" and minetest.get_player_by_name(name) then
+            pos = minetest.get_player_by_name(name):get_pos()
+            if tonumber(split[2]) ~= nil then
+                num_of_meteorites = math.max(1, tonumber(split[2]))
+            end
         else
-            param = string.split(param, " ")
-            if #param == 3 and tonumber(param[1]) ~= "fail" and tonumber(param[2]) ~= "fail" and tonumber(param[3]) ~= "fail" then
-                param = vector.new(tonumber(param[1]), tonumber(param[2]), tonumber(param[3]))
-            else
-                param = nil
+            if tonumber(split[1]) ~= nil and tonumber(split[2]) ~= nil and tonumber(split[3]) ~= nil then
+                pos = vector.new(tonumber(split[1]), tonumber(split[2]), tonumber(split[3]))
+                if tonumber(split[4]) ~= nil then
+                    num_of_meteorites = math.min(1, tonumber(split[4]))
+                end
             end
         end
-
-        local meteorite = spawn_meteorite(param)
+        local meteorite
+        for _ = 1, num_of_meteorites do
+            meteorite = spawn_meteorite(pos)
+        end
         if not meteorite then
             minetest.chat_send_player(name, "Failed to spawn meteorite.")
             return
         end
-        local pos = vector.round(meteorite:get_pos())
-        minetest.chat_send_player(name, "Spawned meteorite at " .. pos.x .. " " .. pos.y .. " " .. pos.z .. ".")
+        local mpos = vector.round(meteorite:get_pos())
+        if num_of_meteorites == 1 then
+            minetest.chat_send_player(name, "Spawned meteorite at " .. mpos.x .. " " .. mpos.y .. " " .. mpos.z .. ".")
+        else
+            minetest.chat_send_player(name, "Spawned meteorites.")
+        end
     end
 })
 

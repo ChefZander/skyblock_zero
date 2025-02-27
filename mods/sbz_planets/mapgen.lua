@@ -1,3 +1,4 @@
+-- THE MAPGEN THAT EXECUTES CODE FROM planet_types.lua
 local c = core.get_content_id
 
 local c_core = c("sbz_resources:the_core")

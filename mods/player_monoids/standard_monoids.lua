@@ -152,3 +152,16 @@ player_monoids.visual_size = monoid({
 		})
 	end,
 })
+
+-- added in sbz:
+-- Air Acceleration - Effect values are acceleration_air multipliers.
+player_monoids.acceleration_air = monoid({
+	combine = mult,
+	fold = mult_fold,
+	identity = 1,
+	apply = function(multiplier, player)
+		local ov = player:get_physics_override()
+		ov.acceleration_air = multiplier
+		player:set_physics_override(ov)
+	end,
+})
