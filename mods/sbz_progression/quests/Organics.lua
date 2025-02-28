@@ -40,9 +40,11 @@ return {
 Alright, this is where it gets complicated, so read carefully.
 
 All plants except moss and algae need to be placed in a habitat in order to grow properly. This means a fully enclosed room with a powered Habitat Regulator placed inside it.
-Plants also need three things: water next to the node they're on, heat from nearby light sources, and as much sky access as possible, hence the walls and ceiling of the habitat should be made of glass. If they don't get these things, they'll start to wilt and die instead of growing. So take that into consideration when designing a habitat.
+Plants also need three things: water next to the node they're on, heat from nearby light sources. If they don't get these things, they'll start to wilt and die instead of growing. So take that into consideration when designing a habitat.
 
 Also, you can use the airtight power cable to deliver power to the switching station. And also make sure to not put things like slabs or stairs in the walls.
+
+<b>Tip: make the habitat walls out of solid nodes (emittrium glass is one of the cheapest), and airlocks, do not use things like stairs, or meteorite radars in the construction of your habitat. At most, use things that look like solid-full cubes. Also make sure that the habitat regulator isn't inside the wall, but inside the room you built.</b>
 ]],
         requires = { "Switching Station", "Emittrium Glass", "Dirt", "Sprouting Plants" }
     },

@@ -10,6 +10,8 @@ Release 31
   - Added _G.full_traceback to the editor environment
   - Fixed matrix screens being wildly inaccurate
   - Added some examples to the knowledge station
+- Cleared up "Growing Plants" quest
+- Fixed some nodes being considered as solid to the habitat
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

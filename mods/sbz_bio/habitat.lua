@@ -32,14 +32,17 @@ function sbz_api.assemble_habitat(start_pos, seen)
             table.insert(co2_sources, { pos, node })
         end
 
-        if name == "air" or minetest.get_item_group(name, "habitat_conducts") > 0 or pos == start_pos then
-            iterate_around_pos(pos, function(cpos)
-                if not seen[hash(cpos)] then
-                    queue:enqueue(cpos)
-                    seen[hash(cpos)] = true
-                end
-            end)
-            size = size + 1
+        local def = core.registered_nodes[name]
+        if def then
+            if (name == "air" or minetest.get_item_group(name, "habitat_conducts") > 0 or pos == start_pos or def.walkable == false or def.collision_box ~= nil or def.node_box ~= nil) and name ~= "sbz_bio:airlock" then
+                iterate_around_pos(pos, function(cpos)
+                    if not seen[hash(cpos)] then
+                        queue:enqueue(cpos)
+                        seen[hash(cpos)] = true
+                    end
+                end)
+                size = size + 1
+            end
         end
         if name == "sbz_bio:habitat_regulator" and pos ~= start_pos then
             return

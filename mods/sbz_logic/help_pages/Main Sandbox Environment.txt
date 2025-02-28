@@ -32,12 +32,12 @@ $C1    msg = <whatever was sent to you>,
 $C1    type = "receive"
 }</mono>
 
-<mono>node, errmsg = get_node(pos)</mono> - gets a node (table of <mono>{ param1 = int, param2 = int, name = "sbz_resources:poo_or_whatever_idk" }</mono>), limited to linking range
-<mono>boolean = is_protected(pos[, someone_else])</mono> - checks if that position is protected to the owner, optionally with the second argument, it can check if it's protected to someone else, not limited by linking range
+<mono>node, errmsg = get_node(pos)</mono> - gets a node (table of <mono>{ param1 = int, param2 = int, name = "sbz_resources:poo_or_whatever_idk" }</mono>), limited to linking range, only accepts a position, if you have a link, do <mono>link.mynode[1]</mono>!
+<mono>boolean = is_protected(pos[, someone_else])</mono> - checks if that position is protected to the owner, optionally with the second argument, it can check if it's protected to someone else, not limited by linking range, only accepts a position
 
 <mono>traceback = full_traceback()</mono> - alias for debug.traceback, experimental but shouldnt be harmful
 
-<mono>ok, errmsg = turn_off_machine(pos)/turn_on_machine(pos)</mono> - forcefully turns on/off a machine, limited to linking range
+<mono>ok, errmsg = turn_off_machine(pos)/turn_on_machine(pos)</mono> - forcefully turns on/off a machine, limited to linking range, only accepts a position, not a link
 
 Also, the basic editor that is in the systemdisk, cares about the global <mono>terminal_text</mono>
 If you do <mono>terminal_text = "helloo world"</mono> it will display "helloo world" on the terminal tab

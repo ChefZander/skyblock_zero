@@ -105,15 +105,19 @@ function logic.get_env(pos, meta)
         full_traceback = debug.traceback,
         turn_on_machine = function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
-            if not sbz_api.is_machine(pos) then return false, "Not a machine." end
             local abs_pos = vector.add(pos, rpos)
+            if not sbz_api.is_machine(abs_pos) and (string.find(core.get_node(abs_pos).name, "connector") == nil) then
+                return false, "Not a machine."
+            end
             if not logic.range_check(pos, abs_pos) then return false, "Can't turn on that, outside of linking range" end
             return sbz_api.force_turn_on(abs_pos, minetest.get_meta(abs_pos))
         end,
         turn_off_machine = function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
-            if not sbz_api.is_machine(pos) then return false, "Not a machine." end
             local abs_pos = vector.add(pos, rpos)
+            if not sbz_api.is_machine(abs_pos) and (string.find(core.get_node(abs_pos).name, "connector") == nil) then
+                return false, "Not a machine."
+            end
             if not logic.range_check(pos, abs_pos) then return false, "Can't turn off that, outside of linking range" end
             return sbz_api.force_turn_off(abs_pos, minetest.get_meta(abs_pos))
         end,
