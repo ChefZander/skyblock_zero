@@ -40,6 +40,29 @@ function logic.get_the_get_node_function(start_pos)
     end)
 end
 
+function logic.get_chat_debug_function(pos, meta)
+    local owner = meta:get_string("owner")
+    return libf(function(msg)
+        if type(msg) ~= "string" then
+            error("In chat_debug(msg), the msg must be a string!")
+        end
+        if #msg > 800 then
+            error("Message too large")
+        end
+        if owner == "" then
+            error("No owner of luacontroller? Solution: re-build the luacontroller")
+        end
+        if not core.is_protected(pos, "") or core.is_protected(pos, owner) then
+            error("For " .. owner .. "'s safety, the area must be protected by them")
+        end
+        if not core.get_player_by_name(owner) then
+            return false
+        end
+        core.chat_send_player(owner,
+            string.format("[Luacontroller @%s] %s", vector.to_string(pos), core.colorize("lime", msg)))
+    end)
+end
+
 function logic.get_env(pos, meta)
     ---@type table
     local base = libox.create_basic_environment()
@@ -58,9 +81,9 @@ function logic.get_env(pos, meta)
     for k, v in pairs {
         editor = get_editor_table(meta),
         pos = vector.copy(pos),
-        origin = vector.new(0, 0, 0),
         yield = coroutine.yield,
         wait_for_event_type = wait_for_event_type,
+        chat_debug = logic.get_chat_debug_function(pos, meta),
         wait = function(t)
             local e = coroutine.yield({
                 type = "wait",
@@ -112,12 +135,16 @@ function logic.get_editor_env(pos, meta, event)
     for k, v in pairs {
         editor = get_editor_table(meta),
         event = event,
+        pos = vector.copy(pos),
+        origin = vector.new(0, 0, 0),
+        chat_debug = logic.get_chat_debug_function(pos, meta),
         turn_on = libf(function()
             sbz_api.queue:add_action(pos, "logic_turn_on", {})
         end),
         turn_off = libf(function()
             sbz_api.queue:add_action(pos, "logic_turn_off", {})
         end),
+        full_traceback = debug.traceback,
     } do
         base[k] = v
     end

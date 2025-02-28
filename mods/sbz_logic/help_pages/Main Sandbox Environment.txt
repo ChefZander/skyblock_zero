@@ -14,7 +14,6 @@ $C1     <mono>editor.editor_code</mono> - the editor code
 $C1     <mono>editor.code</mono> - the normal code
 $C1     <mono>editor.error</mono> - the error that happened in main code (can be edited, wouldnt recomend as you dont know what the editor will do with it)
 
-<mono>origin</mono> - <mono>vector.new(0,0,0)</mono> - in relative coordinates, this is the position to itself
 <mono>pos</mono> - the in-world/non-relative position of the luacontroller
 <mono>yield</mono> - <mono>coroutine.yield</mono>
 
@@ -41,4 +40,6 @@ $C1    type = "receive"
 <mono>ok, errmsg = turn_off_machine(pos)/turn_on_machine(pos)</mono> - forcefully turns on/off a machine, limited to linking range
 
 Also, the basic editor that is in the systemdisk, cares about the global <mono>terminal_text</mono>
-If you do <mono>terminal_text = "helloo world"</mono> it will display "helloo world" on the terminal
+If you do <mono>terminal_text = "helloo world"</mono> it will display "helloo world" on the terminal tab
+
+<mono>is_online = chat_debug(msg)</mono> - Sends a message to the placer of the luacontroller, the luacontroller must be protected by the owner for this to work, returns false if owner is offline

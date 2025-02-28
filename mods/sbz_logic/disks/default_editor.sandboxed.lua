@@ -117,7 +117,8 @@ if event.type == "program" then
     editor.formspec = render_formspec_edit()
 end
 
-if event.type == "gui" or event.type == "off" or event.type == "on" or (event.type == "ran" and mem.old_terminal_text ~= coroutine_env.terminal_text and current_tab == 2) then
+if (event.type == "gui" or event.type == "off" or event.type == "on") or
+    (event.type == "ran" and mem.old_terminal_text ~= (coroutine_env or {}).terminal_text and current_tab == 2) then
     local fields = event.fields or {}
     if fields.turn_off then
         turn_off()
@@ -149,5 +150,5 @@ if event.type == "gui" or event.type == "off" or event.type == "on" or (event.ty
     end
 
     editor.formspec = render_formspec(tonumber(fields.tabs) or current_tab)
-    mem.old_terminal_text = coroutine_env.terminal_text
+    mem.old_terminal_text = (coroutine_env or {}).terminal_text
 end

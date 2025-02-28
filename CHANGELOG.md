@@ -2,8 +2,12 @@ Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte
 - Re-worked how meteorite attractors/repulsors attract players when holding neutronium - You now no longer can move yourself, and experience zero gravity
   - This allows for making orbits if you are skilled
-
-
+- Added the turret
+- For luacontrollers (_G refers to the global environment)
+  - Added _G.chat_debug(msg) to both environments, check your nearest knowledge station
+  - Removed _G.origin from the main environment
+  - Added _G.pos to editor environment
+  - Added _G.full_traceback to the editor environment
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
 - Added lead shielding
