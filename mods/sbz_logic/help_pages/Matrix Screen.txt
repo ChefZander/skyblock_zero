@@ -34,3 +34,61 @@ Ideas for what you can make with this:
 - Bad apple
 - Conways game of life
 - some REALLY COOL in-world ui
+
+<bigger>Examples</bigger>
+This assumes your matrix screen is linked in links.matrix_screen
+
+1) Basic drawing on the screen
+<mono>send_to(links.matrix_screen,{
+$C1   {"red","green","blue"},  
+$C1   {"#ff0000", "#00ff00", "#0000ff"}, -- it can be any color*spec*, don't put in alpha, can also be an integer in 0x[alpha][red][green][blue] format, e.g. 0xFF00FF00 - full green, full alpha
+$C1   {"#ff0000", "#00ff00", "#0000ff"},
+$C1})
+</mono>
+
+2) Drawing by the player 
+<mono>
+$C1-- 1: settings
+$C1local screen_resolution = 32
+$C1
+$C1-- 2: make the screen state
+$C1local screen_state = {}
+$C1for y = 1, screen_resolution do
+$C1    screen_state[y] = {}
+$C1    for x = 1, screen_resolution do
+$C1        screen_state[y][x] = 0 -- more efficient than a string
+$C1    end
+$C1    wait(0.1) -- need this so the luacontroller doesn't time out, when screen resolution is 32, this step could take 3.2 seconds
+$C1end
+$C1
+$C1-- 3: Send
+$C1send_to(links.matrix_screen, "subscribe") -- subscribe for events
+$C1send_to(links.matrix_screen, screen_state)
+$C1
+$C1-- 4: Listen for player input
+$C1-- this step stops when the server gets shut down, the luacontroller may get woken up when 
+$C1-- but hitting the screen, when the luacontroller is off, should automatically restart this whole process
+$C1local events, message
+$C1while true do
+$C1    -- we wait for a "receive" event
+$C1    events = wait_for_event_type("receive")
+$C1    response = table.remove(events)
+$C1    -- the line below is a little complicated, but i'll try to explain it as best as i can
+$C1    -- it's job is to check if the event was from the matrix screen or something else
+$C1    -- the minetest.hash_node_position function is used, because comparing 2 tables simply won't work
+$C1    -- the minetest.hash_to_node_position function turns a position into a number
+$C1    -- links.matrix_screen because a link is always an array of positions, thats why we add [1]
+$C1    -- we add pos too using vector.add because links.matrix_screen[1] is relative to "pos"
+$C1    if minetest.hash_node_position(response.from_pos) == minetest.hash_node_position(vector.add(pos,links.matrix_screen[1])) then
+$C1        local msg = response.msg
+$C1        local pixel_state = screen_state[msg.y][msg.x]
+$C1        if pixel_state == 0 then
+$C1            screen_state[msg.y][msg.x] = 0xFFffffff
+$C1        else
+$C1            screen_state[msg.y][msg.x] = 0
+$C1        end
+$C1        send_to(links.matrix_screen, screen_state) -- send the new screen state
+$C1    end
+$C1end
+</mono>
+

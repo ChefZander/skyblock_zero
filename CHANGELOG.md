@@ -8,6 +8,9 @@ Release 31
   - Removed _G.origin from the main environment
   - Added _G.pos to editor environment
   - Added _G.full_traceback to the editor environment
+  - Fixed matrix screens being wildly inaccurate
+  - Added some examples to the knowledge station
+
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
 - Added lead shielding
