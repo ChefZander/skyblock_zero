@@ -22,6 +22,7 @@ Release 31
 - Fixed autocrafter behavior with pipeworks (now overflow handling with item voids is made easy)
 - Made item sorter and item void textures better
 - Added "Organics Automation" page to questbook
+- Fixed ladders for the 2nd time - now they are only vertical
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
