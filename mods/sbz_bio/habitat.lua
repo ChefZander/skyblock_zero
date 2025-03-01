@@ -11,6 +11,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     seen[hash(start_pos)] = true
 
     local size = 0
+    local storage = 0
     local demand = 0
     local plants = {}
     local co2_sources = {}
@@ -42,6 +43,10 @@ function sbz_api.assemble_habitat(start_pos, seen)
                     end
                 end)
                 size = size + 1
+                storage = storage + 1
+            end
+            if def.store_co2 then
+                storage = storage + def.store_co2
             end
         end
         if name == "sbz_bio:habitat_regulator" and pos ~= start_pos then
@@ -68,7 +73,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     end
     if (size - 1) == 0 then return end
 
-    return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand }
+    return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand, storage = storage }
 end
 
 function sbz_api.habitat_tick(start_pos, meta, stage)
@@ -89,7 +94,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
     local co2 = 0
     local co2_supply_temp = 0
     local co2_supply = 0
-    if meta:get_int("atmospheric_co2") < habitat.size then
+    if meta:get_int("atmospheric_co2") < habitat.storage then
         for _, v in ipairs(habitat.co2_sources) do
             local pos, node = unpack(v)
             if stage == PcgRandom(hash(pos)):next(0, 9) then
@@ -126,13 +131,13 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
             end
         end
     end
-    co2 = math.min(co2, habitat.size)
+    co2 = math.min(co2, habitat.storage)
     meta:set_int("atmospheric_co2", co2)
 
     meta:set_string("infotext", table.concat({
         "CO2 supply: ", math.max(co2_supply, co2_supply_temp),
         "\nCO2 demand: ", habitat.demand,
-        "\nHabitat CO2: ", co2 .. "/" .. habitat.size,
+        "\nHabitat CO2: ", co2 .. "/" .. habitat.storage,
         "\nHabitat size: ", habitat.size
     }))
 end
@@ -160,6 +165,24 @@ sbz_api.register_machine("sbz_bio:habitat_regulator", {
         return 20
     end
 })
+
+core.register_node("sbz_bio:co2_compactor", {
+    description = "Co2 Compactor",
+    info_extra = "Stores 30 co2. Habitat regulator doesn't consider it a wall, similar to how airlock works",
+    groups = { matter = 2, explody = 8 },
+    walkable = false,
+    drawtype = "glasslike",
+    store_co2 = 30,
+    tiles = { "co2_compactor.png" },
+})
+core.register_craft {
+    output = "sbz_bio:co2_compactor",
+    recipe = {
+        { "sbz_bio:stemfruit",         "sbz_resources:matter_blob", "sbz_bio:stemfruit" },
+        { "sbz_resources:matter_blob", "sbz_bio:airlock",           "sbz_resources:matter_blob" },
+        { "sbz_bio:stemfruit",         "sbz_resources:matter_blob", "sbz_bio:stemfruit" }
+    }
+}
 
 minetest.register_craft({
     type = "shapeless",

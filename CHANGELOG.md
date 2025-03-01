@@ -12,6 +12,12 @@ Release 31
   - Added some examples to the knowledge station
 - Cleared up "Growing Plants" quest
 - Fixed some nodes being considered as solid to the habitat
+- Breaking: enabled cyclic mode for pipeworks
+  - Items will now no longer prefer to go one direction if you have something like a tube with branches, or an item sorter, instead they will cycle thru all the directions, make sure you check your factories
+- Enabled backface culling on the tubes, tubes will now look much cleaner at the cost of some visual bugs
+- Storinators can now be colored with the coloring tool
+- Neutronium storinators can now sort by name (if they are placed after the update, existing neutronium storinators will not have this capability)
+- Added co2 compactor (stores co2 like a "co2 battery" would)
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

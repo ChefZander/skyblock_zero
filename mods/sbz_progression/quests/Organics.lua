@@ -109,6 +109,13 @@ The size of the habitat determines how much co2 it can hold.
         requires = { "Growing Plants", "Emittrium Glass" }
     },
     {
+        type = "quest",
+        title = "Co2 Compactors",
+        text =
+        "I'll assume you want to store a little more carbon dioxide in your habitat, well co2 compactors are excellent for that, they store 30 carbon dioxide in one node, so would be equivilent to 30 air nodes.",
+        requires = { "Stemfruit", "Airlocks" }
+    },
+    {
         type = "secret",
         title = "Not Chorus Fruit",
         text =
