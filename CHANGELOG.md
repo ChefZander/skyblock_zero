@@ -18,6 +18,7 @@ Release 31
 - Storinators can now be colored with the coloring tool
 - Neutronium storinators can now sort by name (if they are placed after the update, existing neutronium storinators will not have this capability)
 - Added co2 compactor (stores co2 like a "co2 battery" would)
+- Fixed autocrafter behavior with pipeworks (now overflow handling with item voids is made easy)
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

@@ -63,7 +63,7 @@ minetest.register_node("pipeworks:item_sorter", {
         { name = "itemsorter.png", color = "red" },
 
         { name = "itemsorter.png", color = "white" },
-        { name = "itemsorter.png", color = "grey" },
+        { name = "itemsorter.png", color = "#4C4E52" },
     },
     groups = {
         tube = 1,
