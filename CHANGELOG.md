@@ -21,6 +21,7 @@ Release 31
 - Added co2 compactor (stores co2 like a "co2 battery" would)
 - Fixed autocrafter behavior with pipeworks (now overflow handling with item voids is made easy)
 - Made item sorter and item void textures better
+- Added "Organics Automation" page to questbook
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

@@ -38,7 +38,7 @@ minetest.register_on_mods_loaded(function()
             end
             if v.groups.eat then
                 local sign = "+"
-                if v.groups.eat < 0 then sign = "-" end
+                if v.groups.eat < 0 then sign = "" end -- tostring(-int) does that automatically,
                 new_desc[#new_desc + 1] = ("Can be eaten. %s HP"):format(sign .. v.groups.eat)
             end
 
