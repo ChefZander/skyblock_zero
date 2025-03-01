@@ -116,6 +116,16 @@ The size of the habitat determines how much co2 it can hold.
         requires = { "Stemfruit", "Airlocks" }
     },
     {
+        type = "quest",
+        title = "Warpshrooms",
+        text = [[
+Applying a mystery, very dense block, to your stemfruit, gets you... a mushroom?  Well... there wasn't mush-room for realism haha!
+
+Jokes aside, it grows like stemfruit, just a bit slower.
+        ]],
+        requires = { "Stemfruit", "Neutronium" }
+    },
+    {
         type = "secret",
         title = "Not Chorus Fruit",
         text =

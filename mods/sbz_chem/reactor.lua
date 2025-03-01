@@ -174,7 +174,10 @@ listring[]
             -- must be somewhat submerged in water..
             -- 50% of nodes in a r=2 area around the reactor must be water sources, around the reactor, the check gets performed in a r=5 area
             -- basically just put it in a pond you should be good and don't let radiated water kill your reactor
-            if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 2 then
+
+            -- edit, the information above is outdated:
+            -- 31 water nodes in 11x11x11 space, just have some water pls, i changed div by 2 to div by 4
+            if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
                 -- i know... duplicating explosion code... cringe bad yeah yeah
                 local owner = minetest.get_meta(pos):get_string("owner")
                 minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }) -- we gotta get better sfx

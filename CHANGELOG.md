@@ -23,6 +23,8 @@ Release 31
 - Made item sorter and item void textures better
 - Added "Organics Automation" page to questbook
 - Fixed ladders for the 2nd time - now they are only vertical
+- Added warpshrooms quest
+- Better documented the reactor quest
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

@@ -198,6 +198,7 @@ local achievement_in_inventory_table = {
     ["sbz_chem:bronze_powder"] = "Bronze Age",
     ["sbz_chem:water_fluid_cell"] = "Liquid Water",
     ["sbz_bio:stemfruit"] = "Stemfruit",
+    ["sbz_bio:warpshroom"] = "Warpshrooms",
     ["sbz_chem:uranium_powder"] = "Planet Ores",
     ["sbz_chem:thorium_powder"] = "Planet Ores",
     ["sbz_resources:movable_emitter"] = "Movable Emitters",
