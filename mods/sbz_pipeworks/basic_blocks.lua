@@ -63,7 +63,7 @@ minetest.register_node("pipeworks:item_sorter", {
         { name = "itemsorter.png", color = "red" },
 
         { name = "itemsorter.png", color = "white" },
-        { name = "itemsorter.png", color = "#4C4E52" },
+        { name = "itemsorter.png", color = "#222222" },
     },
     groups = {
         tube = 1,
@@ -184,7 +184,7 @@ minetest.register_craft({
 
 minetest.register_node("pipeworks:item_void", {
     description = "Item void",
-    tiles = { { name = "itemsorter.png", color = "#221C35" } },
+    tiles = { { name = "trashcan.png" } },
     groups = { cracky = 3, matter = 3, tubedevice = 1, tubedevice_receiver = 1 },
     tube = {
         insert_object = function()

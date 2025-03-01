@@ -14,11 +14,13 @@ Release 31
 - Fixed some nodes being considered as solid to the habitat
 - Breaking: enabled cyclic mode for pipeworks
   - Items will now no longer prefer to go one direction if you have something like a tube with branches, or an item sorter, instead they will cycle thru all the directions, make sure you check your factories
-- Enabled backface culling on the tubes, tubes will now look much cleaner at the cost of some visual bugs
+- Enabled backface culling by default on the tubes, tubes will now look much cleaner at the cost of some visual bugs
+  - Added a setting to toggle tube backface culling
 - Storinators can now be colored with the coloring tool
 - Neutronium storinators can now sort by name (if they are placed after the update, existing neutronium storinators will not have this capability)
 - Added co2 compactor (stores co2 like a "co2 battery" would)
 - Fixed autocrafter behavior with pipeworks (now overflow handling with item voids is made easy)
+- Made item sorter and item void textures better
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

@@ -261,8 +261,8 @@ local def = {
 
 pipeworks.register_tube("pipeworks:teleport_tube", {
     description = S("Teleport Tube"),
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "navy" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "navy" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "navy" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = pipeworks.tube_backface_culling, color = "navy" } },
     node_def = def,
 })
 
