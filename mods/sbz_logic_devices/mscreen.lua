@@ -141,9 +141,7 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         local subscribed = vector.from_string(m:get_string("subscribed"))
         if subscribed == nil then return end
 
-        local eyepos = vector.add(player:get_pos(),
-            vector.add(player:get_eye_offset(), vector.new(0, 1.5, --[[player:get_properties().eye_height]] 0))
-        )
+        local eyepos = sbz_api.get_pos_with_eye_height(player)
         local lookdir = player:get_look_dir()
         local distance = vector.distance(eyepos, screenpos)
         local endpos = vector.add(eyepos, vector.multiply(lookdir, distance + 1))
@@ -168,12 +166,13 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         elseif fourdir.z < 0 then
             hitpos.x = -1 * hitpos.x
         end
-        vector.add(hitpos, vector.multiply(fourdir, 0.39))
+
         hitpos.y = -1 * hitpos.y
+
         local hitpixel = {}
-        hitpixel.x = math.floor((hitpos.x + 0.5) * size) + 1
-        hitpixel.y = math.round((hitpos.y + 0.5 - (5 / 32)) * size) + 1
-        -- dont ask why this is math.round and the other one is math.floor, its more accurate somehoww
+        hitpixel.x = math.round((hitpos.x + 0.5) * size) + 1
+        hitpixel.y = math.round((hitpos.y + 0.5) * size) + 1
+
         if hitpixel.x < 1 or hitpixel.x > size or hitpixel.y < 1 or hitpixel.y > size then return end
         local message = {
             x = hitpixel.x,

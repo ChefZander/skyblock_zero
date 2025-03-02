@@ -16,6 +16,7 @@ local quest_files = {
     "Reactor",
     "Jumpdrive",
     "Completionist",
+    "Status_Effects"
 }
 
 local function foreach(t, f)

@@ -246,7 +246,10 @@ function sbz_api.force_turn_off(pos, meta)
     meta:set_int("force_off", 1)
 end
 
-function sbz_api.force_turn_on(_, meta)
+function sbz_api.force_turn_on(pos, meta)
+    if string.find(core.get_node(pos).name, "connector") ~= nil then -- i know, bad fix, you should create a group and all that, but it works so shush
+        sbz_api.turn_on(pos)
+    end
     meta:set_int("force_off", 0)
 end
 

@@ -34,6 +34,7 @@ function jumpdrive.move(source_pos1, source_pos2, target_pos1, target_pos2)
 	jumpdrive.move_metadata(source_pos1, source_pos2, delta_vector)
 	jumpdrive.move_nodetimers(source_pos1, source_pos2, delta_vector)
 
+	movenode_list.from_jumpdrive = true
 	for k, v in ipairs(sbz_api.on_mvps_move) do
 		v(movenode_list)
 	end

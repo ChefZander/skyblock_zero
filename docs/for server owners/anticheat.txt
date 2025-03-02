@@ -1,0 +1,4 @@
+Disable it.
+
+
+No seriously, it partially breaks jetpacks and fully breaks player attraction.

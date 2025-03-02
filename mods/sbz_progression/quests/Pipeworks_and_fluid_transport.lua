@@ -57,6 +57,18 @@ Here is an example of one:
         requires = { "Automatic Filter-Injectors", "Bear Arms" }
     },
     {
+        type = "text",
+        info = true,
+        title = "Organics Automation",
+        text = [[
+I think you want to automate that annoying harvesting of your pyrograss... feeding the burner every day... very boring right!
+Well no worries, node breakers and deployers make plant automation easy.
+
+<img name=questbook_image_organics_factory.png width=348>
+Side note: deployers can place 2 nodes ahead, that's a "feature" not a bug.
+]]
+    },
+    {
         type = "quest",
         title = "Punchers",
         text =
@@ -90,6 +102,13 @@ Here is an example of one:
 
 Oh wait, one thing to mention: The items will fall off the receiving tube if you don't use a high priority tube next to it.]],
         requires = { "Tubes", "Crystal Grower" }
+    },
+    {
+        type = "quest",
+        title = "Automatic Turrets",
+        text =
+        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started.",
+        requires = { "Node Breakers", "Neutronium" }
     },
     -- ==================================================================================================
 

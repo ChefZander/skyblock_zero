@@ -5,3 +5,5 @@
 <mono>turn_on()</mono> - Turns on main sandbox
 <mono>coroutine_env</mono> - If turned on, the editor can access the entire main sandbox environment with this table
 <mono>event</mono> - Instead of yielding, the code is re-executed every time an event happens
+<mono>pos</mono> - same as main sandbox
+<mono>is_online = chat_debug(msg)</mono> - Same as main sandbox

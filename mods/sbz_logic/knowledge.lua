@@ -26,7 +26,8 @@ sbz_api.help_pages_by_index = {
     "Hologram Projector",
     "Luanium Attractor",
     "Jumpdrives",
-    "Drawer Controller"
+    "Drawer Controller",
+    "Teleport Tube"
 }
 
 local function edit_text(t)
@@ -43,7 +44,7 @@ end
 
 for _, v in pairs(sbz_api.help_pages_by_index) do
     local f = assert(io.open(P .. v .. ".txt", "r"),
-        "dude no you arent cool, dont delete random files you think are 'unimportant' but turn out to be actually required")
+        "dude no you arent cool, dont delete random files you think are 'unimportant' but turn out to be actually required... or you are a dev, in that case, hi :D - frog here")
     local tex = f:read("*a")
     f:close()
     sbz_api.help_pages[v] = edit_text(tex)

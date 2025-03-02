@@ -1,0 +1,13 @@
+Skyblock zero is compatible with 
+https://github.com/minetest-monitoring/monitoring
+https://github.com/minetest-monitoring/auth_cache
+https://github.com/minetest-monitoring/metadata_cache
+https://github.com/minetest-monitoring/monitoring_drawers
+
+
+Extra monitoring support:
+I've adde these metrics:
+sbz_switching_station_lag
+sbz_switching_station_count
+
+Though, i don't know how to display them nicely, but you can do /metric sbz_switching_station_count

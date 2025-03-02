@@ -160,14 +160,13 @@ local function playRandomBGM(player)
     if player:get_meta() == nil then return end
 
     local player_name = player:get_player_name()
-    if player:get_meta():get_int("hates_bgm") == 1 then return end
     local random_index = math.random(1, #bgm_sounds)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
     if handles[player_name] then minetest.sound_stop(handles[player_name]) end
     handles[player_name] = minetest.sound_play(sound_name, {
         to_player = player_name,
-        gain = 1,
+        gain = (player:get_meta():get_int("volume") or 100) / 100,
     })
     minetest.after(sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
@@ -175,22 +174,22 @@ local function playRandomBGM(player)
         end)
 end
 
-minetest.register_chatcommand("toggle_bgm", {
-    description = "Toggles background music",
+minetest.register_chatcommand("bgm_volume", {
+    description = "Adjusts volume of background music",
+    params = "[volume, 0 to 200%]",
     func = function(name, param)
+        local volume = tonumber(param)
+        if volume == nil or volume < 0 or volume > 200 then
+            return false, "Needs to be a number between 0 and 200, 100 is the default volume."
+        end
         local player = minetest.get_player_by_name(name or "")
         if not player then return end
         local meta = player:get_meta()
-        local status = meta:get_int("hates_bgm")
-        if status == 0 then
-            if handles[name] then minetest.sound_stop(handles[name]) end
-            meta:set_int("hates_bgm", 1)
-            minetest.chat_send_player(name, "You have disabled the background music.")
-        else
-            meta:set_int("hates_bgm", 0)
-            playRandomBGM(player)
-            minetest.chat_send_player(name, "You have enabled the background music.")
-        end
+        meta:set_int("volume", volume)
+        return true,
+            "Set the volume to " ..
+            volume ..
+            "%, the current background music will stay at the value that was before this command, but the next background music's volume will change."
     end
 
 })

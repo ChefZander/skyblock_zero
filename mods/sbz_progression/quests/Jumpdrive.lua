@@ -40,6 +40,8 @@ Also, emitters stop spawning after y=1000, so you can transport stuff more easil
 
 If your jumpdrive flight takes too much energy, the jumpdrive can also take away power from other batteries, it will do this automatically, but its 4 times less efficient compared to using regular jumpdrive's power.
 It is good practice to use the "show" button before using the "jump" button, to see how much power your flight will consume,
+
+With protections: Jumpdrive leaves protections behind if it collides with another protected area that's not yours.
 ]],
         requires = { "Jumpdrive Backbone", "Warp Device", "Very Advanced Batteries" },
     },

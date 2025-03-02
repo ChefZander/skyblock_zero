@@ -1,4 +1,4 @@
-local laser_range = 120
+local laser_range = 300
 
 local max_wear = 50
 local power_per_1_use = 50

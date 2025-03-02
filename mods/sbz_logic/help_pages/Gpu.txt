@@ -323,3 +323,147 @@ To solve this, you need to do something like this:
 2) apply shader
 3) wait 0.5 seconds or listen for a { type = "shader_complete", err = string[]|nil } message
 4) send_png
+
+<bigger>Example</bigger>
+1) Big mandelbrot set with GPU shaders
+- requires you have 16 matrix screens, linked with names 1, 2, 3, ..., 16, in a square 
+
+<mono>
+$C1send_to(links.gpu,{
+$C1    {
+$C1        type = "create_buffer",
+$C1        index = 1,
+$C1        xsize = 128,
+$C1        ysize = 128,
+$C1        fill = "#555555"
+$C1    },
+$C1    {
+$C1        type = "shader",
+$C1        index = 1,
+$C1        shader = [[ 
+$C1             local maxi = 20
+$C1             local scale = 1/50
+$C1             local offsetx, offsety = 80*scale, 60*scale
+$C1             local intensity = 1
+$C1             local function normal_map(x)
+$C1                 if x < maxi then
+$C1                    return math.floor(intensity*math.sqrt(x/maxi)*255)
+$C1                 else
+$C1                   return 0
+$C1                 end
+$C1             end
+$C1
+$C1             local zi, zr, i = 0,0,0
+$C1             local x = (x*scale)-offsetx
+$C1             local y = (y*scale)-offsety
+$C1             while i < maxi do
+$C1                if (zi*zi+zr*zr >= 4) then break end
+$C1                zr, zi, i = zr*zr-zi*zi+x, 2*zr*zi+y, i+1
+$C1             end
+$C1
+$C1             local v = normal_map(i)
+$C1             return {r=v/2, g=v, b=v/2}
+$C1        ]],
+$C1    },
+$C1})
+$C1wait(0.5) -- shaders are async, so wait a bit
+$C1send_to(links.gpu, {
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 1, y1 = 1, x2 = 32, y2 = 32,
+$C1        to_pos = pos+links["1"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 32, y1 = 1, x2 = 64, y2 = 32,
+$C1        to_pos = pos+links["2"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 64, y1 = 1, x2 = 96, y2 = 32,
+$C1        to_pos = pos+links["3"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 96, y1 = 1, x2 = 128, y2 = 32,
+$C1        to_pos = pos+links["4"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 1, y1 = 32, x2 = 32, y2 = 64,
+$C1        to_pos = pos+links["5"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 32, y1 = 32, x2 = 64, y2 = 64,
+$C1        to_pos = pos+links["6"][1],
+$C1    },{
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 64, y1 = 32, x2 = 96, y2 = 64,
+$C1        to_pos = pos+links["7"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 96, y1 = 32, x2 = 128, y2 = 64,
+$C1        to_pos = pos+links["8"][1],
+$C1    },
+$C1
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 1, y1 = 64, x2 = 32, y2 = 96,
+$C1        to_pos = pos+links["9"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 32, y1 = 64, x2 = 64, y2 = 96,
+$C1        to_pos = pos+links["10"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 64, y1 = 64, x2 = 96, y2 = 96,
+$C1        to_pos = pos+links["11"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 96, y1 = 64, x2 = 128, y2 = 96,
+$C1        to_pos = pos+links["12"][1],
+$C1    },
+$C1
+$C1
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 1, y1 = 96, x2 = 32, y2 = 128,
+$C1        to_pos = pos+links["13"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 32, y1 = 96, x2 = 64, y2 = 128,
+$C1        to_pos = pos+links["14"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 64, y1 = 96, x2 = 96, y2 = 128,
+$C1        to_pos = pos+links["15"][1],
+$C1    },
+$C1    {
+$C1        type = "send_region",
+$C1        index = 1,
+$C1        x1 = 96, y1 = 96, x2 = 128, y2 = 128,
+$C1        to_pos = pos+links["16"][1],
+$C1}})
+$C1</mono>
