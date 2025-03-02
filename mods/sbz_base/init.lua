@@ -164,9 +164,13 @@ local function playRandomBGM(player)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
     if handles[player_name] then minetest.sound_stop(handles[player_name]) end
+    local volume = player:get_meta():get_int("volume") / 100
+    if volume == 0 and player:get_meta():get_int("has_set_volume") == 0 then
+        volume = 1
+    end
     handles[player_name] = minetest.sound_play(sound_name, {
         to_player = player_name,
-        gain = (player:get_meta():get_int("volume") or 100) / 100,
+        gain = volume,
     })
     minetest.after(sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
@@ -186,6 +190,7 @@ minetest.register_chatcommand("bgm_volume", {
         if not player then return end
         local meta = player:get_meta()
         meta:set_int("volume", volume)
+        meta:set_int("has_set_volume", 1)
         return true,
             "Set the volume to " ..
             volume ..
