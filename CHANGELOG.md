@@ -25,7 +25,7 @@ Release 31
 - Fixed ladders for the 2nd time - now they are only vertical
 - Added warpshrooms quest
 - Better documented the reactor quest
-
+- Re-worked how jumpdrives interact with protections
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
 - Added lead shielding

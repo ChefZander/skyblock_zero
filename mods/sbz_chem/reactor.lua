@@ -140,7 +140,7 @@ listring[]
             if tier == 3 and count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((9 * 9 * 9) - 1) / 2 then
                 inv:add_item("rods", rodstack)
                 meta:set_string("infotext",
-                    "Not enough water near the reactor, either put water near your reactor or don't use plutonium fuel rods.")
+                    "Not enough water near the reactor, either put more water near your reactor (needs a lot around the reactor) or don't use plutonium fuel rods.")
                 return 0
             end
             meta:set_string("rod_tier", tier)
