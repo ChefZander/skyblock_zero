@@ -195,7 +195,7 @@ If you need even more power, you might want to consider nuclear reactors.
 Types of fuel rods:
 - thorium: doesn't explode, 800 power
 - uranium: explodes if not given cooling, 2200 power
-- plutonium: must have *non-radioactive* water ***sources*** (not flowing water) around the reactor, explodes, 4800 power
+- plutonium: must have a sufficent amount <b>non-radioactive</b> water sources (not flowing water) near the reactor, it explodes, generates 4800 power
 
 You need at least 6 fuel rods for the reactor to power on.
 ]],

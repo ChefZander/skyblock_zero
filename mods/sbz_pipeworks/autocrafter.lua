@@ -424,7 +424,7 @@ minetest.register_node("pipeworks:autocrafter", {
                 return false
             end
             -- next up, check if we actually can insert
-            compare_stack = ItemStack(stack)
+            local compare_stack = ItemStack(stack)
             for i = 1, 9 do
                 if slots[i] == stack:get_name() then
                     local that_stack = inv:get_stack("src", i)

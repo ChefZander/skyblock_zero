@@ -1,3 +1,7 @@
+Release 32
+- Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
+- Fix background music being at 0% volume by default
+
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte
 - Re-worked how meteorite attractors/repulsors attract players when holding neutronium - You now no longer can move yourself, and experience zero gravity
