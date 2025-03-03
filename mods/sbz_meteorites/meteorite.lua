@@ -113,7 +113,8 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
         self.object:set_armor_groups({ immortal = 1 })
-        self.sound = minetest.sound_play("rocket-loop-99748", { loop = true, gain = 0.15, fade = 0.1 })
+        self.sound = minetest.sound_play("rocket-loop-99748",
+            { loop = true, gain = 0.15, fade = 0.1, object = self.object })
         self.waypoint = nil
         self.time_since = 100
     end,
@@ -136,9 +137,9 @@ minetest.register_entity("sbz_meteorites:meteorite", {
                 for z = -1, 1 do
                     local node = minetest.get_node(pos + vector.new(x, y, z)).name
                     if node ~= "ignore" and node ~= "air" and node ~= "sbz_power:funny_air" then --colliding with something, should explode
-                        self.object:remove()
                         meteorite_explode(pos, self.type)
-                        minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
+                        minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4, pos = self.object:get_pos() })
+                        self.object:remove()
                         return
                     end
                 end
