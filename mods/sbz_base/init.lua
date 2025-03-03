@@ -325,6 +325,7 @@ dofile(MP .. "/queue.lua")
 dofile(MP .. "/override_for_other.lua")
 dofile(MP .. "/lag_delayer.lua")
 dofile(MP .. "/sbz_node_damage.lua")
+dofile(MP .. "/sbz_on_hover.lua")
 
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev

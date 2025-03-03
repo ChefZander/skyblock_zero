@@ -1,3 +1,9 @@
+Release 33
+- Fixed a bug where filter injectors didn't work with one way tubes
+- Added one direction tube
+  - A tube that accepts items from all directions, but sends them to only one direction
+- Fixed meteorite sounds being heard by everyone
+
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default
