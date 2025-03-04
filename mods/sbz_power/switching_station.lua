@@ -350,7 +350,6 @@ local dtime_accum_fulltick = 0
 sbz_api.power_tick = 1
 sbz_api.power_subtick = 0.25
 
-local enable_globalstep = true
 
 local has_monitoring = core.get_modpath("monitoring")
 local switching_station_count
@@ -360,7 +359,7 @@ if has_monitoring then
 end
 
 sbz_api.switching_station_globalstep = function(dtime)
-    if not enable_globalstep then return end
+    if not sbz_api.enable_switching_station_globalstep then return end
     local getnode = minetest.get_node
     local getmeta = minetest.get_meta
     dtime_accum_subtick = dtime_accum_subtick + dtime
@@ -439,10 +438,10 @@ minetest.register_chatcommand("toggle_power", {
     privs = { ["server"] = true },
     func = function(name, param)
         if core.is_yes(param) then
-            enable_globalstep = true
+            sbz_api.enable_switching_station_globalstep = true
             core.chat_send_player(name, "Enabled switching stations")
         else
-            enable_globalstep = false
+            sbz_api.enable_switching_station_globalstep = false
             core.chat_send_player(name, "Temporarily disabled switching stations.")
         end
     end

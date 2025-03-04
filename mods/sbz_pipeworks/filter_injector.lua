@@ -265,11 +265,13 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         item = fromtube.remove_items(frompos, fromnode, stack, dir, count, frominvname, spos)
                     else
                         item = stack:take_item(count)
+                        local vel = vector.copy(todir)
+                        vel.speed = 1
                         if todef.tube and todef.tube.can_go then
-                            if not todef.tube.can_go(topos, tonode, { x = 0, y = 0, z = 0, speed = 0 }, item, {}) then return false end
+                            if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
                         end
                         if todef.tube and todef.tube.can_insert then
-                            if not todef.tube.can_insert(topos, tonode, item, { x = 0, y = 0, z = 0, speed = 0 }) then return false end
+                            if not todef.tube.can_insert(topos, tonode, item, vel) then return false end
                         end
                         frominv:set_stack(frominvname, spos, stack)
                         if fromdef.on_metadata_inventory_take then

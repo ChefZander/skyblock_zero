@@ -105,6 +105,17 @@ Oh wait, one thing to mention: The items will fall off the receiving tube if you
     },
     {
         type = "quest",
+        title = "One Direction Tubes",
+        text = [[
+This is a tube that accepts items from all directions, but allows them to only go in one direction.
+If you hover over it, it will spawn a white particle, the direction of the white particle, is the direction that the items will go in.
+
+To change that direction, sneak and punch it on the side that you want the items to go in.
+]],
+        requires = { "Tubes" }
+    },
+    {
+        type = "quest",
         title = "Automatic Turrets",
         text =
         "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started.",

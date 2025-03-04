@@ -3,6 +3,9 @@ Release 33
 - Added one direction tube
   - A tube that accepts items from all directions, but sends them to only one direction
 - Fixed meteorite sounds being heard by everyone
+- ***BREAKING*** (for multiplayer, for logic nerds): made formspec screens "public"
+  - If you have a formspec screen that you don't want the public accessing, please check the `clicker` field
+- Fixed logic components not sending info to luacontroller after jump
 
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes

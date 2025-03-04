@@ -74,6 +74,7 @@ local achievement_table = {
     ["sbz_resources:robotic_arm"] = "Bear Arms",
     ["pipeworks:automatic_filter_injector"] = "Automatic Filter-Injectors",
     ["pipeworks:tube_1"] = "Tubes",
+    ["pipeworks:one_direction_tube_1"] = "One Direction Tubes",
     ["pipeworks:nodebreaker"] = "Node Breakers",
     ["pipeworks:deployer"] = "Deployers",
     ["pipeworks:puncher"] = "Punchers",

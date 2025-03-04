@@ -7,7 +7,9 @@ sbz_api = {
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
     deg2rad = math.pi / 180,
     rad2deg = 180 / math.pi,
+    enable_switching_station_globalstep = true,
 }
+
 if sbz_api.server_optimizations == "auto" then
     sbz_api.server_optimizations = not core.is_singleplayer()
 elseif sbz_api.server_optimizations == "on" then
