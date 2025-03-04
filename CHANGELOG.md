@@ -6,6 +6,7 @@ Release 33
 - ***BREAKING*** (for multiplayer, for logic nerds): made formspec screens "public"
   - If you have a formspec screen that you don't want the public accessing, please check the `clicker` field
 - Fixed logic components not sending info to luacontroller after jump
+- Fixed bug where filter injector sometimes sent too many items, causing them to sometimes be thrown out
 
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
