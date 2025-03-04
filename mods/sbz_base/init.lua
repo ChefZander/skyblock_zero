@@ -3,7 +3,6 @@ sbz_api = {
     debug = minetest.settings:get_bool("sbz_debug", false),
     version = 32,
     gravity = 9.8 / 2,
-    delay_function = core.delay_function,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
     deg2rad = math.pi / 180,
     rad2deg = 180 / math.pi,
