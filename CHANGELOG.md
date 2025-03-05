@@ -7,6 +7,8 @@ Release 33
   - If you have a formspec screen that you don't want the public accessing, please check the `clicker` field
 - Fixed logic components not sending info to luacontroller after jump
 - Fixed bug where filter injector sometimes sent too many items, causing them to sometimes be thrown out
+- Made robotic arms be able to repair broken tubes
+- Made creative batteries and generators diggable
 
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes

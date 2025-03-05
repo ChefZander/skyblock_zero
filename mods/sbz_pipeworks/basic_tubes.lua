@@ -236,14 +236,11 @@ pipeworks.register_tube("pipeworks:broken_tube", {
             end
             if not pipeworks.check_and_wear_hammer(puncher) then
                 if wieldname == "" then
-                    pipeworks.logger(log_msg .. "by hand. It's not very effective.")
+                    minetest.chat_send_player(playername,
+                        ("Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?"))
                     if minetest.settings:get_bool("enable_damage") then
-                        minetest.chat_send_player(playername,
-                            ("Broken tubes may be a bit sharp."))
                         puncher:set_hp(puncher:get_hp() - 1)
                     end
-                else
-                    pipeworks.logger(log_msg .. "with " .. wieldname .. " but that tool is too weak.")
                 end
                 return
             end
