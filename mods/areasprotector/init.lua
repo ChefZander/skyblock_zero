@@ -263,11 +263,6 @@ local function make_display_nodebox(radius, height)
 	return t
 end
 
-local nbox = {
-	type = "fixed",
-	fixed = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-}
-
 
 minetest.register_node("areasprotector:protector_large", {
 	description = "Large Protector Block",
@@ -281,8 +276,6 @@ minetest.register_node("areasprotector:protector_large", {
 		"areasprotector_big_side.png"
 	},
 	paramtype = "light",
-	drawtype = "nodebox",
-	node_box = nbox,
 	on_place = function(itemstack, player, pointed_thing)
 		return on_place(itemstack, player, pointed_thing, radius_large, height_large, "large")
 	end,
@@ -307,8 +300,6 @@ minetest.register_node("areasprotector:protector_small", {
 		"areasprotector_small_side.png"
 	},
 	paramtype = "light",
-	drawtype = "nodebox",
-	node_box = nbox,
 	on_place = function(itemstack, player, pointed_thing)
 		return on_place(itemstack, player, pointed_thing, radius_small, height_small, "small")
 	end,

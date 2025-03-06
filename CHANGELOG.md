@@ -9,10 +9,15 @@ Release 33
 - Fixed bug where filter injector sometimes sent too many items, causing them to sometimes be thrown out
 - Made robotic arms be able to repair broken tubes
 - Made creative batteries and generators diggable
-
+- Added things to small protector's documentation
+- Fix simple alloy furnace sounds being heard by everyone, regardless of their distance to the audio source
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default
+- Made meteoric matter decay
+- Made jumpdrive only be able to get power from batteries that are in its range.
+- Fixed reactors only saying that their fuel rods are used 0%
+- Added node preserver
 
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte

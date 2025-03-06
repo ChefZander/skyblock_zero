@@ -60,6 +60,8 @@ local explosion_particle_def = {
     collisiondetection = true,
 }
 
+local rod_duration = 3 * 60 * 60
+
 sbz_api.register_stateful_generator("sbz_chem:nuclear_reactor", {
     description = "Nuclear Reactor",
     tiles = {
@@ -143,8 +145,8 @@ listring[]
                     "Not enough water near the reactor, either put more water near your reactor (needs a lot around the reactor) or don't use plutonium fuel rods.")
                 return 0
             end
-            meta:set_string("rod_tier", tier)
-            meta:set_string("rod_timer", 3 * 60 * 60) -- 6 fuel rods will last 3 hours
+            meta:set_int("rod_tier", tier)
+            meta:set_int("rod_timer", rod_duration) -- 6 fuel rods will last 3 hours
         end
         -- alright, from that if statement, while it doesn't look obvious at first, we are sure we have a rod active in some way
         rodtimer = meta:get_int("rod_timer")
@@ -205,7 +207,7 @@ listring[]
 
         meta:set_int("rod_timer", rodtimer - 1)
         meta:set_string("infotext",
-            "Working, used: " .. math.floor((100 - (rodtimer / (3 * 60 * 60) * 100)) / 100) * 100 .. "%")
+            string.format("Working, used: %.3f %%", (100 - (rodtimer / rod_duration) * 100)))
         return tier2power[tier]
     end,
 }, {

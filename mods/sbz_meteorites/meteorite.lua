@@ -6,13 +6,14 @@ end
 
 local function meteorite_explode(pos, type)
     --breaking nodes
-    sbz_api.explode(pos, 8, 0.9, false)
+    sbz_api.explode(pos, 8, 0.9, false, ".meteorite")
     --placing nodes
     local protected = minetest.is_protected(pos, ".meteorite")
     if not protected then
         minetest.set_node(pos,
             { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
     end
+
     local node_types = {
         matter_blob = { "sbz_meteorites:meteoric_matter", "sbz_meteorites:meteoric_metal" },
         emitter = { "sbz_meteorites:meteoric_emittrium", "sbz_meteorites:meteoric_metal" },

@@ -90,10 +90,16 @@ sbz_api.register_machine("sbz_power:turret", {
             meta:set_string("infotext", "Not enough power")
             return power_use
         end
+
+        local actual_range = range
+        if sbz_api.is_in_spawn_zone(pos) then
+            actual_range = 0.2 * actual_range
+        end
         local targets_meteorites = meta:get_int("target_meteorites") == 1
         local targets_players = meta:get_int("target_players") == 1
         local target_list = {}
-        for obj in core.objects_inside_radius(pos, range) do
+
+        for obj in core.objects_inside_radius(pos, actual_range) do
             local is_player = obj:is_player()
             if is_player then
                 if targets_players and sbz_api.line_of_sight(pos, obj:get_pos()) then
@@ -111,14 +117,17 @@ sbz_api.register_machine("sbz_power:turret", {
                 end
             end
         end
-
-        meta:set_string("infotext", "No targets nearby.")
+        local warning_text = ""
+        if sbz_api.is_in_spawn_zone(pos) then
+            warning_text = "\nWarning: in spawn zone, 80% range reduction"
+        end
+        meta:set_string("infotext", "No targets nearby." .. warning_text)
         if #target_list > 0 then
-            meta:set_string("infotext", "Active")
+            meta:set_string("infotext", "Active" .. warning_text)
             local target = target_list[math.random(1, #target_list)]
             local dir = vector.normalize(vector.subtract(target:get_pos(), pos))
             if sbz_api.shoot_turret(pos, dir, meta:get_string("owner")) == false then
-                meta:set_string("infotext", "Invalid/no item")
+                meta:set_string("infotext", "Invalid/no item" .. warning_text)
                 return 0
             else
                 return power_use

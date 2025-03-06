@@ -118,7 +118,7 @@ To change that direction, sneak and punch it on the side that you want the items
         type = "quest",
         title = "Automatic Turrets",
         text =
-        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started.",
+        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started. But be warned, near spawn, the turret's range gets decreased by 80%.",
         requires = { "Node Breakers", "Neutronium" }
     },
     -- ==================================================================================================

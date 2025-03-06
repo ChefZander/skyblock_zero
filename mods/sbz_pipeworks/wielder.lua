@@ -74,7 +74,6 @@ local function wielder_action(def, pos, node, index)
     return retval
 end
 
-
 function pipeworks.register_wielder(def)
     local groups = {
         matter = 2,

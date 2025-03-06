@@ -7,6 +7,17 @@ sbz_api = {
     deg2rad = math.pi / 180,
     rad2deg = 180 / math.pi,
     enable_switching_station_globalstep = true,
+    spawn_zone = core.settings:get("spawn_zone_range") or 300,
+    is_in_spawn_zone = function(pos) -- you can override
+        -- check bounds
+        local a = math.abs
+        if a(pos.x) <= sbz_api.spawn_zone
+            and a(pos.y) <= sbz_api.spawn_zone
+            and a(pos.z) <= sbz_api.spawn_zone then
+            return true
+        end
+        return false
+    end
 }
 
 if sbz_api.server_optimizations == "auto" then

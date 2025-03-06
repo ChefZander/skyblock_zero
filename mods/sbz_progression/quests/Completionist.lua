@@ -19,11 +19,30 @@ TIP: Build a shield out of compressed core dust to protect against antimatter me
     },
     {
         type = "quest",
+        title = "Node Preserver",
+        text = [[
+The node preserver preserves any node, for example:
+When you use it on a storinator, it will preserve all items in that storinator.
+Or on a luacontroller, it will preserve everything it had.
+Or, with a filter injector, it will preserve... again... everything it had.
+
+The node preservers be used on any nodes which have metadata, or inventories.
+They can only dig nodes that the robotic arm can.
+]],
+        requires = { "Phlogiston Fuser" }
+    },
+    {
+        type = "quest",
         title = "Small Protectors",
         text =
         [[
 Small protectors protect a decently sized area.
-Unwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.]],
+Unwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.
+
+Special names ("owners") that you can add to protectors (no player can name themselvs these):
+<b>.meteorite</b> - meteorites will now explode in your area
+]],
+
         requires = { "Concrete Plan", "Furnace" }
     },
     {
