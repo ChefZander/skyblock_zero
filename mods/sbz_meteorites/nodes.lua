@@ -125,3 +125,29 @@ minetest.register_craft {
         { core_blob, core_blob,                   core_blob },
     }
 }
+
+
+-- clean meteorite stuff that isnt used
+local meteorite_nodes = {
+    "sbz_meteorites:meteoric_matter",
+    "sbz_meteorites:meteoric_antimatter",
+    "sbz_meteorites:meteoric_emittrium",
+    "sbz_meteorites:meteoric_metal",
+    "sbz_meteorites:neutronium",
+    "sbz_meteorites:antineutronium",
+}
+
+minetest.register_abm({
+    nodenames = meteorite_nodes,
+    interval = 60,
+    chance = 1,
+    action = function(pos, node)
+        local meta = minetest.get_meta(pos)
+        local placed_at = meta:get_int("placed_at")
+        if placed_at == 0 then
+            meta:set_int("placed_at", os.time())
+        elseif os.time() - placed_at >= 3600 then
+            minetest.remove_node(pos)
+        end
+    end,
+})
