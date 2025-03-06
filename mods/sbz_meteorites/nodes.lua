@@ -132,9 +132,7 @@ local meteorite_nodes = {
     "sbz_meteorites:meteoric_matter",
     "sbz_meteorites:meteoric_antimatter",
     "sbz_meteorites:meteoric_emittrium",
-    "sbz_meteorites:meteoric_metal",
-    "sbz_meteorites:neutronium",
-    "sbz_meteorites:antineutronium",
+    "sbz_meteorites:meteoric_metal"
 }
 
 minetest.register_abm({
