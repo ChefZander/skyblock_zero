@@ -21,6 +21,7 @@ Release 32
 - Removed the teleport request mod, **servers will have to add it back**
 - Fix strange blob crashing the server, when consuming a node with inventory
 - Fixed partially/completely full storinators's drops 
+- Added bulk replacer tool
 
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte
