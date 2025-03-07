@@ -10,4 +10,3 @@ wrench = {
 dofile(modpath .. "/api.lua")
 dofile(modpath .. "/functions.lua")
 dofile(modpath .. "/tool.lua")
-dofile(modpath .. "/crafts.lua")
