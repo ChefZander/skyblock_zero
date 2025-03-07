@@ -18,6 +18,9 @@ Release 32
 - Made jumpdrive only be able to get power from batteries that are in its range.
 - Fixed reactors only saying that their fuel rods are used 0%
 - Added node preserver
+- Removed the teleport request mod, **servers will have to add it back**
+- Fix strange blob crashing the server, when consuming a node with inventory
+- Fixed partially/completely full storinators's drops 
 
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte

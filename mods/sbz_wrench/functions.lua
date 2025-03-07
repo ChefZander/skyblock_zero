@@ -20,7 +20,7 @@ local errors = {
 
 local getdesc = function(node)
 	return minetest.registered_nodes[node.name].short_description or minetest.registered_nodes[node.name].description or
-	node.name
+		node.name
 end
 
 function wrench.description_with_items(pos, meta, node, player)
@@ -43,18 +43,19 @@ function wrench.description_with_configuration(pos, meta, node, player)
 end
 
 local function get_description(def, pos, meta, node, player)
-	if type(def.description) == "string" then
-		return def.description
-	elseif type(def.description) == "function" then
-		local desc = def.description(pos, meta, node, player)
+	if type(def.wrench_description) == "string" then
+		return def.wrench_description
+	elseif type(def.wrench_description) == "function" then
+		local desc = def.wrench_description(pos, meta, node, player)
 		if desc then
 			return desc
 		end
 	end
 
-	if def.meta.inventories then
+	local tmeta = meta:to_table()
+	if tmeta.inventories then
 		return wrench.description_with_items(pos, meta, node, player)
-	elseif def.meta and def.meta.fields.text then
+	elseif tmeta.fields and tmeta.fields.text then
 		return wrench.description_with_text(pos, meta, node, player)
 	else
 		return wrench.description_with_configuration(pos, meta, node, player)

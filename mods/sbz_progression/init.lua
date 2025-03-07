@@ -151,6 +151,7 @@ local achievement_table = {
     ["sbz_power:turret"] = "Automatic Turrets",
     ["sbz_bio:co2_compactor"] = "Co2 Compactors",
     ["sbz_wrench:wrench"] = "Node Preserver",
+    ["replacer:replacer"] = "Bulk Placer Tool"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

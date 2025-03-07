@@ -219,7 +219,6 @@ minetest.register_abm({
 core.register_node("sbz_power:solid_charged_field", {
     description = "Solid Charged Field",
     info_extra = "Used for protecting against radiation.",
-    drawtype = "glasslike",
     tiles = { "solid_charged_field.png" },
     groups = { dig_immediate = 2, matter = 1, explody = 5, charged = 1, charged_field = 1 },
     sunlight_propagates = true,
@@ -460,7 +459,6 @@ minetest.register_craft({
 
 sbz_api.register_generator("sbz_power:creative_generator", {
     description = "Creative Generator",
-    drawtype = "glasslike",
     tiles = { { name = "creative_battery_power_gen.png^[colorize:purple:100", animation = { type = "vertical_frames", length = 0.5 } } },
     groups = { creative = 1, matter = 1 },
     power_generated = 10 ^ 9,

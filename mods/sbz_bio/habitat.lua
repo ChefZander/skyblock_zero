@@ -171,7 +171,7 @@ core.register_node("sbz_bio:co2_compactor", {
     info_extra = "Stores 30 co2. Habitat regulator doesn't consider it a wall, similar to how airlock works",
     groups = { matter = 2, explody = 8 },
     walkable = false,
-    drawtype = "glasslike",
+    drawtype = "glasslike", -- this is so that when you are inside the node, it looks OK
     store_co2 = 30,
     tiles = { "co2_compactor.png" },
 })

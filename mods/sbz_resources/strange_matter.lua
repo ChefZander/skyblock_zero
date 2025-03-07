@@ -57,11 +57,12 @@ minetest.register_abm({
         local v = to_spread[index]
         local old_node = minetest.get_node(v)
         local old_meta = minetest.get_meta(v)
-        core.swap_node(v, { name = "sbz_resources:strange_blob" })
-
         local meta = minetest.get_meta(v)
-        meta:set_string("old_meta", minetest.serialize(old_meta:to_table()))
-        meta:set_string("old_node", minetest.serialize(old_node))
+        if next(old_meta:to_table().inventory) == nil then -- you can't serialize userdata
+            core.swap_node(v, { name = "sbz_resources:strange_blob" })
+            meta:set_string("old_meta", minetest.serialize(old_meta:to_table()))
+            meta:set_string("old_node", minetest.serialize(old_node))
+        end
     end
 })
 
