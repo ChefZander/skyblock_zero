@@ -25,7 +25,8 @@ Release 32
 - Increased the range of planet light control
 - Added copytool
 - Improved autocrafter UI a little bit
-
+- Fixed jumpdrive travelnet compatibility
+- Fixed compatibility with nodes that used on_movenode (so including travelnet)
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte
 - Re-worked how meteorite attractors/repulsors attract players when holding neutronium - You now no longer can move yourself, and experience zero gravity
