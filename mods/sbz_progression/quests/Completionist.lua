@@ -53,6 +53,31 @@ They can only dig nodes that the robotic arm can.
     },
     {
         type = "quest",
+        title = "Copy Tool",
+        text = [[
+(Copy Tool is a tool made with the metatool library - it also combines the luatool and tubetool from the metatool modpack).
+
+The copy tool is used to copy settings between nodes.
+
+aux1+left mouse button => Load the configuration of the node you are pointing at, into the tool
+left mouse button => Paste the configuration from the tool into the node you are pointing at, the configuration stays in the tool
+Putting into crafting grid => resets the configuration of the copy tool
+aux1+sneak+left mouse button => Depending on the node you've pointed at, this may open a special menu, or do the same thing as if you weren't sneaking
+
+Currently supported nodes:
+- autocrafter
+- filter injector
+- item sorter
+- luacontroller
+- teleport tube - brings up a special menu
+- luacontroller - copies editor code, main code, memory, formspec, and links, processes the links so that they are moved with the luacontroller
+
+P.S. if you find anything that you'd like to be compatible with the copytool, don't be afraid to make a suggestion
+        ]],
+        requires = { "Tubes" }
+    },
+    {
+        type = "quest",
         title = "Bulk Placer Tool",
         text = [[
 The tool is from the "replacer" mod (specifically, SwissalpS's fork), originally called "Node replacement tool (technic)", but the name was changed in skyblock zero as that was a bit innacurate (there is no technic here, and it can place nodes too).
