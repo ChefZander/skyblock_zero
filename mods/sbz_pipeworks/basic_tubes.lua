@@ -38,6 +38,74 @@ minetest.register_craft({
     }
 })
 
+pipeworks.register_tube("pipeworks:one_direction_tube", {
+    description = "One Direction Tube",
+    plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "#45283c" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = pipeworks.tube_backface_culling, color = "#45283c" } },
+    node_def = {
+        on_construct = function(pos)
+            local likely_dir = nil
+            iterate_around_pos(pos, function(ipos)
+                if core.get_node(ipos).name:find("pipeworks:one_direction_tube") then
+                    local dir = core.get_meta(ipos):get_int("dir")
+                    likely_dir = dir
+                end
+            end)
+
+            if likely_dir == nil then likely_dir = core.dir_to_wallmounted(vector.new(0, -1, 0)) end
+
+            local meta = core.get_meta(pos)
+            meta:set_int("dir", likely_dir)
+        end,
+        -- gets repeated every half second
+        sbz_on_hover = function(pointed_thing, player)
+            local pos = pointed_thing.under
+            local meta = core.get_meta(pos)
+            local dir = core.wallmounted_to_dir(meta:get_int("dir"))
+
+            core.add_particle({
+                pos = vector.add(
+                    pointed_thing.under,
+                    vector.divide(dir, 2)),
+                expirationtime = 1,
+                size = 4,
+                texture = "star.png",
+                playername = player:get_player_name(),
+                glow = 2,
+                velocity = vector.divide(dir, 5)
+            })
+        end,
+        on_punch = function(pos, node, puncher, pointed_thing)
+            if puncher and not puncher.is_fake_player and puncher:is_player() and not core.is_protected(pos, puncher:get_player_name()) then
+                local controls = puncher:get_player_control()
+                if controls.sneak then
+                    local face = vector.subtract(pointed_thing.above, pointed_thing.under)
+                    local dir = core.dir_to_wallmounted(face)
+                    core.get_meta(pos):set_int("dir", dir)
+                end
+            end
+        end,
+        tube = {
+            can_go = function(pos, node, velocity, stack)
+                local dir = core.wallmounted_to_dir(core.get_meta(pos):get_int("dir"))
+                return { dir }
+            end,
+            --[[
+            can_insert = function(pos, node, stack, direction)
+                local dir = core.wallmounted_to_dir(core.get_meta(pos):get_int("dir"))
+                return vector.equals(dir, direction)
+            end,
+            ]]
+        }
+    },
+})
+
+minetest.register_craft({
+    output = "pipeworks:one_direction_tube_1",
+    type = "shapeless",
+    recipe = { "pipeworks:one_way_tube", "pipeworks:tube_1" }
+})
+
 pipeworks.register_tube("pipeworks:high_priority_tube", {
     description = "High Priority Tube",
     plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "tomato" } },
@@ -168,14 +236,11 @@ pipeworks.register_tube("pipeworks:broken_tube", {
             end
             if not pipeworks.check_and_wear_hammer(puncher) then
                 if wieldname == "" then
-                    pipeworks.logger(log_msg .. "by hand. It's not very effective.")
+                    minetest.chat_send_player(playername,
+                        ("Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?"))
                     if minetest.settings:get_bool("enable_damage") then
-                        minetest.chat_send_player(playername,
-                            ("Broken tubes may be a bit sharp."))
                         puncher:set_hp(puncher:get_hp() - 1)
                     end
-                else
-                    pipeworks.logger(log_msg .. "with " .. wieldname .. " but that tool is too weak.")
                 end
                 return
             end

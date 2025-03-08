@@ -86,3 +86,7 @@ minetest.register_on_mods_loaded(function()
         end
     end
 end)
+
+function sbz_api.play_sfx()
+
+end

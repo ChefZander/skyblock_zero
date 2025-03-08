@@ -1,13 +1,25 @@
 local modname = minetest.get_current_modname()
 sbz_api = {
     debug = minetest.settings:get_bool("sbz_debug", false),
-    version = 32,
+    version = 33,
     gravity = 9.8 / 2,
-    delay_function = core.delay_function,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
     deg2rad = math.pi / 180,
     rad2deg = 180 / math.pi,
+    enable_switching_station_globalstep = true,
+    spawn_zone = core.settings:get("spawn_zone_range") or 300,
+    is_in_spawn_zone = function(pos) -- you can override
+        -- check bounds
+        local a = math.abs
+        if a(pos.x) <= sbz_api.spawn_zone
+            and a(pos.y) <= sbz_api.spawn_zone
+            and a(pos.z) <= sbz_api.spawn_zone then
+            return true
+        end
+        return false
+    end
 }
+
 if sbz_api.server_optimizations == "auto" then
     sbz_api.server_optimizations = not core.is_singleplayer()
 elseif sbz_api.server_optimizations == "on" then
@@ -325,6 +337,7 @@ dofile(MP .. "/queue.lua")
 dofile(MP .. "/override_for_other.lua")
 dofile(MP .. "/lag_delayer.lua")
 dofile(MP .. "/sbz_node_damage.lua")
+dofile(MP .. "/sbz_on_hover.lua")
 
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev

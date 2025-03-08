@@ -13,5 +13,6 @@
     ],
     "Lua.diagnostics.disable": [
         "lowercase-global",
-    ]
+    ],
+    "Lua.completion.autoRequire": false
 }

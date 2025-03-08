@@ -619,9 +619,11 @@ unifieddyes.palettes = {
 	["color"] = "unifieddyes_palette_extended.png",
 }
 
-function unifieddyes.def(d)
+function unifieddyes.def(d, on_dig)
 	d.paramtype2 = d.paramtype2 or "color"
 	d.palette = unifieddyes.palettes[d.paramtype2]
-	d.on_dig = node_dig_without_color
+	if on_dig ~= false then
+		d.on_dig = node_dig_without_color
+	end
 	return d
 end

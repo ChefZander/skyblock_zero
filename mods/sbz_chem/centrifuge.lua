@@ -205,7 +205,7 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
 
 
             inv:set_stack("src", 1, decremented_input)
-            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6, pos = pos })
+            minetest.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed
         end
     end,

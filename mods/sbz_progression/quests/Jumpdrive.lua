@@ -40,6 +40,7 @@ Also, emitters stop spawning after y=1000, so you can transport stuff more easil
 
 If your jumpdrive flight takes too much energy, the jumpdrive can also take away power from other batteries, it will do this automatically, but its 4 times less efficient compared to using regular jumpdrive's power.
 It is good practice to use the "show" button before using the "jump" button, to see how much power your flight will consume,
+The jumpdrive can only take away power from batteries that are in the jumpdrive range.
 
 With protections: Jumpdrive leaves protections behind if it collides with another protected area that's not yours.
 ]],
@@ -62,8 +63,8 @@ Simply place one down in your target destination. Now you can teleport near it w
 So... i imagine you want to move multiple jumpdrives at once... well you are lucky, this is the node for you!
 Connect up all the jumpdrives with jumpdrive backbones, connect that to the fleet controller, and now you can use it!
 
-Warning: Make sure to ALWAYS press "show" before jump... you don't want one of your jumpdrives stuck...
-        ]],
+Warning: Make sure to ALWAYS press "show" before jump... you don't want one of your jumpdrives to be in the wrong place...
+]],
         requires = { "Jumpdrive Backbone" }
     }
 }

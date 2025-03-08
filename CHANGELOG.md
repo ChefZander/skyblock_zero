@@ -1,3 +1,30 @@
+Release 33
+- Fixed a bug where filter injectors didn't work with one way tubes
+- Added one direction tube
+  - A tube that accepts items from all directions, but sends them to only one direction
+- Fixed meteorite sounds being heard by everyone
+- ***BREAKING*** (for multiplayer, for logic nerds): made formspec screens "public"
+  - If you have a formspec screen that you don't want the public accessing, please check the `clicker` field
+- Fixed logic components not sending info to luacontroller after jump
+- Fixed bug where filter injector sometimes sent too many items, causing them to sometimes be thrown out
+- Made robotic arms be able to repair broken tubes
+- Made creative batteries and generators diggable
+- Added things to small protector's documentation
+- Fix simple alloy furnace sounds being heard by everyone, regardless of their distance to the audio source
+- Made jumpdrive only be able to get power from batteries that are in its range.
+- Fixed reactors only saying that their fuel rods are used 0%
+- Added node preserver
+- Removed the teleport request mod, **servers will have to add it back**
+- Fix strange blob crashing the server, when consuming a node with inventory
+- Fixed partially/completely full storinators's drops 
+- Added bulk replacer tool
+- Increased the range of planet light control
+- Added copytool
+- Improved autocrafter UI a little bit
+- Fixed jumpdrive travelnet compatibility
+- Fixed compatibility with nodes that used on_movenode (so including travelnet)
+- Make Meteoric matter decay
+
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default

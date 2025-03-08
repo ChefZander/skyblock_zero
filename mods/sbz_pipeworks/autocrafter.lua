@@ -365,8 +365,9 @@ local function update_meta(meta)
         "listring[context;dst]" ..
         "listring[current_player;main]" ..
         "field_enter_after_edit[maxpow;true]" ..
-        string.format("field[0.22,7;7,0.5;maxpow;Crafts/s (consumes more power);%s]",
-            meta:get_int("maxpow"))
+        string.format("field[0.22,7;7,0.8;maxpow;Crafts/s (consumes more power);%s]",
+            meta:get_int("maxpow")) ..
+        "button[7.22,7;3,0.8;dummy_button_for_mobile_palyers;Set]"
     meta:set_string("formspec", fs)
 
     -- toggling the button doesn't quite call for running a recipe change check

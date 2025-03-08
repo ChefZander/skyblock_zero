@@ -148,7 +148,7 @@ end
 
 local function move(pos, pos2)
     if pos2 == nil then return end
-    sbz_api.move_node(pos, pos2) -- how simple :D (NO DONT LOOK INSIDE, DONT LOOK AT THE COMPATIBILITY AROUND IT)
+    sbz_api.move_node(pos, pos2) -- how simple :D (NO DONT LOOK INSIDE, DONT LOOK AT THE COMPATIBILITY AROUND IT... hundreds of lines of code... accross multiple mods... also the same compatibility working for jumpdrive...)
 end
 
 sbz_api.register_machine("sbz_logic_devices:builder", {
