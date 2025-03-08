@@ -3,7 +3,7 @@ local t0 = os.clock()
 local planets = sbz_api.planets
 planets.area = AreaStore()
 planets.num_planets = 0
-
+local mg_limit = tonumber(core.settings:get("mapgen_limit")) or 31007
 
 local tries = 0
 if not (core.global_exists("mtt") and mtt.enabled) then
@@ -16,9 +16,15 @@ if not (core.global_exists("mtt") and mtt.enabled) then
     local y_min = 2000
     local y_max = 20000
     local mapgen_limit = 31000
+    if mg_limit ~= 31007 then -- Confusing code, i know - was done to make mapgen not break with old worlds
+        mapgen_limit = mg_limit - 1000
+    end
+    if y_max > mg_limit then
+        y_max = mg_limit - 500
+    end
     local area = planets.area
 
-    area:reserve(planets.num_planets) -- Improves performance, cost: 4us
+    area:reserve(planets.num_planets) -- Improves performance i hope
     local random = PcgRandom(core.get_mapgen_setting("seed"))
 
     for planet_type, planet_def in pairs(planets.types) do
