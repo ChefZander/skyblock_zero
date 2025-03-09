@@ -87,6 +87,9 @@ minetest.register_on_mods_loaded(function()
     end
 end)
 
-function sbz_api.play_sfx()
-
+function sbz_api.play_sfx(spec, params, pitch_randomness)
+    pitch_randomness = pitch_randomness or 0.035
+    local pitch = 1 + (math.random() * pitch_randomness * 2) - pitch_randomness
+    params.pitch = params.pitch or pitch
+    core.sound_play(spec, params, true)
 end

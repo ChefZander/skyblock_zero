@@ -24,6 +24,9 @@ Release 33
 - Fixed jumpdrive travelnet compatibility
 - Fixed compatibility with nodes that used on_movenode (so including travelnet)
 - Make Meteoric matter decay
+- Make tree mutations way more potent (lowered to 10 mutations, but without the "60% chance of preventing a mutation" check, and made mutations much more likely)
+- Added pitch variations to some sound effects
+- Made luacontroller's `pos` global change in the main environment if the luacontroller has been jumped
 
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes

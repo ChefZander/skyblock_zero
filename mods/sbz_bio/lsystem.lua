@@ -257,20 +257,19 @@ local function mutate_lsystem(axiom, random)
     return axiom
 end
 
-local chance_of_mutation = 30
-local other_props_mutation_chance = 5 -- angle, iteration, random_level, trunk_type
-local axiom_mutation_chance = 5
-local rules_mutation_chance = 10
+
+local other_props_mutation_chance = 8 -- angle, iteration, random_level, trunk_type
+local axiom_mutation_chance = 10
+local rules_mutation_chance = 50
 
 
 
 ---@return nil
 local function mutate_dna(dna, random, rate)
     -- alr.. so...
-    if not random then random = PcgRandom(math.random(-2 ^ 31 + 1, 2 ^ 31 - 1)) end
+    if not random then random = PcgRandom(math.random(-2 ^ 30, 2 ^ 30)) end
     local function internal_mutate()
         -- if this gets passed, a mutation MAY happen, the number of mutations (=mutation rate) may be influenced by outside factors
-        if random:next(0, 100) > chance_of_mutation then return end
         if random:next(0, 100) <= other_props_mutation_chance then
             local any_prop_mutation_chance = 100 / 4
             if random:next(0, 100) <= any_prop_mutation_chance then

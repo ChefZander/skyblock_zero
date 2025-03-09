@@ -27,6 +27,7 @@ Unwanted people won't be able to take items from machines or modify filter injec
 
 Special names ("owners") that you can add to protectors (no player can name themselvs these):
 <b>.meteorite</b> - meteorites will now explode in your area
+<b>.strange_blob_spread</b> - strange blobs will spread in your area
 ]],
 
         requires = { "Concrete Plan", "Furnace" }

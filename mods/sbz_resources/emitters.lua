@@ -5,22 +5,13 @@ local action = function(pos, _, puncher)
     local tool_name = itemstack:get_name()
     local can_extract_from_emitter = minetest.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
-        minetest.sound_play("punch_core", {
-            gain = 1,
-            max_hear_distance = 6,
-            pos = pos
-        })
         if puncher.is_fake_player then return end
         displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
     for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
         if math.random(1, 10) == 1 then
             puncher:get_inventory():add_item("main", "sbz_resources:raw_emittrium")
-            minetest.sound_play("punch_core", {
-                gain = 1,
-                max_hear_distance = 6,
-                pos = pos
-            })
+
             minetest.add_particlespawner({
                 amount = 50,
                 time = 1,
@@ -41,7 +32,7 @@ local action = function(pos, _, puncher)
             })
             unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
         else
-            minetest.sound_play("punch_core", {
+            sbz_api.play_sfx("punch_core", {
                 gain = 1,
                 max_hear_distance = 6,
                 pos = pos
@@ -146,7 +137,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         itemstack = nil
     end
 
-    minetest.sound_play("punch_core", {
+    sbz_api.play_sfx("punch_core", {
         gain = 1,
         max_hear_distance = 6,
         pos = pos

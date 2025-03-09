@@ -116,7 +116,9 @@ listring[]
     action = function(pos, _, meta, supply, demand)
         local inv = meta:get_inventory()
         local lqinv = core.deserialize(meta:get_string("liquid_inv"))
-
+        if not lqinv then -- the reactor already exploded, it seems like?
+            return 0
+        end
         local rodtimer = meta:get_int("rod_timer")
 
         if rodtimer <= 0 then -- no rods, attempt to get some from inventory
@@ -162,10 +164,11 @@ listring[]
             end
             -- explode
             local owner = minetest.get_meta(pos):get_string("owner")
-            minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }) -- we gotta get better sfx
+            minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
             local strength = 1
             if tier == 3 then strength = 2 end
             sbz_api.explode(pos, 20 * strength, 0.9 * strength, false, owner)
+            core.remove_node(pos)
             explosion_particle_def.pos = pos
             explosion_particle_def.attract.origin = pos
             minetest.add_particlespawner(explosion_particle_def)
@@ -182,8 +185,9 @@ listring[]
             if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
                 -- i know... duplicating explosion code... cringe bad yeah yeah
                 local owner = minetest.get_meta(pos):get_string("owner")
-                minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }) -- we gotta get better sfx
+                minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
                 sbz_api.explode(pos, 20 * 2, 0.9 * 2, false, owner)
+                core.remove_node(pos)
                 explosion_particle_def.pos = pos
                 explosion_particle_def.attract.origin = pos
                 minetest.add_particlespawner(explosion_particle_def)

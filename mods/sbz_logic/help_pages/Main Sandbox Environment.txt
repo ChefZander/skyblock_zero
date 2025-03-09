@@ -14,7 +14,7 @@ $C1     <mono>editor.editor_code</mono> - the editor code
 $C1     <mono>editor.code</mono> - the normal code
 $C1     <mono>editor.error</mono> - the error that happened in main code (can be edited, wouldnt recomend as you dont know what the editor will do with it)
 
-<mono>pos</mono> - the in-world/non-relative position of the luacontroller
+<mono>pos</mono> - the in-world/non-relative position of the luacontroller - changes when the luacontroller gets moved
 <mono>yield</mono> - <mono>coroutine.yield</mono>
 
 <mono>missed_events = wait_for_event_type(event_type)</mono> - yields until the <mono>event.type</mono> of the event is equal to <mono>event_type</mono>, the last event (<mono>misssed_events[#missed_events]</mono>) is that event type

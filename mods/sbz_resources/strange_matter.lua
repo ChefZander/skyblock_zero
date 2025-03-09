@@ -48,7 +48,7 @@ minetest.register_abm({
             end
             if minetest.get_item_group(name, "no_spread") ~= 0 then return end
             if minetest.get_item_group(name, "charged") ~= 0 then return end
-            if minetest.is_protected(filtering_pos, "") then return end
+            if minetest.is_protected(filtering_pos, ".strange_blob_spread") then return end
             return filtering_pos
         end)
 
