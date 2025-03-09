@@ -75,7 +75,7 @@ listring[current_player;main]
         else
             if inv:room_for_item("output", selected_item) then
                 meta:set_string("infotext", "Smelting...")
-                minetest.sound_play("simple_alloy_furnace_running.ogg", { pos = pos })
+                sbz_api.play_sfx("simple_alloy_furnace_running.ogg", { pos = pos })
 
                 inv:add_item("output", selected_item)
                 inv:remove_item("input", input_1)

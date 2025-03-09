@@ -1,6 +1,5 @@
 minetest.register_node("sbz_resources:matter_blob", unifieddyes.def {
     description = "Matter Blob",
-    drawtype = "glasslike",
     tiles = { "matter_blob.png" },
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     walkable = true,
@@ -51,7 +50,6 @@ minetest.register_craft({
 
 minetest.register_node("sbz_resources:antimatter_blob", unifieddyes.def {
     description = "Antimatter Blob",
-    drawtype = "glasslike",
     tiles = { "antimatter_blob.png" },
     groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767, },
     walkable = true,
@@ -103,7 +101,6 @@ minetest.register_craft({
 
 minetest.register_node("sbz_resources:emitter_imitator", {
     description = "Emitter Immitator",
-    drawtype = "glasslike",
     tiles = { "emitter_imitator.png" },
     groups = { matter = 1, explody = 3 },
     paramtype = "light",
@@ -271,71 +268,6 @@ minetest.register_craft({
         { "sbz_resources:antimatter_dust", "",                              "sbz_resources:antimatter_dust" },
         { "sbz_resources:raw_emittrium",   "sbz_resources:antimatter_dust", "sbz_resources:raw_emittrium" }
     }
-})
-
-
-local water_color = "#576ee180"
-
-minetest.register_node("sbz_resources:water_source", {
-    description = "Water Source",
-    drawtype = "liquid",
-    tiles = {
-        { name = "water.png", backface_culling = false },
-        { name = "water.png", backface_culling = true },
-    },
-    inventory_image = minetest.inventorycube "water.png",
-    use_texture_alpha = "blend",
-    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 1, water = 1, cold = 5 },
-    post_effect_color = water_color,
-    paramtype = "light",
-    walkable = false,
-    pointable = false,
-    buildable_to = true,
-    liquidtype = "source",
-    liquid_alternative_source = "sbz_resources:water_source",
-    liquid_alternative_flowing = "sbz_resources:water_flowing",
-    drop = "",
-    liquid_viscosity = 1,
-    drowning = 1,
-})
-
-local animation = {
-    type = "vertical_frames",
-    aspect_w = 16,
-    aspect_h = 16,
-    length = 0.5,
-}
-
-minetest.register_node("sbz_resources:water_flowing", {
-    description = "Flowing Water",
-    drawtype = "flowingliquid",
-    tiles = { "water.png" },
-    special_tiles = {
-        {
-            name = "flowing_water.png",
-            backface_culling = false,
-            animation = animation
-        },
-        {
-            name = "flowing_water.png",
-            backface_culling = true,
-            animation = animation
-        }
-    },
-    use_texture_alpha = "blend",
-    groups = { liquid = 3, habitat_conducts = 1, transparent = 1, not_in_creative_inventory = 1, water = 1, cold = 5 },
-    post_effect_color = water_color,
-    paramtype = "light",
-    paramtype2 = "flowingliquid",
-    walkable = false,
-    pointable = false,
-    buildable_to = true,
-    liquidtype = "flowing",
-    liquid_alternative_source = "sbz_resources:water_source",
-    liquid_alternative_flowing = "sbz_resources:water_flowing",
-    drop = "",
-    liquid_viscosity = 1,
-    drowning = 1,
 })
 
 minetest.register_node("sbz_resources:compressed_core_dust", {

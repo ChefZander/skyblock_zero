@@ -94,23 +94,6 @@ function travelnet.register_travelnet_box(cfg)
 				minetest.remove_node(above)
 			end
 		end,
-		on_movenode = function(_, to_pos)
-			local meta = minetest.get_meta(to_pos);
-			minetest.log("action", "[jumpdrive] Restoring travelnet @ " .. to_pos.x .. "/" .. to_pos.y .. "/" .. to_pos
-				.z)
-
-			local owner_name = meta:get_string("owner");
-			local station_name = meta:get_string("station_name");
-			local station_network = meta:get_string("station_network");
-
-			local stations = travelnet.get_travelnets(owner_name)
-			if (stations[station_network]
-					and stations[station_network][station_name]) then
-				-- update station with new position
-				stations[station_network][station_name].pos = to_pos
-				travelnet.set_travelnets(owner_name, stations)
-			end
-		end
 	})
 
 	if cfg.recipe then

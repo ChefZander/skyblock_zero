@@ -1,0 +1,26 @@
+# textdomain: wrench
+
+# technic_wrench Indonesian translation
+# terjemahan bahasa Indonesia technic_wrench
+# by srifqi
+
+Wrench=Kunci Pas
+
+Not enough room in inventory to pickup node.=Tidak cukup ruang dalam inventaris untuk mengambil nodus.
+Cannot pickup node containing @1.=Tidak dapat mengambil nodus yang berisi @1.
+Cannot pickup node. Owned by @1.=Tidak dapat mengambil nodus. Dimiliki oleh @1.
+Cannot pickup node. Nesting inventories is not allowed.=Tidak dapat mengambil nodus. Inventaris bersusun tidak dibolehkan.
+Cannot pickup node. Node contains too much metadata.=Tidak dapat mengambil nodus. Nodus berisi terlalu banyak metadata.
+Cannot pickup node. Node is missing inventory.=Tidak dapat mengambil nodus. Nodus kehilangan inventaris.
+Cannot pickup node. Node contains unknown metadata.=Tidak dapat mengambil nodus. Nodus mengandung metadata yang tidak diketahui.
+
+@1 with items=@1 berisi barang
+@1 with text "@2"=@1 berisi teks "@2"
+@1 with channel "@2"=@1 dengan saluran "@2"
+@1 with configuration=@1 dengan konfigurasi
+
+@1 with armor=@1 dengan zirah
+@1 with code=@1 dengan kode
+@1 with game "@2" vs. "@3"=@1 dengan permainan "@2" vs. "@3"
+@1 with item "@2"=@1 dengan barang "@2"
+@1 (light level @2) with channel "@3"=@1 (tingkat cahaya @2) dengan saluran "@3"

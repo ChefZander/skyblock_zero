@@ -96,13 +96,12 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         end
 
         meta:set_string("infotext", "Crushing...")
-        inv:remove_item("input", itemname)
-        minetest.sound_play({ name = "050597_ice-crusher-38522" }, { pos = pos, max_hear_distance = 8 })
+        sbz_api.play_sfx({ name = "050597_ice-crusher-38522" }, { pos = pos, max_hear_distance = 8, gain = 0.8 })
 
         local selected_item = possible_outputs[math.random(1, #possible_outputs)]
 
-
         if inv:room_for_item("output", selected_item) then
+            inv:remove_item("input", itemname)
             inv:add_item("output", selected_item)
         else
             meta:set_string("infotext", "Output inventory full")

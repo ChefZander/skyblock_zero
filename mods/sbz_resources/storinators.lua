@@ -99,7 +99,6 @@ local function register_storinator(added_name, def)
             def_copy.on_metadata_inventory_take = update_node_texture
             def_copy.on_metadata_inventory_move = update_node_texture
             def_copy.info_extra = def_copy.slots .. " Slots"
-
             local dropname = "sbz_resources:storinator"
             if #added_name ~= 0 then
                 dropname = dropname .. "_" .. added_name
@@ -109,8 +108,8 @@ local function register_storinator(added_name, def)
             end
 
             storinator_upgrades[name] = added_name
-            def_copy.drop = dropname
 
+            def_copy.drop = dropname
             def_copy.after_dig_node = pipeworks.after_dig
             def_copy.after_place_node = pipeworks.after_place
             def_copy.input_inv = "main"
@@ -178,7 +177,7 @@ listring[]
                 end
                 def_copy.description = "Public " .. def_copy.description
             end
-            def_copy = unifieddyes.def(def_copy)
+            def_copy = unifieddyes.def(def_copy, false)
             core.register_node(name, def_copy)
         end
     end

@@ -1,0 +1,26 @@
+# textdomain: wrench
+
+# technic_wrench brazilian portuguese translation
+# technic_wrench tradução para português brasileiro
+# by Sires
+
+Wrench=Chave Inglesa
+
+Not enough room in inventory to pickup node.=
+Cannot pickup node containing @1.=
+Cannot pickup node. Owned by @1.=
+Cannot pickup node. Nesting inventories is not allowed.=
+Cannot pickup node. Node contains too much metadata.=
+Cannot pickup node. Node is missing inventory.=
+Cannot pickup node. Node contains unknown metadata.=
+
+@1 with items=@1 com items
+@1 with text "@2"=
+@1 with channel "@2"=
+@1 with configuration=
+
+@1 with armor=
+@1 with code=
+@1 with game "@2" vs. "@3"=
+@1 with item "@2"=
+@1 (light level @2) with channel "@3"=

@@ -1,7 +1,8 @@
 <bigger> Luacontroller Basics </bigger>
 Luacontrollers execute <big>SANDBOXED and LIMITED</big> lua code, they can be used for controlling machines or logic devices.
 
-Skyblock Zero's luacontrollers are <b>EXTREMELY</b> different than mesecon's luacontrollers. (But everything possible with mesecon's luacontrollers is possible with skyblock zero's luacontrollers)
+Skyblock Zero's luacontrollers are <b>VERY</b> different than mesecon's luacontrollers. (But practically, everything possible with mesecon's luacontrollers is possible with skyblock zero's luacontrollers.. besides interact with mesecon wire or digilines i guess)
+They are also built to solve complex problems, not simple ones, so they may appear more annoying for simpler problems (sometimes in exchange for more customization - like the editor/main sandbox split).
 
 If you are not familiar with lua, then uhh... you will need to learn it i guess?
 If you are familiar with like any other programming language, it shouldn't be difficult (just experiment with the examples, then do a couple of "Lua for loop how to" searches, no need for a 5 hour long in-depth tutorial video). Don't worry it's no rust.

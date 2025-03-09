@@ -23,21 +23,14 @@ TIP: You can use compressed core dust as a buffer when dealing with antimatter.]
         type = "quest",
         title = "Anti-Annihilator",
         text =
-        [[Unfortunately, you again don't seem to be strong enough to destroy that node once you place it, so let's craft something that can.
-
-To craft an Antimatter Annihilator you'll need a couple things:
-
-* one Matter Dust
-* one Charged Particle
-* three Antimatter Blobs.
-
-Make sure the Charged Particle is properly encased in antimatter, or it'll escape.]],
+        [[Unfortunately, you again don't seem to be strong enough to destroy that node [antimatter nodes] once you place it, so let's craft something that can.]],
         requires = { "More Antimatter" }
     },
     {
         type = "quest",
         title = "Screwdriver",
-        text = "Screwdriver rotates nodes when you click on one with it. \nTIP: This acts similarly to the Minetest Game screwdriver.",
+        text =
+        "Screwdriver rotates nodes when you click on one with it. \nTIP: This acts similarly to the Minetest Game screwdriver.",
         requires = { "Antimatter", "Introduction" }
     },
     --[[

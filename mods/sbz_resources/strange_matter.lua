@@ -7,7 +7,7 @@ minetest.register_node("sbz_resources:strange_blob", {
     description = "Strange Blob",
     info_extra = "It sure is strange looking... never before seen green color...\n wait did it just- oh no....",
     tiles = { "strange_blob.png" },
-    groups = { matter = 1, antimatter = 1, strange = 1 },
+    groups = { matter = 1, antimatter = 1, strange = 1, explody = 100 },
     sounds = sbz_api.sounds.strange(),
     light_source = 14,
 })
@@ -48,7 +48,7 @@ minetest.register_abm({
             end
             if minetest.get_item_group(name, "no_spread") ~= 0 then return end
             if minetest.get_item_group(name, "charged") ~= 0 then return end
-            if minetest.is_protected(filtering_pos, "") then return end
+            if minetest.is_protected(filtering_pos, ".strange_blob_spread") then return end
             return filtering_pos
         end)
 
@@ -57,11 +57,12 @@ minetest.register_abm({
         local v = to_spread[index]
         local old_node = minetest.get_node(v)
         local old_meta = minetest.get_meta(v)
-        core.swap_node(v, { name = "sbz_resources:strange_blob" })
-
         local meta = minetest.get_meta(v)
-        meta:set_string("old_meta", minetest.serialize(old_meta:to_table()))
-        meta:set_string("old_node", minetest.serialize(old_node))
+        if next(old_meta:to_table().inventory) == nil then -- you can't serialize userdata
+            core.swap_node(v, { name = "sbz_resources:strange_blob" })
+            meta:set_string("old_meta", minetest.serialize(old_meta:to_table()))
+            meta:set_string("old_node", minetest.serialize(old_node))
+        end
     end
 })
 

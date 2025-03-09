@@ -66,7 +66,7 @@ core.register_node("sbz_power:creative_battery", {
     info_extra =
     "It never runs out of power... useful for when you need to not have noise in your \"Supply\" statistic in the switching station.",
     tiles = { { name = "creative_battery_power_gen.png", animation = { type = "vertical_frames", length = 0.5 }, } },
-    groups = { creative = 1, sbz_battery = 1, sbz_machine = 1, pipe_conducts = 1, pipe_connects = 1 },
+    groups = { creative = 1, sbz_battery = 1, sbz_machine = 1, pipe_conducts = 1, pipe_connects = 1, matter = 3 },
     battery_max = 10 ^ 9, -- G
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
@@ -78,7 +78,7 @@ core.register_node("sbz_power:creative_battery", {
 core.register_node("sbz_power:real_creative_battery", {
     description = "Creative Battery",
     tiles = { "creative_battery.png" },
-    groups = { creative = 1, sbz_battery = 1, sbz_machine = 1, pipe_conducts = 1, pipe_connects = 1 },
+    groups = { creative = 1, sbz_battery = 1, sbz_machine = 1, pipe_conducts = 1, pipe_connects = 1, matter = 3 },
     battery_max = 10 ^ 9, -- G
     action = function(pos, node, meta, supply, demand)
         local current_power = meta:get_int("power")
