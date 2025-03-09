@@ -124,16 +124,26 @@ mesecon.register_on_mvps_move(function(moved)
         local moved_node = moved[i]
         if moved_node.node.name == "sbz_logic:lua_controller_on" or moved_node.node.name == "sbz_logic:lua_controller_off" then
             minetest.after(0, function()
-                local linked_meta = core.get_meta(moved_node.pos)
-                local links = minetest.deserialize(linked_meta:get_string("links")) or {}
+                local mnode = core.get_node(moved_node.pos).name
+                if mnode == "sbz_logic:lua_controller_on" or mnode == "sbz_logic:lua_controller_off" then
+                    local linked_meta = core.get_meta(moved_node.pos)
+                    local links = minetest.deserialize(linked_meta:get_string("links")) or {}
 
-                for k, more_links in pairs(links) do
-                    for kk, link in pairs(more_links) do
-                        more_links[kk] = vector.copy(link) - vector.copy(moved_node.oldpos) + vector.copy(moved_node.pos)
+                    for k, more_links in pairs(links) do
+                        for kk, link in pairs(more_links) do
+                            more_links[kk] = vector.copy(link) - vector.copy(moved_node.oldpos) +
+                                vector.copy(moved_node.pos)
+                        end
+                    end
+
+                    linked_meta:set_string("links", minetest.serialize(links))
+                    -- nextup: update pos in env
+                    local id = linked_meta:get_string("ID")
+                    local sandbox = libox.coroutine.active_sandboxes[id]
+                    if sandbox then
+                        sandbox.env.pos = moved_node.pos
                     end
                 end
-
-                linked_meta:set_string("links", minetest.serialize(links))
             end)
         end
     end

@@ -119,6 +119,7 @@ listring[]
         if not lqinv then -- the reactor already exploded, it seems like?
             return 0
         end
+
         local rodtimer = meta:get_int("rod_timer")
 
         if rodtimer <= 0 then -- no rods, attempt to get some from inventory

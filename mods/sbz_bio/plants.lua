@@ -108,30 +108,83 @@ function sbz_api.register_plant(name, defs)
     })
 end
 
+-- PYROGRASS FAMILY
 --Pyrograss, hardy and quick to grow, highly flammable due to its carbon content
 --To be used in rockets and explosives and stuff
 sbz_api.register_plant("pyrograss", {
     description = "Pyrograss Plant",
     drop = "sbz_bio:pyrograss 2",
     growth_rate = 4,
+    family = "pyrograss",
     width = 0.25,
     height_min = -0.375,
     height_max = 0,
     no_wilt = true,
 })
-
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
-    groups = { burn = 30, eat = -1 },
+    groups = { burn = 30, eat = 1 },
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", { "group:soil" })
 })
 
+-- uses:
+-- ingredient in powered dirt
+-- 3 razorgrass = 10 fertilizer
+-- poison bullets for later
+-- compressed razorgrass could maybe look nice
+-- grows slightly slower than pyro
+sbz_api.register_plant("razorgrass", {
+    description = "Razorgrass Plant",
+    drop = "sbz_bio:razorpyrograss 2",
+    growth_rate = 8,
+    co2_demand = 5,
+    family = "pyrograss",
+    width = 0.25,
+    height_min = -0.375,
+    height_max = 0,
+})
+minetest.register_craftitem("sbz_bio:razorgrass", {
+    description = "Razorgrass",
+    inventory_image = "razorgrass_4.png",
+    groups = { burn = 2, eat = -8 },
+    eat_fx = { "Poisoned", "Slowed" },
+    on_place = sbz_api.plant_plant("sbz_bio:razorgrass_1", { "group:soil" })
+})
+
+-- uses:
+-- clearing effect
+-- blinding bullets for later
+-- could be used to "polish" decoblocks
+-- boosts plants near it by 15% when in full growth stage, consumes co2, makes plants consume more co2
+-- grows slowly
+sbz_api.register_plant("cleargrass", {
+    description = "Cleargrass Plant",
+    drop = "sbz_bio:cleargrass 2",
+    growth_rate = 16,
+    co2_demand = 5,
+    family = "pyrograss",
+    width = 0.25,
+    height_min = -0.375,
+    height_max = 0,
+})
+
+minetest.register_craftitem("sbz_bio:cleargrass", {
+    description = "Cleargrass",
+    inventory_image = "cleargrass_4.png",
+    groups = { burn = 0, eat = 0, },
+    eat_fx = { "Cleared" },
+    on_place = sbz_api.plant_plant("sbz_bio:cleargrass_1", { "group:soil" })
+})
+
+
+-- STEMFRUIT: base of all plants
 --Stemfruit, generic plant, quite versatile
 --To be used to craft other plants
 sbz_api.register_plant("stemfruit_plant", {
     description = "Stemfruit Plant",
     drop = "sbz_bio:stemfruit 3",
+    family = "stemfruit",
     growth_rate = 8,
     co2_demand = 1,
     width = 0.125,
@@ -146,27 +199,47 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
     on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
 })
 
+
+-- SHROOM FAMILY
+
 --Warpshroom, grows slowly, has teleportation powers
 --To be used later in teleporters
 sbz_api.register_plant("warpshroom", {
     description = "Warpshroom Plant",
     drop = "sbz_bio:warpshroom 2",
+    family = "warpshroom",
     growth_rate = 16,
-    co2_demand = 1,
+    co2_demand = 2,
     width = 0.25,
     height_min = -0.3125,
     height_max = 0.25,
-
 })
 
+-- Shockshroom, 1/2 chance to make 100cj, needs 5 co2
+-- ingredient in powered dirt
+sbz_api.register_plant("shockshroom", {
+    description = "Warpshroom Plant",
+    drop = "sbz_bio:shockshroom 2",
+    family = "warpshroom",
+    growth_rate = 6,
+    co2_demand = 5,
+    width = 0.25,
+    height_min = -0.3125,
+    height_max = 0.25,
+})
+
+local warpshroom_teleport_radius = 16
 local function teleport_randomly(user)
     local user_pos = vector.round(user:get_pos())
     for _ = 1, 1000 do
-        local pos = user_pos + vector.new(math.random(-16, 16), math.random(-16, 16), math.random(-16, 16))
+        local pos = user_pos +
+            vector.new(math.random(-warpshroom_teleport_radius, warpshroom_teleport_radius),
+                math.random(-warpshroom_teleport_radius, warpshroom_teleport_radius),
+                math.random(-warpshroom_teleport_radius, warpshroom_teleport_radius))
         if not minetest.registered_nodes[minetest.get_node(pos).name].walkable
             and not minetest.registered_nodes[minetest.get_node(pos + up).name].walkable
             and minetest.registered_nodes[minetest.get_node(pos - up).name].walkable then
-            user:set_pos(pos - up * 0.5)
+            return user:set_pos(pos - up * 0.5) -- this was missing a "return"... yeah... bad bad
         end
     end
 end

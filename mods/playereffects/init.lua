@@ -41,9 +41,6 @@ end
 if (playereffects.autosave_time == nil) then
 	playereffects.autosave_time = 10
 end
-if (playereffects.use_examples == nil) then
-	playereffects.use_examples = false
-end
 
 --[=[ Load inactive_effects and last_effect_id from playereffects.mt, if this file exists  ]=]
 do
@@ -116,8 +113,11 @@ function playereffects.apply_effect_type(effect_type_id, duration, player, repea
 	local playername = player:get_player_name()
 	local groups = playereffects.effect_types[effect_type_id].groups
 	for k, v in pairs(groups) do
-		playereffects.cancel_effect_group(v, playername)
+		if string.sub(v, 1, #"cancel_") == "cancel_" then
+			playereffects.cancel_effect_group(string.sub(v, #"cancel_" + 1), playername)
+		end
 	end
+	playereffects.cancel_effect_type(effect_type_id, true, player:get_player_name())
 
 	local metadata
 	if (playereffects.effect_types[effect_type_id].repeat_interval == nil) then
@@ -519,7 +519,7 @@ function playereffects.hud_effect(effect_type_id, player, pos, time_left, repeat
 		if (playereffects.effect_types[effect_type_id].icon ~= nil) then
 			icon_id = player:hud_add({
 				hud_elem_type = "image",
-				scale = { x = 2, y = 2 },
+				scale = { x = 1.45, y = 1.45 },
 				position = { x = 1, y = 0.3 },
 				name = "effect_icon_" .. effect_type_id,
 				text = playereffects.effect_types[effect_type_id].icon,
@@ -533,9 +533,4 @@ function playereffects.hud_effect(effect_type_id, player, pos, time_left, repeat
 		icon_id = nil
 	end
 	return text_id, icon_id
-end
-
--- LOAD EXAMPLES
-if (playereffects.use_examples == true) then
-	dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/examples.lua")
 end

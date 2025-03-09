@@ -2,14 +2,15 @@ local ruleset_chars = {
     ["A"] = 10,
     ["B"] = 10,
     ["C"] = 10,
-    ["D"] = 10,
-    ["a"] = 9,
-    ["b"] = 8,
-    ["c"] = 7,
-    ["d"] = 6,
+    ["D"] = 10, -- 100%
+    ["a"] = 9,  -- 90%
+    ["b"] = 8,  -- 80%, you get the pattern
+    ["c"] = 7,  -- 70%
+    ["d"] = 6,  -- 60%
 }
 
 
+local this_is_a_zip_bomb_treshold = 500000 -- 500k characters
 -- not exactly up to spec but good enough
 local function lsystem(start_pos, dna, owner, starting_angle)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
@@ -41,7 +42,6 @@ local function lsystem(start_pos, dna, owner, starting_angle)
     if type(dna.leaves) == "string" then dna.leaves = { name = dna.leaves } end
     local function spawn_leaves(pos)
         set_node(pos, dna.leaves, dna.leaves.name)
-        -- now, no need to do the meta crap :D
     end
 
     local function spawn_trunk(pos, branches)
@@ -104,23 +104,36 @@ local function lsystem(start_pos, dna, owner, starting_angle)
     -- inspired by engine code (mfw its so undocumented i have to actually resort to that)
     -- https://github.com/minetest/minetest/blob/a45b04ffb4c0583ef3c8727ea0f73d40e3662e9d/src/mapgen/treegen.cpp#L194
 
+    local string_size = 0
     local axiom = dna.axiom
     for _ = 1, iterations_max do
         local temp = {}
         for i = 1, #axiom do
+            if string_size >= this_is_a_zip_bomb_treshold then
+                core.log("error",
+                    "Tree at " ..
+                    vector.to_string(start_pos) .. " was a \"\"zip bomb\"\", cannot grow, dna: " .. dump(dna))
+                return false
+            end
             local char = string.sub(axiom, i, i)
             if ruleset_chars[char] then
                 local probability = ruleset_chars[char]
                 if (random:next(1, 10) <= probability) then
                     temp[#temp + 1] = (dna["rules_" .. char:lower()] or "")
+                    string_size = string_size + #temp[#temp]
                 end
             else
                 temp[#temp + 1] = char
+                string_size = string_size + 1
             end
         end
         axiom = table.concat(temp) -- took me a while to guess why this is there specifically, confusing code
     end
+    core.debug("Instruction size: " .. dump(#axiom))
 
+    if #axiom > 10000 then
+        core.debug("Super large tree detected:" .. vector.to_string(start_pos))
+    end
     local pos = vector.copy(start_pos)
 
     local rotation = starting_angle or { x = 0, y = 0, z = 0 }
@@ -135,7 +148,7 @@ local function lsystem(start_pos, dna, owner, starting_angle)
         i = i + 1
         local char = string.sub(axiom, i, i)
         if char == nil or char == "" then break end
-        if i > (dna.max_size or 100000) then
+        if i > (dna.max_size or 5000) then
             break
         end
         if char == "G" then

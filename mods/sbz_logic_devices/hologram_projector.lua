@@ -62,41 +62,43 @@ end
 
 local function process_textures(og_textures)
     local new_textures = {}
-    for k, v in ipairs(og_textures) do
-        if type(v) == "string" or (type(v) == "table" and not v.name) then
-            -- normal texture or texmod
-            new_textures[k] = transform_texture_name(v)
-        elseif type(v) == "table" and v.name then
-            -- now it gets a little tricky
-            -- nah jk
-            v.name = transform_texture_name(v)
-            v.image = nil
-            v.scale = nil
-            v.align_style = nil
-            if v.animation then
-                if v.animation.type == "vertical_frames" then
-                    if libox.type_check(v.animation, {
-                            type = libox.type("string"),
-                            aspect_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            aspect_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            length = function(x) return type(x) == "number" and x > 0.1 end,
-                        }) == false then
+    if type(og_textures) == "table" then
+        for k, v in ipairs(og_textures) do
+            if type(v) == "string" or (type(v) == "table" and not v.name) then
+                -- normal texture or texmod
+                new_textures[k] = transform_texture_name(v)
+            elseif type(v) == "table" and v.name then
+                -- now it gets a little tricky
+                -- nah jk
+                v.name = transform_texture_name(v)
+                v.image = nil
+                v.scale = nil
+                v.align_style = nil
+                if v.animation then
+                    if v.animation.type == "vertical_frames" then
+                        if libox.type_check(v.animation, {
+                                type = libox.type("string"),
+                                aspect_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                aspect_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                length = function(x) return type(x) == "number" and x > 0.1 end,
+                            }) == false then
+                            v.animation = nil
+                        end
+                    elseif v.animation.type == "sheet_2d" then
+                        if libox.type_check(v.animation, {
+                                type = libox.type("string"),
+                                frames_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                frames_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                frame_length = function(x) return type(x) == "number" and x > 0.1 end,
+                            }) == false then
+                            v.animation = nil
+                        end
+                    else
                         v.animation = nil
                     end
-                elseif v.animation.type == "sheet_2d" then
-                    if libox.type_check(v.animation, {
-                            type = libox.type("string"),
-                            frames_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            frames_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            frame_length = function(x) return type(x) == "number" and x > 0.1 end,
-                        }) == false then
-                        v.animation = nil
-                    end
-                else
-                    v.animation = nil
                 end
+                new_textures[k] = v
             end
-            new_textures[k] = v
         end
     end
     return new_textures

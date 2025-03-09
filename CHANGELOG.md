@@ -27,7 +27,9 @@ Release 33
 - Make tree mutations way more potent (lowered to 10 mutations, but without the "60% chance of preventing a mutation" check, and made mutations much more likely)
 - Added pitch variations to some sound effects
 - Made luacontroller's `pos` global change in the main environment if the luacontroller has been jumped
-
+- After an "sbz moment", it was decided that strange blobs should be able to explode
+- Changed planet mapgen a bit, made bluestone/redstone more common
+- Changed how trees get generated, decreased the maximum tree size
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default

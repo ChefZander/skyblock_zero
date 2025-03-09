@@ -16,5 +16,15 @@ But you can still jump, and other knockback sources like explosions can still mo
 
 And yes, you can go in orbit of the meteorite attractor, it just needs some practice.
 ]],
-    }
+    },
+    {
+        type = "secret",
+        title = "Wet",
+        text = [[
+This effect is applied to you when you are standing in water.
+During this effect, you will be 0.8x as fast as you were before.
+
+This effect, combined with certain other effects, may produce a very dangerous combination.
+]],
+    },
 }

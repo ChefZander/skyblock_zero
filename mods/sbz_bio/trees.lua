@@ -309,7 +309,7 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
         rules_c = "+",
         rules_d = "",
         angle = 25,
-        max_size = 30 ^ 3, -- dont know if this is a good idea
+        max_size = 4000,
         tree_core = "sbz_bio:colorium_tree_core"
     },
 }

@@ -65,7 +65,8 @@ minetest.register_node("sbz_resources:emitter", {
     light_source = 14,
     walkable = true,
     on_punch = action,
-    on_rightclick = action
+    on_rightclick = action,
+    diggable = false,
 })
 
 minetest.register_node("sbz_resources:movable_emitter", {
@@ -190,6 +191,7 @@ minetest.register_node("sbz_resources:the_core", {
     walkable = true,
     on_punch = core_interact,
     on_rightclick = core_interact,
+    diggable = false,
 })
 
 -- Core Particles
