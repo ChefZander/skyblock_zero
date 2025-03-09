@@ -30,6 +30,10 @@ Release 33
 - After an "sbz moment", it was decided that strange blobs should be able to explode
 - Changed planet mapgen a bit, made bluestone/redstone more common
 - Changed how trees get generated, decreased the maximum tree size
+- Changed the linker tool so the waypoints have a maximum view range of 100
+
+
+
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default
