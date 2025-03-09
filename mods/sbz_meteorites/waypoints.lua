@@ -49,7 +49,8 @@ function sbz_api.update(player)
     player_huds[name] = {}
     local player_pos = player:get_pos()
     for pos, defs in sbz_api.waypoint_pairs() do
-        if vector.distance(player_pos, pos) >= defs.dist then
+        local dist = vector.distance(player_pos, pos)
+        if dist >= (defs.dist or 0) and dist <= (defs.max_dist or 1000) then
             table.insert(player_huds[name], player:hud_add({
                 name = defs.name,
                 type = "waypoint",

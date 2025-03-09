@@ -4,11 +4,9 @@ local has_locator_mod = minetest.get_modpath("locator")
 local has_pipeworks_mod = minetest.get_modpath("pipeworks")
 local has_sethome_mod = minetest.get_modpath("sethome")
 local has_areas_mod = minetest.get_modpath("areas")
-
-if minetest.get_modpath("travelnet") then
+if core.get_modpath("travelnet") then
     dofile(MP .. "/compat/travelnet.lua")
 end
-
 if has_areas_mod then
     dofile(MP .. "/compat/areas.lua")
 end

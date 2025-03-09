@@ -25,6 +25,7 @@ local function render_individual_link(pos, name)
         waypoint_ids[#waypoint_ids + 1] = sbz_api.set_waypoint(pos, {
             name = name,
             dist = 0,
+            max_dist = 100,
             precision = 0,
             image = "visualiser_trail.png^[verticalframe:3:0"
         })

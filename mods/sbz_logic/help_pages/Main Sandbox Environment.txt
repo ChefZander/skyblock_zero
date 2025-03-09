@@ -14,7 +14,7 @@ $C1     <mono>editor.editor_code</mono> - the editor code
 $C1     <mono>editor.code</mono> - the normal code
 $C1     <mono>editor.error</mono> - the error that happened in main code (can be edited, wouldnt recomend as you dont know what the editor will do with it)
 
-<mono>pos</mono> - the in-world/non-relative position of the luacontroller
+<mono>pos</mono> - the in-world/non-relative position of the luacontroller - changes when the luacontroller gets moved
 <mono>yield</mono> - <mono>coroutine.yield</mono>
 
 <mono>missed_events = wait_for_event_type(event_type)</mono> - yields until the <mono>event.type</mono> of the event is equal to <mono>event_type</mono>, the last event (<mono>misssed_events[#missed_events]</mono>) is that event type
@@ -43,3 +43,6 @@ Also, the basic editor that is in the systemdisk, cares about the global <mono>t
 If you do <mono>terminal_text = "helloo world"</mono> it will display "helloo world" on the terminal tab
 
 <mono>is_online = chat_debug(msg)</mono> - Sends a message to the placer of the luacontroller, the luacontroller must be protected by the owner for this to work, returns false if owner is offline
+
+
+Using xpcall and chat_debug, you can make it so that whenever a luacontroller throws an error, the error will be send to the owner's chat, but that is an excercise for the viewer :D

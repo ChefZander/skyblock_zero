@@ -1,9 +1,10 @@
-local cost = 4
+local cost = 1
 sbz_api.register_stateful_machine("sbz_power:powered_lamp", {
     description = "Powered Lamp",
     tiles = { "power_lamp_off.png^[colorize:black:50" },
     light_source = 0,
-    info_extra = "Really cheap lamp. Uses up 10 power.",
+    info_extra = "Really cheap lamp.",
+    info_power_needed = cost,
     autostate = true,
     action = function(_, _, meta, supply, demand)
         meta:set_string("infotext", "")

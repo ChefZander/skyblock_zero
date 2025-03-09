@@ -72,9 +72,9 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
                 unlock_achievement(owner, "Colorium Trees")
                 local dna = minetest.deserialize(meta:get_string("dna")) or
                     core.registered_items[sapling_name].dna
-                if not meta:get_int("immutable") == 1 then
-                    sbz_api.mutate_dna(dna, nil, 20)
-                end
+                --if not meta:get_int("immutable") == 1 then
+                sbz_api.mutate_dna(dna, nil, 10)
+                --end
                 minetest.remove_node(pos)
                 sbz_api.spawn_tree(pos, dna, owner)
             end
@@ -309,7 +309,7 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
         rules_c = "+",
         rules_d = "",
         angle = 25,
-        max_size = 30 ^ 3, -- dont know if this is a good idea
+        max_size = 4000,
         tree_core = "sbz_bio:colorium_tree_core"
     },
 }

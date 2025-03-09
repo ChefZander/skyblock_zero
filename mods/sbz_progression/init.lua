@@ -74,6 +74,7 @@ local achievement_table = {
     ["sbz_resources:robotic_arm"] = "Bear Arms",
     ["pipeworks:automatic_filter_injector"] = "Automatic Filter-Injectors",
     ["pipeworks:tube_1"] = "Tubes",
+    ["pipeworks:one_direction_tube_1"] = "One Direction Tubes",
     ["pipeworks:nodebreaker"] = "Node Breakers",
     ["pipeworks:deployer"] = "Deployers",
     ["pipeworks:puncher"] = "Punchers",
@@ -149,6 +150,9 @@ local achievement_table = {
     ["sbz_chem:decay_accel_off"] = "Decay Accelerator",
     ["sbz_power:turret"] = "Automatic Turrets",
     ["sbz_bio:co2_compactor"] = "Co2 Compactors",
+    ["sbz_wrench:wrench"] = "Node Preserver",
+    ["replacer:replacer"] = "Bulk Placer Tool",
+    ["metatool:copytool"] = "Copy Tool"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
