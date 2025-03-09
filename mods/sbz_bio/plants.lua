@@ -215,18 +215,6 @@ sbz_api.register_plant("warpshroom", {
     height_max = 0.25,
 })
 
--- Shockshroom, 1/2 chance to make 100cj, needs 5 co2
--- ingredient in powered dirt
-sbz_api.register_plant("shockshroom", {
-    description = "Warpshroom Plant",
-    drop = "sbz_bio:shockshroom 2",
-    family = "warpshroom",
-    growth_rate = 6,
-    co2_demand = 5,
-    width = 0.25,
-    height_min = -0.3125,
-    height_max = 0.25,
-})
 
 local warpshroom_teleport_radius = 16
 local function teleport_randomly(user)
@@ -263,6 +251,28 @@ minetest.register_craft({
     recipe = { "sbz_bio:stemfruit", "sbz_meteorites:neutronium" }
 })
 
+-- Shockshroom, 1/2 chance to make 100cj, needs 5 co2
+-- ingredient in powered dirt
+sbz_api.register_plant("shockshroom", {
+    description = "Shockshroom Plant",
+    drop = "sbz_bio:shockshroom 2",
+    family = "warpshroom",
+    growth_rate = 6,
+    co2_demand = 5,
+    width = 0.25,
+    height_min = -0.3125,
+    height_max = 0.25,
+})
+
+minetest.register_craftitem("sbz_bio:shockshroom", {
+    description = "Shockshroom",
+    inventory_image = "shockshroom_4.png",
+    on_place = sbz_api.plant_plant("sbz_bio:shockshroom_1", { "group:soil" }),
+    groups = { ui_bio = 1, eat = -6 }
+})
+
+-- STARFRUIT FAMILY (unlike the others, there is no base "starfruit" plant)
+-- todo
 --Fiberweed, multi-node seaweed which grows vertically, requires water along its entire stem
 --To be used in making string and fabric for various uses
 local function is_all_water(pos, leveled)
