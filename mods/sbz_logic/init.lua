@@ -137,12 +137,6 @@ mesecon.register_on_mvps_move(function(moved)
                     end
 
                     linked_meta:set_string("links", minetest.serialize(links))
-                    -- nextup: update pos in env
-                    local id = linked_meta:get_string("ID")
-                    local sandbox = libox.coroutine.active_sandboxes[id]
-                    if sandbox then
-                        sandbox.env.pos = moved_node.pos
-                    end
                 end
             end)
         end

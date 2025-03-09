@@ -120,6 +120,7 @@ function logic.initialize_env(meta, env, pos)
             v.z = v.z - pos.z
         end
     end
+    env.pos = vector.copy(pos)
 end
 
 function logic.save_disks_and_mem(meta, env)
