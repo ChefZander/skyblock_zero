@@ -11,6 +11,9 @@
 ---@field z number
 vector = {}
 
+---@alias vectorT table|vector
+
+
 ---@param x number
 ---@param y number
 ---@param z number
@@ -20,7 +23,7 @@ function vector.new(x, y, z) end
 ---@return vector
 function vector.zero() end
 
----@param v vector|table
+---@param v vectorT
 ---@return vector
 function vector.copy(v) end
 
@@ -32,102 +35,108 @@ function vector.copy(v) end
 ---@param s string
 function vector.from_string(s, init) end
 
----@param v vector
+---@param v vectorT
 ---@return string
 function vector.to_string(v) end
 
----@param p1 vector
----@param p2 vector
+---@param p1 vectorT
+---@param p2 vectorT
 ---@return vector
 function vector.direction(p1, p2) end
 
----@param p1 vector
----@param p2 vector
+---@param p1 vectorT
+---@param p2 vectorT
 ---@return number
 function vector.distance(p1, p2) end
 
----@param v vector
+---@param v vectorT
 ---@return number
 function vector.length(v) end
 
----@param v vector
----@return vector
+---@param v vectorT
+---@return vectorT
 function vector.normalize(v) end
 
----@param v vector
----@return vector
+---@param v vectorT
+---@return vectorT
 function vector.floor(v) end
 
----@param v vector
----@return vector
+---@param v vectorT
+---@return vectorT
 function vector.round(v) end
 
----@param v vector
+---@param v vectorT
 ---@param func function
 ---@return vector
 function vector.round(v, func) end
 
----@param v vector
----@param w vector
+---@param v vectorT
+---@param w vectorT
 ---@param func function
 ---@return vector
 function vector.combine(v, w, func) end
 
----@param v1 vector
----@param v2 vector
----@return vector
+---@param v1 vectorT
+---@param v2 vectorT
+---@return boolean
 function vector.equals(v1, v2) end
 
----@param v1 vector
----@param v2 vector
+---@param v1 vectorT
+---@param v2 vectorT
 ---@return vector
 function vector.sort(v1, v2) end
 
----@param v1 vector
----@param v2 vector
+---@param v1 vectorT
+---@param v2 vectorT
 ---@return vector
 function vector.angle(v1, v2) end
 
----@param v1 vector
----@param v2 vector
+---@param v1 vectorT
+---@param v2 vectorT
 ---@return vector
 function vector.dot(v1, v2) end
 
----@param v1 vector
----@param v2 vector
+---@param v1 vectorT
+---@param v2 vectorT
 ---@return vector
 function vector.cross(v1, v2) end
 
----@param v1 vector
----@param v2 vector
+---@param v1 vectorT
+---@param v2 vectorT
 ---@return vector
 function vector.offset(v1, v2) end
 
----@param v vector
+---@param v any
 ---@return boolean
 function vector.check(v) end
 
----@param v vector
----@param x number|vector
+---@param v number|vectorT
+---@param x number|vectorT
 ---@return vector
 function vector.add(v, x) end
 
----@param v vector
----@param x number|vector
+---@param v vectorT
+---@param x number|vectorT
 ---@return vector
 function vector.subtract(v, x) end
 
----@param v vector
----@param x number|vector
+---@param v vectorT
+---@param x number
 ---@return vector
 function vector.multiply(v, x) end
 
----@param v vector
----@param x number|vector
+---@param v vectorT
+---@param x number|vectorT
 ---@return vector
 function vector.divide(v, x) end
 
----@param pos vector
+---@param x vectorT
+---@param min vectorT
+---@param max vectorT
+---@return boolean
+function vector.in_area(x, min, max) end
+
+---@param pos vectorT
 ---@return number
 function core.hash_node_position(pos) end
 

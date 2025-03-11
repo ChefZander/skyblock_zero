@@ -2,7 +2,7 @@ minetest.register_node("sbz_bio:dirt", {
     description = "Dirt",
     tiles = { "dirt.png" },
     groups = {
-        explody = 10,
+        explody = 100,
         matter = 2,
         crumbly = 1,
         moss_growable = 1,
@@ -44,15 +44,19 @@ minetest.register_node("sbz_bio:fertilized_dirt", {
     description = "Fertilized Dirt",
     tiles = { "fertilized_dirt.png" },
     groups = {
-        explody = 10,
-        matter = 2,
+        explody = 100,
+        matter = 1,
         crumbly = 1,
-        soil = 3,
+        soil = 2,
         oddly_breakable_by_hand = 1,
+        fertilizer_no_sprout = 1,
     },
     paramtype = "light",
     sounds = sbz_api.sounds.dirt(),
-    info_extra = "Like dirt, but 3x faster. (And also you can't sprout plants from it.)"
+    info_extra = {
+        "Plants grow 2x faster than on dirt, on this soil.",
+        "Fertilizer can't sprout plants on this soil."
+    }
 })
 minetest.register_craft {
     output = "sbz_bio:fertilized_dirt",
@@ -72,17 +76,17 @@ minetest.register_node("sbz_bio:dirt_with_grass", {
         "dirt_with_grass_xz.png",
     },
     groups = {
-        explody = 10,
+        explody = 100,
         matter = 2,
         crumbly = 1,
-        soil = 2,
+        soil = 1,
         oddly_breakable_by_hand = 1,
         burn = 5,
         charged = 1
     },
     paramtype = "light",
     sounds = sbz_api.sounds.dirt(),
-    info_extra = "Spreads",
+    info_extra = "Spreads, same growth speed as dirt.",
     on_burn = function(pos)
         if is_air(vector.add(pos, vector.new(0, 1, 0))) then
             core.set_node(pos, { name = "sbz_bio:dirt" })
@@ -91,6 +95,36 @@ minetest.register_node("sbz_bio:dirt_with_grass", {
             minetest.get_node_timer(vector.add(pos, vector.new(0, 1, 0))):start(math.random(30, 60))
         end
     end,
+})
+
+sbz_api.register_stateful_machine("sbz_bio:electric_soil", {
+    description = "Electric Soil",
+    groups = {
+        matter = 1,
+        soil = 0,
+        pipe_connects = 1,
+    },
+    autostate = true,
+    info_power_consume = 40,
+    info_extra = "When powered, it's 5 times more powerful than regular dirt.",
+    tiles = { "electric_soil_top.png", "electric_soil.png" },
+    action = function(p, n, m, supply, demand)
+        if supply < demand + 40 then
+            m:set_string("infotext", "Off - the plant above might wilt")
+            return 40, false
+        else
+            m:set_string("infotext", "On")
+            return 40, true
+        end
+    end,
+    paramtype = "light"
+}, {
+    light_source = 14,
+    groups = {
+        matter = 1,
+        soil = 5,
+        pipe_connects = 1
+    }
 })
 
 

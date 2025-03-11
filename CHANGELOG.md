@@ -31,7 +31,7 @@ Release 33
 - Changed planet mapgen a bit, made bluestone/redstone more common
 - Changed how trees get generated, decreased the maximum tree size
 - Changed the linker tool so the waypoints have a maximum view range of 100
-
+- Fixed a lot of lighting bugs when the smooth lighting setting is disabled
 
 
 Release 32

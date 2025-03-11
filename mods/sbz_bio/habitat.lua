@@ -174,13 +174,15 @@ core.register_node("sbz_bio:co2_compactor", {
     drawtype = "glasslike", -- this is so that when you are inside the node, it looks OK
     store_co2 = 30,
     tiles = { "co2_compactor.png" },
+    paramtype = "light"
 })
+
 core.register_craft {
     output = "sbz_bio:co2_compactor",
     recipe = {
-        { "sbz_bio:stemfruit",         "sbz_resources:matter_blob", "sbz_bio:stemfruit" },
+        { "sbz_bio:cleargrass",        "sbz_resources:matter_blob", "sbz_bio:razorgrass" },
         { "sbz_resources:matter_blob", "sbz_bio:airlock",           "sbz_resources:matter_blob" },
-        { "sbz_bio:stemfruit",         "sbz_resources:matter_blob", "sbz_bio:stemfruit" }
+        { "sbz_bio:cleargrass",        "sbz_resources:matter_blob", "sbz_bio:razorgrass" }
     }
 }
 

@@ -17,7 +17,7 @@ local fert_use = function(itemstack, user, pointed)
 
     if minetest.get_item_group(name, "soil") > 0
         and minetest.registered_nodes[minetest.get_node(pos + up).name].buildable_to
-        and name ~= "sbz_bio:fertilized_dirt"
+        and core.get_item_group(name, "fertilizer_no_sprout") <= 0
     then
         if not (sbz_api.get_node_heat(pos) > 7 and sbz_api.is_hydrated(pos)) then return end
         minetest.set_node(pos + up, { name = sprouts[math.random(#sprouts)] })

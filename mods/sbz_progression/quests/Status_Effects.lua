@@ -27,4 +27,28 @@ During this effect, you will be 0.8x as fast as you were before.
 This effect, combined with certain other effects, may produce a very dangerous combination.
 ]],
     },
+    {
+        type = "secret",
+        title = "Shocked",
+        text = [[
+During this effect, you will be 1.2x as fast as you were before.
+You will also experience random jittery movements.
+
+This effect, combined with wet, damages you by 8 hp, and the shocked effect will go away.
+]],
+    },
+    {
+        type = "secret",
+        title = "Poisoned",
+        text = [[
+During this effect, you will be 0.5x as fast as you were before, you will also receive 1 damage every 2 seconds.
+]],
+    },
+    {
+        type = "secret",
+        title = "Immune",
+        text = [[
+During this effect, you will be immune to almost all effects, excluding effects like "Wet" and "Attracted".
+]],
+    },
 }
