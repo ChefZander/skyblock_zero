@@ -57,18 +57,6 @@ Here is an example of one:
         requires = { "Automatic Filter-Injectors", "Bear Arms" }
     },
     {
-        type = "text",
-        info = true,
-        title = "Organics Automation",
-        text = [[
-I think you want to automate that annoying harvesting of your pyrograss... feeding the burner every day... very boring right!
-Well no worries, node breakers and deployers make plant automation easy.
-
-<img name=questbook_image_organics_factory.png width=348>
-Side note: deployers can place 2 nodes ahead, that's a "feature" not a bug.
-]]
-    },
-    {
         type = "quest",
         title = "Punchers",
         text =

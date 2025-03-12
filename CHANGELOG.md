@@ -32,7 +32,8 @@ Release 33
 - Changed how trees get generated, decreased the maximum tree size
 - Changed the linker tool so the waypoints have a maximum view range of 100
 - Fixed a lot of lighting bugs when the smooth lighting setting is disabled
-
+- **Re-worked organics a bit**
+- Added /playtime and /afk
 
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes

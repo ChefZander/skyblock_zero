@@ -132,7 +132,7 @@ You can also make some armor from phlogiston, once it is low on durability, you 
         type = "quest",
         title = "Planet Teleporter",
         text =
-        [[Right-click with a warp crystal to use. There are multiple types of planets, with some of them having rings.]],
+        [[<b>Right</b>-click with a warp crystal to use. If you left click you will waste it. There are multiple types of planets, with some of them having rings.]],
         requires = { "Neutronium", "Phlogiston Fuser" }
     },
     {
