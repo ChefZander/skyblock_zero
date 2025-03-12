@@ -220,6 +220,22 @@ core.register_craftitem("sbz_resources:phlogiston", {
     inventory_image = "phlogiston.png"
 })
 
+core.register_node("sbz_resources:phlogiston_blob", {
+    description = "Phlogiston Blob",
+    tiles = { "phlogiston_blob.png" },
+    groups = { matter = 1, charged = 1 },
+    light_source = 14
+})
+
+core.register_craft {
+    output = "sbz_resources:phlogiston_blob",
+    recipe = {
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston", },
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston", },
+        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston", },
+    }
+}
+
 core.register_craftitem("sbz_resources:phlogiston_circuit", {
     description = "Phlogiston Circuit",
     inventory_image = "phlogiston_circuit.png"

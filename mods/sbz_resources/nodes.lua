@@ -270,6 +270,77 @@ minetest.register_craft({
     }
 })
 
+minetest.register_node("sbz_resources:colorium_glass", unifieddyes.def {
+    description = "Colorium Glass",
+    drawtype = "glasslike_framed_optional",
+    tiles = { "emittrium_glass.png^[colorize:#ffffff:255", "emittrium_glass_shine.png^[colorize:#ffffff:255" },
+    use_texture_alpha = "clip",
+    paramtype = "light",
+    sunlight_propagates = true,
+    groups = { matter = 1, transparent = 1, explody = 100 },
+    sounds = sbz_api.sounds.glass(),
+})
+
+core.register_craft {
+    output = "sbz_resources:colorium_glass 8",
+    recipe = {
+        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", },
+        { "sbz_resources:emittrium_glass", "unifieddyes:colorium",          "sbz_resources:emittrium_glass", },
+        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", },
+    }
+}
+
+
+minetest.register_node("sbz_resources:clear_colorium_glass", unifieddyes.def {
+    description = "Clear Colorium Glass",
+    drawtype = "glasslike_framed_optional",
+    tiles = { "emittrium_glass.png^[colorize:#ffffff:255", "blank.png" },
+    use_texture_alpha = "clip",
+    paramtype = "light",
+    sunlight_propagates = true,
+    groups = { matter = 1, transparent = 1, explody = 100 },
+    sounds = sbz_api.sounds.glass(),
+    info_extra = "Recipe requires cleargrass but it returns it back once you've crafted with it."
+})
+
+core.register_craft {
+    output = "sbz_resources:clear_colorium_glass 8",
+    recipe = {
+        { "sbz_resources:colorium_glass", "sbz_resources:colorium_glass", "sbz_resources:colorium_glass" },
+        { "sbz_resources:colorium_glass", "sbz_bio:cleargrass",           "sbz_resources:colorium_glass" },
+        { "sbz_resources:colorium_glass", "sbz_resources:colorium_glass", "sbz_resources:colorium_glass" },
+    },
+    replacements = {
+        { "sbz_bio:cleargrass", "sbz_bio:cleargrass" }
+    }
+}
+
+minetest.register_node("sbz_resources:stained_colorium_glass", unifieddyes.def {
+    description = "Stained Colorium Glass",
+    drawtype = "glasslike_framed_optional",
+    tiles = { "emittrium_glass.png^[colorize:#ffffff:255", "(blank.png^[invert:rgba^[opacity:150)" },
+    inventory_image = core.inventorycube "(emittrium_glass.png^[colorize:#ffffff:255)^(blank.png^[invert:rgba^[opacity:150)",
+    use_texture_alpha = "blend",
+    backface_culling = true,
+    paramtype = "light",
+    sunlight_propagates = true,
+    groups = { matter = 1, transparent = 1, explody = 100 },
+    sounds = sbz_api.sounds.glass(),
+    info_extra = { "Recipe requires razorgrass, but it returns it back once you've crafted with it." }
+})
+
+core.register_craft {
+    output = "sbz_resources:stained_colorium_glass 8",
+    recipe = {
+        { "sbz_resources:colorium_glass", "sbz_resources:colorium_glass", "sbz_resources:colorium_glass" },
+        { "sbz_resources:colorium_glass", "sbz_bio:razorgrass",           "sbz_resources:colorium_glass" },
+        { "sbz_resources:colorium_glass", "sbz_resources:colorium_glass", "sbz_resources:colorium_glass" },
+    },
+    replacements = {
+        { "sbz_bio:razorgrass", "sbz_bio:razorgrass" }
+    }
+}
+
 minetest.register_node("sbz_resources:compressed_core_dust", {
     description = "Compressed core dust",
     tiles = {

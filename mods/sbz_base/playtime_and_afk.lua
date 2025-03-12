@@ -38,7 +38,7 @@ local function afk_globalstep(dtime)
             })
         else
             obj:set_nametag_attributes({
-                bgcolor = ""
+                bgcolor = "white#00"
             })
         end
     end

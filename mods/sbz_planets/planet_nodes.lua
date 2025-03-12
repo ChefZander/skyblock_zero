@@ -254,7 +254,7 @@ core.register_node("sbz_planets:colorium_mapgen_sapling", {
 })
 
 --[[
-    THE FOLLOWING 2 FUNCTIONS and the moves string ARE FROM STELLUA
+    THE FOLLOWING 2 FUNCTIONS and the moves string ARE FROM STELLUA - though heavily modified
     https://github.com/theidealist101/stellua/blob/main/mods/stl_core/trees.lua#L4
     https://github.com/theidealist101/stellua/blob/main/mods/stl_core/trees.lua#L15
 
@@ -339,6 +339,8 @@ local function make_treedef(rand)
 end
 
 --[[ things are licensed normally now... ]]
+sbz_api.make_treedef = make_treedef
+sbz_api.make_axiom = make_axiom
 
 core.register_abm {
     label = "Colorium mapgen sapling",

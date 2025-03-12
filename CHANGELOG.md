@@ -34,6 +34,8 @@ Release 33
 - Fixed a lot of lighting bugs when the smooth lighting setting is disabled
 - **Re-worked organics a bit**
 - Added /playtime and /afk
+- Added colorium glass
+- Nerfed how much co2 colorium tree trunks and colorium tree leaves make when burning
 
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes

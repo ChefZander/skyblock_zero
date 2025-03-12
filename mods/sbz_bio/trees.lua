@@ -218,7 +218,7 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", {
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,
-        burn = 10,
+        burn = 4,
         transparent = 1,
         explody = 10,
         tree = 1,
@@ -240,7 +240,7 @@ sbz_api.register_leaves("sbz_bio:colorium_leaves", {
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,
-        burn = 3,
+        burn = 2,
         habitat_conducts = 1,
         transparent = 1,
         explody = 10,
@@ -312,8 +312,50 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
         max_size = 4000,
         tree_core = "sbz_bio:colorium_tree_core"
     },
+})
+sbz_api.register_tree("sbz_bio:giant_colorium_sapling", {
+    description = "Giant Colorium Sapling",
+    paramtype = "light",
+    drawtype = "plantlike",
+    tiles = {
+        "giant_colorium_sapling.png"
+    },
+    inventory_image = "giant_colorium_sapling.png",
+    use_texture_alpha = "clip",
+    walkable = false,
+    climbable = true,
+    move_resistance = 1,
+    floodable = true,
+    tree = "sbz_bio:colorium_tree",
+    leaves = "sbz_bio:colorium_leaves",
+    core = "sbz_bio:colorium_tree_core",
+    dna = {
+        axiom = "FFFFFFFAFFFFFFFFA",
+        trunk = "sbz_bio:colorium_tree",
+        leaves = "sbz_bio:colorium_leaves",
+        thin_branches = true,
+        random_level = 0,
+        rules_a = "[&[+FFFFFFFFFFFFFA-/FFFFFFFFFFFA*]^b]", -- makes branches
+        rules_b = "[A+A&A^A/A]A",                          -- branch bomb
+        rules_c = "*F",
+        rules_d = "FFFFF",
+        iterations = 7,
+        angle = 50,
+        max_size = 10000,
+        tree_core = "sbz_bio:colorium_tree",
+        random = true,
+    },
+})
+
+core.register_craft {
+    output = "sbz_bio:giant_colorium_sapling",
+    recipe = {
+        { "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", },
+        { "sbz_resources:phlogiston_blob", "sbz_bio:colorium_sapling",      "sbz_resources:phlogiston_blob", },
+        { "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", },
+    }
 }
-)
+
 
 local vowels = "aeiyou"                        -- 6
 local everything_else = "bcdfghjklmnpqrstvwxz" -- 20
@@ -345,7 +387,7 @@ core.register_node("sbz_bio:colorium_tree_core", {
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,
-        burn = 10,
+        burn = 40,
         transparent = 1,
         explody = 10,
         tree = 1,
