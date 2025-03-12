@@ -274,7 +274,8 @@ sbz_api.register_element("thorium", "#d633af", "Thorium %s (Th)",
     { part_of_crusher_drops = false, radioactive = 1, part_of_enhanced_drops = true })
 sbz_api.register_element("uranium", "#47681e", "Uranium %s (U)",
     { part_of_crusher_drops = false, radioactive = 2, part_of_enhanced_drops = true })
-sbz_api.register_element("plutonium", "#1d2aba", "Plutonium %s (Pu)", { part_of_crusher_drops = false, radioactive = 5 })
+sbz_api.register_element("plutonium", "#1d2aba", "Plutonium %s (Pu)",
+    { part_of_crusher_drops = false, part_of_enhanced_drops = false, radioactive = 5 })
 sbz_api.register_element("lead", "#6E6E6E", "Lead %s (Pb)",
     { part_of_crusher_drops = false, part_of_enhanced_drops = false, radiation_resistance = 8192 })
 

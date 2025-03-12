@@ -129,9 +129,18 @@ Unlike other plants, they will continue consuming CO2 even after they have compl
         title = "Razorgrass",
         text = [[
 When stepping on razorgrass, you will get poisoned.
-It is used for some crafting recipes.
+It is used for some crafting recipes and fertilizer.
     ]],
         requires = { "Stemfruit", "Basic Neutron Emitter" }
+    },
+    {
+        type = "quest",
+        title = "Electric Soil",
+        text = [[
+Was fertilized dirt too slow? Electric soil should be a good upgrade... or bad... Depending on what you need.
+Electric soil will make plants grow a LOT faster, and consume a LOT more co2, and the electric soil itself needs 40Cj every second to run.
+]],
+        requires = { "Shockshrooms" }
     },
     {
         type = "quest",

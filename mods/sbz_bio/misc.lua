@@ -80,7 +80,6 @@ sbz_api.register_stateful_machine("sbz_bio:neutron_emitter", {
     end,
     groups = {
         matter = 1,
-
     },
 }, {
     light_source = 14,

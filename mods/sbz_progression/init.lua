@@ -154,6 +154,7 @@ local achievement_table = {
     ["replacer:replacer"] = "Bulk Placer Tool",
     ["metatool:copytool"] = "Copy Tool",
     ["sbz_bio:neutron_emitter_off"] = "Basic Neutron Emitter",
+    ["sbz_bio:electric_soil_off"] = "Electric Soil",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

@@ -126,7 +126,14 @@ sbz_api.register_stateful_machine("sbz_bio:electric_soil", {
         pipe_connects = 1
     }
 })
-
+core.register_craft {
+    output = "sbz_bio:electric_soil_off",
+    recipe = {
+        { "sbz_bio:fertilized_dirt", "sbz_bio:fertilized_dirt", "sbz_bio:fertilized_dirt", },
+        { "sbz_chem:silver_ingot",   "sbz_chem:silver_ingot",   "sbz_chem:silver_ingot", },
+        { "sbz_bio:shockshroom",     "sbz_bio:shockshroom",     "sbz_bio:shockshroom" }
+    }
+}
 
 
 -- yes i get it, boo, happens outside of the habitat regulator, oh well, i actually like abms
@@ -136,7 +143,7 @@ local get_grass_spread_action = function(require_water)
         local with_water = false
         iterate_around_radius(start_pos, function(pos)
             local node = core.get_node(pos)
-            if core.get_item_group(node.name, "soil") > 0
+            if core.get_item_group(node.name, "soil") == 1 -- only bad soils
                 and node.name ~= "sbz_bio:dirt_with_grass"
                 and sbz_api.get_node_heat(pos) >= 8
             then
