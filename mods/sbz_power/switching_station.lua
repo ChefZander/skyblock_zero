@@ -244,7 +244,11 @@ function sbz_api.switching_station_tick(start_pos)
             touched_nodes[hash(position)] = os.time()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
-            demand = demand + action_result
+            if action_result >= 0 then
+                demand = demand + action_result
+            else
+                supply = supply - action_result
+            end
         end
     end
 

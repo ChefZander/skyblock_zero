@@ -10,8 +10,88 @@ function sbz_api.plant_grow(next_stage)
     end
 end
 
-function sbz_api.plant_growth_tick(num_ticks)
+local warpshroom_family = {
+    "sbz_bio:warpshroom",
+    "sbz_bio:shockshroom",
+    "sbz_bio:stemfruit_plant"
+}
+local pyrograss_family = {
+    "sbz_bio:pyrograss",
+    "sbz_bio:razorgrass",
+    "sbz_bio:cleargrass",
+    "sbz_bio:stemfruit_plant",
+}
+local fiberweed_family = {
+    "sbz_bio:fiberweed",
+    "sbz_bio:stemfruit_plant"
+}
+local can_turn_into = {
+    ["sbz_bio:stemfruit_plant"] = {
+        "sbz_bio:pyrograss",
+        "sbz_bio:razorgrass",
+        "sbz_bio:cleargrass",
+        "sbz_bio:warpshroom",
+        "sbz_bio:shockshroom",
+        "sbz_bio:fiberweed",
+    },
+    ["sbz_bio:warpshroom"] = warpshroom_family,
+    ["sbz_bio:shockshroom"] = warpshroom_family,
+    ["sbz_bio:pyrograss"] = pyrograss_family,
+    ["sbz_bio:razorgrass"] = pyrograss_family,
+    ["sbz_bio:cleargrass"] = pyrograss_family,
+    ["sbz_bio:fiberweed"] = fiberweed_family,
+}
+
+local special_cases = { ["sbz_bio:fiberweed"] = true }
+core.after(0, function()
+    -- dev script for checking if the stuff i write is actually valid
+    for initial_node, node_list in pairs(can_turn_into) do
+        if not core.registered_nodes[initial_node .. "_1"] and not special_cases[initial_node] then
+            error("Uh oh: " ..
+                initial_node)
+        end
+        for k, v in pairs(node_list) do
+            if not core.registered_nodes[v .. "_1"] and not special_cases[v] then error("Uh oh:" .. v) end
+        end
+    end
+end)
+
+local radiation_check = function(pos)
+    local nodes = core.find_nodes_in_area(pos - vector.new(5, 5, 5), pos + vector.new(5, 5, 5),
+        { "group:radioactive" }, true)
+    local rad = 0
+    for nodename, poslist in pairs(nodes) do
+        local val = core.get_item_group(nodename, "radioactive")
+        for _, radpos in ipairs(poslist) do
+            local dist = vector.distance(pos, radpos)
+            rad = rad + ((val ^ 2) / math.max(0.75, dist ^ 2))
+        end
+    end
+    return rad -- so rad
+end
+
+
+
+function sbz_api.plant_growth_tick(num_ticks, mutation_chance)
     return function(pos, node)
+        local rad = radiation_check(pos)
+        -- MUTATIONS
+        -- mutation_chance% chance to mutate every second, when a basic neutron emitter is less than 1 node nearby (rad value of 9 i think?)
+        local chance = ((rad / 9) * mutation_chance) / 100
+        if math.random() < chance then
+            local nn = node.name
+            local basename = string.sub(nn, 1, -3)
+            local stage = string.sub(nn, -2)
+            local possibilities = can_turn_into[basename]
+            local should_turn_into = possibilities[math.random(1, #possibilities)]
+            local newnode = table.copy(node)
+            if special_cases[should_turn_into] then
+                newnode.name = should_turn_into
+            else
+                newnode.name = should_turn_into .. stage
+            end
+            core.swap_node(pos, newnode)
+        end
         if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_hydrated(pos) then
             local meta = minetest.get_meta(pos)
             local count = meta:get_int("count") + 1
@@ -84,6 +164,7 @@ function sbz_api.register_plant(name, defs)
     defs.stages = defs.stages or 4
 
     local growth_boost_base = (defs.growth_boost or 0) / defs.stages
+    local power_per_co2_base = (defs.power_per_co2 or 0) / defs.stages
 
     for i = 1, defs.stages - 1 do
         local interpolant = (i - 1) / (defs.stages - 1)
@@ -113,10 +194,11 @@ function sbz_api.register_plant(name, defs)
                 growth_boost = growth_boost_base * i
             },
             drop = {},
-            growth_tick = sbz_api.plant_growth_tick(defs.growth_rate),
+            growth_tick = sbz_api.plant_growth_tick(defs.growth_rate, defs.mutation_chance or 10),
             grow = sbz_api.plant_grow("sbz_bio:" .. name .. "_" .. (i + 1)),
             wilt = sbz_api.plant_wilt(2),
             sbz_player_inside = defs.sbz_player_inside,
+            power_per_co2 = power_per_co2_base * i
         })
     end
     minetest.register_node("sbz_bio:" .. name .. "_" .. defs.stages, {
@@ -131,9 +213,10 @@ function sbz_api.register_plant(name, defs)
         palette = "wilting_palette.png",
         walkable = false,
         groups = {
-            matter = 3,
             oddly_breakable_by_hand = 3,
+            matter = 3,
             attached_node = 1,
+            plant = defs.use_co2_in_final_stage and 1 or 0,
             habitat_conducts = 1,
             transparent = 1,
             not_in_creative_inventory = 1,
@@ -143,6 +226,10 @@ function sbz_api.register_plant(name, defs)
         },
         drop = defs.drop,
         sbz_player_inside = defs.sbz_player_inside,
+        power_per_co2 = defs.power_per_co2,
+        growth_tick = defs.use_co2_in_final_stage and function() return true end,
+        grow = defs.use_co2_in_final_stage and function() return true end,
+        wilt = defs.use_co2_in_final_stage and sbz_api.plant_wilt(2)
     })
 end
 
@@ -153,7 +240,7 @@ sbz_api.register_plant("pyrograss", {
     description = "Pyrograss Plant",
     drop = "sbz_bio:pyrograss 2",
     growth_rate = 4,
-    family = "pyrograss",
+    family = "sbz_bio:pyrograss",
     width = 0.25,
     height_min = -0.375,
     height_max = 0,
@@ -272,7 +359,8 @@ sbz_api.register_plant("stemfruit_plant", {
     co2_demand = 1,
     width = 0.125,
     height_min = -0.25,
-    height_max = 0.5
+    height_max = 0.5,
+    mutation_chance = 80,
 })
 
 minetest.register_craftitem("sbz_bio:stemfruit", {
@@ -327,13 +415,13 @@ minetest.register_craftitem("sbz_bio:warpshroom", {
     end,
     groups = { ui_bio = 1, eat = 6 }
 })
-
+--[[
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_bio:warpshroom",
     recipe = { "sbz_bio:stemfruit", "sbz_meteorites:neutronium" }
 })
-
+]]
 -- Shockshroom, 1/2 chance to make 50cj, needs 2 co2
 -- ingredient in powered dirt
 playereffects.register_effect_type("shocked", "Shocked", "fx_shocked.png", { "clearable", "speed" }, function(player)
@@ -382,7 +470,8 @@ sbz_api.register_plant("shockshroom", {
     sbz_player_inside = function(pos, player)
         playereffects.apply_effect_type("shocked", 2 / 0.5, player)
     end,
-    produce_power_per_co2 = 50, -- 50/1 co2
+    power_per_co2 = 10,
+    use_co2_in_final_stage = true,
 })
 
 minetest.register_craftitem("sbz_bio:shockshroom", {
@@ -460,7 +549,7 @@ minetest.register_node("sbz_bio:fiberweed", {
         minetest.swap_node(pos, node.param2 <= 0 and { name = "sbz_bio:dirt" } or node)
     end
 })
-
+--[[
 minetest.register_craft({
     output = "sbz_bio:fiberweed",
     recipe = {
@@ -469,3 +558,5 @@ minetest.register_craft({
         { "sbz_bio:algae", "sbz_bio:algae",     "sbz_bio:algae" }
     }
 })
+
+]]

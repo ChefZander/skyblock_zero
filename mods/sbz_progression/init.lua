@@ -149,10 +149,11 @@ local achievement_table = {
     ["pipeworks:teleport_tube_1"] = "Teleport Tubes",
     ["sbz_chem:decay_accel_off"] = "Decay Accelerator",
     ["sbz_power:turret"] = "Automatic Turrets",
-    ["sbz_bio:co2_compactor"] = "Co2 Compactors",
+    ["sbz_bio:co2_compactor"] = "CO2 Compactors",
     ["sbz_wrench:wrench"] = "Node Preserver",
     ["replacer:replacer"] = "Bulk Placer Tool",
-    ["metatool:copytool"] = "Copy Tool"
+    ["metatool:copytool"] = "Copy Tool",
+    ["sbz_bio:neutron_emitter_off"] = "Basic Neutron Emitter",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -211,6 +212,9 @@ local achievement_in_inventory_table = {
     ["sbz_resources:bomb"] = "TNT",
     ["sbz_chem:lead_block"] = "Radiation Shielding",
     ["sbz_resources:strange_blob"] = "It's strange...",
+    ["sbz_bio:cleargrass"] = "Cleargrass",
+    ["sbz_bio:razorgrass"] = "Razorgrass",
+    ["sbz_bio:shockshroom"] = "Shockshrooms",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",
@@ -219,6 +223,9 @@ local achievement_on_dig_table = {
     ["sbz_bio:colorium_emitter"] = "Colorium Emitters",
     ["sbz_power:solid_charged_field"] = "Radiation Shielding",
     ["sbz_resources:bomb"] = "TNT",
+    ["sbz_bio:cleargrass_4"] = "Cleargrass",
+    ["sbz_bio:razorgrass_4"] = "Razorgrass",
+    ["sbz_bio:shockshroom_4"] = "Shockshrooms",
 }
 
 minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)
