@@ -46,7 +46,6 @@ armor.get_armor_pieces = function(ref)
     return armor_data
 end
 
-local texture_index = {}
 -- does texture and armor group stuff
 armor.load_armor_pieces = function(ref, data)
     local armor_groups = table.copy(armor.armor_groups)
@@ -73,11 +72,18 @@ armor.load_armor_pieces = function(ref, data)
     end
     local name = ref:get_player_name()
     local props = ref:get_properties()
-    local calculated_texture_index = texture_index[name] or #props.textures[1]
-    props.textures[1] = string.sub(props.textures[1], 1, texture_index[name]) .. texture_mod
+
+    local texture_index = 1
+    if props.textures[3] then texture_index = 3 end
+    local base_texture = props.textures[texture_index]
+    local concat_find = string.find(base_texture, "%^")
+    if concat_find and concat_find ~= -1 then
+        base_texture = string.sub(base_texture, 1, concat_find - 1)
+    end
+
+    props.textures[texture_index] = base_texture .. texture_mod
     ref:set_properties(props)
 
-    texture_index[name] = calculated_texture_index
     ref:set_armor_groups(armor_groups)
     armor.pieces_to_inventory(data, core.get_inventory { type = "detached", name = "sbz_armor:" .. name })
 
@@ -308,7 +314,8 @@ listring[detached:sbz_armor:%s;main]
 listring[current_player;main]
 model[3.3,0.2;3,5;model;%s;%s;0,180]
 hypertext[6.5,0.2;3,5;htext;%s]
-        ]], name, name, props.mesh, props.textures[1], core.formspec_escape(table.concat(hyper_text, "\n"))),
+        ]], name, name, props.mesh, table.concat(props.textures, ","),
+                core.formspec_escape(table.concat(hyper_text, "\n"))),
         }
     end,
 })
