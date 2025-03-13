@@ -548,9 +548,23 @@ sbz_api.on_place_recharge = function(charge_per_1_wear, after)
 
         stack:set_wear((wear - wear_repaired))
         if after then
-            after(stack, user, pointed)
+            after(stack)
         end
         return stack
+    end
+end
+
+sbz_api.powertool_charge = function(charge_per_1_wear, after)
+    ---@return ItemStack, number
+    return function(stack, usable_power)
+        local used_power = 0
+        local wear = stack:get_wear()
+        local wear_repaired = math.min(math.floor(usable_power / charge_per_1_wear), wear)
+        used_power = wear_repaired * charge_per_1_wear
+
+        stack:set_wear(wear - wear_repaired)
+        if after then after(stack) end
+        return stack, used_power
     end
 end
 

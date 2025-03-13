@@ -168,10 +168,35 @@ function pipeworks.register_wielder(def)
                 meta:set_string("infotext", "Not enough power")
                 return def.cost
             end
-            meta:set_string("infotext", "Working")
             if wielder_action(def, pos, minetest.get_node(pos)) == false then
                 meta:set_string("infotext", "Idle")
                 return 0
+            end
+            meta:set_string("infotext", "Working")
+            local usable_power = supply - (demand + def.cost)
+            if usable_power > 0 then -- recharge powertools
+                local inv = meta:get_inventory()
+                local list = inv:get_list(def.wield_inv.name)
+                local index
+                for i, stack in ipairs(list) do
+                    if not stack:is_empty() and core.get_item_group(stack:get_name(), "power_tool") == 1 then
+                        index = i
+                        break
+                    end
+                end
+                if not index then return def.cost end
+                local stack = list[index]
+                local sdef = stack:get_definition()
+                local powertool_cost = 0
+                if sdef.powertool_charge then
+                    list[index], powertool_cost = sdef.powertool_charge(stack, usable_power)
+                end
+                if powertool_cost ~= 0 then
+                    meta:set_string("infotext",
+                        "Working, and charging powertool: +" .. sbz_api.format_power(math.ceil(powertool_cost)))
+                end
+                inv:set_list(def.wield_inv.name, list)
+                return math.ceil(def.cost + powertool_cost)
             end
             return def.cost
         end,
@@ -233,7 +258,8 @@ pipeworks.register_wielder({
         if stack:get_name() == old_stack:get_name() then
             -- Don't mechanically wear out tool
             if stack:get_wear() ~= old_stack:get_wear() and stack:get_count() == old_stack:get_count()
-                and (item_def.wear_represents == nil or item_def.wear_represents == "mechanical_wear") then
+                and (item_def.wear_represents == nil or item_def.wear_represents == "mechanical_wear")
+                and core.get_item_group(stack:get_name(), "disable_repair") ~= 1 then
                 fakeplayer:set_wielded_item(old_stack)
             end
         elseif not stack:is_empty() then

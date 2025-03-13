@@ -85,12 +85,22 @@ function sbz_api.plant_growth_tick(num_ticks, mutation_chance)
             local possibilities = can_turn_into[basename]
             local should_turn_into = possibilities[math.random(1, #possibilities)]
             local newnode = table.copy(node)
+            local nodepos = vector.copy(pos)
             if special_cases[should_turn_into] then
+                if should_turn_into == "sbz_bio:fiberweed" then
+                    if core.get_node(vector.subtract(nodepos, vector.new(0, 1, 0))).name == "sbz_bio:dirt" then
+                        nodepos = vector.subtract(nodepos, vector.new(0, 1, 0))
+                        should_turn_into = "sbz_bio:fiberweed"
+                    else
+                        return true -- can't mutate
+                    end
+                end
                 newnode.name = should_turn_into
             else
                 newnode.name = should_turn_into .. stage
             end
-            core.swap_node(pos, newnode)
+            core.swap_node(nodepos, newnode)
+            return true -- false =>  too much and it will wilt?
         end
         if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_hydrated(pos) then
             local meta = minetest.get_meta(pos)
@@ -274,7 +284,7 @@ playereffects.register_effect_type("poison", "Poisoned", "fx_poison.png",
 
 sbz_api.register_plant("razorgrass", {
     description = "Razorgrass Plant",
-    drop = "sbz_bio:razorpyrograss 2",
+    drop = "sbz_bio:razorgrass 2",
     growth_rate = 8,
     family = "pyrograss",
     width = 0.25,
