@@ -36,7 +36,7 @@ Release 33
 - Added /playtime and /afk
 - Added colorium glass
 - Nerfed how much co2 colorium tree trunks and colorium tree leaves make when burning
-
+- Made node breakers, deployers, punchers, turrets give power to items that require it
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default

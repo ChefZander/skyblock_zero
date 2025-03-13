@@ -47,7 +47,7 @@ Here is an example of one:
         type = "quest",
         title = "Node Breakers",
         text =
-        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 20 power for each node dug. To make \"caveman automation\" (non lua automation) more powerful, plants that haven't finished growing cannot be dug by the node breaker.",
+        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 20 power for each node dug. To make \"caveman automation\" (non lua automation) more powerful, plants that haven't finished growing cannot be dug by the node breaker. If you insert in a tool that requires power (for example laser), the node breaker will try to charge it, consuming more power.",
         requires = { "Automatic Filter-Injectors" }
     },
     {
@@ -106,7 +106,7 @@ To change that direction, sneak and punch it on the side that you want the items
         type = "quest",
         title = "Automatic Turrets",
         text =
-        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started. But be warned, near spawn, the turret's range gets decreased by 80%.",
+        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started. But be warned, near spawn, the turret's range gets decreased by 80%. If you insert in a tool that requires power, for example lasers, it will try to charge the laser, resulting in more power use.",
         requires = { "Node Breakers", "Neutronium" }
     },
     -- ==================================================================================================

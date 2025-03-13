@@ -130,6 +130,34 @@ sbz_api.register_machine("sbz_power:turret", {
                 meta:set_string("infotext", "Invalid/no item" .. warning_text)
                 return 0
             else
+                -- ok... now that we shot it: recharge the item
+                meta:set_string("infotext", "Working")
+                local usable_power = supply - (demand + power_use)
+                if usable_power > 0 then -- recharge powertools
+                    local inv = meta:get_inventory()
+                    local list = inv:get_list("main")
+                    local index
+                    for i, stack in ipairs(list) do
+                        if not stack:is_empty() and core.get_item_group(stack:get_name(), "power_tool") == 1 then
+                            index = i
+                            break
+                        end
+                    end
+                    if not index then return power_use end
+
+                    local stack = list[index]
+                    local sdef = stack:get_definition()
+                    local powertool_cost = 0
+                    if sdef.powertool_charge then
+                        list[index], powertool_cost = sdef.powertool_charge(stack, usable_power)
+                    end
+                    if powertool_cost ~= 0 then
+                        meta:set_string("infotext",
+                            "Working, and charging powertool: +" .. sbz_api.format_power(math.ceil(powertool_cost)))
+                    end
+                    inv:set_list("main", list)
+                    return math.ceil(power_use + powertool_cost)
+                end
                 return power_use
             end
         end

@@ -185,6 +185,7 @@ function pipeworks.register_wielder(def)
                     end
                 end
                 if not index then return def.cost end
+
                 local stack = list[index]
                 local sdef = stack:get_definition()
                 local powertool_cost = 0
@@ -329,7 +330,6 @@ pipeworks.register_wielder({
         if not node_def.on_punch then
             return false
         end
-
         node_def.on_punch(fakeplayer:get_pos(), node, fakeplayer, pointed)
     end,
     cost = 40
