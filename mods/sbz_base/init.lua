@@ -548,7 +548,7 @@ sbz_api.on_place_recharge = function(charge_per_1_wear, after)
 
         stack:set_wear((wear - wear_repaired))
         if after then
-            after(stack)
+            after(stack, user, pointed)
         end
         return stack
     end
