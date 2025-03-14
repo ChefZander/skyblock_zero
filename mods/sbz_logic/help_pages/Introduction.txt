@@ -86,3 +86,10 @@ Both editor and main sandbox receive gui events.
 Linking range = The radius of the square that you see when you wield the luacontroller linking tool (with the luacontroller linking tool being linked to a luacontroller)
 Linking range is usually enforced for doing anything that's in the world (like sending information or getting a node)
 To increase linking range (by default 0, so the luacontroller basically can't do anything), you will need to upgrade the luacontroller with a Linking Upgrade.
+
+A link is an array of positions, like so: { {x=,y=,z=}, {x=,y=,z=}... }
+If you want to know where a link is, and there is only one position in the link, do <mono>link[1]</mono>
+Some functions may require a link, or they may require a position.
+
+They will usually silently fail if they get a link instead of the position, so to see that error, you can do:
+<mono>chat_debug( dump({turn_off_machine(<link or position>)}) )</mono>

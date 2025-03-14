@@ -12,6 +12,8 @@ pipeworks = {
 	end,
 	entity_update_interval = 0,
 	use_real_entities = true,
+	enable_cyclic_mode = true,
+	tube_backface_culling = minetest.settings:get_bool("sbz_pipe_backface_culling") or true,
 }
 
 -- Load the various other parts of the mod

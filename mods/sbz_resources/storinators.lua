@@ -67,8 +67,8 @@ local function register_storinator(added_name, def)
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay.png^[colorize:%s:255"):format(def.overlay_color),
-
     }
+
     for public = 0, 1 do
         for i = 1, 4 do
             local def_copy = table.copy(def)
@@ -94,7 +94,7 @@ local function register_storinator(added_name, def)
             def_copy.groups.not_in_creative_inventory = i ~= 1 and 1 or 0
             def_copy.groups.public = public
 
-            def_copy.paramtype2 = "facedir"
+            def_copy.paramtype2 = "colorfacedir"
             def_copy.on_metadata_inventory_put = update_node_texture
             def_copy.on_metadata_inventory_take = update_node_texture
             def_copy.on_metadata_inventory_move = update_node_texture
@@ -133,10 +133,19 @@ local function register_storinator(added_name, def)
                 end,
                 connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 }
             }
+
             if def.allow_renaming then
                 def_copy.on_receive_fields = function(pos, _, fields, sender)
-                    if fields.rename then
-                        core.get_meta(pos):set_string("infotext", fields.rename)
+                    local meta = core.get_meta(pos)
+                    if fields.sort then
+                        local inv = meta:get_inventory()
+                        local list = inv:get_list("main")
+                        table.sort(list, function(x, y)
+                            return x:get_name() > y:get_name()
+                        end)
+                        inv:set_list("main", list)
+                    elseif fields.rename then
+                        meta:set_string("infotext", fields.rename)
                     end
                 end
             end
@@ -144,7 +153,6 @@ local function register_storinator(added_name, def)
                 local meta = core.get_meta(pos)
                 local inv = meta:get_inventory()
                 inv:set_size("main", def_copy.slots)
-
 
                 -- 32 = 0.2 spacing, 2:1 slots
                 -- 64 = 0.2/2 spacing, 2:1 slots right?
@@ -170,6 +178,7 @@ listring[]
                 end
                 def_copy.description = "Public " .. def_copy.description
             end
+            def_copy = unifieddyes.def(def_copy)
             core.register_node(name, def_copy)
         end
     end
@@ -274,7 +283,8 @@ register_storinator("neutronium", {
     ui_size = 9.2,
     ui_size_y = 11.5,
     allow_renaming = true,
-    renaming_formspec = "field[0.2,6.7;5,0.6;rename;Name of storinator;${infotext}]",
+    renaming_formspec =
+    "field_enter_after_edit[rename;true]field[0.2,6.7;5,0.6;rename;Name of storinator;${infotext}]button[5.2,6.7;3,0.5;sort;Sort by name]",
     groups = { matter = 1 },
     material = "sbz_meteorites:neutronium",
 })

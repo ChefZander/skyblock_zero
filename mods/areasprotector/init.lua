@@ -152,6 +152,7 @@ local function on_place(itemstack, player, pointed, radius, height, sizeword)
 		minetest.chat_send_player(name, red("You are not allowed to protect that area: ") .. err)
 		return itemstack
 	end
+	--[[
 	local conflicts = minetest.find_nodes_in_area(pos1, pos2,
 		{ "areasprotector:protector_small", "areasprotector:protector_large", })
 	if conflicts and #conflicts > 0 and not minetest.check_player_privs(name, "areas") then
@@ -163,6 +164,7 @@ local function on_place(itemstack, player, pointed, radius, height, sizeword)
 			" of others.")
 		return itemstack
 	end
+	]]
 	local userareas = 0
 	for k, v in pairs(areas.areas) do
 		if v.owner == name and string.sub(v.name, 1, 28) == "Protected by Protector Block" then
@@ -318,26 +320,34 @@ minetest.register_node("areasprotector:protector_small", {
 })
 
 mesecon.register_on_mvps_move(function(moved)
-	local performed_area_operations = false
-	for i = 1, #moved do
-		local moved_node = moved[i]
-		if core.get_item_group(moved_node.node.name, "protector") > 0 then
-			local meta = core.get_meta(moved_node.pos)
-			local id = meta:get_int("area_id")
-			local owners_area_id = minetest.deserialize(meta:get_string("owners_area_id")) or {}
-			areas:move(id, areas.areas[id],
-				vector.add(vector.subtract(areas.areas[id].pos1, moved_node.oldpos), moved_node.pos),
-				vector.add(vector.subtract(areas.areas[id].pos2, moved_node.oldpos), moved_node.pos))
-			for k, area_id in pairs(owners_area_id) do
-				areas:move(area_id, areas.areas[area_id],
-					vector.add(vector.subtract(areas.areas[area_id].pos1, moved_node.oldpos), moved_node.pos),
-					vector.add(vector.subtract(areas.areas[area_id].pos2, moved_node.oldpos), moved_node.pos))
-			end
+	if not moved.from_jumpdrive then -- from luacontroller
+		local performed_area_operations = false
+		for i = 1, #moved do
+			local moved_node = moved[i]
+			if core.get_item_group(moved_node.node.name, "protector") > 0 then
+				local meta = core.get_meta(moved_node.pos)
+				local id = meta:get_int("area_id")
+				local owners_area_id = minetest.deserialize(meta:get_string("owners_area_id") or "") or {}
+				local newpos1 = vector.add(vector.subtract(areas.areas[id].pos1, moved_node.oldpos), moved_node.pos)
+				local newpos2 = vector.add(vector.subtract(areas.areas[id].pos2, moved_node.oldpos), moved_node.pos)
+				if not core.is_area_protected(newpos1, newpos2, areas.areas[id].owner) then
+					areas:move(id, areas.areas[id], newpos1, newpos2)
+				end
+				for k, area_id in pairs(owners_area_id) do
+					newpos1 = vector.add(vector.subtract(areas.areas[area_id].pos1, moved_node.oldpos),
+						moved_node.pos)
+					newpos2 = vector.add(vector.subtract(areas.areas[area_id].pos2, moved_node.oldpos),
+						moved_node.pos)
+					if not core.is_area_protected(newpos1, newpos2, areas.areas[id].owner) then
+						areas:move(area_id, areas.areas[area_id], newpos1, newpos2)
+					end
+				end
 
-			performed_area_operations = true
+				performed_area_operations = true
+			end
 		end
+		if performed_area_operations then areas:save() end
 	end
-	if performed_area_operations then areas:save() end
 end)
 
 -- entities code below (and above) mostly copied-pasted from Zeg9's protector mod
@@ -347,22 +357,26 @@ local vsize = { x = 1.0 / 1.5, y = 1.0 / 1.5 }
 local ecbox = { 0, 0, 0, 0, 0, 0 }
 
 minetest.register_entity("areasprotector:display_large", {
-	physical = false,
-	collisionbox = ecbox,
-	visual = "wielditem",
-	visual_size = vsize,
-	textures = { "areasprotector:display_node_large" },
+	initial_properties = {
+		physical = false,
+		collisionbox = ecbox,
+		visual = "wielditem",
+		visual_size = vsize,
+		textures = { "areasprotector:display_node_large" },
+	},
 	on_step = function(self, dtime)
 		on_step(self, dtime, "large")
 	end
 })
 
 minetest.register_entity("areasprotector:display_small", {
-	physical = false,
-	collisionbox = ecbox,
-	visual = "wielditem",
-	visual_size = vsize,
-	textures = { "areasprotector:display_node_small" },
+	initial_properties = {
+		physical = false,
+		collisionbox = ecbox,
+		visual = "wielditem",
+		visual_size = vsize,
+		textures = { "areasprotector:display_node_small" },
+	},
 	on_step = function(self, dtime)
 		on_step(self, dtime, "small")
 	end

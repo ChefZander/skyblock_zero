@@ -1,7 +1,7 @@
 pipeworks.register_tube("pipeworks:tube", {
     description = "Basic Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = pipeworks.tube_backface_culling } },
 })
 
 minetest.register_craft({
@@ -15,8 +15,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:accelerator_tube", {
     description = "Accelerating Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "springgreen" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "springgreen" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "springgreen" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = pipeworks.tube_backface_culling, color = "springgreen" } },
 
     node_def = {
         tube = {
@@ -40,8 +40,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:high_priority_tube", {
     description = "High Priority Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "tomato" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "tomato" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "tomato" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = pipeworks.tube_backface_culling, color = "tomato" } },
     node_def = {
         tube = {
             priority = 150,
@@ -57,8 +57,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:low_priority_tube", {
     description = "Low Priority Tube",
-    plain = { { name = "basic_tube_plain.png", backface_culling = false, color = "lightgreen" } },
-    noctr = { { name = "basic_tube_noctr.png", backface_culling = false, color = "lightgreen" } },
+    plain = { { name = "basic_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "lightgreen" } },
+    noctr = { { name = "basic_tube_noctr.png", backface_culling = pipeworks.tube_backface_culling, color = "lightgreen" } },
     node_def = {
         tube = {
             priority = 1,
@@ -76,12 +76,12 @@ minetest.register_craft({
 minetest.register_node("pipeworks:one_way_tube", {
     description = "One way tube",
     tiles = {
-        { name = "one_way_tube_top.png",              backface_culling = false },
-        { name = "one_way_tube_top.png",              backface_culling = false },
-        { name = "basic_tube_plain.png",              backface_culling = false },
-        { name = "basic_tube_plain.png",              backface_culling = false },
-        { name = "one_way_tube_top.png^[transformFX", backface_culling = false },
-        { name = "one_way_tube_top.png",              backface_culling = false },
+        { name = "one_way_tube_top.png",              backface_culling = pipeworks.tube_backface_culling },
+        { name = "one_way_tube_top.png",              backface_culling = pipeworks.tube_backface_culling },
+        { name = "basic_tube_plain.png",              backface_culling = pipeworks.tube_backface_culling },
+        { name = "basic_tube_plain.png",              backface_culling = pipeworks.tube_backface_culling },
+        { name = "one_way_tube_top.png^[transformFX", backface_culling = pipeworks.tube_backface_culling },
+        { name = "one_way_tube_top.png",              backface_culling = pipeworks.tube_backface_culling },
     },
 
     use_texture_alpha = "clip",
@@ -139,8 +139,8 @@ minetest.register_craft({
 
 pipeworks.register_tube("pipeworks:broken_tube", {
     description = "Broken Tube",
-    plain = { { name = "pipeworks_broken_tube_plain.png", backface_culling = true, color = "red" } },
-    noctr = { { name = "pipeworks_broken_tube_plain.png", backface_culling = true, color = "red" } },
+    plain = { { name = "pipeworks_broken_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "red" } },
+    noctr = { { name = "pipeworks_broken_tube_plain.png", backface_culling = pipeworks.tube_backface_culling, color = "red" } },
     node_def = {
         drop = "pipeworks:tube_1",
         groups = { not_in_creative_inventory = 1, tubedevice_receiver = 1 },

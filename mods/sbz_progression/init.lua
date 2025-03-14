@@ -146,7 +146,9 @@ local achievement_table = {
     ["sbz_chem:pebble_enhancer_off"] = "Pebble Enhancer",
     ["sbz_chem:nuclear_reactor_off"] = "Nuclear Reactor",
     ["pipeworks:teleport_tube_1"] = "Teleport Tubes",
-    ["sbz_chem:decay_accel_off"] = "Decay Accelerator"
+    ["sbz_chem:decay_accel_off"] = "Decay Accelerator",
+    ["sbz_power:turret"] = "Automatic Turrets",
+    ["sbz_bio:co2_compactor"] = "Co2 Compactors",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -196,6 +198,7 @@ local achievement_in_inventory_table = {
     ["sbz_chem:bronze_powder"] = "Bronze Age",
     ["sbz_chem:water_fluid_cell"] = "Liquid Water",
     ["sbz_bio:stemfruit"] = "Stemfruit",
+    ["sbz_bio:warpshroom"] = "Warpshrooms",
     ["sbz_chem:uranium_powder"] = "Planet Ores",
     ["sbz_chem:thorium_powder"] = "Planet Ores",
     ["sbz_resources:movable_emitter"] = "Movable Emitters",

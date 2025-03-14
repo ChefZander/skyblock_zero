@@ -1,8 +1,36 @@
+Release 32
+- Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
+- Fix background music being at 0% volume by default
+
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte
 - Re-worked how meteorite attractors/repulsors attract players when holding neutronium - You now no longer can move yourself, and experience zero gravity
   - This allows for making orbits if you are skilled
-
+- Added the turret
+- For luacontrollers (_G refers to the global environment)
+  - Added _G.chat_debug(msg) to both environments, check your nearest knowledge station
+  - Removed _G.origin from the main environment
+  - Added _G.pos to editor environment
+  - Added _G.full_traceback to the editor environment
+  - Fixed matrix screens being wildly inaccurate
+  - Added some examples to the knowledge station
+- Cleared up "Growing Plants" quest
+- Fixed some nodes being considered as solid to the habitat
+- Breaking: enabled cyclic mode for pipeworks
+  - Items will now no longer prefer to go one direction if you have something like a tube with branches, or an item sorter, instead they will cycle thru all the directions, make sure you check your factories
+- Enabled backface culling by default on the tubes, tubes will now look much cleaner at the cost of some visual bugs
+  - Added a setting to toggle tube backface culling
+- Storinators can now be colored with the coloring tool
+- Neutronium storinators can now sort by name (if they are placed after the update, existing neutronium storinators will not have this capability)
+- Added co2 compactor (stores co2 like a "co2 battery" would)
+- Fixed autocrafter behavior with pipeworks (now overflow handling with item voids is made easy)
+- Made item sorter and item void textures better
+- Added "Organics Automation" page to questbook
+- Fixed ladders for the 2nd time - now they are only vertical
+- Added warpshrooms quest
+- Better documented the reactor quest
+- Re-worked how jumpdrives interact with protections
+- Changed the behavior of filter injectors so that they don't try to push stuff out when the inventory they are trying to push stuff to is clearly full
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

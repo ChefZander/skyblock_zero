@@ -265,6 +265,12 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         item = fromtube.remove_items(frompos, fromnode, stack, dir, count, frominvname, spos)
                     else
                         item = stack:take_item(count)
+                        if todef.tube and todef.tube.can_go then
+                            if not todef.tube.can_go(topos, tonode, { x = 0, y = 0, z = 0, speed = 0 }, item, {}) then return false end
+                        end
+                        if todef.tube and todef.tube.can_insert then
+                            if not todef.tube.can_insert(topos, tonode, item, { x = 0, y = 0, z = 0, speed = 0 }) then return false end
+                        end
                         frominv:set_stack(frominvname, spos, stack)
                         if fromdef.on_metadata_inventory_take then
                             fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
@@ -272,6 +278,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     end
                     local pos = vector.add(frompos, vector.multiply(dir, 1.4))
                     local start_pos = vector.add(frompos, dir)
+
+
+
                     pipeworks.tube_inject_item(pos, start_pos, dir, item,
                         fakeplayer:get_player_name())
                     return true -- only fire one item, please

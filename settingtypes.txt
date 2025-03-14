@@ -1,3 +1,9 @@
 # Makes servers less laggy, but no effect on singleplayer
 # Sacrifices visuals for less bandwith
 sbz_server_mode (Server Optimizations) enum auto auto,on,off
+
+# If set to false, makes all of the tube's sides always visible
+# It is set to true by default, because it makes tubes look more clear
+# If you have a multiplayer server, a client cannot choose if they
+# would have backface culling on tubes or not, you are choosing for them
+sbz_tube_backface_culling (Tube backface culling) bool true

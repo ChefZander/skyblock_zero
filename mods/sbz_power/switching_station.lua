@@ -352,6 +352,13 @@ sbz_api.power_subtick = 0.25
 
 local enable_globalstep = true
 
+local has_monitoring = core.get_modpath("monitoring")
+local switching_station_count
+if has_monitoring then
+    switching_station_count = monitoring.gauge("sbz_switching_station_count", "Number of active switching stations",
+        { autoflush = true })
+end
+
 sbz_api.switching_station_globalstep = function(dtime)
     if not enable_globalstep then return end
     local getnode = minetest.get_node
@@ -377,7 +384,10 @@ sbz_api.switching_station_globalstep = function(dtime)
     -- tick
     if dtime_accum_fulltick >= sbz_api.power_tick then
         dtime_accum_fulltick = 0
+
+        local count = 0
         for k, v in pairs(all_switching_stations) do
+            count = count + 1
             local pos = unhash(k)
             if getnode(pos).name ~= "sbz_power:switching_station" then
                 getmeta(pos):set_string("infotext", "Inactive")
@@ -388,10 +398,19 @@ sbz_api.switching_station_globalstep = function(dtime)
                 sbz_api.switching_station_tick(pos)
             end
         end
+
+        if switching_station_count then
+            switching_station_count.set(count)
+        end
     end
 end
 
 minetest.register_globalstep(sbz_api.switching_station_globalstep)
+
+if has_monitoring then
+    local switching_station_lag = monitoring.counter("sbz_switching_station_lag", "Switching station lag")
+    sbz_api.switching_station_globalstep = switching_station_lag.wraptime(sbz_api.switching_station_globalstep)
+end
 
 mesecon.register_on_mvps_move(function(moved_nodes)
     for i = 1, #moved_nodes do

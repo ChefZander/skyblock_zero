@@ -140,7 +140,7 @@ listring[]
             if tier == 3 and count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((9 * 9 * 9) - 1) / 2 then
                 inv:add_item("rods", rodstack)
                 meta:set_string("infotext",
-                    "Not enough water near the reactor, either put water near your reactor or don't use plutonium fuel rods.")
+                    "Not enough water near the reactor, either put more water near your reactor (needs a lot around the reactor) or don't use plutonium fuel rods.")
                 return 0
             end
             meta:set_string("rod_tier", tier)
@@ -174,7 +174,10 @@ listring[]
             -- must be somewhat submerged in water..
             -- 50% of nodes in a r=2 area around the reactor must be water sources, around the reactor, the check gets performed in a r=5 area
             -- basically just put it in a pond you should be good and don't let radiated water kill your reactor
-            if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 2 then
+
+            -- edit, the information above is outdated:
+            -- 31 water nodes in 11x11x11 space, just have some water pls, i changed div by 2 to div by 4
+            if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
                 -- i know... duplicating explosion code... cringe bad yeah yeah
                 local owner = minetest.get_meta(pos):get_string("owner")
                 minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }) -- we gotta get better sfx

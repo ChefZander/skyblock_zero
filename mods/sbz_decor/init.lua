@@ -150,11 +150,9 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
             local node = core.get_node(target)
             if node.name == "sbz_decor:ladder" then
                 local dir = minetest.facedir_to_dir(node.param2)
-                if dir == nil then return end
-                dir.y = math.abs(dir.y)
-
-                pointed.under = vector.add(pointed.under, dir)
-                pointed.above = vector.add(pointed.above, dir)
+                local up = vector.new(0, 1, 0)
+                pointed.under = vector.add(pointed.under, up)
+                pointed.above = vector.add(pointed.above, up)
                 if core.get_node(pointed.under).name == "sbz_decor:ladder" then
                     local result = minetest.registered_nodes["sbz_decor:ladder"].on_place(stack, placer, pointed,
                         (recursed or 0) + 1)

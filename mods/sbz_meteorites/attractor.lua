@@ -1,6 +1,16 @@
 local elapsed = 0
 
-local attracted_players = {}
+playereffects.register_effect_type("attracted", "Attracted", "fx_attracted.png", {
+    "speed", "gravity"
+}, function(player)
+    unlock_achievement(player:get_player_name(), "Attracted")
+    player_monoids.gravity:add_change(player, 0, "sbz_meteorite:attracted")
+    player_monoids.speed:add_change(player, 0, "sbz_meteorite:attracted")
+end, function(fx, player)
+    player_monoids.gravity:del_change(player, "sbz_meteorite:attracted")
+    player_monoids.speed:del_change(player, "sbz_meteorite:attracted")
+end, false, true)
+
 
 local function attract_meteorites(pos, dtime, t)
     elapsed = elapsed + dtime
@@ -18,9 +28,7 @@ local function attract_meteorites(pos, dtime, t)
             magnitude = (wielded_item:get_definition().groups or {}).attraction
             if not magnitude then return end
             magnitude = magnitude * wielded_item:get_count()
-            attracted_players[obj:get_player_name()] = 2 -- VERY low gravity for 2 seconds
-            player_monoids.gravity:add_change(obj, 0, "sbz_meteorite:attracted")
-            player_monoids.speed:add_change(obj, 0, "sbz_meteorite:attracted")
+            playereffects.apply_effect_type("attracted", 2, obj)
         end
         obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
         if elapsed > 1 then
@@ -152,14 +160,3 @@ function sbz_api.get_attraction(pos1, pos2)
     local length = vector.length(dir)
     return vector.normalize(dir) * (length ~= 0 and (length ^ (-2)) or 0)
 end
-
-core.register_globalstep(function(dtime)
-    for k, v in pairs(attracted_players) do
-        attracted_players[k] = attracted_players[k] - dtime
-        if attracted_players[k] <= 0 and core.get_player_by_name(k) then
-            player_monoids.gravity:del_change(core.get_player_by_name(k), "sbz_meteorite:attracted")
-            player_monoids.speed:del_change(core.get_player_by_name(k), "sbz_meteorite:attracted")
-            attracted_players[k] = nil
-        end
-    end
-end)

@@ -423,7 +423,16 @@ minetest.register_node("pipeworks:autocrafter", {
             if not slots[stack:get_name()] then
                 return false
             end
-            return inv:room_for_item("src", stack)
+            -- next up, check if we actually can insert
+            local compare_stack = ItemStack(stack)
+            for i = 1, 9 do
+                if slots[i] == stack:get_name() then
+                    local that_stack = inv:get_stack("src", i)
+                    local leftover = that_stack:add_item(stack):get_count()
+                    compare_stack:set_count(leftover)
+                end
+            end
+            return compare_stack:get_count() == 0
         end,
         input_inventory = "dst",
         connect_sides = {

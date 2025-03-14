@@ -1,0 +1,10 @@
+<big>Teleport Tube</big>
+
+You can send it a string, to set the teleport tube's channel.
+Or you can send it a table, with <mono>{can_receive = true/false, channel = "" }</mono> to change if it can receive things, and the channel (both fields optional)
+
+<b>Examples</b>
+
+<mono>send_to(links.tptube, {can_receive = false})</mono>
+<mono>send_to(links.tptube, "frogTheSecond:matter_dust")</mono>
+<mono>send_to(links.tptube, {can_receive = true, channel = "frogTheSecond:matter_dust"})</mono>
