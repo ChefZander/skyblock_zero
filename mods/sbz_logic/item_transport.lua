@@ -20,6 +20,7 @@
 ]]
 
 local function transport_items_inner(pos, e) -- e=event
+    error("Temporarily disabled")
     -- defs
     local lcpos = pos
     local take_from = e.from
