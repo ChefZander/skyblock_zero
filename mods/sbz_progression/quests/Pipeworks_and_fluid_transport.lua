@@ -36,7 +36,7 @@ return {
         title = "Matter Factory",
         text = [[
 Using advanced matter extractors, some automatic filter injectors, tubes, and a storinator, you can make a really good matter factory.
-Advanced matter extractors are crazy fast for their cost, so with like 6 of them, you will get lots of matter in no time.
+Advanced matter extractors are crazy fast for their cost, so with like 5 of them, you will get lots of matter in no time.
 
 Here is an example of one:
 <img name=questbook_image_matter_factory.png width=483 height=453>

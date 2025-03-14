@@ -270,6 +270,7 @@ logic.non_trigger_events = {
     ["wait"] = true,
     ["tick"] = true,
     ["subtick"] = true,
+    ["error"] = true,
 }
 
 function logic.receives_events(pos, event)

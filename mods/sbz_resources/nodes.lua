@@ -294,7 +294,7 @@ core.register_craft {
 minetest.register_node("sbz_resources:clear_colorium_glass", unifieddyes.def {
     description = "Clear Colorium Glass",
     drawtype = "glasslike_framed_optional",
-    tiles = { "emittrium_glass.png^[colorize:#ffffff:255", "blank.png" },
+    tiles = { "emittrium_glass_border.png^[colorize:#ffffff:255", "blank.png" },
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
@@ -317,9 +317,9 @@ core.register_craft {
 
 minetest.register_node("sbz_resources:stained_colorium_glass", unifieddyes.def {
     description = "Stained Colorium Glass",
-    drawtype = "glasslike_framed_optional",
-    tiles = { "emittrium_glass.png^[colorize:#ffffff:255", "(blank.png^[invert:rgba^[opacity:150)" },
-    inventory_image = core.inventorycube "(emittrium_glass.png^[colorize:#ffffff:255)^(blank.png^[invert:rgba^[opacity:150)",
+    drawtype = "glasslike_framed",
+    tiles = { "emittrium_glass_border.png^[colorize:#ffffff:255", "(blank.png^[invert:rgba^[opacity:150)" },
+    inventory_image = core.inventorycube "stained_glass_inv.png",
     use_texture_alpha = "blend",
     backface_culling = true,
     paramtype = "light",

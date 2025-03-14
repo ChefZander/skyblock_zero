@@ -281,9 +281,9 @@ function libox.create_basic_environment()
 
     env.traceback = libox.traceback
     env.pat = {
-        find = wrap(libox.pat.find, libox.pat),
-        match = wrap(libox.pat.match, libox.pat),
-        gmatch = wrap(libox.pat.gmatch, libox.pat),
+        find = libox.pat.find,
+        match = libox.pat.match,
+        gmatch = libox.pat.gmatch,
     }
 
     libox.supply_additional_environment(env) -- for mods to use
