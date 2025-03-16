@@ -71,6 +71,10 @@ Release 31
 - Better documented the reactor quest
 - Re-worked how jumpdrives interact with protections
 - Changed the behavior of filter injectors so that they don't try to push stuff out when the inventory they are trying to push stuff to is clearly full
+- Re-worked and fixed bugs with logic item transport
+
+
+
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers

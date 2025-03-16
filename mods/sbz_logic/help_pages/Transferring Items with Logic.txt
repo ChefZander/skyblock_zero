@@ -7,8 +7,7 @@ $C1    type = "transport_items",
 $C1    from = links.input, -- a vector array, like { [1] = { x = num, y = num, z = num}, [2] = { x = num, y = num, z = num}, ..., [n] = { x = num, y = num, z = num}}
 $C1    to = links.output, -- a vector array    
 $C1    filters = filters, -- will be discussed later
-$C1    inv_list_inputs = "main", -- optional
-$C1    inv_list_outputs = "main", -- optional
+$C1    direction = vector.new(0,1,0), -- from where are the items coming from, entirely optional, example: if a machine say accepts fuel from the bottom, and the rest from the top, you could transfer fuel by setting the direction to vector.new(0,-1,0)
 $C1})
 </mono>
 it transports items evenly from the nodes in the "<mono>from</mono>" table, to the nodes in the "<mono>to</mono>" table,
@@ -21,8 +20,35 @@ $C1          count = 5,
 $C1          wear = 0,
 $C1          count_exact_match = false,
 $C1          slot_index = 0,
-$C1          name = 0,
+$C1          name = "sbz_resources:matter_dust,
 $C1          groups = { ingot = 1 }, -- can be a string, string array, or string->integer array
 $C1     }, -- there can be up to 20 filters
 $C1}
+$C1
+$C1OR
+$C1
+$C1filters = {
+$C1    count = 5,
+$C1    wear = 0,
+$C1    count_exact_match = false,
+$C1    slot_index = 0,
+$C1    name = "sbz_resources:matter_blob",
+$C1    groups = {"matter"},
+$C1}
+$C1
+$C1All values are optional, meaning you don't have to have the "count" value, or the "wear" value.
+</mono>
+
+The event returned may be a special one, of <event>.type="error", you can use <mono>chat_debug(dump(yield(...)))</mono> to observe it
+
+EXAMPLE:
+<mono>
+yield({
+$C1    type = "transport_items",
+$C1    from = links.storinators,
+$C1    to = links.furnaces,
+$C1    filters = {
+$C1        groups = {"powder"}
+$C1    }
+})
 </mono>

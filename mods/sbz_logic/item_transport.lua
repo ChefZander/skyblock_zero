@@ -1,41 +1,22 @@
 --[[
-
-    one_filter = { -- all values are optional, if all are empty, it dumps everything
-        name = "a", -- if missing, it doesn't care about the name
-
-        -- if missing, won't care about groups
-        -- if it's a string[], it just has to have one group in the list
-        -- if it's a { group = int }, it has to exactly match that
-        groups = string | string[] | table<string,integer> ,
-
-        count = 0, -- if missing, assumes max stack size
-        slot_index = 3, -- if missing, tries to find the slot
-        wear = 0,
-        count_exact_match = false,
-    }
-
-    filter = one_filter[] | one_filter
-
-    Also, by the code, this should immiadedly be obvious that it is a horrible idea to grab items from a infinite storinator with this, lol
+    basically, to take out stuff:
+    use filters and loop over the `tube.input_inventory`
+    to put stuff:
+    check tube.can_insert, then tube.insert_object
 ]]
 
 local function transport_items_inner(pos, e) -- e=event
-    error("Temporarily disabled")
     -- defs
     local lcpos = pos
     local take_from = e.from
     local put_to = e.to
-    local invlist_inputs = e.inv_list_inputs
-    local invlist_outputs = e.inv_list_outputs
-    local filters = e.filters
+    local filters = e.filters or {}
+    local direction = e.direction or vector.zero()
+
     -- CHECK EVERYTHING
     assert(type(take_from) == "table", "`from` must be table")
     assert(type(put_to) == "table", "`to` must be table")
     assert(type(filters) == "table", "`filters` must be table")
-    assert(invlist_inputs == nil or type(invlist_inputs) == "string",
-        "invlist_inputs can be nil or string, nothing else")
-    assert(invlist_outputs == nil or type(invlist_outputs) == "string",
-        "invlist_outputs can be nil or string, nothing else")
 
     if not filters[1] then
         filters = { [1] = filters }
@@ -54,6 +35,11 @@ local function transport_items_inner(pos, e) -- e=event
         function(k, v) assert(logic.range_check(lcpos, v), "Node out of range, at key: " .. dump(k)) end)
     table.foreach(put_to,
         function(k, v) assert(logic.range_check(lcpos, v), "Node out of range, at key: " .. dump(k)) end)
+    assert(libox.type_vector(direction), "Invalid direction")
+
+    local vel = setmetatable(table.copy(direction), {}) -- make it not be a vector
+    vel.speed = 1
+
     -- THE STUFFFFFF
     local items = {}
 
@@ -61,9 +47,10 @@ local function transport_items_inner(pos, e) -- e=event
         -- i bet you WILL NOT LIKE this way of doing checks but it sure looks good, no?
         local node = sbz_api.get_node_force(v); if not node then return end
         local node_def = minetest.registered_nodes[node.name]; if not node_def then return end
+        if not node_def.tube then return end
         local meta = minetest.get_meta(v)
         local inv = meta:get_inventory()
-        local list = invlist_inputs or node_def.output_inv; if not list then return end
+        local list = node_def.tube.input_inventory; if not list then return end
         local inv_list = inv:get_list(list); if inv_list == nil then return end
         -- great, now the fun begins
         -- "fun"
@@ -77,8 +64,9 @@ local function transport_items_inner(pos, e) -- e=event
             if stack:is_known() == false then return end
 
             -- filtering
-            ---@param filter table
+            local continue_filters = true
             table.foreachi(filters, function(filter)
+                if not continue_filters then return end
                 if filter.slot_index then
                     if slot_index ~= filter.slot_index then return end
                 end
@@ -113,130 +101,106 @@ local function transport_items_inner(pos, e) -- e=event
                 -- ok, filters passed
 
                 local count = filter.count or stack:get_stack_max()
+                count = math.abs(count)
+                local original_count = stack:get_count()
                 if not filter.count_exact_match then
-                    count = math.min(stack:get_count(), count)
+                    count = math.min(original_count, count)
                 end
-                if count > stack:get_count() then return end
+
+                if count > original_count then return end
                 local taken = stack:take_item(count)
 
                 items[#items + 1] = {
-                    pos = v,
                     ndef = node_def,
                     taken_stack = taken,
-                    inv_list = inv_list,
                     listname = list,
                     inv = inv,
                     index = slot_index,
+                    add_count = original_count - taken:get_count(),
                 }
+                continue_filters = false
             end, true)
             --
         end, true)
     end, true)
+
     -- great, now that we have all the items colected, we can transfer them
-    local fakeplayer = fakelib.create_player(minetest.get_meta(pos):get_string("owner"))
+
     local position_index = 1
     local cache = {}
     local hash = minetest.hash_node_position
 
     local take_out_and_put_to = function(
-        take_pos, put_pos, put_ndef, take_ndef, taken_stack, take_slot_index, take_inv, put_inv, take_listname,
-        put_listname, put_list
-    )
-        -- need to get put_slot_index
-        local put_slot_index
-        local put_stack = ItemStack(taken_stack)
-        local taken_stack_name = taken_stack:get_name()
-        for index, stack in ipairs(put_list) do
-            if (stack:get_name() == taken_stack_name and stack:get_count() < stack:get_stack_max()) or stack:get_name() == "" then
-                local compare_stack = ItemStack(stack); compare_stack:set_count(1)
-                local copmare_stack2 = ItemStack(taken_stack); copmare_stack2:set_count(1)
-                if compare_stack:equals(copmare_stack2) or stack:get_name() == "" then
-                    put_slot_index = index
-                    put_stack:set_count(math.min(taken_stack:get_count(), stack:get_stack_max() - stack:get_count()))
-                end
-            end
-        end
-        if put_slot_index == nil then return end
-        -- TODO: call allow_metadata_inventory_put and allow_metadata_inventory_move
-        fakeplayer:set_wielded_item(taken_stack)
-        local allow_take = take_ndef.allow_metadata_inventory_take and
-            take_ndef.allow_metadata_inventory_take(take_pos, take_listname, take_slot_index,
-                ItemStack(put_stack), fakeplayer) or put_stack:get_count()
-        allow_put = math.min(allow_take, put_stack:get_count())
-        if allow_take == -1 then
-            put_stack = ItemStack(taken_stack)
+        put_pos, put_ndef, put_node, velocity, taken_stack, take_slot_index, take_inv, take_listname, add_count)
+        if not put_ndef.tube then return end
+        local can_insert = true
+        local can_insert_f = put_ndef.tube.can_insert
+        if can_insert_f then can_insert = can_insert_f(put_pos, put_node, taken_stack, velocity) end --else can_insert = true end
+        if can_insert == false then return end
+        local insert_object = put_ndef.tube.insert_object
+        if insert_object == nil then return end -- no way to insert yknowww?
+        local leftover = insert_object(put_pos, put_node, taken_stack, velocity)
+        if not leftover:get_count() == 0 then
+            taken_stack:replace(leftover)
+
+            local set_stack = ItemStack(taken_stack)
+            set_stack:set_count(set_stack:get_count() + add_count)
+            take_inv:set_stack(take_listname, take_slot_index, set_stack)
         else
-            put_stack = taken_stack:take_item(allow_take)
+            local set_stack = ItemStack(taken_stack)
+            set_stack:set_count(add_count)
+            take_inv:set_stack(take_listname, take_slot_index, set_stack)
+            taken_stack:replace(leftover)
+            if taken_stack:get_count() == 0 then taken_stack:clear() end
         end
-
-        local allow_put = put_ndef.allow_metadata_inventory_put and put_ndef.allow_metadata_inventory_put(put_pos,
-            put_listname, put_slot_index, ItemStack(put_stack), fakeplayer) or put_stack:get_count()
-
-        allow_put = math.min(allow_put, put_stack:get_count())
-        if allow_put == -1 then -- inf items sure lol
-            local add = put_stack:get_count()
-            taken_stack:add_item(add)
-        else
-            local add = allow_put - put_stack:get_count()
-            put_stack = put_stack:take_item(allow_take)
-            taken_stack:add_item(add)
-        end
-
-        local set_stack = ItemStack(put_stack)
-        set_stack:add_item(put_list[put_slot_index])
-        put_inv:set_stack(put_listname, put_slot_index, set_stack)
-        if put_ndef.on_metadata_inventory_put then
-            put_ndef.on_metadata_inventory_put(put_pos, put_listname, put_slot_index, put_stack, fakeplayer)
-        end
-        local took_stack = take_inv:get_stack(take_listname, take_slot_index)
-        took_stack:set_count(took_stack:get_count() - put_stack:get_count())
-
-        take_inv:set_stack(take_listname, take_slot_index, taken_stack)
-        if take_ndef.on_metadata_inventory_take then
-            take_ndef.on_metadata_inventory_take(take_pos, take_listname, take_slot_index, ItemStack(took_stack),
-                fakeplayer)
-        end
+        -- ok... now set the taken stack in the inventory it came from
     end
 
-    local iterations_max = 200
+    local iterations_max = 2000
     local iterations = 0
     while true do
         iterations = iterations + 1
-        core.debug("iter: " .. iterations)
-        if iterations > iterations_max then return end -- everything is filled, cant do anything
-        local v = put_to[position_index]
-        if v == nil then
+        if iterations > iterations_max then
+            return
+        end -- everything is filled, cant do anything
+        local put_pos = put_to[position_index]
+        if put_pos == nil then
             position_index = 1
-            v = put_to[position_index]
+            put_pos = put_to[position_index]
         end
-        if #items == 0 then return end -- COMPLETE!
+        if #items == 0 then
+            return
+        end -- COMPLETE!
 
         local target_item = items[#items]
         if target_item.taken_stack:is_empty() then
-            target_item = table.remove(items)
+            while true do
+                target_item = table.remove(items)
+                if not target_item then return end
+                if not target_item.taken_stack:is_empty() then break end
+            end
+        end
+        if target_item == nil then
+            return -- complete
         end
 
-        if cache[hash(v)] == nil then
-            local node = core.get_node(v)
-            local node_def = minetest.registered_nodes[node.name]; if node_def == nil then return end
-            local inv = core.get_meta(v):get_inventory()
-            cache[hash(v)] = {
+        if cache[hash(put_pos)] == nil then
+            local node = core.get_node(put_pos)
+            local node_def = minetest.registered_nodes[node.name]; if node_def == nil then
+                error("Detected an unknown node");
+                return
+            end
+            local inv = core.get_meta(put_pos):get_inventory()
+            cache[hash(put_pos)] = {
                 inv = inv,
                 ndef = node_def,
-                listname = invlist_outputs or node_def.input_inv,
-                list = inv:get_list(invlist_outputs or node_def.input_inv)
+                node = node
             }
         end
 
-        local cache_hit = cache[hash(v)]
-        local inv = cache_hit.inv
-        local listname = cache_hit.listname
-        local list = cache_hit.list
-        if list == nil then return end
-
-        take_out_and_put_to(target_item.pos, v, cache_hit.ndef, target_item.ndef, target_item.taken_stack,
-            target_item.index,
-            target_item.inv, inv, target_item.listname, listname, list)
+        local cache_hit = cache[hash(put_pos)]
+        take_out_and_put_to(put_pos, cache_hit.ndef, cache_hit.node, vel, target_item.taken_stack, target_item.index,
+            target_item.inv, target_item.listname, target_item.add_count)
         position_index = position_index + 1
     end
 end
