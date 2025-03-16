@@ -10,7 +10,7 @@ pipeworks = {
 	logger = function(msg)
 		minetest.log("action", "[pipeworks] " .. msg)
 	end,
-	entity_update_interval = 0,
+	entity_update_interval = 0.1,
 	use_real_entities = true,
 	enable_cyclic_mode = true,
 	tube_backface_culling = minetest.settings:get_bool("sbz_pipe_backface_culling") or true,
