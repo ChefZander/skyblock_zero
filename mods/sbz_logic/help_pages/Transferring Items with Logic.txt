@@ -1,6 +1,6 @@
 <bigger>Transferring Items with Logic</bigger>
 
-It is done like this
+It is done like this 
 <mono>
 $C1any_event = yield({
 $C1    type = "transport_items",
