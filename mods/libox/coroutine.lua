@@ -273,7 +273,7 @@ function api.run_sandbox(ID, value_passed)
     local ok, errmsg_or_value
     local pcall_ok, pcall_errmsg
     -- "nested pcall just in case" i knowww its bad and it sounds bad but yeah
-    local something_gone_horribly_wrong = pcall(function()
+    local no_strange_bug_happened = pcall(function()
         pcall_ok, pcall_errmsg = pcall(function()
             debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
             getmetatable("").__index = sandbox.env.string
@@ -286,7 +286,7 @@ function api.run_sandbox(ID, value_passed)
     debug.sethook()
     getmetatable("").__index = string
 
-    if something_gone_horribly_wrong then
+    if not no_strange_bug_happened then
         return false, "Strange bug happened, but yes - the sandbox timed out."
     end
 
