@@ -80,7 +80,6 @@ Release 29
 - Notice: Releases may be really small like this one, or HUGE like release 28
 - Started doing changelogs again
 - Added more "info sections" to the questbook, told people that you can hold right click to the core in the questbook
-- Renamed 'Simple Charge Generator' to 'Core Dust Powered Generator', and renamed 'Antimatter Generator' to 'Antimatter Reaction Generator'
 - Fixed a bug where colorium storinators needed stemfruit... instead of colorium xD
 - Made bronze slightly darker 
 - Added Teleport Tube, and the proper quests for it

@@ -21,7 +21,7 @@ Also used in connecting jumpdrives to a fleet controller.
         text = [[
 An ingredient in making the jumpdrive engine. May be required for other things in the future.
         ]],
-        requires = { "Crystal Grower", "Antimatter Reaction Generator" },
+        requires = { "Crystal Grower", "Antimatter Generators" },
     },
     {
         type = "quest",

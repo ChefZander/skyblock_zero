@@ -129,11 +129,7 @@ local function lsystem(start_pos, dna, owner, starting_angle)
         end
         axiom = table.concat(temp) -- took me a while to guess why this is there specifically, confusing code
     end
-    core.debug("Instruction size: " .. dump(#axiom))
 
-    if #axiom > 10000 then
-        core.debug("Super large tree detected:" .. vector.to_string(start_pos))
-    end
     local pos = vector.copy(start_pos)
 
     local rotation = starting_angle or { x = 0, y = 0, z = 0 }

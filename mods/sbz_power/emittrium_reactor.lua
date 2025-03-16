@@ -116,6 +116,7 @@ minetest.register_node("sbz_power:reactor_shell", {
         "reactor_shell.png", "blank.png^[invert:rgba^[multiply:#639bFF"
     },
     drawtype = "glasslike_framed",
+    paramtype = "light",
     groups = { matter = 1, reactor_shell = 1, explody = 1 },
 })
 
