@@ -37,10 +37,17 @@ Release 33
 - Added colorium glass
 - Nerfed how much co2 colorium tree trunks and colorium tree leaves make when burning
 - Made node breakers, deployers, punchers, turrets give power to items that require it
+- Fixed pat.* library
+- Fixed bug with meteorite sounds being able to be heard by anyone
+
+
+
+
+
+
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default
-- Fixed pat.* library
 
 Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte

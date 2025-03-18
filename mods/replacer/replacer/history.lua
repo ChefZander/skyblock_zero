@@ -3,7 +3,6 @@ replacer.history.db = {}
 replacer.history.dirty = {}
 local r = replacer
 local rb = replacer.blabla
-local rud_colour_name = ""
 
 function replacer.history.add_item(player, mode, node, short_description)
 	local name = player:get_player_name()
@@ -70,10 +69,7 @@ function replacer.history.init_player(player)
 		}
 		if r.disable_minor_modes then entry.mode.minor = 1 end
 		node_def = minetest.registered_items[entry.node.name]
-		colour_name = rud_colour_name(entry.node.param2, node_def)
-		if 0 < #colour_name then
-			colour_name = ' ' .. colour_name
-		end
+		colour_name = ""
 		entry.human_string = tostring(entry.mode.major) .. '.' .. tostring(entry.mode.minor)
 			.. ' ' .. rb.tool_short_description:format(entry.node.param1, entry.node.param2,
 				colour_name, entry.node.name)
