@@ -39,7 +39,7 @@ Release 33
 - Made node breakers, deployers, punchers, turrets give power to items that require it
 - Fixed pat.* library
 - Fixed bug with meteorite sounds being able to be heard by anyone
-
+- Corrected Antimatter Blob quest's misinformation
 
 
 

@@ -64,10 +64,6 @@ minetest.register_on_mods_loaded(function()
         end
 
 
-        if not v.allow_metadata_inventory_put_was_nop and v.type == "node" then
-            new_desc[#new_desc + 1] = "Logic can't put items to this node. (But pipeworks probably can.)"
-        end
-
         if sbz_api.mvps_stoppers[k] == true then
             new_desc[#new_desc + 1] = "Logic builders or jumpdrives cannot move this node. (mvps stopper)"
         end

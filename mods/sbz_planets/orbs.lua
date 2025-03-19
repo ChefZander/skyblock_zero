@@ -8,8 +8,16 @@
 
 core.register_craftitem("sbz_planets:dwarf_orb", {
     description = "Dwarf Orb",
-    inventory_image = "dwarf_orb.png"
+    inventory_image = "dwarf_orb.png",
+    info_extra = "Used as a crafing replacement for matter annihilators, found naturally in dwarf planets",
 })
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_planets:dwarf_orb 16",
+    recipe = {
+        "sbz_meteorites:neutronium", "sbz_resources:pebble", "sbz_planets:dwarf_orb",
+    }
+}
 
 core.register_node("sbz_planets:dwarf_orb_ore", {
     description = "Dwarf Orb Ore",
