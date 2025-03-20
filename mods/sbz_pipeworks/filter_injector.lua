@@ -20,7 +20,8 @@ local function set_filter_formspec(meta)
                 "Sequence slots by Rotation" }) ..
         fs_helpers.cycling_button(meta, "button[" .. (10.2 - (0.22) - 4) .. ",4.5;4,1", "exmatch_mode",
             { "Exact match - off",
-                "Exact match - on" }) ..
+                "Exact match - on",
+               "Threshold" }) ..
         pipeworks.fs_helpers.get_inv(6) ..
         "listring[]"
 
@@ -256,8 +257,13 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         if exmatch_mode ~= 0 and filterfor.count > count then
                             return false -- not enough, fail
                         else
-                            -- limit quantity to filter amount
-                            count = math.min(filterfor.count, count)
+                            if exmatch_mode ~= 2 then
+                                -- limit quantity to filter amount
+                                count = math.min(filterfor.count, count)
+                            else
+                                -- set item to the threshhold
+                            count = count - filterfor.count
+                            end
                         end
                     end
                     if fromtube.remove_items then
