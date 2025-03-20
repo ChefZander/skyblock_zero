@@ -21,7 +21,7 @@ local function set_filter_formspec(meta)
         fs_helpers.cycling_button(meta, "button[" .. (10.2 - (0.22) - 4) .. ",4.5;4,1", "exmatch_mode",
             { "Exact match - off",
                 "Exact match - on",
-                "Threshold"}) ..
+               "Threshold" }) ..
         pipeworks.fs_helpers.get_inv(6) ..
         "listring[]"
 
@@ -253,18 +253,21 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     end
                     local item
                     local count = math.min(stack:get_count(), doRemove)
-                    if exmatch_mode == 1 then
-                        if  filterfor.count > count then
-                            return false -- not enough, fail
-                        else
-                            -- limit quantity to filter amount
-                            count = math.min(filterfor.count, count)
+                    if filterfor.count ~= nil then
+                        if exmatch_mode == 1 then
+                            if filterfor.count > count then
+                                return false -- not enough, fail
+                            else
+                                count = math.min(filterfor.count, count)
+                            end
                         end
-                    end
-                    if exmatch_mode == 2
-                    then
-                        count = count - filterfor.count
-
+                        if exmatch_mode == 2 then
+                            if count == 0 then
+                                return false
+                            else
+                                count = count - filterfor.count
+                            end
+                        end
                     end
                     if fromtube.remove_items then
                         -- it could be the entire stack...
