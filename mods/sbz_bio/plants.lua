@@ -23,7 +23,6 @@ local pyrograss_family = {
 }
 local fiberweed_family = {
     "sbz_bio:fiberweed",
-    "sbz_bio:stemfruit_plant"
 }
 local can_turn_into = {
     ["sbz_bio:stemfruit_plant"] = {
@@ -32,7 +31,7 @@ local can_turn_into = {
         "sbz_bio:cleargrass",
         "sbz_bio:warpshroom",
         "sbz_bio:shockshroom",
-        "sbz_bio:fiberweed",
+        --        "sbz_bio:fiberweed",
     },
     ["sbz_bio:warpshroom"] = warpshroom_family,
     ["sbz_bio:shockshroom"] = warpshroom_family,
@@ -377,7 +376,25 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
     groups = { burn = 12, eat = 5 },
-    on_place = sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
+    on_place = function(itemstack, user, pointed)
+        local use_pointed = "above"
+        if pointed.switched then
+            use_pointed = "under"
+        end
+        local soil_node = core.get_node(pointed[use_pointed] - up)
+        local water_node = core.get_node(pointed[use_pointed] + up)
+        if minetest.get_item_group(soil_node.name, "soil") > 0 then
+            if core.get_item_group(water_node.name, "water") > 0 then
+                return core.registered_items["sbz_bio:fiberweed"].on_place(itemstack, user, pointed)
+            end
+            local _, pos = minetest.item_place_node(ItemStack("sbz_bio:stemfruit_plant_1"), user, pointed)
+            if pos then
+                itemstack:take_item()
+                return itemstack
+            end
+            return
+        end
+    end --sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
 })
 
 

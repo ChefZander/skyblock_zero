@@ -94,7 +94,7 @@ The radiation comming off of the basic neutron emitter is mostly harmless to pla
         type = "quest",
         title = "Fiberweed",
         text =
-        "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.",
+        "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on regular dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.\nStemfruit will grow into fiberweed when placed under water. To grow this plant, make a little area with water (at least 3 nodes deep), with the regular dirt at the bottom. Then place the stemfruit on the dirt you had underwater, it will sprout into fiberweed.",
         requires = { "Stemfruit", "Basic Neutron Emitter" }
     },
     {
