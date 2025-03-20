@@ -261,11 +261,14 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                                 count = math.min(filterfor.count, count)
                             end
                         end
+                        core.chat_send_all("_______")
+                        core.chat_send_all(count)
+                        core.chat_send_all(filterfor.count)
                         if exmatch_mode == 2 then
-                            if count == 0 then
-                                return false
-                            else
+                            if filterfor.count < count then
                                 count = count - filterfor.count
+                            else
+                                return false
                             end
                         end
                     end
