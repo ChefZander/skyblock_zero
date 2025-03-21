@@ -179,7 +179,7 @@ You will get this quest when you obtain one (possibly will need to move it aroun
 
 You can duplicate colorium emitters with 8 phlogiston.
 ]],
-        requires = { "Colorium Trees", "Phlogiston" },
+        requires = { "Colorium Trees", "Phlogiston Fuser" },
     }
 
 }
