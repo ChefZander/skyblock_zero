@@ -117,7 +117,7 @@ minetest.register_node("sbz_power:reactor_shell", {
     },
     drawtype = "glasslike_framed",
     paramtype = "light",
-    groups = { matter = 1, reactor_shell = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
 })
 
 minetest.register_craft {
@@ -137,7 +137,7 @@ minetest.register_node("sbz_power:reactor_glass", {
     },
     drawtype = "glasslike_framed",
     paramtype = "light",
-    groups = { matter = 1, reactor_shell = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
 })
 
 minetest.register_craft {
@@ -154,7 +154,7 @@ local reactor_shell = "blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.pn
 minetest.register_node("sbz_power:reactor_item_input", {
     description = "Reactor Emittrium Input",
     info_extra = "ONLY ONE can be used in an emittrium reactor, supplies emittrium to the reactor core",
-    groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1, explody = 1, charged = 1 },
 
     tiles = {
         reactor_shell,
@@ -203,7 +203,7 @@ sbz_api.register_stateful("sbz_power:reactor_core", {
     tiles = {
         "reactor_core.png"
     },
-    groups = { matter = 1, reactor_shell = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
     after_place_node = function(pos, placer, itemstack, pointed_thing)
         minetest.get_meta(pos):set_string("owner", placer:get_player_name())
     end,
@@ -281,7 +281,7 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
         reactor_shell,
         "reactor_infoscreen.png",
     },
-    groups = { matter = 1, reactor_shell = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
     on_rightclick = function(pos)
         local meta = minetest.get_meta(pos)
         if meta:get_int("linked") == 0 then
@@ -380,7 +380,7 @@ sbz_api.register_generator("sbz_power:reactor_power_port", {
         reactor_shell,
         "reactor_powerport.png",
     },
-    groups = { matter = 1, reactor_shell = 1, pipe_connects = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, pipe_connects = 1, explody = 1, charged = 1 },
     connect_sides = { "front" },
     action = function(pos, node, meta, supply, demand)
         meta:set_string("infotext", "")
@@ -419,7 +419,7 @@ minetest.register_node("sbz_power:reactor_coolant_port", {
         reactor_shell,
         "reactor_coolantport.png",
     },
-    groups = { matter = 1, reactor_shell = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, explody = 1 },
+    groups = { matter = 1, reactor_shell = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, explody = 1, charged = 1 },
     connect_sides = { "front" },
     on_construct = function(pos)
         minetest.get_meta(pos):set_string("liquid_inv", minetest.serialize({

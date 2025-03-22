@@ -277,7 +277,7 @@ minetest.register_node("sbz_resources:colorium_glass", unifieddyes.def {
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
-    groups = { matter = 1, transparent = 1, explody = 100 },
+    groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
     sounds = sbz_api.sounds.glass(),
 })
 
@@ -298,7 +298,7 @@ minetest.register_node("sbz_resources:clear_colorium_glass", unifieddyes.def {
     use_texture_alpha = "clip",
     paramtype = "light",
     sunlight_propagates = true,
-    groups = { matter = 1, transparent = 1, explody = 100 },
+    groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
     sounds = sbz_api.sounds.glass(),
     info_extra = "Recipe requires cleargrass but it returns it back once you've crafted with it."
 })
@@ -324,7 +324,7 @@ minetest.register_node("sbz_resources:stained_colorium_glass", unifieddyes.def {
     backface_culling = true,
     paramtype = "light",
     sunlight_propagates = true,
-    groups = { matter = 1, transparent = 1, explody = 100 },
+    groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
     sounds = sbz_api.sounds.glass(),
     info_extra = { "Recipe requires razorgrass, but it returns it back once you've crafted with it." }
 })
@@ -347,7 +347,7 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
         "compressed_core_dust.png"
     },
     info_extra = { "You can use this to protect against antimatter" },
-    groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 5 },
+    groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 5, charged = 1 },
     sounds = sbz_api.sounds.matter(),
 })
 
