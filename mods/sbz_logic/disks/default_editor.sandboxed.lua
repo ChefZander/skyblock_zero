@@ -133,6 +133,9 @@ if (event.type == "gui" or event.type == "off" or event.type == "on") or
         end
     end
 
+    local function tobool(x)
+        if x == "true" then return true else return false end
+    end
     local selected_disk = disks[mem.selected]
     if selected_disk and not selected_disk.immutable then
         if fields.set_disk_name then
@@ -142,10 +145,10 @@ if (event.type == "gui" or event.type == "off" or event.type == "on") or
             selected_disk.data = fields.set_disk_data
         end
         if fields.punches_editor then
-            selected_disk.punches_editor = fields.punches_editor
+            selected_disk.punches_editor = tobool(fields.punches_editor)
         end
         if fields.punches_code then
-            selected_disk.punches_code = fields.punches_code
+            selected_disk.punches_code = tobool(fields.punches_code)
         end
     end
 

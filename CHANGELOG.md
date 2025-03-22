@@ -42,7 +42,7 @@ Release 33
 - Corrected Antimatter Blob quest's misinformation
 - Added memory controller
 - Made hologram projectors be able to animate models
-
+- Fixed the default editor's disk menu  being weird sometimes
 
 
 Release 32
