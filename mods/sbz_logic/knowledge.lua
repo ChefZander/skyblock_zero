@@ -27,7 +27,8 @@ sbz_api.help_pages_by_index = {
     "Luanium Attractor",
     "Jumpdrives",
     "Drawer Controller",
-    "Teleport Tube"
+    "Teleport Tube",
+    "Memory Controller",
 }
 
 local function edit_text(t)
