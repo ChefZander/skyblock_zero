@@ -1,0 +1,116 @@
+20240803 * SwissalpS made replacer game agnostic (using [xcompat]).
+20240225 * SwissalpS patched a crash situation with multinode-nodes. Thanks frogTheSecond and Huhhila for detecting and reporting.
+20221107 * fluxionary fixed typo unkown -> unknown
+20220830 * SwissalpS fixed de translation typo. Thanks Niklp09 for reporting.
+20220626 * SwissalpS fixed case where other drops were prefered from actual node that user tried to set to.
+20220624 * SX added technic.plus compat fix
+20220215 * SwissalpS added compat for itemholder and powered_stand when override is used
+           to make them work nicely:
+           https://github.com/pandorabox-io/pandorabox_custom/blob/master/scifi_override.lua
+20220214 * SwissalpS added compat for itemframe, pedestal, itemholder and powered_stand
+           (itemframes and scifi_nodes) showing info on what they are holding.
+20220210 * SwissalpS added some more info to inspection tool when inspecting players.
+20220205 * SwissalpS tweaked formspec of replacer to adjust when minor modes are disabled.
+         * Enabled changing modes with place without pointing at a node.
+         * Added more info on mobs.
+20220204 * SwissalpS added tooltip to protection info as that often clipped.
+         * fixed the alias resolving to not change node_name.
+         * fixed group:food_pumpkin.
+         * dropped datastructure usage for final sorting as it left weird patterns
+           when time-outs were reached. Instead using clasic table.sort with vector.distance
+           comparisons. Also using faster repeat ... until loop.
+         * In field and crust mode only count nodes that were actually changed.
+20220203 * SwissalpS fixed some issues: forced aliases, items that have no drops defined
+           Added compat for buckets, canisters and beertap/mugs
+           Fixed formspec for MT 5.5.0 (that now actually uses padding)
+           Added server setting to disable minor modes.
+           Updated documentation and locales.
+20220127 * SwissalpS cleaned up var names in inspect.lua
+         * Added .luacheckrc and print_dump()
+         * Bumped version to 4.0
+20220126 * SwissalpS improved some compat items and redid translations.
+         * Documentation updated.
+         * Added LICENSE file.
+20220125 * SwissalpS improved sytem for showing dynamicly added crafting methods
+           which allowed to improve the output of technic and saw methods.
+         * Better drop detection method.
+         * Added sound playback for setting replacer errors, mainly.
+         * Change /replacer_mute to /replacer and changed the arguments
+           so sound can be muted separately.
+         * Added tooltips so users have more chance of reading long lines. Adding
+           textarea to make itemstring selectable failed and is post-poned to when
+           new version of formspec is being used for inspection tool as well.
+         * Added experimental hold zoom+click with inspection tool to open unified_inventory.
+20220124 * SwissalpS added wrap around for recipes - yes, long due.
+         * Bugfix, now replacer actually checks groups.
+         * Compat for shears (wool & vines) also fermenting/pickling, advtrains and sci-fi plastic
+         * ehlphabet and letters compat.
+20220123 * SwissalpS added dev-mode and /place_all chat command.
+         * Technic crafting methods for inspection tool, including cnc nodes.
+         * planetoidgen:airlight is treated as air.
+         * New way to determine if replacer can be set to node
+           implementing callbacks better. Such as group denial.
+         * A lot of compatibility added to many mods.
+20220120 * SwissalpS made folder structure to create easier overview.
+         * Improved circular saw item detection for inspect and replacer.
+         * Added beacon beam and base support (no longer needed to be in inv when setting).
+         * Inspection tool now inspects light correctly and respects right-click.
+         * Added locale for inspection tool.
+20220119 * SwissalpS added first draft of de,es,fi,fr,it,pt,ru locales.
+20220118 * SwissalpS cleaned up more code, giving more discriptive variable names and
+           cleaning out ugly modes table that had both number and string indexes
+         * Don't allow replacer to be set to deny_list nodes
+         * History works for users with priv. Various settings added to
+           fine-tune how it behaves.
+         * Implemented minor-modes with more colours ;)
+         * Added non-formspec way to cycle minor modes: Special+Sneak+right-click
+         * Especially in functions with tight loops, local references to global functions was added.
+20220117 * SwissalpS changed mode storage in tool meta to major.minor format
+         * Added version 4 formspec that enables changing minor mode
+           and has prepared history selector.
+         * Moved changelog and cleaned it up adding some dates
+         * Moved formspec code to separate file.
+         * Started implementing translations and history.
+20220115 * SwissalpS refactored constraints and renamed blacklist to deny_list
+20220114 * SwissalpS added support for cable plates and similar nodes
+20220113 * SwissalpS worked in HybridDog's nicer pattern algorithm, modifying a little.
+           Also cleaned up some code and give-priv does not grant modes anymore,
+           creative still does.
+20220112 * SwissalpS improved field mode: when replacing also check for same param2
+           improved crust mode: when placing also allow vacuum instead of only air
+20211202 * SwissalpS added /replacer_mute command
+20210930 * SwissalpS merged patch provided by S-S-X to prevent a rare but possible crash with
+           Unknown Items in hotbar
+         * Also cleaned up tool change messages to blabla.lua
+20201016 * HybridDog provided first documentation and SwissalpS added some more explaining modes.
+20201015 * SwissalpS cleaned up inspector code and made inspector better readable on smaller screens
+20200322 * HybridDog removed fourth mode and improved node search
+         * SwissalpS added backward compatibility for non technic servers, restored
+           creative/give behaviour and fixed the 'too many nodes detected' issue
+         * S-S-X and some players from pandorabox.io requested and inspired ideas to
+           implement which SwissalpS tried to satisfy.
+20200131 * SwissalpS added method to change mode via formspec
+20200109 * BuckarooBanzay added server-setting max_nodes, moved crafts and replacer to
+           separate files, added .luacheckrc and cleaned up inspection tool, fixing
+           some issues on the way and updated readme to look nice
+20191217 * OgelGames fixed digging to be simulated properly
+20191212 * coil0 made modes available as technic tool and added limits
+         * SwissalpS merged Sokomine's and HybridDog's versions
+         * HybridDog added modes for creative mode
+20190628 * coil0 fixed issue by using buildable_to
+20171209 * Got rid of outdated minetest.env
+         * Fixed error in protection function.
+         * Fixed minor bugs.
+         * Added blacklist
+20141002 * Some more improvements for inspect-tool. Added craft-guide.
+20141001 * Added inspect-tool.
+20130112 * If digging the node was unsuccessful, then the replacement will now fail
+           (instead of destroying the old node with its metadata; i.e. chests with content)
+20131120 * if the server version is new enough, minetest.is_protected is used
+           in order to check if the replacement is allowed
+20130424 * param1 and param2 are now stored
+         * hold sneak + right click to store new pattern
+         * right click: place one of the itmes
+         * receipe changed
+         * inventory image added
+

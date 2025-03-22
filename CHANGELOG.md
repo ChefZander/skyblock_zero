@@ -1,3 +1,50 @@
+Release 33
+- Fixed a bug where filter injectors didn't work with one way tubes
+- Added one direction tube
+  - A tube that accepts items from all directions, but sends them to only one direction
+- Fixed meteorite sounds being heard by everyone
+- ***BREAKING*** (for multiplayer, for logic nerds): made formspec screens "public"
+  - If you have a formspec screen that you don't want the public accessing, please check the `clicker` field
+- Fixed logic components not sending info to luacontroller after jump
+- Fixed bug where filter injector sometimes sent too many items, causing them to sometimes be thrown out
+- Made robotic arms be able to repair broken tubes
+- Made creative batteries and generators diggable
+- Added things to small protector's documentation
+- Fix simple alloy furnace sounds being heard by everyone, regardless of their distance to the audio source
+- Made jumpdrive only be able to get power from batteries that are in its range.
+- Fixed reactors only saying that their fuel rods are used 0%
+- Added node preserver
+- Removed the teleport request mod, **servers will have to add it back**
+- Fix strange blob crashing the server, when consuming a node with inventory
+- Fixed partially/completely full storinators's drops 
+- Added bulk replacer tool
+- Increased the range of planet light control
+- Added copytool
+- Improved autocrafter UI a little bit
+- Fixed jumpdrive travelnet compatibility
+- Fixed compatibility with nodes that used on_movenode (so including travelnet)
+- Make Meteoric matter decay
+- Make tree mutations way more potent (lowered to 10 mutations, but without the "60% chance of preventing a mutation" check, and made mutations much more likely)
+- Added pitch variations to some sound effects
+- Made luacontroller's `pos` global change in the main environment if the luacontroller has been jumped
+- After an "sbz moment", it was decided that strange blobs should be able to explode
+- Changed planet mapgen a bit, made bluestone/redstone more common
+- Changed how trees get generated, decreased the maximum tree size
+- Changed the linker tool so the waypoints have a maximum view range of 100
+- Fixed a lot of lighting bugs when the smooth lighting setting is disabled
+- **Re-worked organics a bit**
+- Added /playtime and /afk
+- Added colorium glass
+- Nerfed how much co2 colorium tree trunks and colorium tree leaves make when burning
+- Made node breakers, deployers, punchers, turrets give power to items that require it
+- Fixed pat.* library
+- Fixed bug with meteorite sounds being able to be heard by anyone
+- Corrected Antimatter Blob quest's misinformation
+- Added memory controller
+- Made hologram projectors be able to animate models
+- Fixed the default editor's disk menu  being weird sometimes
+
+
 Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default
@@ -31,6 +78,10 @@ Release 31
 - Better documented the reactor quest
 - Re-worked how jumpdrives interact with protections
 - Changed the behavior of filter injectors so that they don't try to push stuff out when the inventory they are trying to push stuff to is clearly full
+- Re-worked and fixed bugs with logic item transport
+
+
+
 
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
@@ -40,7 +91,6 @@ Release 29
 - Notice: Releases may be really small like this one, or HUGE like release 28
 - Started doing changelogs again
 - Added more "info sections" to the questbook, told people that you can hold right click to the core in the questbook
-- Renamed 'Simple Charge Generator' to 'Core Dust Powered Generator', and renamed 'Antimatter Generator' to 'Antimatter Reaction Generator'
 - Fixed a bug where colorium storinators needed stemfruit... instead of colorium xD
 - Made bronze slightly darker 
 - Added Teleport Tube, and the proper quests for it

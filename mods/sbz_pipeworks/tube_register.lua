@@ -6,7 +6,14 @@ minetest.register_alias("pipeworks:tube", "pipeworks:tube_000000")
 
 -- now, a function to define the tubes
 
-pipeworks.check_and_wear_hammer = function() end
+pipeworks.check_and_wear_hammer = function(puncher)
+    local wielded_item = puncher:get_wielded_item()
+    if wielded_item:get_name() == "sbz_resources:robotic_arm" then
+        return true
+    else
+        return false
+    end
+end
 
 local vti = { 4, 3, 2, 1, 6, 5 }
 

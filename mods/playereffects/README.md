@@ -1,5 +1,5 @@
 # Player Effects
-MODIFIED IN SKYBLOCK ZERO TO MAKE IT LOOK BETTER
+MODIFIED IN SKYBLOCK ZERO TO MAKE IT LOOK BETTER and also to make the hud update more often
 ## Summary
 This is an framework for assigning temporary status effects to players. This mod is aimed to modders and maybe interested people.
 

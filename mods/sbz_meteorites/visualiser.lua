@@ -2,6 +2,7 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
     disallow_pipeworks = true,
     description = "Meteorite Radar",
     drawtype = "mesh",
+    paramtype = "light",
     mesh = "meteorite_radar.obj",
     tiles = { "meteorite_radar.png" },
     collision_box = {

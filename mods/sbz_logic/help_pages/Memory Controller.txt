@@ -1,0 +1,49 @@
+<bigger>Memory Controller</bigger>
+Memory controller is used to store large amounts of data. It only supports storing strings, indexed by smaller strings, like in a table. It won't accept any other data types.
+The memory controller is limited to only create 50ms/s of lag.
+
+<b>set</b>
+Sets a value in the memory controller
+<mono>
+$C1send_to(links.memcontroller,{
+$C1    type = "set",
+$C1    key = "test", -- must be up to 128 characters long
+$C1    value = "hello world",-- the size of the values in the memcontroller must not exceed 
+$C1})
+</mono>
+Sends back a <mono>{ type = "set" }</mono> event, optionally returns an error field if something went wrong
+
+<b>setc</b>
+Exactly the same as set, just compresses the output, this option should be prefered if reaching the lag limit is not a concern.
+<mono>
+$C1send_to(links.memcontroller,{
+$C1    type = "setc",
+$C1    key = "test", -- must be up to 128 characters long
+$C1    value = "hello world",-- the size of the values in the memcontroller must not exceed 
+$C1})
+</mono>
+Sends back a <mono>{ type = "setc" }</mono> event, optionally returns an error field if something went wrong
+
+<b>get</b>
+Sends back the value in the memory controller, if the value is compressed it will send it uncompressed.
+<mono>
+$C1send_to(links.memcontroller,{
+$C1    type = "get",
+$C1    key = "test",  
+$C1})
+</mono>
+Sends back <mono>{ type = "get", data = "hello world" }</mono>
+
+<b>del</b>
+Deletes a value, it is <b>not</b> the same setting the key with nil or an empty string.
+<mono>
+$C1send_to(links.memcontroller,{
+$C1    type = "del",
+$C1    key = "test",
+$C1})
+</mono>
+Sends back a <mono>{ type = "del" }</mono>
+
+<b>reset</b>
+Deletes everything in the memcontroller.
+<mono>send_to(links.memcontroller,{type = "reset"})</mono>

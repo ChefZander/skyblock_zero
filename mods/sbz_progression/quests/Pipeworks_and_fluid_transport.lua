@@ -46,7 +46,7 @@ return {
         title = "Matter Factory",
         text = [[
 Using advanced matter extractors, some automatic filter injectors, tubes, and a storinator, you can make a really good matter factory.
-Advanced matter extractors are crazy fast for their cost, so with like 6 of them, you will get lots of matter in no time.
+Advanced matter extractors are crazy fast for their cost, so with like 5 of them, you will get lots of matter in no time.
 
 Here is an example of one:
 <img name=questbook_image_matter_factory.png width=483 height=453>
@@ -57,7 +57,7 @@ Here is an example of one:
         type = "quest",
         title = "Node Breakers",
         text =
-        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 20 power for each node dug. To make \"caveman automation\" (non lua automation) more powerful, plants that haven't finished growing cannot be dug by the node breaker.",
+        "Node Breakers try to break the node in front of them. The drops are thrown away into the back-side. They need 20 power for each node dug. To make \"caveman automation\" (non lua automation) more powerful, plants that haven't finished growing cannot be dug by the node breaker. If you insert in a tool that requires power (for example laser), the node breaker will try to charge it, consuming more power.",
         requires = { "Automatic Filter-Injectors" }
     },
     {
@@ -65,18 +65,6 @@ Here is an example of one:
         title = "Deployers",
         text = "Deployers try to place a node into their front-side. That's about it.",
         requires = { "Automatic Filter-Injectors", "Bear Arms" }
-    },
-    {
-        type = "text",
-        info = true,
-        title = "Organics Automation",
-        text = [[
-I think you want to automate that annoying harvesting of your pyrograss... feeding the burner every day... very boring right!
-Well no worries, node breakers and deployers make plant automation easy.
-
-<img name=questbook_image_organics_factory.png width=348>
-Side note: deployers can place 2 nodes ahead, that's a "feature" not a bug.
-]]
     },
     {
         type = "quest",
@@ -115,9 +103,20 @@ Oh wait, one thing to mention: The items will fall off the receiving tube if you
     },
     {
         type = "quest",
+        title = "One Direction Tubes",
+        text = [[
+This is a tube that accepts items from all directions, but allows them to only go in one direction.
+If you hover over it, it will spawn a white particle, the direction of the white particle, is the direction that the items will go in.
+
+To change that direction, sneak and punch it on the side that you want the items to go in.
+]],
+        requires = { "Tubes" }
+    },
+    {
+        type = "quest",
         title = "Automatic Turrets",
         text =
-        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started.",
+        "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started. But be warned, near spawn, the turret's range gets decreased by 80%. If you insert in a tool that requires power, for example lasers, it will try to charge the laser, resulting in more power use.",
         requires = { "Node Breakers", "Neutronium" }
     },
     -- ==================================================================================================

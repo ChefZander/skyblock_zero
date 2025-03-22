@@ -6,13 +6,14 @@ end
 
 local function meteorite_explode(pos, type)
     --breaking nodes
-    sbz_api.explode(pos, 8, 0.9, false)
+    sbz_api.explode(pos, 8, 0.9, false, ".meteorite")
     --placing nodes
     local protected = minetest.is_protected(pos, ".meteorite")
     if not protected then
         minetest.set_node(pos,
             { name = type == "antimatter_blob" and "sbz_meteorites:antineutronium" or "sbz_meteorites:neutronium" })
     end
+
     local node_types = {
         matter_blob = { "sbz_meteorites:meteoric_matter", "sbz_meteorites:meteoric_metal" },
         emitter = { "sbz_meteorites:meteoric_emittrium", "sbz_meteorites:meteoric_metal" },
@@ -113,7 +114,8 @@ minetest.register_entity("sbz_meteorites:meteorite", {
         local texture = self.type .. ".png^meteorite.png"
         self.object:set_properties({ textures = { texture, texture, texture, texture, texture, texture } })
         self.object:set_armor_groups({ immortal = 1 })
-        self.sound = minetest.sound_play("rocket-loop-99748", { loop = true, gain = 0.15, fade = 0.1 })
+        self.sound = minetest.sound_play({ name = "rocket-loop-99748", gain = 0.15, fade = 0.1, },
+            { object = self.object, max_hear_distance = 100, loop = true, })
         self.waypoint = nil
         self.time_since = 100
     end,
@@ -136,9 +138,10 @@ minetest.register_entity("sbz_meteorites:meteorite", {
                 for z = -1, 1 do
                     local node = minetest.get_node(pos + vector.new(x, y, z)).name
                     if node ~= "ignore" and node ~= "air" and node ~= "sbz_power:funny_air" then --colliding with something, should explode
-                        self.object:remove()
                         meteorite_explode(pos, self.type)
-                        minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
+                        minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 },
+                            { pos = self.object:get_pos(), max_hear_distance = 300 })
+                        self.object:remove()
                         return
                     end
                 end

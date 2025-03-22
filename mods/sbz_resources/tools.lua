@@ -126,7 +126,7 @@ minetest.register_tool("sbz_resources:drill", {
         ("%s uses"):format(drill_max_wear),
         "Shift+\"Place\" it on a battery to re-charge it."
     },
-    groups = { core_drop_multi = 3, disable_repair = 1 },
+    groups = { core_drop_multi = 4, disable_repair = 1, power_tool = 1 },
     -- Tool properties
     tool_capabilities = tool_caps,
     after_use = function(stack, user, node, digparams)
@@ -137,10 +137,13 @@ minetest.register_tool("sbz_resources:drill", {
         return stack
     end,
     on_place = sbz_api.on_place_recharge((drill_max_wear / 65535) * drill_power_per_1_use, function(stack, user, pointed)
-        if stack:get_wear() < 65535 then
+        if stack:get_wear() < 65530 then
             stack:get_meta():set_tool_capabilities(tool_caps)
         end
     end),
+    powertool_charge = sbz_api.powertool_charge((drill_max_wear / 65535) * drill_power_per_1_use),
+    charge_per_use = drill_power_per_1_use,
+    wear_represents = "power",
 
     wear_color = { color_stops = { [0] = "lime" } },
     sound = { punch_use = { name = "drill_dig", } },

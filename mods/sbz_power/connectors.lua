@@ -66,7 +66,7 @@ minetest.register_node("sbz_power:connector_on", {
     end,
     assemble = function(pos, node, dir, network, seen)
         seen[hash(pos)] = true
-        local self_dir = minetest.wallmounted_to_dir(node.param2)
+        local self_dir = vector.copy(minetest.wallmounted_to_dir(node.param2))
         if self_dir + dir == vector.zero() or self_dir - dir == vector.zero() then
             local new_network = sbz_api.assemble_network(pos + dir, seen)
             for k, val in pairs(new_network) do

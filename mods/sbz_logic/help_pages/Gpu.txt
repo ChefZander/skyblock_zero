@@ -304,10 +304,12 @@ It iterates the lua code over all the pixels in that buffer.
 The lua code must return a table of {r=int,g=int,b=int} and must not have any strings (or blocky comments) because i didn't want to deal with them.
 The code is limited to 500 instructions
 
-The environment is immutable, and very simple:
+The environment is immutable (use only local variables), and very simple:
 - math.* - includes everything from math.* but without math.randomseed
+- buffer - the buffer... is a copy of the buffer, is immutable
+- x, y - the current coordinates
 - buffer[index(x,y)] - gives you the pixel at coordinates x, y
-- index(x,y) - helps you index the buffer
+- index(x,y) - helps you index the buffer, you can do conways game of life with this but good luck!
 
 Use local variables when trying to do anything
 Shaders are async, so if you do something like:
@@ -326,7 +328,7 @@ To solve this, you need to do something like this:
 
 <bigger>Example</bigger>
 1) Big mandelbrot set with GPU shaders
-- requires you have 16 matrix screens, linked with names 1, 2, 3, ..., 16, in a square 
+- requires you have 16 matrix screens, linked with names 1, 2, 3, ..., 16, in a square, from top left to bottom right
 
 <mono>
 $C1send_to(links.gpu,{

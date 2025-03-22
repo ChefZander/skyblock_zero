@@ -120,6 +120,7 @@ function logic.initialize_env(meta, env, pos)
             v.z = v.z - pos.z
         end
     end
+    env.pos = vector.copy(pos)
 end
 
 function logic.save_disks_and_mem(meta, env)
@@ -149,6 +150,7 @@ function logic.save_disks_and_mem(meta, env)
                 local function toint(x)
                     if x then return 1 else return 0 end
                 end
+
                 stack_meta:set_string('data', serialized_data)
                 stack_meta:set_int("override_code", toint(target_disk.punches_code))
                 stack_meta:set_int("override_editor", toint(target_disk.punches_editor))
@@ -269,6 +271,7 @@ logic.non_trigger_events = {
     ["wait"] = true,
     ["tick"] = true,
     ["subtick"] = true,
+    ["error"] = true,
 }
 
 function logic.receives_events(pos, event)

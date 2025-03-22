@@ -2,7 +2,7 @@
 
 Set the recipe of an Autocrafter.
 <mono>
-$C1local m = "sbz_resources:matter_dust"
+$C1local M = "sbz_resources:matter_dust"
 $C1send_to(links.autocrafter, {
 $C1    {M, M, M},
 $C1    {M, M, M},

@@ -12,9 +12,8 @@ minetest.register_craftitem("sbz_logic:data_disk", {
     on_use = function(stack, user, pointed)
         if pointed.type ~= "node" then return end
         local stack_meta = stack:get_meta()
-        local override_code,
-        override_editor = stack_meta:get_int("override_code") == 1,
-            stack_meta:get_int("override_editor") == 1
+        local override_code, override_editor =
+            stack_meta:get_int("override_code") == 1, stack_meta:get_int("override_editor") == 1
 
         local target = pointed.under
         if minetest.is_protected(target, user:get_player_name()) then
@@ -24,11 +23,14 @@ minetest.register_craftitem("sbz_logic:data_disk", {
         local node = minetest.get_node(target)
         if not minetest.get_item_group(node.name, "sbz_luacontroller") == 1 then return end
 
-        if override_editor then
-            logic.override_editor(target, stack_meta:get_string("data"))
-        end
-        if override_code then
-            logic.override_code(target, stack_meta:get_string("data"))
+        local deserialized = core.deserialize(stack_meta:get_string("data"))
+        if type(deserialized) == "string" then
+            if override_editor then
+                logic.override_editor(target, deserialized)
+            end
+            if override_code then
+                logic.override_code(target, deserialized)
+            end
         end
     end,
     inventory_image = "data_disk.png",

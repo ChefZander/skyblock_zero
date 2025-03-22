@@ -1,0 +1,1 @@
+# This used to be the tubetool, but i renamed it to copytool and added luacontroller support, the code is based off of tubetool

@@ -24,7 +24,8 @@ minetest.register_node("sbz_logic_devices:formspec_screen", {
     light_source = 5,
     groups = {
         matter = 1,
-        ui_logic = 1
+        ui_logic = 1,
+        public = 1,
     },
     on_logic_send = function(pos, msg, from_pos)
         if type(msg) ~= "string" then return end

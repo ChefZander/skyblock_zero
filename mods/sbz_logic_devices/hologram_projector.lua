@@ -62,41 +62,43 @@ end
 
 local function process_textures(og_textures)
     local new_textures = {}
-    for k, v in ipairs(og_textures) do
-        if type(v) == "string" or (type(v) == "table" and not v.name) then
-            -- normal texture or texmod
-            new_textures[k] = transform_texture_name(v)
-        elseif type(v) == "table" and v.name then
-            -- now it gets a little tricky
-            -- nah jk
-            v.name = transform_texture_name(v)
-            v.image = nil
-            v.scale = nil
-            v.align_style = nil
-            if v.animation then
-                if v.animation.type == "vertical_frames" then
-                    if libox.type_check(v.animation, {
-                            type = libox.type("string"),
-                            aspect_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            aspect_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            length = function(x) return type(x) == "number" and x > 0.1 end,
-                        }) == false then
+    if type(og_textures) == "table" then
+        for k, v in ipairs(og_textures) do
+            if type(v) == "string" or (type(v) == "table" and not v.name) then
+                -- normal texture or texmod
+                new_textures[k] = transform_texture_name(v)
+            elseif type(v) == "table" and v.name then
+                -- now it gets a little tricky
+                -- nah jk
+                v.name = transform_texture_name(v)
+                v.image = nil
+                v.scale = nil
+                v.align_style = nil
+                if v.animation then
+                    if v.animation.type == "vertical_frames" then
+                        if libox.type_check(v.animation, {
+                                type = libox.type("string"),
+                                aspect_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                aspect_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                length = function(x) return type(x) == "number" and x > 0.1 end,
+                            }) == false then
+                            v.animation = nil
+                        end
+                    elseif v.animation.type == "sheet_2d" then
+                        if libox.type_check(v.animation, {
+                                type = libox.type("string"),
+                                frames_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                frames_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
+                                frame_length = function(x) return type(x) == "number" and x > 0.1 end,
+                            }) == false then
+                            v.animation = nil
+                        end
+                    else
                         v.animation = nil
                     end
-                elseif v.animation.type == "sheet_2d" then
-                    if libox.type_check(v.animation, {
-                            type = libox.type("string"),
-                            frames_w = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            frames_h = function(x) return type(x) == "number" and math.floor(x) == x and x > 1 end,
-                            frame_length = function(x) return type(x) == "number" and x > 0.1 end,
-                        }) == false then
-                        v.animation = nil
-                    end
-                else
-                    v.animation = nil
                 end
+                new_textures[k] = v
             end
-            new_textures[k] = v
         end
     end
     return new_textures
@@ -244,21 +246,19 @@ minetest.register_entity("sbz_logic_devices:hologram", {
             or math.abs(diff.z) > range_max then
             return self.object:remove()
         end
-        --[[
-        if moveresult and #moveresult.collisions ~= 0 then
+        if self.get_collision_info then
             local meta = minetest.get_meta(parent)
             local subscribed = vector.from_string(meta:get_string("subscribed"))
 
             if subscribed then
                 sbz_logic.send(subscribed, {
-                    type = "collision",
+                    type = "collision_info",
                     id = self.id,
                     moveresult = moveresult
                 })
             end
+            self.get_collision_info = false
         end
-        so turns out that yea this is horrible
-        ]]
     end
 })
 
@@ -273,14 +273,10 @@ local function exec_command(pos, cmd, from_pos)
         return
     end
 
-
     local subscribed = vector.from_string(meta:get_string("subscribed"))
-
     local notify = sbz_logic.get_notify(subscribed, pos)
 
     if type(cmd) ~= "table" then return end
-
-
 
     local stuff = projectors[h(pos)]
     if stuff == nil then
@@ -290,7 +286,6 @@ local function exec_command(pos, cmd, from_pos)
         }
         stuff = projectors[h(pos)]
     end
-
 
     -- clean up inactive objects
     for k, v in pairs(stuff.objects) do
@@ -345,9 +340,11 @@ local function exec_command(pos, cmd, from_pos)
             stuff.objects[k] = nil
         end
     elseif cmd.type == "remove" and type(cmd.id) == "string" then
-        if stuff.objects[cmd.id] and stuff.objects[cmd.id].remove then
-            stuff.objects[cmd.id]:remove()
-            table.remove(stuff.objects, cmd.id)
+        if stuff.objects[cmd.id] then
+            if stuff.objects[cmd.id].remove then
+                stuff.objects[cmd.id]:remove()
+            end
+            stuff.objects[cmd.id] = nil
         else
             notify {
                 type = "error",
@@ -413,6 +410,26 @@ local function exec_command(pos, cmd, from_pos)
         if libox.type("string")(cmd.texture_mod) then
             obj:set_texture_mod(transform_texture_name(cmd.texture_mod, true))
         end
+
+        local function type_bone_property(x)
+            return x == nil or libox.type_check(x, {
+                vec = libox.type_vector,
+                interpolation = type_or_nil("number"),
+                absolute = type_or_nil("boolean"),
+            })
+        end
+        if type(cmd.bone_override) == "table" then
+            if libox.type_check(cmd.bone_override, {
+                    bone = libox.type("string"),
+                    override = {
+                        position = type_bone_property,
+                        rotation = type_bone_property,
+                        scale = type_bone_property
+                    }
+                }) then
+                obj:set_bone_override(cmd.bone_override)
+            end
+        end
     elseif cmd.type == "get_object" then -- get the entire ref
         local id = cmd.id
         if type(id) ~= "string" then return end
@@ -421,6 +438,7 @@ local function exec_command(pos, cmd, from_pos)
         local obj = stuff.objects[id]
         notify { -- the exact same format as object detector
             type = "get_object",
+            id = id,
             is_player = false,
             nametag = obj:get_nametag_attributes(),
             pos = obj:get_pos(),
@@ -435,79 +453,13 @@ local function exec_command(pos, cmd, from_pos)
             texture_mod = obj:get_texture_mod(),
             name = obj:get_luaentity().name,
         }
-        --[[
-        -- IF ANYONE WANTS TO REVIVE THIS FEEL FREE!!!
-    elseif cmd.type == "make_texture_for_voxelmodel" then
-        -- i know it feels like it doesnt belong here but it returns a png texmod, should be useful, also async
-        minetest.handle_async(function(cmd)
-            local screen = cmd.screen -- uses XYZ
-            if type(screen) ~= "string" then
-                return nil,
-                    "3D Screen must be in format of <r><g><b><r><g><b>.... where <r>, <g>, <b> are byte representations of them..."
-            end
-            ---@type string[]
-            local image_result = {} -- colorspec2bytes[]
-            -- size is 48x272
-            -- cmd.screen's size should be 16^3
+    elseif cmd.type == "get_collision_info" then
+        local id = cmd.id
+        if type(id) ~= "string" then return end
+        if stuff.objects[id] == nil then return notify { type = "error", msg = "Invalid id in get_object command" } end
+        local obj = stuff.objects[id]
 
-            local function hash3d(x, y, z) -- custom
-                return (x - 1) + (y - 1) * 16 + (z - 1) * 16 * 16
-            end
-
-            local function hash2d(x, y)
-                return (y - 1) * 48 + x
-            end
-
-            local function get(hash)
-                return cmd.screen:sub(hash * 4 - 3, hash * 4)
-            end
-
-            for x = 1, 16 do
-                for y = 1, 16 do
-                    for z = 1, 16 do
-                        local color = get(hash3d(x, y, z))
-                        if #color == 4 and string.sub(color, 4) ~= "\0" then
-                            -- -Y
-                            image_result[hash2d((16 * 2) + (x - 1), (math.abs(16 - (y - 1)) * 16) + z)] = color
-                            -- +Y
-                            image_result[hash2d((16 * 2) + (x - 1), (math.abs(16 - (y - 1)) * 16) - 16 + z)] = color
-
-                            -- -X
-                            image_result[hash2d(math.abs(16 - (z - 1)), math.abs(16 - (x - 1)) * 16 + math.abs(16 - (y - 1)))] =
-                                color
-                            -- +X
-
-                            image_result[hash2d(math.abs(16 - (z - 1)), math.abs(16 - (x - 1)) * 16 + 16 + math.abs(16 - (y - 1)))] =
-                                color
-
-                            -- -Z
-                            image_result[hash2d(16 + math.abs(16 - (x - 1)), math.abs(16 - (z - 1)) * 16 + math.abs(16 - (y - 1)))] =
-                                color
-                        end
-                    end
-                end
-            end
-
-            for i = 1, (16 * 16 * 17 * 3) do
-                image_result[i] = image_result[i] or minetest.colorspec_to_bytes("#00000000")
-            end
-            local png = minetest.encode_png(48, 272, table.concat(image_result), 1)
-            png = minetest.encode_base64(png)
-            return png
-        end, function(png_data, error)
-            if not error then
-                notify {
-                    type = "make_texture_for_voxelmodel",
-                    png_data = png_data
-                }
-            else
-                notify {
-                    type = "error",
-                    msg = error
-                }
-            end
-        end, cmd)
-        --]]
+        obj:get_luaentity().get_collision_info = true
     elseif cmd.type == "particle" then
         -- cant do spawner sorry
         local t = libox.type
