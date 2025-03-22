@@ -246,21 +246,19 @@ minetest.register_entity("sbz_logic_devices:hologram", {
             or math.abs(diff.z) > range_max then
             return self.object:remove()
         end
-        --[[
-        if moveresult and #moveresult.collisions ~= 0 then
+        if self.get_collision_info then
             local meta = minetest.get_meta(parent)
             local subscribed = vector.from_string(meta:get_string("subscribed"))
 
             if subscribed then
                 sbz_logic.send(subscribed, {
-                    type = "collision",
+                    type = "collision_info",
                     id = self.id,
                     moveresult = moveresult
                 })
             end
+            self.get_collision_info = false
         end
-        so turns out that yea this is horrible
-        ]]
     end
 })
 
@@ -275,14 +273,10 @@ local function exec_command(pos, cmd, from_pos)
         return
     end
 
-
     local subscribed = vector.from_string(meta:get_string("subscribed"))
-
     local notify = sbz_logic.get_notify(subscribed, pos)
 
     if type(cmd) ~= "table" then return end
-
-
 
     local stuff = projectors[h(pos)]
     if stuff == nil then
@@ -292,7 +286,6 @@ local function exec_command(pos, cmd, from_pos)
         }
         stuff = projectors[h(pos)]
     end
-
 
     -- clean up inactive objects
     for k, v in pairs(stuff.objects) do
@@ -417,6 +410,26 @@ local function exec_command(pos, cmd, from_pos)
         if libox.type("string")(cmd.texture_mod) then
             obj:set_texture_mod(transform_texture_name(cmd.texture_mod, true))
         end
+
+        local function type_bone_property(x)
+            return x == nil or libox.type_check(x, {
+                vec = libox.type_vector,
+                interpolation = type_or_nil("number"),
+                absolute = type_or_nil("boolean"),
+            })
+        end
+        if type(cmd.bone_override) == "table" then
+            if libox.type_check(cmd.bone_override, {
+                    bone = libox.type("string"),
+                    override = {
+                        position = type_bone_property,
+                        rotation = type_bone_property,
+                        scale = type_bone_property
+                    }
+                }) then
+                obj:set_bone_override(cmd.bone_override)
+            end
+        end
     elseif cmd.type == "get_object" then -- get the entire ref
         local id = cmd.id
         if type(id) ~= "string" then return end
@@ -425,6 +438,7 @@ local function exec_command(pos, cmd, from_pos)
         local obj = stuff.objects[id]
         notify { -- the exact same format as object detector
             type = "get_object",
+            id = id,
             is_player = false,
             nametag = obj:get_nametag_attributes(),
             pos = obj:get_pos(),
@@ -439,6 +453,13 @@ local function exec_command(pos, cmd, from_pos)
             texture_mod = obj:get_texture_mod(),
             name = obj:get_luaentity().name,
         }
+    elseif cmd.type == "get_collision_info" then
+        local id = cmd.id
+        if type(id) ~= "string" then return end
+        if stuff.objects[id] == nil then return notify { type = "error", msg = "Invalid id in get_object command" } end
+        local obj = stuff.objects[id]
+
+        obj:get_luaentity().get_collision_info = true
     elseif cmd.type == "particle" then
         -- cant do spawner sorry
         local t = libox.type

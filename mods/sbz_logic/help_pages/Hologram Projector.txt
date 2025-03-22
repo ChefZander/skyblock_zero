@@ -63,14 +63,24 @@ Removes one object, the id is the id you specified in the <mono>object</mono> co
 
 <big>get_object</big>
 <mono>send_to(links.hologram_projector, { type = "get_object", id = "my_object" })</mono>
-Gets you all the properties that an object detector would, in the same format.
+Gets you all the properties that an object detector would, and sends them in the same format. The only exception is that the "type" key of the response is set to "get_object", and "id" key is set to the id you've supplied
+<big>get_collision_info</big>
+<mono>send_to(links.hologram_projector, { type = "get_collision_info", id = "my_object" })</mono>
+Gets you the next moveresult
+in the format of:
+<mono>{
+    type = "collision_info",
+    id = <id>,
+    moveresult = moveresult
+
+}</mono>
 
 <big>modify_object</big>
 <mono>
 $C1send_to(links.hologram_projector, {
 $C1    type = "modify_object",
 $C1    id = "my_object",
-$C1    -- all the fields below are optional, and can be mixed togheter
+$C1    -- all the fields below are optional, and can be mixed togheter, or can be alone
 $C1    set_properties = {...}, -- object properties, exactly the same as the object command but without the "type", "id", and "pos" fields
 $C1    set_nametag_attributes = {
 $C1        text = "",
@@ -81,9 +91,18 @@ $C1    pos = vector.zero(), -- relative
 $C1    velocity = vector.zero(),
 $C1    rotation = vector.zero(),
 $C1    texture_mod = "^[brighten",
+$C1    bone_override = { -- advanced, animates a model thats capable of animating!
+$C1         bone = "any bone, you can find those in the model file... :/",
+$C1         override = {
+$C1             -- all of these fields are optional
+$C1             position = <bone_property>,
+$C1             rotation = <bone_property>,
+$C1             scale = <bone_property>, -- <bone_property> is { vec = vector, interpolation = 0, absolute = false }, see luanti documentation for set_bone_override
+$C1         }
+$C1    }
 $C1})
 </mono>
-Modifies an object...
+Modifies an object in a way
 
 <big>particle</big>
 Adds a particle...

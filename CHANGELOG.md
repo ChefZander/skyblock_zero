@@ -40,8 +40,8 @@ Release 33
 - Fixed pat.* library
 - Fixed bug with meteorite sounds being able to be heard by anyone
 - Corrected Antimatter Blob quest's misinformation
-
-
+- Added memory controller
+- Made hologram projectors be able to animate models
 
 
 
