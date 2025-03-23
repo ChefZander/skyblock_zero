@@ -235,7 +235,7 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", unifieddyes.def {
     sounds = sbz_api.sounds.tree(),
 })
 
-sbz_api.register_leaves("sbz_bio:colorium_leaves", {
+sbz_api.register_leaves("sbz_bio:colorium_leaves", unifieddyes.def {
     description = "Colorium Leaves",
     groups = {
         matter = 3,
