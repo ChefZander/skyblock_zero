@@ -213,7 +213,7 @@ function sbz_api.register_trunk(name, def)
     minetest.register_node(name, def)
 end
 
-sbz_api.register_trunk("sbz_bio:colorium_tree", {
+sbz_api.register_trunk("sbz_bio:colorium_tree", unifieddyes.def {
     description = "Colorium Tree",
     groups = {
         matter = 3,
