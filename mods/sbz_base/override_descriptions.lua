@@ -1,4 +1,11 @@
 -- adds info for sbz_power and sbz_pipeworks
+
+local pals = {
+    ["unifieddyes_palette_colorfacedir.png"] = true,
+    ["unifieddyes_palette_extended.png"] = true,
+    ["unifieddyes_palette_colorwallmounted.png"] = true
+}
+
 minetest.register_on_mods_loaded(function()
     for k, v in pairs(minetest.registered_items) do
         local og_desc = v.description
@@ -70,6 +77,10 @@ minetest.register_on_mods_loaded(function()
 
         if v.light_source and v.light_source ~= 0 then
             new_desc[#new_desc + 1] = "Light source: " .. v.light_source
+        end
+
+        if pals[v.pallete or ""] then
+            new_desc[#new_desc + 1] = "This node can be colored."
         end
 
         if #new_desc > 1 then
