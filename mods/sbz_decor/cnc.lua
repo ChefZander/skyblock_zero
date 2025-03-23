@@ -7,10 +7,10 @@ local function make_formspec(meta)
 
     local src = inv:get_stack("src", 1)
 
-    inv:set_stack("choices", 1, src:get_name() .. "_slab " .. math.min(src:get_count() * 2, 99))
-    inv:set_stack("choices", 2, src:get_name() .. "_stair " .. math.min(src:get_count(), 99))
-    inv:set_stack("choices", 3, src:get_name() .. "_stair_inner " .. math.min(src:get_count(), 99))
-    inv:set_stack("choices", 4, src:get_name() .. "_stair_outer " .. math.min(src:get_count(), 99))
+    inv:set_stack("choices", 1, src:get_name() .. "_slab " .. math.min(src:get_count() * 2, src:get_stack_max()))
+    inv:set_stack("choices", 2, src:get_name() .. "_stair " .. math.min(src:get_count(), src:get_stack_max()))
+    inv:set_stack("choices", 3, src:get_name() .. "_stair_inner " .. math.min(src:get_count(), src:get_stack_max()))
+    inv:set_stack("choices", 4, src:get_name() .. "_stair_outer " .. math.min(src:get_count(), src:get_stack_max()))
 
     meta:set_string("formspec", [[
         formspec_version[7]

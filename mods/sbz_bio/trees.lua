@@ -225,7 +225,7 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", unifieddyes.def {
         ui_bio = 1
     },
     radius = 3,
-    paramtype2 = "wallmounted",
+    paramtype2 = "colorwallmounted",
     tiles = {
         "colorium_tree_top.png",
         "colorium_tree_top.png",
