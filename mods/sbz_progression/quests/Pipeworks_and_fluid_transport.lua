@@ -27,6 +27,16 @@ return {
     Now you can!
 
     The Automatic Filter-Injector takes stacks of items from nodes, and places them into tubes or other nodes.
+        
+        The Automatic Filter-Injector has two settings:
+            The slot sequence allows you to change the order that items are taken out.
+                Priority: Takes items out in first out order
+                Randomly: Takes items out in a random order
+                Rotation: Takes items out in a round-robin order
+            The match mode sets the behavior when taking out items:
+                Exact match - off: If an item matches the filter, it takes out the whole stack
+                Exact match - on: If an item matches the filter and the stack are higher it takes out the filter count, for example the filter is set to 5 matter, and it is pulling from a stack of 60 matter it will pull out 5 matter until the stack is below 5 or empty
+                Threshold: If an item matches the filter and the stack are higher it takes out items until the stack matches the filter, so I have a filter of 5 matter and a stack of 60 it will pull 55 matter out of the stack.
     ]],
         requires = { "Bear Arms", "Tubes" }
     },
