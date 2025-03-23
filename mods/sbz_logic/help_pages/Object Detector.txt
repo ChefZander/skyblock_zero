@@ -11,9 +11,10 @@ $C1 })
 </mono>
 
 <big>The response:</big>
-See https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md for what the obj:<x> functions represent, or just dump() them and see
+You can search <action name=link url=https://github.com/minetest/minetest/blob/5.9.0/doc/lua_api.md>lua_api.md</action> to figure out what the obj.something functions represent, or you can use dump(msg) to see at least what they behave like
 
-For both:
+The response is sent in a table, with these fields (depending on the object):
+For both entities and players:
 <mono>
 is_player = obj:is_player()
 nametag = obj:get_nametag_attributes()

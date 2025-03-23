@@ -8,7 +8,7 @@ return {
         type = "quest",
         title = "Meteorites",
         text =
-        "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny asteroids that whiz past your core occasionally. These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. It'll probably still take a few tries though.",
+        "By this point you've probably been here for at least an hour. You've almost certainly noticed the funny meteorites that whiz past your core occasionally. These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft Meteorite Radar, which shows you their trajectory and makes them much easier to catch. When there is no meteorite nearby, it will do nothing. It'll probably still take a few tries though. When meteorites explode, they will turn into neutronium and some meteoric matter, all meteoric matter decays after a hour. Neutronium or strange matter do not decay.",
         requires = { "Simple Alloy Furnace", "Emittrium Circuits" }
     },
 
@@ -20,7 +20,7 @@ Soo... i'm guessing you would have a lot of trouble getting to the meteorites by
 Well don't fear, there is the laser now...
 
 To charge the laser, "place it" into a battery. (shift+place to battery)
-It also does some damage to other players.
+It also does some damage to other players if PVP is enabled.
 ]],
         requires = { "Simple Alloy Furnace", "Emittrium Circuits" },
     },

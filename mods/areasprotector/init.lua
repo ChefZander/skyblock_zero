@@ -106,13 +106,15 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 		if string.find(name, "[\\%[%];,$]", 1, false) then
 			minetest.chat_send_player(owner_name,
 				red("You are not allowed to protect that area: ") ..
-				"That name is obviously invalid and also it would be slightly tricky displaying it so like yeah")
+				"That name is obviously invalid.")
 			return
 		end
+
 		owners_area_id[name] = areas:add(name, "Protector block sub-area", pos1, pos2, meta:get_int("area_id"))
 		areas:save()
 		owners[#owners + 1] = fields.add_more_owners
 	end
+
 
 	local duplicate_checks = {}
 	for k, v in ipairs(owners) do
@@ -210,14 +212,13 @@ local function after_dig(pos, oldnode, oldmetadata, digger, sizeword)
 		local id = tonumber(oldmetadata.fields.area_id)
 		if areas.areas[id] and areas:isAreaOwner(id, owner) then
 			areas:remove(id)
-			areas:save()
 		end
 		for k, v in pairs(minetest.deserialize(oldmetadata.fields.owners_area_id) or {}) do
-			if areas.areas[v] then
+			if areas.areas[v] and areas:isAreaOwner(v, areas.areas[v].owner) then
 				areas:remove(v)
-				areas:save()
 			end
 		end
+		areas:save()
 	end
 end
 
@@ -262,11 +263,6 @@ local function make_display_nodebox(radius, height)
 	return t
 end
 
-local nbox = {
-	type = "fixed",
-	fixed = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-}
-
 
 minetest.register_node("areasprotector:protector_large", {
 	description = "Large Protector Block",
@@ -280,8 +276,6 @@ minetest.register_node("areasprotector:protector_large", {
 		"areasprotector_big_side.png"
 	},
 	paramtype = "light",
-	drawtype = "nodebox",
-	node_box = nbox,
 	on_place = function(itemstack, player, pointed_thing)
 		return on_place(itemstack, player, pointed_thing, radius_large, height_large, "large")
 	end,
@@ -306,8 +300,6 @@ minetest.register_node("areasprotector:protector_small", {
 		"areasprotector_small_side.png"
 	},
 	paramtype = "light",
-	drawtype = "nodebox",
-	node_box = nbox,
 	on_place = function(itemstack, player, pointed_thing)
 		return on_place(itemstack, player, pointed_thing, radius_small, height_small, "small")
 	end,

@@ -1,0 +1,95 @@
+-- inspection tool: add button to open unified_inventory's formspec
+    this may no longer be as important and isn't that practical as there are
+    now so many buttons. It would be hard to keep clear which item will be shown.
+    <OgelGames@Discord> SwissalpS: by using player:set_inventory_formspec() unified_inventory
+        binds itself to the 'i'-key
+        https://github.com/minetest-mods/unified_inventory/blob/d6688872c84417d2f61d6f5e607aea39d78920aa/internal.lua#L302-L306
+    <OgelGames@Discord> I think you could open it by sending the formspec from
+        unified_inventory.get_formspec(player, page)
+    maybe we can use this on group buttons
+
+-- inspection tool:
+    stop passing context in hidden fields, use runtime cache to keep
+        context -> enables to keep all recipes in cycle and possibly reduce look-ups.
+    crafting info on craftable entities like bikes, trains
+    figure out how to make the itemstring selectable for copy -> do that with new formspec version
+    add mixing method
+    add info for plants telling when they are ripe -> allowing user to click on the ripe
+        stage and see possible seed drop -> showing info about planting.
+        don't forget wine:blue_agave when doing that
+
+-- known incompat replacer ------------------------
+-- doors in general (low priority)
+ (lowest priority)
+-- elphabet: add human readable letter to shortstring mainly for history
+-- letters: similar to elphabet
+
+------ replacer fixes --------
+
+try to add a formspec for player to be able to choose from multiple valid drops
+    when node does not drop itself.
+
+-- can't be set --> no recipe
+homedecor:glass_table_large_square
+homedecor:dvd_cd_cabinet
+homedecor:chains
+homedecor:wood_table_large_square
+scifi_nodes:junk
+scifi_nodes:engine
+scifi_nodes:doomengine
+scifi_nodes:crate
+scifi_nodes:capsule2
+scifi_nodes:capsule3
+scifi_nodes:builder
+
+-- can be set but can't be placed -- need alias for inspect tool too
+-- these seem to work now, maybe placing them with place_all isn't good simulation?
+homedecor:desk_lamp_7 -> 14
+homedecor:ceiling_lantern_6 -> 14
+homedecor:ceiling_lamp_8|on -> 14
+homedecor:glowlight_half_8|on -> 14
+homedecor:glowlight_quarter_0|on -> 14
+homedecor:glowlight_small_cube_1|on -> 14
+homedecor:ground_lantern_0-13|on homedecor:ground_lantern_14
+homedecor:hanging_lantern_10|on -> 14
+homedecor:lattice_lantern_large_1|on -> 14
+homedecor:lattice_lantern_small_1
+homedecor:plasma_ball_off -> homedecor:plasma_ball_on -- meh
+homedecor:plasma_lamp_8|on -> 14
+homedecor:standing_lamp_8
+homedecor:table_lamp_12
+
+------- need 'cable plate override' ---------
+homedecor:speaker_open -> homedecor:speaker (cable plate overrides) -- not fixing as user can have both in inventory
+
+---------- known incompat inspect -----------
+
+---- missing icons ----
+cottages:wool;cottages:wool (used by homedecor:curtain_open) -- meh, there is working recipe
+(homedecor:stained_glass) -- cottages:glass_pane_side
+
+-- fix in scifi_nodes
+flowers:dandelion --> dandelion_white and dandelion_yellow would exist (*scifi_nodes:plant10 also 9)
+
+-- fix in homedecor_kitchen
+homedecor:kitchen_cabinet --> homedecor:kitchen_cabinet_colorable *
+
+-- fix these in bridger mod
+bridger:corrugated_steelgreen --> bridger:corrugated_steel_green *
+bridger:corrugated_steelwhite
+bridger:corrugated_steelred
+bridger:corrugated_steelsteel
+bridger:corrugated_steelyellow
+
+-- christmas presents say they don't drop anything
+
+-- will not implement --
+    add helper so when setting replacer to an itemframe that contains something,
+        set to the contents --> but which param values? This isn't a good idea.
+    add biofuel hints also general 'fuel' craft types -> if biofuel doesn't expose a list
+        this is also doomed (as I don't want to maintain lists)
+    add digging method for ores --> maybe not. Doing this dynamically seems overkill to
+        check every registered item to see if it drops the requested item
+    add info for seeds and saplings about planting -> this too seems like a task that will
+        include mainting a list of all plant types of any mod that adds them. Not my intention.
+

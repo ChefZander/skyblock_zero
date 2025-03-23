@@ -269,20 +269,26 @@ function api.run_sandbox(ID, value_passed)
         return false, "The coroutine is dead, nothing to do."
     end
 
-    local old_hook = { debug.gethook() }
 
     local ok, errmsg_or_value
-
-    local pcall_ok, pcall_errmsg = pcall(function()
-        debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
-        getmetatable("").__index = sandbox.env.string
-        ok, errmsg_or_value = coroutine.resume(thread, value_passed)
+    local pcall_ok, pcall_errmsg
+    -- "nested pcall just in case" i knowww its bad and it sounds bad but yeah
+    local no_strange_bug_happened = pcall(function()
+        pcall_ok, pcall_errmsg = pcall(function()
+            debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
+            getmetatable("").__index = sandbox.env.string
+            ok, errmsg_or_value = coroutine.resume(thread, value_passed)
+            debug.sethook()
+        end)
+        debug.sethook()
+        getmetatable("").__index = string
     end)
-    -- in rare cases this is actually nessesary,
-    -- in all other cases coroutine.resume works perfectly fine to catch the error
-    -- actually i dont really know if its that nessesary...
-    debug.sethook(unpack(old_hook))
+    debug.sethook()
     getmetatable("").__index = string
+
+    if not no_strange_bug_happened then
+        return false, "Strange bug happened, but yes - the sandbox timed out."
+    end
 
     local size_check = api.size_check(sandbox.env, sandbox.size_limit, thread)
     if not size_check then return false, "Out of memory!" end

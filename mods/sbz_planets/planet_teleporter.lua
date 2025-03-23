@@ -1,3 +1,5 @@
+local mg_limit = tonumber(core.settings:get("mapgen_limit")) or 31007
+local mg_vector = vector.new(mg_limit, mg_limit, mg_limit)
 core.register_node("sbz_planets:planet_teleporter", {
     info_extra = "Teleports you to a planet. Insert a warp crystal to get teleported.",
     description = "Planet Teleporter",
@@ -15,6 +17,12 @@ core.register_node("sbz_planets:planet_teleporter", {
         local data = core.deserialize(content.data)
         local pos_to_tp_to = (vector.subtract(content.max, content.min) / 2) + content.min
         pos_to_tp_to.y = content.max.y + 60
+        if not vector.in_area(pos_to_tp_to, -mg_vector, mg_vector) then
+            core.chat_send_player(clicker_name,
+                "Oops, the crystal broke, please insert another one. [What actually happened was that the planet teleporter tried to teleport you out of this world. Hello if you are seeing this - you must be very lucky.]")
+            stack:take_item(1)
+            return stack
+        end
         if sbz_api.planets.has_rings(data[1], data[2]) then
             pos_to_tp_to.y = pos_to_tp_to.y - (((content.max.y - content.min.y) / 4) + sbz_api.planets.ring_size + 10)
         end

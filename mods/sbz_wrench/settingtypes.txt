@@ -1,0 +1,8 @@
+# Allows the wrench to be crafted if either the 'technic' or 'default' mod is installed.
+wrench.enable_crafting (Enable crafting recipe) bool true
+
+# The number of times the wrench can be used before breaking. Default 50. Set to 0 for infinite uses.
+wrench.tool_uses (Wrench uses) int 50
+
+# Enables compression of item metadata when picking up nodes. Significantly decreases the size of item metadata, at the cost of not being human-readable.
+wrench.compress_data (Compress item metadata) bool true

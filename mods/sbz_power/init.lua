@@ -29,7 +29,26 @@ function sbz_api.add_tube_support(def)
                     local inv = meta:get_inventory()
 
                     if inv:get_list(def.input_inv or "") then
-                        stack = stack:peek_item(1)
+                        stack = ItemStack(stack)
+                        local original_count = stack:get_count()
+                        if not inv:room_for_item(def.input_inv, stack) then
+                            -- local t0 = core.get_us_time()
+                            stack = stack:peek_item(1)
+                            if not inv:room_for_item(def.input_inv, stack) then return false end
+                            -- IM TOO DUMB FOR BINARY SEARCH
+                            --                            local t0 = core.get_us_time()
+                            for i = original_count, 1, -1 do
+                                stack:set_count(i)
+                                if inv:room_for_item(def.input_inv, stack) then
+                                    --                                    core.debug("Can_insert for sbz_api.add_pipeworks_support took " ..
+                                    --                                        core.get_us_time() - t0)
+                                    return true, original_count - i
+                                end
+                            end
+                            return false
+                        else
+                            return true
+                        end
                         return inv:room_for_item(def.input_inv, stack)
                     end
                     return false

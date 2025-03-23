@@ -274,12 +274,22 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         item = fromtube.remove_items(frompos, fromnode, stack, dir, count, frominvname, spos)
                     else
                         item = stack:take_item(count)
+                        local vel = vector.copy(todir)
+                        vel.speed = 1
                         if todef.tube and todef.tube.can_go then
-                            if not todef.tube.can_go(topos, tonode, { x = 0, y = 0, z = 0, speed = 0 }, item, {}) then return false end
+                            if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
                         end
                         if todef.tube and todef.tube.can_insert then
-                            if not todef.tube.can_insert(topos, tonode, item, { x = 0, y = 0, z = 0, speed = 0 }) then return false end
+                            local can_insert, excess_count = todef.tube.can_insert(topos, tonode, item, vel)
+                            if not can_insert then return false end
+                            if excess_count then
+                                item:set_count(item:get_count() - excess_count)
+                                stack:set_count(stack:get_count() + excess_count)
+                                if stack:get_name() == "" then stack:set_name(item:get_name()) end
+                            end
                         end
+
+
                         frominv:set_stack(frominvname, spos, stack)
                         if fromdef.on_metadata_inventory_take then
                             fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
@@ -287,8 +297,6 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     end
                     local pos = vector.add(frompos, vector.multiply(dir, 1.4))
                     local start_pos = vector.add(frompos, dir)
-
-
 
                     pipeworks.tube_inject_item(pos, start_pos, dir, item,
                         fakeplayer:get_player_name())

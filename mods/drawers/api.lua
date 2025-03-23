@@ -321,9 +321,9 @@ function drawers.register_drawer(name, def)
 		def.after_place_node = pipeworks.after_place
 		def.after_dig_node = pipeworks.after_dig
 		def.on_movenode = function(_, to_pos)
-			--			minetest.after(1, function()
-			drawers.spawn_visuals(to_pos)
-			--			end)
+			minetest.after(0.1, function()
+				drawers.spawn_visuals(to_pos)
+			end)
 		end
 	end
 

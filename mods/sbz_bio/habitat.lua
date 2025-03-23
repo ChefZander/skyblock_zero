@@ -13,6 +13,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     local size = 0
     local storage = 0
     local demand = 0
+    local power_generated = 0
     local plants = {}
     local co2_sources = {}
 
@@ -26,9 +27,13 @@ function sbz_api.assemble_habitat(start_pos, seen)
             local d = minetest.get_item_group(name, "needs_co2")
             local under = vector.subtract(pos, vector.new(0, 1, 0))
             local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "invalid" }).name, "soil")
-            d = math.ceil(d * (1.5 * soil))
+            d = math.ceil(d * math.max(1, soil))
             table.insert(plants, { pos, node, d })
             demand = demand + d
+            local def = core.registered_nodes[name]
+            if def.power_per_co2 then
+                power_generated = power_generated + math.floor(def.power_per_co2 * d)
+            end
         elseif minetest.get_item_group(name, "co2_source") > 0 then
             table.insert(co2_sources, { pos, node })
         end
@@ -73,7 +78,15 @@ function sbz_api.assemble_habitat(start_pos, seen)
     end
     if (size - 1) == 0 then return end
 
-    return { plants = plants, co2_sources = co2_sources, size = size - 1, demand = demand, storage = storage }
+    return {
+        plants = plants,
+        co2_sources = co2_sources,
+        size = size - 1,
+        demand = demand,
+        storage = storage,
+        power_generated =
+            power_generated
+    }
 end
 
 function sbz_api.habitat_tick(start_pos, meta, stage)
@@ -116,13 +129,13 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
 
     co2 = co2 + meta:get_int("atmospheric_co2")
     for _, v in ipairs(habitat.plants) do
-        local pos, node, d = unpack(v)
+        local pos, node, demand = unpack(v)
         local under = vector.subtract(pos, vector.new(0, 1, 0))
-        local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "invalid" }).name, "soil")
+        local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "" }).name, "soil")
 
         if (stage == PcgRandom(hash(pos)):next(0, 9)) then
-            if co2 - d >= 0 then
-                co2 = co2 - d
+            if co2 - demand >= 0 then
+                co2 = co2 - demand
                 local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end
                 if growth_tick(pos, node) then touched_nodes[hash(pos)] = time end
             else
@@ -138,8 +151,11 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
         "CO2 supply: ", math.max(co2_supply, co2_supply_temp),
         "\nCO2 demand: ", habitat.demand,
         "\nHabitat CO2: ", co2 .. "/" .. habitat.storage,
-        "\nHabitat size: ", habitat.size
+        "\nHabitat size: ", habitat.size,
+        habitat.power_generated > 0 and
+        ("\nPower Generated: " .. sbz_api.format_power(habitat.power_generated)) or ""
     }))
+    return habitat.power_generated
 end
 
 sbz_api.register_machine("sbz_bio:habitat_regulator", {
@@ -155,32 +171,35 @@ sbz_api.register_machine("sbz_bio:habitat_regulator", {
             meta:set_string("infotext", "Not enough power, needs: 20")
         else
             local count = meta:get_int("count") + 1
-            sbz_api.habitat_tick(pos, meta, count % 10)
+            local power_generated = sbz_api.habitat_tick(pos, meta, count % 10) or 0
             if count >= 10 then
                 meta:set_int("count", 0)
             else
                 meta:set_int("count", count)
             end
+            return 20 - power_generated
         end
         return 20
     end
 })
 
 core.register_node("sbz_bio:co2_compactor", {
-    description = "Co2 Compactor",
+    description = "CO2 Compactor",
     info_extra = "Stores 30 co2. Habitat regulator doesn't consider it a wall, similar to how airlock works",
     groups = { matter = 2, explody = 8 },
     walkable = false,
-    drawtype = "glasslike",
+    drawtype = "glasslike", -- this is so that when you are inside the node, it looks OK
     store_co2 = 30,
     tiles = { "co2_compactor.png" },
+    paramtype = "light"
 })
+
 core.register_craft {
     output = "sbz_bio:co2_compactor",
     recipe = {
-        { "sbz_bio:stemfruit",         "sbz_resources:matter_blob", "sbz_bio:stemfruit" },
+        { "sbz_bio:cleargrass",        "sbz_resources:matter_blob", "sbz_bio:razorgrass" },
         { "sbz_resources:matter_blob", "sbz_bio:airlock",           "sbz_resources:matter_blob" },
-        { "sbz_bio:stemfruit",         "sbz_resources:matter_blob", "sbz_bio:stemfruit" }
+        { "sbz_bio:cleargrass",        "sbz_resources:matter_blob", "sbz_bio:razorgrass" }
     }
 }
 

@@ -60,6 +60,8 @@ local explosion_particle_def = {
     collisiondetection = true,
 }
 
+local rod_duration = 3 * 60 * 60
+
 sbz_api.register_stateful_generator("sbz_chem:nuclear_reactor", {
     description = "Nuclear Reactor",
     tiles = {
@@ -114,6 +116,9 @@ listring[]
     action = function(pos, _, meta, supply, demand)
         local inv = meta:get_inventory()
         local lqinv = core.deserialize(meta:get_string("liquid_inv"))
+        if not lqinv then -- the reactor already exploded, it seems like?
+            return 0
+        end
 
         local rodtimer = meta:get_int("rod_timer")
 
@@ -143,8 +148,8 @@ listring[]
                     "Not enough water near the reactor, either put more water near your reactor (needs a lot around the reactor) or don't use plutonium fuel rods.")
                 return 0
             end
-            meta:set_string("rod_tier", tier)
-            meta:set_string("rod_timer", 3 * 60 * 60) -- 6 fuel rods will last 3 hours
+            meta:set_int("rod_tier", tier)
+            meta:set_int("rod_timer", rod_duration) -- 6 fuel rods will last 3 hours
         end
         -- alright, from that if statement, while it doesn't look obvious at first, we are sure we have a rod active in some way
         rodtimer = meta:get_int("rod_timer")
@@ -160,10 +165,11 @@ listring[]
             end
             -- explode
             local owner = minetest.get_meta(pos):get_string("owner")
-            minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }) -- we gotta get better sfx
+            minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
             local strength = 1
             if tier == 3 then strength = 2 end
             sbz_api.explode(pos, 20 * strength, 0.9 * strength, false, owner)
+            core.remove_node(pos)
             explosion_particle_def.pos = pos
             explosion_particle_def.attract.origin = pos
             minetest.add_particlespawner(explosion_particle_def)
@@ -180,8 +186,9 @@ listring[]
             if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
                 -- i know... duplicating explosion code... cringe bad yeah yeah
                 local owner = minetest.get_meta(pos):get_string("owner")
-                minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }) -- we gotta get better sfx
+                minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
                 sbz_api.explode(pos, 20 * 2, 0.9 * 2, false, owner)
+                core.remove_node(pos)
                 explosion_particle_def.pos = pos
                 explosion_particle_def.attract.origin = pos
                 minetest.add_particlespawner(explosion_particle_def)
@@ -205,7 +212,7 @@ listring[]
 
         meta:set_int("rod_timer", rodtimer - 1)
         meta:set_string("infotext",
-            "Working, used: " .. math.floor((100 - (rodtimer / (3 * 60 * 60) * 100)) / 100) * 100 .. "%")
+            string.format("Working, used: %.3f %%", (100 - (rodtimer / rod_duration) * 100)))
         return tier2power[tier]
     end,
 }, {

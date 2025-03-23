@@ -254,7 +254,7 @@ core.register_node("sbz_planets:colorium_mapgen_sapling", {
 })
 
 --[[
-    THE FOLLOWING 2 FUNCTIONS and the moves string ARE FROM STELLUA
+    THE FOLLOWING 2 FUNCTIONS and the moves string ARE FROM STELLUA - though heavily modified
     https://github.com/theidealist101/stellua/blob/main/mods/stl_core/trees.lua#L4
     https://github.com/theidealist101/stellua/blob/main/mods/stl_core/trees.lua#L15
 
@@ -283,23 +283,39 @@ Anything else besides those functions is licensed normally.
 local MOVES = "FfffTTTABCDabcd++--&&^^//**"
 
 --Create random axiom recursively
-local max_depth = 4
-local function make_axiom(rand, depth)
+local axioms = 0
+
+local function make_axiom_internal(rand, depth)
+    axioms = axioms + 1
+    if axioms >= 10 then
+        return ""
+    end
+    if depth >= 3 then return "" end
     depth = depth or 0
-    if depth > max_depth then return "" end
     local out = {}
     for _ = 1, rand:next(4, 8) do
-        local char = rand:next(-2, string.len(MOVES))
+        local char = rand:next(-1, string.len(MOVES))
         if char <= 0 then
-            out[#out + 1] = "[" .. make_axiom(rand, depth + 1) .. "]"
+            out[#out + 1] = "[" .. make_axiom_internal(rand, depth + 1) .. "]"
         else
             out[#out + 1] = string.sub(MOVES, char, char)
         end
     end
+    if axioms < 1 then
+        out[#out + 1] = make_axiom_internal(rand, 0)
+    end
     return table.concat(out)
 end
 
+local function make_axiom(rand)
+    axioms = 0
+    local result = make_axiom_internal(rand, 0)
+    axioms = 0
+    return result
+end
+
 --Generate random L-system definition
+local random_enough = 100000
 local function make_treedef(rand)
     return {
         axiom = make_axiom(rand),
@@ -310,17 +326,21 @@ local function make_treedef(rand)
         trunk = "sbz_bio:colorium_tree",
         leaves = "sbz_bio:colorium_leaves",
         angle = rand:next(10, 50),
-        iterations = rand:next(1, 6),
+        -- map iterations to 3 to 7, with 3 being the most likely
+        iterations = math.round(3 + (4 * ((rand:next(0, random_enough) / random_enough) ^ 1.4))),
         random_level = rand:next(0, 3),
         trunk_type = ({ "single", "single", "single", "double", "crossed" })[rand:next(1, 5)],
         thin_branches = true,
         fruit_chance = 0,
         seed = rand:next(),
-        tree_core = "sbz_bio:colorium_tree_core"
+        tree_core = "sbz_bio:colorium_tree_core",
+        max_size = 4000,
     }
 end
 
 --[[ things are licensed normally now... ]]
+sbz_api.make_treedef = make_treedef
+sbz_api.make_axiom = make_axiom
 
 core.register_abm {
     label = "Colorium mapgen sapling",
@@ -337,7 +357,7 @@ core.register_abm {
         local center = (vector.subtract(planet.max, planet.min) / 2) + planet.min
         local angle = vector.dir_to_rotation(vector.normalize(vector.subtract(center, pos)))
         core.remove_node(pos)
-        local dna = make_treedef(PcgRandom(math.random(-10000, 10000)))
+        local dna = make_treedef(PcgRandom(math.floor(pos.x) + math.ceil(pos.y) + math.round(pos.z)))
         sbz_api.spawn_tree(pos, dna, "", angle)
     end
 }

@@ -7,7 +7,8 @@ minetest.register_tool("sbz_resources:laser_weapon", {
     description = "Laser",
     info_extra = "Do you want to get all the meteorites you see, without bridging to them? This is the perfect weapon",
     inventory_image = "laser_pointer.png",
-    groups = { disable_repair = 1 },
+    groups = { disable_repair = 1, power_tool = 1 },
+    wear_represents = "power",
     on_use = function(stack, player, original_pointed)
         if stack:get_wear() < (65535) then
             stack:set_wear(math.min(65535, stack:get_wear() + (65535 / max_wear)))
@@ -64,6 +65,9 @@ minetest.register_tool("sbz_resources:laser_weapon", {
         return stack
     end,
     on_place = sbz_api.on_place_recharge((max_wear / 65535) * power_per_1_use),
+    powertool_charge = sbz_api.powertool_charge((max_wear / 65535) * power_per_1_use),
+    charge_per_use = power_per_1_use,
+    power_per_1_use = power_per_1_use,
     wield_scale = { x = 1, y = 1, z = 2.5 },
     wield_image = "laser_wield.png",
     wear_color = { color_stops = { [0] = "lime" } },

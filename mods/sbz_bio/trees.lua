@@ -72,9 +72,9 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
                 unlock_achievement(owner, "Colorium Trees")
                 local dna = minetest.deserialize(meta:get_string("dna")) or
                     core.registered_items[sapling_name].dna
-                if not meta:get_int("immutable") == 1 then
-                    sbz_api.mutate_dna(dna, nil, 20)
-                end
+                --if not meta:get_int("immutable") == 1 then
+                sbz_api.mutate_dna(dna, nil, 10)
+                --end
                 minetest.remove_node(pos)
                 sbz_api.spawn_tree(pos, dna, owner)
             end
@@ -213,19 +213,19 @@ function sbz_api.register_trunk(name, def)
     minetest.register_node(name, def)
 end
 
-sbz_api.register_trunk("sbz_bio:colorium_tree", {
+sbz_api.register_trunk("sbz_bio:colorium_tree", unifieddyes.def {
     description = "Colorium Tree",
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,
-        burn = 10,
+        burn = 4,
         transparent = 1,
         explody = 10,
         tree = 1,
         ui_bio = 1
     },
     radius = 3,
-    paramtype2 = "wallmounted",
+    paramtype2 = "colorwallmounted",
     tiles = {
         "colorium_tree_top.png",
         "colorium_tree_top.png",
@@ -235,12 +235,12 @@ sbz_api.register_trunk("sbz_bio:colorium_tree", {
     sounds = sbz_api.sounds.tree(),
 })
 
-sbz_api.register_leaves("sbz_bio:colorium_leaves", {
+sbz_api.register_leaves("sbz_bio:colorium_leaves", unifieddyes.def {
     description = "Colorium Leaves",
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,
-        burn = 3,
+        burn = 2,
         habitat_conducts = 1,
         transparent = 1,
         explody = 10,
@@ -309,11 +309,53 @@ sbz_api.register_tree("sbz_bio:colorium_sapling", {
         rules_c = "+",
         rules_d = "",
         angle = 25,
-        max_size = 30 ^ 3, -- dont know if this is a good idea
+        max_size = 4000,
         tree_core = "sbz_bio:colorium_tree_core"
     },
+})
+sbz_api.register_tree("sbz_bio:giant_colorium_sapling", {
+    description = "Giant Colorium Sapling",
+    paramtype = "light",
+    drawtype = "plantlike",
+    tiles = {
+        "giant_colorium_sapling.png"
+    },
+    inventory_image = "giant_colorium_sapling.png",
+    use_texture_alpha = "clip",
+    walkable = false,
+    climbable = true,
+    move_resistance = 1,
+    floodable = true,
+    tree = "sbz_bio:colorium_tree",
+    leaves = "sbz_bio:colorium_leaves",
+    core = "sbz_bio:colorium_tree_core",
+    dna = {
+        axiom = "FFFFFFFAFFFFFFFFA",
+        trunk = "sbz_bio:colorium_tree",
+        leaves = "sbz_bio:colorium_leaves",
+        thin_branches = true,
+        random_level = 0,
+        rules_a = "[&[+FFFFFFFFFFFFFA-/FFFFFFFFFFFA*]^b]", -- makes branches
+        rules_b = "[A+A&A^A/A]A",                          -- branch bomb
+        rules_c = "*F",
+        rules_d = "FFFFF",
+        iterations = 7,
+        angle = 50,
+        max_size = 10000,
+        tree_core = "sbz_bio:colorium_tree",
+        random = true,
+    },
+})
+
+core.register_craft {
+    output = "sbz_bio:giant_colorium_sapling",
+    recipe = {
+        { "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", },
+        { "sbz_resources:phlogiston_blob", "sbz_bio:colorium_sapling",      "sbz_resources:phlogiston_blob", },
+        { "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", "sbz_resources:phlogiston_blob", },
+    }
 }
-)
+
 
 local vowels = "aeiyou"                        -- 6
 local everything_else = "bcdfghjklmnpqrstvwxz" -- 20
@@ -345,7 +387,7 @@ core.register_node("sbz_bio:colorium_tree_core", {
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,
-        burn = 10,
+        burn = 40,
         transparent = 1,
         explody = 10,
         tree = 1,

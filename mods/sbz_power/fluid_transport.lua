@@ -216,11 +216,11 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
                 return 0
             end
 
+            meta:set_string("infotext", "Running")
             if minetest.registered_nodes[fromnode].on_liquid_inv_update then
                 minetest.registered_nodes[fromnode].on_liquid_inv_update(
                     frompos,
                     minetest.deserialize(minetest.get_meta(frompos):get_string("liquid_inv")))
-                meta:set_string("infotext", "Running")
             end
             return pump_consumbtion
         end

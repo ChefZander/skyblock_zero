@@ -1,0 +1,50 @@
+# Replace / place up to this many nodes when using modes other than single.
+# Depending on server hardware and amount of users, this value needs adapting.
+# On singleplayer you can mostly use a higher value.
+# The default is 3168
+replacer.max_nodes (Maximum nodes to replace with one click) int 3168
+
+# Some nodes take a long time to be placed. This value limits the time
+# in seconds in which the nodes are placed.
+replacer.max_time (Time limit when putting nodes) float 1.0
+
+# Radius limit factor when more possible positions are found than either max_nodes or charge
+# Set to 0 or less for behaviour of before version 3.3
+replacer.radius_factor (A factor to adjust size limit) float 0.4
+
+# If you don't want to use the minor modes at all, set to true
+replacer.disable_minor_modes (Disable using minor modes) bool false
+
+# You can make history available to users with this priv. By default it is set to creative
+# as non-creative users can make several replacers.
+replacer.history_priv (Priv needed to allow using history) string creative
+
+# When set, does not save history over sessions. Reason might be old MT version.
+replacer.history_disable_persistency (Disable saving history) bool false
+
+# How frequently history is saved to player-meta. Only users with the priv are affected.
+replacer.history_save_interval (Interval in minutes at which history is saved) int 7
+
+# When set, changes the replacer's major and minor modes when picking an item from history.
+# The modes are stored either way.
+replacer.history_include_mode (Should picking from history also set mode) bool false
+
+# Limit history length. Duplicates are removed so there isn't much need for long histories.
+replacer.history_max (Maximum amount of history items) int 7 2 55555
+
+# You may choose to hide basic recipe but then make sure to enable the technic direct one
+replacer.hide_recipe_basic (Hide basic recipe) bool false
+
+# Hide the upgrade recipe. Only available if technic is installed.
+replacer.hide_recipe_technic_upgrade (Hide upgrade recipe) bool false
+
+# Hide the direct upgrade recipe. Only available if technic is installed.
+replacer.hide_recipe_technic_direct (Hide direct recipe) bool true
+
+# Enable technic replacer recipe without technic mod installed. You may want to
+# override the recipe to match your server type and be more expensive.
+replacer.enable_recipe_technic_without_technic (Enable technic replacer without [technic]) bool false
+
+# Enable developer mode
+replacer.dev_mode (Enable developer mode) bool false
+

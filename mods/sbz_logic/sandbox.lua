@@ -14,6 +14,11 @@ logic.main_limit, logic.editor_limit, logic.mem_size, logic.combined_limit = tim
     max_us_per_second
 logic.max_ram = max_ram
 
+-- ID to pos and meta
+logic.id2pos = {
+    -- ["ID1"] = { meta = core.get_meta(pos), pos = pos },
+}
+
 -- from mesecons - https://github.com/minetest-mods/mesecons/blob/master/mesecons_luacontroller/init.lua - heavily edited
 local function make_safe(x)
     local function is_allowed(_x)
@@ -120,6 +125,7 @@ function logic.initialize_env(meta, env, pos)
             v.z = v.z - pos.z
         end
     end
+    env.pos = vector.copy(pos)
 end
 
 function logic.save_disks_and_mem(meta, env)
@@ -149,6 +155,7 @@ function logic.save_disks_and_mem(meta, env)
                 local function toint(x)
                     if x then return 1 else return 0 end
                 end
+
                 stack_meta:set_string('data', serialized_data)
                 stack_meta:set_int("override_code", toint(target_disk.punches_code))
                 stack_meta:set_int("override_editor", toint(target_disk.punches_editor))
@@ -174,7 +181,8 @@ function logic.on_turn_off(pos)
     meta:set_int("waiting", 0)
     local ID = meta:get_string("ID")
     active_sandboxes[ID] = nil
-    logic.send_editor_event(pos, { type = "off" })
+    logic.id2pos[ID] = nil
+    logic.send_editor_event(pos, meta, { type = "off" })
 end
 
 function logic.turn_off(pos)
@@ -193,7 +201,7 @@ function logic.can_run(pos, meta, editor)
             return true
         else
             active_sandboxes[meta:get_string("ID")] = nil
-            logic.send_editor_event(pos, { type = "off" })
+            logic.send_editor_event(pos, meta, { type = "off" })
             return true
         end
     end
@@ -215,11 +223,11 @@ logic.post_runs = {
                 return true
             end,
         },
-        f = function(pos, response)
+        f = function(pos, response, ID)
             local meta = M(pos)
-            if meta:get_int("waiting") == 0 then -- incase something REALLY REALLY STRANGE happens
+            if meta:get_int("waiting") == 0 then -- only one wait at a time
                 meta:set_int("waiting", 1)
-                sbz_api.queue:add_action(pos, "logic_wait", {}, response.time)
+                sbz_api.queue:add_action(pos, "logic_wait", { ID }, response.time)
             end
         end
     },
@@ -229,8 +237,7 @@ logic.post_runs = {
             from = libox.type("table"),
             to = libox.type("table"),
             filters = libox.type("table"),
-            inv_list_inputs = function(x) return x == nil or type(x) == "string" end,
-            inv_list_outputs = function(x) return x == nil or type(x) == "string" end,
+            direction = function(x) return x == nil or libox.type_vector(x) end,
         },
         f = transport_items,
     }
@@ -240,7 +247,7 @@ function logic.is_on(pos)
     return not libox_coroutine.is_sandbox_dead(M(pos):get_string("ID"))
 end
 
-function logic.post_run(pos, response)
+function logic.post_run(pos, response, ID)
     if type(response) == "string" then
         response = {
             type = response
@@ -259,7 +266,7 @@ function logic.post_run(pos, response)
         typedef.type = libox.type("string")
         local ok, errmsg = libox.type_check(response, typedef)
         if ok then
-            post_run.f(pos, response)
+            post_run.f(pos, response, ID)
         end
     end
 end
@@ -269,6 +276,7 @@ logic.non_trigger_events = {
     ["wait"] = true,
     ["tick"] = true,
     ["subtick"] = true,
+    ["error"] = true,
 }
 
 function logic.receives_events(pos, event)
@@ -281,19 +289,29 @@ function logic.receives_events(pos, event)
     return true
 end
 
+local BYTE_A, BYTE_Z = string.byte("A"), string.byte("Z")
+local function generate_id()
+    local out = {}
+    for _ = 1, 20 do                                             -- 1 in krillion chance that it somehow collides
+        out[#out + 1] = string.char(math.random(BYTE_A, BYTE_Z)) -- [A-Z]
+    end
+    return table.concat(out)
+end
+
 function logic.turn_on(pos)
     local meta = M(pos)
     if not logic.can_run(pos, meta) then
         return false
     end
-    meta:set_string("error", "")
 
-    local mem = minetest.deserialize(meta:get_string("mem"))
+    meta:set_string("error", "")
     meta:mark_as_private("code")
-    local id = libox_coroutine.create_sandbox {
-        ID = vector.to_string(pos),
+
+    local id = generate_id()
+    id = libox_coroutine.create_sandbox {
+        ID = id,
         code = meta:get_string("code"),
-        env = logic.get_env(pos, meta, mem),
+        env = logic.get_env(pos, meta, id),
         time_limit = time_limit,
         size_limit = max_ram,
     }
@@ -304,25 +322,25 @@ function logic.turn_on(pos)
     if not ok then
         return false
     end
-    logic.send_editor_event(pos, { type = "on" })
+    logic.send_editor_event(pos, meta, { type = "on" })
     return id
 end
 
 function logic.send_event_to_sandbox(pos, event)
     local t0 = minetest.get_us_time()
 
+    local meta = M(pos)
     if not logic.receives_events(pos, event) then
         return false
     end
 
-    local meta = M(pos)
     local id = meta:get_string("ID")
     if id == nil or libox_coroutine.is_sandbox_dead(id) then
         id = logic.turn_on(pos)
         if not id then return false end
         meta:set_string("ID", id)
     end
-
+    logic.id2pos[id] = { pos = pos, meta = meta }
     -- set mem
     local env = active_sandboxes[id].env
     logic.initialize_env(meta, env, pos)
@@ -341,22 +359,18 @@ function logic.send_event_to_sandbox(pos, event)
         return false
     else
         local value = errmsg
-        logic.post_run(pos, value)
+        logic.post_run(pos, value, id)
         -- send back to the editor
         if type(event) ~= "gui" then
-            logic.send_editor_event(pos, {
-                type = "ran",
-            })
+            logic.send_editor_event(pos, meta, { type = "ran" })
         end
         return true
     end
 end
 
 -- editor is a different type of sandbox for simplicity
-function logic.send_editor_event(pos, event)
+function logic.send_editor_event(pos, meta, event)
     local t0 = minetest.get_us_time()
-
-    local meta = M(pos)
 
     if not logic.can_run(pos, meta, true) then
         return false
@@ -393,7 +407,7 @@ function logic.on_receive_fields(pos, formname, fields, sender)
         clicker = sender:get_player_name(),
         type = "gui",
     }
-    logic.send_editor_event(pos, ev)
+    logic.send_editor_event(pos, M(pos), ev)
     if logic.is_on(pos) then
         logic.send_event_to_sandbox(pos, ev)
     end
@@ -402,7 +416,7 @@ end
 function logic.override_editor(pos, code)
     local meta = M(pos)
     meta:set_string("editor_code", code)
-    logic.send_editor_event(pos, {
+    logic.send_editor_event(pos, meta, {
         type = "program"
     })
 end
@@ -419,11 +433,14 @@ function logic.override_code(pos, code)
 end
 
 sbz_api.queue:add_function("logic_send_event", logic.send_event_to_sandbox)
-sbz_api.queue:add_function("logic_wait", function(pos)
-    M(pos):set_int("waiting", 0)
-    logic.send_event_to_sandbox(pos, {
-        type = "wait",
-    })
+sbz_api.queue:add_function("logic_wait", function(_, ID)
+    local posdata = logic.id2pos[ID]
+    if posdata then
+        posdata.meta:set_int("waiting", 0)
+        logic.send_event_to_sandbox(posdata.pos, {
+            type = "wait",
+        })
+    end
 end)
 
 sbz_api.queue:add_function("logic_turn_off", logic.turn_off)
@@ -434,6 +451,7 @@ function logic.calculate_bill(us_taken_main, us_taken_editor)
     return math.ceil((us_taken_main + us_taken_editor) / 1000) * 4
 end
 
+-- switching station action
 function logic.on_tick(pos, node, meta, supply, demand)
     local old_bill = meta:get_int("bill")
     if old_bill ~= 0 then
@@ -443,7 +461,6 @@ function logic.on_tick(pos, node, meta, supply, demand)
         return math.max(0, meta:get_int("bill") - result)
     end
 
-
     local us_taken_main = meta:get_float("microseconds_taken_main_sandbox")
     local us_taken_editor = meta:get_float("microseconds_taken_editor_sandbox")
 
@@ -452,7 +469,7 @@ function logic.on_tick(pos, node, meta, supply, demand)
     local net = supply - demand
     local return_value
 
-    if net < bill then -- bill needs to get paid over multiple ticks, that means that your luacontroller will also not work (no editor, no nothing)
+    if net < bill then -- bill needs to get paid over multiple ticks, that means that your luacontroller will also not work (no editor too)
         local result = math.max(0, bill - net)
         meta:set_int("bill", result)
         return_value = math.max(0, meta:get_int("bill") - result)

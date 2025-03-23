@@ -100,6 +100,11 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
         collisionbox = { 0, 0, 0, 0, 0, 0, },
         textures = { "blank.png^[invert:a" },
     },
+    on_activate = function(self)
+        self.object:set_armor_groups {
+            jumpdrive_movable = 1,
+        }
+    end,
 })
 
 minetest.register_node("sbz_logic_devices:matrix_screen", {

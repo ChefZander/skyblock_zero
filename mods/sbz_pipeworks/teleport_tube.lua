@@ -276,17 +276,16 @@ minetest.register_craft({
 })
 
 
-if minetest.get_modpath("mesecons_mvps") then
-    -- Update tubes when moved by pistons
-    mesecon.register_on_mvps_move(function(moved_nodes)
-        for _, n in ipairs(moved_nodes) do
-            if n.node.name:find("pipeworks:teleport_tube") then
-                local meta = minetest.get_meta(n.pos)
-                set_tube(n.pos, meta:get_string("channel"), meta:get_int("can_receive"))
-            end
+-- Update tubes when moved by pistons
+mesecon.register_on_mvps_move(function(moved_nodes)
+    for _, n in ipairs(moved_nodes) do
+        if n.node.name:find("pipeworks:teleport_tube") then
+            local meta = minetest.get_meta(n.pos)
+            remove_tube(n.oldpos)
+            set_tube(n.pos, meta:get_string("channel"), meta:get_int("can_receive"))
         end
-    end)
-end
+    end
+end)
 
 -- Expose teleport tube database API for other mods
 pipeworks.tptube = {

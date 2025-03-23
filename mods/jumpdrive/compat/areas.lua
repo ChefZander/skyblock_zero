@@ -8,11 +8,12 @@ jumpdrive.register_after_jump(function(from_area, to_area)
 
   local queue_move = {}
   for id, area in pairs(list) do
-    local xMatch = area.pos1.x >= pos1.x and area.pos2.x <= pos2.x
-    local yMatch = area.pos1.y >= pos1.y and area.pos2.y <= pos2.y
-    local zMatch = area.pos1.z >= pos1.z and area.pos2.z <= pos2.z
+    -- the center of the area needs to be inside the jumpdrive
+    local center = vector.subtract(area.pos2, vector.divide(vector.subtract(area.pos2, area.pos1), 2))
 
-    if not jumpdrive.is_area_protected(vector.add(area.pos1, delta_vector), vector.add(area.pos2, delta_vector), area.owner) then
+    local center_match = vector.in_area(center, pos1, pos2)
+
+    if center_match and not jumpdrive.is_area_protected(vector.add(area.pos1, delta_vector), vector.add(area.pos2, delta_vector), area.owner) then
       minetest.log("action", "[jumpdrive] moving area " .. id)
 
       queue_move[#queue_move + 1] = {

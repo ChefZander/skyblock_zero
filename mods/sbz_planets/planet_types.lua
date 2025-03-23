@@ -99,8 +99,8 @@ sbz_api.planets.register_type {
         local vi = 1
 
         local function rocks(noise)
-            if stone_type_noise[ni] > 0.25 then
-                if noise > 0.25 then
+            if stone_type_noise[ni] >= 0.1 then
+                if noise <= 0.1 then
                     return c_stone
                 else
                     return c_red_stone
@@ -213,8 +213,8 @@ sbz_api.planets.register_type {
         local vi = 1
 
         local function rocks(noise)
-            if stone_type_noise[ni] > 0.25 then
-                if noise > 0.25 then
+            if stone_type_noise[ni] > 0.1 then
+                if noise < 0.1 then
                     return c_stone
                 else
                     return c_blue_stone
@@ -361,8 +361,8 @@ sbz_api.planets.register_type {
         local vi = 1
 
         local function rocks(noise)
-            if stone_type_noise[ni] > 0.25 then
-                if noise > 0.25 then
+            if stone_type_noise[ni] > 0.1 then
+                if noise < 0.1 then
                     return c_stone
                 else
                     return c_red_stone

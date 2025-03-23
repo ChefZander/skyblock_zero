@@ -20,7 +20,7 @@ local armor_types_to_names = {
 
 for armor_type, armor_name in pairs(armor_types_to_names) do
     armor.register("sbz_armor:admin_" .. armor_name:lower(), {
-        description = "Admin " .. armor_name,
+        description = "Creative " .. armor_name,
         armor_type = armor_type,
         inventory_image = ("(armor_%s_inv.png^[multiply:grey)"):format(armor_name:lower()),
         armor_texture = ("(armor_%s_body.png^[multiply:grey)"):format(armor_name:lower()),

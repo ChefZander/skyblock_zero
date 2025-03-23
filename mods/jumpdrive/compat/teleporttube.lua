@@ -9,6 +9,7 @@ if not is_compatible then
 end
 
 function jumpdrive.teleporttube_compat(from, to)
+	-- no
 	--[[
 	if not is_compatible then
 		return

@@ -33,7 +33,8 @@ minetest.register_tool("sbz_resources:jetpack", {
             [0] = "lime"
         }
     },
-    groups = { disable_repair = 1 },
+    groups = { disable_repair = 1, power_tool = 1 },
+    wear_represents = "power",
     on_use = function(itemstack, user, pointed_thing)
         -- Check if user is valid
         if not user or user.is_fake_player then

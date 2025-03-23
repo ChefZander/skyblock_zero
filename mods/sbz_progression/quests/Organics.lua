@@ -30,7 +30,7 @@ return {
         type = "quest",
         title = "Sprouting Plants",
         text =
-        "You'll also need to craft the algae on your pool into fertilizer. This is useful for forcing dormant seeds in the non-fertilized dirt to germinate.",
+        "You'll also need to craft the algae on your pool into fertilizer. This is useful for forcing dormant seeds in dirt to germinate.",
         requires = { "Liquid Water" }
     },
     {
@@ -40,9 +40,10 @@ return {
 Alright, this is where it gets complicated, so read carefully.
 
 All plants except moss and algae need to be placed in a habitat in order to grow properly. This means a fully enclosed room with a powered Habitat Regulator placed inside it.
-Plants also need three things: water next to the node they're on, heat from nearby light sources. If they don't get these things, they'll start to wilt and die instead of growing. So take that into consideration when designing a habitat.
+Plants also need : water next to the node they're on and heat from nearby light sources.
+If they don't get these things, they'll start to wilt and die instead of growing. So take that into consideration when designing a habitat.
 
-Also, you can use the airtight power cable to deliver power to the switching station. And also make sure to not put things like slabs or stairs in the walls.
+Also, you can use the airtight power cable to deliver power to the switching station and make sure to not put things like slabs or stairs in the walls.
 
 <b>Tip: make the habitat walls out of solid nodes (emittrium glass is one of the cheapest), and airlocks, do not use things like stairs, or meteorite radars in the construction of your habitat. At most, use things that look like solid-full cubes. Also make sure that the habitat regulator isn't inside the wall, but inside the room you built.</b>
 ]],
@@ -50,27 +51,11 @@ Also, you can use the airtight power cable to deliver power to the switching sta
     },
     {
         type = "quest",
-        title = "TNT",
-        requires = { "Growing Plants" },
-        text = [[
-There are TNT sticks, they are made by compressing 9 pyrograss. These TNT sticks can be thrown and they can be used in combat.
-
-Normal TNT (compressed 9 tnt sticks, 81 pyrograss) can be lit by right clicking it. TNT knocks back entites (regardless of if there is line of sight) and damages entities only if there is line of sight.
-
-To complete this quest, craft a full TNT block.
-
-Also, TNT explosions are delayed if the server is laggy, meaning you can set up 100 000 TNT and it wouldn't be much of an issue. (frog tried this)
-        ]],
-    },
-    {
-        type = "quest",
         title = "Fertilized Dirt",
         text = [[
-I'm guessing you want to grow plants faster now, don't worry, there is a solution!
+I'm guessing you want to grow plants faster now, don't worry, this is one of the solutions!
 
-You can craft fertilized dirt with 4 algae and 1 dirt, and boom, you have 3x faster dirt.
-But there is a catch, the growth will be 3x faster, but so will the co2 consumbtion.
-And you also can't fertilize the dirt, to germinate the dormant seeds, you have to manually place your plant.
+The growth of plants above it will be 2x faster, but so will the co2 consumbtion, and you can't fertilize the dirt, you will have to manually place your plant.
 ]],
         requires = { "Growing Plants" }
     },
@@ -91,15 +76,71 @@ The size of the habitat determines how much co2 it can hold.
         type = "quest",
         title = "Stemfruit",
         text =
-        "The only other plant you can get from fertilizing dirt is Stemfruit; you won't need to grow much of these, but due to their unusual genetic instability you can craft them with stuff to make new types of plant. Try out some combinations and see what you get!",
+        "The only other plant you can get from fertilizing dirt is Stemfruit; you won't need to grow much of these, but due to their unusual genetic instability, they will very easily mutate to other types of plants, even when provided a very small amount of radiation.",
         requires = { "Carbon Dioxide" }
+    },
+    {
+        type = "quest",
+        title = "Basic Neutron Emitter",
+        text = [[
+There is not enough radiation in the air for plants to mutate on their own, so basic neutron emitter helps them to mutate.
+Fully grown plants don't mutate.
+
+The radiation comming off of the basic neutron emitter is mostly harmless to players, but if there are multiple neutron emitters, that might become a concern, place this node near plants.
+]],
+        requires = { "Growing Plants", "Neutronium" }
     },
     {
         type = "quest",
         title = "Fiberweed",
         text =
-        "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.",
-        requires = { "Stemfruit" }
+        "Unlike the other plants we've met so far, this one lives in the water, and can only be planted on regular dirt. It'll keep growing higher and higher until it reaches the surface of the water. Its sturdiness and fibrousness allow it to be crafted into Rope, which may be placed hanging from things to climb down them.\nStemfruit will grow into fiberweed when placed under water. To grow this plant, make a little area with water (at least 3 nodes deep), with the regular dirt at the bottom. Then place the stemfruit on the dirt you had underwater, it will sprout into fiberweed.",
+        requires = { "Stemfruit", "Basic Neutron Emitter" }
+    },
+    {
+        type = "quest",
+        title = "Warpshrooms",
+        text = [[
+Warpshrooms are used for teleport technology, they grow slightly slower than other plants, and when eaten, they teleport you around.
+        ]],
+        requires = { "Stemfruit", "Basic Neutron Emitter" }
+    },
+    {
+        type = "quest",
+        title = "Shockshrooms",
+        text = [[
+Shockshrooms are very energetic shrooms, so energetic that they will inflict the "shocked" effect when you step on them, and will generate a small amount of power. (better soil makes it generate more)
+Unlike other plants, they will continue consuming CO2 even after they have completely grown, and will keep generating power.
+]],
+        requires = { "Stemfruit", "Basic Neutron Emitter" }
+    },
+    {
+        type = "quest",
+        title = "Cleargrass",
+        text = [[
+When stepping on cleargrass, you get rid of almost all effects.
+The cleargrass will boost plant growth by 25% when fully grown.
+Unlike other plants, they will continue consuming CO2 even after they have completely grown, and will keep boosting plant growth.
+    ]],
+        requires = { "Stemfruit", "Basic Neutron Emitter" }
+    },
+    {
+        type = "quest",
+        title = "Razorgrass",
+        text = [[
+When stepping on razorgrass, you will get poisoned.
+It is used for some crafting recipes and fertilizer.
+    ]],
+        requires = { "Stemfruit", "Basic Neutron Emitter" }
+    },
+    {
+        type = "quest",
+        title = "Electric Soil",
+        text = [[
+Was fertilized dirt too slow? Electric soil should be a good upgrade... or bad... Depending on what you need.
+Electric soil will make plants grow a LOT faster, and consume a LOT more co2, and the electric soil itself needs 40Cj every second to run.
+]],
+        requires = { "Shockshrooms" }
     },
     {
         type = "quest",
@@ -110,26 +151,42 @@ The size of the habitat determines how much co2 it can hold.
     },
     {
         type = "quest",
-        title = "Co2 Compactors",
+        title = "CO2 Compactors",
         text =
-        "I'll assume you want to store a little more carbon dioxide in your habitat, well co2 compactors are excellent for that, they store 30 carbon dioxide in one node, so would be equivilent to 30 air nodes.",
+        "I'll assume you want to store a little more carbon dioxide in your habitat, if so CO2 compactors are excellent for that, they store 30 carbon dioxide in one node, so would be equivilent to 30 empty air nodes.",
         requires = { "Stemfruit", "Airlocks" }
-    },
-    {
-        type = "quest",
-        title = "Warpshrooms",
-        text = [[
-Applying a mystery, very dense block, to your stemfruit, gets you... a mushroom?  Well... there wasn't mush-room for realism haha!
-
-Jokes aside, it grows like stemfruit, just a bit slower.
-        ]],
-        requires = { "Stemfruit", "Neutronium" }
     },
     {
         type = "secret",
         title = "Not Chorus Fruit",
         text =
         "So apparently Warpshrooms make you teleport randomly when you eat them. Dunno if that makes up for how long they take to grow."
+    },
+    {
+        type = "quest",
+        title = "TNT",
+        requires = { "Growing Plants" },
+        text = [[
+There are TNT sticks, they are made by compressing 9 pyrograss. These TNT sticks can be thrown and they can be used in combat.
+
+Normal TNT (compressed 9 tnt sticks, 81 pyrograss) can be lit by right clicking it. TNT knocks back entites (regardless of if there is line of sight) and damages entities only if there is line of sight.
+
+To complete this quest, craft a full TNT block.
+
+Also, TNT explosions are delayed if the server is laggy, meaning you can set up 100 000 TNT and it wouldn't be much of an issue. (frog tried this)
+]],
+    },
+    {
+        type = "text",
+        info = true,
+        title = "Organics Automation",
+        text = [[
+I think you want to automate that annoying harvesting of your pyrograss... feeding the burner every day... very boring right!
+Well no worries, node breakers and deployers make plant automation easy.
+
+<img name=questbook_image_organics_factory.png width=348>
+Side note: deployers can place 2 nodes ahead, that's a "feature" not a bug.
+]]
     },
     {
         type = "quest",
@@ -179,7 +236,7 @@ You will get this quest when you obtain one (possibly will need to move it aroun
 
 You can duplicate colorium emitters with 8 phlogiston.
 ]],
-        requires = { "Colorium Trees", "Phlogiston" },
+        requires = { "Colorium Trees", "Phlogiston Fuser" },
     }
 
 }

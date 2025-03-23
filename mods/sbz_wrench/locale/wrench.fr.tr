@@ -1,0 +1,26 @@
+# textdomain: wrench
+
+# technic_wrench french translation
+# technic_wrench traduction en français
+# by d-stephane
+
+Wrench=Clé
+
+Not enough room in inventory to pickup node.=Pas assez de place dans l’inventaire pour stocker cet objet.
+Cannot pickup node containing @1.=Impossible de récupérer l'objet contenant @1.
+Cannot pickup node. Owned by @1.=Impossible de récupérer l'objet car il appartient à @1
+Cannot pickup node. Nesting inventories is not allowed.=Impossible de récupérer l'objet. Les inventaires imbriqués ne sont pas autorisés.
+Cannot pickup node. Node contains too much metadata.=Impossible de récupérer l'objet car il contient trop de métadonnées.
+Cannot pickup node. Node is missing inventory.=Impossible de récupérer l'objet car l'inventaire est manquant
+Cannot pickup node. Node contains unknown metadata.=Impossible de récupérer l'objet car il contient des métadonnées inconnues.
+
+@1 with items=@1 avec des objets
+@1 with text "@2"=@1 avec le texte "@2"
+@1 with channel "@2"=@1 avec le canal "@2"
+@1 with configuration=@1 avec la configuration
+
+@1 with armor=@1 avec armure
+@1 with code=@1 avec code
+@1 with game "@2" vs. "@3"=@1 avec le jeu "@2" vs. "@3"
+@1 with item "@2"=@1 avec l'objet "@2"
+@1 (light level @2) with channel "@3"=@1 (niveau lumineux @2) avec canal "@3"
