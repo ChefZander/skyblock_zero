@@ -1,6 +1,6 @@
 -- adds info for sbz_power and sbz_pipeworks
 
-local pals = {
+local palettes = {
     ["unifieddyes_palette_colorfacedir.png"] = true,
     ["unifieddyes_palette_extended.png"] = true,
     ["unifieddyes_palette_colorwallmounted.png"] = true
@@ -45,7 +45,7 @@ minetest.register_on_mods_loaded(function()
             end
             if v.groups.eat then
                 local sign = "+"
-                if v.groups.eat < 0 then sign = "" end -- tostring(-int) does that automatically,
+                if v.groups.eat < 0 then sign = "" end -- tostring(-x) does that automatically,
                 new_desc[#new_desc + 1] = ("Can be eaten. %s HP"):format(sign .. v.groups.eat)
             end
 
@@ -79,8 +79,9 @@ minetest.register_on_mods_loaded(function()
             new_desc[#new_desc + 1] = "Light source: " .. v.light_source
         end
 
-        if pals[v.pallete or ""] then
-            new_desc[#new_desc + 1] = "This node can be colored."
+
+        if palettes[v.palette or ""] then
+            new_desc[#new_desc + 1] = "Can be colored."
         end
 
         if #new_desc > 1 then
