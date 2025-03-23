@@ -137,6 +137,7 @@ mesecon.register_on_mvps_move(function(moved)
                     end
 
                     linked_meta:set_string("links", minetest.serialize(links))
+                    logic.id2pos[linked_meta:get_string("ID")] = { pos = moved_node.pos, meta = linked_meta }
                 end
             end)
         end
