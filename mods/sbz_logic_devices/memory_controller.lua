@@ -136,3 +136,14 @@ core.register_node("sbz_logic_devices:memcontroller", {
         meta:set_string("infotext", ("Memory Controller\nLag: %sms/%sms"):format((lag + t) / 1000, lag_limit / 1000))
     end,
 })
+
+unified_inventory.register_craft {
+    type = "ele_fab",
+    items = {
+        "sbz_resources:lua_chip 6",
+        "sbz_logic:data_disk 12",
+    },
+    output = "sbz_logic_devices:memcontroller",
+    width = 2,
+    height = 1,
+}
