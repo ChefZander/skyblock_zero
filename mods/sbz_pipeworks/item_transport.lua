@@ -42,7 +42,9 @@ minetest.register_globalstep(function(dtime)
 	for _, entity in pairs(luaentity.entities) do
 		if entity.name == "pipeworks:tubed_item" then
 			local h = minetest.hash_node_position(vector.round(entity._pos))
-			tube_item_count[h] = (tube_item_count[h] or 0) + 1
+			if h ~= nil then
+				tube_item_count[h] = (tube_item_count[h] or 0) + 1
+			end
 		end
 	end
 end)
