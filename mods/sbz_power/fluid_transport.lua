@@ -161,14 +161,15 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
             meta:set_string("infotext", "Not enough power")
             return pump_consumbtion, false
         else
-            node = minetest.get_node(pos)
+            node = sbz_api.get_node_force(pos)
+            if not node then return 0 end
             local dir = pipeworks.facedir_to_right_dir(node.param2)
 
             local frompos = vector.subtract(pos, dir)
             local topos = vector.add(pos, dir)
 
-            local fromnode = minetest.get_node(frompos).name
-            local tonode = minetest.get_node(topos).name
+            local fromnode = (sbz_api.get_node_force(frompos) or {}).name or ""
+            local tonode = (sbz_api.get_node_force(topos) or {}).name or ""
 
             if not minetest.get_item_group(fromnode, "fluid_pipe_stores") then
                 meta:set_string("infotext", "Can't pull from that node")
@@ -315,7 +316,7 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
             return fluid_capturer_demand, false
         end
         local up_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
-        local up_node = minetest.get_node(up_pos).name
+        local up_node = (sbz_api.get_node_force(up_pos) or {}).name or ""
         if minetest.get_item_group(up_node, "liquid_capturable") ~= 1 then
             meta:set_string("infotext", "Above this node isn't a valid liquid")
             return 0
