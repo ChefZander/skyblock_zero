@@ -103,16 +103,18 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
                 habitat_max_size))
         return
     end
+    if sbz_api.accelerated_habitats then stage = 0 end
 
     local co2 = 0
     local co2_supply_temp = 0
     local co2_supply = 0
-    if meta:get_int("atmospheric_co2") < habitat.storage then
+    local atm_co2 = meta:get_int("atmospheric_co2")
+    if atm_co2 < habitat.storage then
         for _, v in ipairs(habitat.co2_sources) do
             local pos, node = unpack(v)
-            if stage == PcgRandom(hash(pos)):next(0, 9) then
+            if stage == PcgRandom(hash(pos)):next(0, 9) or sbz_api.accelerated_habitats then
                 co2 = co2 +
-                    minetest.registered_nodes[node.name].co2_action(pos, node)
+                    minetest.registered_nodes[node.name].co2_action(pos, node, atm_co2 + co2, habitat.storage)
             end
             touched_nodes[hash(pos)] = time
         end
@@ -133,7 +135,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
         local under = vector.subtract(pos, vector.new(0, 1, 0))
         local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "" }).name, "soil")
 
-        if (stage == PcgRandom(hash(pos)):next(0, 9)) then
+        if (stage == PcgRandom(hash(pos)):next(0, 9)) or sbz_api.accelerated_habitats then
             if co2 - demand >= 0 then
                 co2 = co2 - demand
                 local growth_tick = minetest.registered_nodes[node.name].growth_tick or function(...) end

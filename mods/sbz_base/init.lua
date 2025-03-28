@@ -17,7 +17,8 @@ sbz_api = {
             return true
         end
         return false
-    end
+    end,
+    accelerated_habitats = false,
 }
 
 if sbz_api.server_optimizations == "auto" then

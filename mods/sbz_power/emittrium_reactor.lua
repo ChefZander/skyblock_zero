@@ -380,6 +380,7 @@ sbz_api.register_generator("sbz_power:reactor_power_port", {
         reactor_shell,
         "reactor_powerport.png",
     },
+    power_generated = POWER_GEN,
     groups = { matter = 1, reactor_shell = 1, pipe_connects = 1, explody = 1, charged = 1 },
     connect_sides = { "front" },
     action = function(pos, node, meta, supply, demand)
