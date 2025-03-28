@@ -118,7 +118,7 @@ function sbz_api.switching_station_tick(start_pos)
             local dir = v[3]
             local max = v[4]
             local meta = minetest.get_meta(position)
-            if (sbz_api.get_node_force(position) or {}).name == node.name then
+            if (sbz_api.get_node_force(position) or {}).name == node then
                 local def = node_defs[node]
                 local current = 0
                 if def.get_power then
@@ -154,7 +154,7 @@ function sbz_api.switching_station_tick(start_pos)
             local position = v[1]
             local node = v[2]
             local dir = v[3]
-            if (sbz_api.get_node_force(position) or {}).name == node.name then
+            if (sbz_api.get_node_force(position) or {}).name == node then
                 node_defs[node].action(position, node, minetest.get_meta(position), supply, demand, dir)
             end
         end
@@ -206,7 +206,7 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
         local meta = minetest.get_meta(position)
-        if (sbz_api.get_node_force(position) or {}).name == node.name then
+        if (sbz_api.get_node_force(position) or {}).name == node then
             if meta:get_int("force_off") == 1 then
                 table.remove(batteries, k)
             else
@@ -233,7 +233,7 @@ function sbz_api.switching_station_tick(start_pos)
     for k, v in ipairs(generators) do
         local position = v[1]
         local node = v[2]
-        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 and (sbz_api.get_node_force(position) or {}).name == node.name then
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 and (sbz_api.get_node_force(position) or {}).name == node then
             touched_nodes[hash(position)] = os.time()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
@@ -245,7 +245,7 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
 
-        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 and (sbz_api.get_node_force(position) or {}).name == node.name then
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 and (sbz_api.get_node_force(position) or {}).name == node then
             touched_nodes[hash(position)] = os.time()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
@@ -283,7 +283,7 @@ function sbz_api.switching_station_sub_tick(start_pos)
     for k, v in ipairs(machines) do
         local position = v[1]
         local node = v[2]
-        if (sbz_api.get_node_force(position) or {}).name == node.name then
+        if (sbz_api.get_node_force(position) or {}).name == node then
             touched_nodes[hash(position)] = os.time()
             demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
         end

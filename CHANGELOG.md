@@ -1,3 +1,8 @@
+Release 34
+- Added a recipe to memory controller
+- Added an info page "Overflow Handling"
+- Added an "Items destroyed: " infotext to item voids
+
 Release 33
 - Fixed a bug where filter injectors didn't work with one way tubes
 - Added one direction tube

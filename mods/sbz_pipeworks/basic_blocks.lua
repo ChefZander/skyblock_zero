@@ -1,7 +1,5 @@
 --[[ includes:
-    Item Vorter
-    Item Vacuum
-    Item Teleporter
+    Item Sorter
     Item Void
 --]]
 
@@ -187,7 +185,13 @@ minetest.register_node("pipeworks:item_void", {
     tiles = { { name = "trashcan.png" } },
     groups = { cracky = 3, matter = 3, tubedevice = 1, tubedevice_receiver = 1 },
     tube = {
-        insert_object = function()
+        insert_object = function(pos, node, stack, direction)
+            local meta = core.get_meta(pos)
+            local meta_stack_count = meta:get_int("items_voided")
+            local stack_count = stack:get_count()
+            meta_stack_count = meta_stack_count + stack_count
+            meta:set_int("items_voided", meta_stack_count)
+            meta:set_string("infotext", "Items destroyed: " .. meta_stack_count)
             return ItemStack("")
         end,
         connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 },
