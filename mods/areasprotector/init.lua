@@ -233,7 +233,7 @@ local function on_punch(pos, node, puncher, sizeword)
 	end
 	if not removed then -- nothing was removed: there wasn't the entity
 		minetest.add_entity(pos, "areasprotector:display_" .. sizeword)
-		minetest.after(4, remove_display, pos)
+		minetest.after(15, remove_display, pos)
 	end
 end
 
@@ -355,6 +355,7 @@ minetest.register_entity("areasprotector:display_large", {
 		visual = "wielditem",
 		visual_size = vsize,
 		textures = { "areasprotector:display_node_large" },
+		backface_culling = false,
 	},
 	on_step = function(self, dtime)
 		on_step(self, dtime, "large")
@@ -368,6 +369,7 @@ minetest.register_entity("areasprotector:display_small", {
 		visual = "wielditem",
 		visual_size = vsize,
 		textures = { "areasprotector:display_node_small" },
+		backface_culling = false,
 	},
 	on_step = function(self, dtime)
 		on_step(self, dtime, "small")
