@@ -131,6 +131,7 @@ function wrench.pickup_node(pos, player)
 			end
 		end
 	end
+
 	local inv = meta:get_inventory()
 	local tmeta = meta:to_table()
 	if not safe_to_pickup(def, tmeta, inv) then
@@ -169,6 +170,9 @@ function wrench.pickup_node(pos, player)
 	local drop_node = table.copy(node)
 	if def.drop then
 		drop_node.name = def.drop
+	end
+	if def.drop and not core.registered_nodes[def.drop] then
+		return errors.cant_dig
 	end
 
 	local stack = ItemStack(drop_node.name)
