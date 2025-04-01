@@ -4,7 +4,7 @@ Release 34
 - Added an "Items destroyed: " infotext to item voids
 - Improved some quests by adding images
 - Made burners store co2
-
+- Fixed rare bugs with filter injectors
 Release 33
 - Fixed a bug where filter injectors didn't work with one way tubes
 - Added one direction tube

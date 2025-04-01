@@ -3,16 +3,32 @@ local enable_max_limit = minetest.settings:get_bool("pipeworks_enable_items_per_
 local max_tube_limit = tonumber(minetest.settings:get("pipeworks_max_items_per_tube")) or 30
 if enable_max_limit == nil then enable_max_limit = true end
 
-function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner, tags)
+function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner, tags, topos)
 	-- Take item in any format
 	local stack = ItemStack(item)
+	if topos then
+		local node = sbz_api.get_node_force(topos)
+		if node and core.registered_nodes[node.name] then
+			local def = core.registered_nodes[node.name]
+			if def.tube and def.tube.insert_object then
+				local can_insertf = def.tube.can_insert
+				local can_insert = true
+				if can_insertf then can_insert = can_insertf(topos, node, stack, velocity, owner) end
+				if can_insert then
+					local leftover = def.tube.insert_object(topos, node, stack, velocity, owner)
+					stack = leftover
+					if stack:is_empty() then return false end
+				end
+			end
+		end
+	end
+
 	local obj = luaentity.add_entity(pos, "pipeworks:tubed_item")
 	obj:set_item(stack:to_string())
 	obj.start_pos = vector.new(start_pos)
 	obj:set_velocity(velocity)
 	obj.owner = owner
 	obj.tags = {}
-	--obj:set_color("red") -- todo: this is test-only code
 	return obj
 end
 
