@@ -497,7 +497,7 @@ sbz_api.register_plant("shockshroom", {
     sbz_player_inside = function(pos, player)
         playereffects.apply_effect_type("shocked", 2 / 0.5, player)
     end,
-    power_per_co2 = 10,
+    power_per_co2 = 30,
     use_co2_in_final_stage = true,
 })
 
