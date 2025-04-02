@@ -15,7 +15,7 @@ return {
 
     Tubes are, well, tubes that can transport items around! Currently, you can't interact with them: but just have some lying around, the next and future quests utilize them.
 
-    TIP: Items in tubes will go into directions with higher priority.]],
+    TIP: Items in tubes will go into directions with higher tube priority. The default tube priority is 100.]],
         requires = { "Furnace" },
     },
     {
@@ -105,6 +105,8 @@ Well... a simple answer would be to have more storinators :D... but that's not p
 Item voids have the lowest priority, so items really don't want to go there.
 Storinator, has a higher priority than the item void, so if the storinator isn't full, items will go there.
 Item voids, have a lower priority, so if the item can't go to the storinator, it will go into the item void.
+
+The default priority is 100.
 ]]
     },
     {

@@ -255,7 +255,7 @@ local def = {
         pipeworks.after_place(pos)
     end,
     on_logic_send = logic_action,
-    info_extra = "Place a high priority tube next to a receiving teleport tube.",
+    info_extra = "Place a higher priority tube/machine next to a receiving teleport tube.",
 
 }
 

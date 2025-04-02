@@ -97,7 +97,7 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, s
         tubelike = 1,
         tube = {
             connect_sides = { front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1 },
-            priority = 50
+            priority = 50,
         },
         on_punch = function(pos, node, player, pointed)
             local playername = player:get_player_name()
