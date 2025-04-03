@@ -4,12 +4,15 @@ local notifications = modlib.minetest.playerdata()
 
 local function remove_last_notification(name)
 	local notifs = notifications[name]
-	minetest.get_player_by_name(name):hud_remove(notifs[#notifs].hud_id)
+	if minetest.get_player_by_name(name) ~= nil then
+		minetest.get_player_by_name(name):hud_remove(notifs[#notifs].hud_id)
+	end
 	notifs[#notifs] = nil
 end
 
 function epidermis.send_notification(player, message, color)
 	local name = player:get_player_name()
+	if player == nil or not player:is_valid() then return end
 	local notifs = notifications[name]
 	if epidermis.colors[color] then
 		color = epidermis.colors[color]:to_number_rgb()
