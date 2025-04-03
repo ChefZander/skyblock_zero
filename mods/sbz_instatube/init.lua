@@ -197,8 +197,8 @@ core.register_node("sbz_instatube:one_way_instatube", {
         priority = 80,
     },
 })
-special_insert_logic["sbz_instatube:one_way_instatube"] = function(pos)
-
+special_insert_logic["sbz_instatube:one_way_instatube"] = function(pos, node, dir)
+    return vector.equals(core.facedir_to_dir(node.param2), dir)
 end
 
 
