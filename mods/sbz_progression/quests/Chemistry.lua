@@ -69,15 +69,15 @@ Have you wished to fly? Do i have the tool for you...
 
 The controls:
 
-Left clicking an un-activated jetpack (you can see with the red lighgt on the texture) will activate it.
-Left clicking an activated jetpack (the light becomes green) will de-activate it
+Left clicking while holding an un-activated jetpack (you can see with the red lighgt on the texture) will activate it.
+Left clicking while holding an activated jetpack (the light becomes green) will de-activate it
 
 When a jetpack is activated:
-If you press jump:
+If you press/hold jump:
 - jetpack applies upwards velocity to you
 - jetpack wears down a bit
 - you become 2x faster
-If you press both jump and shift or aux1:
+If you press/hold both jump and shift or aux1:
 - jetpack applies half as much upwards velocity as when you jump
 - jetpack wears down 2x less
 - you still become 2x faster

@@ -91,10 +91,13 @@ local wallmounted_to_dir_is_fake_bad = {
     [5] = vector.new(0, 0, -1),
 }
 
-function iterate_around_pos(pos, func)
+function iterate_around_pos(pos, func, include_self)
     for i = 0, 5 do
         local dir = vector.copy(wallmounted_to_dir_is_fake_bad[i])
         func(pos + dir, dir)
+    end
+    if include_self then
+        func(pos, vector.zero())
     end
 end
 
