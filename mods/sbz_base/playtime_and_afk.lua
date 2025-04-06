@@ -94,7 +94,7 @@ core.register_chatcommand("playtime", {
         if #param ~= 0 and param ~= " " then
             player = param
         end
-        core.chat_send_player(player, ("%s's playtime: %s\n%s's afk time: %s\n%s's afk and playtime: %s"):format(
+        core.chat_send_player(name, ("%s's playtime: %s\n%s's afk time: %s\n%s's afk and playtime: %s"):format(
             player, get_time(modstorage:get_int(player .. "_playtime")),
             player, get_time(modstorage:get_int(player .. "_afk_playtime")),
             player, get_time(modstorage:get_int(player .. "_playtime") + modstorage:get_int(player .. "_afk_playtime"))
