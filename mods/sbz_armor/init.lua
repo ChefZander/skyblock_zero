@@ -35,7 +35,7 @@ local armor = {
     }
 }
 
-local disable_setting_texture = true
+local disable_setting_texture = false
 
 local piece_types = armor.piece_types
 

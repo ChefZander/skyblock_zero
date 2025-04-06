@@ -623,3 +623,5 @@ core.register_node("sbz_instatube:cycling_input_instant_tube", {
         priority = 75,
     },
 })
+
+dofile(core.get_modpath("sbz_instatube") .. "/recipes.lua")

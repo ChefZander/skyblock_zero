@@ -109,6 +109,12 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 				"That name is obviously invalid.")
 			return
 		end
+		if name == "" then
+			minetest.chat_send_player(owner_name,
+				red("You are not allowed to protect that area: ") ..
+				"You need to fill out the field with a name")
+			return
+		end
 
 		owners_area_id[name] = areas:add(name, "Protector block sub-area", pos1, pos2, meta:get_int("area_id"))
 		areas:save()
