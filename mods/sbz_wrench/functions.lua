@@ -104,6 +104,7 @@ function wrench.pickup_node(pos, player)
 	if not def then
 		return
 	end
+
 	if not (minetest.get_dig_params(def.groups, core.registered_items["sbz_resources:robotic_arm"].tool_capabilities) or {}).diggable then
 		return errors.cant_dig
 	end
@@ -171,8 +172,8 @@ function wrench.pickup_node(pos, player)
 	if def.drop then
 		drop_node.name = def.drop
 	end
-	if def.drop and not core.registered_nodes[def.drop] then
-		return errors.cant_dig
+	if not core.registered_nodes[drop_node.name] then
+		return false, errors.cant_dig
 	end
 
 	local stack = ItemStack(drop_node.name)
