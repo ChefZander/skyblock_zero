@@ -63,7 +63,7 @@ function jumpdrive.preflight_check(source, destination, radius, playername)
 	if vector.distance(source, destination) > 500 and not is_node_within_radius(destination, "jumpdrive:station", 60) then
 		return { success = false, message = "Traveling too far without a Jumpdrive station." }
 	end
-	if destination.y < -110 then
+	if destination.y < -110 and destination.y > -210 then
 		return { success = false, message = "Traveling that deep is not supported yet" }
 	end
 	return { success = true }

@@ -171,7 +171,7 @@ minetest.register_globalstep(function(dtime)
         if pos.y < safetynet_low - 100 then
             unlock_achievement(player:get_player_name(), "Emptiness")
         end
-        if pos.y < safetynet_low - 110 then
+        if pos.y < safetynet_low - 110 and pos.y > safetynet_low - 210 then
             displayDialougeLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({ x = 0, y = 1, z = 0 })
         end

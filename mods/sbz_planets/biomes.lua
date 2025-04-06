@@ -9,6 +9,6 @@ core.register_ore({
     clust_scarcity = 80 * 80 * 80,
     clust_num_ores = 1,
     clust_size = 1,
-    y_min = -300,
-    y_max = 1500,
+    y_min = -30000,
+    y_max = 30000,
 })
