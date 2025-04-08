@@ -1,3 +1,13 @@
+Release 35
+- made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
+- fixed some bugs
+- made fluid pipe look better
+- added instatubes
+
+
+
+
+
 Release 34
 - Added a recipe to memory controller
 - Added an info page "Overflow Handling"

@@ -124,7 +124,7 @@ local function wire(len, stretch_to)
     return base_box
 end
 
-local wire_size = 1 / 4
+local wire_size = 3 / 16
 
 --[[
 Do you dislike pipeworks? Have you ever wanted to burn pipeworks with fire? Here is the tube for you!

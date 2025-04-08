@@ -76,6 +76,7 @@ function pipeworks.break_tube(pos)
 	local meta = minetest.get_meta(pos)
 	meta:set_string("the_tube_was", minetest.serialize(node))
 	minetest.swap_node(pos, { name = "pipeworks:broken_tube_1" })
+	core.get_meta(pos):set_string("infotext", "Broken Tube")
 	pipeworks.scan_for_tube_objects(pos)
 end
 

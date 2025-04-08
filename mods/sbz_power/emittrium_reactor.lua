@@ -590,7 +590,7 @@ local function core_tick(pos)
 
         meta:set_int("heat", heat)
 
-        infometa:set_int("heat", heat)
+        infometa:set_int("heat", math.max(0, heat))
         infometa:set_int("water_level", waterinv[1].count)
         infometa:set_int("emittrium_level", emittrium_stack:get_count())
         minetest.registered_nodes["sbz_power:reactor_infoscreen"].on_reactor_update(nodes.info)
