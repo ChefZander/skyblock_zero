@@ -50,32 +50,36 @@ core.register_entity("sbz_multiblocks:node_ghost", {
             wield_item = staticdata.item_name,
             textures = textures,
         }
-        local nametag = core.add_entity(
-            self.object:get_pos() - vector.new(0, 0.5, 0), "sbz_multiblocks:nametag_workaround", def.short_description
-        )
-        nametag:set_attach(self.object, "", { x = 0, y = -10, z = 0 })
-        core.after(staticdata.expiration or 5, function()
-            if self.object:is_valid() then
-                self.object:remove()
-            end
-        end)
+        if not staticdata.no_nametag then
+            local nametag = core.add_entity(
+                self.object:get_pos() - vector.new(0, 0.5, 0), "sbz_multiblocks:nametag_workaround",
+                def.short_description
+            )
+            nametag:set_attach(self.object, "", { x = 0, y = -10, z = 0 })
+            core.after(staticdata.expiration or 5, function()
+                if self.object:is_valid() then
+                    self.object:remove()
+                end
+            end)
+        end
     end,
 })
 
-function multiblocks.render_ghost(pos, itemname)
+function multiblocks.render_ghost(pos, itemname, no_nametag)
     core.add_entity(pos, "sbz_multiblocks:node_ghost", core.serialize {
         item_name = itemname,
         texmod = "^[multiply:#00FFFF^[opacity:250",
         expiration = 10,
+        no_nametag = no_nametag
     })
 end
 
 function multiblocks.draw_schematic(start_pos, schematic, category_represent)
-    for pos, node in pairs(schematic) do
+    for pos, node_match in pairs(schematic.data) do
         pos = uh(pos)
-        local name = node
-        if type(name) == "table" then name = node.name end
+        local name = node_match
+        if type(name) == "function" then name = "unifieddyes:colorium_blob" end
         if category_represent[name] then name = category_represent[name] end
-        multiblocks.render_ghost(vector.add(start_pos, pos), name)
+        multiblocks.render_ghost(vector.add(start_pos, pos), name, type(node_match) == "function")
     end
 end

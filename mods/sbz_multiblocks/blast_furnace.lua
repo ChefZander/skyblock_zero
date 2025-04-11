@@ -3,6 +3,60 @@
 
 local ud = unifieddyes.def -- Why not!
 
+local function get_furnce_controller_formspec(pos)
+    local meta = core.get_meta(pos)
+    local connections = core.deserialize(meta:get_string("connections"))
+    if not connections then
+        local fs = string.format([[
+formspec_version[7]
+size[8,6]
+button[0.5,0.5;3,1;form_multiblock;Form Multiblock]
+button[4.5,0.5;3,1;show_ghosts;Show Build Plan]
+label[0.5,2;Number of heater rows:]
+scrollbaroptions[min=1;max=4;smallstep=1;largestep=4;arrows=default]
+scrollbar[0.5,2.5;7,0.5;horizontal;num_of_heater_rows;%s]
+
+label[1.6,3.3;1]
+label[3.2,3.3;2]
+label[4.7,3.3;3]
+label[6.25,3.3;4]
+    ]], math.max(1, meta:get_int("num_of_heater_rows")))
+        if #meta:get_string("errmsg") ~= 0 then
+            fs = fs ..
+                string.format("textarea[0.5,4;8,2;;Error message when trying to form multiblock:;%s]",
+                    meta:get_string("errmsg"))
+        end
+    else
+        return [[
+formspec_version[7]
+size[10.2,12]
+list[current_player;main;0.2,7;8,4;]
+
+button[0.2,5.6;4,1;furnace_modes;Furnace Mode: Blast]
+label[4.5,6.1;Heat: 10Cj]
+
+
+list[current_player;main;4.2,2;1,1;]
+
+image[3.2,2;1,1;furnace_plus.png;]
+list[current_player;main;2.2,2;1,1;]
+
+image[1.2,2;1,1;furnace_plus.png;]
+list[current_player;main;0.2,2;1,1;]
+
+
+image[5.8,2;1,1;furnace_arrow.png;]
+list[current_player;main;7,1.5;2,2;]
+
+]]
+    end
+end
+
+
+local function form_multiblock(pos)
+
+end
+
 -- contains storage
 core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
     description = "Blast Furnace Controller",
@@ -17,12 +71,17 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
         "blast_furnace_controller_sides.png",
     },
     light_source = 3,
+    on_construct = function(pos)
+        local meta = core.get_meta(pos)
+        meta:set_string("formspec", get_furnce_controller_formspec(pos))
+    end
 })
 
 core.register_node("sbz_multiblocks:blast_furnace_casing", ud {
     description = "Blast Furnace Casing",
     groups = {
         matter = 1,
+        can_wallshare = 1,
     },
     drawtype = "glasslike_framed",
     paramtype = "light",
@@ -64,6 +123,7 @@ sbz_api.register_machine("sbz_multiblocks:blast_furnace_power_port", ud {
     description = "Blast Furnace Power Port",
     groups = {
         matter = 1,
+        multiblock_power_port = 1,
     },
     connect_sides = { "front" },
     paramtype = "light",
@@ -87,6 +147,7 @@ core.register_node("sbz_multiblocks:blast_furnace_item_input", ud {
         matter = 1,
         tubedevice = 1,
         tubedevice_receiver = 1,
+        multiblock_item_input = 1,
     },
     connect_sides = { "front" },
     paramtype = "light",
@@ -118,6 +179,7 @@ core.register_node("sbz_multiblocks:blast_furnace_item_output", ud {
         matter = 1,
         tubedevice = 1,
         tubedevice_receiver = 1,
+        multiblock_item_output = 1,
     },
     connect_sides = { "front" },
     paramtype = "light",
