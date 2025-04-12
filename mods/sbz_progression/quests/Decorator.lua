@@ -147,5 +147,13 @@ You extract colorium dust from colorium leaves, then you put it in the furnace.
 With that colorium, you make your tool.
         ]],
         requires = { "Colorium Trees" }
+    },
+    {
+        type = "quest",
+        title = "Bricks",
+        text = [[
+More fancy traditional bricks to build with.
+        ]],
+        requires = { "Clay" }
     }
 }
