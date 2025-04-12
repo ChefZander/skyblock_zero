@@ -394,6 +394,15 @@ minetest.register_node("sbz_resources:gravel", {
     light_source = 3,
 })
 
+minetest.register_node("sbz_resources:dust", {
+    description = "Dust",
+    tiles = { "dust.png" },
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
 core.register_node("sbz_resources:dark_sand", {
     description = "Dark Sand",
     tiles = { "sand.png^[colorizehsl:0:0:-50" },
