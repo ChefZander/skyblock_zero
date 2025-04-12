@@ -23,12 +23,21 @@ unified_inventory.register_craft_type("compressing", {
 })
 
 unified_inventory.register_craft_type("crystal_growing", {
-    description = "(Crystal) Growing",
+    description = "Crystal Growing",
     icon = "crystal_grower.png^[verticalframe:17:1",
     width = 1,
     height = 1,
     uses_crafting_grid = false,
 })
+
+unified_inventory.register_craft_type("blast_furnace", {
+    description = "Blast Furnace",
+    icon = "blast_furnace_heater_inner.png^blast_furnace_heater_frame.png",
+    width = 3,
+    height = 1,
+    uses_crafting_grid = false,
+})
+sbz_api.blast_furnace_recipes = {}
 
 sbz_api.crusher_drops = {}
 sbz_api.crusher_drops_enhanced = {}

@@ -64,7 +64,11 @@ function multiblocks.form_multiblock(pos, schem)
             if category_funcs[node_match] then
                 node_match = category_funcs[node_match]
             else
-                category_funcs[node_match] = function(pos_, node_) return schem.categories[node_match][node_] end
+                local old_node_match = node_match
+                category_funcs[node_match] = function(pos_, node_)
+                    return schem.categories[old_node_match][node_.name]
+                end
+                node_match = category_funcs[node_match]
             end
         end
 
@@ -115,17 +119,18 @@ function multiblocks.form_multiblock(pos, schem)
             end
         end
     end
+
     -- great... now lets check the limits
     for name, limit in pairs(schem.limits) do
-        if limits[name] < limit.min then
+        if (limits[name] or 0) < limit.min then
             return {
                 success = false,
-                errmsg = "You have to have at least " .. limits.min .. " node(s) of " .. name
+                errmsg = "You have to have at least " .. limit.min .. " node(s) of " .. name
             }
-        elseif limits[name] > limit.max then
+        elseif (limits[name] or 0) > limit.max then
             return {
                 success = false,
-                errmsg = "You can only have " .. limits.max .. " node(s) of " .. name
+                errmsg = "You can only have " .. limit.max .. " node(s) of " .. name
             }
         end
     end
@@ -139,7 +144,7 @@ function multiblocks.form_multiblock(pos, schem)
             controller_positions[#controller_positions + 1] = pos
             meta:set_string("controller_positions", core.serialize(controller_positions))
         else
-            meta:set_string("controller_pos", vector.to_string(ipos))
+            meta:set_string("controller_pos", vector.to_string(pos))
         end
     end
     return returns
@@ -161,7 +166,42 @@ function multiblocks.break_multiblock(pos, schem)
         else
             meta:set_string("controller_pos", "")
         end
+        if core.get_item_group(node.name, "multiblock_controller") == 1 then
+            core.registered_nodes[node.name].on_multiblock_break(pos, meta)
+        end
     end
+end
+
+function multiblocks.after_dig(pos, oldnode, oldmeta, digger)
+    local controller_positions = core.deserialize(oldmeta.fields.controller_positions or "")
+    local controller_pos = vector.from_string(oldmeta.fields.controller_pos or "")
+    if controller_positions then
+        for _, cpos in pairs(controller_positions) do
+            local cnode = sbz_api.get_node_force(cpos)
+
+            if cnode then
+                local cdef = core.registered_nodes[cnode.name]
+                if cdef.get_schematic then
+                    local schem = cdef.get_schematic(cpos, oldmeta)
+                    multiblocks.break_multiblock(cpos, schem)
+                end
+            end
+        end
+    elseif controller_pos then
+        local cnode = sbz_api.get_node_force(controller_pos)
+        if cnode then
+            local cdef = core.registered_nodes[cnode.name]
+            if cdef.get_schematic then
+                local schem = cdef.get_schematic(controller_pos, oldmeta)
+                multiblocks.break_multiblock(controller_pos, schem)
+            end
+        end
+    end
+end
+
+function multiblocks.before_movenode(from_pos, to_pos)
+    local meta = core.get_meta(from_pos)
+    multiblocks.after_dig(_, _, meta:to_table(), _)
 end
 
 local mp = core.get_modpath(core.get_current_modname())

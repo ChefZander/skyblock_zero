@@ -77,7 +77,7 @@ local function get_meteorite_maker_formspec(pos, meta, counts)
         for k, v in pairs(counts_arr) do
             k = v
             v = counts[v]
-            if core.registered_items[k] == nil then error(dump(k)) end
+            if core.registered_items[k] == nil then error(dump(k)) end -- it's a dev-time error i guess you could say
             local desc = core.registered_items[k].short_description or core.registered_items[k].description
             local text = string.format("%s: %s/%s", desc, v.current, v.max)
             y = y + 0.5

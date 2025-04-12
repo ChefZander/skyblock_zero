@@ -41,7 +41,7 @@ function jumpdrive.move(source_pos1, source_pos2, target_pos1, target_pos2)
 
 	-- move "on_movenode" aware nodes
 	for _, entry in ipairs(movenode_list) do
-		if entry.nodedef then
+		if entry.nodedef and entry.nodedef.on_movenode then
 			entry.nodedef.on_movenode(entry.from_pos, entry.to_pos, {
 				edge = entry.edge
 			})

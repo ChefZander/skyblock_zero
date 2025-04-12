@@ -1,4 +1,3 @@
-local modname = minetest.get_current_modname()
 sbz_api = {
     debug = minetest.settings:get_bool("sbz_debug", false),
     version = 33,
@@ -28,8 +27,6 @@ elseif sbz_api.server_optimizations == "on" then
 elseif sbz_api.server_optimizations == "off" then
     sbz_api.server_optimizations = false
 end
-
-local modpath = minetest.get_modpath("sbz_base")
 
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
@@ -330,6 +327,24 @@ end
 
 function sbz_api.clamp(x, min, max)
     return math.max(math.min(x, max), min)
+end
+
+function sbz_api.make_immutable(t)
+    for k, v in pairs(t) do
+        if type(v) == "table" then
+            sbz_api.make_immutable(v)
+            local mt = table.copy(getmetatable(v) or {})
+            if not mt.immutable then
+                mt.immutable = true
+                mt.newindex = function(t_, k_, v_)
+                    error("Immutable!", 2)
+                end
+                mt.index = v
+                setmetatable(v, mt)
+            end
+        end
+    end
+    return t
 end
 
 local MP = minetest.get_modpath("sbz_base")

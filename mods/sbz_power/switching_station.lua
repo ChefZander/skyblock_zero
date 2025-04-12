@@ -167,7 +167,7 @@ function sbz_api.switching_station_tick(start_pos)
                 sbz_api.format_power(network_before.supply - network_before.battery_supply_only),
                 sbz_api.format_power(network_before.demand),
                 sbz_api.format_power(network_before.battery_supply_only, network_before.battery_max),
-                network_before.lag / 1000, network_size
+                math.floor(network_before.lag / 1000), network_size
             )
         )
     end

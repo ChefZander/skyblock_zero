@@ -3,7 +3,8 @@ Release 35
 - fixed some bugs
 - made fluid pipe look better
 - added instatubes
-
+- Added blast furnace
+- Made switching station lag not show fractions of miliseconds
 
 
 
