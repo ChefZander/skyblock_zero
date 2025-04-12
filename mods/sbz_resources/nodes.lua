@@ -396,7 +396,16 @@ minetest.register_node("sbz_resources:gravel", {
 
 minetest.register_node("sbz_resources:dust", {
     description = "Dust",
-    tiles = { "dust.png" },
+    tiles = { "dust.png" }, -- Needs retexture by artist
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+minetest.register_node("sbz_resources:clay", {
+    description = "Clay",
+    tiles = { "clay.png" }, -- Needs retexture by artist
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
     sounds = sbz_api.sounds.sand(),

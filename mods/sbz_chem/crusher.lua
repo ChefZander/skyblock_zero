@@ -42,6 +42,14 @@ unified_inventory.register_craft {
     }
 }
 
+unified_inventory.register_craft {
+    output = "sbz_resources:dust 2",
+    type = "crushing",
+    items = {
+        "sbz_resources:sand"
+    }
+}
+
 sbz_api.register_stateful_machine("sbz_chem:crusher", {
     description = "Crusher",
     tiles = {
