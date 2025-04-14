@@ -32,14 +32,15 @@ end
 sbz_api.get_version_string = function()
     local gamename = "SkyBlock: Zero "
     local version_string = "Release " .. sbz_api.version
-    if sbz_api.dev then
+    if sbz_api.is_version_dev then
         version_string = version_string .. "-dev"
     end
+
     if sbz_api.debug then
-        version_string = version_string .. ",debug "
+        version_string = version_string .. " debug "
     end
     if sbz_api.server_optimizations then
-        version_string = version_string .. ",server-optimized "
+        version_string = version_string .. " server-optimized "
     end
 
     return gamename .. "(" .. version_string .. ")"

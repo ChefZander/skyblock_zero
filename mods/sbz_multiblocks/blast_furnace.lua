@@ -252,9 +252,14 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
             for _, recipe in pairs(sbz_api.simple_alloy_furnace_recipes) do
                 local r = recipe.recipe
                 if (r[1] == inp1name and r[2] == inp2name) or (r[1] == inp2name and r[2] == inp1name) then
-                    out = ItemStack(recipe.output)
+                    out = ItemStack(recipe.output[1])
                     cost = table.copy(r)
-                    for k, v in pairs(cost) do
+                    if r[1] == inp2name then
+                        local t = cost[1]
+                        cost[1] = cost[2]
+                        cost[2] = t
+                    end
+                    for k, v in ipairs(cost) do
                         cost[k] = ItemStack(v)
                     end
                 end
