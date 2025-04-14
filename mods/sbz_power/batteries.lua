@@ -23,14 +23,14 @@ function sbz_power.register_battery(name, def)
             local channel = meta:get_string("channel")
             local help_text = minetest.formspec_escape(
                 "Channels are public by default" .. "\n" ..
-                "Use <player>:<player>:<player>:<channel> \n To limmit the channle to the set of players given"
+                "Use <player>:<player>:<player>:<channel> \n To limit the channel to the set of players given"
             )
 
             local formspec = "formspec_version[2]size[8,4.4]" ..
                 "image[0.5,0.3;1,1;warp_crystal.png]" ..
                 "label[1.75,0.8;" .. "Teleporting Battery" .. "]" ..
                 "field[0.5,1.7;5,0.8;channel;" .. "Channel" .. ";${channel}]" ..
-                "field[5,0.5;2.5,0.8;maxpower;" .. "Power limmit in Cj" .. ";${maxpower}]" ..
+                "field[5,0.5;2.5,0.8;maxpower;" .. "Power limit in Cj" .. ";${maxpower}]" ..
                 "button_exit[5.5,1.7;2,0.8;save;" .. "Save" .. "]" ..
                 "label[0.5,2.8;" .. help_text .. "]"
             meta:set_string("formspec", formspec)
