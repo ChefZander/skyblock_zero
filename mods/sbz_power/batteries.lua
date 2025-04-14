@@ -89,7 +89,7 @@ minetest.register_craft({
 
 sbz_power.register_battery("sbz_power:teleport_battery", {
     description = "Teleport Battery",
-    tiles = { "very_advanced_battery.png" },
+    tiles = { "teleport_battery.png" },
     groups = { matter = 1, level = 2 },
     battery_max = 200000,
     on_receive_fields = function(pos, formname, fields, player)
