@@ -125,16 +125,20 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                         index=index+1
                 end
             end
-            if username_flag ~= index and username_flag ~= -1 or index == 1
+            if string.len(fields.channel) < 1000
             then
-                meta:set_string("channel", fields.channel)
-            elseif fields.channel == ""
-            then
-                core.chat_send_player(player:get_player_name(),"The channel can't be blank")
+                if username_flag ~= index and username_flag ~= -1 or index == 1
+                then
+                    meta:set_string("channel", fields.channel)
+                elseif fields.channel == ""
+                then
+                    core.chat_send_player(player:get_player_name(),"The channel can't be blank")
+                else
+                    core.chat_send_player(player:get_player_name(),"Sorry, receiving from this channel is reserved try another one")
+                end
             else
-                core.chat_send_player(player:get_player_name(),"Sorry, receiving from this channel is reserved try another one")
+                core.chat_send_player(player:get_player_name(),"Nice try this power party can't be this big (you can't input more then 999 charictors)")
             end
-
         end
 
 end,
