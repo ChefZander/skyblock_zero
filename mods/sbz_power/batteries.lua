@@ -105,7 +105,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                 end
                 meta:set_int("maxpower", 200000)
             else
-                if tonumber(fields.maxpower) > 200000
+                if tonumber(fields.maxpower) > 200000 and  tonumber(fields.maxpower) <0
                 then
                     core.chat_send_player(player:get_player_name(),"The power limmit it too high try setting it lower")
                 else
