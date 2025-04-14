@@ -1,5 +1,5 @@
 local all_switching_stations = {} -- h(pos) = true|nil
-
+local storage = core.get_mod_storage()
 sbz_api.switching_station_networks = {}
 
 
@@ -118,34 +118,42 @@ function sbz_api.switching_station_tick(start_pos)
             local dir = v[3]
             local max = v[4]
             local meta = minetest.get_meta(position)
-
-            local def = node_defs[node]
-            local current = 0
-            if def.get_power then
-                current = def.get_power(position, node, meta, supply, demand, v[3])
-            else
-                current = meta:get_int("power")
-            end
-
-            local set_power = def.set_power or
-                function(pos, node, meta, current_power, supplied_power, dir)
-                    meta:set_int("power", supplied_power)
+            if (sbz_api.get_node_force(position) or {}).name == node then
+                local def = node_defs[node]
+                local current = 0
+                if def.get_power then
+                    current = def.get_power(position, node, meta, supply, demand, v[3])
+                else
+                    current = meta:get_int("power")
                 end
-
-            if excess > 0 then -- charging
-                local power_add = max - current
-                if power_add > excess then
-                    power_add = excess
+                if node == "sbz_power:teleport_battery" and meta:get_string("channel") ~= ""
+                then
+                    current = storage:get_int(meta:get_string("channel"))
+                    max = meta:get_int("maxpower")
                 end
-                excess = excess - power_add
-                set_power(position, node, meta, current, current + power_add, dir)
-            elseif excess < 0 then -- discharging
-                local power_remove = current
-                if power_remove > -excess then
-                    power_remove = -excess
+                local set_power = def.set_power or
+                    function(pos, node, meta, current_power, supplied_power, dir)
+                        meta:set_int("power", supplied_power)
+                    end
+                if excess > 0 then -- charging
+                    local power_add = max - current
+                    if power_add > excess then
+                        power_add = excess
+                    end
+                    excess = excess - power_add
+                    set_power(position, node, meta, current, current + power_add, dir)
+                elseif excess < 0 then -- discharging
+                    local power_remove = current
+                    if power_remove > -excess then
+                        power_remove = -excess
+                    end
+                    excess = excess + power_remove
+                    set_power(position, node, meta, current, current - power_remove, dir)
                 end
-                excess = excess + power_remove
-                set_power(position, node, meta, current, current - power_remove, dir)
+                if node == "sbz_power:teleport_battery" and meta:get_string("channel") ~= ""
+                then
+                    storage:set_int(meta:get_string("channel"), meta:get_int("power"))
+                end
             end
         end
 
@@ -153,7 +161,9 @@ function sbz_api.switching_station_tick(start_pos)
             local position = v[1]
             local node = v[2]
             local dir = v[3]
-            node_defs[node].action(position, node, minetest.get_meta(position), supply, demand, dir)
+            if (sbz_api.get_node_force(position) or {}).name == node then
+                node_defs[node].action(position, node, minetest.get_meta(position), supply, demand, dir)
+            end
         end
 
         local network_size = #network_before.generators + #network_before.machines + #network_before.batteries
@@ -164,7 +174,7 @@ function sbz_api.switching_station_tick(start_pos)
                 sbz_api.format_power(network_before.supply - network_before.battery_supply_only),
                 sbz_api.format_power(network_before.demand),
                 sbz_api.format_power(network_before.battery_supply_only, network_before.battery_max),
-                network_before.lag / 1000, network_size
+                math.floor(network_before.lag / 1000), network_size
             )
         )
     end
@@ -203,23 +213,25 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
         local meta = minetest.get_meta(position)
-        if meta:get_int("force_off") == 1 then
-            table.remove(batteries, k)
-        else
-            touched_nodes[hash(position)] = os.time()
-
-            local d = node_defs[node]
-            v[4] = d.battery_max
-
-            local battery_power = 0
-            if d.get_power then
-                battery_power = d.get_power(position, node, meta, supply, demand, v[3])
+        if (sbz_api.get_node_force(position) or {}).name == node then
+            if meta:get_int("force_off") == 1 then
+                table.remove(batteries, k)
             else
-                battery_power = meta:get_int("power")
-            end
+                touched_nodes[hash(position)] = os.time()
 
-            battery_max = battery_max + v[4]
-            supply = supply + battery_power
+                local d = node_defs[node]
+                v[4] = d.battery_max
+
+                local battery_power = 0
+                if d.get_power then
+                    battery_power = d.get_power(position, node, meta, supply, demand, v[3])
+                else
+                    battery_power = meta:get_int("power")
+                end
+
+                battery_max = battery_max + v[4]
+                supply = supply + battery_power
+            end
         end
     end
 
@@ -228,7 +240,7 @@ function sbz_api.switching_station_tick(start_pos)
     for k, v in ipairs(generators) do
         local position = v[1]
         local node = v[2]
-        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 and (sbz_api.get_node_force(position) or {}).name == node then
             touched_nodes[hash(position)] = os.time()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
@@ -240,7 +252,7 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
 
-        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
+        if minetest.get_meta(v[1]):get_int("force_off") ~= 1 and (sbz_api.get_node_force(position) or {}).name == node then
             touched_nodes[hash(position)] = os.time()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
@@ -278,9 +290,10 @@ function sbz_api.switching_station_sub_tick(start_pos)
     for k, v in ipairs(machines) do
         local position = v[1]
         local node = v[2]
-
-        touched_nodes[hash(position)] = os.time()
-        demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
+        if (sbz_api.get_node_force(position) or {}).name == node then
+            touched_nodes[hash(position)] = os.time()
+            demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
+        end
     end
 
     local t1 = minetest.get_us_time()
