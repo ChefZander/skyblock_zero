@@ -101,13 +101,13 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                 if fields.maxpower ~= ""
                 then
                     core.chat_send_player(player:get_player_name(),"Ah yes can I have " .. dump(fields.maxpower) .. " power" .. " ... they have played us for absolute fools")
-                    core.chat_send_player(player:get_player_name(),"Input a number next time if you don't want the pwer to be set to 200000")
+                    core.chat_send_player(player:get_player_name(),"Input a number next time if you don't want the power to be set to 200000")
                 end
                 meta:set_int("maxpower", 200000)
             else
                 if tonumber(fields.maxpower) > 200000 and  tonumber(fields.maxpower) <0
                 then
-                    core.chat_send_player(player:get_player_name(),"The power limmit it too high try setting it lower")
+                    core.chat_send_player(player:get_player_name(),"The power limit it too high try setting it lower")
                 else
                     meta:set_int("maxpower", tonumber(fields.maxpower))
                 end
