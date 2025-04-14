@@ -5,7 +5,7 @@
 - you can choose if it conducts power by setting the pipe_conducts group to 0
 - `def.disallow_pipeworks` - so if you dont want itemtransport (DONT DO THIS INTENTIONALLY to make your machine more "balanced", PLEASE) you just set this to true, also this automatically happens when you dont have a output_inv
 - `def.input_inv` `def.output_inv` - theese are the input/output inventory lists, `def.input_inv` is optional for pipeworks
-- `power_consumed = def.action(pos, node, meta, supply, demand)`
+- `def.action(pos, node, meta, supply, demand) = power consumed`
  - node: its the node name... not really useful
  - supply: the... supply... of the network
  - demand: the... demand...... of the network
