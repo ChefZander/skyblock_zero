@@ -23,14 +23,14 @@ function sbz_power.register_battery(name, def)
             local channel = meta:get_string("channel")
             local help_text = minetest.formspec_escape(
                 "Channels are public by default" .. "\n" ..
-                "Use <player>:<player>:<player>:<channel> \n To limmit the channle to the set of players given"
+                "Use <player>:<player>:<player>:<channel> \n To limit the channel to the set of players given"
             )
 
             local formspec = "formspec_version[2]size[8,4.4]" ..
                 "image[0.5,0.3;1,1;warp_crystal.png]" ..
                 "label[1.75,0.8;" .. "Teleporting Battery" .. "]" ..
                 "field[0.5,1.7;5,0.8;channel;" .. "Channel" .. ";${channel}]" ..
-                "field[5,0.5;2.5,0.8;maxpower;" .. "Power limmit in Cj" .. ";${maxpower}]" ..
+                "field[5,0.5;2.5,0.8;maxpower;" .. "Power limit in Cj" .. ";${maxpower}]" ..
                 "button_exit[5.5,1.7;2,0.8;save;" .. "Save" .. "]" ..
                 "label[0.5,2.8;" .. help_text .. "]"
             meta:set_string("formspec", formspec)
@@ -100,18 +100,17 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
             then
                 if fields.maxpower ~= ""
                 then
-                    core.chat_send_player(player:get_player_name(),"Ah yes can I have " .. dump(fields.maxpower) .. " power" .. " ... they have played us for absolute fools")
-                    core.chat_send_player(player:get_player_name(),"Input a number next time if you don't want the pwer to be set to 200000")
+                    core.chat_send_player(player:get_player_name(),"This field only accepts numbers.")
                 end
                 meta:set_int("maxpower", 200000)
             else
                 if tonumber(fields.maxpower) > 200000
                 then
-                    core.chat_send_player(player:get_player_name(),"The power limmit it too high try setting it lower")
+                    core.chat_send_player(player:get_player_name(),"The power limit it too high. Try setting it lower.")
                 else
                     if tonumber(fields.maxpower) < 0
                     then
-                        core.chat_send_player(player:get_player_name(),"Unlimited power oh wait ah man")
+                        core.chat_send_player(player:get_player_name(),"Please input a positive number.")
                     else
                         meta:set_int("maxpower", tonumber(fields.maxpower))
                     end
@@ -137,12 +136,12 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                     meta:set_string("channel", fields.channel)
                 elseif fields.channel == ""
                 then
-                    core.chat_send_player(player:get_player_name(),"The channel can't be blank")
+                    core.chat_send_player(player:get_player_name(),"The channel can't be blank.")
                 else
-                    core.chat_send_player(player:get_player_name(),"Sorry, receiving from this channel is reserved try another one")
+                    core.chat_send_player(player:get_player_name(),"Sorry, receiving from this channel is reserved, try another one.")
                 end
             else
-                core.chat_send_player(player:get_player_name(),"Nice try this power party can't be this big (you can't input more then 256 charictors)")
+                core.chat_send_player(player:get_player_name(),"The power party can't be this big (you can't input more then 256 characters)")
             end
         end
 
