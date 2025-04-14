@@ -91,7 +91,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
     description = "Teleport Battery",
     tiles = { "teleport_battery.png" },
     groups = { matter = 1, level = 2 },
-    battery_max = 200000,
+    battery_max = 10000,
     on_receive_fields = function(pos, formname, fields, player)
         local meta = core.get_meta(pos)
         if fields.save == "Save" or fields.key_enter == "true"
@@ -102,9 +102,9 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                 then
                     core.chat_send_player(player:get_player_name(),"This field only accepts numbers.")
                 end
-                meta:set_int("maxpower", 200000)
+                meta:set_int("maxpower", 10000)
             else
-                if tonumber(fields.maxpower) > 200000
+                if tonumber(fields.maxpower) > 10000
                 then
                     core.chat_send_player(player:get_player_name(),"The power limit it too high. Try setting it lower.")
                 else
