@@ -130,7 +130,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                         index=index+1
                 end
             end
-            if string.len(fields.channel) < 1000
+            if string.len(fields.channel) < 257
             then
                 if username_flag ~= index and username_flag ~= -1 or index == 1
                 then
@@ -142,7 +142,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
                     core.chat_send_player(player:get_player_name(),"Sorry, receiving from this channel is reserved try another one")
                 end
             else
-                core.chat_send_player(player:get_player_name(),"Nice try this power party can't be this big (you can't input more then 999 charictors)")
+                core.chat_send_player(player:get_player_name(),"Nice try this power party can't be this big (you can't input more then 256 charictors)")
             end
         end
 
