@@ -1,6 +1,6 @@
 sbz_api = {
-    debug = minetest.settings:get_bool("sbz_debug", false),
     version = 33,
+    is_version_dev = true,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
     deg2rad = math.pi / 180,
@@ -17,7 +17,8 @@ sbz_api = {
         end
         return false
     end,
-    accelerated_habitats = false,
+    accelerated_habitats = false, -- for debug
+    debug = minetest.settings:get_bool("sbz_debug", false),
 }
 
 if sbz_api.server_optimizations == "auto" then
@@ -26,6 +27,25 @@ elseif sbz_api.server_optimizations == "on" then
     sbz_api.server_optimizations = true
 elseif sbz_api.server_optimizations == "off" then
     sbz_api.server_optimizations = false
+end
+
+sbz_api.get_version_string = function()
+    local gamename = "SkyBlock: Zero "
+    local version_string = "Release " .. sbz_api.version
+    if sbz_api.dev then
+        version_string = version_string .. "-dev"
+    end
+    if sbz_api.debug then
+        version_string = version_string .. ",debug "
+    end
+    if sbz_api.server_optimizations then
+        version_string = version_string .. ",server-optimized "
+    end
+
+    return gamename .. "(" .. version_string .. ")"
+end
+sbz_api.get_simple_version_string = function()
+    return "SkyBlock: Zero (Release " .. sbz_api.version .. (sbz_api.is_version_dev and "-dev" or "") .. ")"
 end
 
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
@@ -214,7 +234,7 @@ minetest.register_chatcommand("bgm_volume", {
 
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
-    minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Release %s)"):format(sbz_api.version))
+    minetest.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
     minetest.chat_send_player(player:get_player_name(),
         "‼ reminder: If you fall off, use /core to teleport back to the core.")
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
@@ -606,7 +626,7 @@ local old_handler = core.error_handler
 
 core.error_handler = function(error, stack_level)
     return (old_handler(error, stack_level) or "") ..
-        ("\n==============\nSkyblock: Zero (Version %s)\n=============="):format(sbz_api.version)
+        ("\n==============\n%s\n=============="):format(sbz_api.get_version_string())
 end
 
 core.log("action", "Skyblock: Zero's Base Mod has finished loading.")

@@ -163,7 +163,7 @@ Now... some things are just impossible with the basic instatube, so there are mo
 <big>Priority Instatubes</big>
 (Low priority instatubes, high priority instatubes)
 
-They change the priori... ok todo explain fuck
+They change the priority of all the
         ]],
     },
     -- ==================================================================================================
