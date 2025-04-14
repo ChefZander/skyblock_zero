@@ -10,17 +10,24 @@ local function allow_metadata_inventory_move(pos, from_list, from_index, to_list
     return count
 end
 
+unified_inventory.register_craft_type("engraver", {
+    description = "Engraving",
+    icon = "engraver.png^[verticalframe:24:1",
+    width = 1,
+    height = 1,
+    uses_crafting_grid = false,
+})
 
-sbz_api.register_stateful_machine("sbz_chem:crystal_grower", {
-    description = "Crystal Grower",
-    info_power_consume = 120,
+sbz_api.register_stateful_machine("sbz_chem:engraver", {
+    description = "Engraver",
+    info_power_consume = 3400,
     tiles = {
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower.png^[verticalframe:17:1",
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver.png^[verticalframe:24:1",
     },
     groups = { matter = 1 },
     paramtype2 = "4dir",
@@ -32,8 +39,8 @@ sbz_api.register_stateful_machine("sbz_chem:crystal_grower", {
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        inv:set_size("src", 4)
-        inv:set_size("dst", 4)
+        inv:set_size("src", 2)
+        inv:set_size("dst", 1)
 
         meta:set_string("formspec", [[
 formspec_version[7]
@@ -51,25 +58,25 @@ listring[context;dst]
     after_dig_node = pipeworks.after_dig,
     autostate = true,
     action = function(pos, _, meta, supply, demand)
-        local power_needed = 120
+        local power_needed = 3400
         local inv = meta:get_inventory()
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")
             return power_needed, false
         else
-            meta:set_string("infotext", "Growing...")
+            meta:set_string("infotext", "Engraving... Using 3400Cj")
 
             local src = inv:get_list("src")
 
             local out, decremented_input, index
-            for i = 1, 4 do
+            for i = 1, 2 do
                 local recipe_outputs = unified_inventory.get_usage_list(src[i]:get_name())
                 local out_inner = ItemStack("")
                 local input = ItemStack("")
 
                 for _, v in pairs(recipe_outputs or {}) do
-                    if v.type == "crystal_growing" then
+                    if v.type == "engraver" then
                         out_inner = ItemStack(v.output)
                         input = ItemStack(v.items[1])
                         break
@@ -100,22 +107,22 @@ listring[context;dst]
     end,
 }, {
     tiles = {
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        "crystal_grower_side.png",
-        { name = "crystal_grower.png", animation = { type = "vertical_frames", length = 2 } },
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver_side.png",
+        "engraver_side.png",
+        { name = "engraver.png", animation = { type = "vertical_frames", length = 1 } },
     },
     light_source = 14,
 })
 
 
 minetest.register_craft({
-    output = "sbz_chem:crystal_grower",
+    output = "sbz_chem:engraver",
     recipe = {
-        { "sbz_resources:stone",             "sbz_meteorites:antineutronium", "sbz_resources:stone" },
-        { "sbz_resources:reinforced_matter", "sbz_meteorites:neutronium",     "sbz_resources:reinforced_matter" },
-        { "sbz_resources:stone",             "sbz_chem:titanium_block",       "sbz_resources:stone" },
+        { "sbz_resources:reinforced_matter", "sbz_resources:laser_weapon", "sbz_resources:reinforced_matter" },
+        { "sbz_resources:emittrium_circuit", "sbz_resources:storinator",   "sbz_resources:emittrium_circuit" },
+        { "sbz_meteorites:neutronium",       "sbz_meteorites:neutronium",  "sbz_meteorites:neutronium" },
     }
 })

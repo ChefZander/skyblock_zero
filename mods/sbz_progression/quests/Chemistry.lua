@@ -56,7 +56,7 @@ If you have lots of metals this is the battery for you!
         type = "quest",
         title = "Crystal Grower",
         text = [[
-If you put in 9 warpshrooms, you will get some warp crystals, which you use for anything teleportation-related.
+Grows crystals out of stuff.
         ]],
         requires = { "Compressor", "Neutronium" }
     },
@@ -117,6 +117,53 @@ It needs 1 matter and 1 antimatter per second.
 It's super resource hungy but gives you more power.
 ]],
         requires = { "Furnace" }
+    },
+    {
+        type = "quest",
+        title = "Engraver",
+        text = [[
+Creates processors from silicon crystals.
+        ]],
+        requires = { "Laser", "Crystal Grower" }
+    },
+    {
+        type = "text",
+        title = "Multiblock Terminology",
+        text = [[
+Multiblock - A machine that is made from multiple nodes (blocks).
+Wallsharing - When 2 multiblocks share a wall
+"Forming" a multiblock - Connecting all the nodes of a multiblock to a controller.
+"Breaking" a multiblock - Disconnecting all the nodes of a multiblock, making it not function. This does <b>not</b> mean that any of the nodes of the multiblock would be damaged, the multiblock just won't function and will have to be re-formed.
+
+Multiblocks will break when they are moved, or if any of their nodes are broken. This means they are not friendly to jumpdrives and you will have to form them again, this may change in the future.
+The emittrium reactor was made before multiblocks got standardised, so some of this information that is here most likely won't apply to them.
+]],
+        info = true
+    },
+
+    {
+        type = "quest",
+        title = "Blast Furnace",
+        text = [[
+The blast furnace is a multiblock that allows you to smelt or alloy things very fast.
+It also introduces a special mode that lets you alloy 3 items (required for some recipes), and when using the item input, it won't clog like the alloy furnace.
+
+<b>Please keep in mind, before making it, have some good ore automation, or you will find crafting it really not fun.</b>
+
+To get started, craft the blast furnace controller.
+Click/tap on the "Show Build Plan" button to see what nodes the furnace will occupy. The furnace will always face one way relative to the controller.
+Then, choose the amount of heater rows you want. Each heater smelts as fast as a regular furnace, and it will speed up "blast recipes" (recipes that require the blast furnace).
+Then build it :D.
+
+Once you have built it according to the plan, don't forget to replace one machine casing (any machine casing) with one power port.
+Optionally, you can add the item inputs/outputs. The item output will completely dump the destination inventory.
+
+The blast furnace will look like this (the amount of heaters and the placement of the power port, item input and item output can be different):
+<img name=questbook_image_blast_furnace.png>
+
+To complete this quest, craft a blast furnace controller, but be aware that it doesn't end there.
+        ]],
+        requires = { "Compressor", "Engraver" }
     },
     {
         type = "quest",

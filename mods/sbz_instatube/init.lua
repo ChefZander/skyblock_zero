@@ -76,16 +76,23 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                     end
                 elseif is_receiver then
                     local def = regnodes[node.name]
-                    if not def.tube then error(node.name) end
-                    machines[#machines + 1] = {
-                        pos = ipos,
-                        priority = added_priority + ((def.tube or {}).priority or 100),
-                        tube = def.tube,
-                        is_tube = def.tubelike == 1,
-                        node = node,
-                        dir = dir,
-                        filter_logic = filter_logic,
-                    }
+                    if not def.tube then
+                        core.log("error",
+
+                            "This node: " ..
+                            node.name ..
+                            " does have the tubedevice group but doesn't have a tube={} table, REPORT THIS AS A BUG IF YOU SEE THIS! (no need for extra steps, just send need the name of the node, and that it came from here)")
+                    else
+                        machines[#machines + 1] = {
+                            pos = ipos,
+                            priority = added_priority + ((def.tube or {}).priority or 100),
+                            tube = def.tube,
+                            is_tube = def.tubelike == 1,
+                            node = node,
+                            dir = dir,
+                            filter_logic = filter_logic,
+                        }
+                    end
                 end
             end, include_start_pos)
             include_start_pos = false
@@ -425,6 +432,7 @@ instatube.special_priority["sbz_instatube:high_priority_instant_tube"] = 150
 
 core.register_node("sbz_instatube:low_priority_instant_tube", {
     description = "Low Priority Instatube",
+    info_extra = "Can't be used with normal tubes, but with instatubes it works fine.",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
     paramtype2 = "color",

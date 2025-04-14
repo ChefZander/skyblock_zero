@@ -142,6 +142,30 @@ To change that direction, sneak and punch it on the side that you want the items
         "Do you want to automatically shoot down meteorites, or even shoot down players? The automatic turret will help in that. It is similar to the node breaker, but does not dig nodes. Equip it with a laser to get started. But be warned, near spawn, the turret's range gets decreased by 80%. If you insert in a tool that requires power, for example lasers, it will try to charge the laser, resulting in more power use.",
         requires = { "Node Breakers", "Neutronium" }
     },
+    {
+        type = "quest",
+        title = "Instatubes",
+        text = [[
+Instatubes are tubes that are instant. They are generally less laggy than their regular pipeworks tube counterparts.
+
+Instatubes work a bit differently than regular tubes.
+They internally create a list of all the receivers, then they will sort the receivers based on priority, and the receivers with largest priority will be given the items first, if they are full, it will move on with the receiver with lower priority.
+This is different to regular pipeworks tubes... in a way... that's hard to explain, so a visual example would be best:
+<img name=questbook_image_instatubes_vs_pipeworks_tubes.png>
+Suppose that the green storinators had a priority of 99. (they don't, but it will make explaining this easier) That is higher than regular pipeworks tubes, but lower than regular storinators.
+In that case, with the default pipeworks tubes, the items will flow first to the green storinator, then once it's full, it will flow to the regular storinator.
+Instatubes work a bit differently, they will choose the storinator with the highest priority, then to the lowest. So items would flow first into the regular storinator, once that's full, it will flow to the green storinator.
+
+Overflow handling: simply put up an item void connected to the instatubes (might need to connect it to a few low priority tubes if you use those anywhere, as it has only a priority of one, and you can go below that)
+
+Now... some things are just impossible with the basic instatube, so there are more types of instatubes :D, this will cover them
+
+<big>Priority Instatubes</big>
+(Low priority instatubes, high priority instatubes)
+
+They change the priori... ok todo explain fuck
+        ]],
+    },
     -- ==================================================================================================
 
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },

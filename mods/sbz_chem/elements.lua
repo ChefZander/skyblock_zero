@@ -74,7 +74,8 @@ sbz_api.register_element = function(name, color, description, def)
             radiation_resistance = rad_resistance,
         },
         description = string.format(description, "Block"),
-        tiles = { "block.png^[colorize:" .. color .. ":150" },
+        drawtype = "glasslike_framed",
+        tiles = { "block_frame.png^[colorize:" .. color .. ":200", "block_inner.png^[colorize:" .. color .. ":200" },
         sounds = sbz_api.sounds.metal()
     })
 
@@ -193,7 +194,21 @@ sbz_api.register_element = function(name, color, description, def)
         }, ("sbz_chem:%s_fluid_source"):format(name), color)
     end
     if not disabled then
-        stairs.register("sbz_chem:" .. name .. "_block")
+        stairs.register("sbz_chem:" .. name .. "_block", {
+            tiles = {
+                "block_full.png^[colorize:" .. color .. ":200",
+                "block_full.png^[colorize:" .. color .. ":200",
+                "block_full.png^[colorize:" .. color .. ":200",
+                "block_full.png^[colorize:" .. color .. ":200",
+                "block_full.png^[colorize:" .. color .. ":200",
+                "block_full.png^[colorize:" .. color .. ":200",
+            },
+            tex = {
+                stair_front = "block_stair_front.png^[colorize:" .. color .. ":200",
+                stair_side = "block_stair_side.png^[colorize:" .. color .. ":200",
+                stair_cross = "block_stair_cross.png^[colorize:" .. color .. ":200",
+            }
+        })
         minetest.register_craft({
             type = "cooking",
             output = "sbz_chem:" .. name .. "_ingot",
@@ -256,7 +271,7 @@ end)
 
 sbz_api.register_element("gold", "#FFD700", "Gold %s (Au)",
     { part_of_crusher_drops = false, part_of_enhanced_drops = true })
-sbz_api.register_element("silver", "#C0C0C0", "Silver %s (Ag)",
+sbz_api.register_element("silver", "#F0F0F0", "Silver %s (Ag)",
     { part_of_crusher_drops = false, part_of_enhanced_drops = true })
 sbz_api.register_element("iron", "#B7410E", "Iron %s (Fe)", { fluid = 1 })
 sbz_api.register_element("copper", "#B87333", "Copper %s (Cu)")

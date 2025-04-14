@@ -368,6 +368,7 @@ core.register_node("sbz_multiblocks:blast_furnace_casing", ud {
         matter = 1,
         wallsharing = 1,
     },
+    info_extra = "Nobody says that you can't use theese as decoration...",
     drawtype = "glasslike_framed",
     paramtype = "light",
     paramtype2 = "color",
@@ -376,7 +377,6 @@ core.register_node("sbz_multiblocks:blast_furnace_casing", ud {
         "blast_furnace_casing_inner.png",
     },
     light_source = 3,
-    wallmounted_rotate_vertical = true,
     after_dig_node = sbz_api.multiblocks.after_dig,
     before_movenode = sbz_api.multiblocks.before_movenode,
 })
@@ -562,3 +562,59 @@ core.register_node("sbz_multiblocks:blast_furnace_item_output", ud {
     after_dig_node = sbz_api.multiblocks.after_dig,
     before_movenode = sbz_api.multiblocks.before_movenode,
 })
+
+-- yey... 566 lines of codes in... need to do RECIPES [imagine it pronounced wrong in this comment]
+
+core.register_craft {
+    output = "sbz_multiblocks:blast_furnace_casing 9",
+    recipe = {
+        { "sbz_chem:invar_block", "sbz_chem:invar_block",  "sbz_chem:invar_block", },
+        { "sbz_chem:invar_block", "sbz_chem:silver_block", "sbz_chem:invar_block", },
+        { "sbz_chem:invar_block", "sbz_chem:invar_block",  "sbz_chem:invar_block", },
+    }
+}
+
+core.register_craft {
+    output = "sbz_multiblocks:blast_furnace_controller",
+    recipe = {
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block", },
+        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:simple_processor",       "sbz_multiblocks:blast_furnace_casing", },
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block", },
+    }
+}
+
+core.register_craft {
+    output = "sbz_multiblocks:blast_furnace_heater 2",
+    recipe = {
+        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:heating_element", "sbz_multiblocks:blast_furnace_casing", },
+        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:heating_element", "sbz_multiblocks:blast_furnace_casing", },
+        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:heating_element", "sbz_multiblocks:blast_furnace_casing", }
+    }
+}
+
+core.register_craft {
+    output = "sbz_multiblocks:blast_furnace_item_input",
+    recipe = {
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
+        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:storinator_bronze",      "sbz_multiblocks:blast_furnace_casing" },
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
+    }
+}
+
+core.register_craft {
+    output = "sbz_multiblocks:blast_furnace_item_output",
+    recipe = {
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
+        { "sbz_multiblocks:blast_furnace_casing", "pipeworks:automatic_filter_injector",  "sbz_multiblocks:blast_furnace_casing" },
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
+    }
+}
+
+core.register_craft {
+    output = "sbz_multiblocks:blast_furnace_power_port",
+    recipe = {
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
+        { "sbz_multiblocks:blast_furnace_casing", "sbz_power:power_pipe",                 "sbz_multiblocks:blast_furnace_casing" },
+        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
+    }
+}

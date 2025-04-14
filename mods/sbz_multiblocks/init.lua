@@ -205,6 +205,6 @@ function multiblocks.before_movenode(from_pos, to_pos)
 end
 
 local mp = core.get_modpath(core.get_current_modname())
-dofile(mp .. "/visuals.lua")
 
+dofile(mp .. "/visuals.lua")
 dofile(mp .. "/blast_furnace.lua")
