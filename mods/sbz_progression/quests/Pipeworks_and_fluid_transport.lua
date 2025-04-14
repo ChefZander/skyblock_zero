@@ -163,8 +163,28 @@ Now... some things are just impossible with the basic instatube, so there are mo
 <big>Priority Instatubes</big>
 (Low priority instatubes, high priority instatubes)
 
-They change the priority of all the
-        ]],
+They change the priority of all the machines on their "branch", to explain this better, here it is visually:
+<img name=questbook_image_instatube_priority.png width=450>
+
+<big>Teleport Instatube</big>
+It teleports items... But isn't quite the same as using the pipeworks instatube, because teleport instatubes will check out all teleport instatubes, and give the item to the highest priority receiver, instead of just sending items to one randomly.
+
+<big>Cycling Input Instatube</big>
+This instatube is only useful when placed to something that outputs items (example: filter injectors and blast furnace output ports).
+It will completely ignore the priority of the receivers, instead just cycling between them.
+
+<big>Randomized Input Instatube</big>
+Like the cycling input instatube but it just gives one random receiver the item
+
+<big>Instatube Item Filter</big>
+Similar to the item sorter, but it only governs what can pass through that tube. (The advantage of using it over item sorters is that it will respect priority, and also no short lived entities will get created)
+
+<big>One way instatubes</big>
+Instatubes that only allow items flowing from one direction, useful when having multiple filter injectors.
+
+
+<b>To complete this quest, craft an instatube</b>
+]],
     },
     -- ==================================================================================================
 

@@ -157,6 +157,7 @@ local achievement_table = {
     ["sbz_bio:electric_soil_off"] = "Electric Soil",
     ["sbz_chem:engraver_off"] = "Engraver",
     ["sbz_multiblocks:blast_furnace_controller"] = "Blast Furnace",
+    ["sbz_instatube:instant_tube"] = "Instatubes",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
