@@ -41,9 +41,9 @@ end
 
 ---@param start_pos vector
 ---@param seen table|nil
-function sbz_api.assemble_network(start_pos, seen)
+function sbz_api.assemble_network(start_pos, seen, parent_net_id)
     local t0 = minetest.get_us_time()
-    local by_connector = (not not seen) -- if seen exists
+    local by_connector = parent_net_id
     seen = seen or {}
 
     local net_id, network
@@ -61,7 +61,7 @@ function sbz_api.assemble_network(start_pos, seen)
         }
         network = networks[net_id]
     else
-        net_id = nil
+        net_id = parent_net_id
         network = {
             generators = {},
             machines = {},
@@ -90,9 +90,7 @@ function sbz_api.assemble_network(start_pos, seen)
     local queue = Queue.new()
     queue:enqueue({ start_pos, vector.zero() })
     seen[start_pos] = true
-    if net_id then
-        pos2network[h(start_pos)] = net_id
-    end
+    pos2network[h(start_pos)] = net_id
 
     sbz_api.vm_begin()
 
@@ -122,7 +120,9 @@ function sbz_api.assemble_network(start_pos, seen)
         elseif is_machine then
             machines[#machines + 1] = { current_pos, nn, dir }
         elseif is_connector then
-            minetest.registered_nodes[nn].assemble(current_pos, sbz_api.vm_get_node(current_pos), dir, network, seen)
+            pos2network[h(current_pos)] = net_id
+            minetest.registered_nodes[nn].assemble(current_pos, sbz_api.vm_get_node(current_pos), dir, network, seen,
+                net_id)
         end
 
         if is_subticking then
@@ -145,7 +145,7 @@ function sbz_api.assemble_network(start_pos, seen)
 
     network.lag = minetest.get_us_time() - t0
     network.lagstamp = os.time()
-    if net_id then
+    if not by_connector then
         return net_id
     else
         return network
