@@ -1,8 +1,5 @@
 local all_switching_stations = {} -- h(pos) = true|nil
 
-sbz_api.switching_station_networks = {}
-
-
 local touched_nodes = {}
 
 ---@type function
@@ -15,27 +12,64 @@ local node_defs = minetest.registered_nodes
 ---@type function
 local IG = minetest.get_item_group
 
+sbz_api.pos2network = {}
+sbz_api.networks = {}
+
+local pos2network = sbz_api.pos2network
+local networks = sbz_api.networks
+
+local max_net_id = 0
+local function get_next_network_id()
+    max_net_id = max_net_id + 1
+    return max_net_id
+end
+
+local function get_network(pos)
+    local hpos = h(pos)
+    if hpos and pos2network[hpos] then
+        return networks[pos2network[hpos]]
+    end
+end
+
 ---@param start_pos vector
 ---@param seen table|nil
 function sbz_api.assemble_network(start_pos, seen)
     local t0 = minetest.get_us_time()
-    local by_connector = not not seen
+    local by_connector = (not not seen) -- if seen exists
     seen = seen or {}
-    local network = {
-        generators = {},
-        machines = {},
-        switching_stations = {},
-        batteries = {},
-        connectors = {},
-        subticking_machines = {},
-    }
+
+    local net_id, network
+    if not by_connector then
+        net_id = get_next_network_id()
+
+        networks[net_id] = {
+            generators = {},
+            machines = {},
+            switching_stations = {},
+            batteries = {},
+            connectors = {},
+            subticking_machines = {},
+            dirty = false
+        }
+        network = networks[net_id]
+    else
+        net_id = nil
+        network = {
+            generators = {},
+            machines = {},
+            switching_stations = {},
+            batteries = {},
+            connectors = {},
+            subticking_machines = {},
+            dirty = false
+        }
+    end
 
     local generators = network.generators
     local machines = network.machines
     local switching_stations = network.switching_stations
     local batteries = network.batteries
 
-    seen = seen or {}
     setmetatable(seen, {
         __index = function(t, k)
             return rawget(t, h(k))
@@ -44,9 +78,13 @@ function sbz_api.assemble_network(start_pos, seen)
             rawset(t, h(k), v)
         end
     })
+
     local queue = Queue.new()
     queue:enqueue({ start_pos, vector.zero() })
     seen[start_pos] = true
+    if net_id then
+        pos2network[h(start_pos)] = net_id
+    end
 
     sbz_api.vm_begin()
 
@@ -55,13 +93,13 @@ function sbz_api.assemble_network(start_pos, seen)
     while not queue:is_empty() do
         local current_pos, dir = unpack(queue:dequeue())
         local nn = (sbz_api.get_node_force(current_pos) or {}).name -- node name
-        local is_conducting = IG(nn, "pipe_conducts") == 1
+        local is_conducting = IG(nn, "pipe_conducts") > 0
 
-        local is_generator = IG(nn, "sbz_generator") == 1
-        local is_machine = IG(nn, "sbz_machine") == 1
-        local is_battery = IG(nn, "sbz_battery") == 1
+        local is_generator = IG(nn, "sbz_generator") > 0
+        local is_machine = IG(nn, "sbz_machine") > 0
+        local is_battery = IG(nn, "sbz_battery") > 0
         local is_connector = IG(nn, "sbz_connector") > 0
-        local is_subticking = IG(nn, "sbz_machine_subticking") == 1
+        local is_subticking = IG(nn, "sbz_machine_subticking") > 0
 
         if nn == "sbz_power:switching_station" then
             if by_connector then
@@ -83,7 +121,11 @@ function sbz_api.assemble_network(start_pos, seen)
             network.subticking_machines[#network.subticking_machines + 1] = { current_pos, nn }
         end
 
+
         if is_conducting then
+            if net_id then
+                pos2network[h(current_pos)] = net_id
+            end
             iterate_around_pos(current_pos, function(pos, dir)
                 if not seen[pos] then
                     seen[pos] = true
@@ -94,7 +136,12 @@ function sbz_api.assemble_network(start_pos, seen)
     end
 
     network.lag = minetest.get_us_time() - t0
-    return network
+    network.lagstamp = os.time()
+    if net_id then
+        return net_id
+    else
+        return network
+    end
 end
 
 function sbz_api.switching_station_tick(start_pos)
@@ -104,7 +151,7 @@ function sbz_api.switching_station_tick(start_pos)
     end
 
     local meta = minetest.get_meta(start_pos)
-    local network_before = sbz_api.switching_station_networks[hash(start_pos)]
+    local network_before = get_network(start_pos)
 
     if network_before ~= nil then
         -- ah batteries
@@ -172,14 +219,25 @@ function sbz_api.switching_station_tick(start_pos)
         )
     end
 
+    local net_id = pos2network[h(start_pos)]
+    local network = networks[net_id]
+
+    if network and network.dirty then
+        networks[net_id] = nil
+        network = nil
+    end
+    if network == nil then
+        net_id = sbz_api.assemble_network(start_pos)
+        network = networks[net_id]
+    end
+
     local t0 = minetest.get_us_time()
 
-    ---@diagnostic disable-next-line: missing-parameter
-    local network = sbz_api.assemble_network(start_pos)
     local generators = network.generators
     local machines = network.machines
     local switching_stations = network.switching_stations
     local batteries = network.batteries
+
     local supply = 0
     local demand = 0
     local battery_max = 0
@@ -198,6 +256,7 @@ function sbz_api.switching_station_tick(start_pos)
             vel = { min = -range, max = range },
             drag = { x = .5, y = .5, z = .5 }
         })
+        networks[net_id] = nil
         minetest.remove_node(start_pos)
         return false
     end
@@ -225,6 +284,8 @@ function sbz_api.switching_station_tick(start_pos)
                 battery_max = battery_max + v[4]
                 supply = supply + battery_power
             end
+        else
+            network.dirty = true
         end
     end
 
@@ -259,22 +320,26 @@ function sbz_api.switching_station_tick(start_pos)
 
     local t1 = minetest.get_us_time()
     local lag = t1 - t0
-    network.lag = network.lag + lag
-
+    if network.lagstamp == os.time() then
+        network.lag = network.lag + lag
+    else
+        network.lag = lag
+    end
+    network.lagstamp = os.time()
     network.supply = supply
     network.demand = demand
     network.battery_max = battery_max
-
-    sbz_api.switching_station_networks[hash(start_pos)] = network
-
     return true
 end
 
 function sbz_api.switching_station_sub_tick(start_pos)
     local t0 = minetest.get_us_time()
 
-    local network = sbz_api.switching_station_networks[hash(start_pos)]
+    local network = get_network(start_pos)
     if network == nil then return end
+    if network.dirty then
+        networks[pos2network[h(start_pos)]] = nil
+    end
 
     local machines = network.subticking_machines or {}
     local supply = network.supply
@@ -383,7 +448,6 @@ sbz_api.switching_station_globalstep = function(dtime)
             if getnode(pos).name ~= "sbz_power:switching_station" then
                 getmeta(pos):set_string("infotext", "Inactive")
                 all_switching_stations[k] = nil
-                sbz_api.switching_station_networks[k] = nil
             else
                 sbz_api.switching_station_sub_tick(pos)
             end
@@ -402,7 +466,6 @@ sbz_api.switching_station_globalstep = function(dtime)
                 getmeta(pos):set_string("infotext", "Inactive")
                 table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right
                 all_switching_stations[k] = nil
-                sbz_api.switching_station_networks[v] = nil
             else
                 sbz_api.switching_station_tick(pos)
             end
@@ -431,8 +494,6 @@ mesecon.register_on_mvps_move(function(moved_nodes)
         if node.name == "sbz_power:switching_station" then
             all_switching_stations[hash(oldpos)] = nil
             all_switching_stations[hash(pos)] = true
-            sbz_api.switching_station_networks[hash(pos)] = sbz_api.switching_station_networks[hash(oldpos)]
-            sbz_api.switching_station_networks[hash(pos)] = nil
         elseif touched_nodes[hash(oldpos)] then
             touched_nodes[hash(pos)] = touched_nodes[hash(oldpos)]
             touched_nodes[hash(oldpos)] = nil
@@ -463,21 +524,23 @@ function sbz_api.get_power_from_batteries(start_pos, radius)
     radius = radius or math.huge
     local radius_vect = vector.new(radius, radius, radius)
     local bat_power = 0
-    local network = sbz_api.assemble_network(start_pos)
-    for k, v in pairs(network.batteries) do
-        local pos = v[1]
-        if vector.in_area(pos, -radius_vect, radius_vect) then
-            local meta = core.get_meta(pos)
-            local name = v[2]
-            local def = node_defs[name]
-            local battery_power = 0
-            if core.get_item_group(name, "limited_battery") == 0 then
-                if def.get_power then
-                    battery_power = def.get_power(pos, name, meta, 0, 0, v[3])
-                else
-                    battery_power = meta:get_int("power")
+    local network = get_network(start_pos)
+    if network and not network.dirty then
+        for k, v in pairs(network.batteries) do
+            local pos = v[1]
+            if vector.in_area(pos, -radius_vect, radius_vect) then
+                local meta = core.get_meta(pos)
+                local name = v[2]
+                local def = node_defs[name]
+                local battery_power = 0
+                if core.get_item_group(name, "limited_battery") == 0 then
+                    if def.get_power then
+                        battery_power = def.get_power(pos, name, meta, 0, 0, v[3])
+                    else
+                        battery_power = meta:get_int("power")
+                    end
+                    bat_power = bat_power + battery_power
                 end
-                bat_power = bat_power + battery_power
             end
         end
     end
@@ -486,34 +549,67 @@ end
 
 ---@param radius number|nil
 function sbz_api.drain_power_from_batteries(start_pos, power, radius)
-    local network = sbz_api.assemble_network(start_pos)
+    local network = get_network(start_pos)
     radius = radius or math.huge
     local radius_vect = vector.new(radius, radius, radius)
-    for k, v in pairs(network.batteries) do
-        local pos = v[1]
-        local meta = core.get_meta(pos)
-        local name = v[2]
-        local def = node_defs[name]
-        if vector.in_area(pos, -radius_vect, radius_vect) then
-            if core.get_item_group(name, "limited_battery") == 0 then
-                local set_power = def.set_power or
-                    function(pos, node, meta, current_power, supplied_power, dir)
-                        meta:set_int("power", supplied_power)
-                    end
+    if network and not network.dirty then
+        for k, v in pairs(network.batteries) do
+            local pos = v[1]
+            local meta = core.get_meta(pos)
+            local name = v[2]
+            local def = node_defs[name]
+            if vector.in_area(pos, -radius_vect, radius_vect) then
+                if core.get_item_group(name, "limited_battery") == 0 then
+                    local set_power = def.set_power or
+                        function(pos, node, meta, current_power, supplied_power, dir)
+                            meta:set_int("power", supplied_power)
+                        end
 
-                local battery_power = 0
-                if def.get_power then
-                    battery_power = def.get_power(pos, name, meta, 0, 0, v[3])
-                else
-                    battery_power = meta:get_int("power")
-                end
-                local taken_away = math.min(power, battery_power)
-                set_power(pos, name, meta, battery_power, battery_power - taken_away, v[3])
-                power = power - taken_away
-                if power <= 0 then
-                    break
+                    local battery_power = 0
+                    if def.get_power then
+                        battery_power = def.get_power(pos, name, meta, 0, 0, v[3])
+                    else
+                        battery_power = meta:get_int("power")
+                    end
+                    local taken_away = math.min(power, battery_power)
+                    set_power(pos, name, meta, battery_power, battery_power - taken_away, v[3])
+                    power = power - taken_away
+                    if power <= 0 then
+                        break
+                    end
                 end
             end
         end
     end
 end
+
+core.register_on_mods_loaded(function()
+    for name, def in pairs(core.registered_nodes) do
+        if IG(name, "pipe_conducts") then
+            local og_construct = def.on_construct
+            local og_destruct = def.on_destruct
+            core.override_item(name, {
+                on_construct = function(pos)
+                    iterate_around_pos(pos, function(ipos, dir)
+                        if get_network(ipos) then
+                            get_network(ipos).dirty = true
+                        end
+                    end)
+
+                    if og_construct then return og_construct(pos) end
+                end,
+                on_destruct = function(pos)
+                    iterate_around_pos(pos, function(ipos, dir)
+                        if get_network(ipos) then
+                            get_network(ipos).dirty = true
+                        end
+                    end)
+
+                    if og_destruct then return og_destruct(pos) end
+                end
+            })
+        end
+    end
+end)
+
+sbz_api.get_switching_station_network = get_network

@@ -27,8 +27,20 @@ minetest.register_node("sbz_power:connector_off", {
         if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
             node.name = "sbz_power:connector_on"
             minetest.swap_node(pos, node)
+            iterate_around_pos(pos, function(ipos, dir)
+                if sbz_api.get_switching_station_network(ipos) then
+                    sbz_api.get_switching_station_network(ipos).dirty = true
+                end
+            end)
             minetest.sound_play({ name = "door-lock-43124" }, { pos = pos }, true)
         end
+    end,
+    on_turn_on = function(pos)
+        iterate_around_pos(pos, function(ipos, dir)
+            if sbz_api.get_switching_station_network(ipos) then
+                sbz_api.get_switching_station_network(ipos).dirty = true
+            end
+        end)
     end,
     use_texture_alpha = "clip",
 })
@@ -61,6 +73,11 @@ minetest.register_node("sbz_power:connector_on", {
         if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
             node.name = "sbz_power:connector_off"
             minetest.swap_node(pos, node)
+            iterate_around_pos(pos, function(ipos, dir)
+                if sbz_api.get_switching_station_network(ipos) then
+                    sbz_api.get_switching_station_network(ipos).dirty = true
+                end
+            end)
             minetest.sound_play({ name = "door-lock-43124" }, { pos = pos }, true)
         end
     end,
@@ -79,6 +96,14 @@ minetest.register_node("sbz_power:connector_on", {
         end
     end,
     use_texture_alpha = "clip",
+    on_turn_off = function(pos)
+        iterate_around_pos(pos, function(ipos, dir)
+            if sbz_api.get_switching_station_network(ipos) then
+                sbz_api.get_switching_station_network(ipos).dirty = true
+            end
+        end)
+    end,
+
 })
 
 minetest.register_craft({

@@ -195,6 +195,9 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
                 end
             end
             if fields.form_multiblock then
+                if meta:get_int("num_of_heater_rows") == 0 then
+                    meta:set_int("num_of_heater_rows", 1)
+                end
                 local schem = make_schem(pos)
                 local result = sbz_api.multiblocks.form_multiblock(pos, schem)
                 if result.success == false then
