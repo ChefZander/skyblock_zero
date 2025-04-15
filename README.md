@@ -3,8 +3,6 @@ Start from absolutely nothing in a skyblock world. Time is your resource. Get lo
 
 ## Playing
 There is an in-game Quest Book to get you started. Have fun!<br>
-#### Notes
-- This is a demo, there's not much content and it may break.
 - **Please report bugs in the package threads, i will fix them ASAP.**
 <br>
 I have included a CHANGELOG.md with the download for those interested.
