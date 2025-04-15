@@ -5,7 +5,8 @@ Release 35
 - added instatubes
 - Added blast furnace
 - Made switching station lag not show fractions of miliseconds
-
+- Optimized switching stations
+- Optimized super powered lamps
 
 
 
