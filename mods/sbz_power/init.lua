@@ -298,3 +298,4 @@ dofile(modpath .. "/batteries.lua")
 dofile(modpath .. "/phlogiston_fuser.lua")
 
 dofile(modpath .. "/turret.lua")
+dofile(modpath .. "/testnodes.lua")

@@ -471,7 +471,6 @@ sbz_api.switching_station_globalstep = function(dtime)
             local pos = unhash(k)
             if getnode(pos).name ~= "sbz_power:switching_station" then
                 getmeta(pos):set_string("infotext", "Inactive")
-                table.remove(all_switching_stations, k) -- some may call this InEfFiCeNt and they are right
                 all_switching_stations[k] = nil
             else
                 sbz_api.switching_station_tick(pos)
