@@ -50,7 +50,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
     if not by_connector then
         net_id = get_next_network_id()
 
-        networks[net_id] = setmetatable({
+        networks[net_id] = {
             generators = {},
             machines = {},
             switching_stations = {},
@@ -58,20 +58,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
             connectors = {},
             subticking_machines = {},
             --            dirty = false
-        }, {
-            __index = function(t, k)
-                if k == "dirty" then
-                    --                    core.debug(debug.traceback())
-                end
-                return rawget(t, k)
-            end,
-            __newindex = function(t, k, v)
-                if k == "dirty" then
-                    core.debug(debug.traceback())
-                end
-                return rawset(t, k, v)
-            end
-        })
+        }
         network = networks[net_id]
     else
         net_id = parent_net_id
@@ -251,12 +238,10 @@ function sbz_api.switching_station_tick(start_pos)
     local network = networks[net_id]
 
     if network and network.dirty then
-        core.debug("Network dirty")
         networks[net_id] = nil
         network = nil
     end
     if network == nil then
-        core.debug("Network nil")
         net_id = sbz_api.assemble_network(start_pos)
         network = networks[net_id]
     end
@@ -629,7 +614,6 @@ core.register_on_mods_loaded(function()
                 end,
                 on_destruct = function(pos)
                     iterate_around_pos(pos, function(ipos, dir)
-                        core.debug(dump(name))
                         if get_network(ipos) then
                             get_network(ipos).dirty = true
                         end
