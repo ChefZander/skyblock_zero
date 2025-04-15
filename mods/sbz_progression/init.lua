@@ -219,6 +219,10 @@ local achievement_in_inventory_table = {
     ["sbz_bio:cleargrass"] = "Cleargrass",
     ["sbz_bio:razorgrass"] = "Razorgrass",
     ["sbz_bio:shockshroom"] = "Shockshrooms",
+
+    ["sbz_resources:dust"] = "Dust",
+    ["sbz_resources:clay"] = "Clay",
+    ["sbz_resources:bricks"] = "Bricks",
 }
 local achievement_on_dig_table = {
     ["sbz_meteorites:antineutronium"] = "Antineutronium",

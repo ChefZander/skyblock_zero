@@ -1,4 +1,5 @@
 local all_switching_stations = {} -- h(pos) = true|nil
+local storage = core.get_mod_storage()
 
 local touched_nodes = {}
 
@@ -180,12 +181,15 @@ function sbz_api.switching_station_tick(start_pos)
                 else
                     current = meta:get_int("power")
                 end
-
+                if node == "sbz_power:teleport_battery" and meta:get_string("channel") ~= ""
+                then
+                    current = storage:get_int(meta:get_string("channel"))
+                    max = meta:get_int("maxpower")
+                end
                 local set_power = def.set_power or
                     function(pos, node, meta, current_power, supplied_power, dir)
                         meta:set_int("power", supplied_power)
                     end
-
                 if excess > 0 then -- charging
                     local power_add = max - current
                     if power_add > excess then
@@ -200,6 +204,10 @@ function sbz_api.switching_station_tick(start_pos)
                     end
                     excess = excess + power_remove
                     set_power(position, node, meta, current, current - power_remove, dir)
+                end
+                if node == "sbz_power:teleport_battery" and meta:get_string("channel") ~= ""
+                then
+                    storage:set_int(meta:get_string("channel"), meta:get_int("power"))
                 end
             end
         end

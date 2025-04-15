@@ -394,6 +394,75 @@ minetest.register_node("sbz_resources:gravel", {
     light_source = 3,
 })
 
+minetest.register_node("sbz_resources:dust", {
+    description = "Dust",
+    tiles = { "dust.png" }, -- Needs retexture by artist
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+minetest.register_abm({
+    label = "Dust Decay",
+    nodenames = { "sbz_resources:dust" },
+    interval = 100,
+    chance = 20,
+    action = function(pos, node, active_object_count, active_object_count_wider)
+        minetest.after(1, function()
+            -- field decayed
+            minetest.set_node(pos, { name = "air" })
+
+            -- plop
+            minetest.sound_play("decay", { pos = pos, gain = 1.0 })
+
+            -- more particles!
+            minetest.add_particlespawner({
+                amount = 100,
+                time = 1,
+                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+                minvel = { x = -5, y = -5, z = -5 },
+                maxvel = { x = 5, y = 5, z = 5 },
+                minacc = { x = 0, y = 0, z = 0 },
+                maxacc = { x = 0, y = 0, z = 0 },
+                minexptime = 10,
+                maxexptime = 20,
+                minsize = 0.5,
+                maxsize = 1.0,
+                collisiondetection = false,
+                vertical = false,
+                texture = "dust.png",
+                glow = 10
+            })
+        end)
+    end,
+})
+
+minetest.register_node("sbz_resources:clay", {
+    description = "Clay",
+    tiles = { "clay.png" }, -- Needs retexture by artist
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+minetest.register_node("sbz_resources:bricks", {
+    description = "Bricks",
+    tiles = { "bricks.png" }, -- Needs retexture by artist
+    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
+    walkable = true,
+    sounds = sbz_api.sounds.sand(),
+    light_source = 3,
+})
+
+minetest.register_craft({
+    type = "cooking",
+    output = "sbz_resources:bricks",
+    recipe = "sbz_resources:clay",
+})
+
 core.register_node("sbz_resources:dark_sand", {
     description = "Dark Sand",
     tiles = { "sand.png^[colorizehsl:0:0:-50" },

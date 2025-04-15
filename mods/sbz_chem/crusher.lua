@@ -42,6 +42,14 @@ unified_inventory.register_craft {
     }
 }
 
+unified_inventory.register_craft {
+    output = "sbz_resources:dust 2",
+    type = "crushing",
+    items = {
+        "sbz_resources:sand"
+    }
+}
+
 sbz_api.register_stateful_machine("sbz_chem:crusher", {
     description = "Crusher",
     tiles = {
@@ -97,6 +105,21 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
         meta:set_string("infotext", "Crushing...")
         sbz_api.play_sfx({ name = "050597_ice-crusher-38522" }, { pos = pos, max_hear_distance = 8, gain = 0.8 })
+
+        -- NOTE!!! early exit on this branch
+        if itemname == "sbz_resources:sand" and inv:contains_item("output", "sbz_chem:water_fluid_cell") then
+            inv:remove_item("input", itemname)
+            inv:remove_item("output", "sbz_chem:water_fluid_cell")
+            inv:add_item("output", "sbz_resources:clay")
+
+            if inv:room_for_item("output", "sbz_chem:empty_fluid_cell") then
+                inv:add_item("output", "sbz_chem:empty_fluid_cell")
+            else
+                minetest.add_item(pos, "sbz_chem:empty_fluid_cell")
+            end
+
+            return power_needed
+        end
 
         local selected_item = possible_outputs[math.random(1, #possible_outputs)]
 

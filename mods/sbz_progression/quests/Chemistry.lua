@@ -248,5 +248,20 @@ You need at least 6 fuel rods for the reactor to power on.
 ]],
         requires = { "Planet Ores", "Radiation Shielding" }
     },
-
+    {
+        type = "quest",
+        title = "Dust",
+        text = [[
+Dust can grow plants at twice the speed of Dirt, but it decays after some time.
+]],
+        requires = { "Crusher", "Liquid Water"}
+    },
+    {
+        type = "quest",
+        title = "Clay",
+        text = [[
+Clay is a precursor. It has no particular use.
+]],
+        requires = { "Crusher", "Liquid Water"}
+    },
 }
