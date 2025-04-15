@@ -27,7 +27,14 @@ end
 local function get_network(pos)
     local hpos = h(pos)
     if hpos and pos2network[hpos] then
-        return networks[pos2network[hpos]]
+        local net = networks[pos2network[hpos]]
+        if net then
+            if net.dirty or os.difftime(net.lagstamp, os.time()) > 12 then
+                networks[pos2network[hpos]] = nil
+                net = nil
+            end
+            return net
+        end
     end
 end
 
