@@ -87,7 +87,7 @@ end
 
 core.register_chatcommand("playtime", {
     description = "Shows your, or other player's playtime.",
-    param = "[player]",
+    params = "[player]",
     privs = {},
     func = function(name, param)
         local player = name

@@ -1,6 +1,27 @@
 return {
     { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
+    {
+        type = "text",
+        title = "General info",
+        info = true,
+        text = [[
+By holding aux1 (usually "e"), you can sprint.
 
+You have 20 health points, you re-gain them usually eating food.
+If you die, your inventory stays with you, meaning there is no reason to worry about dying.
+
+There are several in-game commands useful in survival:
+- /bgm_volume <percentage> - sets the background music's volume
+- commands of the areas mod - protecting using areas using /protect has been disabled, but you can still do other things
+- /drawers_fix - if drawers appear broken just run that, command was taken from pandorabox_custom
+- /afk - marks you as afk
+- /core - teleports you to the core
+- /playtime - shows your, or other player's playtime
+- /qb - gives you the questbook if you don't have one
+- /home - teleports you to home
+- /sethome - sets your home
+]]
+    },
     {
         type = "quest",
         title = "Introduction",
@@ -82,7 +103,7 @@ You can get four Matter Plates by placing one matter blob into the crafting grid
         type = "quest",
         title = "Switching Station",
         text =
-        [[The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you don't have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world.]],
+        [[The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you don't have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world. When a machine says "no network found", it's not connected to the switching station and won't do anything.]],
         requires = { "Matter Plates" }
     },
     {
@@ -104,7 +125,7 @@ The power unit Cosmic Joules is abbreviated to Cj in most interfaces.
 One Matter Annihilator, four matter blobs and four bits of core dust.
 Also, you may need to click 2 times for the UI to show up.
 
-TIP: Machines without power occasionally emit red particles.]],
+TIP: Early game machines without power occasionally emit red particles.]],
         requires = { "Annihilator", "Charged Field" }
     },
 
