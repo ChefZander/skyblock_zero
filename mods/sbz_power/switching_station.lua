@@ -181,11 +181,8 @@ function sbz_api.switching_station_tick(start_pos)
             else
                 current = meta:get_int("power")
             end
-            if node == "sbz_power:teleport_battery" and meta:get_string("channel") ~= ""
-            then
-                current = storage:get_int(meta:get_string("channel"))
-                max = meta:get_int("maxpower")
-            end
+
+
             local set_power = def.set_power or
                 function(pos, node, meta, current_power, supplied_power, dir)
                     meta:set_int("power", supplied_power)
@@ -204,10 +201,6 @@ function sbz_api.switching_station_tick(start_pos)
                 end
                 excess = excess + power_remove
                 set_power(position, node, meta, current, current - power_remove, dir)
-            end
-            if node == "sbz_power:teleport_battery" and meta:get_string("channel") ~= ""
-            then
-                storage:set_int(meta:get_string("channel"), meta:get_int("power"))
             end
         end
 
@@ -273,19 +266,28 @@ function sbz_api.switching_station_tick(start_pos)
         return false
     end
 
+    local ids = {}
     for k, v in ipairs(batteries) do
         local position = v[1]
         local node = v[2]
         local meta = minetest.get_meta(position)
-
-        if meta:get_int("force_off") == 1 then
-            table.remove(batteries, k)
-        else
+        local d = node_defs[node]
+        local id_good = true
+        if d.get_battery_id then
+            local id = d.get_battery_id(position, meta)
+            if ids[id] then
+                touched_nodes[hash(position)] = os.time()
+                id_good = false
+            end
+            ids[id] = true
+        end
+        if meta:get_int("force_off") ~= 1 and id_good then
             touched_nodes[hash(position)] = os.time()
 
-            local d = node_defs[node]
             v[4] = d.battery_max
-
+            if d.get_battery_max then
+                v[4] = d.get_battery_max(position, meta)
+            end
             local battery_power = 0
             if d.get_power then
                 battery_power = d.get_power(position, node, meta, supply, demand, v[3])
@@ -324,9 +326,6 @@ function sbz_api.switching_station_tick(start_pos)
             else
                 supply = supply - action_result
             end
-        end
-        if node == "sbz_chem:high_power_electric_furnace_off" or node == "sbz_chem:high_power_electric_furnace_on" then
-
         end
     end
 
