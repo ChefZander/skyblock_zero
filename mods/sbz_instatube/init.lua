@@ -1,18 +1,23 @@
 -- instatube!!
-local network_refresh_time = 1 -- higher reduces lag, but makes tube less responsive to changes in network... leading to strange "glitches", setting to zero is finee
 sbz_api.instatube = {}
 local instatube = sbz_api.instatube
-instatube.networks = {} -- table<poshash, network>
+instatube.networks = {}    -- table<id, network>
+instatube.pos2network = {} -- table<hpos, ids>
+local pos2network = instatube.pos2network
 
-do
-    local timer = 0
-    core.register_globalstep(function(dtime)
-        timer = timer + dtime
-        if timer > network_refresh_time then
-            instatube.networks = {}
-            timer = 0
-        end
-    end)
+local max_net_id = 0
+local function get_next_network_id()
+    max_net_id = max_net_id + 1
+    return max_net_id
+end
+
+local function add_to_pos2network(pos, net)
+    local p2n = pos2network[core.hash_node_position(pos)]
+    if p2n then
+        p2n[#p2n + 1] = net
+    else
+        pos2network[core.hash_node_position(pos)] = { net }
+    end
 end
 
 instatube.special_insert_logic = {} -- table<nodename, function>, changes if network takes a path
@@ -22,16 +27,19 @@ local special_insert_logic = instatube.special_insert_logic
 local regnodes = core.registered_nodes
 local hash = core.hash_node_position
 
---todo: eliminate duplicate entries
 sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
+    local net_id = get_next_network_id()
     local queue = Queue.new()
     local seen = {}
-    local network = { --[[time = os.time(),]] machines = {} } -- something else may be added in the future
-    local machines = network.machines                         -- not just machines, tubes and the like too
-
+    instatube.networks[net_id] = { machines = {} }
+    local network = instatube.networks[net_id]
+    -- something else may be added in the future, so thats why there is the machines = {} table instead of just machines being in the root
+    -- btw its not just machines, tubes and the like too
+    local machines = network.machines
     local include_start_pos = true
     queue:enqueue({ start_pos, {}, 0 })
     sbz_api.vm_begin()
+
     while true do
         local pos, filter_logic, added_priority = unpack(queue:dequeue() or {})
         if not pos then break end
@@ -72,6 +80,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                         supplied_added_priority = added_priority + instatube.special_priority[node.name]
                     end
                     if should_enqueue then
+                        add_to_pos2network(pos, net_id)
                         queue:enqueue({ ipos, supplied_filter_logic, supplied_added_priority })
                     end
                 elseif is_receiver then
@@ -99,6 +108,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
         end
     end
     sbz_api.vm_commit()
+
     if ordering == nil then -- by priority
         table.sort(machines, function(a, b)
             return a.priority > b.priority
@@ -106,7 +116,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
         end)
     end
     -- else, the other sorts change with every item being inserted to instatube
-    return network
+    return net_id
 end
 
 local function wire(len, stretch_to)
@@ -139,11 +149,15 @@ You will still interact with pipeworks just much less...
 ]]
 
 local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
-    local network = instatube.networks[core.hash_node_position(pos)]
+    local meta = core.get_meta(pos)
+    local net_id = meta:get_int("net_id")
+    local network = instatube.networks[net_id]
     if not network then
-        instatube.networks[core.hash_node_position(pos)] = instatube.create_instatube_network(pos, ordering)
-        network = instatube.networks[core.hash_node_position(pos)]
+        net_id = sbz_api.instatube.create_instatube_network(pos, ordering)
+        meta:set_int("net_id", net_id)
+        network = instatube.networks[net_id]
     end
+
     local machines = network.machines
     if ordering == "randomized" then
         table.shuffle(machines)
@@ -633,3 +647,38 @@ core.register_node("sbz_instatube:cycling_input_instant_tube", {
 })
 
 dofile(core.get_modpath("sbz_instatube") .. "/recipes.lua")
+
+local function remove_all_nets_around(pos)
+    iterate_around_pos(pos, function(ipos)
+        local hpos = core.hash_node_position(ipos)
+        local nets_at_hpos = pos2network[hpos]
+        if nets_at_hpos then
+            for k, v in ipairs(nets_at_hpos) do
+                if instatube.networks[v] then
+                    instatube.networks[v] = nil
+                end
+            end
+        end
+        pos2network[hpos] = nil
+    end, true)
+end
+
+
+core.register_on_mods_loaded(function()
+    for name, def in pairs(core.registered_nodes) do
+        if core.get_item_group(name, "instatube") > 0 and core.get_item_group(name, "tubedevice") > 0 then
+            local og_construct = def.on_construct
+            local og_destruct = def.on_destruct
+            core.override_item(name, {
+                on_construct = function(pos)
+                    remove_all_nets_around(pos)
+                    if og_construct then return og_construct(pos) end
+                end,
+                on_destruct = function(pos)
+                    remove_all_nets_around(pos)
+                    if og_destruct then return og_destruct(pos) end
+                end
+            })
+        end
+    end
+end)

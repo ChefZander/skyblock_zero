@@ -1,4 +1,4 @@
-Release 35
+Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
 - fixed some bugs
 - made fluid pipe look better
@@ -7,8 +7,8 @@ Release 35
 - Made switching station lag not show fractions of miliseconds
 - Optimized switching stations
 - Optimized super powered lamps
-
-
+- Optimized reactors
+- Optimized fluid transport
 
 Release 34
 - Added a recipe to memory controller
