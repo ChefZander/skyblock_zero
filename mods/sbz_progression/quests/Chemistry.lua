@@ -60,7 +60,14 @@ Grows crystals out of stuff.
         ]],
         requires = { "Compressor", "Neutronium" }
     },
-
+    {
+        type = "quest",
+        title = "Teleport Battery",
+        text = [[
+Teleport Battery teleports power accross networks. Can be useful when trying to share power with other people.
+    ]],
+        requires = { "Crystal Grower" },
+    },
     {
         type = "quest",
         title = "Jetpack",
@@ -254,7 +261,7 @@ You need at least 6 fuel rods for the reactor to power on.
         text = [[
 Dust can grow plants at twice the speed of Dirt, but it decays after some time.
 ]],
-        requires = { "Crusher", "Liquid Water"}
+        requires = { "Crusher", "Liquid Water" }
     },
     {
         type = "quest",
@@ -262,6 +269,6 @@ Dust can grow plants at twice the speed of Dirt, but it decays after some time.
         text = [[
 Clay is a precursor. It has no particular use.
 ]],
-        requires = { "Crusher", "Liquid Water"}
+        requires = { "Crusher", "Liquid Water" }
     },
 }

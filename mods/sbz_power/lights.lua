@@ -91,7 +91,7 @@ sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
     description = "Super Powered Lamp",
     tiles = { "super_power_lamp_off.png^[colorize:black:50" },
     light_source = 0,
-    info_extra = "Lights up a 12x12x12 square around itself!",
+    info_extra = "Lights up a 13x13x13 square around itself!",
     autostate = true,
     action = function(pos, _, meta, supply, demand)
         meta:set_string("infotext", "")

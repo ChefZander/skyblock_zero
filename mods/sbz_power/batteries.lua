@@ -66,7 +66,7 @@ minetest.register_craft({
 
 local function set_tp_battery_formspec(pos)
     local meta = core.get_meta(pos)
-    local channel = meta:get_string("channel")
+    --local channel = meta:get_string("channel")
     local help_text = minetest.formspec_escape(
         "Channels are public by default" .. "\n" ..
         "Use <player>:<player>:<player>:<channel> \n To limit the channel to the set of players given"
@@ -91,6 +91,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
         set_tp_battery_formspec(pos)
     end,
     get_battery_max = function(pos, meta)
+        if meta:get_string("channel") == "" then return 0 end
         return meta:get_int("maxpower")
     end,
     set_power = function(pos, node, meta, current, supplied_power, dir)
@@ -102,6 +103,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
     end,
 
     get_power = function(pos, node, meta)
+        if meta:get_string("channel") == "" then return 0 end
         return storage:get_int(meta:get_string("channel"))
     end,
     action = function(pos, node, meta, supply, demand)
@@ -163,6 +165,36 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
             end
         end
     end,
+    on_logic_send = function(pos, msg, from_pos)
+        local node = sbz_api.get_node_force(from_pos) -- get even if its unloaded
+        if not node then return end
+        local controller_meta = core.get_meta(from_pos)
+        local owner = controller_meta:get_string("owner")
+
+        local meta = core.get_meta(pos)
+        if type(msg) == "table" then
+            local sep = ":"
+            local index = 0
+            local username_flag = -1
+            if msg.channel ~= "" and msg.channel ~= nil and type(msg.channel) == "string" then
+                for str in string.gmatch(msg.channel, "([^" .. sep .. "]+)") do
+                    if str == owner and username_flag == -1 then
+                        username_flag = index
+                        -- set it to the index so we can track if it is the last string where it would get rejected
+                    end
+                    index = index + 1
+                end
+                if string.len(msg.channel) < 256 then
+                    if username_flag ~= index and username_flag ~= -1 or index == 1 then
+                        if tonumber(msg.maxpower) ~= nil and msg.maxpower ~= "" and tonumber(msg.maxpower) <= 10000 and tonumber(msg.maxpower) >= 0 then
+                            meta:set_int("maxpower", tonumber(msg.maxpower))
+                        end
+                        meta:set_string("channel", msg.channel)
+                    end
+                end
+            end
+        end
+    end
 })
 
 minetest.register_craft({

@@ -9,6 +9,8 @@ Release 35 - "Optimization update"
 - Optimized super powered lamps
 - Optimized reactors
 - Optimized fluid transport
+- Added teleport batteries (thanks to lnee)
+
 
 Release 34
 - Added a recipe to memory controller

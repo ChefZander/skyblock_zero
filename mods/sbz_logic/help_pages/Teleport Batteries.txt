@@ -1,0 +1,6 @@
+<bigger>Teleport Batteries</bigger>
+
+<mono>send_to(links.tpbat, {
+$C1    channel = "hello", -- optional, sets channel
+$C1    maxpower = 10000, -- optional, sets max power
+})</mono>
