@@ -182,25 +182,26 @@ function sbz_api.switching_station_tick(start_pos)
                 current = meta:get_int("power")
             end
 
-
-            local set_power = def.set_power or
-                function(pos, node, meta, current_power, supplied_power, dir)
-                    meta:set_int("power", supplied_power)
+            if max then -- if not max then battery has not been ran
+                local set_power = def.set_power or
+                    function(pos, node, meta, current_power, supplied_power, dir)
+                        meta:set_int("power", supplied_power)
+                    end
+                if excess > 0 then -- charging
+                    local power_add = max - current
+                    if power_add > excess then
+                        power_add = excess
+                    end
+                    excess = excess - power_add
+                    set_power(position, node, meta, current, current + power_add, dir)
+                elseif excess < 0 then -- discharging
+                    local power_remove = current
+                    if power_remove > -excess then
+                        power_remove = -excess
+                    end
+                    excess = excess + power_remove
+                    set_power(position, node, meta, current, current - power_remove, dir)
                 end
-            if excess > 0 then -- charging
-                local power_add = max - current
-                if power_add > excess then
-                    power_add = excess
-                end
-                excess = excess - power_add
-                set_power(position, node, meta, current, current + power_add, dir)
-            elseif excess < 0 then -- discharging
-                local power_remove = current
-                if power_remove > -excess then
-                    power_remove = -excess
-                end
-                excess = excess + power_remove
-                set_power(position, node, meta, current, current - power_remove, dir)
             end
         end
 

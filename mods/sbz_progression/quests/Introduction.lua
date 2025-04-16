@@ -2,7 +2,7 @@ return {
     { type = "text", title = "Questline: Introduction", text = "The first questline, to introduce you to the game. Your adventure will start here." },
     {
         type = "text",
-        title = "General info",
+        title = "General Info",
         info = true,
         text = [[
 By holding aux1 (usually "e"), you can sprint.
