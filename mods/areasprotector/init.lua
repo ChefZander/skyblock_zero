@@ -93,7 +93,11 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 			owners[k] = nil
 		end
 	end
-
+	local new_owners = {}
+	for k, v in pairs(owners) do
+		new_owners[#new_owners + 1] = v
+	end
+	owners = new_owners
 	if fields.add_more_owners_button then
 		local name = fields.add_more_owners
 		local pos1 = vector.add(pos, vector.new(radius, height, radius))
