@@ -283,6 +283,14 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         item = stack:take_item(count)
                         local vel = vector.copy(todir)
                         vel.speed = 1
+                        if core.get_item_group(tonode.name, "instatube") == 1 then -- instatubes get fully special handling :D
+                            local old_item = ItemStack(item)
+                            local leftover = todef.tube.insert_object(topos, tonode, item, vel, owner)
+                            stack:add_item(leftover)
+                            frominv:set_stack(frominvname, spos, stack)
+                            return true
+                        end
+
                         if todef.tube and todef.tube.can_go then
                             if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
                         end
@@ -295,7 +303,6 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                                 if stack:get_name() == "" then stack:set_name(item:get_name()) end
                             end
                         end
-
 
                         frominv:set_stack(frominvname, spos, stack)
                         if fromdef.on_metadata_inventory_take then

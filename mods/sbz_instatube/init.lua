@@ -174,6 +174,7 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
         meta:set_int("cycle", (shift_table_by + 1) % #machines)
     end
     -- next up... machines!
+
     for index, machine in ipairs(network.machines) do
         local mnode = machine.node
         local can_insert = true
@@ -262,6 +263,7 @@ core.register_node("sbz_instatube:instant_tube", {
     tube = {
         connect_sides = { front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1 },
         insert_object = instatube_insert_object,
+
         priority = 75,
     },
 })
