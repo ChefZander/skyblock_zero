@@ -10,7 +10,7 @@ Release 35 - "Optimization update"
 - Optimized reactors
 - Optimized fluid transport
 - Added teleport batteries (thanks to lnee)
-
+- Made drawers support filter injectors
 
 Release 34
 - Added a recipe to memory controller
@@ -101,9 +101,6 @@ Release 31
 - Changed the behavior of filter injectors so that they don't try to push stuff out when the inventory they are trying to push stuff to is clearly full
 - Re-worked and fixed bugs with logic item transport
 
-
-
-
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
 - Added lead shielding
@@ -132,6 +129,7 @@ Release 10
 - new secret quests
 - several ui fixes and a craft guide system
 - added Starlight Collectors
+- Stopped doing changelogs
 
 Release 9
 - New questline "Decorator"

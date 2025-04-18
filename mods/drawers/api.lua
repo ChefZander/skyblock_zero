@@ -320,11 +320,37 @@ function drawers.register_drawer(name, def)
 		}
 		def.after_place_node = pipeworks.after_place
 		def.after_dig_node = pipeworks.after_dig
-		def.on_movenode = function(_, to_pos)
-			minetest.after(0.1, function()
-				drawers.spawn_visuals(to_pos)
-			end)
+		def.tube.return_input_invref = function(pos, node, dir, owner)
+			local inv = fakelib.create_inventory()
+			local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
+			if not vis then return false end
+			for i = 1, 4 do
+				local this_vis = vis[i]
+				if not this_vis then break end
+				local content = drawers.drawer_get_content(pos, this_vis.visualId)
+				local stack = ItemStack({
+					name = content.name,
+					count = math.min(content.count, ItemStack(content.name):get_stack_max())
+				})
+				inv:set_size("slot" .. i, 1)
+				inv:set_size("old_slot" .. i, 1)
+				inv:set_stack("slot" .. i, 1, stack)
+				inv:set_stack("old_slot" .. i, 1, stack) -- to determine how much has been taken
+			end
+			return inv
 		end
+		def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos)
+			return drawers.drawer_take_item(pos, stack)
+		end
+		def.tube.ignore_metadata_inventory_take = true
+		def.tube.input_inventory = {
+			"slot1", "slot2", "slot3", "slot4"
+		}
+	end
+	def.on_movenode = function(_, to_pos)
+		minetest.after(0.1, function()
+			drawers.spawn_visuals(to_pos)
+		end)
 	end
 
 	if drawers.enable_1x1 then

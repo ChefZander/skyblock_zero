@@ -148,11 +148,11 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
             return 1
         end
 
-        if fromtube then fromtube.input_inventory = fromtube.input_inventory end
-        if not (fromtube and fromtube.input_inventory) then
+        if not fromtube or not (fromtube or {}).input_inventory then
             meta:set_string("infotext", "Can't pull from that node :/")
             return 1
         end
+
 
         local filters = {}
 
@@ -172,6 +172,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         if fromtube.return_input_invref then
             frominv = fromtube.return_input_invref(frompos, fromnode, dir, owner)
             if not frominv then
+                meta:set_string("infotext", "Can't pull from that node/node's direction/possibly something else?")
                 return 1
             end
         else
@@ -182,7 +183,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
 
         local function grabAndFire(frominvname, filterfor)
             local sposes = {}
-            if not frominvname or not frominv:get_list(frominvname) then return end
+            if not frominvname or not frominv:get_list(frominvname) then
+                return
+            end
             for spos, stack in ipairs(frominv:get_list(frominvname)) do
                 local matches
                 if filterfor == "" then
@@ -242,7 +245,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 local doRemove = stack:get_count()
                 if fromtube.can_remove then
                     doRemove = fromtube.can_remove(frompos, fromnode, stack, dir, frominvname, spos)
-                elseif fromdef.allow_metadata_inventory_take then
+                elseif fromdef.allow_metadata_inventory_take and not fromtube.ignore_metadata_inventory_take then
                     doRemove = fromdef.allow_metadata_inventory_take(frompos, frominvname, spos, stack, fakeplayer)
                 end
 
@@ -320,7 +323,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
             end
             if done then break end
         end
-        if fromtube.after_filter then fromtube.after_filter(frompos) end
+        if fromtube.after_filter then fromtube.after_filter(frompos, frominv) end
 
         return 1
     end

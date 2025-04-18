@@ -1,5 +1,6 @@
 # Minetest Mod Storage Drawers
-# Modified in skyblock zero
+## Modified in skyblock zero, original source taken from https://github.com/minetest-mods/drawers
+## The /drawers_fix was from pandorabox_mods, see bottom of init.lua
 
 [![ContentDB](https://content.minetest.net/packages/LNJ/drawers/shields/downloads/)](https://content.minetest.net/packages/LNJ/drawers/)
 ![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)
