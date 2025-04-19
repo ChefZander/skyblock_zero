@@ -43,46 +43,55 @@ minetest.register_node("sbz_power:funny_air", {
 
 local size = {
     x = 6, y = 6, z = 6
-} -- so 12x12x12 cube around the thing
+}
+-- so 12x12x12 cube around the thing
 
+local c_funny_air = core.get_content_id("sbz_power:funny_air") -- we goin low level! (i havent used this function since mapgen...)
+local c_air = core.get_content_id("air")
+local data = {}
 local function illuminate(pos)
-    for x = -size.x, size.x do
-        for y = -size.y, size.y do
-            for z = -size.z, size.z do
-                local ax, ay, az = pos.x + x, pos.y + y, pos.z + z
-
-                local p = { x = ax, y = ay, z = az }
-                local n = sbz_api.get_node_force(p)
-
-                if n and n.name == "air" then
-                    minetest.set_node(p, { name = "sbz_power:funny_air" })
-                end
-            end
+    local smax, smin = vector.add(pos, size), vector.subtract(pos, size)
+    local manip = VoxelManip(smin, smax)
+    local pmin, pmax = manip:get_emerged_area()
+    local area = VoxelArea(pmin, pmax)
+    manip:get_data(data)
+    local dirty = false -- "dirty" optimization borrowed from mt-mods/technic lv lamps
+    for i in area:iterp(smin, smax) do
+        if data[i] == c_air then
+            dirty = true
+            data[i] = c_funny_air
         end
+    end
+    if dirty then
+        manip:set_data(data)
+        manip:write_to_map(true)
     end
 end
 
 local function undo_illuminate(pos)
-    for x = -size.x, size.x do
-        for y = -size.y, size.y do
-            for z = -size.z, size.z do
-                local ax, ay, az = pos.x + x, pos.y + y, pos.z + z
-
-                local p = { x = ax, y = ay, z = az }
-                local n = sbz_api.get_node_force(p)
-
-                if n and n.name == "sbz_power:funny_air" then
-                    minetest.set_node(p, { name = "air" })
-                end
-            end
+    local smax, smin = vector.add(pos, size), vector.subtract(pos, size)
+    local manip = VoxelManip(smin, smax)
+    local pmin, pmax = manip:get_emerged_area()
+    local area = VoxelArea(pmin, pmax)
+    manip:get_data(data)
+    local dirty = false
+    for i in area:iterp(smin, smax) do
+        if data[i] == c_funny_air then
+            dirty = true
+            data[i] = c_air
         end
     end
+    if dirty then
+        manip:set_data(data)
+        manip:write_to_map(true)
+    end
 end
+
 sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
     description = "Super Powered Lamp",
     tiles = { "super_power_lamp_off.png^[colorize:black:50" },
     light_source = 0,
-    info_extra = "Lights up a 12x12x12 square around itself!",
+    info_extra = "Lights up a 13x13x13 square around itself!",
     autostate = true,
     action = function(pos, _, meta, supply, demand)
         meta:set_string("infotext", "")

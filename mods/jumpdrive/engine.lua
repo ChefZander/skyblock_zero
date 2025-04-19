@@ -10,8 +10,6 @@ core.register_node("jumpdrive:engine", {
 	groups = {
 		matter = 1,
 		oddly_breakable_by_hand = 3,
-		tubedevice = 1,
-		tubedevice_receiver = 1,
 
 		sbz_battery = 1,
 		sbz_machine = 1,

@@ -222,18 +222,28 @@ local function on_mvps_move(moved_nodes)
 end
 
 sbz_api.move_node = function(A, B)
-    local nodeA = core.get_node(A)
+    sbz_api.vm_begin()
+    local nodeA = sbz_api.get_node_force(A) or { name = "" }
+    local nodeAdef = core.registered_nodes[nodeA]
+
+    if not nodeAdef then return false end
     if mesecon.is_mvps_stopper(nodeA, A, B) then
         return false
     end
 
-    local nodeB = core.get_node(B)
-    if not minetest.registered_nodes[nodeB.name] then
+    local nodeB = sbz_api.get_node_force(B) or { name = "" }
+    local nodeBdef = minetest.registered_nodes[nodeB.name]
+    if not nodeBdef then
         return false
     end
-    if minetest.registered_nodes[nodeB.name].buildable_to == false then
+
+    if nodeBdef.buildable_to == false then
         return false
     end
+    if nodeAdef.before_movenode then
+        nodeAdef.before_movenode(A, B)
+    end
+
     local nodeAmeta = core.get_meta(A)
     local nodeAtimer = core.get_node_timer(A)
 

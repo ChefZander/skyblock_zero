@@ -1,6 +1,6 @@
 sbz_api.register_stateful_machine("sbz_chem:pebble_enhancer", {
     description = "Pebble Enhancer",
-    info_extra = "Shiny, potentially radioactive pebbles.",
+    info_extra = "Makes shiny, potentially radioactive pebbles.",
     tiles = {
         "pebble_enhancer_top.png",
         "pebble_enhancer_side.png"

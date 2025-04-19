@@ -449,7 +449,7 @@ minetest.register_craft({
     recipe = { "sbz_bio:stemfruit", "sbz_meteorites:neutronium" }
 })
 ]]
--- Shockshroom, 1/2 chance to make 50cj, needs 2 co2
+-- Shockshroom, +40 power, needs 2 co2
 -- ingredient in powered dirt
 playereffects.register_effect_type("shocked", "Shocked", "fx_shocked.png", { "clearable", "speed" }, function(player)
     ---modifies the vector, returns it
@@ -497,7 +497,7 @@ sbz_api.register_plant("shockshroom", {
     sbz_player_inside = function(pos, player)
         playereffects.apply_effect_type("shocked", 2 / 0.5, player)
     end,
-    power_per_co2 = 10,
+    power_per_co2 = 30,
     use_co2_in_final_stage = true,
 })
 

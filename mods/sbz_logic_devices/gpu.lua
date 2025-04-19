@@ -72,7 +72,7 @@ end
 
 local function type_any(x) return true end
 
-local function validate_area(buffer, x1, y1, x2, y2)
+local function validate_area(buffer, x1, y1, x2, y2, dont_switch_x1_y1)
     if not (buffer and buffer.xsize and buffer.ysize)
         or type(x1) ~= "number"
         or type(x2) ~= "number"
@@ -86,11 +86,13 @@ local function validate_area(buffer, x1, y1, x2, y2)
     x2 = math.max(1, math.min(buffer.xsize, math.floor(x2)))
     y1 = math.max(1, math.min(buffer.ysize, math.floor(y1)))
     y2 = math.max(1, math.min(buffer.ysize, math.floor(y2)))
-    if x1 > x2 then
-        x1, x2 = x2, x1
-    end
-    if y1 > y2 then
-        y1, y2 = y2, y1
+    if not dont_switch_x1_y1 then
+        if x1 > x2 then
+            x1, x2 = x2, x1
+        end
+        if y1 > y2 then
+            y1, y2 = y2, y1
+        end
     end
     return x1, y1, x2, y2
 end
@@ -327,7 +329,7 @@ local commands = {
             local buf_t = buffers[command.index]
             if buf_t == nil then return end
 
-            local x1, y1, x2, y2 = validate_area(buf_t, command.x1, command.y1, command.x2, command.y2)
+            local x1, y1, x2, y2 = validate_area(buf_t, command.x1, command.y1, command.x2, command.y2, true)
             if x1 == nil then return end
 
             local color = transform_color(command.color)

@@ -11,8 +11,9 @@ minetest.register_on_mods_loaded(function()
         local og_desc = v.description
         local new_desc = { og_desc }
 
-        if v.power_needed or v.info_power_needed then
-            new_desc[#new_desc + 1] = "Consumes " .. (v.power_needed or v.info_power_needed) .. " power"
+        if v.power_needed or v.info_power_needed or v.info_power_consume then
+            new_desc[#new_desc + 1] = "Consumes " ..
+            (v.power_needed or v.info_power_needed or v.info_power_consume) .. " power"
         end
         if v.power_generated or v.info_generated then
             new_desc[#new_desc + 1] = "Generates " .. (v.power_generated or v.info_generated) .. " power"

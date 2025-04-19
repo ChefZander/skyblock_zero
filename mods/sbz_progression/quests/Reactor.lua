@@ -3,7 +3,7 @@ return {
         type = "text",
         title = "Questline: Emittrium Reactor",
         text = [[
-Emittrium reactors are another way of generating energy. They are a 3x3x3 cube made of reactor shells (or reactor glass), with a reactor core in the center. The shells can be replaced with a reactor power port, a reactor coolant port, a reactor emittrium port and a reactor infoscreen. It consumes emittrium and water, and generates 800 power.
+Emittrium reactors are another way of generating energy. They are a 3x3x3 cube made of reactor shells (or reactor glass), with a reactor core in the center. Some of the shells must be replaced with a reactor power port, a reactor coolant port, a reactor emittrium port and a reactor infoscreen. It consumes emittrium and water.
 If it doesn't have enough coolant (water), it heats up, and bad things happen if it heats up too much.]]
     },
     {
@@ -58,7 +58,7 @@ If it doesn't have enough coolant (water), it heats up, and bad things happen if
         type = "quest",
         title = "Building the emittrium reactor and turning it on",
         text =
-        "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of these shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)\n\nNow, to actually turn the reactor on, click the infoscreen, then turn it on in the UI. If you have something wrong in the reactor, it will tell you.\n\nIf you have multiple reactors, try pressing the re-link button if you think the infoscreen is displaying the wrong information",
+        "Build a 3x3 cube of reactor shells or reactor glass, in the center, place the core, but in place of some of these shells, build the extra blocks mentioned earlier (Emittrium input, coolant port, power port, etc.)\n\nNow, to actually turn the reactor on, click the infoscreen, then turn it on in the UI. If you have something wrong in the reactor, it will tell you.\n\nIf you have multiple reactors, try pressing the re-link button if you think the infoscreen is displaying the wrong information.\nThe finished reactor should look something like this (obviously, there are many more ways to build it than just this): \n<img name=questbook_image_reactor.png>",
         requires = { "Reactor Shells", "Reactor Infoscreens", "Reactor Power Ports", "Reactor Coolant Ports", "Reactor Emittrium Input", "Reactor Core" }
     },
 }

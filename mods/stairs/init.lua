@@ -62,7 +62,7 @@ local function internal2human(v)
 	if v == "stair" then return "Stair" end
 	if v == "stair_inner" then return "Stair (inner)" end
 	if v == "stair_outer" then return "Stair (outer)" end
-	return "!Unknown! (FIX THIS IMMIADEDLY)"
+	return "!Unknown! (FIX THIS)"
 end
 
 
@@ -103,6 +103,8 @@ function stairs.register(name, reg_def)
 		def_copy.groups[v] = 1
 		def_copy.groups.not_in_creative_inventory = 1
 		def_copy.groups.habitat_conducts = 1
+		def_copy.tiles = reg_def.tiles or def_copy.tiles
+
 		for k, v in pairs(unifieddyes.def {
 			description = def_copy.description .. " " .. internal2human(v),
 			drawtype = "nodebox",
@@ -124,7 +126,7 @@ function stairs.register(name, reg_def)
 		}) do
 			def_copy[k] = v
 		end
-
+		local tiles = table.copy(def_copy.tiles)
 		if tex then
 			if v == "slab" and tex.stair_front then
 				def_copy.tiles[2] = def_copy.tiles[1]
@@ -133,26 +135,26 @@ function stairs.register(name, reg_def)
 				end
 			elseif v == "stair" and tex.stair_front and tex.stair_side then
 				def_copy.tiles[1] = tex.stair_front -- top
-				def_copy.tiles[2] = def.tiles[1] -- bottom
+				def_copy.tiles[2] = tiles[1] -- bottom
 				-- sides
 				def_copy.tiles[3] = tex.stair_side
 				def_copy.tiles[4] = tex.stair_side .. "^[transformFX"
 
-				def_copy.tiles[5] = def.tiles[1] --tex.stair_front
+				def_copy.tiles[5] = tiles[1] --tex.stair_front
 				def_copy.tiles[6] = tex.stair_front
 			elseif v == "stair_outer" and tex.stair_cross and tex.stair_side then
 				def_copy.tiles[1] = tex.stair_side
-				def_copy.tiles[2] = def.tiles[1]
+				def_copy.tiles[2] = tiles[1]
 				def_copy.tiles[3] = tex.stair_cross
 				def_copy.tiles[4] = tex.stair_side .. "^[transformFX"
 				def_copy.tiles[5] = tex.stair_side
 				def_copy.tiles[6] = tex.stair_cross
 			elseif v == "stair_inner" and tex.stair_side then
 				def_copy.tiles[1] = tex.stair_side .. "^[transformFXFY"
-				def_copy.tiles[2] = def.tiles[1]
+				def_copy.tiles[2] = tiles[1]
 				def_copy.tiles[3] = tex.stair_side
-				def_copy.tiles[4] = def.tiles[1]
-				def_copy.tiles[5] = def.tiles[1]
+				def_copy.tiles[4] = tiles[1]
+				def_copy.tiles[5] = tiles[1]
 				def_copy.tiles[6] = tex.stair_side .. "^[transformFX"
 			end
 			def_copy.tiles = set_textures(def_copy.tiles, reg_def.align)
@@ -181,62 +183,6 @@ function stairs.register(name, reg_def)
 		minetest.register_node(def.name .. "_leveled", c)
 	end
 
-	--[[
-	minetest.register_craft {
-		output = name .. "_slab 6",
-		recipe = {
-			{ name, name, name },
-		}
-	}
-
-	minetest.register_craft {
-		output = name,
-		recipe = {
-			{ name .. "_slab", name .. "_slab" }
-		}
-	}
-
-	minetest.register_craft {
-		output = name .. "_stair 8",
-		recipe = {
-			{ "",   "",   name },
-			{ "",   name, name },
-			{ name, name, name }
-		}
-	}
-	minetest.register_craft {
-		output = name .. "_stair 8",
-		recipe = {
-			{ name, "",   "" },
-			{ name, name, "" },
-			{ name, name, name }
-		}
-	}
-	minetest.register_craft {
-		output = name .. " 3",
-		recipe = {
-			{ name .. "_stair", name .. "_stair", },
-			{ name .. "_stair", name .. "_stair", }
-		}
-	}
-
-	minetest.register_craft {
-		output = name .. "_stair_inner 7",
-		recipe = {
-			{ "",   name, "" },
-			{ name, "",   name },
-			{ name, name, name }
-		}
-	}
-
-	minetest.register_craft {
-		output = name .. "_stair_outer 6",
-		recipe = {
-			{ "",   name, "" },
-			{ name, name, name }
-		}
-	}
-	]]
 	local to_override_info_extra = def.info_extra
 	if type(def.info_extra) == "string" then
 		to_override_info_extra = { def.info_extra }

@@ -1,2 +1,3 @@
 coverage/*
 mods/sbz_debug
+test_formspec

@@ -178,13 +178,15 @@ function pipeworks.register_wielder(def)
                 local inv = meta:get_inventory()
                 local list = inv:get_list(def.wield_inv.name)
                 local index
-                for i, stack in ipairs(list) do
-                    if not stack:is_empty() and core.get_item_group(stack:get_name(), "power_tool") == 1 then
-                        index = i
-                        break
+                if list ~= nil then
+                    for i, stack in ipairs(list) do
+                        if not stack:is_empty() and core.get_item_group(stack:get_name(), "power_tool") == 1 then
+                            index = i
+                            break
+                        end
                     end
                 end
-                if not index then return def.cost end
+                if not index or not list then return def.cost end
 
                 local stack = list[index]
                 local sdef = stack:get_definition()

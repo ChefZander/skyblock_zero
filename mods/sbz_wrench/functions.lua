@@ -104,6 +104,7 @@ function wrench.pickup_node(pos, player)
 	if not def then
 		return
 	end
+
 	if not (minetest.get_dig_params(def.groups, core.registered_items["sbz_resources:robotic_arm"].tool_capabilities) or {}).diggable then
 		return errors.cant_dig
 	end
@@ -131,6 +132,7 @@ function wrench.pickup_node(pos, player)
 			end
 		end
 	end
+
 	local inv = meta:get_inventory()
 	local tmeta = meta:to_table()
 	if not safe_to_pickup(def, tmeta, inv) then
@@ -169,6 +171,9 @@ function wrench.pickup_node(pos, player)
 	local drop_node = table.copy(node)
 	if def.drop then
 		drop_node.name = def.drop
+	end
+	if not core.registered_nodes[drop_node.name] then
+		return false, errors.cant_dig
 	end
 
 	local stack = ItemStack(drop_node.name)

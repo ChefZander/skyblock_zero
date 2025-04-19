@@ -29,6 +29,7 @@ sbz_api.help_pages_by_index = {
     "Drawer Controller",
     "Teleport Tube",
     "Memory Controller",
+    "Teleport Batteries",
 }
 
 local function edit_text(t)

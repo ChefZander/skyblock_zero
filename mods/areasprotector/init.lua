@@ -93,7 +93,11 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 			owners[k] = nil
 		end
 	end
-
+	local new_owners = {}
+	for k, v in pairs(owners) do
+		new_owners[#new_owners + 1] = v
+	end
+	owners = new_owners
 	if fields.add_more_owners_button then
 		local name = fields.add_more_owners
 		local pos1 = vector.add(pos, vector.new(radius, height, radius))
@@ -107,6 +111,12 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 			minetest.chat_send_player(owner_name,
 				red("You are not allowed to protect that area: ") ..
 				"That name is obviously invalid.")
+			return
+		end
+		if name == "" then
+			minetest.chat_send_player(owner_name,
+				red("You are not allowed to protect that area: ") ..
+				"You need to fill out the field with a name")
 			return
 		end
 
@@ -233,7 +243,7 @@ local function on_punch(pos, node, puncher, sizeword)
 	end
 	if not removed then -- nothing was removed: there wasn't the entity
 		minetest.add_entity(pos, "areasprotector:display_" .. sizeword)
-		minetest.after(4, remove_display, pos)
+		minetest.after(15, remove_display, pos)
 	end
 end
 
@@ -355,6 +365,7 @@ minetest.register_entity("areasprotector:display_large", {
 		visual = "wielditem",
 		visual_size = vsize,
 		textures = { "areasprotector:display_node_large" },
+		backface_culling = false,
 	},
 	on_step = function(self, dtime)
 		on_step(self, dtime, "large")
@@ -368,6 +379,7 @@ minetest.register_entity("areasprotector:display_small", {
 		visual = "wielditem",
 		visual_size = vsize,
 		textures = { "areasprotector:display_node_small" },
+		backface_culling = false,
 	},
 	on_step = function(self, dtime)
 		on_step(self, dtime, "small")

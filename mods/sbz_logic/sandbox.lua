@@ -4,8 +4,8 @@ local M = minetest.get_meta
 local libox_coroutine = libox.coroutine
 local active_sandboxes = libox_coroutine.active_sandboxes
 
-local time_limit = 5000              -- 5ms
-local editor_time_limit = 1000       -- 1ms
+local time_limit = 10 * 1000         --ms
+local editor_time_limit = 3000       -- ms
 local max_memsize = 1024             -- 1024 serialized characters, just use disks lol
 local max_us_per_second = 100 * 1000 -- 100 milis
 local max_ram = 1024 * 1024          -- 1 megabyte

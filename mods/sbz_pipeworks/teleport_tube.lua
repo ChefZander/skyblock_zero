@@ -90,7 +90,7 @@ local function get_receivers(pos, channel)
         if val.cr == 1 and val.channel == channel and not vector.equals(val, pos) then
             minetest.load_area(val)
             local node_name = minetest.get_node(val).name
-            if node_name:find("pipeworks:teleport_tube") then
+            if node_name:find("pipeworks:teleport_tube") or core.get_item_group(node_name, "tptube") then
                 table.insert(receivers, val)
             else
                 remove_tube(val)
@@ -241,7 +241,7 @@ local def = {
     tube = {
         can_go = can_go,
         on_repair = repair_tube,
-        priority = 50,
+        priority = 80,
     },
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
@@ -255,8 +255,7 @@ local def = {
         pipeworks.after_place(pos)
     end,
     on_logic_send = logic_action,
-    info_extra = "Place a high priority tube next to a receiving teleport tube.",
-
+    info_extra = "Place a higher priority tube/machine next to a receiving teleport tube.",
 }
 
 pipeworks.register_tube("pipeworks:teleport_tube", {
@@ -276,7 +275,6 @@ minetest.register_craft({
 })
 
 
--- Update tubes when moved by pistons
 mesecon.register_on_mvps_move(function(moved_nodes)
     for _, n in ipairs(moved_nodes) do
         if n.node.name:find("pipeworks:teleport_tube") then
@@ -304,6 +302,9 @@ pipeworks.tptube = {
         end
         update_meta(meta)
     end,
+    receive_fields = receive_fields,
+    logic_action = logic_action,
+    get_receivers = get_receivers,
 }
 
 -- Load the database

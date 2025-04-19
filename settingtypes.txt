@@ -1,0 +1,3 @@
+# Makes servers less laggy, but no effect on singleplayer
+# Sacrifices visuals for less bandwith
+sbz_server_mode (Server Optimizations) enum auto auto,on,off

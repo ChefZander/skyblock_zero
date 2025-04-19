@@ -197,6 +197,7 @@ minetest.register_node("sbz_power:charged_field_residue", {
     tiles = { "charged_field_residue.png" },
     groups = { unbreakable = 1, charged_field = 1, },
     sunlight_propagates = true,
+    paramtype = "light",
     walkable = true,
     on_punch = function(pos, node, puncher, pointed_thing)
         if puncher.is_fake_player then return end

@@ -246,6 +246,15 @@ minetest.register_chatcommand("dev_mapblocks", {
         return true, "Area sent!"
     end
 })
+core.register_chatcommand("dev_fast_habitats", {
+    description = "Toggles making habitats fast, don't use this in a server",
+    params = "",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        sbz_api.accelerated_habitats = not sbz_api.accelerated_habitats
+    end
+})
+
 core.register_chatcommand("dev_toggle_pvp", {
     description = "Toggle pvp, NEEDS SERVER RESTART, bad idea to use if you aren't a dev",
     params = "<enable>",

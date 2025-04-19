@@ -1,10 +1,13 @@
 local S = minetest.get_translator("areas")
 
+minetest.register_privilege("protect_command",
+	"[SBZ] Can use /protect command (protections without protectors), admins should give to trusted players/people who need.")
+
 -- disallow /protect for sbz
 minetest.register_chatcommand("protect", {
 	params = S("<AreaName>"),
 	description = S("Protect your own area"),
-	privs = { [areas.config.self_protection_privilege] = true, areas = true },
+	privs = { [areas.config.self_protection_privilege] = true, protect_command = true },
 	func = function(name, param)
 		if param == "" then
 			return false, S("Invalid usage, see /help @1.", "protect")
