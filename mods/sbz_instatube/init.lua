@@ -684,3 +684,25 @@ core.register_on_mods_loaded(function()
         end
     end
 end)
+
+instatube.show_network = function(p1, p2, net)
+    p1, p2 = vector.sort(p1, p2)
+    local A = VoxelArea(p1, p2)
+    for i in A:iterp(p1, p2) do
+        local p = A:position(i)
+        local p2n = pos2network[core.hash_node_position(p)]
+        if p2n then
+            for k, v in pairs(p2n) do
+                if v == net then
+                    core.add_entity(p, "sbz_base:debug_entity")
+                end
+            end
+        end
+    end
+    local network = instatube.networks[net]
+    if network then
+        for k, v in pairs(network.machines) do
+            core.add_entity(v.pos, "sbz_base:debug_entity", "green")
+        end
+    end
+end

@@ -625,42 +625,14 @@ sbz_api.get_switching_station_network = get_network
 
 -- debug
 
-core.register_entity("sbz_power:debug_entity", {
-    initial_properties = {
-        static_save = false,
-        pointable = false,
-        visual = "cube",
-        visual_size = { x = 1.2, y = 1.2, z = 1.2 },
-        use_texture_alpha = true,
-        glow = 14,
-        damage_texture_modifier = "",
-        shaded = false,
-        backface_culling = true,
-        textures = {
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-        }
-    },
-    on_activate = function(self, staticdata, dtime_s)
-        core.after(8, function()
-            if self.object:is_valid() then
-                self.object:remove()
-            end
-        end)
-    end,
-})
-
 sbz_api.make_network_visible = function(p1, p2, net)
     p1, p2 = vector.sort(p1, p2)
     local va = VoxelArea(p1, p2)
+    local network = networks[net]
     for i in va:iterp(p1, p2) do
         local p = va:position(i)
         if pos2network[core.hash_node_position(p)] == net then
-            core.add_entity(p, "sbz_power:debug_entity")
+            core.add_entity(p, "sbz_base:debug_entity")
         end
     end
 end

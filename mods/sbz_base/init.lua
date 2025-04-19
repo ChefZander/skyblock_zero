@@ -623,6 +623,48 @@ function sbz_api.get_pos_with_eye_height(placer)
     return p
 end
 
+core.register_entity("sbz_base:debug_entity", {
+    initial_properties = {
+        static_save = false,
+        pointable = false,
+        visual = "cube",
+        visual_size = { x = 1.2, y = 1.2, z = 1.2 },
+        use_texture_alpha = true,
+        glow = 14,
+        damage_texture_modifier = "",
+        shaded = false,
+        backface_culling = true,
+        textures = {
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+        }
+    },
+    on_activate = function(self, staticdata, dtime_s)
+        if staticdata and #staticdata ~= 0 then
+            self.object:set_properties({
+                colors = {
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                }
+            })
+        end
+        core.after(8, function()
+            if self.object:is_valid() then
+                self.object:remove()
+            end
+        end)
+    end,
+})
+
+-- errors come last.
 local old_handler = core.error_handler
 
 core.error_handler = function(error, stack_level)

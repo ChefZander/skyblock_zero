@@ -60,14 +60,16 @@ local function register_storinator(added_name, def)
             def.tiles[i] = def.tiles[i] .. "^[colorize:white:20"
         end
     end
-    def.overlay_tiles = {
+    for k, v in pairs({
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay_side.png^[colorize:%s:255"):format(def.overlay_color),
         ("storinator_overlay.png^[colorize:%s:255"):format(def.overlay_color),
-    }
+    }) do
+        def.tiles[k] = def.tiles[k] .. "^(" .. v .. ")" -- used to be overlay tiles, now not
+    end
 
     for public = 0, 1 do
         for i = 1, 4 do

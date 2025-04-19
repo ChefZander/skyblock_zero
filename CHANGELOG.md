@@ -11,6 +11,10 @@ Release 35 - "Optimization update"
 - Optimized fluid transport
 - Added teleport batteries (thanks to lnee)
 - Made drawers support filter injectors
+- Made drawers color-able
+- Made copytool copy filter injector "exact match mode"
+
+
 
 Release 34
 - Added a recipe to memory controller

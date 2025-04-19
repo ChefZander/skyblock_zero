@@ -284,7 +284,7 @@ function drawers.register_drawer(name, def)
 	def.collision_box = { type = "regular" }
 	def.selection_box = { type = "fixed", fixed = drawers.node_box_simple }
 	def.paramtype = "light"
-	def.paramtype2 = "facedir"
+	def.paramtype2 = "colorfacedir"
 	def.light_source = 10
 	def.groups = def.groups or {}
 	def.is_ground_content = false
@@ -352,7 +352,7 @@ function drawers.register_drawer(name, def)
 			drawers.spawn_visuals(to_pos)
 		end)
 	end
-
+	def = unifieddyes.def(def)
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
 		local def1 = table.copy(def)
@@ -388,7 +388,6 @@ function drawers.register_drawer(name, def)
 		def4.groups.drawer = 4
 		core.register_node(name .. "4", def4)
 	end
-
 	if (not def.no_craft) and def.material then
 		if drawers.enable_1x1 then
 			core.register_craft({
