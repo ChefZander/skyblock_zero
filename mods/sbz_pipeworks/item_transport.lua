@@ -60,6 +60,8 @@ minetest.register_globalstep(function(dtime)
 			local h = minetest.hash_node_position(vector.round(entity._pos))
 			if h ~= nil and not minetest.is_nan(h) then
 				tube_item_count[h] = (tube_item_count[h] or 0) + 1
+			else
+				luaentity.entites[_] = nil
 			end
 		end
 	end
@@ -165,6 +167,9 @@ end
 --	then deletes itself (i.e. the original item stack).
 local function go_next(pos, velocity, stack, owner, tags)
 	local cnode = minetest.get_node(pos)
+	if cnode.name == "ignore" then
+		return false, velocity, nil
+	end
 	local cmeta = minetest.get_meta(pos)
 	local speed = math.abs(velocity.x + velocity.y + velocity.z)
 	if speed == 0 then

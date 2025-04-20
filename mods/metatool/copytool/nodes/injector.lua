@@ -5,7 +5,7 @@
 local definition = {
 	name = 'filter',
 	nodes = {
-		"pipeworks:automatic_filter_injector"
+		"pipeworks:automatic_filter_injector",
 	},
 	group = 'injector',
 	protection_bypass_read = "interact",

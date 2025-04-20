@@ -54,7 +54,6 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
                     end
                 end
                 if same_upgrade_count < def.same_upgrade_max then
-                    def.action_in(stack, pos, meta)
                     return stack:get_count()
                 else
                     return 0
@@ -64,11 +63,33 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
             return stack:get_count()
         end
     end,
-    -- all TODOs: Make UPGRADES AND DISKS GREAT AGAI- WORK...
-    allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+    on_metadata_inventory_put = function(pos, listname, index, stack, player)
         if listname == "upgrades" then
-            minetest.registered_craftitems[stack:get_name()].action_out(stack, pos, minetest.get_meta(pos))
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            local def = stack:get_definition()
+            def.action_reset(stack, pos, meta)
+            for i, inv_stack in ipairs(inv:get_list("upgrades")) do
+                if inv_stack:get_name() == stack:get_name() then
+                    def.action_in(inv_stack, pos, meta)
+                end
+            end
         end
+    end,
+    on_metadata_inventory_take = function(pos, listname, index, stack, player)
+        if listname == "upgrades" then
+            local meta = minetest.get_meta(pos)
+            local inv = meta:get_inventory()
+            local def = stack:get_definition()
+            def.action_reset(stack, pos, meta)
+            for i, inv_stack in ipairs(inv:get_list("upgrades")) do
+                if inv_stack:get_name() == stack:get_name() then
+                    def.action_in(inv_stack, pos, meta)
+                end
+            end
+        end
+    end,
+    allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         return stack:get_count()
     end,
 

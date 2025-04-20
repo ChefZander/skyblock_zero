@@ -186,6 +186,19 @@ Instatubes that only allow items flowing from one direction, useful when having 
 <b>To complete this quest, craft an instatube</b>
 ]],
     },
+    {
+        type = "quest",
+        title = "Pattern Storinator",
+        text = [[
+It is a storinator with 16 slots of storage, and 16 slots for the pattern.
+The pattern slots govern how the storage slots can be filled. If a pattern has in the first slot 43 matter dust, then there can be only up to 43 matter dust in that slot. Similar to the autocrafter (but the autocrafter allows a full stack.)
+
+When the pattern storinator can no longer be inserted to, it will dump its entire contents to the output side.
+
+The pattern storinator can be used in machines like the meteorite maker, where your flow rate of emittrium and matter blobs might make the meteorite maker clog.
+]],
+        requires = { "Automatic Filter-Injectors" }
+    },
     -- ==================================================================================================
 
     { type = "text",  title = "Questline: Fluid Transport", text = "This questline is all about transporting fluids." },

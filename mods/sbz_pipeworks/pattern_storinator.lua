@@ -17,15 +17,18 @@ local after_filled_behavior = function(pos, meta, inv)
         return -- literally do nothing lol, this mode may be accesible later when i feel like adding a button idk
     else
         local storage = inv:get_list("storage")
+
+        inv:set_list("storage", {})
+        inv:set_size("storage", 16)
         local dir = pipeworks.facedir_to_right_dir((sbz_api.get_node_force(pos) or {}).param2)
         if not dir then return end
         dir = vector.subtract(vector.zero(), dir)
         for i = 1, #storage do
             local start_pos = vector.add(pos, dir)
-            pipeworks.tube_inject_item(pos, start_pos, dir, storage[i], meta:get_string("owner"), nil, start_pos)
+            minetest.after(0, function() -- added so that 2 pattern storinators wont create an infinite loop
+                pipeworks.tube_inject_item(pos, start_pos, dir, storage[i], meta:get_string("owner"), nil, start_pos)
+            end)
         end
-        inv:set_list("storage", {})
-        inv:set_size("storage", 16)
     end
 end
 
@@ -81,15 +84,15 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
             local pattern = inv:get_list("pattern")
 
             for index = 1, #pattern do
-                if pattern:get_name() == stack:get_name() then
+                if pattern[index]:get_name() == stack:get_name() then
                     local sstack = storage[index]
                     sstack:add_item(stack)
-                    if sstack:get_count() <= pattern:get_count() then
+                    if sstack:get_count() <= pattern[index]:get_count() then
                         inv:set_stack("storage", index, sstack)
                         check_and_act_if_filled(pos, meta, inv)
                         return ItemStack()
                     elseif sstack:get_count() ~= sstack:get_stack_max() then
-                        local diffcount = sstack:get_count() - pattern:get_count()
+                        local diffcount = sstack:get_count() - pattern[index]:get_count()
                         local setstack = ItemStack(sstack)
                         setstack:take_item(diffcount)
                         inv:set_stack("storage", index, setstack)
@@ -108,11 +111,12 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
             stack = stack:peek_item(1)
             local storage = inv:get_list("storage")
             local pattern = inv:get_list("pattern")
-
-            for index = 1, #pattern do
-                if pattern:get_name() == stack:get_name() then
-                    if storage[index]:get_count() + stack:get_count() <= pattern:get_count() then
-                        return true, pattern:get_count() - storage[index]:get_count()
+            if pattern then -- can be nil in really rare cases
+                for index = 1, #pattern do
+                    if pattern[index]:get_name() == stack:get_name() then
+                        if storage[index]:get_count() + stack:get_count() <= pattern[index]:get_count() then
+                            return true, pattern[index]:get_count() - storage[index]:get_count()
+                        end
                     end
                 end
             end
@@ -190,3 +194,12 @@ listring[]
         end
     end
 })
+
+core.register_craft {
+    output = "pipeworks:pattern_storinator",
+    recipe = {
+        { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit" },
+        { "sbz_resources:storinator",        "sbz_resources:storinator",        "pipeworks:automatic_filter_injector" },
+        { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit" }
+    }
+}
