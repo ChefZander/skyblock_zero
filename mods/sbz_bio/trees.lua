@@ -194,7 +194,7 @@ function sbz_api.register_leaves(name, def)
             minetest.remove_node(pos)
             minetest.check_for_falling(pos)
         end,
-        drop = "",
+        drop = def.tree_drop,
     } do
         def[k] = v
     end
