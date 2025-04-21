@@ -147,14 +147,14 @@ local wire_size = 3 / 16
 Do you dislike pipeworks? Have you ever wanted to burn pipeworks with fire? Here is the tube for you!
 You will still interact with pipeworks just much less...
 ]]
+local instatubes_net_id = {}
 
 local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
-    local meta = core.get_meta(pos)
-    local net_id = meta:get_int("net_id")
+    local net_id = instatubes_net_id[hash(pos)] or -1
     local network = instatube.networks[net_id]
     if not network then
         net_id = sbz_api.instatube.create_instatube_network(pos, ordering)
-        meta:set_int("net_id", net_id)
+        instatubes_net_id[hash(pos)] = net_id
         network = instatube.networks[net_id]
     end
 
