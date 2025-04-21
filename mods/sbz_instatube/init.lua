@@ -334,7 +334,7 @@ core.register_node("sbz_instatube:item_filter", {
         local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         meta:set_string("formspec", [[
-formspec_version[10]
+formspec_version[8]
 size[10.2,8.2]
 list[context;filter;0.22,0.5;5,1;]
 list[current_player;main;0.22,3;8,4;]

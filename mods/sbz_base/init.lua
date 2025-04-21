@@ -297,6 +297,28 @@ minetest.register_on_joinplayer(function(player)
         background9[5,5;1,1;theme_background.png^\[colorize:purple:50;true;10]
         listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
     ]])
+
+    local pinfo = core.get_player_information(player:get_player_name())
+    if pinfo.protocol_version < 44 then -- 44 = 5.9.0
+        core.show_formspec(player:get_player_name(), "", [[
+size[20,18]
+real_coordinates[true]
+hypertext[0.2,0.2;19.6,17.8;h;<center><bigger>Warning!</bigger></center>
+It appears like you are using an outdated version of Luanti/Minetest, or a client based on Luanti/Minetest that hasn't been keeping up to date.
+Skyblock Zero on multiplayer is playable with your client, but you may experience errors in the chat, or things not working how they should.
+
+Issues that may arise:
+- Machines not being able to be rotated
+- Random errors in the chat
+- Some entities not rendering (like the turret)
+- UI being broken
+
+The only fix for this is to update your client to Luanti 5.9.0 <b>or above</b>. <style size=0>or spoof your protocol version if you are smart and lazy</style>
+If you are on Multicraft, or other luanti clients, try switching to regular Luanti instead.
+]
+button_exit[0.2,16.2;19.6,1.5;exit;Continue to play]
+    ]])
+    end
 end)
 
 core.register_on_respawnplayer(function(ref)
