@@ -172,7 +172,7 @@ function sbz_api.register_leaves(name, def)
             for _, item in ipairs(drops) do
                 if math.random() <= 1 / item.rarity then
                     if digger and digger:is_player() then
-                        local leftover = digger:get_inventory():add_item("main", item)
+                        local leftover = digger:get_inventory():add_item("main", item.item)
                         if leftover then
                             minetest.add_item({
                                 x = pos.x - 0.5 + math.random(),
@@ -185,7 +185,7 @@ function sbz_api.register_leaves(name, def)
                             x = pos.x - 0.5 + math.random(),
                             y = pos.y - 0.5 + math.random(),
                             z = pos.z - 0.5 + math.random(),
-                        }, item)
+                        }, ItemStack(item.item))
                     end
                     break
                 end
@@ -194,7 +194,6 @@ function sbz_api.register_leaves(name, def)
             minetest.remove_node(pos)
             minetest.check_for_falling(pos)
         end,
-        drop = "",
     } do
         def[k] = v
     end
@@ -266,6 +265,19 @@ sbz_api.register_leaves("sbz_bio:colorium_leaves", unifieddyes.def {
         {
             item = "sbz_bio:colorium_leaves",
             rarity = 1
+        }
+    },
+    drop = {
+        max_items = 1,
+        items = {
+            {
+                items = { "sbz_bio:colorium_sapling" },
+                rarity = 5
+            },
+            {
+                items = { "sbz_bio:colorium_leaves" },
+                rarity = 1
+            }
         }
     },
     sounds = sbz_api.sounds.leaves(),

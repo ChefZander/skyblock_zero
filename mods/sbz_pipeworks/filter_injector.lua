@@ -21,7 +21,7 @@ local function set_filter_formspec(meta)
         fs_helpers.cycling_button(meta, "button[" .. (10.2 - (0.22) - 4) .. ",4.5;4,1", "exmatch_mode",
             { "Exact match - off",
                 "Exact match - on",
-               "Threshold" }) ..
+                "Threshold" }) ..
         pipeworks.fs_helpers.get_inv(6) ..
         "listring[]"
 
@@ -117,38 +117,42 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         local dir = pipeworks.facedir_to_right_dir(node.param2)
 
         local frompos = vector.subtract(pos, dir)
-        local fromnode = minetest.get_node(frompos)
+        local fromnode = sbz_api.get_node_force(frompos)
 
         if not fromnode then
-            meta:set_string("infotext", "I can't pull from that node - there is no node there?")
+            meta:set_string("infotext", "Can't pull from that node - there is no node there?")
             return 1
         end
 
         local fromdef = minetest.registered_nodes[fromnode.name]
         if not fromdef or not fromdef.tube then
-            meta:set_string("infotext", "I can't pull from that node :/")
+            meta:set_string("infotext", "Can't pull from that node :/")
             return 1
         end
         local fromtube = table.copy(fromdef.tube)
 
         local todir = pipeworks.facedir_to_right_dir(node.param2)
         local topos = vector.add(pos, todir)
-        local tonode = minetest.get_node(topos)
+        local tonode = sbz_api.get_node_force(topos)
+        if not tonode then
+            meta:set_string("infotext", "Can't push to that node - that node does not exist.")
+            return 1
+        end
         local todef = minetest.registered_nodes[tonode.name]
 
         if not todef
             or not (minetest.get_item_group(tonode.name, "tube") == 1
                 or minetest.get_item_group(tonode.name, "tubedevice") == 1
                 or minetest.get_item_group(tonode.name, "tubedevice_receiver") == 1) then
-            meta:set_string("infotext", "I can't push to that node")
+            meta:set_string("infotext", "Can't push to that node")
             return 1
         end
 
-        if fromtube then fromtube.input_inventory = fromtube.input_inventory end
-        if not (fromtube and fromtube.input_inventory) then
-            meta:set_string("infotext", "I can't pull from that node :/")
+        if not fromtube or not (fromtube or {}).input_inventory then
+            meta:set_string("infotext", "Can't pull from that node :/")
             return 1
         end
+
 
         local filters = {}
 
@@ -168,6 +172,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         if fromtube.return_input_invref then
             frominv = fromtube.return_input_invref(frompos, fromnode, dir, owner)
             if not frominv then
+                meta:set_string("infotext", "Can't pull from that node/node's direction/possibly something else?")
                 return 1
             end
         else
@@ -178,7 +183,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
 
         local function grabAndFire(frominvname, filterfor)
             local sposes = {}
-            if not frominvname or not frominv:get_list(frominvname) then return end
+            if not frominvname or not frominv:get_list(frominvname) then
+                return
+            end
             for spos, stack in ipairs(frominv:get_list(frominvname)) do
                 local matches
                 if filterfor == "" then
@@ -238,7 +245,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 local doRemove = stack:get_count()
                 if fromtube.can_remove then
                     doRemove = fromtube.can_remove(frompos, fromnode, stack, dir, frominvname, spos)
-                elseif fromdef.allow_metadata_inventory_take then
+                elseif fromdef.allow_metadata_inventory_take and not fromtube.ignore_metadata_inventory_take then
                     doRemove = fromdef.allow_metadata_inventory_take(frompos, frominvname, spos, stack, fakeplayer)
                 end
 
@@ -276,6 +283,14 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         item = stack:take_item(count)
                         local vel = vector.copy(todir)
                         vel.speed = 1
+                        if core.get_item_group(tonode.name, "instatube") == 1 then -- instatubes get fully special handling :D
+                            local old_item = ItemStack(item)
+                            local leftover = todef.tube.insert_object(topos, tonode, item, vel, owner)
+                            stack:add_item(leftover)
+                            frominv:set_stack(frominvname, spos, stack)
+                            return true
+                        end
+
                         if todef.tube and todef.tube.can_go then
                             if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
                         end
@@ -289,7 +304,6 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                             end
                         end
 
-
                         frominv:set_stack(frominvname, spos, stack)
                         if fromdef.on_metadata_inventory_take then
                             fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
@@ -299,7 +313,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     local start_pos = vector.add(frompos, dir)
 
                     pipeworks.tube_inject_item(pos, start_pos, dir, item,
-                        fakeplayer:get_player_name())
+                        fakeplayer:get_player_name(), nil, topos)
                     return true -- only fire one item, please
                 end
             end
@@ -316,7 +330,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
             end
             if done then break end
         end
-        if fromtube.after_filter then fromtube.after_filter(frompos) end
+        if fromtube.after_filter then fromtube.after_filter(frompos, frominv) end
 
         return 1
     end

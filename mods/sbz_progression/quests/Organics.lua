@@ -67,6 +67,7 @@ So now that you have a habitat, all you've got to do is use some fertilizer on s
 	
 There is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary. Some items are better than others, try out a few and see what works best!
 Keep in mind, the excess co2 produced by the burner will stay in the habitat, so this means you can have a burner running, and it would build up co2 in the habitat.
+If the burner generates more co2 than the habitat can store, it can store a bit of co2 on its own, but it will stop burning when it is storing co2.
 
 The size of the habitat determines how much co2 it can hold.
 ]],

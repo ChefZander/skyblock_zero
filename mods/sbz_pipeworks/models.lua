@@ -21,7 +21,7 @@ local function wire(len, stretch_to)
 	return base_box
 end
 
-local wire_size = 1 / 4
+local wire_size = 3 / 16
 
 -- Tube models
 

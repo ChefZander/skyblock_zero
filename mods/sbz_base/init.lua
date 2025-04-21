@@ -1,7 +1,6 @@
-local modname = minetest.get_current_modname()
 sbz_api = {
-    debug = minetest.settings:get_bool("sbz_debug", false),
     version = 33,
+    is_version_dev = true,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
     deg2rad = math.pi / 180,
@@ -17,7 +16,9 @@ sbz_api = {
             return true
         end
         return false
-    end
+    end,
+    accelerated_habitats = false, -- for debug
+    debug = minetest.settings:get_bool("sbz_debug", false),
 }
 
 if sbz_api.server_optimizations == "auto" then
@@ -28,7 +29,25 @@ elseif sbz_api.server_optimizations == "off" then
     sbz_api.server_optimizations = false
 end
 
-local modpath = minetest.get_modpath("sbz_base")
+sbz_api.get_version_string = function()
+    local gamename = "SkyBlock: Zero "
+    local version_string = "Release " .. sbz_api.version
+    if sbz_api.is_version_dev then
+        version_string = version_string .. "-dev"
+    end
+
+    if sbz_api.debug then
+        version_string = version_string .. " debug "
+    end
+    if sbz_api.server_optimizations then
+        version_string = version_string .. " server-optimized "
+    end
+
+    return gamename .. "(" .. version_string .. ")"
+end
+sbz_api.get_simple_version_string = function()
+    return "SkyBlock: Zero (Release " .. sbz_api.version .. (sbz_api.is_version_dev and "-dev" or "") .. ")"
+end
 
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
 --code borrowed from builtin/vector.lua in 5.10-dev
@@ -90,10 +109,13 @@ local wallmounted_to_dir_is_fake_bad = {
     [5] = vector.new(0, 0, -1),
 }
 
-function iterate_around_pos(pos, func)
+function iterate_around_pos(pos, func, include_self)
     for i = 0, 5 do
         local dir = vector.copy(wallmounted_to_dir_is_fake_bad[i])
         func(pos + dir, dir)
+    end
+    if include_self then
+        func(pos, vector.zero())
     end
 end
 
@@ -213,7 +235,7 @@ minetest.register_chatcommand("bgm_volume", {
 
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
-    minetest.chat_send_player(player:get_player_name(), ("SkyBlock: Zero (Release %s)"):format(sbz_api.version))
+    minetest.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
     minetest.chat_send_player(player:get_player_name(),
         "‼ reminder: If you fall off, use /core to teleport back to the core.")
     minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
@@ -326,6 +348,24 @@ end
 
 function sbz_api.clamp(x, min, max)
     return math.max(math.min(x, max), min)
+end
+
+function sbz_api.make_immutable(t)
+    for k, v in pairs(t) do
+        if type(v) == "table" then
+            sbz_api.make_immutable(v)
+            local mt = table.copy(getmetatable(v) or {})
+            if not mt.immutable then
+                mt.immutable = true
+                mt.newindex = function(t_, k_, v_)
+                    error("Immutable!", 2)
+                end
+                mt.index = v
+                setmetatable(v, mt)
+            end
+        end
+    end
+    return t
 end
 
 local MP = minetest.get_modpath("sbz_base")
@@ -583,11 +623,53 @@ function sbz_api.get_pos_with_eye_height(placer)
     return p
 end
 
+core.register_entity("sbz_base:debug_entity", {
+    initial_properties = {
+        static_save = false,
+        pointable = false,
+        visual = "cube",
+        visual_size = { x = 1.2, y = 1.2, z = 1.2 },
+        use_texture_alpha = true,
+        glow = 14,
+        damage_texture_modifier = "",
+        shaded = false,
+        backface_culling = true,
+        textures = {
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+            "matter_blob.png^[opacity:200",
+        }
+    },
+    on_activate = function(self, staticdata, dtime_s)
+        if staticdata and #staticdata ~= 0 then
+            self.object:set_properties({
+                colors = {
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                    staticdata,
+                }
+            })
+        end
+        core.after(8, function()
+            if self.object:is_valid() then
+                self.object:remove()
+            end
+        end)
+    end,
+})
+
+-- errors come last.
 local old_handler = core.error_handler
 
 core.error_handler = function(error, stack_level)
     return (old_handler(error, stack_level) or "") ..
-        ("\n==============\nSkyblock: Zero (Version %s)\n=============="):format(sbz_api.version)
+        ("\n==============\n%s\n=============="):format(sbz_api.get_version_string())
 end
 
 core.log("action", "Skyblock: Zero's Base Mod has finished loading.")

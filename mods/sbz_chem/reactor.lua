@@ -61,6 +61,7 @@ local explosion_particle_def = {
 }
 
 local rod_duration = 3 * 60 * 60
+local random = PcgRandom(0)
 
 sbz_api.register_stateful_generator("sbz_chem:nuclear_reactor", {
     description = "Nuclear Reactor",
@@ -183,20 +184,26 @@ listring[]
 
             -- edit, the information above is outdated:
             -- 31 water nodes in 11x11x11 space, just have some water pls, i changed div by 2 to div by 4
-            if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
-                -- i know... duplicating explosion code... cringe bad yeah yeah
-                local owner = minetest.get_meta(pos):get_string("owner")
-                minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
-                sbz_api.explode(pos, 20 * 2, 0.9 * 2, false, owner)
-                core.remove_node(pos)
-                explosion_particle_def.pos = pos
-                explosion_particle_def.attract.origin = pos
-                minetest.add_particlespawner(explosion_particle_def)
-                return 10000
+            -- edit: ok so.. yeah this needs to be optimized... so it will only get called once per 15s
+            local count = meta:get_int("liquid_check")
+            if (count + (pos.x + pos.y + pos.z)) % 15 == 0 then
+                if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
+                    -- i know... duplicating explosion code... cringe bad yeah yeah
+                    local owner = minetest.get_meta(pos):get_string("owner")
+                    minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
+                    sbz_api.explode(pos, 20 * 2, 0.9 * 2, false, owner)
+                    core.remove_node(pos)
+                    explosion_particle_def.pos = pos
+                    explosion_particle_def.attract.origin = pos
+                    minetest.add_particlespawner(explosion_particle_def)
+                    return 10000
+                end
             end
+            meta:set_int("liquid_check", meta:get_int("liquid_check") + 1)
         end
+
         -- great... now
-        -- render formspec BEFORE consuming water
+        -- render formspec BEFORE consuming water cuz then it will never show that its 100% full
         meta:set_string("formspec", "formspec_version[7]size[10.2,10.8]" ..
             sbz_api.bar(lqinv[1].count, lqinv.max_count_in_each_stack, 0.2, 0.2, " Water Sources",
                 "Reactor Water Storage", "Don't let it get too low.") .. [[

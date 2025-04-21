@@ -1,3 +1,6 @@
+# This is me, frog, again
+This is a document kept in here for... idk... its a mind dump
+
 # Ok, this is me, frog, before you read this document
 This was written a long time ago
 You can see my ideas in here, some did not make it

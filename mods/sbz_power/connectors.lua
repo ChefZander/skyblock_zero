@@ -27,8 +27,20 @@ minetest.register_node("sbz_power:connector_off", {
         if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
             node.name = "sbz_power:connector_on"
             minetest.swap_node(pos, node)
+            iterate_around_pos(pos, function(ipos, dir)
+                if sbz_api.get_switching_station_network(ipos) then
+                    sbz_api.get_switching_station_network(ipos).dirty = true
+                end
+            end, true)
             minetest.sound_play({ name = "door-lock-43124" }, { pos = pos }, true)
         end
+    end,
+    on_turn_on = function(pos)
+        iterate_around_pos(pos, function(ipos, dir)
+            if sbz_api.get_switching_station_network(ipos) then
+                sbz_api.get_switching_station_network(ipos).dirty = true
+            end
+        end, true)
     end,
     use_texture_alpha = "clip",
 })
@@ -61,24 +73,37 @@ minetest.register_node("sbz_power:connector_on", {
         if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
             node.name = "sbz_power:connector_off"
             minetest.swap_node(pos, node)
+            iterate_around_pos(pos, function(ipos, dir)
+                if sbz_api.get_switching_station_network(ipos) then
+                    sbz_api.get_switching_station_network(ipos).dirty = true
+                end
+            end, true)
             minetest.sound_play({ name = "door-lock-43124" }, { pos = pos }, true)
         end
     end,
-    assemble = function(pos, node, dir, network, seen)
+    assemble = function(pos, node, dir, network, seen, parent_net_id)
         seen[hash(pos)] = true
         local self_dir = vector.copy(minetest.wallmounted_to_dir(node.param2))
         if self_dir + dir == vector.zero() or self_dir - dir == vector.zero() then
-            local new_network = sbz_api.assemble_network(pos + dir, seen)
+            local new_network = sbz_api.assemble_network(pos + dir, seen, parent_net_id)
             for k, val in pairs(new_network) do
-                if type(val) ~= "table" then
+                if type(val) ~= "table" and k ~= "dirty" then
                     network[k] = val
-                else
+                elseif k ~= "dirty" then
                     table.insert_all(network[k], val)
                 end
             end
         end
     end,
     use_texture_alpha = "clip",
+    on_turn_off = function(pos)
+        iterate_around_pos(pos, function(ipos, dir)
+            if sbz_api.get_switching_station_network(ipos) then
+                sbz_api.get_switching_station_network(ipos).dirty = true
+            end
+        end, true)
+    end,
+
 })
 
 minetest.register_craft({

@@ -102,7 +102,7 @@ function logic.get_env(initial_pos, initial_meta, id)
     local owner = initial_meta:get_string("owner")
 
     for k, v in pairs {
-        editor = get_editor_table(initial_meta),
+        editor = get_editor_table(id),
         pos = vector.copy(initial_pos),
         yield = coroutine.yield,
         wait_for_event_type = wait_for_event_type,

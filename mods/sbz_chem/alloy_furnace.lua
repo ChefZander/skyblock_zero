@@ -74,7 +74,7 @@ listring[current_player;main]
             return power_needed, false
         else
             if inv:room_for_item("output", selected_item) then
-                meta:set_string("infotext", "Smelting...")
+                meta:set_string("infotext", "Alloying")
                 sbz_api.play_sfx("simple_alloy_furnace_running.ogg", { pos = pos })
 
                 inv:add_item("output", selected_item)

@@ -19,7 +19,7 @@ minetest.register_node("unifieddyes:colorium_blob", unifieddyes.def {
 	},
 	light_source = 14,
 	info_extra = "A pure white colorable node.",
-	groups = { matter = 1, antimatter = 1 }
+	groups = { matter = 1, antimatter = 1, charged = 1 }
 })
 minetest.register_craft {
 	output = "unifieddyes:colorium_blob",

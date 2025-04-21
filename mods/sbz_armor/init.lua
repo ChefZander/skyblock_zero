@@ -35,6 +35,8 @@ local armor = {
     }
 }
 
+local disable_setting_texture = false
+
 local piece_types = armor.piece_types
 
 sbz_api.armor = armor
@@ -82,7 +84,9 @@ armor.load_armor_pieces = function(ref, data)
     end
 
     props.textures[texture_index] = base_texture .. texture_mod
-    ref:set_properties(props)
+    if not disable_setting_texture then
+        ref:set_properties(props)
+    end
 
     ref:set_armor_groups(armor_groups)
     armor.pieces_to_inventory(data, core.get_inventory { type = "detached", name = "sbz_armor:" .. name })

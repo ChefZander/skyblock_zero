@@ -1,4 +1,5 @@
 # ![Logo](logo.svg) Modding Library (`modlib`)
+Was taken from https://github.com/appgurueu/modlib, readme.md modified
 
 Multipurpose Minetest Modding Library
 

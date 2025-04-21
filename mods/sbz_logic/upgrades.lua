@@ -33,8 +33,8 @@ logic.register_upgrade("sbz_logic:linking_upgrade", {
     action_in = function(stack, logic_pos, logic_meta)
         logic_meta:set_int("linking_range", logic_meta:get_int "linking_range" + 8)
     end,
-    action_out = function(stack, logic_pos, logic_meta)
-        logic_meta:set_int("linking_range", logic_meta:get_int "linking_range" - 8)
+    action_reset = function(stack, logic_pos, logic_meta)
+        logic_meta:set_int("linking_range", 0)
     end,
     inventory_image = "luacontroller_linking_upgrade.png"
 })

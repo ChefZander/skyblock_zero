@@ -380,6 +380,7 @@ sbz_api.register_generator("sbz_power:reactor_power_port", {
         reactor_shell,
         "reactor_powerport.png",
     },
+    info_generated = POWER_GEN,
     groups = { matter = 1, reactor_shell = 1, pipe_connects = 1, explody = 1, charged = 1 },
     connect_sides = { "front" },
     action = function(pos, node, meta, supply, demand)
@@ -589,7 +590,7 @@ local function core_tick(pos)
 
         meta:set_int("heat", heat)
 
-        infometa:set_int("heat", heat)
+        infometa:set_int("heat", math.max(0, heat))
         infometa:set_int("water_level", waterinv[1].count)
         infometa:set_int("emittrium_level", emittrium_stack:get_count())
         minetest.registered_nodes["sbz_power:reactor_infoscreen"].on_reactor_update(nodes.info)

@@ -155,6 +155,11 @@ local achievement_table = {
     ["metatool:copytool"] = "Copy Tool",
     ["sbz_bio:neutron_emitter_off"] = "Basic Neutron Emitter",
     ["sbz_bio:electric_soil_off"] = "Electric Soil",
+    ["sbz_chem:engraver_off"] = "Engraver",
+    ["sbz_multiblocks:blast_furnace_controller"] = "Blast Furnace",
+    ["sbz_instatube:instant_tube"] = "Instatubes",
+    ["sbz_power:teleport_battery"] = "Teleport Battery",
+    ["pipeworks:pattern_storinator"] = "Pattern Storinator",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

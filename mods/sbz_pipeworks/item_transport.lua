@@ -3,16 +3,32 @@ local enable_max_limit = minetest.settings:get_bool("pipeworks_enable_items_per_
 local max_tube_limit = tonumber(minetest.settings:get("pipeworks_max_items_per_tube")) or 30
 if enable_max_limit == nil then enable_max_limit = true end
 
-function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner, tags)
+function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner, tags, topos)
 	-- Take item in any format
 	local stack = ItemStack(item)
+	if topos then
+		local node = sbz_api.get_node_force(topos)
+		if node and core.registered_nodes[node.name] then
+			local def = core.registered_nodes[node.name]
+			if def.tube and def.tube.insert_object then
+				local can_insertf = def.tube.can_insert
+				local can_insert = true
+				if can_insertf then can_insert = can_insertf(topos, node, stack, velocity, owner) end
+				if can_insert then
+					local leftover = def.tube.insert_object(topos, node, stack, velocity, owner)
+					stack = leftover
+					if stack:is_empty() then return false end
+				end
+			end
+		end
+	end
+
 	local obj = luaentity.add_entity(pos, "pipeworks:tubed_item")
 	obj:set_item(stack:to_string())
 	obj.start_pos = vector.new(start_pos)
 	obj:set_velocity(velocity)
 	obj.owner = owner
 	obj.tags = {}
-	--obj:set_color("red") -- todo: this is test-only code
 	return obj
 end
 
@@ -42,7 +58,11 @@ minetest.register_globalstep(function(dtime)
 	for _, entity in pairs(luaentity.entities) do
 		if entity.name == "pipeworks:tubed_item" then
 			local h = minetest.hash_node_position(vector.round(entity._pos))
-			tube_item_count[h] = (tube_item_count[h] or 0) + 1
+			if h ~= nil and not minetest.is_nan(h) then
+				tube_item_count[h] = (tube_item_count[h] or 0) + 1
+			else
+				luaentity.entites[_] = nil
+			end
 		end
 	end
 end)
@@ -58,6 +78,7 @@ function pipeworks.break_tube(pos)
 	local meta = minetest.get_meta(pos)
 	meta:set_string("the_tube_was", minetest.serialize(node))
 	minetest.swap_node(pos, { name = "pipeworks:broken_tube_1" })
+	core.get_meta(pos):set_string("infotext", "Broken Tube")
 	pipeworks.scan_for_tube_objects(pos)
 end
 
@@ -146,6 +167,9 @@ end
 --	then deletes itself (i.e. the original item stack).
 local function go_next(pos, velocity, stack, owner, tags)
 	local cnode = minetest.get_node(pos)
+	if cnode.name == "ignore" then
+		return false, velocity, nil
+	end
 	local cmeta = minetest.get_meta(pos)
 	local speed = math.abs(velocity.x + velocity.y + velocity.z)
 	if speed == 0 then

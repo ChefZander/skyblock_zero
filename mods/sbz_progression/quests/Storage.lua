@@ -53,9 +53,11 @@ Or do you just have a large amount of some junk, but you don't want to throw it 
 
 Well... introducing DRAWERS, they are like storinators... but only store 1 type of item... and don't store tools...
 But yeah they are really good at that...
-They store 3200 of 1 type of item (without upgrades).
+They store 3200 of 1 type of item (without upgrades). With upgrades they can store a lot more.
 
 Drawers also come with 1x2 and 4x4 variants.
+
+<b>Tip: These support the automatic filter injector.</b>
 ]],
         requires = { "Storinators" }
     },

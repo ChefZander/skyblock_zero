@@ -1,3 +1,28 @@
+-- "entirety of fluid transport in 1 file, seriously?... even in the sbz_power mod... like bro"
+-- - frog, writing to past self
+
+sbz_api.fluid_transport = {}
+local fluid_transport = sbz_api.fluid_transport
+fluid_transport.pos2network = {}
+fluid_transport.networks = {}
+local network_max_id = 0
+local function get_next_network_id()
+    network_max_id = network_max_id + 1
+    return network_max_id
+end
+
+local pos2network = fluid_transport.pos2network
+local networks = fluid_transport.networks
+
+local function add_to_pos2network(pos, net)
+    local p2n = pos2network[core.hash_node_position(pos)]
+    if p2n then
+        p2n[#p2n + 1] = net
+    else
+        pos2network[core.hash_node_position(pos)] = { net }
+    end
+end
+
 local function wire(len, stretch_to)
     local full = 0.5
     local base_box = { -len, -len, -len, len, len, len }
@@ -17,8 +42,7 @@ local function wire(len, stretch_to)
     return base_box
 end
 
-local wire_size = 1 / 4
-
+local wire_size = 3 / 16
 
 minetest.register_node("sbz_power:fluid_pipe", {
     description = "Fluid pipe",
@@ -69,6 +93,7 @@ local animation_def = {
 
 local function liquid_inv_add_item(inv, stack, on_update, pos)
     local max_count_in_each_stack = inv.max_count_in_each_stack
+    local changed = false
 
     for i = 1, #inv do
         local inv_stack = inv[i]
@@ -83,6 +108,7 @@ local function liquid_inv_add_item(inv, stack, on_update, pos)
                 inv_stack.count = inv_stack.count - leftover
             end
             stack.count = leftover
+            changed = true
             if inv_stack.name == "any" then inv_stack.name = stack.name end
             if on_update then on_update(pos, inv) end
             if stack.count == 0 then
@@ -90,20 +116,24 @@ local function liquid_inv_add_item(inv, stack, on_update, pos)
             end
         end
     end
-    return stack
+    return stack, changed
 end
 
-function sbz_api.pump(start_pos, liquid_stack, frompos)
+function fluid_transport.assemble_network(start_pos, frompos)
+    local net_id = get_next_network_id()
+    networks[net_id] = {
+        dity = false,
+    } -- a simple array of machines, beautiful really
+    -- realistically, a dirty = true scenario should never happen, but who knows what i will do in the future
+    local net = networks[net_id]
     sbz_api.vm_begin()
-
-    local abort = false
-
     local seen = {}
-    local hash = minetest.hash_node_position
+    local h = core.hash_node_position
     local queue = Queue.new()
 
-    seen[hash(start_pos)] = true
+    seen[h(start_pos)] = true
     queue:enqueue(start_pos)
+    pos2network[h(start_pos)] = { net_id }
 
     while not queue:is_empty() do
         local current_pos = queue:dequeue()
@@ -111,28 +141,51 @@ function sbz_api.pump(start_pos, liquid_stack, frompos)
         local is_conducting = minetest.get_item_group(node, "sbz_fluid_conducts") == 1
         local is_storing = minetest.get_item_group(node, "fluid_pipe_stores") == 1
 
-        if is_storing and hash(current_pos) ~= hash(frompos) then
-            local meta = minetest.get_meta(current_pos)
-            local liquid_inventory = minetest.deserialize(meta:get_string("liquid_inv"))
-            liquid_stack = liquid_inv_add_item(liquid_inventory, liquid_stack,
-                minetest.registered_nodes[node].on_liquid_inv_update, current_pos)
-            if liquid_stack.count == 0 then
-                abort = true
-            end
-            meta:set_string("liquid_inv", minetest.serialize(liquid_inventory))
+        if is_storing and h(current_pos) ~= h(frompos) then
+            net[#net + 1] = current_pos
         end
-        if abort then break end
 
         if is_conducting then
+            add_to_pos2network(current_pos, net_id)
             iterate_around_pos(current_pos, function(pos)
-                if not seen[hash(pos)] then
-                    seen[hash(pos)] = true
+                if not seen[h(pos)] then
+                    seen[h(pos)] = true
                     queue:enqueue(pos)
                 end
             end)
         end
     end
+    return net_id
+end
 
+function fluid_transport.pump(start_pos, liquid_stack, frompos)
+    local nets = pos2network[core.hash_node_position(start_pos)]
+    local net
+    if nets then
+        net = networks[nets[1] or -1]
+    end
+
+    if not net or net.dirty then
+        net = networks[fluid_transport.assemble_network(start_pos, frompos)]
+    end
+
+    local abort = false
+    for _, current_pos in ipairs(net) do
+        local node = (sbz_api.get_node_force(current_pos) or {}).name
+
+        local meta = minetest.get_meta(current_pos)
+        local liquid_inventory = minetest.deserialize(meta:get_string("liquid_inv"))
+        local changed
+        liquid_stack, changed = liquid_inv_add_item(liquid_inventory, liquid_stack,
+            minetest.registered_nodes[node].on_liquid_inv_update, current_pos)
+        if liquid_stack.count == 0 then
+            abort = true
+        end
+        if changed then
+            meta:set_string("liquid_inv", minetest.serialize(liquid_inventory))
+        end
+        if abort then break end
+    end
     return liquid_stack
 end
 
@@ -161,14 +214,15 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
             meta:set_string("infotext", "Not enough power")
             return pump_consumbtion, false
         else
-            node = minetest.get_node(pos)
+            node = sbz_api.get_node_force(pos)
+            if not node then return 0 end
             local dir = pipeworks.facedir_to_right_dir(node.param2)
 
             local frompos = vector.subtract(pos, dir)
             local topos = vector.add(pos, dir)
 
-            local fromnode = minetest.get_node(frompos).name
-            local tonode = minetest.get_node(topos).name
+            local fromnode = (sbz_api.get_node_force(frompos) or {}).name or ""
+            local tonode = (sbz_api.get_node_force(topos) or {}).name or ""
 
             if not minetest.get_item_group(fromnode, "fluid_pipe_stores") then
                 meta:set_string("infotext", "Can't pull from that node")
@@ -206,7 +260,7 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
 
             local target_stack_copy = table.copy(target_stack)
 
-            local stack_left = sbz_api.pump(topos, target_stack, frompos)
+            local stack_left = fluid_transport.pump(topos, target_stack, frompos)
             from_liquid_inv[target_stack_index] = stack_left
 
             frommeta:set_string("liquid_inv", minetest.serialize(from_liquid_inv))
@@ -315,7 +369,7 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
             return fluid_capturer_demand, false
         end
         local up_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
-        local up_node = minetest.get_node(up_pos).name
+        local up_node = (sbz_api.get_node_force(up_pos) or {}).name or ""
         if minetest.get_item_group(up_node, "liquid_capturable") ~= 1 then
             meta:set_string("infotext", "Above this node isn't a valid liquid")
             return 0
@@ -481,3 +535,38 @@ minetest.register_craft {
         { "sbz_chem:empty_fluid_cell", "sbz_resources:robotic_arm", "sbz_power:fluid_tank" }
     }
 }
+
+local function remove_all_nets_around(pos)
+    iterate_around_pos(pos, function(ipos)
+        local hpos = core.hash_node_position(ipos)
+        local nets_at_hpos = pos2network[hpos]
+        if nets_at_hpos then
+            for k, v in ipairs(nets_at_hpos) do
+                if networks[v] then
+                    networks[v] = nil
+                end
+            end
+        end
+        pos2network[hpos] = nil
+    end, true)
+end
+
+
+core.register_on_mods_loaded(function()
+    for name, def in pairs(core.registered_nodes) do
+        if core.get_item_group(name, "fluid_pipe_connects") > 0 then
+            local og_construct = def.on_construct
+            local og_destruct = def.on_destruct
+            core.override_item(name, {
+                on_construct = function(pos)
+                    remove_all_nets_around(pos)
+                    if og_construct then return og_construct(pos) end
+                end,
+                on_destruct = function(pos)
+                    remove_all_nets_around(pos)
+                    if og_destruct then return og_destruct(pos) end
+                end
+            })
+        end
+    end
+end)

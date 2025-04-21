@@ -5,7 +5,7 @@
 local definition = {
 	name = 'filter',
 	nodes = {
-		"pipeworks:automatic_filter_injector"
+		"pipeworks:automatic_filter_injector",
 	},
 	group = 'injector',
 	protection_bypass_read = "interact",
@@ -54,9 +54,7 @@ function definition:paste(node, pos, player, data)
 
 	meta:set_int("slotseq_mode", data.slotseq_mode)
 	meta:set_int("slotseq_index", data.slotseq_index)
-	if node.name == "pipeworks:filter" then
-		meta:set_int("exmatch_mode", data.exmatch_mode)
-	end
+	meta:set_int("exmatch_mode", data.exmatch_mode)
 
 	-- update injector formspec
 	local nodedef = minetest.registered_nodes[node.name]

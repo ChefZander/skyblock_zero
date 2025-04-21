@@ -17,8 +17,18 @@ minetest.register_node("sbz_bio:burner", sbz_api.add_tube_support({
             "listring[]"
         )
     end,
-    co2_action = function(pos)
+    co2_action = function(pos, node, co2, storage)
         local meta = minetest.get_meta(pos)
+        local co2_stored = meta:get_int("co2_stored")
+        if co2_stored > 0 then
+            local output = co2_stored
+            if (output + co2) > storage then
+                output = math.max(0, storage - co2) -- output+co2 = storage... so umm... makes sense if you think about it...
+            end
+            meta:set_int("co2_stored", co2_stored - output)
+            meta:set_string("infotext", "Storing " .. co2_stored - output .. " co2")
+            return output
+        end
         local inv = meta:get_inventory()
         local itemstack = inv:get_stack("main", 1)
         if itemstack:is_empty() then return 0 end
@@ -26,6 +36,13 @@ minetest.register_node("sbz_bio:burner", sbz_api.add_tube_support({
         if output == 0 then return 0 end
         itemstack:take_item()
         inv:set_stack("main", 1, itemstack)
+        meta:set_string("infotext", "Storing 0 co2")
+        if (output + co2) > storage then
+            local new_output = math.max(0, storage - co2)
+            meta:set_int("co2_stored", output - new_output)
+            meta:set_string("infotext", "Storing " .. (output - new_output) .. " co2")
+            return new_output
+        end
         return output
     end,
     output_inv = "main",

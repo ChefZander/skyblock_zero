@@ -254,6 +254,9 @@ pipeworks.register_tube("pipeworks:broken_tube", {
                     minetest.swap_node(pos, { name = was_node.name, param2 = was_node.param2 })
                     pipeworks.scan_for_tube_objects(pos)
                 end
+                if meta:get_string("infotext") == "Broken Tube" then
+                    meta:set_string("infotext", "")
+                end
                 meta:set_string("the_tube_was", "")
             else
                 pipeworks.logger(log_msg .. " but original node " .. was_node.name .. " is not registered anymore.")

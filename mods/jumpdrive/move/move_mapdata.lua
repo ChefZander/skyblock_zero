@@ -23,7 +23,7 @@ local movenode_aware_nodeids = {}
 minetest.register_on_mods_loaded(function()
 	local count = 0
 	for nodename, nodedef in pairs(minetest.registered_nodes) do
-		if type(nodedef.on_movenode) == "function" then
+		if type(nodedef.on_movenode) == "function" or type(nodedef.before_movenode) == "function" then
 			count = count + 1
 			local id = minetest.get_content_id(nodename)
 			movenode_aware_nodeids[id] = nodedef
@@ -110,7 +110,14 @@ function jumpdrive.move_mapdata(source_pos1, source_pos2, target_pos1, target_po
 			end
 		end
 	end
-
+	-- can call before_movenode here
+	for k, v in pairs(movenode_list) do
+		if v.nodedef then
+			if v.nodedef.before_movenode then
+				v.nodedef.before_movenode(v.from_pos, v.to_pos, v.edge)
+			end
+		end
+	end
 
 	manip:set_data(target_data)
 	manip:set_light_data(target_param1)

@@ -1,3 +1,28 @@
+Release 35 - "Optimization update"
+- made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
+- fixed some bugs
+- made fluid pipe look better
+- added instatubes
+- Added blast furnace
+- Made switching station lag not show fractions of miliseconds
+- Optimized switching stations
+- Optimized super powered lamps
+- Optimized reactors
+- Optimized fluid transport
+- Added teleport batteries (thanks to lnee)
+- Made drawers support filter injectors
+- Made drawers color-able
+- Made copytool copy filter injector "exact match mode"
+
+
+
+Release 34
+- Added a recipe to memory controller
+- Added an info page "Overflow Handling"
+- Added an "Items destroyed: " infotext to item voids
+- Improved some quests by adding images
+- Made burners store co2
+- Fixed rare bugs with filter injectors
 Release 33
 - Fixed a bug where filter injectors didn't work with one way tubes
 - Added one direction tube
@@ -80,9 +105,6 @@ Release 31
 - Changed the behavior of filter injectors so that they don't try to push stuff out when the inventory they are trying to push stuff to is clearly full
 - Re-worked and fixed bugs with logic item transport
 
-
-
-
 Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
 - Added lead shielding
@@ -111,6 +133,7 @@ Release 10
 - new secret quests
 - several ui fixes and a craft guide system
 - added Starlight Collectors
+- Stopped doing changelogs
 
 Release 9
 - New questline "Decorator"
