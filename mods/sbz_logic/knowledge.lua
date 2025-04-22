@@ -10,7 +10,7 @@ sbz_api.help_pages_by_index = {
     "Main Sandbox Environment",
     "Editor Environment",
     "Event Types",
-    "Disks and Mem",
+    "Disks, Mem and Links",
     "Lua Builder",
     "Object Detector",
     "Formspec Screen",
@@ -55,6 +55,10 @@ end
 local function gen_page(meta)
     local idx = meta:get_int "index"
     if idx == 0 then idx = 1 end
+    local help_pages_index = {}
+    for i, index in ipairs(sbz_api.help_pages_by_index) do
+        help_pages_index[i] = core.formspec_escape(index)
+    end
     local fs = {
         string.format([[
         formspec_version[7]
@@ -64,7 +68,7 @@ local function gen_page(meta)
             hypertext[5.2,0;14.6,19.6;a;%s]
         container_end[]
         ]],
-            table.concat(sbz_api.help_pages_by_index, ","),
+            table.concat(help_pages_index, ","),
             idx,
             minetest.formspec_escape(sbz_api.help_pages[sbz_api.help_pages_by_index[idx]])
         )

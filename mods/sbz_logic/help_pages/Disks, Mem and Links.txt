@@ -1,0 +1,47 @@
+<bigger>Disks, Memoery and Links</bigger>
+
+<big><mono>mem</mono></big>
+It is persistant storage. Present in both editor and main sandboxes. In the editor sandbox, it can be used to store data accross events. Can only store 1024 bytes. It is serialized so it can't store these types:
+- Functions
+- Userdata
+- Threads
+
+<mono>mem_data, errmsg = read_mem()</mono> - Gets data from mem.
+<mono>ok, errmsg = write_mem(mem_data)</mono> - Stores data to mem.
+
+<big><mono>Disk</mono></big>
+Similar to mem, disks are persistant storage attached to the item.
+It can store up to 20 kB.
+
+<mono>disk_data = {
+$C1    name = "example", -- can write
+$C1    data = <whatever you want, same restriction on types as mem>, -- can write
+$C1    punches_editor = false, -- can write
+$C1    punches_code = false, -- can write
+$C1    immutable = false, -- read only, if true, it's a system disk
+$C1    max = 20480, -- read only, if absent, it's probably a system disk
+$C1    index = 1, -- read only, just the index
+$C1},
+</mono>
+
+<mono>disk_id</mono> parameter - Supports inventory slot numbers and disk names.
+
+<mono>disk_data, errmsg = read_disk(disk_id)</mono> - Gets disk data.
+<mono>ok, errmsg = write_disk(disk_id, disk_data)</mono> - Store the disk.
+<mono>disk_slots, errmsg = available_disks()</mono> - Get sorted list of slot numbers of available disks.
+<mono>disk_names, errmsg = available_disk_names()</mono> - Get list of disk names sorted according to their slot number. Slower then <mono>available_disks()</mono>, but great for avoiding unnecesary disk reads just for reading names.
+
+<big>Links</big>
+Links to positions set by the link tool. You can use the same link for multiple positions.
+
+<mono>{
+$C1    ["some name"] = {
+$C1        [1] = pos1,
+$C1        [2] = ...,
+$C1    },
+$C1    ["some other name"] = ...,
+$C1    ...
+$C1}
+</mono>
+
+<mono>links, errmsg = read_links()</mono> - Gets links as above.

@@ -266,6 +266,9 @@ function libox.create_basic_environment()
         get_us_time = libox.sandbox_lib_f(minetest.get_us_time),
     } -- safe minetest functions
 
+    -- also allow new namespace
+    env.core = env.minetest
+
 
     -- extra global environment stuff
     for _, v in ipairs({

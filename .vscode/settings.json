@@ -1,6 +1,8 @@
 {
+    "Lua.runtime.version": "Lua 5.1",
     "Lua.diagnostics.globals": [
         "minetest",
+        "core",
         "PcgRandom",
         "PerlinNoise",
         "vector",
