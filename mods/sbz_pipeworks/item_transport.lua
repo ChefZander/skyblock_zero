@@ -61,7 +61,7 @@ minetest.register_globalstep(function(dtime)
 			if h ~= nil and not minetest.is_nan(h) then
 				tube_item_count[h] = (tube_item_count[h] or 0) + 1
 			else
-				luaentity.entites[_] = nil
+				luaentity.entites[_]:remove()
 			end
 		end
 	end
