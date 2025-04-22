@@ -434,7 +434,7 @@ end)
 
 
 core.register_chatcommand("remove_tube_entities", {
-	description = "Removes all tube entities",
+	description = "Removes all tube entities, use when it lags",
 	privs = { ["server"] = true },
 	func = function(name, param)
 		for id, luaent in pairs(luaentity.entities) do
