@@ -186,6 +186,7 @@ Instatubes that only allow items flowing from one direction, useful when having 
 <b>To complete this quest, craft an instatube</b>
 ]],
     },
+    requires = { "Blast Furnace" },
     {
         type = "quest",
         title = "Pattern Storinator",
