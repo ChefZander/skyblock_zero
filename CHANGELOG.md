@@ -11,6 +11,8 @@ Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Re-wrote the "Introduction" luacontroller help page
 - Fixed blast furnace not breaking properly when digging a blast furnace controller
 - Made instatubes colorable and fixed a bug where instatubes that were dug weren't stackable with freshly crafted ones
+- Made antimatter platforms explody
+
 
 Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
@@ -29,7 +31,6 @@ Release 35 - "Optimization update"
 - Made copytool copy filter injector "exact match mode"
 
 
-
 Release 34
 - Added a recipe to memory controller
 - Added an info page "Overflow Handling"
@@ -37,6 +38,7 @@ Release 34
 - Improved some quests by adding images
 - Made burners store co2
 - Fixed rare bugs with filter injectors
+
 Release 33
 - Fixed a bug where filter injectors didn't work with one way tubes
 - Added one direction tube
