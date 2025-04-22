@@ -1,10 +1,11 @@
-Release 36
+Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted
 - Added the height limit for emitters back
 - Added a command that removes all pipeworks tube entities
 - Fixed bugs about meteorite spawning (they could previously only spawn near spawn)
 - Buffed the spawn rate on multiplayer (For each person, a meteorite will spawn)
-
+- Fixed instatubes not "internally connecting" when machines are placed near them
+- Fixed wielders (punchers/node breakers/deployers) making a big amount of entities in certain situations
 
 Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)

@@ -219,6 +219,34 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
     return stack
 end
 
+local function instatube_can_insert(pos, node, stack, vel, owner)
+    local net_id = instatubes_net_id[hash(pos)] or -1
+    local network = instatube.networks[net_id]
+    if not network then
+        return true -- create the network
+    end
+    for _, machine in ipairs(network.machines) do
+        local mnode = machine.node
+        local can_insert = true
+        local mpos = table.copy(machine.pos)
+        if machine.tube.can_insert then
+            can_insert = can_insert and
+                machine.tube.can_insert(mpos, mnode, stack, { x = 0, y = 0, z = 0, speed = 1 }, owner)
+        end
+        if can_insert then
+            local filter_logic = machine.filter_logic
+            for _, filter in ipairs(filter_logic) do
+                local filter_f = instatube.special_filter_logic[filter.node.name]
+                can_insert = can_insert and filter_f(filter.pos, filter.node, filter.dir, stack)
+            end
+        end
+        if can_insert then
+            return true
+        end
+    end
+    return false
+end
+
 local wrap_instatube_insert_object = function(ordering)
     return function(pos, _, stack, _, owner)
         return instatube_insert_object(pos, _, stack, _, owner, ordering)
@@ -263,7 +291,7 @@ core.register_node("sbz_instatube:instant_tube", {
     tube = {
         connect_sides = { front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1 },
         insert_object = instatube_insert_object,
-
+        can_insert = instatube_can_insert,
         priority = 75,
     },
 })
@@ -668,7 +696,7 @@ end
 
 core.register_on_mods_loaded(function()
     for name, def in pairs(core.registered_nodes) do
-        if core.get_item_group(name, "instatube") > 0 and core.get_item_group(name, "tubedevice") > 0 then
+        if core.get_item_group(name, "instatube") > 0 or core.get_item_group(name, "tubedevice") > 0 then
             local og_construct = def.on_construct
             local og_destruct = def.on_destruct
             core.override_item(name, {

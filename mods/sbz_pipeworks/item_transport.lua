@@ -390,6 +390,22 @@ luaentity.register_entity("pipeworks:tubed_item", {
 				return
 			end
 			velocity = vector.multiply(velocity, -1)
+			-- this is to prevent massive amounts of tubed entities with wielders, added in sbz
+			local to_return = vector.add(pos, velocity)
+			local to_return_node = core.get_node(to_return)
+			local to_return_def = core.registered_nodes[to_return_node.name]
+			if to_return_def.tube and to_return_def.tube.can_insert then
+				local can_insert = to_return_def.tube.can_insert(to_return, to_return_node, stack, velocity, self.owner)
+				if not can_insert then -- drop itself
+					local dropped_item = minetest.add_item(self.start_pos, stack)
+					if dropped_item then
+						dropped_item:set_velocity(vector.multiply(velocity, 2))
+						self:remove()
+					end
+					return
+				end
+			end
+
 			self:set_pos(vector.subtract(self.start_pos, vector.multiply(vel, moved_by - 1)))
 			self:set_velocity(velocity)
 			self:set_item(leftover:to_string())

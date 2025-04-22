@@ -23,10 +23,11 @@ local after_filled_behavior = function(pos, meta, inv)
         local dir = pipeworks.facedir_to_right_dir((sbz_api.get_node_force(pos) or {}).param2)
         if not dir then return end
         dir = vector.subtract(vector.zero(), dir)
+        local to_pos = vector.add(pos, dir)
+        local end_pos = vector.add(pos, vector.multiply(dir, 0.4))
         for i = 1, #storage do
-            local start_pos = vector.add(pos, dir)
             minetest.after(0, function() -- added so that 2 pattern storinators wont create an infinite loop
-                pipeworks.tube_inject_direct(pos, start_pos, start_pos, dir, storage[i], meta:get_string("owner"))
+                pipeworks.tube_inject_direct(pos, end_pos, to_pos, dir, storage[i], meta:get_string("owner"))
             end)
         end
     end
