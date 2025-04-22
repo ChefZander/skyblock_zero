@@ -253,7 +253,7 @@ local wrap_instatube_insert_object = function(ordering)
     end
 end
 
-core.register_node("sbz_instatube:instant_tube", {
+core.register_node("sbz_instatube:instant_tube", unifieddyes.def {
     description = "Instatube",
     connects_to = { "sbz_instatube:instant_tube", "group:tubedevice", "pipeworks:automatic_filter_injector" },
     info_extra = { "Deliver items in record time! (Also less lag and less weird behavior!)" },
@@ -296,7 +296,7 @@ core.register_node("sbz_instatube:instant_tube", {
     },
 })
 
-core.register_node("sbz_instatube:one_way_instatube", {
+core.register_node("sbz_instatube:one_way_instatube", unifieddyes.def {
     description = "One Way Instatube",
     tiles = {
         "one_way_instatube.png",
@@ -346,7 +346,7 @@ end
 
 -- now the item filter
 
-core.register_node("sbz_instatube:item_filter", {
+core.register_node("sbz_instatube:item_filter", unifieddyes.def {
     description = "Instatube Item Filter",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
@@ -432,7 +432,7 @@ instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node
     return passing_filter
 end
 
-core.register_node("sbz_instatube:high_priority_instant_tube", {
+core.register_node("sbz_instatube:high_priority_instant_tube", unifieddyes.def {
     description = "High Priority Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
@@ -474,7 +474,7 @@ core.register_node("sbz_instatube:high_priority_instant_tube", {
 })
 instatube.special_priority["sbz_instatube:high_priority_instant_tube"] = 150
 
-core.register_node("sbz_instatube:low_priority_instant_tube", {
+core.register_node("sbz_instatube:low_priority_instant_tube", unifieddyes.def {
     description = "Low Priority Instatube",
     info_extra = "Can't be used with normal tubes, but with instatubes it works fine.",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
@@ -517,7 +517,7 @@ core.register_node("sbz_instatube:low_priority_instant_tube", {
 })
 instatube.special_priority["sbz_instatube:low_priority_instant_tube"] = -150
 
-core.register_node("sbz_instatube:teleport_instant_tube", {
+core.register_node("sbz_instatube:teleport_instant_tube", unifieddyes.def {
     description = "Teleport Instatube",
     info_extra = { "Links to all teleport tubes in a channel at once." },
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
@@ -592,7 +592,7 @@ mesecon.register_on_mvps_move(function(moved_nodes)
     end
 end)
 
-core.register_node("sbz_instatube:randomized_input_instant_tube", {
+core.register_node("sbz_instatube:randomized_input_instant_tube", unifieddyes.def {
     description = "Randomized Input Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     info_extra = { "" },
@@ -634,7 +634,7 @@ core.register_node("sbz_instatube:randomized_input_instant_tube", {
     },
 })
 
-core.register_node("sbz_instatube:cycling_input_instant_tube", {
+core.register_node("sbz_instatube:cycling_input_instant_tube", unifieddyes.def {
     description = "Cycling Input Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     info_extra = { "" },
