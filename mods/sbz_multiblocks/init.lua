@@ -199,6 +199,14 @@ function multiblocks.after_dig(pos, oldnode, oldmeta, digger)
     end
 end
 
+function multiblocks.after_dig_controller(name)
+    return function(pos, oldnode, oldmeta, digger)
+        local def = core.registered_nodes[name]
+        local schem = def.get_schematic(pos, oldmeta)
+        multiblocks.break_multiblock(pos, schem)
+    end
+end
+
 function multiblocks.before_movenode(from_pos, to_pos)
     local meta = core.get_meta(from_pos)
     multiblocks.after_dig(_, _, meta:to_table(), _)

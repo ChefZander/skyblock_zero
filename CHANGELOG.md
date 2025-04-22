@@ -9,7 +9,7 @@ Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed instatube quest being always visible 
 - Made luacontroller "ram" limit to be 400kb (from 1mb)
 - Re-wrote the "Introduction" luacontroller help page
-
+- Fixed blast furnace not breaking properly when digging a blast furnace controller
 
 Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
