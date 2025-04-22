@@ -299,12 +299,12 @@ core.register_node("sbz_instatube:instant_tube", unifieddyes.def {
 core.register_node("sbz_instatube:one_way_instatube", unifieddyes.def {
     description = "One Way Instatube",
     tiles = {
-        "one_way_instatube.png",
-        "one_way_instatube.png",
-        "instatube.png",
-        "instatube.png",
         "one_way_instatube.png^[transformFX",
+        "one_way_instatube.png^[transformFX",
+        "instatube.png",
+        "instatube.png",
         "one_way_instatube.png",
+        "one_way_instatube.png^[transformFX",
     },
     light_source = 5,
     drawtype = "nodebox",

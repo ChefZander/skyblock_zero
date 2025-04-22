@@ -12,7 +12,7 @@ Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed blast furnace not breaking properly when digging a blast furnace controller
 - Made instatubes colorable and fixed a bug where instatubes that were dug weren't stackable with freshly crafted ones
 - Made antimatter platforms explody
-
+- Fixed one way instatube textures being in the wrong direction
 
 Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
