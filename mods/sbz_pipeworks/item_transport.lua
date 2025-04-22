@@ -3,33 +3,30 @@ local enable_max_limit = minetest.settings:get_bool("pipeworks_enable_items_per_
 local max_tube_limit = tonumber(minetest.settings:get("pipeworks_max_items_per_tube")) or 30
 if enable_max_limit == nil then enable_max_limit = true end
 
-function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner, tags, topos)
+function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner)
 	-- Take item in any format
 	local stack = ItemStack(item)
-	if topos then
-		local node = sbz_api.get_node_force(topos)
-		if node and core.registered_nodes[node.name] then
-			local def = core.registered_nodes[node.name]
-			if def.tube and def.tube.insert_object then
-				local can_insertf = def.tube.can_insert
-				local can_insert = true
-				if can_insertf then can_insert = can_insertf(topos, node, stack, velocity, owner) end
-				if can_insert then
-					local leftover = def.tube.insert_object(topos, node, stack, velocity, owner)
-					stack = leftover
-					if stack:is_empty() then return false end
-				end
-			end
-		end
-	end
-
 	local obj = luaentity.add_entity(pos, "pipeworks:tubed_item")
 	obj:set_item(stack:to_string())
-	obj.start_pos = vector.new(start_pos)
+	obj.start_pos = vector.copy(start_pos)
 	obj:set_velocity(velocity)
 	obj.owner = owner
 	obj.tags = {}
 	return obj
+end
+
+function pipeworks.tube_inject_direct(pos, start_pos, to_pos, velocity, item, owner) -- function needed because monitoring pipeworks.tube_inject_item
+	local node = sbz_api.get_node_force(to_pos)
+	local stack = ItemStack(item)
+	if node and core.registered_nodes[node.name] then
+		local def = core.registered_nodes[node.name]
+		if def.tube and def.tube.insert_object then
+			local leftover = def.tube.insert_object(to_pos, node, stack, velocity, owner)
+			stack = leftover
+			if stack:is_empty() then return false end
+		end
+	end
+	return pipeworks.tube_inject_item(pos, start_pos, velocity, stack, owner) -- leftover
 end
 
 -- adding two tube functions
@@ -55,13 +52,32 @@ minetest.register_globalstep(function(dtime)
 		return
 	end
 	tube_item_count = {}
+
+	-- start removing entities after there are too much
+	local too_many_entities = 1000
+
+	local count = 0
 	for _, entity in pairs(luaentity.entities) do
 		if entity.name == "pipeworks:tubed_item" then
 			local h = minetest.hash_node_position(vector.round(entity._pos))
 			if h ~= nil and not minetest.is_nan(h) then
+				count = count + 1
 				tube_item_count[h] = (tube_item_count[h] or 0) + 1
 			else
-				luaentity.entites[_]:remove()
+				entity:remove()
+			end
+		end
+	end
+	if count > too_many_entities then
+		local to_remove = (count - too_many_entities)
+		local removed = 0
+		for _, entity in pairs(luaentity.entities) do
+			if entity.name == "pipeworks:tubed_item" then
+				entity:remove()
+			end
+			removed = removed + 1
+			if removed >= to_remove then
+				break
 			end
 		end
 	end

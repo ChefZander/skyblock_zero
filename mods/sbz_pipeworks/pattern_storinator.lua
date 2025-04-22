@@ -26,7 +26,7 @@ local after_filled_behavior = function(pos, meta, inv)
         for i = 1, #storage do
             local start_pos = vector.add(pos, dir)
             minetest.after(0, function() -- added so that 2 pattern storinators wont create an infinite loop
-                pipeworks.tube_inject_item(pos, start_pos, dir, storage[i], meta:get_string("owner"), nil, start_pos)
+                pipeworks.tube_inject_direct(pos, start_pos, start_pos, dir, storage[i], meta:get_string("owner"))
             end)
         end
     end

@@ -303,6 +303,7 @@ function luaentity.add_entity(pos, name)
 			index = 0
 		end
 	end
+
 	luaentity.entities_index = index
 
 	local entity = {
