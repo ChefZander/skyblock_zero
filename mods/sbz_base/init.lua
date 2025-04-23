@@ -1,5 +1,5 @@
 sbz_api = {
-    version = 34,
+    version = 35,
     is_version_dev = false,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
