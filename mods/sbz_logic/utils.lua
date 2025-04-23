@@ -44,6 +44,7 @@ function logic.range_check(luac_pos, pos2)
 end
 
 function logic.type_link(x, or_pos)
+    if type(x) ~= "table" then return false end
     if libox.type_vector(x) and or_pos then return true end
 
     local ret = true

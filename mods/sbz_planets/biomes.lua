@@ -10,5 +10,5 @@ core.register_ore({
     clust_num_ores = 1,
     clust_size = 1,
     y_min = -30000,
-    y_max = 30000,
+    y_max = 2000,
 })

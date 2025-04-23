@@ -221,7 +221,7 @@ core.register_node("sbz_planets:colorium_core", {
 local water_color = "#576ee180"
 
 core.register_node("sbz_planets:water_source_nofall", {
-    description = "Water Source-Like Product :D",
+    description = "Not Water",
     drawtype = "liquid",
     tiles = {
         { name = "water.png", backface_culling = false },

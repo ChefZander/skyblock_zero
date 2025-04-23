@@ -312,8 +312,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     local pos = vector.add(frompos, vector.multiply(dir, 1.4))
                     local start_pos = vector.add(frompos, dir)
 
-                    pipeworks.tube_inject_item(pos, start_pos, dir, item,
-                        fakeplayer:get_player_name(), nil, topos)
+                    pipeworks.tube_inject_direct(pos, start_pos, topos, dir, item, fakeplayer:get_player_name())
                     return true -- only fire one item, please
                 end
             end

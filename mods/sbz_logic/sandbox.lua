@@ -8,7 +8,7 @@ local time_limit = 10 * 1000         --ms
 local editor_time_limit = 3000       -- ms
 local max_memsize = 1024             -- 1024 serialized characters, just use disks lol
 local max_us_per_second = 100 * 1000 -- 100 milis
-local max_ram = 1024 * 1024          -- 1 megabyte
+local max_ram = 400 * 1024
 
 logic.main_limit, logic.editor_limit, logic.mem_size, logic.combined_limit = time_limit, editor_time_limit, max_memsize,
     max_us_per_second

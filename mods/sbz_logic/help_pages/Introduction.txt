@@ -1,17 +1,13 @@
 <bigger> Luacontroller Basics </bigger>
-Luacontrollers execute <big>SANDBOXED and LIMITED</big> lua code, they can be used for controlling machines or logic devices.
+Luacontrollers execute sandboxed lua code, they can be used for controlling machines or "logic devices".
 
-Skyblock Zero's luacontrollers are <b>VERY</b> different than mesecon's luacontrollers. (But practically, everything possible with mesecon's luacontrollers is possible with skyblock zero's luacontrollers.. besides interact with mesecon wire or digilines i guess)
-They are also built to solve complex problems, not simple ones, so they may appear more annoying for simpler problems (sometimes in exchange for more customization - like the editor/main sandbox split).
+Skyblock Zero's luacontrollers are very different than mesecon's luacontrollers. (But everything possible with mesecon's luacontrollers should be possible with skyblock zero's luacontrollers, besides interacting with mesecon wire or digilines, as those don't exist in skyblock zero)
+They are built to solve complex problems, and be customizable, sometimes at the cost of setting it up.
 
-If you are not familiar with lua, then uhh... you will need to learn it i guess?
-If you are familiar with like any other programming language, it shouldn't be difficult (just experiment with the examples, then do a couple of "Lua for loop how to" searches, no need for a 5 hour long in-depth tutorial video). Don't worry it's no rust.
-Also keep in mind that minetest is using luajit. (Almost the same as lua5.1, anything that works on lua5.1 *should* work on luajit.) 
+You have to be familiar with lua 5.1 to use them.
 
-So... how do you actually use a luacontroller... 
-
-By default, even when connected to power, it doesn't do anything
-To actually be able to use the luacontroller, you need to get the editor system disk.
+By default the luacontroller won't do anything.
+To be able to edit the luacontroller's code, you need to get the editor system disk.
 
 If you click the luacontroller with the editor system disk (will be reffered to as "punching editor" here), it will deploy the disk's editor code to the luacontroller,
 so if you right click the luacontroller, an editor should appear.
@@ -19,37 +15,35 @@ so if you right click the luacontroller, an editor should appear.
 If there are any errors in the <b>editor</b> code, they will be displayed in the infotext (infotext is that text that appears when you hover a block).
 But if there are any errors in the <b>main</b> code, they should be displayed by the editor.
 
-Using the luacontroller is also more cleanly covered in the Getting Started page.
+Setting up the luacontroller is also more cleanly covered in the Getting Started page.
 
-What's the difference between editor and main code?
-Editor code - Code that's responsible for the editor, runs differently than main code but i won't get into that just now...
+Editor code - Code that's responsible for the editor
 Main code - Code that actually does the thing you want to achieve with the luacontroller
 
 <bigger>Compute Limits</bigger>
 
-To not cause any harm to the server, or accidental infinite loops, the execution *time* of the luacontroller is limited.
+To not cause any harm to the server, or accidental infinite loops, the execution time of the luacontroller is limited.
 
-The editor is limited to $EDITOR_MS_LIMIT$ miliseconds per event (such as clicking).
+The editor is limited to $EDITOR_MS_LIMIT$ miliseconds per event (e.g. when someone clicks on a button, you have this amoutn of miliseconds to process that).
 The main code is limited to $MAIN_MS_LIMIT$ miliseconds without yielding.
-There is no hard cap on how many events per second you can have, but instead miliseconds used per second.
-So if main code and editor take up more than $COMBINED_MS_LIMIT$ miliseconds, per second, the sandbox won't be able to receive events (including editor) until the next second passes. (And the probably very high bill gets paid.)
+There is no hard limit on how many events per second you can have but there is a limit on how much server resources you can use up per second.
+So if main code and editor take up more than $COMBINED_MS_LIMIT$ miliseconds, per second, the sandbox won't be able to receive events (including editor) until the next second passes.
 
-Also, for each milisecond you take, you get billed 4 power. If you consumed too much, the luacontroller (including editor) won't function until the bill is paid.
+For each milisecond the luacontroller takes, it gets billed 4 power. The luacontroller won't function until the bill is paid.
 
 <bigger>Main Code</bigger>
 
-So, if you are used to the mesecons luacontroller, temporarily forget *everything* about how the code is executed, this is <b>very</b> different.
+The main code gets executed inside a coroutine, and you can <b>yield</b> it. (Kinda like pausing it)
 
-The main code gets executed inside a coroutine, and you can *yield* it, in fact that is how you obtain events.
-so <mono>event = yield(...)</mono>
+<mono>event = yield(...)</mono>
 
-You can yield <big>ANYWHERE*!!</big>
+Thanks to luajit, you can yield anywhere.
 Example: <mono>
 $C1i = 0
 $C1local function yield_if_needed()
 $C1    i = i + 1
 $C1    if i == 5 then
-$C1        _missed_events = wait(0.1) -- this function internally calls yield, ill go over it later.
+$C1        _missed_events = wait(0.1) -- this function internally calls yield
 $C1        i = 0
 $C1    end
 $C1end
@@ -57,25 +51,20 @@ $C1
 $C1for x = 1,100 do
 $C1    for y = 1,100 do
 $C1        for z = 1,100 do
-$C1            yield_if_needed() -- pauses the sandbox so we don't time out
-$C1            do_some_complex_stuff_idk_have_fun()
+$C1            yield_if_needed() -- pauses the sandbox so it doesn't time out
 $C1        end
 $C1    end
 $C1end
 </mono>
 
-*with luajit, PUC lua is not supported
+The main code is turned on/off by the editor, or it can be turned on by a <mono>send</mono> event.
 
-It is turned on/off by the editor, or turned on by a <mono>send</mono> event
-
-You can have up to $MAIN_RAM_LIMIT$ MEGABYTE(S) in the environment (though that also includes all the mounted disks), it weighs all locals, functions, their upvalues, their locals, their functions... IF libox is included in the trusted mods setting. (If it isn't and it's a server that's a serious vurnability.)
-
-Only disks and mem get saved though.
+You can have up to $MAIN_RAM_LIMIT$ kilobytes in the main sandbox. This may be refered to as the "ram" limit. (all locals, functions, their upvalues, their locals, their functions...)
 
 <bigger>Editor Code</bigger>
 
-Code that's responsible for the... editor...
-Executes VERY similarly to the mesecons luacontroller
+Code that's responsible for the editor
+Executes very similarly to the mesecons luacontroller. Meaning that instead of yielding, there is a global defined named <mono>event</mono> that has the event.
 
 Only contains a very basic environment, but once the main sandbox is on, it can access that environment directly.
 
@@ -84,13 +73,16 @@ Both editor and main sandbox receive gui events.
 
 <bigger>Linking</bigger>
 
-Linking range = The radius of the square that you see when you wield the luacontroller linking tool (with the luacontroller linking tool being linked to a luacontroller)
+Linking range - The radius of the square that you see when you wield the luacontroller linking tool (with the luacontroller linking tool being linked to a luacontroller)
 Linking range is usually enforced for doing anything that's in the world (like sending information or getting a node)
-To increase linking range (by default 0, so the luacontroller basically can't do anything), you will need to upgrade the luacontroller with a Linking Upgrade.
+To increase linking range (by default 0, <b>by default the luacontroller basically can't do anything</b>), you will need to upgrade the luacontroller with a Linking Upgrade.
 
 A link is an array of positions, like so: { {x=,y=,z=}, {x=,y=,z=}... }
 If you want to know where a link is, and there is only one position in the link, do <mono>link[1]</mono>
-Some functions may require a link, or they may require a position.
 
-They will usually silently fail if they get a link instead of the position, so to see that error, you can do:
+Some functions may require a link, or they may require a position.
+Those functions will usually silently fail if they get a link instead of the position, so to see that error, you can do:
+
 <mono>chat_debug( dump({turn_off_machine(<link or position>)}) )</mono>
+
+You can compare positions using <mono>vector.equals</mono>, or <mono>core.hash_node_position(pos1) == core.hash_node_position(pos2)</mono>

@@ -66,7 +66,8 @@ local function wielder_action(def, pos, node, index)
     if def.eject_drops then
         for i, stack in ipairs(inv:get_list("main")) do
             if not stack:is_empty() then
-                pipeworks.tube_inject_item(pos, pos, dir, stack)
+                local item_pos = vector.add(pos, vector.multiply(dir, 0.4))
+                pipeworks.tube_inject_direct(item_pos, pos, vector.add(pos, dir), dir, stack)
                 inv:set_stack("main", i, ItemStack(""))
             end
         end

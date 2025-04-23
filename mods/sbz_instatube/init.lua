@@ -147,14 +147,14 @@ local wire_size = 3 / 16
 Do you dislike pipeworks? Have you ever wanted to burn pipeworks with fire? Here is the tube for you!
 You will still interact with pipeworks just much less...
 ]]
+local instatubes_net_id = {}
 
 local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
-    local meta = core.get_meta(pos)
-    local net_id = meta:get_int("net_id")
+    local net_id = instatubes_net_id[hash(pos)] or -1
     local network = instatube.networks[net_id]
     if not network then
         net_id = sbz_api.instatube.create_instatube_network(pos, ordering)
-        meta:set_int("net_id", net_id)
+        instatubes_net_id[hash(pos)] = net_id
         network = instatube.networks[net_id]
     end
 
@@ -219,13 +219,41 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
     return stack
 end
 
+local function instatube_can_insert(pos, node, stack, vel, owner)
+    local net_id = instatubes_net_id[hash(pos)] or -1
+    local network = instatube.networks[net_id]
+    if not network then
+        return true -- create the network
+    end
+    for _, machine in ipairs(network.machines) do
+        local mnode = machine.node
+        local can_insert = true
+        local mpos = table.copy(machine.pos)
+        if machine.tube.can_insert then
+            can_insert = can_insert and
+                machine.tube.can_insert(mpos, mnode, stack, { x = 0, y = 0, z = 0, speed = 1 }, owner)
+        end
+        if can_insert then
+            local filter_logic = machine.filter_logic
+            for _, filter in ipairs(filter_logic) do
+                local filter_f = instatube.special_filter_logic[filter.node.name]
+                can_insert = can_insert and filter_f(filter.pos, filter.node, filter.dir, stack)
+            end
+        end
+        if can_insert then
+            return true
+        end
+    end
+    return false
+end
+
 local wrap_instatube_insert_object = function(ordering)
     return function(pos, _, stack, _, owner)
         return instatube_insert_object(pos, _, stack, _, owner, ordering)
     end
 end
 
-core.register_node("sbz_instatube:instant_tube", {
+core.register_node("sbz_instatube:instant_tube", unifieddyes.def {
     description = "Instatube",
     connects_to = { "sbz_instatube:instant_tube", "group:tubedevice", "pipeworks:automatic_filter_injector" },
     info_extra = { "Deliver items in record time! (Also less lag and less weird behavior!)" },
@@ -263,20 +291,20 @@ core.register_node("sbz_instatube:instant_tube", {
     tube = {
         connect_sides = { front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1 },
         insert_object = instatube_insert_object,
-
+        can_insert = instatube_can_insert,
         priority = 75,
     },
 })
 
-core.register_node("sbz_instatube:one_way_instatube", {
+core.register_node("sbz_instatube:one_way_instatube", unifieddyes.def {
     description = "One Way Instatube",
     tiles = {
-        "one_way_instatube.png",
-        "one_way_instatube.png",
-        "instatube.png",
-        "instatube.png",
         "one_way_instatube.png^[transformFX",
+        "one_way_instatube.png^[transformFX",
+        "instatube.png",
+        "instatube.png",
         "one_way_instatube.png",
+        "one_way_instatube.png^[transformFX",
     },
     light_source = 5,
     drawtype = "nodebox",
@@ -318,7 +346,7 @@ end
 
 -- now the item filter
 
-core.register_node("sbz_instatube:item_filter", {
+core.register_node("sbz_instatube:item_filter", unifieddyes.def {
     description = "Instatube Item Filter",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
@@ -334,7 +362,7 @@ core.register_node("sbz_instatube:item_filter", {
         local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         meta:set_string("formspec", [[
-formspec_version[10]
+formspec_version[8]
 size[10.2,8.2]
 list[context;filter;0.22,0.5;5,1;]
 list[current_player;main;0.22,3;8,4;]
@@ -404,7 +432,7 @@ instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node
     return passing_filter
 end
 
-core.register_node("sbz_instatube:high_priority_instant_tube", {
+core.register_node("sbz_instatube:high_priority_instant_tube", unifieddyes.def {
     description = "High Priority Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
@@ -446,7 +474,7 @@ core.register_node("sbz_instatube:high_priority_instant_tube", {
 })
 instatube.special_priority["sbz_instatube:high_priority_instant_tube"] = 150
 
-core.register_node("sbz_instatube:low_priority_instant_tube", {
+core.register_node("sbz_instatube:low_priority_instant_tube", unifieddyes.def {
     description = "Low Priority Instatube",
     info_extra = "Can't be used with normal tubes, but with instatubes it works fine.",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
@@ -489,7 +517,7 @@ core.register_node("sbz_instatube:low_priority_instant_tube", {
 })
 instatube.special_priority["sbz_instatube:low_priority_instant_tube"] = -150
 
-core.register_node("sbz_instatube:teleport_instant_tube", {
+core.register_node("sbz_instatube:teleport_instant_tube", unifieddyes.def {
     description = "Teleport Instatube",
     info_extra = { "Links to all teleport tubes in a channel at once." },
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
@@ -564,7 +592,7 @@ mesecon.register_on_mvps_move(function(moved_nodes)
     end
 end)
 
-core.register_node("sbz_instatube:randomized_input_instant_tube", {
+core.register_node("sbz_instatube:randomized_input_instant_tube", unifieddyes.def {
     description = "Randomized Input Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     info_extra = { "" },
@@ -606,7 +634,7 @@ core.register_node("sbz_instatube:randomized_input_instant_tube", {
     },
 })
 
-core.register_node("sbz_instatube:cycling_input_instant_tube", {
+core.register_node("sbz_instatube:cycling_input_instant_tube", unifieddyes.def {
     description = "Cycling Input Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
     info_extra = { "" },
@@ -668,7 +696,7 @@ end
 
 core.register_on_mods_loaded(function()
     for name, def in pairs(core.registered_nodes) do
-        if core.get_item_group(name, "instatube") > 0 and core.get_item_group(name, "tubedevice") > 0 then
+        if core.get_item_group(name, "instatube") > 0 or core.get_item_group(name, "tubedevice") > 0 then
             local og_construct = def.on_construct
             local og_destruct = def.on_destruct
             core.override_item(name, {
