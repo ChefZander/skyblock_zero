@@ -7,9 +7,10 @@ local prefixes = {
     ["M"] = 10 ^ 6,
     ["G"] = 10 ^ 9,
     ["T"] = 10 ^ 12,
+
     -- alright... now no matter how much you stack your power sources, with unmodified skyblock zero, no one should be able to reach these
-    ["P (Congratulations i guess you learned how to mod)"] = 10 ^ 15,
-    ["E (WTF?)"] = 10 ^ 18,
+    ["P"] = 10 ^ 15,
+    ["E"] = 10 ^ 18,
     ["Z"] = 10 ^ 21,
     ["Y"] = 10 ^ 24,
     -- ok enough thats too big
@@ -24,6 +25,8 @@ local function get_prefix_and_divider(n)
                 divider = v
                 prefix = k
             end
+        else
+            break
         end
     end
     return prefix, divider

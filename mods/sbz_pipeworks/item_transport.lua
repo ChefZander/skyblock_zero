@@ -378,6 +378,7 @@ luaentity.register_entity("pipeworks:tubed_item", {
 		pipeworks.load_position(self.start_pos)
 		local node = minetest.get_node(self.start_pos)
 		if minetest.get_item_group(node.name, "tubedevice_receiver") == 1 then
+			local oldstack = stack
 			local leftover
 			local def = minetest.registered_nodes[node.name]
 			if def.tube and def.tube.insert_object then
@@ -391,10 +392,10 @@ luaentity.register_entity("pipeworks:tubed_item", {
 			end
 			velocity = vector.multiply(velocity, -1)
 			-- this is to prevent massive amounts of tubed entities with wielders, added in sbz
-			local to_return = vector.add(pos, velocity)
+			local to_return = vector.add(self.start_pos, velocity)
 			local to_return_node = core.get_node(to_return)
 			local to_return_def = core.registered_nodes[to_return_node.name]
-			if to_return_def.tube and to_return_def.tube.can_insert then
+			if to_return_def.tube and to_return_def.tube.can_insert and oldstack:equals(leftover) then
 				local can_insert = to_return_def.tube.can_insert(to_return, to_return_node, stack, velocity, self.owner)
 				if not can_insert then -- drop itself
 					local dropped_item = minetest.add_item(self.start_pos, stack)
