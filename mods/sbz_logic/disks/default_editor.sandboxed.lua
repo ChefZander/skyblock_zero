@@ -28,49 +28,21 @@ end
 
 -- Always run this before exiting editor environment
 local function finalizer()
-    if mem and dirty_mem then write_mem(mem) end
+    local did_err = {}
+    if mem and dirty_mem then
+        local ok, errmsg = write_mem(mem)
+        if errmsg then did_err[#did_err+1] = errmsg end
+    end
 
     for slot, _ in pairs(dirty_disks) do
         local ok, errmsg = write_disk(slot, disks[slot])
+        if errmsg then did_err[#did_err+1] = errmsg end
+    end
+    if #did_err > 0 then
+        error('Editor error: ' .. table.concat(did_err, '\n'))
     end
 end
 
-
-local function text_wrap(text, max_length)
-    local result = {}
-    local line = ''
-    local pos = 1
-
-    local total_length = #text
-    if total_length > 1024 then -- aw hell nah ToT
-        return text
-    end
-
-    while pos <= total_length do
-        -- Find the next space or end of string
-        local next_space = string.find(text, ' ', pos, true) or (total_length + 1)
-        local word = string.sub(text, pos, next_space - 1)
-
-        if #line + next_space - pos <= max_length then
-            if line ~= '' then
-                line = line .. ' ' .. word
-            else
-                line = line .. word
-            end
-        else
-            result[#result+1] = line
-            line = word
-        end
-
-        pos = next_space + 1
-    end
-
-    if #line > 0 then
-        result[#result+1] = line
-    end
-
-    return table.concat(result, '\n')
-end
 
 local function render_formspec_edit()
     local control_button
@@ -89,19 +61,19 @@ button[0.2,12.5;3,1;turn_on;Turn on]
 
     return string.format(prepend, 1) .. string.format([=[
 hypertext[0,0.3;20,1;;<center><big>Super basic editor, YOU can make a better one :)]
-style_type[textarea;font=mono;textcolor=black]
+style[code;font=mono;textcolor=black]
 textarea[0.2,2;19.6,10;code;The code...;%s]
 %s
-button[3.4,12.5;3,1;save;Save]
-label[6.7,12.5;%s]]=],
-        E(editor.code) or '',
+button[3.4,12.5;3,1;save;Save]]
+textarea[6.6,12.5;13.2,2.3;;;%s]]=],
+        E(editor.code or ''),
         control_button,
-        E(text_wrap(editor_errmsg or editor.error, 60)))
+        E(editor_errmsg or editor.error))
 end
 
 -- If mem is bad, tell error in the edit tab
 if editor_errmsg then
-    render_formspec_edit()
+    editor.formspec = render_formspec_edit()
     finalizer()
     return
 end
@@ -111,7 +83,7 @@ local function render_formspec_term()
     return string.format(prepend, 2) .. string.format([[
 box[0,0;20,15;black]
 textarea[0,0;20,15;;;%s]
-]], terminal_text)
+]], E(terminal_text))
 end
 
 local function render_formspec_inventory()
@@ -136,7 +108,6 @@ local function render_formspec_disk()
             fs[#fs + 1] = string.format([=[
 style_type[box;colors=#42beef69]
 box[0.1,%s;1.2,1.2;]
-style_type[box;colors=]
 image_button[0.2,%s;1,1;data_disk.png;%s;]
 ]=], Y-0.1, Y, slot)
         else
@@ -145,7 +116,7 @@ image_button[0.2,%s;1,1;data_disk.png;%s;]
         end
         if disk_names[i] ~= '' then
             fs[#fs + 1] = string.format(
-                "tooltip[%s;Disk #%s: %s]", slot, slot, disk_names[i])
+                "tooltip[%s;Disk #%s: %s]", slot, slot, E(disk_names[i]))
         else
             fs[#fs + 1] = string.format(
                 "tooltip[%s;Unnamed Disk #%s]", slot, slot)
@@ -163,7 +134,7 @@ image_button[0.2,%s;1,1;data_disk.png;%s;]
 
     local disk, errmsg = read_disk(selected)
     if errmsg then
-        fs[#fs + 1] = string.format('label[13,13;%s], ', errmsg)
+        fs[#fs + 1] = string.format('textarea[13,3;6.8,8.8;;;%s]', E(errmsg))
         dirty_mem = true
         mem.selected = nil
         return string.format(prepend, 4) .. table.concat(fs)
@@ -173,7 +144,6 @@ image_button[0.2,%s;1,1;data_disk.png;%s;]
         local is_editable = type(disk.data) == "string" or disk.data == nil
         local non_editable_msg =
             "\nCan't edit it here because it's a non-string type, can't show it but here is the dumped version:\n"
-            .. E(dump(disk.data))
 
         fs[#fs + 1] = string.format([=[
 field[2,1;10,1;write_disk_name;Disk Name;%s]
@@ -184,11 +154,11 @@ image_button[11.25,0.2;0.75,0.75;data_disk.png;disk_type;]
 tooltip[disk_type;System Code Disk]
 checkbox[13,1;punches_editor;Punches editor;%s]
 checkbox[13,2;punches_code;Punches code;%s]
-button[13,12;3,1;save;Save]
-label[13,3;Can hold: %s kB]]=],
+textarea[13,3;6.8,8.8;;;Can hold: %s kB]
+button[13,12;3,1;save;Save]]=],
             E(disk.name),
             is_editable and "write_disk_data" or "",
-            is_editable and E(disk.data or "") or non_editable_msg,
+            is_editable and E(disk.data or "") or E(non_editable_msg .. dump(disk.data)),
             tostring(disk.punches_editor),
             tostring(disk.punches_code),
             tostring(math.floor(disk.max / 1024)))
@@ -198,7 +168,6 @@ label[13,3;Can hold: %s kB]]=],
 style_type[box;colors=#ff71718f]
 box[2,1;10,1;]
 box[2,3;10,10;]
-style_type[box;colors=]
 textarea[2,1;10,1;;Disk Name;%s]
 textarea[2,3;10,10;;Disk Data;%s]
 style[disk_type;bgcolor=#0000;border=false]
@@ -207,7 +176,7 @@ image_button[11.25,0.2;0.75,0.75;system_code_disk.png;disk_type;]
 tooltip[disk_type;System Code Disk]
 label[13,1;Punches editor: %s]
 label[13,2;Punches code: %s]
-label[13,3;This disk is immutable]]=],
+textarea[13,3;6.8,8.8;;;This disk is immutable]]=],
             E(disk.name),
             E(disk.data),
             disk.punches_editor and "yes" or "no",
