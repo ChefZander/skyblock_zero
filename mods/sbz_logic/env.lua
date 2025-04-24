@@ -92,18 +92,9 @@ local function get_editor_table(id, provided_meta)
 end
 
 local libf = libox.sandbox_lib_f
---- Enables JIT and escapes the function from being included in time cost
-local function jit_optimize(f)
-    return libf(function(...)
-        local hook = {debug.gethook()}
-        debug.sethook()
-        jit.on(true, true)
-        local capture = {f(...)}
-        jit.off(true, true)
-        debug.sethook(unpack(hook))
-        return unpack(capture)
-    end)
-end
+
+-- See also: https://github.com/ChefZander/skyblock_zero/pull/134
+-- for how JIT affected these luac functions
 
 local function get_unpack_pdata(id, pos, meta)
     if id then
@@ -115,7 +106,7 @@ local function get_unpack_pdata(id, pos, meta)
 end
 
 function logic.get_the_get_node_function(id)
-    return jit_optimize(function(pos)
+    return libf(function(pos)
         local lc_pos = get_unpack_pdata(id)
         if not libox.type_vector(pos) then
             return false, "Invalid position"
@@ -130,7 +121,7 @@ function logic.get_the_get_node_function(id)
 end
 
 function logic.get_chat_debug_function(id, owner, provided_pos)
-    return jit_optimize(function(msg)
+    return libf(function(msg)
         local pos = get_unpack_pdata(id, provided_pos, nil)
 
         if type(msg) ~= "string" then
@@ -154,14 +145,14 @@ function logic.get_chat_debug_function(id, owner, provided_pos)
 end
 
 local function get_read_mem(id, meta)
-    return jit_optimize(function()
+    return libf(function()
         local _, meta = get_unpack_pdata(id, nil, meta)
         return core.deserialize(meta:get_string("mem")) or {}
     end)
 end
 
 local function get_write_mem(id, meta)
-    return jit_optimize(function(mem_data)
+    return libf(function(mem_data)
         local _, meta = get_unpack_pdata(id, nil, meta)
         local mem, errmsg = logic.serialize_data(mem_data, max_memsize)
         if errmsg then
@@ -201,7 +192,7 @@ local function disk_get(stack, stack_name, slot, stack_meta, disk_name)
     end
 end
 local function get_read_disk(id, meta)
-    return jit_optimize(function(disk_id)
+    return libf(function(disk_id)
         local _, meta = get_unpack_pdata(id, nil, meta)
         local inv = meta:get_inventory()
         local disk_list = inv:get_list('disks') or {}
@@ -238,7 +229,7 @@ local function boolean4meta(v)
     return v and 1 or 0
 end
 local function get_write_disk(id, meta)
-    return jit_optimize(function(disk_id, disk_data)
+    return libf(function(disk_id, disk_data)
         local _, meta = get_unpack_pdata(id, nil, meta)
         local inv = meta:get_inventory()
         local disk_list = inv:get_list('disks') or {}
@@ -331,7 +322,7 @@ local function get_write_disk(id, meta)
     end)
 end
 local function get_available_disks(id, meta)
-    return jit_optimize(function()
+    return libf(function()
         local _, meta = get_unpack_pdata(id, nil, meta)
         local inv = meta:get_inventory()
         local disk_list = inv:get_list('disks') or {}
@@ -346,7 +337,7 @@ local function get_available_disks(id, meta)
     end)
 end
 local function get_available_disk_names(id, meta)
-    return jit_optimize(function ()
+    return libf(function ()
         local _, meta = get_unpack_pdata(id, nil, meta)
         local inv = meta:get_inventory()
         local disk_list = inv:get_list('disks') or {}
@@ -392,22 +383,22 @@ function logic.get_env(initial_pos, initial_meta, id)
             if e.type == "wait" then return { e } end
             return wait_for_event_type("wait")
         end,
-        send_to = jit_optimize(function(send_to_pos, msg)
+        send_to = libf(function(send_to_pos, msg)
             if not logic.type_link(send_to_pos, true) then return false, "send_to_pos must be a link or position" end
             local posdata = logic.id2pos[id]
             if not posdata then error(err_lc_should_be_off) end
             return logic.send_l(logic.add_to_link(send_to_pos, posdata.pos), msg, posdata.pos)
         end),
         get_node = logic.get_the_get_node_function(id),
-        is_protected = jit_optimize(function(rpos, who)
+        is_protected = libf(function(rpos, who)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             local posdata = logic.id2pos[id]
             if not posdata then error(err_lc_should_be_off) end
             local abs_pos = vector.add(rpos, posdata.pos)
             return minetest.is_protected(abs_pos, who or owner)
         end),
-        full_traceback = jit_optimize(debug.traceback),
-        turn_on_machine = jit_optimize(function(rpos)
+        full_traceback = debug.traceback,
+        turn_on_machine = libf(function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             local posdata = logic.id2pos[id]
             if not posdata then error(err_lc_should_be_off) end
@@ -420,7 +411,7 @@ function logic.get_env(initial_pos, initial_meta, id)
             if not logic.range_check(pos, abs_pos) then return false, "Can't turn on that, outside of linking range" end
             return sbz_api.force_turn_on(abs_pos, minetest.get_meta(abs_pos))
         end),
-        turn_off_machine = jit_optimize(function(rpos)
+        turn_off_machine = libf(function(rpos)
             if not libox.type_vector(rpos) then return false, "Invalid position." end
             local posdata = logic.id2pos[id]
             if not posdata then error(err_lc_should_be_off) end
@@ -463,13 +454,13 @@ function logic.get_editor_env(pos, meta, event)
         pos = vector.copy(pos),
         origin = vector.new(0, 0, 0),
         chat_debug = logic.get_chat_debug_function(nil, owner, pos),
-        turn_on = jit_optimize(function()
+        turn_on = libf(function()
             sbz_api.queue:add_action(pos, "logic_turn_on", {})
         end),
-        turn_off = jit_optimize(function()
+        turn_off = libf(function()
             sbz_api.queue:add_action(pos, "logic_turn_off", {})
         end),
-        full_traceback = jit_optimize(debug.traceback),
+        full_traceback = debug.traceback,
         read_mem = get_read_mem(nil, meta),
         write_mem = get_write_mem(nil, meta),
         read_disk = get_read_disk(nil, meta),
