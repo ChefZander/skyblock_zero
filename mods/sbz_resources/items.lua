@@ -82,31 +82,6 @@ minetest.register_craft({
     }
 })
 
-minetest.register_node("sbz_resources:compressed_core_dust", {
-    description = "Compressed core dust",
-    tiles = {
-        "compressed_core_dust.png"
-    },
-    groups = { matter = 1, explody = 10 },
-    sounds = sbz_api.sounds.matter(),
-})
-
-minetest.register_craft({
-    output = "sbz_resources:compressed_core_dust",
-    recipe = {
-        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
-        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
-        { "sbz_resources:core_dust", "sbz_resources:core_dust", "sbz_resources:core_dust" },
-    }
-})
-
-minetest.register_craft {
-    output = "sbz_resources:core_dust 9",
-    recipe = {
-        { "sbz_resources:compressed_core_dust" }
-    }
-}
-
 core.register_craftitem("sbz_resources:phlogiston", {
     description = "Phlogiston",
     inventory_image = "phlogiston.png"

@@ -1,3 +1,19 @@
+Release 36 - "Oh no... there is stuff to fix actually, oops" Update
+- Fixed a bug with instatubes that made them behave really strangely, when a server restarted
+- Added the height limit for emitters back
+- Added a command that removes all pipeworks tube entities
+- Fixed bugs about meteorite spawning (they could previously only spawn near spawn)
+- Buffed the spawn rate on multiplayer (For each person, a meteorite will spawn)
+- Fixed instatubes not "internally connecting" when machines are placed near them
+- Fixed wielders (punchers/node breakers/deployers) making a big amount of entities in certain situations
+- Fixed instatube quest being always visible 
+- Made luacontroller "ram" limit to be 400kb (from 1mb)
+- Re-wrote the "Introduction" luacontroller help page
+- Fixed blast furnace not breaking properly when digging a blast furnace controller
+- Made instatubes colorable and fixed a bug where instatubes that were dug weren't stackable with freshly crafted ones
+- Made antimatter platforms explody
+- Fixed one way instatube textures being in the wrong direction
+
 Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
 - fixed some bugs
@@ -15,7 +31,6 @@ Release 35 - "Optimization update"
 - Made copytool copy filter injector "exact match mode"
 
 
-
 Release 34
 - Added a recipe to memory controller
 - Added an info page "Overflow Handling"
@@ -23,6 +38,7 @@ Release 34
 - Improved some quests by adding images
 - Made burners store co2
 - Fixed rare bugs with filter injectors
+
 Release 33
 - Fixed a bug where filter injectors didn't work with one way tubes
 - Added one direction tube

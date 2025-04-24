@@ -1,16 +1,19 @@
 local function spawn_meteorite(pos)
-    local players = minetest.get_connected_players()
-    if #players == 0 then return end
-    local player = players[math.random(#players)]
     if not pos then
-        local player_pos = player:get_pos()
-        local attempts = 0
-        repeat
-            pos = player_pos + vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
-            attempts = attempts + 1
-        until attempts >= 256 or vector.length(pos) > 80 and vector.length(pos) < 100 and minetest.get_node(pos).name == "air"
+        for _, ref in pairs(minetest.get_connected_players()) do
+            local player_pos = ref:get_pos()
+            local attempts = 0
+            local relative_pos
+            repeat
+                relative_pos = vector.new(math.random(-100, 100), math.random(-100, 100), math.random(-100, 100))
+                pos = player_pos + relative_pos
+                attempts = attempts + 1
+            until attempts >= 256 or vector.length(relative_pos) > 80 and vector.length(relative_pos) < 100 and minetest.get_node(pos).name == "air"
+        end
+    end -- DO NOT TURN THIS INTO AN if/else when refactoring, read the code and figure out why
+    if pos then
+        return minetest.add_entity(pos, "sbz_meteorites:meteorite")
     end
-    return minetest.add_entity(pos, "sbz_meteorites:meteorite")
 end
 
 minetest.register_chatcommand("spawn_meteorite", {

@@ -5,9 +5,9 @@ local libox_coroutine = libox.coroutine
 local active_sandboxes = libox_coroutine.active_sandboxes
 
 local time_limit = 10e3              -- 10ms
-local editor_time_limit = 3000       -- 3ms
+local editor_time_limit = 3e3        -- 3ms
 local max_us_per_second = 100e3      -- 100ms
-local max_ram = 400 * 1024           -- 400 kilobyte
+local max_ram = 400 * 1024           -- 400kb
 
 logic.main_limit = time_limit
 logic.editor_limit = editor_time_limit

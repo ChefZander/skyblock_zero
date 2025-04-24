@@ -303,6 +303,7 @@ function luaentity.add_entity(pos, name)
 			index = 0
 		end
 	end
+
 	luaentity.entities_index = index
 
 	local entity = {
@@ -392,6 +393,8 @@ local move_entities_globalstep_part2 = function(dtime)
 					entity:on_step(dtime)
 				end
 			end
+		else
+			entity:remove()
 		end
 	end
 end
@@ -429,3 +432,15 @@ minetest.register_globalstep(function(dtime)
 
 	dtime_accum = 0
 end)
+
+
+core.register_chatcommand("remove_tube_entities", {
+	description = "Removes all tube entities, use when it lags",
+	privs = { ["server"] = true },
+	func = function(name, param)
+		for id, luaent in pairs(luaentity.entities) do
+			luaent:remove()
+		end
+		return true, "Done"
+	end
+})

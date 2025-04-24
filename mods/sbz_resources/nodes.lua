@@ -82,7 +82,7 @@ minetest.register_node("sbz_resources:antimatter_platform", {
         type = "fixed",
         fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 }
     },
-    groups = { antimatter = 2, cracky = 3 },
+    groups = { antimatter = 2, cracky = 3, explody = 100 },
     paramtype = "light",
     sunlight_propagates = true,
     walkable = true,
@@ -346,8 +346,7 @@ minetest.register_node("sbz_resources:compressed_core_dust", {
     tiles = {
         "compressed_core_dust.png"
     },
-    info_extra = { "You can use this to protect against antimatter" },
-    groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 5, charged = 1 },
+    groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 10, charged = 1 },
     sounds = sbz_api.sounds.matter(),
 })
 

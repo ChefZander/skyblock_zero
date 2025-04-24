@@ -366,7 +366,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
         meta:set_string("formspec", get_furnce_controller_formspec(pos))
     end,
     get_schematic = make_schem,
-    after_dig_node = sbz_api.multiblocks.after_dig,
+    after_dig_node = sbz_api.multiblocks.after_dig_controller("sbz_multiblocks:blast_furnace_controller"),
     before_movenode = sbz_api.multiblocks.before_movenode,
 })
 
