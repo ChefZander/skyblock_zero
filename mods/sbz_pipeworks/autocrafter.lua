@@ -397,6 +397,7 @@ minetest.register_node("pipeworks:autocrafter", {
         insert_object = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local slots = minetest.deserialize(meta:get_string("reserved_slots"))
+            if slots == nil then return stack end
             if not slots[stack:get_name()] then
                 return stack
             end
@@ -421,6 +422,9 @@ minetest.register_node("pipeworks:autocrafter", {
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
             local slots = minetest.deserialize(meta:get_string("reserved_slots"))
+            if slots == nil then
+                return false
+            end
             if not slots[stack:get_name()] then
                 return false
             end
