@@ -28,10 +28,10 @@ local function make_safe1(x, seen)
             x[key] = nil
         else
             if type(key) == "table" then
-                make_safe1(key)
+                make_safe1(key, seen)
             end
             if type(value) == "table" then
-                make_safe1(value)
+                make_safe1(value, seen)
             end
         end
     end
@@ -286,6 +286,10 @@ local function get_write_disk(id, meta)
         ty = type(disk_data)
         if ty ~= 'table' then -- Destroy disk! >:)
             disk_data = { data = '' }
+        end
+
+        if disk_data.data == nil and disk_data.name == nil and disk_data.punches_code == nil and disk_data.punches_editor == nil then
+            return false, 'No disk fields to write, did you forget to put e.g. data into disk_data.data?'
         end
 
         local data, errmsg
