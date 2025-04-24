@@ -415,7 +415,7 @@ minetest.register_abm({
     interval = timeout_limit,
     chance = 1,
     action = function(pos, node)
-        if not touched_nodes[hash(pos)] or (os.time() - touched_nodes[hash(pos)] >= timeout_limit) then
+        if not touched_nodes[hash(pos)] or (os.time() - touched_nodes[hash(pos)] >= timeout_limit) and core.get_item_group(node.name, "network_always_found") ~= 1 then
             minetest.get_meta(pos):set_string("infotext", "No network found")
             if node_defs[node.name].stateful then
                 sbz_api.turn_off(pos)

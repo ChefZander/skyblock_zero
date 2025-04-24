@@ -245,7 +245,7 @@ sbz_api.register_generator("sbz_power:starlight_collector", {
     description = "Starlight Collector",
     drawtype = "nodebox",
     tiles = { "starlight_collector.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png" },
-    groups = { matter = 1, pipe_connects = 1 },
+    groups = { matter = 1, pipe_connects = 1, network_always_found = 1 },
     sunlight_propagates = true,
     walkable = true,
     node_box = {
@@ -256,7 +256,6 @@ sbz_api.register_generator("sbz_power:starlight_collector", {
     use_texture_alpha = "clip",
     action_interval = 1,
     action = function(pos, node, meta)
-        meta:set_string("infotext", "")
         local r = math.random(0, 2)
         if r == 1 then return 1 end
         return 0
