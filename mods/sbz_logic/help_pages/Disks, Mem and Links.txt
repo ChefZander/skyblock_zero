@@ -32,9 +32,9 @@ $C1},
 <mono>disk_names, errmsg = available_disk_names()</mono> - Get list of disk names sorted according to their slot number. Slower then <mono>available_disks()</mono>, but great for avoiding unnecesary disk reads just for reading names.
 
 <big>Links</big>
-Links to positions set by the link tool. You can use the same link for multiple positions.
+Links to positions set by the link tool. You can use the same link for multiple positions. Like luacontroller <mono>pos</mono>, <mono>links</mono> is available in both environments.
 
-<mono>{
+<mono>links = {
 $C1    ["some name"] = {
 $C1        [1] = pos1,
 $C1        [2] = ...,
@@ -43,5 +43,3 @@ $C1    ["some other name"] = ...,
 $C1    ...
 $C1}
 </mono>
-
-<mono>links, errmsg = read_links()</mono> - Gets links as above.

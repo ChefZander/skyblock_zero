@@ -358,21 +358,6 @@ local function get_available_disk_names(id, meta)
     end)
 end
 
-local function get_read_links(id, pos, meta)
-    return function()
-        local pos, meta = get_unpack_pdata(id, pos, meta)
-        local links = core.deserialize(meta:get_string("links")) or {}
-        for _, l in pairs(links) do
-            for _, p in pairs(l) do -- transform to relative positions
-                p.x = p.x - pos.x
-                p.y = p.y - pos.y
-                p.z = p.z - pos.z
-            end
-        end
-        return links
-    end
-end
-
 function logic.get_env(initial_pos, initial_meta, id)
     ---@type table
     local base = libox.create_basic_environment()
@@ -450,7 +435,6 @@ function logic.get_env(initial_pos, initial_meta, id)
         write_disk = get_write_disk(id),
         available_disks = get_available_disks(id),
         available_disk_names = get_available_disk_names(id),
-        read_links = get_read_links(id),
     } do
         base[k] = v
     end
@@ -488,7 +472,6 @@ function logic.get_editor_env(pos, meta, event)
         write_disk = get_write_disk(nil, meta),
         available_disks = get_available_disks(nil, meta),
         available_disk_names = get_available_disk_names(nil, meta),
-        read_links = get_read_links(nil, pos, meta),
     } do
         base[k] = v
     end

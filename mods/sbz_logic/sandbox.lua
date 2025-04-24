@@ -19,6 +19,18 @@ logic.id2pos = {
     -- ["ID1"] = { meta = core.get_meta(pos), pos = pos },
 }
 
+function logic.initialize_env(meta, env, pos)
+    env.pos = vector.copy(pos)
+    env.links = core.deserialize(meta:get_string("links")) or {}
+    for _, l in pairs(env.links) do
+        for _, p in pairs(l) do -- transform to relative positions
+            p.x = p.x - pos.x
+            p.y = p.y - pos.y
+            p.z = p.z - pos.z
+        end
+    end
+end
+
 function logic.on_turn_off(pos)
     local meta = M(pos)
     meta:set_int("waiting", 0)
@@ -186,9 +198,7 @@ function logic.send_event_to_sandbox(pos, event)
     logic.id2pos[id] = { pos = pos, meta = meta }
 
     local env = active_sandboxes[id].env
-
-    -- Update globals in sandbox
-    env.pos = vector.copy(pos)
+    logic.initialize_env(meta, env, pos)
 
     -- Calculate time cost
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
@@ -225,6 +235,7 @@ function logic.send_editor_event(pos, meta, event)
     end
 
     local env = logic.get_editor_env(pos, meta, event)
+    logic.initialize_env(meta, env, pos)
 
     meta:mark_as_private("editor_code")
     local ok, errmsg = libox.normal_sandbox {
