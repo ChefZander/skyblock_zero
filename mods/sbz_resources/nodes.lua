@@ -449,9 +449,10 @@ minetest.register_node("sbz_resources:clay", {
     light_source = 3,
 })
 
-minetest.register_node("sbz_resources:bricks", {
+minetest.register_node("sbz_resources:bricks", unifieddyes.def {
     description = "Bricks",
-    tiles = { "bricks.png" }, -- Needs retexture by artist
+    tiles = { "bricks.png" },
+    drawtype = "color",
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
     walkable = true,
     sounds = sbz_api.sounds.sand(),
@@ -463,6 +464,8 @@ minetest.register_craft({
     output = "sbz_resources:bricks",
     recipe = "sbz_resources:clay",
 })
+
+stairs.register("sbz_resources:bricks")
 
 core.register_node("sbz_resources:dark_sand", {
     description = "Dark Sand",
