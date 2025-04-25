@@ -66,6 +66,9 @@ function logic.serialize_mem(mem, max, name)
     if not name then name = "the mem table" end
     local safe_mem = make_safe(mem)
     local serialized_mem = minetest.serialize(safe_mem)
+    if not serialized_mem then
+        return false, string.format("Something went wrong while serializing " .. name .. ".")
+    end
     if #serialized_mem > max then
         return false, string.format("You stored too much in %s (%s/%s bytes)", name, #serialized_mem, max)
     else
