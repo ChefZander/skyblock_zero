@@ -223,6 +223,7 @@ local function instatube_can_insert(pos, node, stack, vel, owner)
     local net_id = instatubes_net_id[hash(pos)] or -1
     local network = instatube.networks[net_id]
     if not network then
+        instatubes_net_id[hash(pos)] = net_id
         return true -- create the network
     end
     for _, machine in ipairs(network.machines) do
