@@ -689,6 +689,7 @@ local function remove_all_nets_around(pos)
                 end
             end
         end
+        instatubes_net_id[hpos] = nil
         pos2network[hpos] = nil
     end, true)
 end
