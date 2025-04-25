@@ -368,6 +368,22 @@ core.register_craft {
     }
 }
 
+-- purely decor
+minetest.register_node("sbz_bio:colorium_planks", unifieddyes.def {
+    description = "Colorium Planks",
+    tiles = { "colorium_planks.png" },
+    paramtype2 = "color",
+    groups = { matter = 3, oddly_breakable_by_hand = 2, burn = 1, transparent = 1, explody = 10, },
+    sounds = sbz_api.sounds.tree(),
+})
+
+core.register_craft({
+    type = "shapeless",
+    recipe = { "sbz_bio:colorium_tree" },
+    output = "sbz_bio:colorium_planks 4",
+})
+
+stairs.register("sbz_bio:colorium_planks")
 
 local vowels = "aeiyou"                        -- 6
 local everything_else = "bcdfghjklmnpqrstvwxz" -- 20

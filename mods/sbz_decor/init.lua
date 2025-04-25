@@ -112,11 +112,33 @@ dofile(MP .. "/cnc.lua")
 -- inspired by what i saw from mtg ladders
 local ladder_autoplace_limit = 16
 
+local get_ladder_on_place = function(ladder_name)
+    return function(stack, placer, pointed, recursed)
+        if (recursed or 0) > ladder_autoplace_limit then return end
+        if pointed.type == "node" then
+            local target = pointed.under
+            local node = core.get_node(target)
+            if node.name == "sbz_decor:ladder" then
+                local dir = minetest.facedir_to_dir(node.param2)
+                local up = vector.new(0, 1, 0)
+                pointed.under = vector.add(pointed.under, up)
+                pointed.above = vector.add(pointed.above, up)
+                if core.get_node(pointed.under).name == ladder_name then
+                    local result = minetest.registered_nodes[ladder_name].on_place(stack, placer, pointed,
+                        (recursed or 0) + 1)
+                    return result
+                end
+                return core.item_place_node(stack, placer, pointed, node.param2)
+            end
+        end
+        return core.item_place_node(stack, placer, pointed)
+    end
+end
+
 core.register_node("sbz_decor:ladder", unifieddyes.def {
     description = "Matter Ladder",
-    info_extra = "", -- idk if this is required but leaving it here anyway
     drawtype = "nodebox",
-    node_box = {     -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
+    node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
         type = "fixed",
         fixed = {
             { -0.5,   -0.5,    0.375, -0.375, 0.5,     0.5 }, -- NodeBox1
@@ -143,29 +165,55 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
     paramtype = "light",
     paramtype2 = "facedir",
     sunlight_propagates = true,
-    on_place = function(stack, placer, pointed, recursed)
-        if (recursed or 0) > ladder_autoplace_limit then return end
-        if pointed.type == "node" then
-            local target = pointed.under
-            local node = core.get_node(target)
-            if node.name == "sbz_decor:ladder" then
-                local dir = minetest.facedir_to_dir(node.param2)
-                local up = vector.new(0, 1, 0)
-                pointed.under = vector.add(pointed.under, up)
-                pointed.above = vector.add(pointed.above, up)
-                if core.get_node(pointed.under).name == "sbz_decor:ladder" then
-                    local result = minetest.registered_nodes["sbz_decor:ladder"].on_place(stack, placer, pointed,
-                        (recursed or 0) + 1)
-                    return result
-                end
-                return core.item_place_node(stack, placer, pointed, node.param2)
-            end
-        end
-        return core.item_place_node(stack, placer, pointed)
-    end,
-    node_placement_prediction = "", -- REQUIRED
+    on_place = get_ladder_on_place("sbz_decor:ladder"),
+    node_placement_prediction = "",
     climbable = true,
 })
+
+core.register_node("sbz_decor:anitmatter_ladder", unifieddyes.def {
+    description = "Antimatter Ladder",
+    drawtype = "nodebox",
+    node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
+        type = "fixed",
+        fixed = {
+            { -0.5,   -0.5,    0.375, -0.375, 0.5,     0.5 }, -- NodeBox1
+            { 0.375,  -0.5,    0.375, 0.5,    0.5,     0.5 }, -- NodeBox3
+            { -0.375, 0.3125,  0.375, 0.375,  0.4375,  0.5 }, -- NodeBox5
+            { -0.375, 0.0625,  0.375, 0.375,  0.1875,  0.5 }, -- NodeBox8
+            { -0.375, -0.1875, 0.375, 0.375,  -0.0625, 0.5 }, -- NodeBox9
+            { -0.375, -0.4375, 0.375, 0.375,  -0.3125, 0.5 }, -- NodeBox10
+        }
+    },
+    selection_box = {
+        type = "fixed",
+        fixed = {
+            -8 / 16, -8 / 16, 3 / 16, 8 / 16, 8 / 16, 8 / 16
+        }
+    },
+    tiles = { "antimatter_blob.png" },
+    inventory_image = "antimatter_ladder.png",
+    groups = {
+        matter = 3,
+        explody = 3,
+        habitat_conducts = 1,
+    },
+    light_source = 3,
+    paramtype = "light",
+    paramtype2 = "colorfacedir", --"facedir",
+    sunlight_propagates = true,
+    on_place = get_ladder_on_place("sbz_decor:antimatter_ladder"),
+    node_placement_prediction = "",
+    climbable = true,
+})
+
+core.register_craft {
+    output = "sbz_decor:ladder 12",
+    recipe = {
+        { "sbz_resources:antimatter_blob", "",                              "sbz_resources:antimatter_blob", },
+        { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", },
+        { "sbz_resources:antimatter_blob", "",                              "sbz_resources:antimatter_blob", },
+    }
+}
 
 core.register_craft {
     output = "sbz_decor:ladder 12",

@@ -20,11 +20,12 @@ stairs.register("sbz_resources:matter_blob")
 minetest.register_alias("sbz_resources:matter_stair", "sbz_resources:matter_blob_stair")
 minetest.register_alias("sbz_resources:matter_slab", "sbz_resources:matter_blob_slab")
 
-minetest.register_node("sbz_resources:matter_platform", {
+minetest.register_node("sbz_resources:matter_platform", unifieddyes.def {
     description = "Matter Platform",
     tiles = { "matter_blob.png^platform_overlay.png^[makealpha:255,0,0" },
     use_texture_alpha = "clip",
     drawtype = "nodebox",
+    paramtype2 = "color",
     node_box = {
         type = "fixed",
         fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 }
@@ -72,10 +73,11 @@ stairs.register("sbz_resources:antimatter_blob")
 minetest.register_alias("sbz_resources:antimatter_stair", "sbz_resources:antimatter_blob_stair")
 minetest.register_alias("sbz_resources:antimatter_slab", "sbz_resources:antimatter_blob_slab")
 
-minetest.register_node("sbz_resources:antimatter_platform", {
+minetest.register_node("sbz_resources:antimatter_platform", unifieddyes.def {
     description = "Antimatter Platform",
     tiles = { "antimatter_blob.png^platform_overlay.png^[makealpha:255,0,0" },
     use_texture_alpha = "clip",
+    paramtype2 = "color",
     light_source = 2,
     drawtype = "nodebox",
     node_box = {
