@@ -19,6 +19,7 @@ local remove_nets = function(pos)
         pos2network[h(ipos)] = nil
     end)
 end
+
 core.register_node("sbz_power:starlight_catcher", {
     description = "Starlight Catcher",
     info_extra =

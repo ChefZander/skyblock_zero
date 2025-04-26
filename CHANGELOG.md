@@ -3,7 +3,8 @@ Release 37
 - Added bricks and wooden planks
 - Fixed one pixel of pebble being transparent (Yes, you weren't crazy!)
 - Fixed a lot of bugs with instatubes and specifically instatube teleport tubes
-
+- Added starlight catchers
+- Optimized habitat regulators
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted
