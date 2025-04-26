@@ -595,7 +595,6 @@ end)
 core.register_node("sbz_instatube:randomized_input_instant_tube", unifieddyes.def {
     description = "Randomized Input Instatube",
     connects_to = { "group:tubedevice", "pipeworks:automatic_filter_injector" },
-    info_extra = { "" },
     connect_sides = { "top", "bottom", "front", "left", "back", "right" },
     paramtype2 = "color",
     light_source = 5,

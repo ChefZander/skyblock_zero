@@ -90,7 +90,7 @@ local function get_receivers(pos, channel)
         if val.cr == 1 and val.channel == channel and not vector.equals(val, pos) then
             minetest.load_area(val)
             local node_name = minetest.get_node(val).name
-            if node_name:find("pipeworks:teleport_tube") or core.get_item_group(node_name, "tptube") then
+            if node_name:find("pipeworks:teleport_tube") or core.get_item_group(node_name, "tptube") == 1 then
                 table.insert(receivers, val)
             else
                 remove_tube(val)
