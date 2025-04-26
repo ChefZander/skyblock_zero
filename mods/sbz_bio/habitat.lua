@@ -64,7 +64,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
                 storage = storage + def.store_co2
             end
         end
-        if name == "sbz_bio:habitat_regulator" and hash(pos) ~= hash(start_pos) then
+        if name == "sbz_bio:habitat_regulator" and pos ~= start_pos then
             return
         end
     end
