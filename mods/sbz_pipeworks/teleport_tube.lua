@@ -64,6 +64,24 @@ local function read_tube_db()
     tube_db.version = nil
 end
 
+
+local function on_update_channel(channel) -- for tptube instant tubes, and also delete senders that are not real
+    for k, v in pairs(tube_db) do
+        local node = sbz_api.get_node_force(v)
+        if node then
+            if v.cr == 1 and v.channel == channel then
+                if node.name == "sbz_instatube:teleport_instant_tube" then
+                    sbz_api.instatube.remove_all_nets_around(v)
+                end
+            elseif v.cr == 0 then -- get_receivers takes care of v.cr == 1 nodes
+                if not node.name:find("pipeworks:teleport_tube") and core.get_item_group(node.name, "tptube") ~= 1 then
+                    remove_tube(v)
+                end
+            end
+        end
+    end
+end
+
 local function set_tube(pos, channel, cr)
     local hash = hash_pos(pos)
     local tube = tube_db[hash]
@@ -72,10 +90,12 @@ local function set_tube(pos, channel, cr)
             tube.channel = channel
             tube.cr = cr
             save_tube(hash)
+            on_update_channel(channel)
         end
     else
         tube_db[hash] = { x = pos.x, y = pos.y, z = pos.z, channel = channel, cr = cr }
         save_tube(hash)
+        on_update_channel(channel)
     end
 end
 
@@ -101,6 +121,8 @@ local function get_receivers(pos, channel)
     receiver_cache[channel] = cache
     return receivers
 end
+
+
 
 local help_text = minetest.formspec_escape(
     S("Channels are public by default") .. "\n" ..

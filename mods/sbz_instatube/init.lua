@@ -52,13 +52,16 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                 local is_receiver = core.get_item_group(node.name, "tubedevice") == 1
                 if is_wire then
                     local should_enqueue = true
+
                     if special_insert_logic[node.name] then
                         local val = special_insert_logic[node.name](ipos, node, dir)
                         if type(val) == "table" then -- means its a teleport tube of some kind
                             if val.x then            -- vector
+                                add_to_pos2network(val, net_id)
                                 queue:enqueue({ val, filter_logic, added_priority })
-                            else                     -- vector array
+                            else -- vector array
                                 for _, vec in ipairs(val) do
+                                    add_to_pos2network(vec, net_id)
                                     queue:enqueue({ vec, filter_logic, added_priority })
                                 end
                             end
@@ -517,6 +520,24 @@ core.register_node("sbz_instatube:low_priority_instant_tube", unifieddyes.def {
 })
 instatube.special_priority["sbz_instatube:low_priority_instant_tube"] = -150
 
+
+local function remove_all_nets_around(pos)
+    iterate_around_pos(pos, function(ipos)
+        local hpos = core.hash_node_position(ipos)
+        local nets_at_hpos = pos2network[hpos]
+        if nets_at_hpos then
+            for k, v in ipairs(nets_at_hpos) do
+                if instatube.networks[v] then
+                    instatube.networks[v] = nil
+                end
+            end
+        end
+        instatubes_net_id[hpos] = nil
+        pos2network[hpos] = nil
+    end, true)
+end
+
+sbz_api.instatube.remove_all_nets_around = remove_all_nets_around
 core.register_node("sbz_instatube:teleport_instant_tube", unifieddyes.def {
     description = "Teleport Instatube",
     info_extra = { "Links to all teleport tubes in a channel at once." },
@@ -561,7 +582,10 @@ core.register_node("sbz_instatube:teleport_instant_tube", unifieddyes.def {
     end,
     on_logic_send = pipeworks.tptube.logic_action,
     on_destruct = pipeworks.tptube.remove_tube,
-    on_receive_fields = pipeworks.tptube.receive_fields,
+    on_receive_fields = function(pos, ...)
+        remove_all_nets_around(pos)
+        return pipeworks.tptube.receive_fields(pos, ...)
+    end,
     tube = {
         connect_sides = { front = 1, back = 1, left = 1, right = 1, top = 1, bottom = 1 },
         insert_object = instatube_insert_object,
@@ -677,21 +701,6 @@ core.register_node("sbz_instatube:cycling_input_instant_tube", unifieddyes.def {
 
 dofile(core.get_modpath("sbz_instatube") .. "/recipes.lua")
 
-local function remove_all_nets_around(pos)
-    iterate_around_pos(pos, function(ipos)
-        local hpos = core.hash_node_position(ipos)
-        local nets_at_hpos = pos2network[hpos]
-        if nets_at_hpos then
-            for k, v in ipairs(nets_at_hpos) do
-                if instatube.networks[v] then
-                    instatube.networks[v] = nil
-                end
-            end
-        end
-        instatubes_net_id[hpos] = nil
-        pos2network[hpos] = nil
-    end, true)
-end
 
 
 core.register_on_mods_loaded(function()
