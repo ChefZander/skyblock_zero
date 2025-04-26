@@ -207,7 +207,7 @@ core.register_node("sbz_decor:anitmatter_ladder", unifieddyes.def {
 })
 
 core.register_craft {
-    output = "sbz_decor:ladder 12",
+    output = "sbz_decor:antimatter_ladder 12",
     recipe = {
         { "sbz_resources:antimatter_blob", "",                              "sbz_resources:antimatter_blob", },
         { "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", "sbz_resources:antimatter_blob", },
