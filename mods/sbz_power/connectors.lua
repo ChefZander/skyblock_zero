@@ -82,6 +82,7 @@ minetest.register_node("sbz_power:connector_on", {
         end
     end,
     assemble = function(pos, node, dir, network, seen, parent_net_id)
+        core.get_meta(pos):set_string("infotext", "")
         seen[hash(pos)] = true
         local self_dir = vector.copy(minetest.wallmounted_to_dir(node.param2))
         if self_dir + dir == vector.zero() or self_dir - dir == vector.zero() then

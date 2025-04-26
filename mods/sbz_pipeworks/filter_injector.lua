@@ -284,7 +284,6 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         local vel = vector.copy(todir)
                         vel.speed = 1
                         if core.get_item_group(tonode.name, "instatube") == 1 then -- instatubes get fully special handling :D
-                            local old_item = ItemStack(item)
                             local leftover = todef.tube.insert_object(topos, tonode, item, vel, owner)
                             stack:add_item(leftover)
                             frominv:set_stack(frominvname, spos, stack)
