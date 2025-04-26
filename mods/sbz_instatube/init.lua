@@ -69,6 +69,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                             should_enqueue = should_enqueue and val
                         end
                     end
+
                     local supplied_filter_logic = filter_logic
                     if instatube.special_filter_logic[node.name] then
                         supplied_filter_logic = table.copy(filter_logic) -- avoid wasting memory and time
@@ -82,6 +83,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                     if instatube.special_priority[node.name] then
                         supplied_added_priority = added_priority + instatube.special_priority[node.name]
                     end
+
                     if should_enqueue then
                         add_to_pos2network(pos, net_id)
                         queue:enqueue({ ipos, supplied_filter_logic, supplied_added_priority })

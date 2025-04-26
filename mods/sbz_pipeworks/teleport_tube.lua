@@ -8,7 +8,6 @@ local enable_logging = minetest.settings:get_bool("pipeworks_log_teleport_tubes"
 local tube_db_version = 4
 local tube_db = {}
 local receiver_cache = {}
-
 local function hash_pos(pos)
     vector.round(pos)
     return string.format("%.0f", minetest.hash_node_position(pos))
@@ -66,6 +65,8 @@ end
 
 
 local function on_update_channel(channel) -- for tptube instant tubes, and also delete senders that are not real
+    --    local cache = receiver_cache[channel]
+
     for k, v in pairs(tube_db) do
         local node = sbz_api.get_node_force(v)
         if node then
@@ -177,6 +178,9 @@ local function update_tube(pos, channel, cr, player_name)
             return
         end
     end
+
+    local old_channel = meta:get_string("channel")
+    receiver_cache[old_channel] = nil
     meta:set_string("channel", channel)
     meta:set_int("can_receive", cr)
     set_tube(pos, channel, cr)
