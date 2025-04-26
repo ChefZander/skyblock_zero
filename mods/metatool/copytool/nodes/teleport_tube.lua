@@ -58,7 +58,7 @@ metatool.form.register_form('copytool:teleport_tube_list', {
 		end
 	end
 })
-
+nodes[#nodes + 1] = "sbz_instatube:teleport_instant_tube"
 local definition = {
 	name = 'teleport_tube',
 	nodes = nodes,
