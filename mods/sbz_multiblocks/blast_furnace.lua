@@ -395,7 +395,6 @@ core.register_node("sbz_multiblocks:blast_furnace_heater", ud {
     info_power_needed = 5, -- they do not connect to cables directly
     groups = {
         matter = 1,
-        explody = -100,
     },
     drawtype = "glasslike_framed",
     paramtype = "light",

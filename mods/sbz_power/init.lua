@@ -299,3 +299,4 @@ dofile(modpath .. "/phlogiston_fuser.lua")
 
 dofile(modpath .. "/turret.lua")
 dofile(modpath .. "/testnodes.lua")
+dofile(modpath .. "/starlight_catcher.lua")

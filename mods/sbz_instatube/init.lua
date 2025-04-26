@@ -150,6 +150,7 @@ You will still interact with pipeworks just much less...
 local instatubes_net_id = {}
 
 local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
+    core.debug("Hello")
     local net_id = instatubes_net_id[hash(pos)] or -1
     local network = instatube.networks[net_id]
     if not network then
@@ -157,7 +158,6 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
         instatubes_net_id[hash(pos)] = net_id
         network = instatube.networks[net_id]
     end
-
     local machines = network.machines
     if ordering == "randomized" then
         table.shuffle(machines)

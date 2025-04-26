@@ -1,3 +1,9 @@
+Release 37
+- Fixed instatubes sometimes not working
+- Added bricks and wooden planks
+- Fixed one pixel of pebble being transparent (Yes, you weren't crazy!)
+
+
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted
 - Added the height limit for emitters back
