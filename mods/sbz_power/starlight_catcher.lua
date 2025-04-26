@@ -36,38 +36,56 @@ core.register_node("sbz_power:starlight_catcher", {
     on_destruct = remove_nets,
 })
 
+local wallmounted_to_dir = {
+    [0] = { 0, 1, 0 },
+    { 0,  -1, 0 },
+    { 1,  0,  0 },
+    { -1, 0,  0 },
+    { 0,  0,  1 },
+    { 0,  0,  -1 },
+}
+
+-- i attempted to optimize this function as much as i possibly could
+
+local stack = {} -- attempt to optimize GC
 local assemble_network = function(start_pos)
     local seen = {}
     local net_id = get_next_net_id()
     local amount = -1 -- hacky i know
 
     pos2network[h(start_pos)] = net_id
-    local stack = {}
     ---@type number
     local index = 0
 
     index = index + 1
     stack[index] = start_pos
 
-    sbz_api.vm_begin()
-
+    local h_start_pos = h(start_pos)
+    local get_or_load_node = sbz_api.get_or_load_node
     while index > 0 do
         local pos = stack[index]
         index = index - 1
-        if not seen[h(pos)] then
-            seen[h(pos)] = true
-            local node = sbz_api.get_node_force(pos)
-            if node then
-                if node.name == "sbz_power:starlight_catcher" or h(pos) == h(start_pos) then
-                    amount = amount + 1
-                    pos2network[h(pos)] = net_id
-                    sbz_api.iterate_around_pos_nocopy(pos, function(ipos)
-                        index = index + 1
-                        stack[index] = ipos
-                    end)
-                elseif node.name == "sbz_power:photon_energy_converter" and h(pos) ~= h(start_pos) then
-                    return -1
+        local hpos = h(pos)
+        if not seen[hpos] then
+            seen[hpos] = true
+            local node = get_or_load_node(pos)
+            local nodename = node.name
+            if nodename == "sbz_power:starlight_catcher" or hpos == h_start_pos then
+                amount = amount + 1
+                pos2network[hpos] = net_id
+
+                for i = 0, 5 do
+                    local dir = wallmounted_to_dir[i]
+                    local ipos = {
+                        x = dir[1] + pos.x,
+                        y = dir[2] + pos.y,
+                        z = dir[3] + pos.z
+                    }
+                    index = index + 1
+                    stack[index] = ipos
                 end
+            elseif nodename == "sbz_power:photon_energy_converter" and hpos ~= h_start_pos then
+                return -1
             end
         end
     end

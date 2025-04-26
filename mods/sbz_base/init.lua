@@ -395,6 +395,17 @@ function sbz_api.make_immutable(t)
     return t
 end
 
+--[[
+    These 4 lines of code that can pretty much replace vm.lua are from:
+    https://github.com/mt-mods/technic/blob/379bedc20d7ab11c758afa52d5916b23dced5354/technic/helpers.lua#L102 to line 107
+]]
+function sbz_api.get_or_load_node(pos)
+    local node = core.get_node_or_nil(pos)
+    if node then return node end
+    core.load_area(pos)
+    return core.get_node(pos)
+end
+
 local MP = minetest.get_modpath("sbz_base")
 
 dofile(MP .. "/override_for_areas.lua")
