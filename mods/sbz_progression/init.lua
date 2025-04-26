@@ -160,6 +160,7 @@ local achievement_table = {
     ["sbz_instatube:instant_tube"] = "Instatubes",
     ["sbz_power:teleport_battery"] = "Teleport Battery",
     ["pipeworks:pattern_storinator"] = "Pattern Storinator",
+    ["sbz_power:starlight_catcher"] = "Starlight Catchers",
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

@@ -94,13 +94,7 @@ table.foreachi = function(t, f, key_last)
     return t
 end
 
--- REASONING BEHIND NOT USING core.wallmounted_to_dir(i)
--- IT CAUSED A NASTY BUG, NASTY, NASTY, BUG.
--- BECAUSE SOMETIMES, IT JUST FORGOT THAT THE DOWN DIRECTION WAS A THING
--- I DONT KNOW WHY
--- frog
-
-local wallmounted_to_dir_is_fake_bad = {
+local wallmounted_to_dir = {
     [0] = vector.new(0, 1, 0),
     [1] = vector.new(0, -1, 0),
     [2] = vector.new(1, 0, 0),
@@ -111,11 +105,22 @@ local wallmounted_to_dir_is_fake_bad = {
 
 function iterate_around_pos(pos, func, include_self)
     for i = 0, 5 do
-        local dir = vector.copy(wallmounted_to_dir_is_fake_bad[i])
+        local dir = vector.copy(wallmounted_to_dir[i])
         func(pos + dir, dir)
     end
     if include_self then
         func(pos, vector.zero())
+    end
+end
+
+local vzero = vector.zero()
+function sbz_api.iterate_around_pos_nocopy(pos, func, include_self) -- for small optimizations where you know that it wont get polluted
+    for i = 0, 5 do
+        local dir = wallmounted_to_dir[i]
+        func(pos + dir, dir)
+    end
+    if include_self then
+        func(pos, vzero)
     end
 end
 

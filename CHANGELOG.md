@@ -2,6 +2,7 @@ Release 37
 - Fixed instatubes sometimes not working
 - Added bricks and wooden planks
 - Fixed one pixel of pebble being transparent (Yes, you weren't crazy!)
+- Fixed a lot of bugs with instatubes and specifically instatube teleport tubes
 
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update

@@ -296,6 +296,7 @@ dofile(modpath .. "/ele_fab.lua")
 dofile(modpath .. "/lights.lua")
 dofile(modpath .. "/batteries.lua")
 dofile(modpath .. "/phlogiston_fuser.lua")
-
 dofile(modpath .. "/turret.lua")
+dofile(modpath .. "/starlight_catcher.lua")
+
 dofile(modpath .. "/testnodes.lua")
