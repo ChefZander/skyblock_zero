@@ -27,6 +27,15 @@ local special_insert_logic = instatube.special_insert_logic
 local regnodes = core.registered_nodes
 local hash = core.hash_node_position
 
+
+local function iter_around(pos, queue, filter_logic, added_priority, seen, net_id)
+    add_to_pos2network(pos, net_id)
+    iterate_around_pos(pos, function(ipos, dir)
+        if not seen[hash(ipos)] then
+            queue:enqueue({ ipos, filter_logic, added_priority, dir })
+        end
+    end, false)
+end
 sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
     local net_id = get_next_network_id()
     local queue = Queue.new()
@@ -36,81 +45,73 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
     -- something else may be added in the future, so thats why there is the machines = {} table instead of just machines being in the root
     -- btw its not just machines, tubes and the like too
     local machines = network.machines
-    local include_start_pos = true
-    queue:enqueue({ start_pos, {}, 0 })
+
+    queue:enqueue({ start_pos, {}, 0, vector.zero() })
     sbz_api.vm_begin()
 
-    while true do
-        local pos, filter_logic, added_priority = unpack(queue:dequeue() or {})
-        if not pos then break end
+    while not queue:is_empty() do
+        local pos, filter_logic, added_priority, dir = unpack(queue:dequeue())
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
-            iterate_around_pos(pos, function(ipos, dir)
-                local node = sbz_api.get_or_load_node(ipos)
-                local is_wire = core.get_item_group(node.name, "instatube") == 1
-                local is_receiver = core.get_item_group(node.name, "tubedevice") == 1
-                if is_wire then
-                    local should_enqueue = true
+            local node = sbz_api.get_or_load_node(pos)
+            local is_wire = core.get_item_group(node.name, "instatube") == 1
+            local is_receiver = core.get_item_group(node.name, "tubedevice") == 1
+            if is_wire then
+                local should_enqueue = true
 
-                    if special_insert_logic[node.name] then
-                        local val = special_insert_logic[node.name](ipos, node, dir)
-                        if type(val) == "table" then -- means its a teleport tube of some kind
-                            if val.x then            -- vector
-                                add_to_pos2network(val, net_id)
-                                queue:enqueue({ val, filter_logic, added_priority })
-                            else -- vector array
-                                for _, vec in ipairs(val) do
-                                    add_to_pos2network(vec, net_id)
-                                    queue:enqueue({ vec, filter_logic, added_priority })
-                                end
+                if special_insert_logic[node.name] then
+                    local val = special_insert_logic[node.name](pos, node, dir)
+                    if type(val) == "table" then -- means its a teleport tube of some kind
+                        if val.x then            -- vector
+                            iter_around(val, queue, filter_logic, added_priority, seen, net_id)
+                        else                     -- vector array
+                            for _, vec in ipairs(val) do
+                                iter_around(vec, queue, filter_logic, added_priority, seen, net_id)
                             end
-                        else
-                            should_enqueue = should_enqueue and val
                         end
-                    end
-
-                    local supplied_filter_logic = filter_logic
-                    if instatube.special_filter_logic[node.name] then
-                        supplied_filter_logic = table.copy(filter_logic) -- don't copy every time a change has to be made ofc
-                        supplied_filter_logic[#supplied_filter_logic + 1] = {
-                            pos = ipos,
-                            dir = dir,
-                            node = node,
-                        }
-                    end
-                    local supplied_added_priority = added_priority
-                    if instatube.special_priority[node.name] then
-                        supplied_added_priority = added_priority + instatube.special_priority[node.name]
-                    end
-
-                    if should_enqueue then
-                        core.debug("Hi! " .. vector.to_string(ipos))
-                        add_to_pos2network(pos, net_id)
-                        queue:enqueue({ ipos, supplied_filter_logic, supplied_added_priority })
-                    end
-                elseif is_receiver then
-                    local def = regnodes[node.name]
-                    if not def.tube then
-                        core.log("error",
-
-                            "This node: " ..
-                            node.name ..
-                            " does have the tubedevice group but doesn't have a tube={} table, REPORT THIS AS A BUG IF YOU SEE THIS! (no need for extra steps, just send need the name of the node, and that it came from here)")
                     else
-                        machines[#machines + 1] = {
-                            pos = ipos,
-                            priority = added_priority + ((def.tube or {}).priority or 100),
-                            tube = def.tube,
-                            is_tube = def.tubelike == 1,
-                            node = node,
-                            dir = dir,
-                            filter_logic = filter_logic,
-                        }
+                        should_enqueue = should_enqueue and val
                     end
                 end
-            end, include_start_pos)
+
+                local supplied_filter_logic = filter_logic
+                if instatube.special_filter_logic[node.name] then
+                    supplied_filter_logic = table.copy(filter_logic) -- don't copy every time a change has to be made ofc
+                    supplied_filter_logic[#supplied_filter_logic + 1] = {
+                        pos = pos,
+                        dir = dir,
+                        node = node,
+                    }
+                end
+                local supplied_added_priority = added_priority
+                if instatube.special_priority[node.name] then
+                    supplied_added_priority = added_priority + instatube.special_priority[node.name]
+                end
+
+                if should_enqueue then
+                    iter_around(pos, queue, supplied_filter_logic, supplied_added_priority, seen, net_id)
+                end
+            elseif is_receiver then
+                local def = regnodes[node.name]
+                if not def.tube then
+                    core.log("error",
+
+                        "This node: " ..
+                        node.name ..
+                        " does have the tubedevice group but doesn't have a tube={} table, REPORT THIS AS A BUG IF YOU SEE THIS! (no need for extra steps, just send need the name of the node, and that it came from here)")
+                else
+                    machines[#machines + 1] = {
+                        pos = pos,
+                        priority = added_priority + ((def.tube or {}).priority or 100),
+                        tube = def.tube,
+                        is_tube = def.tubelike == 1,
+                        node = node,
+                        dir = dir,
+                        filter_logic = filter_logic,
+                    }
+                end
+            end
         end
-        include_start_pos = false
     end
     sbz_api.vm_commit()
 
@@ -776,13 +777,12 @@ label[0,0.5;Select Network:]
 dropdown[5,0.25;5,0.5;nets;%s;%s;false]
 tablecolumns[text;text;text]
 table[0,1;10,9;machines;Type,Position,Priority,%s;1]
-button[0,10;10,1;waypoint;Waypoint]
+button_exit[0,10;10,1;exit;Exit]
 ]]
     local netpos = fsdata[username].pos
     local nets_at_pos = pos2network[hash(netpos)]
     local dropdown_text = {}
     local dropdown_id
-    core.debug(dump(nets_at_pos))
     local count = 0
     for k, v in ipairs(nets_at_pos) do
         if instatube.networks[v] then
@@ -808,10 +808,24 @@ button[0,10;10,1;waypoint;Waypoint]
     fs = string.format(fs, table.concat(dropdown_text, ","), dropdown_id, table.concat(table_text, ","))
     core.show_formspec(username, "sbz_instatube:dbg_tool_fs", fs)
 end
+core.register_on_player_receive_fields(function(player, formname, fields)
+    local username = player:get_player_name()
+    if formname == "sbz_instatube:dbg_tool_fs" and fsdata[username] then
+        if fields.nets and not fields.quit and not fields.exit then
+            local net_id = tonumber(fields.nets)
+            if not net_id then return end
+            fsdata[username].chosen_net = net_id
+            display_formspec(username)
+        end
+    end
+end)
 
 core.register_craftitem("sbz_instatube:dbg_tool", {
     description = "Instatube Debug Tool",
     info_extra = "Shows all machines connected to instatube",
+    inventory_image = "instatube_debug_tool.png",
+    stack_max = 1,
+
     on_use = function(stack, user, pointed)
         if not pointed.under then return end
         local target = pointed.under
@@ -840,3 +854,9 @@ core.register_craftitem("sbz_instatube:dbg_tool", {
         display_formspec(username)
     end
 })
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_instatube:dbg_tool",
+    recipe = { "screwdriver:screwdriver", "sbz_instatube:instant_tube" }
+}
