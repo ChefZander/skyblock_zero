@@ -149,9 +149,11 @@ minetest.register_craft {
     }
 }
 
-minetest.register_node("sbz_resources:stable_strange_blob", {
+minetest.register_node("sbz_resources:stable_strange_blob", unifieddyes.def {
     description = "Stabilized Strange Blob",
     tiles = { "stable_strange_blob.png" },
+    paramtype2 = "color",
+    paramtype = "light",
     groups = { matter = 1, antimatter = 1, strange = 0, charged = 1, explody = 5 },
     light_source = 14,
     info_extra = "Now i can enjoy the never-before seen green color with less of the... strange-ness..."
