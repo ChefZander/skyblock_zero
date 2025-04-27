@@ -118,7 +118,7 @@ local get_ladder_on_place = function(ladder_name)
         if pointed.type == "node" then
             local target = pointed.under
             local node = core.get_node(target)
-            if node.name == "sbz_decor:ladder" then
+            if node.name == ladder_name then
                 local dir = minetest.facedir_to_dir(node.param2)
                 local up = vector.new(0, 1, 0)
                 pointed.under = vector.add(pointed.under, up)
@@ -206,7 +206,7 @@ core.register_node("sbz_decor:antimatter_ladder", unifieddyes.def {
     climbable = true,
 })
 
-core.register_alias_force("sbz_decor:antimatter_ladder", "sbz_decor:anitmatter_ladder")
+core.register_alias_force("sbz_decor:anitmatter_ladder", "sbz_decor:antimatter_ladder")
 
 core.register_craft {
     output = "sbz_decor:antimatter_ladder 12",
