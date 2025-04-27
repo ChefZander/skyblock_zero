@@ -23,7 +23,7 @@ local function meteorite_explode(pos, type)
     if not protected then
         for _ = 1, 16 do
             local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
-            if is_air(pos) then
+            if is_air(new_pos) then
                 minetest.set_node(new_pos, {
                     name = math.random() < 0.2 and node_types[type][2] or
                         node_types[type][1]
