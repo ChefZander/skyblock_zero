@@ -356,7 +356,7 @@ local function controller_on_logic_receive(pos, msg, from_pos)
   if type(msg.type) ~= "string" then return end
 
   if msg.type == "eject" then
-    if msg and type(msg) ~= "string" and type(msg) ~= "table" then return end
+    if msg.item and type(msg.item) ~= "string" and type(msg.item) ~= "table" then return end
 
 	  local item = ItemStack(msg.item)
 	  local drawers_index = controller_get_drawer_index(pos, item:get_name())
@@ -382,7 +382,7 @@ local function controller_on_logic_receive(pos, msg, from_pos)
 	  for k, v in pairs(drawer_net_index) do
 		  result[k] = drawers.drawer_get_content(v.drawer_pos, v.visualid)
     end
-    sbz_logic.send(from_pos, aaa, pos)
+    sbz_logic.send(from_pos, result, pos)
   end
 
 end

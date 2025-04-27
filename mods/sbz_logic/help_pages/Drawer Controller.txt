@@ -1,4 +1,15 @@
 <bigger>Drawer Controller</bigger>
 
-Currently, the only feature is injecting items from drawers.
+Two features are supported: Ejecting items from drawers and getting information about the items in the drawers.
+
+<big>Ejecting</big>
 Send it an itemstack in a string form like "sbz_resources:matter_blob 69" and it will send that matter blob stack out of the drawer controller from nearby drawers.
+<mono>send_to(links.drawercontroller,{
+$C1    type = "eject",
+$C1    item = "sbz_resources:matter_blob 69"
+})</mono>
+
+<big>Getting items</big>
+<mono>send_to(links.drawercontroller,{
+$C1    type = "get_items",
+})</mono>
