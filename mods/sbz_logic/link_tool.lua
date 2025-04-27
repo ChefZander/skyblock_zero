@@ -197,6 +197,11 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     range = 10,
     liquids_pointable = true,
     on_place = function(stack, placer, pointed)
+        if not pointed.type ~= "node" then return end
+        if core.is_protected(pointed.under, placer:get_player_name()) then
+            core.record_protection_violation(pointed.under, placer:get_player_name())
+            return
+        end
         if placer:get_player_control().aux1 == false then
             local target = pointed.under
             minetest.show_formspec(placer:get_player_name(), "sbz_logic:luacontroller_linker_form",
@@ -214,6 +219,10 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     end,
     on_use = function(stack, placer, pointed)
         if pointed.type ~= "node" then return end
+        if core.is_protected(pointed.under, placer:get_player_name()) then
+            core.record_protection_violation(pointed.under, placer:get_player_name())
+            return
+        end
         if placer:get_player_control().aux1 == false then
             local target = pointed.under
             make_link(stack:get_meta(), target, placer)
