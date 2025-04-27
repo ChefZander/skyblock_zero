@@ -170,7 +170,7 @@ core.register_node("sbz_decor:ladder", unifieddyes.def {
     climbable = true,
 })
 
-core.register_node("sbz_decor:anitmatter_ladder", unifieddyes.def {
+core.register_node("sbz_decor:antimatter_ladder", unifieddyes.def {
     description = "Antimatter Ladder",
     drawtype = "nodebox",
     node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
@@ -205,6 +205,8 @@ core.register_node("sbz_decor:anitmatter_ladder", unifieddyes.def {
     node_placement_prediction = "",
     climbable = true,
 })
+
+core.register_alias_force("sbz_decor:antimatter_ladder", "sbz_decor:anitmatter_ladder")
 
 core.register_craft {
     output = "sbz_decor:antimatter_ladder 12",
