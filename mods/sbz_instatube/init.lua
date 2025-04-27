@@ -311,6 +311,7 @@ core.register_node("sbz_instatube:one_way_instatube", unifieddyes.def {
         "one_way_instatube.png",
         "one_way_instatube.png^[transformFX",
     },
+    connect_sides = { "right", "left" },
     light_source = 5,
     drawtype = "nodebox",
     paramtype = "light",
