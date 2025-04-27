@@ -55,7 +55,7 @@ core.register_node("sbz_logic_devices:node_db", {
             end
 
             -- filter
-            local max_results = math.min(msg.max_results or 0, MAX_RESULTS)
+            local max_results = math.min(msg.max_results or MAX_RESULTS, MAX_RESULTS)
 
             if #result > max_results then
                 for i = max_results, #result do
