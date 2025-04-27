@@ -352,26 +352,39 @@ local function controller_on_metadata_inventory_put(pos, listname, index, stack,
 end
 
 local function controller_on_logic_receive(pos, msg, from_pos)
-	if msg and type(msg) ~= "string" and type(msg) ~= "table" then
-		return -- Protect against ItemStack(...) errors
-	end
+  if type(msg) ~= "table" then return end
+  if type(msg.type) ~= "string" then return end
 
-	local item = ItemStack(msg)
-	local drawers_index = controller_get_drawer_index(pos, item:get_name())
+  if msg.type == "eject" then
+    if msg and type(msg) ~= "string" and type(msg) ~= "table" then return end
 
-	if not drawers_index[item:get_name()] then
-		-- we can't do anything: the requested item doesn't exist
-		return
-	end
+	  local item = ItemStack(msg.item)
+	  local drawers_index = controller_get_drawer_index(pos, item:get_name())
 
-	local taken_stack = drawers.drawer_take_item(
-		drawers_index[item:get_name()]["drawer_pos"], item)
-	local dir = core.facedir_to_dir(core.get_node(pos).param2)
+	  if not drawers_index[item:get_name()] then
+	  	-- we can't do anything: the requested item doesn't exist
+	  	return
+	  end
 
-	-- prevent crash if taken_stack ended up with a nil value
-	if taken_stack then
-		pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
-	end
+	  local taken_stack = drawers.drawer_take_item(
+	  	drawers_index[item:get_name()]["drawer_pos"], item)
+	  local dir = core.facedir_to_dir(core.get_node(pos).param2)
+
+	  -- prevent crash if taken_stack ended up with a nil value
+	  if taken_stack then
+	  	pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+	  end
+
+  elseif msg.type == "get_items" then
+	  local meta = core.get_meta(pos)
+    local result = {}
+	  local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
+	  for k, v in pairs(drawer_net_index) do
+		  result[k] = drawers.drawer_get_content(v.drawer_pos, v.visualid)
+    end
+    sbz_logic.send(from_pos, aaa, pos)
+  end
+
 end
 
 local function controller_on_receive_fields(pos, formname, fields, sender)
