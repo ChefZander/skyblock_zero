@@ -343,7 +343,9 @@ core.register_node("sbz_instatube:one_way_instatube", unifieddyes.def {
         insert_object = instatube_insert_object,
         priority = 80,
     },
-    on_rotate = pipeworks.on_rotate,
+    on_rotate = function(pos, ...)
+        return pipeworks.on_rotate(pos, ...)
+    end,
 })
 -- i hope indexing this is faster than indexing node def
 special_insert_logic["sbz_instatube:one_way_instatube"] = function(pos, node, dir)
@@ -711,6 +713,7 @@ core.register_on_mods_loaded(function()
         if core.get_item_group(name, "instatube") > 0 or core.get_item_group(name, "tubedevice") > 0 then
             local og_construct = def.on_construct
             local og_destruct = def.on_destruct
+            local og_on_rotate = def.og_on_rotate
             core.override_item(name, {
                 on_construct = function(pos)
                     remove_all_nets_around(pos)
@@ -719,6 +722,10 @@ core.register_on_mods_loaded(function()
                 on_destruct = function(pos)
                     remove_all_nets_around(pos)
                     if og_destruct then return og_destruct(pos) end
+                end,
+                on_rotate = function(pos, ...)
+                    remove_all_nets_around(pos)
+                    if og_on_rotate then return og_on_rotate(pos, ...) end
                 end
             })
         end

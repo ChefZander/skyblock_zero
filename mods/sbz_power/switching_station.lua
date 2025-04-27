@@ -597,6 +597,7 @@ core.register_on_mods_loaded(function()
         if IG(name, "pipe_conducts") > 0 then
             local og_construct = def.on_construct
             local og_destruct = def.on_destruct
+            local og_on_rotate = def.on_rotate
             core.override_item(name, {
                 on_construct = function(pos)
                     iterate_around_pos(pos, function(ipos, dir)
@@ -615,7 +616,15 @@ core.register_on_mods_loaded(function()
                     end)
 
                     if og_destruct then return og_destruct(pos) end
-                end
+                end,
+                on_rotate = function(pos, ...)
+                    iterate_around_pos(pos, function(ipos, dir)
+                        if get_network(ipos) then
+                            get_network(ipos).dirty = true
+                        end
+                    end)
+                    if og_on_rotate then return og_on_rotate(pos, ...) end
+                end,
             })
         end
     end
