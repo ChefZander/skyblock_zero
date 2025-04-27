@@ -5,6 +5,7 @@ Release 37
 - Fixed a lot of bugs with instatubes and specifically instatube teleport tubes
 - Added starlight catchers
 - Optimized habitat regulators
+- Fixed cycling instatubes not behaving correctly
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted

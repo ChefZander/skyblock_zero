@@ -1,6 +1,6 @@
 -- like the craftdb
 -- https://github.com/dennisjenkins75/digiline_craftdb/
-
+-- months later to clarify: No code from it was actually used here
 
 local MAX_RESULTS = 200
 

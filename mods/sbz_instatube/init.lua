@@ -46,8 +46,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
             iterate_around_pos(pos, function(ipos, dir)
-                local node = sbz_api.get_node_force(ipos)
-                if not node then return end
+                local node = sbz_api.get_or_load_node(ipos)
                 local is_wire = core.get_item_group(node.name, "instatube") == 1
                 local is_receiver = core.get_item_group(node.name, "tubedevice") == 1
                 if is_wire then
@@ -72,7 +71,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
 
                     local supplied_filter_logic = filter_logic
                     if instatube.special_filter_logic[node.name] then
-                        supplied_filter_logic = table.copy(filter_logic) -- avoid wasting memory and time
+                        supplied_filter_logic = table.copy(filter_logic) -- don't copy every time a change has to be made ofc
                         supplied_filter_logic[#supplied_filter_logic + 1] = {
                             pos = ipos,
                             dir = dir,
@@ -85,6 +84,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                     end
 
                     if should_enqueue then
+                        core.debug("Hi! " .. vector.to_string(ipos))
                         add_to_pos2network(pos, net_id)
                         queue:enqueue({ ipos, supplied_filter_logic, supplied_added_priority })
                     end
@@ -109,8 +109,8 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                     end
                 end
             end, include_start_pos)
-            include_start_pos = false
         end
+        include_start_pos = false
     end
     sbz_api.vm_commit()
 
@@ -167,15 +167,17 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
         table.shuffle(machines)
     elseif ordering == "cycle" then
         local meta = core.get_meta(pos)
-        local shift_table_by = meta:get_int("cycle") % #machines
         local shifted_table = {}
-        for i = 1, #machines do -- this for loop (literally, these 3 lines of code) were designed by AI, specifically microsoft copilot (not github copilot if that matters)
-            shifted_table[i] = machines[((i - shift_table_by - 1) % #machines) + 1]
+        local len = #machines
+
+        for i = 1, len do
+            shifted_table[(i % len) + 1] = machines[i]
         end
         network.machines = shifted_table
         machines = shifted_table
-        meta:set_string("infotext", "Cycle #" .. shift_table_by)
-        meta:set_int("cycle", (shift_table_by + 1) % #machines)
+        local cycle = meta:get_int("cycle")
+        meta:set_string("infotext", "Cycle #" .. (cycle % len))
+        meta:set_int("cycle", (cycle + 1) % len)
     end
     -- next up... machines!
 
@@ -753,3 +755,88 @@ instatube.show_network = function(p1, p2, net)
         end
     end
 end
+
+local fsdata = {}
+
+local function display_formspec(username)
+    local chosen_net_id = fsdata[username].chosen_net
+    if not chosen_net_id then
+        core.chat_send_player(username, "Something went wrong.")
+        return
+    end
+    local chosen_net = instatube.networks[chosen_net_id]
+    if not chosen_net then
+        core.chat_send_player(username, "That network no longer exists")
+        return
+    end
+    local fs = [[
+formspec_version[7]
+size[10,11]
+label[0,0.5;Select Network:]
+dropdown[5,0.25;5,0.5;nets;%s;%s;false]
+tablecolumns[text;text;text]
+table[0,1;10,9;machines;Type,Position,Priority,%s;1]
+button[0,10;10,1;waypoint;Waypoint]
+]]
+    local netpos = fsdata[username].pos
+    local nets_at_pos = pos2network[hash(netpos)]
+    local dropdown_text = {}
+    local dropdown_id
+    core.debug(dump(nets_at_pos))
+    local count = 0
+    for k, v in ipairs(nets_at_pos) do
+        if instatube.networks[v] then
+            count = count + 1
+            dropdown_text[count] = v
+            if v == chosen_net_id then
+                dropdown_id = count
+            end
+        end
+    end
+    if not dropdown_id then
+        core.chat_send_player(username, "The network you were looking at no longer exists")
+        return
+    end
+
+    local table_text = {} -- insert a comma
+    local machines = chosen_net.machines
+    for k, v in ipairs(machines) do
+        table_text[#table_text + 1] = v.node.name
+        table_text[#table_text + 1] = core.formspec_escape(vector.to_string(v.pos))
+        table_text[#table_text + 1] = v.priority
+    end
+    fs = string.format(fs, table.concat(dropdown_text, ","), dropdown_id, table.concat(table_text, ","))
+    core.show_formspec(username, "sbz_instatube:dbg_tool_fs", fs)
+end
+
+core.register_craftitem("sbz_instatube:dbg_tool", {
+    description = "Instatube Debug Tool",
+    info_extra = "Shows all machines connected to instatube",
+    on_use = function(stack, user, pointed)
+        if not pointed.under then return end
+        local target = pointed.under
+        local username = user:get_player_name()
+        local nets = pos2network[hash(target)]
+        if not nets then
+            core.chat_send_player(username, "No instatube networks found.")
+            return
+        end
+        local chosen_net = instatubes_net_id[hash(target)]
+
+        if not chosen_net then
+            local real_nets = {}
+            for k, v in pairs(nets) do
+                if instatube.networks[v] then
+                    table.insert(real_nets, v)
+                end
+            end
+            pos2network[hash(target)] = real_nets
+            chosen_net = real_nets[math.random(1, #real_nets)]
+        end
+        fsdata[username] = {
+            pos = target,
+            chosen_net = chosen_net
+        }
+        display_formspec(username)
+    end
+})
