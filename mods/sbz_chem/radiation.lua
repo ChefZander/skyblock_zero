@@ -218,7 +218,7 @@ local function dmg_abm(pos, node)
     local strength =
         minetest.get_item_group(node.name, "radioactive") +
         (minetest.get_item_group(node.name, "weak_radioactive") / 100)
-    local max_dist = strength * rad_dmg_mult_sqrt
+    local max_dist = math.min(strength * rad_dmg_mult_sqrt, 10)
     for _, o in pairs(minetest.get_objects_inside_radius(pos,
         max_dist + abdomen_offset)) do
         if (o:is_player()) and o:get_hp() > 0 then
@@ -255,7 +255,7 @@ core.register_node("sbz_chem:radon", {
     light_source = 10,
     use_texture_alpha = "blend",
     diggable = false,
-    groups = { not_in_creative_inventory = 1, habitat_conducts = 1, explody = 10000, weak_radioactive = 50, },
+    groups = { not_in_creative_inventory = 1, habitat_conducts = 1, explody = 10000, --[[weak_radioactive = 50,--]] }, -- not radioactive so that maybe its more performant?
     sunlight_propagates = true,
     post_effect_color = "#6abe3032",
     walkable = false,

@@ -69,7 +69,6 @@ local function process_textures(og_textures)
                 new_textures[k] = transform_texture_name(v)
             elseif type(v) == "table" and v.name then
                 -- now it gets a little tricky
-                -- nah jk
                 v.name = transform_texture_name(v)
                 v.image = nil
                 v.scale = nil
@@ -209,6 +208,7 @@ minetest.register_entity("sbz_logic_devices:hologram", {
         self.parent = staticdata.parent
         self.id = staticdata.id
         self.object:set_properties(staticdata.properties)
+        self.object:set_armor_groups { matter = 100, antimatter = 100, hologram = 100, light = 100 }
     end,
     on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
         local parent = self.parent
@@ -240,16 +240,29 @@ minetest.register_entity("sbz_logic_devices:hologram", {
     end,
     on_step = function(self, dtime, moveresult)
         local parent = self.parent
+        local parent_node = sbz_api.get_or_load_node(parent)
+        if parent_node.name ~= "sbz_logic_devices:hologram_projector" then
+            self.object:remove()
+            return
+        end
+
         local diff = vector.subtract(parent, self.object:get_pos())
         if math.abs(diff.x) > range_max
             or math.abs(diff.y) > range_max
-            or math.abs(diff.z) > range_max then
+            or math.abs(diff.z) > range_max
+        then
+            local meta = minetest.get_meta(parent)
+            local subscribed = vector.from_string(meta:get_string("subscribed"))
+            sbz_logic.send(subscribed, {
+                type = "walked_off",
+                id = self.id,
+                moveresult = moveresult,
+            })
             return self.object:remove()
         end
         if self.get_collision_info then
             local meta = minetest.get_meta(parent)
             local subscribed = vector.from_string(meta:get_string("subscribed"))
-
             if subscribed then
                 sbz_logic.send(subscribed, {
                     type = "collision_info",
@@ -295,6 +308,10 @@ local function exec_command(pos, cmd, from_pos)
     end
 
     if cmd.type == "object" then
+        if stuff.objects[cmd.id] then
+            stuff.objects[cmd.id]:remove()
+            stuff.objects[cmd.id] = nil
+        end
         local props_ok, props_errmsg = validate_object_properties(cmd)
         if not props_ok then
             return notify {
