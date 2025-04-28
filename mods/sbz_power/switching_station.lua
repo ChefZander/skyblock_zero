@@ -121,8 +121,12 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
             machines[#machines + 1] = { current_pos, nn, dir }
         elseif is_connector then
             pos2network[h(current_pos)] = net_id
-            minetest.registered_nodes[nn].assemble(current_pos, sbz_api.vm_get_node(current_pos), dir, network, seen,
-                net_id)
+            local def = core.registered_nodes[nn]
+            local node = sbz_api.get_or_load_node(current_pos)
+            if def.can_assemble(current_pos, node, dir, network, seen, parent_net_id) then
+                minetest.registered_nodes[nn].assemble(current_pos, node, dir, network, seen,
+                    net_id)
+            end
         end
 
         if is_subticking then

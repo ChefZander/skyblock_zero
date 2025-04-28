@@ -23,6 +23,7 @@ minetest.register_node("sbz_power:connector_off", {
         "switch_off.png"
     },
     connects_to = { "sbz_power:power_pipe", "group:sbz_machine" },
+    connect_sides = { "front", "back" },
     on_rightclick = function(pos, node, person)
         if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
             node.name = "sbz_power:connector_on"
@@ -69,6 +70,7 @@ minetest.register_node("sbz_power:connector_on", {
         "switch_on.png"
     },
     connects_to = { "sbz_power:power_pipe", "group:sbz_machine" },
+    connect_sides = { "front", "back" },
     on_rightclick = function(pos, node, person)
         if not core.is_protected(pos, person:get_player_name()) then -- fix very very bad bug!
             node.name = "sbz_power:connector_off"
@@ -95,6 +97,10 @@ minetest.register_node("sbz_power:connector_on", {
                 end
             end
         end
+    end,
+    can_assemble = function(pos, node, dir, network, seen, parent_net_id)
+        local self_dir = vector.copy(minetest.wallmounted_to_dir(node.param2))
+        return self_dir + dir == vector.zero() or self_dir - dir == vector.zero()
     end,
     use_texture_alpha = "clip",
     on_turn_off = function(pos)
