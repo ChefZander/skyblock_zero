@@ -606,11 +606,11 @@ instatube.special_insert_logic["sbz_instatube:teleport_instant_tube"] = function
     local meta = minetest.get_meta(pos)
     local channel = meta:get_string("channel")
     if channel == "" then
-        return false
+        return true
     end
     local receivers = pipeworks.tptube.get_receivers(pos, channel)
     if #receivers == 0 then
-        return false
+        return true
     end
     return receivers
 end
