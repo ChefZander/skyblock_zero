@@ -8,6 +8,7 @@ Release 37
 - Fixed cycling instatubes not behaving correctly
 - Added an instatube debug tool
 - Fixed a bug where luacontroller linkers weren't respecting protections (yikes)
+- Optimized drawer controllers
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted
