@@ -120,12 +120,15 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
         elseif is_machine then
             machines[#machines + 1] = { current_pos, nn, dir }
         elseif is_connector then
-            pos2network[h(current_pos)] = net_id
             local def = core.registered_nodes[nn]
             local node = sbz_api.get_or_load_node(current_pos)
+
             if def.can_assemble(current_pos, node, dir, network, seen, parent_net_id) then
+                pos2network[h(current_pos)] = net_id
                 minetest.registered_nodes[nn].assemble(current_pos, node, dir, network, seen,
                     net_id)
+            else
+                seen[current_pos] = false
             end
         end
 
