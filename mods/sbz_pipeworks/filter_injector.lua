@@ -126,7 +126,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
 
         local fromdef = minetest.registered_nodes[fromnode.name]
         if not fromdef or not fromdef.tube then
-            meta:set_string("infotext", "Can't pull from that node :/")
+            meta:set_string("infotext", "Can't pull from that node :/ - No behavior for tube interaction defined.")
             return 1
         end
         local fromtube = table.copy(fromdef.tube)
@@ -148,8 +148,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
             return 1
         end
 
-        if not fromtube or not (fromtube or {}).input_inventory then
-            meta:set_string("infotext", "Can't pull from that node :/")
+        if not fromtube.input_inventory then
+            meta:set_string("infotext",
+                "Can't pull from that node :/ - No input inventory in definition. (" .. fromnode.name .. ")")
             return 1
         end
 
