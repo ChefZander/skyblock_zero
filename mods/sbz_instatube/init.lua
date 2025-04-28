@@ -183,13 +183,14 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
     -- next up... machines!
 
     for index, machine in ipairs(network.machines) do
+        if stack:is_empty() then break end
         local mnode = machine.node
         local can_insert = true
         local mpos = table.copy(machine.pos)
-        if machine.tube.can_insert then
-            can_insert = can_insert and
-                machine.tube.can_insert(mpos, mnode, stack, { x = 0, y = 0, z = 0, speed = 1 }, owner)
-        end
+        --        if machine.tube.can_insert then
+        --            can_insert = can_insert and
+        --                machine.tube.can_insert(mpos, mnode, stack, { x = 0, y = 0, z = 0, speed = 1 }, owner)
+        --        end
         if can_insert then
             local filter_logic = machine.filter_logic
             for _, filter in ipairs(filter_logic) do
@@ -204,7 +205,7 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
                         { x = 0, y = 0, z = 0, speed = 1 },
                         owner)
                 end
-            else
+            else -- its a tupe, dump the stack in
                 local entity = pipeworks.tube_inject_item(mpos, vector.subtract(mpos, machine.dir),
                     { x = machine.dir.x, y = machine.dir.y, z = machine.dir.z, speed = 4 }, stack, owner, {})
                 if machine.tube.can_go then
