@@ -8,7 +8,6 @@ this means that libox cannot measure local variables and upvalues inside corouti
 
 LIBOX WILL EXPOSE AND USE debug.getlocal AND debug.getupvalue
 also MAKE SURE TO TRUST ALL MODS IF YOU MAKE LIBOX A TRUSTED MOD
-(but also this is very hard to abuse unless your mods store the insecure environment somewhere)
 
 If you don't use coroutine sandboxes, feel free to ignore this warning
 Libox can also reuse debug.getlocal and getupvalue if it is already avaliable in the environment

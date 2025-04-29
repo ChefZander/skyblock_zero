@@ -272,7 +272,7 @@ function api.run_sandbox(ID, value_passed)
 
     local ok, errmsg_or_value
     local pcall_ok, pcall_errmsg
-    -- "nested pcall just in case" i knowww its bad and it sounds bad but yeah
+    -- "nested pcall just in case" i knowww its bad and it sounds bad but yeah i had crashes when there wasnt a pcall adn yeaah
     local no_strange_bug_happened = pcall(function()
         pcall_ok, pcall_errmsg = pcall(function()
             debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)

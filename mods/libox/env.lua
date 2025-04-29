@@ -265,7 +265,7 @@ function libox.create_basic_environment()
         decode_base64 = libox.sandbox_lib_f(minetest.decode_base64),
         get_us_time = libox.sandbox_lib_f(minetest.get_us_time),
     } -- safe minetest functions
-
+    env.core = env.minetest
 
     -- extra global environment stuff
     for _, v in ipairs({

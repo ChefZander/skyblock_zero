@@ -218,7 +218,7 @@ local function controller_get_drawer_index(pos, itemstring)
 			drawer_net_index[itemstring].drawer_pos,
 			drawer_net_index[itemstring].visualid)
 
-		if content.name ~= itemstring or content.count > content.maxCount then
+		if content.name ~= itemstring or content.count >= content.maxCount then
 			drawer_net_index = index_drawers(pos)
 			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
 		end
