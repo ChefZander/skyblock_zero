@@ -34,7 +34,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
         if IG(name, "plant") > 0 then
             local d = minetest.get_item_group(name, "needs_co2")
             local under = vector.subtract(pos, vector.new(0, 1, 0))
-            local soil = minetest.get_item_group(sbz_api.get_or_load_node(pos).name, "soil")
+            local soil = IG(sbz_api.get_or_load_node(under).name, "soil")
             d = math.ceil(d * math.max(1, soil))
             table.insert(plants, { pos, node, d })
             demand = demand + d
