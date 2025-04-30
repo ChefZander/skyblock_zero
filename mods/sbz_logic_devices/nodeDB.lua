@@ -55,14 +55,6 @@ core.register_node("sbz_logic_devices:node_db", {
             end
 
             -- filter
-            local max_results = math.min(msg.max_results or MAX_RESULTS, MAX_RESULTS)
-
-            if #result > max_results then
-                for i = max_results, #result do
-                    result[i] = nil
-                end
-            end
-
             if msg.exclude_groups then
                 local new_result = {}
                 for k, v in ipairs(result) do
@@ -77,6 +69,13 @@ core.register_node("sbz_logic_devices:node_db", {
                     end
                 end
                 result = new_result
+            end
+                
+            local max_results = math.min(msg.max_results or MAX_RESULTS, MAX_RESULTS)
+            if #result > max_results then
+                for i = max_results+1, #result do
+                    result[i] = nil
+                end
             end
 
             -- add basic def
