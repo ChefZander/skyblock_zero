@@ -34,6 +34,7 @@ function sbz_api.add_tube_support(def)
                     if not inv:room_for_item(def.input_inv, test_stack) then
                         return false
                     end
+
                     -- middleground, some can be inserted, some can't, figure out how much can be inserted
                     -- thank you the4spaceconstants for this optimization idea
                     local list = inv:get_list(def.input_inv)
