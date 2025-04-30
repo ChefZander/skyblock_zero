@@ -68,6 +68,7 @@ minetest.register_node("pipeworks:item_sorter", {
         tubedevice = 1,
         matter = 3,
     },
+    tubelike = 1,
     tube = {
         can_go = function(pos, node, velocity, stack)
             local tbl, tbln = {}, 0
