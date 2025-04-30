@@ -19,39 +19,34 @@ function sbz_api.add_tube_support(def)
                 insert_object = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
-                    if inv:get_list(def.input_inv) then
-                        return inv:add_item(def.input_inv, stack)
-                    end
-                    return stack
+                    return inv:add_item(def.input_inv, stack)
                 end,
                 can_insert = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
 
-                    if inv:get_list(def.input_inv or "") then
-                        stack = ItemStack(stack)
-                        local original_count = stack:get_count()
-                        if not inv:room_for_item(def.input_inv, stack) then
-                            -- local t0 = core.get_us_time()
-                            stack = stack:peek_item(1)
-                            if not inv:room_for_item(def.input_inv, stack) then return false end
-                            -- IM TOO DUMB FOR BINARY SEARCH
-                            --                            local t0 = core.get_us_time()
-                            for i = original_count, 1, -1 do
-                                stack:set_count(i)
-                                if inv:room_for_item(def.input_inv, stack) then
-                                    --                                    core.debug("Can_insert for sbz_api.add_pipeworks_support took " ..
-                                    --                                        core.get_us_time() - t0)
-                                    return true, original_count - i
-                                end
-                            end
-                            return false
-                        else
-                            return true
-                        end
-                        return inv:room_for_item(def.input_inv, stack)
+                    stack = ItemStack(stack)
+                    if inv:room_for_item(def.input_inv, stack) then
+                        return true
                     end
-                    return false
+                    local test_stack = ItemStack(stack)
+                    test_stack:set_count(1)
+                    if not inv:room_for_item(def.input_inv, test_stack) then
+                        return false
+                    end
+                    -- middleground, some can be inserted, some can't, figure out how much can be inserted
+                    -- thank you the4spaceconstants for this optimization idea
+                    local list = inv:get_list(def.input_inv)
+                    if not list then return false end
+                    local can_be_inserted = 0
+                    local stackname = stack:get_name()
+                    for index = 1, #list do
+                        local item = list[index]
+                        if item:get_name() == stackname then
+                            can_be_inserted = can_be_inserted + item:get_free_space()
+                        end
+                    end
+                    return true, stack:get_count() - can_be_inserted
                 end,
                 input_inventory = def.output_inv,
                 connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },

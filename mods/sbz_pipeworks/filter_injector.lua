@@ -294,6 +294,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         if todef.tube and todef.tube.can_go then
                             if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
                         end
+
                         if todef.tube and todef.tube.can_insert then
                             local can_insert, excess_count = todef.tube.can_insert(topos, tonode, item, vel)
                             if not can_insert then return false end
