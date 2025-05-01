@@ -11,6 +11,7 @@ Release 37
 - Optimized drawer controllers
 - Fixed node preservers not preserving the contents of "wielders" (punchers, node breakers, deployers)
 - Fixed instatubes not playing nice with item sorters
+- Added paper and books
 
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
