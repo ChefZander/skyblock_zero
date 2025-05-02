@@ -140,9 +140,12 @@ end
 
 -- optimized in sbz
 -- the original function literally put a FLAME in the flame graph like legit https://discord.com/channels/1274459478712123423/1311060385507442829/1366433551054143589
+
+local h = core.hash_node_position
+local drawer_networks = {}
+
 local search_stack = {}
 local function find_connected_drawers(controller_pos)
-	local h = core.hash_node_position
 	local IG = core.get_item_group
 	local connected = {}
 	local seen = {}
@@ -200,27 +203,24 @@ end
 	the network is reindexed.
 ]]
 local function controller_get_drawer_index(pos, itemstring)
-	local meta = core.get_meta(pos)
-
 	-- If the index has not been created, the item isn't in the index, the
 	-- item in the drawer is no longer the same item in the index, or the item
 	-- is in the index but it's full, run the index_drawers function.
-	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
-
+	local drawer_net_index = drawer_networks[h(pos)]
 	-- If the index has not been created
 	-- If the item isn't in the index (or the index is corrupted)
 	if not is_valid_drawer_index_slot(drawer_net_index, itemstring) then
 		drawer_net_index = index_drawers(pos)
-		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+		drawer_networks[h(pos)] = drawer_net_index
 	else
 		-- There is a valid entry in the index: check that the entry is still up-to-date
 		local content = drawers.drawer_get_content(
 			drawer_net_index[itemstring].drawer_pos,
 			drawer_net_index[itemstring].visualid)
 
-		if content.name ~= itemstring or content.count >= content.maxCount then
+		if content.name ~= itemstring or content.count > content.maxCount then
 			drawer_net_index = index_drawers(pos)
-			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+			drawer_networks[h(pos)] = drawer_net_index
 		end
 	end
 
