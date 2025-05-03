@@ -258,7 +258,7 @@ sbz_api.register_plant("pyrograss", {
 minetest.register_craftitem("sbz_bio:pyrograss", {
     description = "Pyrograss",
     inventory_image = "pyrograss_4.png",
-    groups = { burn = 30, eat = 1 },
+    groups = { burn = 30, eat = 1, nb_nouse = 1 },
     on_place = sbz_api.plant_plant("sbz_bio:pyrograss_1", { "group:soil" })
 })
 
@@ -304,7 +304,7 @@ core.register_craft {
 minetest.register_craftitem("sbz_bio:razorgrass", {
     description = "Razorgrass",
     inventory_image = "razorgrass_4.png",
-    groups = { burn = 2, eat = -8 },
+    groups = { burn = 2, eat = -8, nb_nouse = 1 },
     eat_fx = { "Poisoned", "Slowed" },
     on_place = sbz_api.plant_plant("sbz_bio:razorgrass_1", { "group:soil" }),
     on_use = function(stack, user, pointed)
@@ -347,7 +347,7 @@ sbz_api.register_plant("cleargrass", {
 minetest.register_craftitem("sbz_bio:cleargrass", {
     description = "Cleargrass",
     inventory_image = "cleargrass_4.png",
-    groups = { burn = 0, eat = 0 },
+    groups = { burn = 0, eat = 0, nb_nouse = 1 },
     eat_fx = { "Cleared" },
     on_place = sbz_api.plant_plant("sbz_bio:cleargrass_1", { "group:soil" }),
     on_use = function(stack, user, pointed)
@@ -375,7 +375,7 @@ sbz_api.register_plant("stemfruit_plant", {
 minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
-    groups = { burn = 12, eat = 5 },
+    groups = { burn = 12, eat = 5, nb_nouse = 1 },
     on_place = function(itemstack, user, pointed)
         local use_pointed = "above"
         if pointed.switched then
@@ -440,7 +440,7 @@ minetest.register_craftitem("sbz_bio:warpshroom", {
         unlock_achievement(user:get_player_name(), "Not Chorus Fruit")
         return eat(itemstack, user, pointed)
     end,
-    groups = { ui_bio = 1, eat = 6 }
+    groups = { ui_bio = 1, eat = 6, nb_nouse = 1 }
 })
 --[[
 minetest.register_craft({
@@ -505,7 +505,7 @@ minetest.register_craftitem("sbz_bio:shockshroom", {
     description = "Shockshroom",
     inventory_image = "shockshroom_4.png",
     on_place = sbz_api.plant_plant("sbz_bio:shockshroom_1", { "group:soil" }),
-    groups = { ui_bio = 1, eat = -1 },
+    groups = { ui_bio = 1, eat = -1, nb_nouse = 1 },
     on_use = function(stack, user, pointed)
         if user.is_fake_player then return end
         playereffects.apply_effect_type("shocked", 180 / 0.5, user, 0.5)
