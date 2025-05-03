@@ -300,6 +300,7 @@ function dump2(obj, name, dumped) end
 
 ---@param obj any
 ---@param dumped table?
+---@return string
 function dump(obj, dumped) end
 
 ---@param x number
