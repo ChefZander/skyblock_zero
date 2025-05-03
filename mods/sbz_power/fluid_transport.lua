@@ -502,7 +502,7 @@ listring[context;input]listring[]
             meta:set_string("infotext", "Not enough fluid inside")
             return 0
         end
-        if not sbz_api.fluid_cells2sources[lqinv[1].name] then
+        if not sbz_api.sources2fluid_cells[lqinv[1].name] then
             meta:set_string("infotext", "Cannot put that liquid in a fluid cell")
             return 0
         end
@@ -511,7 +511,7 @@ listring[context;input]listring[]
             return 0
         end
 
-        local craftresult = sbz_api.fluid_cells2sources[lqinv[1].name]
+        local craftresult = sbz_api.sources2fluid_cells[lqinv[1].name]
 
         if not inv:room_for_item("output", craftresult) then
             meta:set_string("infotext", "Full")
