@@ -79,11 +79,11 @@ if editor_errmsg then
 end
 
 local function render_formspec_term()
-    local terminal_text = E(main_env.terminal_text or "")
+    local terminal_text = E(tostring(main_env.terminal_text) or "")
     return string.format(prepend, 2) .. string.format([[
 box[0,0;20,15;black]
 textarea[0,0;20,15;;;%s]
-]], E(terminal_text))
+]], terminal_text)
 end
 
 local function render_formspec_inventory()
@@ -186,6 +186,8 @@ textarea[13,3;6.8,8.8;;;This disk is immutable]]=],
 end
 
 if event.type == "program" then -- load this editor
+    dirty_mem = true
+    mem.current_tab = 1
     editor.formspec = render_formspec_edit()
 
 elseif (event.type == "gui" or event.type == "off" or event.type == "on") or
