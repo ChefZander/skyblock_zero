@@ -487,7 +487,7 @@ function logic.on_tick(pos, node, meta, supply, demand)
         string.format("Editor lag: %s\nMain sandbox lag: %s\nCombined: %s\nBill: %s Cj\nCan run: %s",
             format_us(us_taken_editor), format_us(us_taken_main), format_us(us_taken_editor + us_taken_main), bill,
             logic.can_run(pos, meta, true) and "yes" or
-            "no (probably hasn't paid the bill? or you used more than 100 miliseconds)"))
+            "no (didn't pay bill or used more than 100ms)"))
 
     meta:set_float("microseconds_taken_main_sandbox", 0)
     meta:set_float("microseconds_taken_editor_sandbox", 0)

@@ -208,11 +208,11 @@ end
 local function transport_items(pos, e)
     local ok, errmsg = pcall(transport_items_inner, pos, e)
     if not ok then
-        sbz_api.logic.send_event_to_sandbox(pos, {
+        sbz_api.queue:add_action(pos, "logic_wait", { {
             type = "error",
             error_type = "yield_error",
             errmsg = errmsg,
-        })
+        } }, 0)
     end
 end
 

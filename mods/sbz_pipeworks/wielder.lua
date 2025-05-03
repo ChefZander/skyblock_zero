@@ -117,6 +117,7 @@ function pipeworks.register_wielder(def)
             can_remove = function(pos, node, stack)
                 return stack:get_count()
             end,
+            priority = 50,
         },
         on_construct = function(pos)
             local meta = minetest.get_meta(pos)

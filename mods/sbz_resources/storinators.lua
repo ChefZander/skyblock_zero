@@ -34,10 +34,11 @@ local function update_node_texture(pos)
     if minetest.get_item_group(node.name, "public") > 0 then
         new_texture = new_texture .. "_public"
     end
-
+    local old_nodename = node.name
     node.name = "sbz_resources:" .. new_texture
-
-    minetest.swap_node(pos, node)
+    if old_nodename ~= node.name then
+        minetest.swap_node(pos, node)
+    end
 end
 
 local recipe_tail = "sbz_resources:storinator"
