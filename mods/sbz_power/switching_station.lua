@@ -601,7 +601,7 @@ end
 
 core.register_on_mods_loaded(function()
     for name, def in pairs(core.registered_nodes) do
-        if IG(name, "pipe_conducts") > 0 then
+        if IG(name, "pipe_connects") > 0 or IG(name, "pipe_conducts") > 0 then
             local og_construct = def.on_construct
             local og_destruct = def.on_destruct
             local og_on_rotate = def.on_rotate
