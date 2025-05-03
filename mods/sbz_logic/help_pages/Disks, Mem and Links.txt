@@ -1,4 +1,4 @@
-<bigger>Disks, Memoery and Links</bigger>
+<bigger>Disks, Memory and Links</bigger>
 
 <big><mono>mem</mono></big>
 It is persistant storage. Present in both editor and main sandboxes. In the editor sandbox, it can be used to store data accross events. Can only store 1024 bytes. It is serialized so it can't store these types:

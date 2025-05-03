@@ -198,7 +198,10 @@ local function get_read_disk(id, meta)
         local disk_list = inv:get_list('disks') or {}
 
         local ty = type(disk_id)
-        if ty == 'number'then
+        if ty == 'number' then
+            if disk_id ~= disk_id then
+                return false, 'Given disk slot is Not a Number'
+            end
             local stack = disk_list[disk_id]
             local stack_name = stack:get_name()
             if stack_name == '' then
@@ -238,6 +241,9 @@ local function get_write_disk(id, meta)
         local slot = disk_id
         local stack, stack_name, stack_meta
         if ty == 'number' then
+            if disk_id ~= disk_id then
+                return false, 'Given disk slot is Not a Number'
+            end
             stack = disk_list[disk_id]
             stack_name = stack:get_name()
             if stack_name == '' then
