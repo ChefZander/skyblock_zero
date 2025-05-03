@@ -227,7 +227,8 @@ pipeworks.register_wielder({
         local stack = fakeplayer:get_wielded_item()
         local old_stack = ItemStack(stack)
         local item_def = minetest.registered_items[stack:get_name()]
-        if item_def.on_use then
+        -- use only items that's allowed to be used
+        if item_def.on_use and core.get_item_group(stack:get_name(), 'nb_nouse') == 0 then
             stack = item_def.on_use(stack, fakeplayer, pointed) or stack
             fakeplayer:set_wielded_item(stack)
         else
@@ -293,6 +294,9 @@ pipeworks.register_wielder({
         local def = minetest.registered_items[stack:get_name()]
         if def and def.on_place then
             local new_stack, placed_pos = def.on_place(stack, fakeplayer, pointed)
+            if new_stack and core.is_creative_enabled(fakeplayer:get_player_name()) then
+                new_stack:take_item() -- undoes creative's auto-add
+            end
             fakeplayer:set_wielded_item(new_stack or stack)
             -- minetest.item_place_node doesn't play sound to the placer
             local sound = placed_pos and def.sounds and def.sounds.place
