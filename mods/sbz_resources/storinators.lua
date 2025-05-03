@@ -5,9 +5,10 @@ local function update_node_texture(pos)
     local count = 0
 
 
-    local invsize = inv:get_size("main")
-    for i = 1, inv:get_size("main") do
-        if not inv:get_stack("main", i):is_empty() then
+    local list = inv:get_list("main")
+    local invsize = #list
+    for i = 1, invsize do
+        if not list[i]:is_empty() then
             count = count + 1
         end
     end
@@ -24,7 +25,7 @@ local function update_node_texture(pos)
         new_texture = "storinator_full_3"
     end
 
-    local node = minetest.get_node(pos)
+    local node = sbz_api.get_or_load_node(pos)
 
     if storinator_upgrades[node.name] and #storinator_upgrades[node.name] ~= 0 then
         new_texture = new_texture .. "_" .. storinator_upgrades[node.name]
@@ -38,8 +39,6 @@ local function update_node_texture(pos)
 
     minetest.swap_node(pos, node)
 end
-
-
 
 local recipe_tail = "sbz_resources:storinator"
 local function slots_lvl(x)
