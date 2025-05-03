@@ -199,8 +199,8 @@ local function get_read_disk(id, meta)
 
         local ty = type(disk_id)
         if ty == 'number' then
-            if disk_id ~= disk_id then
-                return false, 'Given disk slot is Not a Number'
+            if disk_id ~= disk_id or disk_id == math.huge or disk_id == -math.huge then
+                return false, 'Given disk slot is not finite'
             end
             local stack = disk_list[disk_id]
             local stack_name = stack:get_name()
@@ -241,8 +241,8 @@ local function get_write_disk(id, meta)
         local slot = disk_id
         local stack, stack_name, stack_meta
         if ty == 'number' then
-            if disk_id ~= disk_id then
-                return false, 'Given disk slot is Not a Number'
+            if disk_id ~= disk_id or disk_id == math.huge or disk_id == -math.huge then
+                return false, 'Given disk slot is not finite'
             end
             stack = disk_list[disk_id]
             stack_name = stack:get_name()
