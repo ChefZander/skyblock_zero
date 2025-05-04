@@ -446,6 +446,33 @@ local commands = {
             end
         end,
     },
+    ["load_flat"] = {
+        type_checks = {
+            index = type_index,
+            buffer = libox.type("table"),
+            xsize = type_int,
+            ysize = type_int,
+        },
+        f = function(buffers, command)
+            local xsize = min(math.abs(command.xsize), max_buffer_size)
+            local ysize = min(math.abs(command.ysize), max_buffer_size)
+
+            buffers[command.index] = {
+                ysize = ysize,
+                xsize = xsize,
+                buffer = {}
+            }
+
+            local buffer = buffers[command.index].buffer
+            local i = 0
+            for y = 1, ysize do
+                for x = 1, xsize do
+                    i = i + 1
+                    buffer[i] = transform_color(command.buffer[i])
+                end
+            end
+        end,
+    },
     ["send_packed"] = {
         -- this packing works a little differently, and should be like a lot faster
         type_checks = {

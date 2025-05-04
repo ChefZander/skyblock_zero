@@ -115,6 +115,16 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
 
     on_turn_off = logic.on_turn_off,
     after_dig_node = logic.on_turn_off,
+    on_rightclick = function(pos, node, clicker)
+        if not clicker.is_fake_player then
+            local meta = core.get_meta(pos)
+            local fs = meta:get_string("formspec")
+            if fs == "" then
+                displayDialogueLine(clicker:get_player_name(),
+                    "Punch a basic editor disk to the luacontroller to use the editor.")
+            end
+        end
+    end,
     on_receive_fields = logic.on_receive_fields,
     groups = {
         sbz_luacontroller = 1, matter = 1, ui_logic = 1, tubedevice = 1, tubedevice_receiver = 1, sbz_machine_subticking = 1

@@ -284,25 +284,16 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                         item = stack:take_item(count)
                         local vel = vector.copy(todir)
                         vel.speed = 1
-                        if core.get_item_group(tonode.name, "instatube") == 1 then -- instatubes get fully special handling :D
-                            local leftover = todef.tube.insert_object(topos, tonode, item, vel, owner)
-                            stack:add_item(leftover)
-                            frominv:set_stack(frominvname, spos, stack)
-                            return true
-                        end
 
                         if todef.tube and todef.tube.can_go then
                             if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
                         end
 
-                        if todef.tube and todef.tube.can_insert then
-                            local can_insert, excess_count = todef.tube.can_insert(topos, tonode, item, vel)
-                            if not can_insert then return false end
-                            if excess_count then
-                                item:set_count(item:get_count() - excess_count)
-                                stack:set_count(stack:get_count() + excess_count)
-                                if stack:get_name() == "" then stack:set_name(item:get_name()) end
-                            end
+                        if core.get_item_group(tonode.name, "tubedevice_receiver") == 1 then -- xD - instatubes and everything else... WHY DID I NOT THINK OF THIS EARLIER OMG
+                            item = todef.tube.insert_object(topos, tonode, item, vel, owner)
+                            stack:add_item(item)
+                            frominv:set_stack(frominvname, spos, stack)
+                            return true
                         end
 
                         frominv:set_stack(frominvname, spos, stack)
