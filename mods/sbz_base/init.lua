@@ -419,6 +419,8 @@ dofile(MP .. "/sbz_on_hover.lua")
 dofile(MP .. "/sbz_player_inside.lua")
 dofile(MP .. "/playtime_and_afk.lua")
 dofile(MP .. "/dwarf_orb_crafts.lua")
+dofile(MP .. "/serialize.lua")
+dofile(MP .. "/serialize_benchmark.lua")
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then
@@ -659,6 +661,12 @@ function sbz_api.get_pos_with_eye_height(placer)
         p.y = p.y + (placer:get_properties().eye_height or 0)
     end
     return p
+end
+
+function sbz_api.benchmark(name, f)
+    local t0 = os.clock()
+    f()
+    core.debug(name .. " TOOK: " .. (os.clock() - t0) * 1000 .. "ms")
 end
 
 core.register_entity("sbz_base:debug_entity", {

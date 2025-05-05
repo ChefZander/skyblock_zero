@@ -1,3 +1,7 @@
 # Makes servers less laggy, but no effect on singleplayer
-# Sacrifices visuals for less bandwith
+# Sacrifices visuals for less bandwith and more performance
 sbz_server_mode (Server Optimizations) enum auto auto,on,off
+
+# Controls backface culling on pipeworks tubes
+# If you disable this, the back faces will be visible
+sbz_pipe_backface_culling (Tube backface culling) bool true

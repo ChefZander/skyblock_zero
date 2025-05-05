@@ -305,6 +305,7 @@ function drawers.register_drawer(name, def)
 	if minetest.get_modpath("pipeworks") and pipeworks then
 		def.groups.tubedevice = 1
 		def.groups.tubedevice_receiver = 1
+		def.groups.tubedevice_use_item_entities = 1
 		def.tube = def.tube or {}
 		def.tube.insert_object = def.tube.insert_object or
 			drawers.drawer_insert_object_from_tube

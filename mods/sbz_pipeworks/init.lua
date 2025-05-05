@@ -13,11 +13,11 @@ pipeworks = {
 	entity_update_interval = 0.1,
 	use_real_entities = true,
 	enable_cyclic_mode = true,
-	tube_backface_culling = minetest.settings:get_bool("sbz_pipe_backface_culling") or true,
+	tube_backface_culling = core.settings:get_bool("sbz_pipe_backface_culling", true),
 }
 
--- Load the various other parts of the mod
 
+-- Load the various other parts of the mod
 dofile(pipeworks.modpath .. "/common.lua")
 dofile(pipeworks.modpath .. "/models.lua")
 dofile(pipeworks.modpath .. "/autoplace_tubes.lua")
