@@ -1,6 +1,8 @@
 -- can't use sbz_api.register_machine here
 -- also holy crap it's so insanely complex?... good luck..., taken from pipeworks
 
+-- Patches: https://github.com/mt-mods/pipeworks/pull/154 by The4codeblocks (Heavily edited)
+
 local fs_helpers = pipeworks.fs_helpers
 
 local function set_filter_formspec(meta)
@@ -134,6 +136,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         local todir = pipeworks.facedir_to_right_dir(node.param2)
         local topos = vector.add(pos, todir)
         local tonode = sbz_api.get_node_force(topos)
+
         if not tonode then
             meta:set_string("infotext", "Can't push to that node - that node does not exist.")
             return 1
@@ -241,6 +244,8 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     return a < b
                 end)
             end
+            local taken = 0
+            local invsize = frominv:get_size(frominvname)
             for _, spos in ipairs(sposes) do
                 local stack = frominv:get_stack(frominvname, spos)
                 local doRemove = stack:get_count()
@@ -254,61 +259,68 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 if doRemove > 0 then
                     if slotseq_mode == 2 then
                         local nextpos = spos + 1
-                        if nextpos > frominv:get_size(frominvname) then
+                        if nextpos > invsize then
                             nextpos = 1
                         end
                         meta:set_int("slotseq_index", nextpos)
                     end
-                    local item
                     local count = math.min(stack:get_count(), doRemove)
-                    if filterfor.count ~= nil then
-                        if exmatch_mode == 1 then
-                            if filterfor.count > count then
-                                return false -- not enough, fail
-                            else
-                                count = math.min(filterfor.count, count)
-                            end
-                        end
-                        if exmatch_mode == 2 then
-                            if filterfor.count < count then
-                                count = count - filterfor.count
-                            else
-                                return false
-                            end
-                        end
-                    end
-                    if fromtube.remove_items then
-                        -- it could be the entire stack...
-                        item = fromtube.remove_items(frompos, fromnode, stack, dir, count, frominvname, spos)
-                    else
-                        item = stack:take_item(count)
-                        local vel = vector.copy(todir)
-                        vel.speed = 1
-
-                        if todef.tube and todef.tube.can_go then
-                            if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
-                        end
-
-                        if core.get_item_group(tonode.name, "tubedevice_receiver") == 1 and core.get_item_group(tonode.name, "tubedevice_use_item_entities") == 0 then -- xD - instatubes and everything else... WHY DID I NOT THINK OF THIS EARLIER OMG
-                            item = todef.tube.insert_object(topos, tonode, item, vel, owner)
-                            stack:add_item(item)
-                            frominv:set_stack(frominvname, spos, stack)
-                            return true
-                        end
-
-                        frominv:set_stack(frominvname, spos, stack)
-                        if fromdef.on_metadata_inventory_take then
-                            fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
-                        end
-                    end
-                    local pos = vector.add(frompos, vector.multiply(dir, 1.4))
-                    local start_pos = vector.add(frompos, dir)
-
-                    pipeworks.tube_inject_direct(pos, start_pos, topos, dir, item, fakeplayer:get_player_name())
-                    return true -- only fire one item, please
+                    taken = taken + count
                 end
             end
-            return false
+            local item
+            if taken == 0 then return false end
+            if filterfor.count then taken = math.min(taken, filterfor.count) end
+            if filterfor.count and (exmatch_mode ~= 0) and (filterfor.count > taken) then return false end
+            local real_taken = 0
+            if fromtube.remove_items then
+                for i, spos in ipairs(sposes) do
+                    -- it could be the entire stack...
+                    item = fromtube.remove_items(frompos, fromnode, frominv:get_stack(frominvname, spos), dir, taken,
+                        frominvname, spos)
+                    local count = math.min(taken, item:get_count())
+                    taken = taken - count
+                    real_taken = real_taken + count
+                    if taken == 0 then break end
+                    if not filterfor.count then break end
+                end
+            else
+                for i, spos in ipairs(sposes) do
+                    -- it could be the entire stack...
+                    local stack = frominv:get_stack(frominvname, spos)
+                    local count = math.min(taken, stack:get_count())
+                    item = stack:take_item(taken)
+                    frominv:set_stack(frominvname, spos, stack)
+                    if fromdef.on_metadata_inventory_take then
+                        fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
+                    end
+                    taken = taken - count
+                    real_taken = real_taken + count
+                    if taken == 0 then break end
+                    if not filterfor.count then break end
+                end
+            end
+
+            local vel = vector.copy(todir)
+            vel.speed = 1
+            if todef.tube and todef.tube.can_go then
+                if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
+            end
+
+            item:set_count(real_taken)
+
+            if core.get_item_group(tonode.name, "tubedevice_receiver") == 1 and core.get_item_group(tonode.name, "tubedevice_use_item_entities") == 0 then -- xD - instatubes and everything else... WHY DID I NOT THINK OF THIS EARLIER OMG
+                item = todef.tube.insert_object(topos, tonode, item, vel, owner)
+                frominv:add_item(frominvname, item)
+                return true
+            end
+
+            local pos = vector.add(frompos, vector.multiply(dir, 1.4))
+            local start_pos = vector.add(frompos, dir)
+
+            pipeworks.tube_inject_direct(pos, start_pos, topos, dir, item, fakeplayer:get_player_name())
+
+            return true
         end
 
         for _, frominvname in ipairs(type(fromtube.input_inventory) == "table" and fromtube.input_inventory or { fromtube.input_inventory }) do

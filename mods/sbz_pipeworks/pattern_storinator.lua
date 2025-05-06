@@ -86,23 +86,24 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
 
             for index = 1, #pattern do
                 if pattern[index]:get_name() == stack:get_name() then
-                    local sstack = storage[index]
-                    sstack:add_item(stack)
-                    if sstack:get_count() <= pattern[index]:get_count() then
-                        inv:set_stack("storage", index, sstack)
+                    local old_sstack = ItemStack(storage[index])
+                    local new_sstack = storage[index]
+                    local pattern_stack = pattern[index]
+                    new_sstack:add_item(stack)
+                    if new_sstack:get_count() <= pattern_stack:get_count() then
+                        inv:set_stack("storage", index, new_sstack)
                         check_and_act_if_filled(pos, meta, inv)
                         return ItemStack()
-                    elseif sstack:get_count() ~= sstack:get_stack_max() then
-                        local diffcount = sstack:get_count() - pattern[index]:get_count()
-                        local setstack = ItemStack(sstack)
+                    elseif old_sstack:get_count() < pattern_stack:get_count() then
+                        local diffcount = new_sstack:get_count() - pattern_stack:get_count()
+                        local setstack = ItemStack(new_sstack)
                         setstack:take_item(diffcount)
                         inv:set_stack("storage", index, setstack)
                         check_and_act_if_filled(pos, meta, inv)
-                        return sstack:peek_item(diffcount)
+                        return new_sstack:peek_item(diffcount)
                     end
                 end
             end
-
             return stack
         end,
         can_insert = function(pos, node, stack, direction)
