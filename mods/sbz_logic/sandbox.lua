@@ -189,6 +189,10 @@ function logic.send_event_to_sandbox(pos, event)
         return false
     end
 
+    if not logic.can_run(pos, meta, false) then
+        return false
+    end
+
     local id = meta:get_string("ID")
     if id == nil or libox_coroutine.is_sandbox_dead(id) then
         id = logic.turn_on(pos)
