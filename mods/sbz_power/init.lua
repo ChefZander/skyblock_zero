@@ -251,8 +251,19 @@ function sbz_api.is_machine(pos)
 end
 
 function sbz_api.is_on(pos)
-    local nodename = minetest.get_node(pos).name
+    local nodename = sbz_api.get_or_load_node(pos).name
+    local meta = core.get_meta(pos)
+    if meta:get_int("force_off") == 1 then
+        return false
+    end
     return string.sub(nodename, -3) == "_on"
+end
+
+function sbz_api.is_on_by_name_and_meta(name, meta)
+    if meta:get_int("force_off") == 1 then
+        return false
+    end
+    return string.sub(name, -3) == "_on"
 end
 
 --dofile(modpath .. "/vm.lua") -- moved to sbz_base
@@ -273,3 +284,6 @@ dofile(modpath .. "/phlogiston_fuser.lua")
 dofile(modpath .. "/turret.lua")
 dofile(modpath .. "/starlight_catcher.lua")
 dofile(modpath .. "/testnodes.lua")
+
+dofile(modpath .. "/sensor_linker.lua")
+dofile(modpath .. "/gates.lua")

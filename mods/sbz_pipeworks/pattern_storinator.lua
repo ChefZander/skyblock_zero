@@ -17,10 +17,10 @@ local after_filled_behavior = function(pos, meta, inv)
         return -- literally do nothing lol, this mode may be accesible later when i feel like adding a button idk
     else
         local storage = inv:get_list("storage")
-
+        if not storage then return end
         inv:set_list("storage", {})
         inv:set_size("storage", 16)
-        local dir = pipeworks.facedir_to_right_dir((sbz_api.get_node_force(pos) or {}).param2)
+        local dir = pipeworks.facedir_to_right_dir(sbz_api.get_or_load_node(pos).param2)
         if not dir then return end
         dir = vector.subtract(vector.zero(), dir)
         local to_pos = vector.add(pos, dir)

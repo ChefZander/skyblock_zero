@@ -38,17 +38,19 @@ local function render_links(dtime)
         sbz_api.remove_waypoint(v)
     end
     waypoint_ids = {}
+
     for k, v in pairs(minetest.get_connected_players()) do
         local wielded_item = v:get_wielded_item()
         if wielded_item:get_name() == "sbz_power:sensor_linker" then
             local itemmeta = wielded_item:get_meta()
-            local linked_pos_data = itemmeta:get_string("linked_pos")
+            local linked_pos_data = itemmeta:get_string("linked")
             if linked_pos_data ~= "" then
                 local linked_pos = sbz_deserialize.vec3_32bit(linked_pos_data)
                 local linked_node = sbz_api.get_or_load_node(linked_pos)
                 local linked_meta = minetest.get_meta(linked_pos)
-                local radius = linked_meta:get_int("linking_range") or
-                    core.registered_nodes[linked_node.name].linking_range
+                local radius = core.registered_nodes[linked_node.name].linking_range or
+                    linked_meta:get_int("linking_range")
+
                 vizlib.draw_cube(linked_pos, radius + 0.5, {
                     player = v,
                     color = "blue",
@@ -57,8 +59,10 @@ local function render_links(dtime)
                 })
                 local links = core.deserialize(linked_meta:get_string("links"))
                 if type(links) == "table" then
-                    for name, position in pairs(links) do
-                        render_individual_link(position, name)
+                    for name, vector_array in pairs(links) do
+                        for _, position in pairs(vector_array) do
+                            render_individual_link(position, name)
+                        end
                     end
                 end
             end
@@ -68,7 +72,7 @@ end
 
 core.register_globalstep(render_links)
 
-local function try_to_link_to_sensor(stack, pos, placer)
+local function try_to_link_to_tool(stack, pos, placer)
     local meta = stack:get_meta()
     local name = placer:get_player_name()
     local node = sbz_api.get_node_force(pos)
@@ -90,27 +94,27 @@ end
 
 local function make_link(meta, pos, placer)
     local linked = meta:get_string("linked")
+    local placer_name = placer:get_player_name()
     if linked == "" then
-        return err_link_invalid(placer)
+        return core.chat_send_player(placer_name, "Tool isn't linked to any machine.")
     end
+
     local linked_pos = sbz_deserialize.vec3_32bit(linked)
-
     local linked_node = sbz_api.get_or_load_node(linked_pos)
-
-    if not linked_node then
-        return err_link_invalid(placer)
-    end
     linked_node = linked_node.name
 
     local ndef = minetest.registered_nodes[linked_node]
     if ndef == nil then return err_link_invalid(placer) end
-    if not ndef.can_sensor_link then return err_link_invalid(placer) end
+    if not ndef.can_sensor_link then
+        return core.chat_send_player(placer_name,
+            "The node that the tool is linked with doesn't support linking with the sensor linker.")
+    end
 
     local linked_meta = minetest.get_meta(linked_pos)
     local linked_range = ndef.linking_range or linked_meta:get_int("linking_range")
 
     if linked_range == 0 then
-        minetest.chat_send_player(placer:get_player_name(), "Can't link anything in that sensor.")
+        minetest.chat_send_player(placer:get_player_name(), "Can't link anything in that sensor, linked range is 0.")
         return
     end
 
@@ -124,15 +128,17 @@ local function make_link(meta, pos, placer)
         minetest.chat_send_player(placer:get_player_name(), "You need to set a name first (Left click)")
         return
     end
-    -- ok HOPEFULLY thats enough checks holy crap
+
     if ndef.add_link then
         ndef.add_link(meta, pos, placer)
     else
         local links = minetest.deserialize(linked_meta:get_string("links")) or {}
-
         links[name] = links[name] or {}
         links[name][#links[name] + 1] = pos
 
+        -- Hmm... WTF WAS I THINKING WHEN I WROTE THIS
+        -- it works
+        -- don't touch it
         -- dupe check
         local names = {}
         for lname, lpos in pairs(links) do
@@ -214,7 +220,7 @@ minetest.register_craftitem("sbz_power:sensor_linker", {
             placer:get_meta():set_string("target", vector.to_string(target))
         else
             if pointed.type ~= "node" then return end
-            try_to_link_to_sensor(stack, pointed.under, placer)
+            try_to_link_to_tool(stack, pointed.under, placer)
         end
         return stack
     end,
@@ -228,7 +234,7 @@ minetest.register_craftitem("sbz_power:sensor_linker", {
         if placer:get_player_control().aux1 == false then
             make_link(stack:get_meta(), target, placer)
         else
-            try_to_link_to_sensor(stack, target, placer)
+            try_to_link_to_tool(stack, target, placer)
         end
         return stack
     end,

@@ -22,6 +22,8 @@ local function table_equals(t1, t2)
     return true
 end
 
+local test_laggy_stuff = true
+
 sbz_api.serialize.benchmark = function()
     local args = {}
     local serialized_result
@@ -50,15 +52,62 @@ sbz_api.serialize.benchmark = function()
         "vec3_array_32bit doesn't serialize properly")
     core.debug("vec3_array_32bit is correct!")
 
-    sbz_api.benchmark("minetest.serialize - Large amount of stuff", function()
-        for i = 1, amount do
-            serialized_result = core.serialize(args)
+    if test_laggy_stuff then
+        sbz_api.benchmark("minetest.serialize - Large amount of stuff", function()
+            for i = 1, amount do
+                serialized_result = core.serialize(args)
+            end
+        end)
+        sbz_api.benchmark("minetest.deserialize - Large amount of stuff", function()
+            local buf = {}
+            for i = 1, amount do
+                core.deserialize(serialized_result, buf)
+            end
+        end)
+    end
+
+    local links_args = {}
+    for i = 1, math.floor(amount / 4) do
+        links_args[i] = vector.new(
+            math.random(-mg_limit, mg_limit),
+            math.random(-mg_limit, mg_limit),
+            math.random(-mg_limit, mg_limit)
+        )
+    end
+    local to_serialize = {
+        ["name1"] = links_args,
+        ["name2"] = links_args,
+        ["name3"] = links_args,
+    }
+    sbz_api.benchmark("links - serialize - Large amount of stuff", function()
+        local buf = {}
+        for i = 1, math.floor(amount / 3) do
+            serialized_result = sbz_api.serialize.links(to_serialize, buf)
         end
     end)
-    sbz_api.benchmark("minetest.deserialize - Large amount of stuff", function()
+    local deserialized_result
+    sbz_api.benchmark("links - deserialize - Large amount of stuff", function()
         local buf = {}
         for i = 1, amount do
-            core.deserialize(serialized_result, buf)
+            deserialized_result = sbz_api.deserialize.links(serialized_result, buf)
         end
     end)
+
+    assert(table_equals(deserialized_result, to_serialize),
+        "links serialization isn't correct")
+    core.debug("links serialization is correct!")
+
+    if test_laggy_stuff then
+        sbz_api.benchmark("minetest.serialize - serialize links", function()
+            for i = 1, amount do
+                serialized_result = core.serialize(to_serialize)
+            end
+        end)
+        sbz_api.benchmark("minetest.deserialize - serialize links", function()
+            local buf = {}
+            for i = 1, amount do
+                core.deserialize(serialized_result, buf)
+            end
+        end)
+    end
 end
