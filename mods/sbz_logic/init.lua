@@ -95,6 +95,9 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
 
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
         if to_list == "disks" and from_list == "disks" then return 0 end
+        if to_list == "upgrades" and from_list == "disks" then
+            return 0
+        end
         return count
     end,
 

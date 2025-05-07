@@ -244,8 +244,10 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     return a < b
                 end)
             end
+
             local taken = 0
             local invsize = frominv:get_size(frominvname)
+
             for _, spos in ipairs(sposes) do
                 local stack = frominv:get_stack(frominvname, spos)
                 local doRemove = stack:get_count()
@@ -270,8 +272,16 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
             end
             local item
             if taken == 0 then return false end
-            if filterfor.count then taken = math.min(taken, filterfor.count) end
-            if filterfor.count and (exmatch_mode ~= 0) and (filterfor.count > taken) then return false end
+            if filterfor.count and (exmatch_mode == 2) then
+                if filterfor.count < taken then
+                    taken = taken - filterfor.count
+                else
+                    return false
+                end
+            else
+                if filterfor.count then taken = math.min(taken, filterfor.count) end
+                if filterfor.count and (exmatch_mode == 1) and (filterfor.count > taken) then return false end
+            end
             local real_taken = 0
             if fromtube.remove_items then
                 for i, spos in ipairs(sposes) do
