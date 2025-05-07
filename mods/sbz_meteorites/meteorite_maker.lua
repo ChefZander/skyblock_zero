@@ -9,7 +9,7 @@ local meteorite_recipes = {
             -- 1 chemical, would be, in a very ideal scenario: 3 matter blobs
             "sbz_chem:iron_ingot 50",        -- 150 matter blobs
             "sbz_chem:nickel_ingot 50",      -- 150 matter blobs
-            "sbz_resources:matter_blob 792", -- 8 stacks
+            "sbz_resources:matter_blob 800", -- 8 stacks
             -- around 1000 matter blobs
         },
     },
@@ -20,8 +20,8 @@ local meteorite_recipes = {
             -- i decided that emittrium should be a lot denser than matter blobs
             -- so like, 1 emittrium = 3 matter blobs
             -- emitter meteorites are by far THE FASTEST to manifacture
-            "sbz_resources:raw_emittrium 297", -- 891 matter blobs
-            "sbz_resources:matter_blob 109"    -- the rest, to be exactly 1000
+            "sbz_resources:raw_emittrium 200",
+            "sbz_resources:matter_blob 200",
         }
     },
     {
