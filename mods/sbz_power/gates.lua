@@ -7,16 +7,9 @@ local function def(d)
 end
 
 local linking_range = 15
-sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
-    description = "NOT gate",
-    tiles = {
-        "lgate_not_on.png^[invert:rgb",
-    },
-    paramtype2 = "color4dir",
-    can_sensor_link = true,
-    groups = { matter = 1, sbz_machine_subticking = 1 },
-    action = function() return 0 end,
-    action_subtick = function(pos, _, meta, supply, demand)
+
+local function simple_lgate_action(f)
+    return function(pos, _, meta, supply, demand)
         meta:set_string("infotext", "")
         local links = core.deserialize(meta:get_string("links"))
         if not links then
@@ -31,19 +24,49 @@ sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
         end
 
         local state = sbz_api.is_on(links.A[1])
-        state = not state
+        state = f(state)
         if state then
             sbz_api.turn_on(pos)
         else
             sbz_api.turn_off(pos)
         end
         return 0
-    end,
+    end
+end
+sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
+    description = "NOT gate",
+    tiles = {
+        "lgate_not_on.png^[invert:rgb",
+    },
+    paramtype2 = "color4dir",
+    can_sensor_link = true,
+    groups = { matter = 1, sbz_machine_subticking = 1 },
+    action = function() return 0 end,
+    action_subtick = simple_lgate_action(function(x) return not x end),
     linking_range = linking_range,
 }, {
     light_source = 14,
     tiles = {
         "lgate_not_on.png",
+    }
+})
+
+sbz_api.register_stateful_machine("sbz_power:lgate_buffer", def {
+    description = "Buffer gate",
+    info_extra = "whats the use for this again...",
+    tiles = {
+        "lgate_buffer_on.png^[invert:rgb",
+    },
+    paramtype2 = "color4dir",
+    can_sensor_link = true,
+    groups = { matter = 1, sbz_machine_subticking = 1 },
+    action = function() return 0 end,
+    action_subtick = simple_lgate_action(function(x) return x end),
+    linking_range = linking_range,
+}, {
+    light_source = 14,
+    tiles = {
+        "lgate_buffer_on.png",
     }
 })
 
@@ -182,5 +205,56 @@ sbz_api.register_stateful_machine("sbz_power:lgate_xnor", def {
     light_source = 14,
     tiles = {
         "lgate_xnor_on.png",
+    }
+})
+
+sbz_api.register_stateful_machine("sbz_power:machine_controller", unifieddyes.def {
+    description = "Machine Controller",
+    tiles = {
+        "machine_controller.png^[invert:rgb",
+    },
+    paramtype2 = "color4dir",
+    can_sensor_link = true,
+    groups = { matter = 1, sbz_machine_subticking = 1 },
+    action = function() return 0 end,
+    linking_range = linking_range,
+    action_subtick = function(pos, node, meta, supply, demand)
+        meta:set_string("infotext", "")
+        local links = core.deserialize(meta:get_string("links"))
+        if not links then
+            meta:set_string("infotext",
+                "Needs to be connected with machine linker, make one link with the name \"A\" and \"B\"")
+            return 0
+        end
+
+        if not links.A or (links.A and not links.A[1]) then
+            meta:set_string("infotext", "Needs an \"A\" link.")
+            return 0
+        end
+        if not links.B or (links.B and not links.B[1]) then
+            meta:set_string("infotext", "Needs a \"B\" link.")
+            return 0
+        end
+
+        local state = sbz_api.is_on(links.A[1])
+        for k, v in pairs(links.B) do
+            local meta = core.get_meta(v)
+            if state then
+                sbz_api.force_turn_on(v, meta)
+            else
+                sbz_api.force_turn_off(v, meta)
+            end
+        end
+        if state then
+            sbz_api.turn_on(pos)
+        else
+            sbz_api.turn_off(pos)
+        end
+        return 0
+    end,
+}, {
+    light_source = 14,
+    tiles = {
+        "machine_controller.png",
     }
 })
