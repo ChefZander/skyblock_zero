@@ -44,7 +44,7 @@ function logic.turn_off(pos)
     sbz_api.turn_off(pos) -- nah, no special logic needed yet
 end
 
-function logic.can_run(pos, meta, editor)
+function logic.can_run(pos, meta, editor, no_off_events)
     if meta:get_int("bill") ~= 0 then
         return false
     end
@@ -55,9 +55,13 @@ function logic.can_run(pos, meta, editor)
         if libox_coroutine.is_sandbox_dead(meta:get_string("ID")) then
             return true
         else
-            active_sandboxes[meta:get_string("ID")] = nil
-            logic.send_editor_event(pos, meta, { type = "off" })
-            return true
+            if not no_off_events then
+                active_sandboxes[meta:get_string("ID")] = nil
+                logic.send_editor_event(pos, meta, { type = "off" })
+                return true
+            else
+                return true
+            end
         end
     end
     return true
@@ -189,7 +193,7 @@ function logic.send_event_to_sandbox(pos, event)
         return false
     end
 
-    if not logic.can_run(pos, meta, false) then
+    if not logic.can_run(pos, meta, false, true) then
         return false
     end
 
