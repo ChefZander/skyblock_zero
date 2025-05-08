@@ -4,6 +4,19 @@ local touched_nodes = {}
 local habitat_max_size = 4096
 
 local stack = {}
+
+local wallmounted_to_dir = {
+    [0] = { 0, 1, 0 },
+    [1] = { 0, -1, 0 },
+    [2] = { 1, 0, 0 },
+    [3] = { -1, 0, 0 },
+    [4] = { 0, 0, 1 },
+    [5] = { 0, 0, -1 },
+}
+
+-- this function is cancer
+-- used to be*
+-- maybe kinda is?
 function sbz_api.assemble_habitat(start_pos, seen)
     seen = seen or {}
 
@@ -24,17 +37,20 @@ function sbz_api.assemble_habitat(start_pos, seen)
     sbz_api.vm_begin()
 
     local IG = core.get_item_group
+    local get_node = sbz_api.get_or_load_node
+
+
     while index > 0 and size < habitat_max_size do
         local pos = stack[index]
         index = index - 1
 
-        local node = sbz_api.get_or_load_node(pos)
+        local node = get_node(pos)
         local name = node.name
 
         if IG(name, "plant") > 0 then
-            local d = minetest.get_item_group(name, "needs_co2")
+            local d = IG(name, "needs_co2")
             local under = vector.subtract(pos, vector.new(0, 1, 0))
-            local soil = IG(sbz_api.get_or_load_node(under).name, "soil")
+            local soil = IG(get_node(under).name, "soil")
             d = math.ceil(d * math.max(1, soil))
             table.insert(plants, { pos, node, d })
             demand = demand + d
@@ -49,14 +65,20 @@ function sbz_api.assemble_habitat(start_pos, seen)
         local def = core.registered_nodes[name]
         if def then
             if (name == "air" or IG(name, "habitat_conducts") > 0 or pos == start_pos or def.walkable == false or def.collision_box ~= nil or def.node_box ~= nil) and name ~= "sbz_bio:airlock" then
-                sbz_api.iterate_around_pos_nocopy(pos, function(cpos)
+                for i = 0, 5 do
+                    local to_add = wallmounted_to_dir[i]
+                    local cpos = {
+                        x = pos.x + to_add[1],
+                        y = pos.y + to_add[2],
+                        z = pos.z + to_add[3]
+                    }
                     local hcpos = hash(cpos)
                     if not seen[hcpos] then
                         seen[hcpos] = true
                         index = index + 1
                         stack[index] = cpos
                     end
-                end)
+                end
                 size = size + 1
                 storage = storage + 1
             end

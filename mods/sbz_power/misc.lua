@@ -1,8 +1,9 @@
-sbz_api.register_stateful_machine("sbz_power:phosphor", {
+sbz_api.register_stateful_machine("sbz_power:phosphor", unifieddyes.def {
     description = "Phosphor",
     paramtype = "light",
     sunlight_propagates = true,
     drawtype = "glasslike_framed",
+    paramtype2 = "color",
     tiles = { "phosphor_overlay.png", "matter_blob.png" },
     groups = { matter = 1, cracky = 3 },
     action = function(pos, node, meta, supply, demand)
@@ -17,8 +18,8 @@ sbz_api.register_stateful_machine("sbz_power:phosphor", {
     disallow_pipeworks = true
 }, {
     drawtype = "glasslike_framed",
-    tiles = { "phosphor_overlay.png", "emitter_imitator.png" },
-    light_source = 2,
+    tiles = { "phosphor_overlay.png", "emitter_imitator.png^[contrast:0:+60" },
+    light_source = 4,
     action = function(pos, node, meta, supply, demand)
         meta:set_string("infotext", "")
         if demand + 1 <= supply then
@@ -36,17 +37,6 @@ minetest.register_craft({
     recipe = { "sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit" }
 })
 
-
-sbz_api.register_machine("sbz_power:interactor", {
-    description = "Interactor (deprecated + you hacker you! you should not own this)",
-    tiles = {},
-    drop = "pipeworks:puncher",
-    groups = { matter = 1, cracky = 3, not_in_creative_inventory = 1 },
-    action = function(pos, node, meta, supply, demand)
-        meta:set_string("infotext", "Deprecated, get rid of this.")
-        return 0
-    end
-})
 
 local function vacuum(pos, radius, inv)
     radius = radius + 0.5

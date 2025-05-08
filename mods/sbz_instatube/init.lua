@@ -429,18 +429,20 @@ listring[]
 })
 
 instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node, dir, stack)
-    local meta = core.get_meta(pos)
-    local inv = meta:get_inventory()
+    local inv = core.get_meta(pos):get_inventory()
     local filtlist = inv:get_list("filter")
-    if not filtlist then return false end          -- this check is NEEDED!!!
-    local passing_filter = false
+    if not filtlist then return false end
     if inv:is_empty("filter") then return true end -- just like pipeworks lol
-    for k, fstack in ipairs(filtlist) do
-        if fstack:get_name() == stack:get_name() and fstack:get_count() <= stack:get_count() then
-            passing_filter = true
+    local fstack
+    local stack_name = stack:get_name()
+    local stack_count = stack:get_count()
+    for i = 1, 5 do
+        fstack = filtlist[i]
+        if fstack:get_name() == stack_name and fstack:get_count() <= stack_count then
+            return true
         end
     end
-    return passing_filter
+    return false
 end
 
 core.register_node("sbz_instatube:high_priority_instant_tube", unifieddyes.def {

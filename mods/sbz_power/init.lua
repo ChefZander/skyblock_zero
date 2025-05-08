@@ -287,3 +287,4 @@ dofile(modpath .. "/testnodes.lua")
 
 dofile(modpath .. "/sensor_linker.lua")
 dofile(modpath .. "/gates.lua")
+dofile(modpath .. "/sensors_player_facing.lua") -- depends on gates.lua for its sbz_api.* funcs

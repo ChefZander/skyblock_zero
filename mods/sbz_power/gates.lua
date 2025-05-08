@@ -33,10 +33,17 @@ local function simple_lgate_action(f)
         return 0
     end
 end
+
+local function make_tex_on(tex)
+    return "(lgate_base.png^lgate_" .. tex .. ".png)"
+end
+local function make_tex_off(tex)
+    return make_tex_on(tex) .. "^[hsl:0:0:-30"
+end
 sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
     description = "NOT gate",
     tiles = {
-        "lgate_not_on.png^[invert:rgb",
+        make_tex_off("not")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -47,7 +54,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_not_on.png",
+        make_tex_on("not")
     }
 })
 
@@ -55,7 +62,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_buffer", def {
     description = "Buffer gate",
     info_extra = "whats the use for this again...",
     tiles = {
-        "lgate_buffer_on.png^[invert:rgb",
+        make_tex_off("buffer")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -66,7 +73,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_buffer", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_buffer_on.png",
+        make_tex_on("buffer")
     }
 })
 
@@ -103,7 +110,7 @@ end
 sbz_api.register_stateful_machine("sbz_power:lgate_or", def {
     description = "OR gate",
     tiles = {
-        "lgate_or_on.png^[invert:rgb",
+        make_tex_off("or")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -114,14 +121,14 @@ sbz_api.register_stateful_machine("sbz_power:lgate_or", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_or_on.png",
+        make_tex_on("or")
     }
 })
 
 sbz_api.register_stateful_machine("sbz_power:lgate_nor", def {
     description = "NOR gate",
     tiles = {
-        "lgate_nor_on.png^[invert:rgb",
+        make_tex_off("nor")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -132,14 +139,14 @@ sbz_api.register_stateful_machine("sbz_power:lgate_nor", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_nor_on.png",
+        make_tex_on("nor")
     }
 })
 
 sbz_api.register_stateful_machine("sbz_power:lgate_and", def {
     description = "AND gate",
     tiles = {
-        "lgate_and_on.png^[invert:rgb",
+        make_tex_off("and")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -150,14 +157,14 @@ sbz_api.register_stateful_machine("sbz_power:lgate_and", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_and_on.png",
+        make_tex_on("and")
     }
 })
 
 sbz_api.register_stateful_machine("sbz_power:lgate_nand", def {
     description = "NAND gate",
     tiles = {
-        "lgate_nand_on.png^[invert:rgb",
+        make_tex_off("nand")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -168,14 +175,14 @@ sbz_api.register_stateful_machine("sbz_power:lgate_nand", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_nand_on.png",
+        make_tex_on("nand")
     }
 })
 
 sbz_api.register_stateful_machine("sbz_power:lgate_xor", def {
     description = "XOR gate",
     tiles = {
-        "lgate_xor_on.png^[invert:rgb",
+        make_tex_off("xor")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -186,14 +193,14 @@ sbz_api.register_stateful_machine("sbz_power:lgate_xor", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_xor_on.png",
+        make_tex_on("xor")
     }
 })
 
 sbz_api.register_stateful_machine("sbz_power:lgate_xnor", def {
     description = "XNOR gate",
     tiles = {
-        "lgate_xnor_on.png^[invert:rgb",
+        make_tex_off("xnor")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -204,14 +211,22 @@ sbz_api.register_stateful_machine("sbz_power:lgate_xnor", def {
 }, {
     light_source = 14,
     tiles = {
-        "lgate_xnor_on.png",
+        make_tex_on("xnor")
     }
 })
+
+function sbz_api.make_sensor_tex_on(tex)
+    return "(lgate_base.png^" .. tex .. ".png)"
+end
+
+function sbz_api.make_sensor_tex_off(tex)
+    return sbz_api.make_sensor_tex_on(tex) .. "^[hsl:0:0:-30"
+end
 
 sbz_api.register_stateful_machine("sbz_power:machine_controller", unifieddyes.def {
     description = "Machine Controller",
     tiles = {
-        "machine_controller.png^[invert:rgb",
+        sbz_api.make_sensor_tex_off("machine_controller")
     },
     paramtype2 = "color4dir",
     can_sensor_link = true,
@@ -255,6 +270,6 @@ sbz_api.register_stateful_machine("sbz_power:machine_controller", unifieddyes.de
 }, {
     light_source = 14,
     tiles = {
-        "machine_controller.png",
+        sbz_api.make_sensor_tex_on("machine_controller")
     }
 })
