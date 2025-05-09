@@ -253,7 +253,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 local doRemove = stack:get_count()
                 if fromtube.can_remove then
                     doRemove = fromtube.can_remove(frompos, fromnode, stack, dir, frominvname, spos)
-                elseif fromdef.allow_metadata_inventory_take and fromtube.ignore_metadata_inventory_take then
+                elseif fromdef.allow_metadata_inventory_take and (not fromtube.ignore_metadata_inventory_take) then
                     doRemove = fromdef.allow_metadata_inventory_take(frompos, frominvname, spos, stack, fakeplayer)
                 end
                 -- stupid lack of continue statements grumble

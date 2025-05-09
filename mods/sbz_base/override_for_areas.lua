@@ -24,7 +24,7 @@ minetest.register_on_mods_loaded(function()
 
             local is_put_nop = v.allow_metadata_inventory_put == nil
             local tube_def = v.tube
-            if tube_def then
+            if tube_def and tube_def.ignore_metadata_inventory_take == nil then
                 tube_def.ignore_metadata_inventory_take = is_put_nop
             end
             minetest.override_item(k, {

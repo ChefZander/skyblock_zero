@@ -341,11 +341,10 @@ function drawers.register_drawer(name, def)
 			end
 			return inv
 		end
-		def.tube.ignore_metadata_inventory_take = true
-
 		def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos)
 			return drawers.drawer_take_item(pos, stack)
 		end
+
 		def.tube.ignore_metadata_inventory_take = true
 		def.tube.input_inventory = {
 			"slot1", "slot2", "slot3", "slot4"
