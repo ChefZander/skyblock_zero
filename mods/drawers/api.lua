@@ -321,6 +321,7 @@ function drawers.register_drawer(name, def)
 		}
 		def.after_place_node = pipeworks.after_place
 		def.after_dig_node = pipeworks.after_dig
+
 		def.tube.return_input_invref = function(pos, node, dir, owner)
 			local inv = fakelib.create_inventory()
 			local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
@@ -340,6 +341,8 @@ function drawers.register_drawer(name, def)
 			end
 			return inv
 		end
+		def.tube.ignore_metadata_inventory_take = true
+
 		def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos)
 			return drawers.drawer_take_item(pos, stack)
 		end

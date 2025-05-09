@@ -117,8 +117,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
         size = size - 1,
         demand = demand,
         storage = storage,
-        power_generated =
-            power_generated
+        power_generated = power_generated
     }
 end
 
@@ -128,8 +127,7 @@ function sbz_api.habitat_tick(start_pos, meta, stage)
     local habitat = sbz_api.assemble_habitat(start_pos)
     if not habitat then
         meta:set_string("infotext",
-            (
-                [[
+            ([[
 Habitat unenclosed or too large (max size is %s nodes) or there are multiple habitat regulators in the same habitat.
 Make sure the habitat is fully sealed. And make sure things like slabs or non-airtight power wires aren't in the walls.
 ]])

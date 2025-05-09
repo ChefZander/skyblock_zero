@@ -251,6 +251,8 @@ function sbz_api.switching_station_tick(start_pos)
     local switching_stations = network.switching_stations
     local batteries = network.batteries
 
+    local profiler = {}
+
     local supply = 0
     local demand = 0
     local battery_max = 0
@@ -315,9 +317,16 @@ function sbz_api.switching_station_tick(start_pos)
         local node = v[2]
         if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
             touched_nodes[hash(position)] = os.time()
+
+            local profiler_t0 = core.get_us_time()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
             supply = supply + action_result
+
+            profiler[node] = profiler[node] or {}
+            profiler[node].generated = (profiler[node].generated or 0) + action_result
+            profiler[node].lag = (profiler[node].lag or 0) + (core.get_us_time() - profiler_t0)
+            profiler[node].count = (profiler[node].count or 0) + 1
         end
     end
 
@@ -327,6 +336,9 @@ function sbz_api.switching_station_tick(start_pos)
 
         if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
             touched_nodes[hash(position)] = os.time()
+
+            local profiler_t0 = core.get_us_time()
+
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
             if action_result >= 0 then
@@ -334,6 +346,11 @@ function sbz_api.switching_station_tick(start_pos)
             else
                 supply = supply - action_result
             end
+
+            profiler[node] = profiler[node] or {}
+            profiler[node].generated = (profiler[node].generated or 0) - action_result
+            profiler[node].lag = (profiler[node].lag or 0) + (core.get_us_time() - profiler_t0)
+            profiler[node].count = (profiler[node].count or 0) + 1
         end
     end
 
@@ -348,6 +365,7 @@ function sbz_api.switching_station_tick(start_pos)
     network.supply = supply
     network.demand = demand
     network.battery_max = battery_max
+    network.profiler = profiler
     return true
 end
 
@@ -379,6 +397,31 @@ function sbz_api.switching_station_sub_tick(start_pos)
     return true
 end
 
+local function profiler_formspec(pos, username)
+    local net = get_network(pos)
+    if not net then return end
+    if net.dirty then return end
+    if not net.profiler then return end
+    local fs = [[
+formspec_version[7]
+size[10,11]
+tablecolumns[text,align=left;text,align=center;text,align=center;text,align=center]
+table[0,0;10,10;machines;Type,Amount,Lag,Power,%s;1]
+button_exit[0,10;10,1;exit;Exit]
+]]
+    local table_text = {}
+
+    for k, v in pairs(net.profiler) do
+        table_text[#table_text + 1] = k
+        table_text[#table_text + 1] = v.count
+        table_text[#table_text + 1] = math.floor(v.lag / 1000) .. "ms"
+        table_text[#table_text + 1] = v.generated
+    end
+    fs = string.format(fs, table.concat(table_text, ","))
+    core.show_formspec(username, "sbz_power:switching_station_profiler", fs)
+end
+
+
 minetest.register_node("sbz_power:switching_station", {
     description = "Switching Station",
     tiles = { "switching_station.png" },
@@ -388,6 +431,9 @@ minetest.register_node("sbz_power:switching_station", {
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         meta:set_string("infotext", "Loading....")
+    end,
+    on_rightclick = function(pos, node, clicker, stack, pointed)
+        profiler_formspec(pos, clicker:get_player_name())
     end,
 })
 
@@ -434,12 +480,8 @@ minetest.register_abm({
     end
 })
 
-
-
-
 sbz_api.power_tick = 1
 sbz_api.power_subtick = 0.25
-
 
 local has_monitoring = core.get_modpath("monitoring")
 local switching_station_count

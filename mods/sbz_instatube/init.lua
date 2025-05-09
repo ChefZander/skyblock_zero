@@ -810,6 +810,8 @@ button_exit[0,10;10,1;exit;Exit]
     fs = string.format(fs, table.concat(dropdown_text, ","), dropdown_id, table.concat(table_text, ","))
     core.show_formspec(username, "sbz_instatube:dbg_tool_fs", fs)
 end
+
+
 core.register_on_player_receive_fields(function(player, formname, fields)
     local username = player:get_player_name()
     if formname == "sbz_instatube:dbg_tool_fs" and fsdata[username] then
