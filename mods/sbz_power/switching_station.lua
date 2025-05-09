@@ -1,5 +1,4 @@
 local all_switching_stations = {} -- h(pos) = true|nil
-local storage = core.get_mod_storage()
 
 local touched_nodes = {}
 
@@ -361,6 +360,7 @@ function sbz_api.switching_station_tick(start_pos)
     else
         network.lag = lag
     end
+
     network.lagstamp = os.time()
     network.supply = supply
     network.demand = demand
@@ -402,6 +402,7 @@ local function profiler_formspec(pos, username)
     if not net then return end
     if net.dirty then return end
     if not net.profiler then return end
+    core.chat_send_player(username, "Network ID: " .. dump(sbz_api.pos2network[h(pos)]))
     local fs = [[
 formspec_version[7]
 size[10,11]
