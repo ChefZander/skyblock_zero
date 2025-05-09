@@ -1,7 +1,6 @@
 local r = replacer
 local rb = replacer.blabla
 local S = replacer.S
-local is_protected = minetest.is_protected
 local pos_to_string = replacer.nice_pos_string
 
 -- limit by node, use replacer.register_limit(sName, iMax)
@@ -60,11 +59,9 @@ function replacer.permit_replace(pos, old_node_def, new_node_def,
 		return false, S('Replacing nodes of type "@1" is not allowed '
 			.. 'on this server. Replacement failed.', old_node_def.name)
 	end
-
-	if is_protected(pos, player_name) then
+	if core.is_protected(pos, player_name) then
 		return false, S('Protected at @1', pos_to_string(pos))
 	end
-
 	return true
 end -- permit_replace
 
