@@ -45,7 +45,7 @@ local function render_links(dtime)
             local itemmeta = wielded_item:get_meta()
             local linked_pos_data = itemmeta:get_string("linked")
             if linked_pos_data ~= "" then
-                local linked_pos = sbz_deserialize.vec3_32bit(linked_pos_data)
+                local linked_pos = core.deserialize(linked_pos_data)
                 local linked_node = sbz_api.get_or_load_node(linked_pos)
                 local linked_meta = minetest.get_meta(linked_pos)
                 local radius = core.registered_nodes[linked_node.name].linking_range or
@@ -82,7 +82,7 @@ local function try_to_link_to_tool(stack, pos, placer)
     if not ndef then return end
     if not ndef.can_sensor_link then return displayDialogueLine(name, "Can't link with that.") end
     -- ok yeah it can link
-    meta:set_string("linked", sbz_serialize.vec3_32bit(pos))
+    meta:set_string("linked", core.serialize(pos))
     minetest.chat_send_player(name, "Succesfully linked to the sensor.")
     happy_particles(pos)
 end
@@ -99,7 +99,7 @@ local function make_link(meta, pos, placer)
         return core.chat_send_player(placer_name, "Tool isn't linked to any machine.")
     end
 
-    local linked_pos = sbz_deserialize.vec3_32bit(linked)
+    local linked_pos = core.deserialize(linked)
     local linked_node = sbz_api.get_or_load_node(linked_pos)
     linked_node = linked_node.name
 

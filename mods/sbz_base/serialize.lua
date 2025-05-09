@@ -13,6 +13,9 @@ assert(bit, "No bit library found? Update your luanti version or use luaJIT.") -
 
     TODO:
         - serialize liquid inv here, and serialize/deserialize it F A S T e r than luanti can
+
+    -- OK, EDIT: DO NOT USE WITH NODE METAS BECAUSE THEY IGNORE \1 CAUSING ALL KINDS OF BAD CRAP
+    -- THIS FILE IS USELESS then thank you luanti
 ]]
 
 sbz_api.serialize = {}
@@ -75,6 +78,7 @@ function sbz_api.serialize.vec3_32bit(vec)
 end
 
 function sbz_api.deserialize.vec3_32bit(str)
+    assert(#str == 12, "Corrupted data!")
     local xc1, xc2, xc3, xc4, yc1, yc2, yc3, yc4, zc1, zc2, zc3, zc4 = byte(str, 1, 12)
     return {
         x = lshift(xc1, 24) + lshift(xc2, 16) + lshift(xc3, 8) + xc4,

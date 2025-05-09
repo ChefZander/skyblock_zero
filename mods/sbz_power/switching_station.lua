@@ -436,8 +436,6 @@ minetest.register_abm({
 
 
 
-local dtime_accum_subtick = 0
-local dtime_accum_fulltick = 0
 
 sbz_api.power_tick = 1
 sbz_api.power_subtick = 0.25
@@ -453,43 +451,32 @@ end
 sbz_api.switching_station_globalstep = function(dtime)
     if not sbz_api.enable_switching_station_globalstep then return end
     local getnode = minetest.get_node
-    local getmeta = minetest.get_meta
-    dtime_accum_subtick = dtime_accum_subtick + dtime
+    local swcount = 0
 
-    -- subtick
-    if dtime_accum_subtick >= sbz_api.power_subtick then
-        dtime_accum_subtick = 0
-        dtime_accum_fulltick = dtime_accum_fulltick + sbz_api.power_subtick
-        for k, v in pairs(all_switching_stations) do
-            local pos = unhash(k)
-            if getnode(pos).name ~= "sbz_power:switching_station" then
-                getmeta(pos):set_string("infotext", "Inactive")
-                all_switching_stations[k] = nil
-            else
+    for k, _ in pairs(all_switching_stations) do
+        swcount = swcount + 1
+        local pos = unhash(k)
+        if getnode(pos).name ~= "sbz_power:switching_station" then
+            all_switching_stations[k] = nil
+        end
+        local network = get_network(pos)
+        if network then
+            network.timer_subtick = (network.timer_subtick or 0) + dtime
+            if network.timer_subtick >= sbz_api.power_subtick then
+                network.timer_subtick = 0
+                network.timer_tick = (network.timer_tick or 0) + sbz_api.power_subtick
                 sbz_api.switching_station_sub_tick(pos)
             end
-        end
-    end
-
-    -- tick
-    if dtime_accum_fulltick >= sbz_api.power_tick then
-        dtime_accum_fulltick = 0
-
-        local count = 0
-        for k, v in pairs(all_switching_stations) do
-            count = count + 1
-            local pos = unhash(k)
-            if getnode(pos).name ~= "sbz_power:switching_station" then
-                getmeta(pos):set_string("infotext", "Inactive")
-                all_switching_stations[k] = nil
-            else
+            if (network.timer_tick or 0) >= sbz_api.power_tick then
+                network.timer_tick = 0
                 sbz_api.switching_station_tick(pos)
             end
+        else
+            sbz_api.switching_station_tick(pos)
         end
-
-        if switching_station_count then
-            switching_station_count.set(count)
-        end
+    end
+    if switching_station_count then
+        switching_station_count.set(swcount)
     end
 end
 
