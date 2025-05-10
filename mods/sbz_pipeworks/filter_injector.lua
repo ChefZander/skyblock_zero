@@ -119,7 +119,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         local dir = pipeworks.facedir_to_right_dir(node.param2)
 
         local frompos = vector.subtract(pos, dir)
-        local fromnode = sbz_api.get_node_force(frompos)
+        local fromnode = sbz_api.get_or_load_node(frompos)
 
         if not fromnode then
             meta:set_string("infotext", "Can't pull from that node - there is no node there?")
@@ -135,7 +135,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
 
         local todir = pipeworks.facedir_to_right_dir(node.param2)
         local topos = vector.add(pos, todir)
-        local tonode = sbz_api.get_node_force(topos)
+        local tonode = sbz_api.get_or_load_node(topos)
 
         if not tonode then
             meta:set_string("infotext", "Can't push to that node - that node does not exist.")

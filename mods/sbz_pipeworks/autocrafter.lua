@@ -397,6 +397,7 @@ local function update_meta(pos, meta)
     return true
 end
 
+local inv_cache = sbz_api.make_cache("inv_cache") -- USE ONLY inv_cache.data, nothing else, as it wont get cleared that way
 
 minetest.register_node("pipeworks:autocrafter", {
     description = S("Autocrafter"),
@@ -406,27 +407,29 @@ minetest.register_node("pipeworks:autocrafter", {
     is_ground_content = false,
     tube = {
         insert_object = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
             local slots = get_reserved_slots_or_reserve_them(pos)
             if slots == nil then return stack end
-            if not slots[stack:get_name()] then
+            local stackname = stack:get_name()
+            if not slots[stackname] then
                 return stack
             end
-            local inv = meta:get_inventory()
 
+            local inv = inv_cache.data[h(pos)]
+            if not inv then
+                inv_cache.data[h(pos)] = core.get_meta(pos):get_inventory()
+                inv = inv_cache.data[h(pos)]
+            end
+            local srclist = inv:get_list("src")
+            local that_stack, leftover
             for i = 1, 9 do
-                if slots[i] == stack:get_name() then
-                    local that_stack = inv:get_stack("src", i)
-                    local leftover = that_stack:add_item(stack):get_count()
-                    inv:set_stack("src", i, that_stack)
+                if slots[i] == stackname then
+                    that_stack = srclist[i]
+                    leftover = that_stack:add_item(stack):get_count()
+                    srclist[i] = that_stack
                     stack:set_count(leftover)
-                    --[[
-                    if stack:set_count(leftover) then
-                        break
-                    end
-                    --]]
                 end
             end
+            inv:set_list("src", srclist)
             return stack
         end,
         can_insert = function(pos, node, stack, direction)

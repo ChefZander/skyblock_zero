@@ -413,33 +413,31 @@ minetest.register_abm({
     interval = 100,
     chance = 10,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.after(1, function()
-            -- field decayed
-            minetest.set_node(pos, { name = "air" })
+        -- field decayed
+        minetest.set_node(pos, { name = "air" })
 
-            -- plop
-            minetest.sound_play("decay", { pos = pos, gain = 1.0 })
+        -- plop
+        minetest.sound_play("decay", { pos = pos, gain = 1.0 })
 
-            -- more particles!
-            minetest.add_particlespawner({
-                amount = 100,
-                time = 1,
-                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                minvel = { x = -5, y = -5, z = -5 },
-                maxvel = { x = 5, y = 5, z = 5 },
-                minacc = { x = 0, y = 0, z = 0 },
-                maxacc = { x = 0, y = 0, z = 0 },
-                minexptime = 10,
-                maxexptime = 20,
-                minsize = 0.5,
-                maxsize = 1.0,
-                collisiondetection = false,
-                vertical = false,
-                texture = "dust.png",
-                glow = 10
-            })
-        end)
+        -- more particles!
+        minetest.add_particlespawner({
+            amount = 100,
+            time = 1,
+            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+            minvel = { x = -5, y = -5, z = -5 },
+            maxvel = { x = 5, y = 5, z = 5 },
+            minacc = { x = 0, y = 0, z = 0 },
+            maxacc = { x = 0, y = 0, z = 0 },
+            minexptime = 10,
+            maxexptime = 20,
+            minsize = 0.5,
+            maxsize = 1.0,
+            collisiondetection = false,
+            vertical = false,
+            texture = "dust.png",
+            glow = 10
+        })
     end,
 })
 

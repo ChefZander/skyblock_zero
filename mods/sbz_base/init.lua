@@ -420,7 +420,7 @@ dofile(MP .. "/sbz_player_inside.lua")
 dofile(MP .. "/playtime_and_afk.lua")
 dofile(MP .. "/dwarf_orb_crafts.lua")
 dofile(MP .. "/toggle_areas_hud.lua")
-
+dofile(MP .. "/cache.lua")
 -- useless cuz of luanti metadata limitations
 dofile(MP .. "/serialize.lua")
 dofile(MP .. "/serialize_benchmark.lua")

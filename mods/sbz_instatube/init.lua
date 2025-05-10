@@ -28,17 +28,21 @@ local regnodes = core.registered_nodes
 local hash = core.hash_node_position
 
 
-local function iter_around(pos, queue, filter_logic, added_priority, seen, net_id)
+local stack = {}
+local function iter_around(pos, rope, filter_logic, added_priority, seen, net_id)
     add_to_pos2network(pos, net_id)
     iterate_around_pos(pos, function(ipos, dir)
         if not seen[hash(ipos)] then
-            queue:enqueue({ ipos, filter_logic, added_priority, dir })
+            rope = rope + 1
+            stack[rope] = { ipos, filter_logic, added_priority, dir }
         end
     end, false)
+    return rope
 end
+
+
 sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
     local net_id = get_next_network_id()
-    local queue = Queue.new()
     local seen = {}
     instatube.networks[net_id] = { machines = {} }
     local network = instatube.networks[net_id]
@@ -46,11 +50,15 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
     -- btw its not just machines, tubes and the like too
     local machines = network.machines
 
-    queue:enqueue({ start_pos, {}, 0, vector.zero() })
+    local rope = 0
+
+    rope = rope + 1
+    stack[rope] = { start_pos, {}, 0, vector.zero }
     sbz_api.vm_begin()
 
-    while not queue:is_empty() do
-        local pos, filter_logic, added_priority, dir = unpack(queue:dequeue())
+    while rope > 0 do
+        local pos, filter_logic, added_priority, dir = unpack(stack[rope])
+        rope = rope - 1
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
             local node = sbz_api.get_or_load_node(pos)
@@ -63,10 +71,10 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                     local val = special_insert_logic[node.name](pos, node, dir)
                     if type(val) == "table" then -- means its a teleport tube of some kind
                         if val.x then            -- vector
-                            iter_around(val, queue, filter_logic, added_priority, seen, net_id)
+                            rope = iter_around(val, rope, filter_logic, added_priority, seen, net_id)
                         else                     -- vector array
                             for _, vec in ipairs(val) do
-                                iter_around(vec, queue, filter_logic, added_priority, seen, net_id)
+                                rope = iter_around(vec, rope, filter_logic, added_priority, seen, net_id)
                             end
                         end
                     else
@@ -89,7 +97,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                 end
 
                 if should_enqueue then
-                    iter_around(pos, queue, supplied_filter_logic, supplied_added_priority, seen, net_id)
+                    rope = iter_around(pos, rope, supplied_filter_logic, supplied_added_priority, seen, net_id)
                 end
             elseif is_receiver then
                 local def = regnodes[node.name]
@@ -186,18 +194,19 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
         if stack:is_empty() then break end
         local mnode = machine.node
         local can_insert = true
-        local mpos = table.copy(machine.pos)
-        --        if machine.tube.can_insert then
-        --            can_insert = can_insert and
-        --                machine.tube.can_insert(mpos, mnode, stack, { x = 0, y = 0, z = 0, speed = 1 }, owner)
-        --        end
+        local mpos = machine.pos
+        mpos = { x = mpos.x, y = mpos.y, z = mpos.z } -- copy
+
         if can_insert then
             local filter_logic = machine.filter_logic
-            for _, filter in ipairs(filter_logic) do
+            local filter
+            for i = 1, #filter_logic do
+                filter = filter_logic[i]
                 local filter_f = instatube.special_filter_logic[filter.node.name]
                 can_insert = can_insert and filter_f(filter.pos, filter.node, filter.dir, stack)
             end
         end
+
         if can_insert then
             if not machine.is_tube then
                 if machine.tube.insert_object then
@@ -428,22 +437,37 @@ listring[]
     end,
 })
 
+local filtlist_cache = {}
+
 instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node, dir, stack)
-    local inv = core.get_meta(pos):get_inventory()
-    local filtlist = inv:get_list("filter")
+    local filtlist = filtlist_cache[hash(pos)]
+    if not filtlist then
+        local inv = core.get_meta(pos):get_inventory()
+        filtlist_cache[hash(pos)] = inv:get_list("filter")
+        filtlist = filtlist_cache[hash(pos)]
+        local fstack
+        for i = 1, 5 do
+            fstack = filtlist[i]
+            filtlist[i] = { fstack:get_name(), fstack:get_count() }
+        end
+    end
     if not filtlist then return false end
-    if inv:is_empty("filter") then return true end -- just like pipeworks lol
-    local fstack
+    --if inv:is_empty("filter") then return true end -- just like pipeworks lol -- removed for optimization
+    local fentry
     local stack_name = stack:get_name()
     local stack_count = stack:get_count()
     for i = 1, 5 do
-        fstack = filtlist[i]
-        if fstack:get_name() == stack_name and fstack:get_count() <= stack_count then
+        fentry = filtlist[i]
+        if fentry[1] == stack_name and fentry[2] <= stack_count then
             return true
         end
     end
     return false
 end
+
+core.register_globalstep(function(dtime)
+    filtlist_cache = {}
+end)
 
 core.register_node("sbz_instatube:high_priority_instant_tube", unifieddyes.def {
     description = "High Priority Instatube",

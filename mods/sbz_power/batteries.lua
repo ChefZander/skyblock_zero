@@ -178,7 +178,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
         end
     end,
     on_logic_send = function(pos, msg, from_pos)
-        local node = sbz_api.get_node_force(from_pos) -- get even if its unloaded
+        local node = sbz_api.get_or_load_node(from_pos) -- get even if its unloaded
         if not node then return end
         local controller_meta = core.get_meta(from_pos)
         local owner = controller_meta:get_string("owner")

@@ -109,11 +109,11 @@ function sbz_api.plant_growth_tick(num_ticks, mutation_chance)
             under.y = under.y - 1
 
             local growth_multiplier = 1
-            local soil = core.get_item_group((sbz_api.get_node_force(under) or { name = "" }).name, "soil")
+            local soil = core.get_item_group((sbz_api.get_or_load_node(under) or { name = "" }).name, "soil")
             growth_multiplier = math.max(0, growth_multiplier + (soil - 1))
 
             iterate_around_pos(pos, function(ipos)
-                local n = sbz_api.get_node_force(ipos)
+                local n = sbz_api.get_or_load_node(ipos)
                 if n and core.get_item_group(n.name, "growth_boost") > 0 then
                     growth_multiplier = growth_multiplier +
                         (growth_multiplier * (core.get_item_group(n.name, "growth_boost") / 100))

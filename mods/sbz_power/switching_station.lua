@@ -97,7 +97,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
 
     while not queue:is_empty() do
         local current_pos, dir = unpack(queue:dequeue())
-        local nn = (sbz_api.get_node_force(current_pos) or {}).name -- node name
+        local nn = (sbz_api.get_or_load_node(current_pos) or {}).name -- node name
         local is_conducting = IG(nn, "pipe_conducts") > 0
 
         local is_generator = IG(nn, "sbz_generator") > 0

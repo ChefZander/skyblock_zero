@@ -34,25 +34,25 @@ local action = function(pos, _, puncher)
                 unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
             end
         else
-            sbz_api.play_sfx("punch_core", {
-                gain = 1,
-                max_hear_distance = 6,
-                pos = pos
-            })
+            if not puncher.is_fake_player then
+                sbz_api.play_sfx("punch_core", {
+                    gain = 1,
+                    max_hear_distance = 6,
+                    pos = pos
+                })
+            end
             local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
             local item = items[math.random(#items)]
 
-            if puncher and puncher:is_player() then
-                local inv = puncher:get_inventory()
-                if inv then
-                    local leftover = inv:add_item("main", item)
-                    if not leftover:is_empty() then
-                        minetest.add_item(pos, leftover)
-                    end
+            local inv = puncher:get_inventory()
+            if inv then
+                local leftover = inv:add_item("main", item)
+                if not leftover:is_empty() then
+                    minetest.add_item(pos, leftover)
                 end
-                if not puncher.is_fake_player then
-                    unlock_achievement(puncher:get_player_name(), "Introduction")
-                end
+            end
+            if not puncher.is_fake_player then
+                unlock_achievement(puncher:get_player_name(), "Introduction")
             end
         end
     end

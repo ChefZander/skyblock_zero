@@ -68,7 +68,7 @@ local function on_update_channel(channel) -- for tptube instant tubes, and also 
     --    local cache = receiver_cache[channel]
 
     for k, v in pairs(tube_db) do
-        local node = sbz_api.get_node_force(v)
+        local node = sbz_api.get_or_load_node(v)
         if node then
             if v.cr == 1 and v.channel == channel then
                 if node.name == "sbz_instatube:teleport_instant_tube" then
@@ -335,3 +335,14 @@ pipeworks.tptube = {
 
 -- Load the database
 read_tube_db()
+
+-- DEBUG TOOL, used with //luatransform
+function pipeworks.tptube.restore(pos)
+    local node = sbz_api.get_or_load_node(pos)
+    local meta = core.get_meta(pos)
+    local channel = meta:get_string("channel")
+    local cr = meta:get_int("can_receive")
+    if channel ~= "" then
+        set_tube(pos, channel, cr)
+    end
+end

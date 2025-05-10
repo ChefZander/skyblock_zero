@@ -33,7 +33,7 @@ function sbz_api.assemble_habitat(start_pos, seen)
     local power_generated = 0
     local plants = {}
     local co2_sources = {}
-
+    local pos, node, name, def, to_add, cpos, hcpos
     sbz_api.vm_begin()
 
     local IG = core.get_item_group
@@ -41,11 +41,11 @@ function sbz_api.assemble_habitat(start_pos, seen)
 
 
     while index > 0 and size < habitat_max_size do
-        local pos = stack[index]
+        pos = stack[index]
         index = index - 1
 
-        local node = get_node(pos)
-        local name = node.name
+        node = get_node(pos)
+        name = node.name
 
         if IG(name, "plant") > 0 then
             local d = IG(name, "needs_co2")
@@ -62,17 +62,17 @@ function sbz_api.assemble_habitat(start_pos, seen)
             table.insert(co2_sources, { pos, node })
         end
 
-        local def = core.registered_nodes[name]
+        def = core.registered_nodes[name]
         if def then
             if (name == "air" or IG(name, "habitat_conducts") > 0 or pos == start_pos or def.walkable == false or def.collision_box ~= nil or def.node_box ~= nil) and name ~= "sbz_bio:airlock" then
                 for i = 0, 5 do
-                    local to_add = wallmounted_to_dir[i]
-                    local cpos = {
+                    to_add = wallmounted_to_dir[i]
+                    cpos = {
                         x = pos.x + to_add[1],
                         y = pos.y + to_add[2],
                         z = pos.z + to_add[3]
                     }
-                    local hcpos = hash(cpos)
+                    hcpos = hash(cpos)
                     if not seen[hcpos] then
                         seen[hcpos] = true
                         index = index + 1
@@ -165,7 +165,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
     for _, v in ipairs(habitat.plants) do
         local pos, node, demand = unpack(v)
         local under = vector.subtract(pos, vector.new(0, 1, 0))
-        local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "" }).name, "soil")
+        local soil = minetest.get_item_group((sbz_api.get_or_load_node(under) or { name = "" }).name, "soil")
 
         if (stage == PcgRandom(hash(pos)):next(0, 9)) or sbz_api.accelerated_habitats then
             if co2 - demand >= 0 then

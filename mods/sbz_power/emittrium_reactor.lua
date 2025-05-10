@@ -296,7 +296,7 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
             meta:set_int("linked", 0)
             return
         end
-        local linkedname = sbz_api.get_node_force(linkedpos)
+        local linkedname = sbz_api.get_or_load_node(linkedpos)
         if linkedname == nil then
             if not try_linking(pos, meta) then
                 meta:set_string("infotext", "No reactor nearby")
@@ -493,7 +493,7 @@ local function core_tick(pos)
         for y = iter_start_pos.y, iter_start_pos.y + 2 do
             for z = iter_start_pos.z, iter_start_pos.z + 2 do
                 local vec = vector.new(x, y, z)
-                local node = sbz_api.get_node_force(vec).name
+                local node = sbz_api.get_or_load_node(vec).name
                 if node == "sbz_power:reactor_power_port" then
                     if nodes.power == nil then
                         nodes.power = vec

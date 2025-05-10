@@ -121,6 +121,7 @@ sbz_api.register_generator("sbz_power:simple_charged_field", {
     end,
     info_extra = "Decays after some time"
 })
+
 minetest.register_craft({
     output = "sbz_power:simple_charged_field",
     recipe = {

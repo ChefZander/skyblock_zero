@@ -75,7 +75,7 @@ core.register_globalstep(render_links)
 local function try_to_link_to_tool(stack, pos, placer)
     local meta = stack:get_meta()
     local name = placer:get_player_name()
-    local node = sbz_api.get_node_force(pos)
+    local node = sbz_api.get_or_load_node(pos)
     if not node then return end
     node = node.name
     local ndef = minetest.registered_nodes[node]

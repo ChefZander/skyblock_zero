@@ -97,8 +97,6 @@ Craft one, put in the block of your choosing*, and boom!
         title = "Emitter Immitators",
         text = [[Emitter Immitators are decorational nodes providing light.
 
-You can get one, by surrounding a 'Matter Blob' with 'Antimatter Dust'. They don't glow as much as The Core though.
-
 TIP: Emitter Immitators spawn a lot of particles when punched, try it!]],
         requires = { "A bigger platform", "More Antimatter" }
     },

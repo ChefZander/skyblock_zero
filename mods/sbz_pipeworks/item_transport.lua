@@ -16,7 +16,7 @@ function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner)
 end
 
 function pipeworks.tube_inject_direct(pos, start_pos, to_pos, velocity, item, owner) -- function needed because monitoring pipeworks.tube_inject_item
-	local node = sbz_api.get_node_force(to_pos)
+	local node = sbz_api.get_or_load_node(to_pos)
 	local stack = ItemStack(item)
 	if node and core.registered_nodes[node.name] then
 		local def = core.registered_nodes[node.name]
