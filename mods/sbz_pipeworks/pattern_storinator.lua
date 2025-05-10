@@ -12,27 +12,6 @@ Once the storinator has been filled (=> no things can enter it, all the patterns
 Just a tubedevice, not a machine
 ]]
 
-local after_filled_behavior = function(pos, meta, inv)
-    if meta:get_string("after_filled") == "store" then
-        return -- literally do nothing lol, this mode may be accesible later when i feel like adding a button idk
-    else
-        local storage = inv:get_list("storage")
-        if not storage then return end
-        inv:set_list("storage", {})
-        inv:set_size("storage", 16)
-        local dir = pipeworks.facedir_to_right_dir(sbz_api.get_or_load_node(pos).param2)
-        if not dir then return end
-        dir = vector.subtract(vector.zero(), dir)
-        local to_pos = vector.add(pos, dir)
-        local end_pos = vector.add(pos, vector.multiply(dir, 0.4))
-        for i = 1, #storage do
-            minetest.after(0, function() -- added so that 2 pattern storinators wont create an infinite loop
-                pipeworks.tube_inject_direct(pos, end_pos, to_pos, dir, storage[i], meta:get_string("owner"))
-            end)
-        end
-    end
-end
-
 local function check_and_act_if_filled(pos, meta, inv)
     local filled = true
     local storage = inv:get_list("storage")
@@ -45,7 +24,7 @@ local function check_and_act_if_filled(pos, meta, inv)
         end
     end
     if filled then
-        after_filled_behavior(pos, meta, inv)
+        meta:set_int("output_mode", 1)
     end
     return filled
 end
@@ -72,7 +51,7 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
         { name = "pattern_storinator_side.png^[transformFX", animation = { type = "vertical_frames", length = 3 } },
         { name = "pattern_storinator_side.png^[transformFX", animation = { type = "vertical_frames", length = 3 } },
         "pattern_storinator_back.png",
-        "pattern_storinator_output.png",
+        "pattern_storinator_back.png",
         { name = "pattern_storinator_side.png",              animation = { type = "vertical_frames", length = 3 } },
         { name = "pattern_storinator_side.png^[transformFX", animation = { type = "vertical_frames", length = 3 } },
     },
@@ -80,27 +59,46 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
         input_inventory = "storage",
         insert_object = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
+            local can_insert = true
             local inv = meta:get_inventory()
             local storage = inv:get_list("storage")
             local pattern = inv:get_list("pattern")
 
-            for index = 1, #pattern do
-                if pattern[index]:get_name() == stack:get_name() then
-                    local old_sstack = ItemStack(storage[index])
-                    local new_sstack = storage[index]
-                    local pattern_stack = pattern[index]
-                    new_sstack:add_item(stack)
-                    if new_sstack:get_count() <= pattern_stack:get_count() then
-                        inv:set_stack("storage", index, new_sstack)
-                        check_and_act_if_filled(pos, meta, inv)
-                        return ItemStack()
-                    elseif old_sstack:get_count() < pattern_stack:get_count() then
-                        local diffcount = new_sstack:get_count() - pattern_stack:get_count()
-                        local setstack = ItemStack(new_sstack)
-                        setstack:take_item(diffcount)
-                        inv:set_stack("storage", index, setstack)
-                        check_and_act_if_filled(pos, meta, inv)
-                        return new_sstack:peek_item(diffcount)
+            if meta:get_int("output_mode") == 1 then
+                local is_storage_empty = true
+                for index = 1, #pattern do
+                    local sstack = storage[index]
+                    if not sstack:is_empty() then
+                        is_storage_empty = false
+                        break
+                    end
+                end
+                if is_storage_empty == true then
+                    meta:set_int("output_mode", 0)
+                else
+                    can_insert = false
+                end
+            end
+
+            if can_insert then
+                for index = 1, #pattern do
+                    if pattern[index]:get_name() == stack:get_name() then
+                        local old_sstack = ItemStack(storage[index])
+                        local new_sstack = storage[index]
+                        local pattern_stack = pattern[index]
+                        new_sstack:add_item(stack)
+                        if new_sstack:get_count() <= pattern_stack:get_count() then
+                            inv:set_stack("storage", index, new_sstack)
+                            check_and_act_if_filled(pos, meta, inv)
+                            return ItemStack()
+                        elseif old_sstack:get_count() < pattern_stack:get_count() then
+                            local diffcount = new_sstack:get_count() - pattern_stack:get_count()
+                            local setstack = ItemStack(new_sstack)
+                            setstack:take_item(diffcount)
+                            inv:set_stack("storage", index, setstack)
+                            check_and_act_if_filled(pos, meta, inv)
+                            return new_sstack:peek_item(diffcount)
+                        end
                     end
                 end
             end
@@ -109,10 +107,29 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
         can_insert = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            --            local oldstack = stack
-            stack = stack:peek_item(1)
+
             local storage = inv:get_list("storage")
             local pattern = inv:get_list("pattern")
+
+            if meta:get_int("output_mode") == 1 then
+                local is_storage_empty = true
+                for index = 1, #pattern do
+                    local sstack = storage[index]
+                    if not sstack:is_empty() then
+                        is_storage_empty = false
+                        break
+                    end
+                end
+                if is_storage_empty == true then
+                    meta:set_int("output_mode", 0)
+                else
+                    return false
+                end
+            end
+
+            --            local oldstack = stack
+            stack = stack:peek_item(1)
+
             if pattern then -- can be nil in really rare cases
                 for index = 1, #pattern do
                     if pattern[index]:get_name() == stack:get_name() then
@@ -124,7 +141,14 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
             end
             return false
         end,
-        connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 }
+        connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 },
+        return_input_invref = function(pos, node, dir, owner)
+            local meta = core.get_meta(pos)
+            if meta:get_int("output_mode") == 1 then
+                return meta:get_inventory()
+            end
+            return nil -- explicit specifically so you KNOW its intentional
+        end,
     },
     on_construct = function(pos)
         local meta = core.get_meta(pos)

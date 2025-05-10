@@ -192,9 +192,11 @@ Instatubes that only allow items flowing from one direction, useful when having 
         title = "Pattern Storinator",
         text = [[
 It is a storinator with 16 slots of storage, and 16 slots for the pattern.
-The pattern slots govern how the storage slots can be filled. If a pattern has in the first slot 43 matter dust, then there can be only up to 43 matter dust in that slot. Similar to the autocrafter (but the autocrafter allows a full stack.)
+The pattern slots govern how the storage slots can be filled. If a pattern has in the first slot 43 matter dust, then there can be only up to 43 matter dust in that slot. Similar to how the autocrafter does it.
 
-When the pattern storinator can no longer be inserted to, it will dump its entire contents to the output side.
+By default, filter injector does nothing to the pattern storinator.
+When the pattern storinator is full (storage matches the pattern), it will allow using filter injectors, but will disallow inputting items into the pattern storinator.
+Once its empty, you will be able to insert to it again, and filter injectors will stop working on it.
 
 The pattern storinator can be used in machines like the meteorite maker, where your flow rate of emittrium and matter blobs might make the meteorite maker clog.
 ]],

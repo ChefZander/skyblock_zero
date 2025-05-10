@@ -176,7 +176,8 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
         if fromtube.return_input_invref then
             frominv = fromtube.return_input_invref(frompos, fromnode, dir, owner)
             if not frominv then
-                meta:set_string("infotext", "Can't pull from that node/node's direction/possibly something else?")
+                meta:set_string("infotext",
+                    "Can't pull from that node yet. (May be dependant on direction or node state.)")
                 return 1
             end
         else
