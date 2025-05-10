@@ -397,7 +397,8 @@ minetest.register_node("sbz_resources:gravel", {
 
 minetest.register_node("sbz_resources:dust", {
     description = "Dust",
-    info_extra = "Perfect for scaffolding (no seriously).\nIt is temporary, it will go away after some time.",
+    info_extra =
+    "Perfect for scaffolding (no seriously, you can climb it).\nIt is temporary, it will go away after some time.",
     tiles = { "dust.png" },
     groups = { matter = 1, charged = 1, sand = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
     walkable = false,
