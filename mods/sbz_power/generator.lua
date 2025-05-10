@@ -129,32 +129,36 @@ minetest.register_craft({
         { "sbz_resources:charged_particle", "sbz_resources:charged_particle", "sbz_resources:charged_particle" }
     }
 })
-minetest.register_abm({
-    label = "Simple Charged Field Particles",
-    nodenames = { "sbz_power:simple_charged_field" },
-    interval = 1,
-    chance = 1,
-    action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.add_particlespawner({
-            amount = 5,
-            time = 1,
-            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-            minvel = { x = -2, y = -2, z = -2 },
-            maxvel = { x = 2, y = 2, z = 2 },
-            minacc = { x = 0, y = 0, z = 0 },
-            maxacc = { x = 0, y = 0, z = 0 },
-            minexptime = 10,
-            maxexptime = 20,
-            minsize = 0.5,
-            maxsize = 1.0,
-            collisiondetection = false,
-            vertical = false,
-            texture = "charged_particle.png",
-            glow = 10
-        })
-    end,
-})
+
+if not sbz_api.server_optimizations then
+    minetest.register_abm({
+        label = "Simple Charged Field Particles",
+        nodenames = { "sbz_power:simple_charged_field" },
+        interval = 1,
+        chance = 1,
+        action = function(pos, node, active_object_count, active_object_count_wider)
+            minetest.add_particlespawner({
+                amount = 5,
+                time = 1,
+                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+                minvel = { x = -2, y = -2, z = -2 },
+                maxvel = { x = 2, y = 2, z = 2 },
+                minacc = { x = 0, y = 0, z = 0 },
+                maxacc = { x = 0, y = 0, z = 0 },
+                minexptime = 10,
+                maxexptime = 20,
+                minsize = 0.5,
+                maxsize = 1.0,
+                collisiondetection = false,
+                vertical = false,
+                texture = "charged_particle.png",
+                glow = 10
+            })
+        end,
+    })
+end
+
 minetest.register_abm({
     label = "Simple Charged Field Decay",
     nodenames = { "sbz_power:simple_charged_field" },

@@ -252,6 +252,8 @@ function sbz_api.switching_station_tick(start_pos)
 
     local profiler = {}
 
+    network.switching_station_pos = start_pos
+
     local supply = 0
     local demand = 0
     local battery_max = 0
@@ -681,3 +683,24 @@ sbz_api.make_network_visible = function(p1, p2, net)
         end
     end
 end
+
+core.register_chatcommand("teleport_to_laggiest_switching_station", {
+    description =
+    "Teleports to the laggiest switching station, useful to diagnose issues with skyblock zero on multiplayer.",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        local pos = nil
+        local max_lag = -math.huge
+        for k, v in pairs(networks) do
+            local lag = v.lag
+            if lag > max_lag then
+                max_lag = lag
+                pos = v.switching_station_pos
+            end
+        end
+        if pos == nil then return false, "Could not find a switching station like that" end
+        local player = core.get_player_by_name(name)
+        player:set_pos(pos)
+        return true, "Done"
+    end
+})
