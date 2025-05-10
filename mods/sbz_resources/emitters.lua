@@ -6,7 +6,7 @@ local action = function(pos, _, puncher)
     local can_extract_from_emitter = minetest.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
         if puncher.is_fake_player then return end
-        displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
+        sbz_api.displayDialogLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
     for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
         if math.random(1, 10) == 1 then

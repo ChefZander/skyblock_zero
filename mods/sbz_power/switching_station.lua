@@ -402,7 +402,7 @@ local function profiler_formspec(pos, username)
     if not net then return end
     if net.dirty then return end
     if not net.profiler then return end
-    core.chat_send_player(username, "Network ID: " .. dump(sbz_api.pos2network[h(pos)]))
+    core.chat_send_player(username, "[Switching Station] Network ID: " .. dump(sbz_api.pos2network[h(pos)])) -- use: detect if the network has changed
     local fs = [[
 formspec_version[7]
 size[10,11]
@@ -421,7 +421,6 @@ button_exit[0,10;10,1;exit;Exit]
     fs = string.format(fs, table.concat(table_text, ","))
     core.show_formspec(username, "sbz_power:switching_station_profiler", fs)
 end
-
 
 minetest.register_node("sbz_power:switching_station", {
     description = "Switching Station",

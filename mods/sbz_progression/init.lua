@@ -9,24 +9,13 @@ dofile(modpath .. "/annoy.lua")
 local mod_storage = core.get_mod_storage()
 sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
 
-function displayDialogueLine(player_name, text)
+function sbz_api.displayDialogLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
         to_player = player_name,
         gain = 1,
     })
 end
-
-function displayGlobalDialogueLine(text)
-    minetest.chat_send_all("⌠ " .. text .. " ⌡")
-    minetest.sound_play("dialouge", {
-        gain = 1,
-    })
-end
-
-displayDialougeLine = displayDialogueLine
-displayGlobalDialougeLine = displayGlobalDialogueLine
-
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
 local achievement_table = {
@@ -178,7 +167,7 @@ minetest.register_globalstep(function(dtime)
             unlock_achievement(player:get_player_name(), "Emptiness")
         end
         if pos.y < safetynet_low - 300 then
-            displayDialougeLine(player:get_player_name(), "You fell off the platform.")
+            sbz_api.displayDialogLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({ x = 0, y = 1, z = 0 })
         end
     end

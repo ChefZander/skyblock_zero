@@ -123,7 +123,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
             local meta = core.get_meta(pos)
             local fs = meta:get_string("formspec")
             if fs == "" then
-                displayDialogueLine(clicker:get_player_name(),
+                sbz_api.displayDialogLine(clicker:get_player_name(),
                     "Punch a basic editor disk to the luacontroller to use the editor.")
             end
         end

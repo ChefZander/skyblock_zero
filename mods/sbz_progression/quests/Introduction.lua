@@ -20,6 +20,7 @@ There are several in-game commands useful in survival:
 - /qb - gives you the questbook if you don't have one
 - /home - teleports you to home
 - /sethome - sets your home
+- /toggle_areas_hud - Toggles the areas hud, may be useful if you dont want to always see it.
 ]]
     },
     {

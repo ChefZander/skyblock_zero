@@ -80,7 +80,7 @@ local function try_to_link_to_tool(stack, pos, placer)
     node = node.name
     local ndef = minetest.registered_nodes[node]
     if not ndef then return end
-    if not ndef.can_sensor_link then return displayDialogueLine(name, "Can't link with that.") end
+    if not ndef.can_sensor_link then return sbz_api.displayDialogLine(name, "Can't link with that.") end
     -- ok yeah it can link
     meta:set_string("linked", core.serialize(pos))
     minetest.chat_send_player(name, "Succesfully linked to the sensor.")

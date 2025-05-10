@@ -144,13 +144,12 @@ minetest.register_on_newplayer(function(player)
     local name = player:get_player_name()
     if inv then
         if inv:contains_item("main", "sbz_progression:questbook") then
-            displayDialougeLine(name, "You already had a questbook before joining.")
+            sbz_api.displayDialogLine(name, "You already had a questbook before joining.")
         else
             if inv:room_for_item("main", "sbz_progression:questbook") then
                 inv:add_item("main", "sbz_progression:questbook")
-                -- displayDialougeLine(name, "You have been given a Quest Book.")
             else
-                displayDialougeLine(name,
+                sbz_api.displayDialogLine(name,
                     "Your inventory is full. Can't give you a questbook. Use /qb")
             end
         end
@@ -167,11 +166,12 @@ minetest.register_on_joinplayer(function(ref, last_login)
 end)
 
 minetest.register_chatcommand("core", {
-    description = "Go back to the core, if you fell off.",
+    description = "Go back to the core.",
     privs = {},
     func = function(name, param)
         minetest.get_player_by_name(name):set_pos({ x = 0, y = 1, z = 0 })
-        displayDialougeLine(name, "Beamed you back to the Core.")
+        sbz_api.displayDialogLine(name, "Sent you back to the Core.") -- i think me renaming "Beamed" to "Sent" is going to make zander mad but i geniuenly have no idea what "Beamed" means so i think most people have no idea too
+        -- me, frog, renaming it will also most likely make people investigate its meaning, so we will see :)
     end,
 })
 
@@ -345,7 +345,7 @@ core.register_chatcommand("killme", {
 minetest.register_on_chat_message(function(name, message)
     local players = minetest.get_connected_players()
     if #players == 1 then
-        displayDialougeLine(name, "You talk. But there is no one to listen.")
+        sbz_api.displayDialogLine(name, "You talk. But there is no one to listen.")
         unlock_achievement(name, "Desolate")
     end
     return false
@@ -419,8 +419,12 @@ dofile(MP .. "/sbz_on_hover.lua")
 dofile(MP .. "/sbz_player_inside.lua")
 dofile(MP .. "/playtime_and_afk.lua")
 dofile(MP .. "/dwarf_orb_crafts.lua")
+dofile(MP .. "/toggle_areas_hud.lua")
+
+-- useless cuz of luanti metadata limitations
 dofile(MP .. "/serialize.lua")
 dofile(MP .. "/serialize_benchmark.lua")
+
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then
