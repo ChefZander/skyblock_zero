@@ -103,7 +103,7 @@ local function dig(pos, owner, def_target, def_item, inv, index, node)
     if def_target.on_dig(pos, node, player) == false then return end
 
     player:set_wielded_item(stack)
-    dont_wear_out(stack, old_stack, player, def_item)
+    dont_wear_out(stack, old_stack, player, item_def)
 end
 
 
