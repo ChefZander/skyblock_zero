@@ -397,9 +397,11 @@ minetest.register_node("sbz_resources:gravel", {
 
 minetest.register_node("sbz_resources:dust", {
     description = "Dust",
-    tiles = { "dust.png" }, -- Needs retexture by artist
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
-    walkable = true,
+    info_extra = "Perfect for scaffolding (no seriously).\nIt is temporary, it will go away after some time.",
+    tiles = { "dust.png" },
+    groups = { matter = 1, charged = 1, sand = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
+    walkable = false,
+    climbable = true,
     sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
@@ -408,7 +410,7 @@ minetest.register_abm({
     label = "Dust Decay",
     nodenames = { "sbz_resources:dust" },
     interval = 100,
-    chance = 20,
+    chance = 10,
     action = function(pos, node, active_object_count, active_object_count_wider)
         minetest.after(1, function()
             -- field decayed
