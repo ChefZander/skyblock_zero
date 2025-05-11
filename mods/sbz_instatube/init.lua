@@ -46,7 +46,7 @@ local function iter_around(pos, rope, filter_logic, added_priority, seen, net_id
     if p2n then
         p2n[#p2n + 1] = net_id
     else
-        p2n[hpos] = { net_id }
+        pos2network[hpos] = { net_id }
     end
 
     local dir, ipos
