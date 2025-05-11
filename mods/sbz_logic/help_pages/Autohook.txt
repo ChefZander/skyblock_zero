@@ -1,0 +1,18 @@
+<big>Autohook</big>
+
+Status: $AUTOHOOK_ENABLED$
+
+When autohook is enabled, when a luacontroller takes too much time to execute before yielding, instead of throwing an error, the debug hook will instead yield.
+
+Meaning in practice, that you don't have to have pointless <mono>wait(0)</mono> calls anymore, as autohook will simply yield automatically.
+
+<big>How do i enable it? (For server admins/singleplayer world owners)</big>
+
+Requirements:
+- a unix system (unless you compile it for windows)
+
+Process:
+- add sbz_logic_autohook to your trusted mods
+
+
+How to compile it? there is a makefile in that directory, so you can simply go to <gamedir>/mods/sbz_logic_autohook, then execute <mono>make clean all</mono> in the terminal.
