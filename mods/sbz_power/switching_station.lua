@@ -57,6 +57,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
             connectors = {},
             subticking_machines = {},
             --            dirty = false
+            timer_subtick = math.random(-25, 0) / 10
         }
         network = networks[net_id]
     else

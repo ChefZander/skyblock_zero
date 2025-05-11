@@ -8,11 +8,6 @@ Meaning in practice, that you don't have to have pointless <mono>wait(0)</mono> 
 
 <big>How do i enable it? (For server admins/singleplayer world owners)</big>
 
-Requirements:
-- a unix system (unless you compile it for windows)
-
-Process:
-- add sbz_logic_autohook to your trusted mods
-
+Add sbz_logic_autohook to your trusted mods. <b>Be aware that you will need to use linux unless you compile it yourself and add functionality to the mod that will recognize that dll.</b> 
 
 How to compile it? there is a makefile in that directory, so you can simply go to <gamedir>/mods/sbz_logic_autohook, then execute <mono>make clean all</mono> in the terminal.
