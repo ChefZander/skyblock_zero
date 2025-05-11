@@ -30,7 +30,7 @@ The Automatic Filter-Injector takes stacks of items from nodes, and places them 
 <b>The slot sequence (allows you to change the order that items are taken out):</b>
 Priority: Takes items out in first out order
 Randomly: Takes items out in a random order
-Rotation: Takes items out in a round-robin order
+Rotation: Takes items out in a cyclic order
 <b>The match mode (sets the behavior when taking out items):</b>
 Exact match - off: If an item matches the filter, it takes out the whole stack
 Exact match - on: If an item matches the filter and the stack are higher it takes out the filter count, for example the filter is set to 5 matter, and it is pulling from a stack of 60 matter it will pull out 5 matter until the stack is below 5 or empty

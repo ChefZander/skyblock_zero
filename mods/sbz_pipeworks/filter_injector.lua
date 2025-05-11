@@ -236,14 +236,13 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 end
             elseif slotseq_mode == 2 then
                 local headpos = meta:get_int("slotseq_index")
-                table.sort(sposes, function(a, b)
-                    if a >= headpos then
-                        if b < headpos then return true end
-                    else
-                        if b >= headpos then return false end
-                    end
-                    return a < b
-                end)
+
+                local shifted = {}
+
+                for i = 1, #sposes do
+                    shifted[(i - headpos - 1) % #sposes + 1] = sposes[i]
+                end
+                sposes = shifted
             end
 
             local taken = 0
@@ -259,16 +258,20 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 end
                 -- stupid lack of continue statements grumble
                 if doRemove > 0 then
-                    if slotseq_mode == 2 then
+                    --[[                    if slotseq_mode == 2 then
                         local nextpos = spos + 1
                         if nextpos > invsize then
                             nextpos = 1
                         end
                         meta:set_int("slotseq_index", nextpos)
                     end
+                    ]]
                     local count = math.min(stack:get_count(), doRemove)
                     taken = taken + count
                 end
+            end
+            if slotseq_mode == 2 then
+                meta:set_int("slotseq_index", meta:get_int("slotseq_index") + 1)
             end
             local item
             if taken == 0 then return false end

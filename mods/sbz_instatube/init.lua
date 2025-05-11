@@ -29,14 +29,39 @@ local hash = core.hash_node_position
 
 
 local stack = {}
+
+local wallmounted_to_dir = {
+    [0] = { 0, 1, 0 },
+    [1] = { 0, -1, 0 },
+    [2] = { 1, 0, 0 },
+    [3] = { -1, 0, 0 },
+    [4] = { 0, 0, 1 },
+    [5] = { 0, 0, -1 },
+}
+
 local function iter_around(pos, rope, filter_logic, added_priority, seen, net_id)
-    add_to_pos2network(pos, net_id)
-    iterate_around_pos(pos, function(ipos, dir)
+    --add_to_pos2network(pos, net_id)
+    local hpos = core.hash_node_position(pos)
+    local p2n = pos2network[hpos]
+    if p2n then
+        p2n[#p2n + 1] = net_id
+    else
+        p2n[hpos] = { net_id }
+    end
+
+    local dir, ipos
+    for i = 0, 5 do
+        dir = wallmounted_to_dir[i]
+        ipos = {
+            x = pos.x + dir[1],
+            y = pos.y + dir[2],
+            z = pos.z + dir[3],
+        }
         if not seen[hash(ipos)] then
             rope = rope + 1
             stack[rope] = { ipos, filter_logic, added_priority, dir }
         end
-    end, false)
+    end
     return rope
 end
 
@@ -56,14 +81,16 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
     stack[rope] = { start_pos, {}, 0, vector.zero }
     sbz_api.vm_begin()
 
+    local IG = core.get_item_group
+    local get_or_load_node = sbz_api.get_or_load_node
     while rope > 0 do
         local pos, filter_logic, added_priority, dir = unpack(stack[rope])
         rope = rope - 1
         if not seen[hash(pos)] then
             seen[hash(pos)] = true
-            local node = sbz_api.get_or_load_node(pos)
-            local is_wire = core.get_item_group(node.name, "instatube") == 1
-            local is_receiver = core.get_item_group(node.name, "tubedevice") == 1
+            local node = get_or_load_node(pos)
+            local is_wire = IG(node.name, "instatube") == 1
+            local is_receiver = IG(node.name, "tubedevice") == 1
             if is_wire then
                 local should_enqueue = true
 
@@ -103,7 +130,6 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                 local def = regnodes[node.name]
                 if not def.tube then
                     core.log("error",
-
                         "This node: " ..
                         node.name ..
                         " does have the tubedevice group but doesn't have a tube={} table, REPORT THIS AS A BUG IF YOU SEE THIS! (no need for extra steps, just send need the name of the node, and that it came from here)")
@@ -437,14 +463,14 @@ listring[]
     end,
 })
 
-local filtlist_cache = {}
+local filtlist_cache = sbz_api.make_cache("filtlist_cache")
 
 instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node, dir, stack)
-    local filtlist = filtlist_cache[hash(pos)]
+    local filtlist = filtlist_cache.data[hash(pos)]
     if not filtlist then
         local inv = core.get_meta(pos):get_inventory()
-        filtlist_cache[hash(pos)] = inv:get_list("filter")
-        filtlist = filtlist_cache[hash(pos)]
+        filtlist_cache.data[hash(pos)] = inv:get_list("filter")
+        filtlist = filtlist_cache.data[hash(pos)]
         local fstack
         for i = 1, 5 do
             fstack = filtlist[i]
@@ -464,10 +490,6 @@ instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node
     end
     return false
 end
-
-core.register_globalstep(function(dtime)
-    filtlist_cache = {}
-end)
 
 core.register_node("sbz_instatube:high_priority_instant_tube", unifieddyes.def {
     description = "High Priority Instatube",

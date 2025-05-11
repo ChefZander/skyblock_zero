@@ -58,6 +58,20 @@ local function vacuum(pos, radius, inv)
     end
 end
 
+core.register_chatcommand("clearitems", {
+    description = "Like clearobjects but only for items, and only quick",
+    privs = { ["server"] = true },
+    func = function(name, param)
+        for k, obj in pairs(core.object_refs) do
+            local entity = obj:get_luaentity()
+            if entity and entity.name == "__builtin:item" then
+                obj:remove()
+            end
+        end
+        return true, "Done"
+    end
+})
+
 local item_vaccum_power_demand = 20
 
 -- you expected this to be in the pipeworks mod didn't you... well its more convenient to put it here because sbz_api
