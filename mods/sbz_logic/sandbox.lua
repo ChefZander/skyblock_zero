@@ -171,8 +171,8 @@ function logic.turn_on(pos)
         ID = id,
         code = meta:get_string("code"),
         env = logic.get_env(pos, meta, id),
-        time_limit = time_limit,
         size_limit = max_ram,
+        time_limit = time_limit,
     }
     meta:set_string("ID", id)
     meta:mark_as_private("ID")
@@ -208,8 +208,27 @@ function logic.send_event_to_sandbox(pos, event)
     local env = active_sandboxes[id].env
     logic.initialize_env(meta, env, pos)
 
+    -- :{ i KNOW its scuffed but you dont understand thats what is needed
+    -- and thats what programming sometimes requires
+    -- for great things you must do great crimes i guess
+    -- i dont know
+    if sbz_api.autohook then
+        local old_sethook = debug.sethook
+        debug.sethook = function(...)
+            local vararg = { ... }
+            if #vararg > 0 then
+                sbz_api.autohook()
+            else
+                old_sethook()
+                debug.sethook = old_sethook
+            end -- // warcrime over
+        end
+    end
+
+
     -- Calculate time cost
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
+
     meta:set_float("microseconds_taken_main_sandbox",
         meta:get_float("microseconds_taken_main_sandbox") + (minetest.get_us_time() - t0))
 
