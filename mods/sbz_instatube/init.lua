@@ -31,12 +31,12 @@ local hash = core.hash_node_position
 local stack = {}
 
 local wallmounted_to_dir = {
-    [0] = { 0, 1, 0 },
-    [1] = { 0, -1, 0 },
-    [2] = { 1, 0, 0 },
-    [3] = { -1, 0, 0 },
-    [4] = { 0, 0, 1 },
-    [5] = { 0, 0, -1 },
+    [0] = { x = 0, y = 1, z = 0 },
+    [1] = { x = 0, y = -1, z = 0 },
+    [2] = { x = 1, y = 0, z = 0 },
+    [3] = { x = -1, y = 0, z = 0 },
+    [4] = { x = 0, y = 0, z = 1 },
+    [5] = { x = 0, y = 0, z = -1 },
 }
 
 local function iter_around(pos, rope, filter_logic, added_priority, seen, net_id)
@@ -53,9 +53,9 @@ local function iter_around(pos, rope, filter_logic, added_priority, seen, net_id
     for i = 0, 5 do
         dir = wallmounted_to_dir[i]
         ipos = {
-            x = pos.x + dir[1],
-            y = pos.y + dir[2],
-            z = pos.z + dir[3],
+            x = pos.x + dir.x,
+            y = pos.y + dir.y,
+            z = pos.z + dir.z,
         }
         if not seen[hash(ipos)] then
             rope = rope + 1
