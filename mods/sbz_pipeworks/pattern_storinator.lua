@@ -1,21 +1,13 @@
---[[
-16 slot storinator
-
-16 slots for storage, 16 slots for pattern
-
-Pattern = something that dictates how many items should be in each slot
-
-Once the storinator has been filled (=> no things can enter it, all the patterns satisfied), it will:
-- Dump: Dump the entire storinator's contents into one direction
-- thats it for now :3
-
-Just a tubedevice, not a machine
-]]
-
-local function check_and_act_if_filled(pos, meta, inv)
+local function check_and_act_if_filled(pos, meta, storage_or_inv, pattern)
+    local storage
+    if type(storage_or_inv) == "userdata" then
+        local inv = storage_or_inv
+        pattern = inv:get_list("pattern")
+        storage = inv:get_list("storage")
+    else
+        storage = storage_or_inv
+    end
     local filled = true
-    local storage = inv:get_list("storage")
-    local pattern = inv:get_list("pattern")
 
     for index = 1, #pattern do
         if storage[index]:get_count() ~= pattern[index]:get_count() then
@@ -80,24 +72,33 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
                 end
             end
 
+
+            local stack_name = stack:get_name()
+            local stack_count = stack:get_count()
             if can_insert then
+                local pattern_stack, storage_stack, storage_stack_count, pattern_stack_count
                 for index = 1, #pattern do
-                    if pattern[index]:get_name() == stack:get_name() then
-                        local old_sstack = ItemStack(storage[index])
-                        local new_sstack = storage[index]
-                        local pattern_stack = pattern[index]
-                        new_sstack:add_item(stack)
-                        if new_sstack:get_count() <= pattern_stack:get_count() then
-                            inv:set_stack("storage", index, new_sstack)
-                            check_and_act_if_filled(pos, meta, inv)
+                    pattern_stack = pattern[index]
+                    if pattern_stack:get_name() == stack_name then
+                        storage_stack = storage[index]
+                        storage_stack_count = storage_stack:get_count()
+                        pattern_stack_count = pattern_stack:get_count()
+
+                        if (storage_stack_count + stack_count) <= pattern_stack_count then
+                            core.debug("Yo!")
+                            storage_stack:set_count(storage_stack_count + stack_count)
+                            storage_stack:set_name(stack_name)
+                            inv:set_stack("storage", index, storage_stack)
+                            check_and_act_if_filled(pos, meta, storage, pattern)
                             return ItemStack()
-                        elseif old_sstack:get_count() < pattern_stack:get_count() then
-                            local diffcount = new_sstack:get_count() - pattern_stack:get_count()
-                            local setstack = ItemStack(new_sstack)
-                            setstack:take_item(diffcount)
-                            inv:set_stack("storage", index, setstack)
-                            check_and_act_if_filled(pos, meta, inv)
-                            return new_sstack:peek_item(diffcount)
+                        elseif storage_stack_count < pattern_stack_count then
+                            local diffcount = (storage_stack_count + stack_count) - pattern_stack_count
+                            storage_stack:set_count(pattern_stack_count)
+                            storage_stack:set_name(stack_name)
+                            inv:set_stack("storage", index, storage_stack)
+                            check_and_act_if_filled(pos, meta, storage, pattern)
+                            storage_stack:set_count(diffcount)
+                            return storage_stack
                         end
                     end
                 end

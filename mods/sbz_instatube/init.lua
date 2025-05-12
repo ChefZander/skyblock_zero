@@ -463,7 +463,7 @@ listring[]
     end,
 })
 
-local filtlist_cache = sbz_api.make_cache("filtlist_cache")
+local filtlist_cache = sbz_api.make_cache("filtlist_cache", 1)
 
 instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node, dir, stack)
     local filtlist = filtlist_cache.data[hash(pos)]
