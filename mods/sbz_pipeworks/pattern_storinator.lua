@@ -85,7 +85,6 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
                         pattern_stack_count = pattern_stack:get_count()
 
                         if (storage_stack_count + stack_count) <= pattern_stack_count then
-                            core.debug("Yo!")
                             storage_stack:set_count(storage_stack_count + stack_count)
                             storage_stack:set_name(stack_name)
                             inv:set_stack("storage", index, storage_stack)

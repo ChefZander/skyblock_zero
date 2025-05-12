@@ -99,9 +99,11 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
                     if type(val) == "table" then -- means its a teleport tube of some kind
                         if val.x then            -- vector
                             rope = iter_around(val, rope, filter_logic, added_priority, seen, net_id)
-                        else                     -- vector array
+                            seen[hash(val)] = true
+                        else -- vector array
                             for _, vec in ipairs(val) do
                                 rope = iter_around(vec, rope, filter_logic, added_priority, seen, net_id)
+                                seen[hash(vec)] = true
                             end
                         end
                     else
@@ -463,7 +465,7 @@ listring[]
     end,
 })
 
-local filtlist_cache = sbz_api.make_cache("filtlist_cache", 1)
+local filtlist_cache = sbz_api.make_cache("filtlist_cache", 0)
 
 instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node, dir, stack)
     local filtlist = filtlist_cache.data[hash(pos)]
@@ -484,6 +486,7 @@ instatube.special_filter_logic["sbz_instatube:item_filter"] = function(pos, node
     local stack_count = stack:get_count()
     for i = 1, 5 do
         fentry = filtlist[i]
+
         if fentry[1] == stack_name and fentry[2] <= stack_count then
             return true
         end
@@ -801,6 +804,15 @@ instatube.show_network = function(p1, p2, net)
     if network then
         for k, v in pairs(network.machines) do
             core.add_entity(v.pos, "sbz_base:debug_entity", "green")
+        end
+    end
+end
+
+instatube.get_machine = function(pos, net_id)
+    local net = instatube.networks[net_id]
+    for k, v in pairs(net.machines) do
+        if vector.equals(v.pos, pos) then
+            core.debug(dump(v))
         end
     end
 end
