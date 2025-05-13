@@ -78,7 +78,7 @@ sbz_api.instatube.create_instatube_network = function(start_pos, ordering)
     local rope = 0
 
     rope = rope + 1
-    stack[rope] = { start_pos, {}, 0, vector.zero }
+    stack[rope] = { start_pos, {}, 0, vector.zero() }
     sbz_api.vm_begin()
 
     local IG = core.get_item_group
