@@ -6,8 +6,18 @@ When autohook is enabled, when a luacontroller takes too much time to execute be
 
 Meaning in practice, that you don't have to have pointless <mono>wait(0)</mono> calls anymore, as autohook will simply yield automatically.
 
+<b>(small) Downsides<b>
+Given that you cannot control where the debug hook yields, it may attempt to yield in places it can't, resulting in a <mono>attempt to yield across C-call boundary</mono>
+To solve this, after the time limit has passed, your code is internally given 10 "chances" to get in a state that is yieldable. If not, it will just yield anyway. So this error should be very rare unless you are intentionally trying to get it.
+You cannot yield in places such as <mono>return x, y, z</mono> or <mono>table.sort(x, function() ... end)</mono>
+
+Also, autohook works only with luajit, but this isn't a problem as skyblock zero requires luajit to run anyway (what 99.9% of people have).
+
+
 <big>How do i enable it? (For server admins/singleplayer world owners)</big>
 
 Add sbz_logic_autohook to your trusted mods. <b>Be aware that you will need to use linux unless you compile it yourself and add functionality to the mod that will recognize that dll.</b> 
 
 How to compile it? there is a makefile in that directory, so you can simply go to <gamedir>/mods/sbz_logic_autohook, then execute <mono>make clean all</mono> in the terminal.
+
+Why does this need to use luajit's C api? Because you cannot yield in regular debug hooks, that will result in a <mono>attempt to yield accross C-call boundary</mono> error.

@@ -106,8 +106,6 @@ local function dig(pos, owner, def_target, def_item, inv, index, node)
     dont_wear_out(stack, old_stack, player, item_def)
 end
 
-
-
 local function use(pos, owner, item_def, inv, index, dir)
     if not item_def.on_use then return end
     local player = fakelib.create_player {
@@ -151,11 +149,13 @@ local function move(pos, pos2)
     sbz_api.move_node(pos, pos2) -- how simple :D (NO DONT LOOK INSIDE, DONT LOOK AT THE COMPATIBILITY AROUND IT... hundreds of lines of code... accross multiple mods... also the same compatibility working for jumpdrive...)
 end
 
+local builder_queues = {}
+
 sbz_api.register_machine("sbz_logic_devices:builder", {
     description = "Lua Builder",
     info_extra = {
-        "It lets the lua controller... control it... so that... yea... it builds!!! you can build!!!",
-        "Can build 50 nodes every 0.25 seconds... good luck!",
+        "A way for lua controllers to interact with the world.",
+        "Can build/break/dig/punch/see 50 nodes every 0.25 seconds...",
     },
     tiles = {
         "lua_builder.png"
@@ -187,7 +187,7 @@ listring[]
     action = function() return 0 end,
     action_subtick = function(pos, _, meta, supply, demand)
         local net = supply - demand
-        local queued_events = minetest.deserialize(meta:get_string("queued_events")) or {}
+        local queued_events = builder_queues[core.hash_node_position(pos)] or {}
         local queue_can_handle = math.min(
             math.min(queue_max, #queued_events),
             math.max(0, math.floor(net / (queue_max * power_per_action)))
@@ -271,7 +271,7 @@ listring[]
         for i = 1, queue_can_handle do
             inner_loop(i)
         end
-        meta:set_string("queued_events", "")
+        builder_queues[core.hash_node_position(pos)] = nil
         meta:set_string("infotext",
             string.format("Lua Builder\nHandling: %s events\nConsuming: %s Cj", queue_can_handle,
                 queue_can_handle * power_per_action))
@@ -279,11 +279,12 @@ listring[]
     end,
 
     on_logic_send = function(pos, msg, from_pos)
-        local meta = minetest.get_meta(pos)
-        local queued_events = minetest.deserialize(meta:get_string("queued_events")) or {}
-        queued_events[#queued_events + 1] = msg
-        msg.from_pos = from_pos
-        meta:set_string("queued_events", minetest.serialize(queued_events))
+        local queued_events = builder_queues[core.hash_node_position(pos)] or {}
+        if #queued_events <= queue_max then
+            queued_events[#queued_events + 1] = msg
+            msg.from_pos = from_pos
+            builder_queues[core.hash_node_position(pos)] = queued_events
+        end
     end
 })
 
@@ -299,3 +300,14 @@ unified_inventory.register_craft {
     width = 2,
     height = 2,
 }
+
+mesecon.register_on_mvps_move(function(moved_nodes)
+    for i = 1, #moved_nodes do
+        local moved_node = moved_nodes[i]
+        if builder_queues[core.hash_node_position(moved_node.oldpos)] then
+            builder_queues[core.hash_node_position(moved_node.pos)] = builder_queues
+                [core.hash_node_position(moved_node.oldpos)]
+            builder_queues[core.hash_node_position(moved_node.oldpos)] = nil
+        end
+    end
+end)

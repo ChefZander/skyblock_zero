@@ -16,20 +16,23 @@ long long get_time_ms(){
 }
 
 long long autohook_time = 0;
+int attempts = 0; // THIS is to avoid a "yield across C-call boundary" error
+#define max_attempts 10 // this is like a weird "const" in javascript, i like it
 
 static void hookf(lua_State *L, lua_Debug *ar){
     if ((get_time_ms() - autohook_time) >= autohook_max_time) {
-        // lua_newtable(L); // { ["type"] = "timeout" }
-        // lua_pushstring(L, "type");
-        // lua_pushstring(L, "timeout");
-        // lua_settable(L, -3);
-        lua_sethook(L, nil, 0, 0);
-        lua_yield(L, 0);
+        if (lua_isyieldable(L) || attempts >= max_attempts){ // luajit adds isyieldable tsym luajit
+            lua_sethook(L, nil, 0, 0);
+            lua_yield(L, 0);
+        } else {
+            attempts = attempts + 1;
+        }
     }
 }
 
 static int autohook(lua_State *L){
     autohook_time = get_time_ms();
+    attempts = 0;
     lua_sethook(L, hookf, LUA_MASKCOUNT, 50);
     return 0;
 };

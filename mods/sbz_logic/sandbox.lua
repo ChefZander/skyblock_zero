@@ -99,7 +99,7 @@ logic.post_runs = {
             direction = function(x) return x == nil or libox.type_vector(x) end,
         },
         f = transport_items,
-    }
+    },
 }
 
 function logic.is_on(pos)
@@ -212,8 +212,8 @@ function logic.send_event_to_sandbox(pos, event)
     -- and thats what programming sometimes requires
     -- for great things you must do great crimes i guess
     -- i dont know
+    local old_sethook = debug.sethook
     if sbz_api.autohook then
-        local old_sethook = debug.sethook
         debug.sethook = function(...)
             local vararg = { ... }
             if #vararg > 0 then
@@ -225,9 +225,10 @@ function logic.send_event_to_sandbox(pos, event)
         end
     end
 
-
-    -- Calculate time cost
+    --    local true_t0 = core.get_us_time()
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
+    --    core.debug(dump(core.get_us_time() - true_t0))
+    debug.sethook = old_sethook
 
     meta:set_float("microseconds_taken_main_sandbox",
         meta:get_float("microseconds_taken_main_sandbox") + (minetest.get_us_time() - t0))

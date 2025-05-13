@@ -297,6 +297,12 @@ minetest.register_on_joinplayer(function(player)
         sneak_glitch = true,
     })
 
+    --[[
+    style_type[button;bgcolor=#000000]
+    style_type[button_exit;bgcolor=#000000]
+    style_type[image_button;bgcolor=#000000]
+    style_type[item_image_button;bgcolor=#000000]
+    ]]
     player:set_formspec_prepend([[
         bgcolor[#080808BB;true]
         background9[5,5;1,1;theme_background.png^\[colorize:purple:50;true;10]
