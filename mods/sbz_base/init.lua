@@ -19,6 +19,7 @@ sbz_api = {
     end,
     accelerated_habitats = false, -- for debug
     debug = minetest.settings:get_bool("sbz_debug", false),
+    logic_gate_linking_range = 15,
 }
 
 if sbz_api.server_optimizations == "auto" then

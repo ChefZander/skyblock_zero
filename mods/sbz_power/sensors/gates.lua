@@ -6,7 +6,7 @@ local function def(d)
     return unifieddyes.def(d)
 end
 
-local linking_range = 15
+local linking_range = sbz_api.logic_gate_linking_range
 
 local function simple_lgate_action(f)
     return function(pos, _, meta, supply, demand)

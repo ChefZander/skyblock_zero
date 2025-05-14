@@ -1,0 +1,5 @@
+<big>Sensors</big>
+
+<b>Delayers</b> (technically not sensors but still included)
+Use: <mono>send_to(links.delayer, delay)</mono>, where <mono>delay</mono> is a number.
+It will set the delay of the delayer.
