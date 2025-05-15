@@ -112,24 +112,24 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 
 	local categories_pos = {
 		ui_peruser.page_x,
-		ui_peruser.page_y - ui_peruser.btn_spc - 0.5
+		ui_peruser.page_y - ui_peruser.btn_spc - 1.1
 	}
 	local categories_scroll_pos = {
 		ui_peruser.page_x,
-		ui_peruser.form_header_y - (ui_peruser.is_lite_mode and 0 or 0.2)
+		ui_peruser.form_header_y - 0.2
 	}
 
 	formspec[n] = string.format("background9[%f,%f;%f,%f;%s;false;16]",
 		ui_peruser.page_x - 0.15, categories_scroll_pos[2],
-		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1.4 + (ui_peruser.is_lite_mode and 0 or 0.2) + 0.2,
-		"theme_background.png^[colorize:purple:30")
+		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1,
+		"theme_background.png^[colorize:blue:30")
 	n = n + 1
 
 
-	formspec[n] = string.format("label[%f,%f;%s]",
-		ui_peruser.page_x,
-		ui_peruser.form_header_y + (ui_peruser.is_lite_mode and 0.3 or 0.2), F(S("Category:")))
-	n = n + 1
+	-- formspec[n] = string.format("label[%f,%f;%s]",
+	-- 	ui_peruser.page_x,
+	-- 	ui_peruser.form_header_y + (ui_peruser.is_lite_mode and 0.3 or 0.2), F(S("Category:")))
+	-- n = n + 1
 
 	local scroll_offset = 0
 	local category_count = #ui.category_list
@@ -149,17 +149,17 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 			n = n + 1
 		end
 	end
-	if category_count > ui_peruser.pagecols and scroll_offset > 0 then
-		-- prev
-		formspec[n] = formspec_button(ui_peruser, "prev_category", "ui_dir_icon.png^[transformFX", categories_scroll_pos,
-			{ ui_peruser.pagecols - 2, 0 }, 0.8, S("Scroll categories left"))
-		n = n + 1
-	end
-	if category_count > ui_peruser.pagecols and category_count - scroll_offset > ui_peruser.pagecols then
-		-- next
-		formspec[n] = formspec_button(ui_peruser, "next_category", "ui_dir_icon.png", categories_scroll_pos,
-			{ ui_peruser.pagecols - 1, 0 }, 0.8, S("Scroll categories right"))
-	end
+	--	if category_count > ui_peruser.pagecols and scroll_offset > 0 then
+	-- prev
+	formspec[n] = formspec_button(ui_peruser, "prev_category", "ui_dir_icon.png^[transformFX", categories_scroll_pos,
+		{ ui_peruser.pagecols - 1.3, 1 }, 0.5, S("Scroll categories left"))
+	n = n + 1
+	-- end
+	-- if category_count > ui_peruser.pagecols and category_count - scroll_offset > ui_peruser.pagecols then
+	-- next
+	formspec[n] = formspec_button(ui_peruser, "next_category", "ui_dir_icon.png", categories_scroll_pos,
+		{ ui_peruser.pagecols - 0.8, 1 }, 0.5, S("Scroll categories right"))
+	-- end
 end
 
 local function formspec_add_search_box(player, formspec, ui_peruser)
@@ -279,8 +279,8 @@ local function formspec_add_item_browser(player, formspec, ui_peruser)
 		end
 	end
 
-	formspec[n] = "style[page_number;content_offset=0]"
-	formspec[n + 1] = string.format("image_button[%f,%f;%f,0.4;;page_number;%s: %s;false;false;]",
+	n = n - 1
+	formspec[n] = string.format("image_button[%f,%f;%f,0.4;;no_bg;%s: %s;false;false;]",
 		ui_peruser.page_buttons_x,
 		ui_peruser.page_buttons_y + ui_peruser.btn_spc * 2 - 0.1,
 		ui_peruser.btn_spc * (bn - 1) + ui_peruser.btn_size,
