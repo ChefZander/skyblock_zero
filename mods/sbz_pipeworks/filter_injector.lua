@@ -17,9 +17,9 @@ local function set_filter_formspec(meta)
         "label[0.22,1.5;Prefer item types:]" ..
         "list[context;main;0.22,1.75;8,2;]" ..
         fs_helpers.cycling_button(meta, "button[0.22,4.5;4,1", "slotseq_mode",
-            { "Sequence slots by Priority",
-                "Sequence slots Randomly",
-                "Sequence slots by Rotation" }) ..
+            { "Sequence slots\nby Priority",
+                "Sequence slots\nRandomly",
+                "Sequence slots\nby Rotation" }) ..
         fs_helpers.cycling_button(meta, "button[" .. (10.2 - (0.22) - 4) .. ",4.5;4,1", "exmatch_mode",
             { "Exact match - off",
                 "Exact match - on",
