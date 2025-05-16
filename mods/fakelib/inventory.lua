@@ -1,4 +1,3 @@
-
 local fake_inventory = {}
 local identifier = "fakelib:inventory"
 local check, secure_table = ...
@@ -21,14 +20,14 @@ function fakelib.create_inventory(sizes)
 		for listname, size in pairs(sizes) do
 			if type(listname) == "string" and type(size) == "number" and size > 0 then
 				local list = {}
-				for i=1, size do
+				for i = 1, size do
 					list[i] = ItemStack()
 				end
 				lists[listname] = list
 			end
 		end
 	end
-	return secure_table({lists = lists}, fake_inventory, identifier)
+	return secure_table({ lists = lists }, fake_inventory, identifier)
 end
 
 -- Helper functions
@@ -36,7 +35,7 @@ end
 
 local function copy_list(list)
 	local copy = {}
-	for i=1, #list do
+	for i = 1, #list do
 		copy[i] = ItemStack(list[i])
 	end
 	return copy
@@ -64,7 +63,7 @@ function fake_inventory:is_empty(listname)
 	if not list or #list == 0 then
 		return true
 	end
-	for _,stack in ipairs(list) do
+	for _, stack in ipairs(list) do
 		if not stack:is_empty() then
 			return false
 		end
@@ -92,11 +91,11 @@ function fake_inventory:set_size(listname, size)
 	end
 	local list = self.lists[listname] or {}
 	if #list < size then
-		for i=#list+1, size do
+		for i = #list + 1, size do
 			list[i] = ItemStack()
 		end
 	elseif #list > size then
-		for i=size+1, #list do
+		for i = size + 1, #list do
 			list[i] = nil
 		end
 	end
@@ -161,14 +160,14 @@ function fake_inventory:set_list(listname, list)
 	end
 	check(2, list, "table")
 	local new_list, size = {}, 0
-	for i,s in pairs(list) do
+	for i, s in pairs(list) do
 		check(4, i, "number")
 		if i > size then
 			size = i
 		end
 		new_list[i] = ItemStack(s)
 	end
-	for i=1, size do
+	for i = 1, size do
 		if not new_list[i] then
 			new_list[i] = ItemStack()
 		end
@@ -192,14 +191,14 @@ function fake_inventory:set_lists(lists)
 		check(3, list, "table")
 		listname = tostring(listname)
 		local new_list, size = {}, 0
-		for i,s in pairs(list) do
+		for i, s in pairs(list) do
 			check(5, i, "number")
 			if i > size then
 				size = i
 			end
 			new_list[i] = ItemStack(s)
 		end
-		for i=1, size do
+		for i = 1, size do
 			if not new_list[i] then
 				new_list[i] = ItemStack()
 			end
@@ -217,7 +216,7 @@ function fake_inventory:add_item(listname, stack)
 		return stack
 	end
 	local empty = {}
-	for _,s in ipairs(list) do
+	for _, s in ipairs(list) do
 		if s:is_empty() then
 			table.insert(empty, s)
 		else
@@ -227,7 +226,7 @@ function fake_inventory:add_item(listname, stack)
 			end
 		end
 	end
-	for _,s in ipairs(empty) do
+	for _, s in ipairs(empty) do
 		stack = s:add_item(stack)
 		if stack:is_empty() then
 			return stack
@@ -243,7 +242,7 @@ function fake_inventory:room_for_item(listname, stack)
 	if not list or #list == 0 or stack:is_empty() then
 		return false
 	end
-	for _,s in ipairs(copy_list(list)) do
+	for _, s in ipairs(copy_list(list)) do
 		stack = s:add_item(stack)
 		if stack:is_empty() then
 			return true
@@ -260,7 +259,7 @@ function fake_inventory:contains_item(listname, stack, match_meta)
 		return false
 	end
 	local count = stack:get_count()
-	for _,s in ipairs(list) do
+	for _, s in ipairs(list) do
 		if stack_matches(stack, s, match_meta) then
 			count = count - s:get_count()
 			if count <= 0 then
@@ -279,7 +278,7 @@ function fake_inventory:remove_item(listname, stack)
 		return ItemStack()
 	end
 	local name, remaining, removed = stack:get_name(), stack:get_count()
-	for i=#list, 1, -1 do
+	for i = #list, 1, -1 do
 		local s = list[i]
 		if s:get_name() == name then
 			s = s:take_item(remaining)
@@ -298,5 +297,5 @@ function fake_inventory:remove_item(listname, stack)
 end
 
 function fake_inventory.get_location()
-	return {type = "undefined"}
+	return { type = "undefined" }
 end

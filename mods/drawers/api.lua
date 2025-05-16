@@ -323,7 +323,7 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 
 		def.tube.return_input_invref = function(pos, node, dir, owner)
-			local inv = fakelib.create_inventory()
+			local inv = core.get_meta(pos):get_inventory() -- fakelib.create_inventory() -- fakelib is WEEIRD
 			local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
 			if not vis then return false end
 			for i = 1, 4 do
@@ -334,6 +334,7 @@ function drawers.register_drawer(name, def)
 					name = content.name,
 					count = math.min(content.count, ItemStack(content.name):get_stack_max())
 				})
+
 				inv:set_size("slot" .. i, 1)
 				inv:set_size("old_slot" .. i, 1)
 				inv:set_stack("slot" .. i, 1, stack)
@@ -341,9 +342,27 @@ function drawers.register_drawer(name, def)
 			end
 			return inv
 		end
-		def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos)
-			return drawers.drawer_take_item(pos, stack)
+		def.tube.after_filter = function(pos, inv)
+			local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
+			for i = 1, 4 do
+				local this_vis = vis[i]
+				if not this_vis then break end
+				local stack = inv:get_stack("slot" .. i, 1)
+				local old_stack = inv:get_stack("old_slot" .. i, 1)
+				local diff = old_stack:get_count() - stack:get_count()
+				old_stack:set_count(diff)
+				drawers.drawer_take_item(pos, old_stack)
+				-- local content = drawers.drawer_get_content(pos, this_vis.visualId)
+				-- local count = content.count - diff
+			end
 		end
+		-- def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos, inv)
+		-- 	local oldstack = inv:get_stack(invname, 1)
+		-- 	oldstack:set_count(oldstack:get_count() - stack:get_count())
+		-- 	inv:set_stack(invname, 1, oldstack)
+		-- 	core.debug(inv:get_stack(invname, 1):to_string())
+		-- 	return stack
+		-- end
 
 		def.tube.ignore_metadata_inventory_take = true
 		def.tube.input_inventory = {

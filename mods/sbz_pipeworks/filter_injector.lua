@@ -246,7 +246,6 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
             end
 
             local taken = 0
-            local invsize = frominv:get_size(frominvname)
 
             for _, spos in ipairs(sposes) do
                 local stack = frominv:get_stack(frominvname, spos)
@@ -292,7 +291,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 for i, spos in ipairs(sposes) do
                     -- it could be the entire stack...
                     item = fromtube.remove_items(frompos, fromnode, frominv:get_stack(frominvname, spos), dir, taken,
-                        frominvname, spos)
+                        frominvname, spos, inv)
                     local count = math.min(taken, item:get_count())
                     taken = taken - count
                     real_taken = real_taken + count
@@ -306,7 +305,7 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     local count = math.min(taken, stack:get_count())
                     item = stack:take_item(taken)
                     frominv:set_stack(frominvname, spos, stack)
-                    if fromdef.on_metadata_inventory_take then
+                    if fromdef.on_metadata_inventory_take and (not fromtube.ignore_metadata_inventory_take) then
                         fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
                     end
                     taken = taken - count
