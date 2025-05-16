@@ -329,6 +329,7 @@ function drawers.register_drawer(name, def)
 			for i = 1, 4 do
 				local this_vis = vis[i]
 				if not this_vis then break end
+
 				local content = drawers.drawer_get_content(pos, this_vis.visualId)
 				local stack = ItemStack({
 					name = content.name,
