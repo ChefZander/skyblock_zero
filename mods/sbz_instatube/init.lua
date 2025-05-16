@@ -767,7 +767,15 @@ core.register_on_mods_loaded(function()
         if core.get_item_group(name, "instatube") > 0 or core.get_item_group(name, "tubedevice") > 0 then
             local og_construct = def.on_construct
             local og_destruct = def.on_destruct
-            local og_on_rotate = def.og_on_rotate
+            local og_on_rotate = def.on_rotate
+
+            local new_on_rotate = function(pos, ...)
+                remove_all_nets_around(pos)
+                if og_on_rotate then return og_on_rotate(pos, ...) end
+            end
+            if og_on_rotate == false or og_on_rotate == nil then
+                new_on_rotate = false
+            end
             core.override_item(name, {
                 on_construct = function(pos)
                     remove_all_nets_around(pos)
@@ -777,10 +785,7 @@ core.register_on_mods_loaded(function()
                     remove_all_nets_around(pos)
                     if og_destruct then return og_destruct(pos) end
                 end,
-                on_rotate = function(pos, ...)
-                    remove_all_nets_around(pos)
-                    if og_on_rotate then return og_on_rotate(pos, ...) end
-                end
+                on_rotate = new_on_rotate,
             })
         end
     end

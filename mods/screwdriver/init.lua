@@ -186,7 +186,6 @@ screwdriver.handler = function(itemstack, user, pointed_thing, mode, uses)
 	elseif ndef.can_dig and not ndef.can_dig(pos, user) then
 		return itemstack
 	end
-
 	if should_rotate and new_param2 ~= node.param2 then
 		node.param2 = new_param2
 		minetest.swap_node(pos, node)
