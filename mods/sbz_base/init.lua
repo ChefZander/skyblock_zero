@@ -298,58 +298,6 @@ minetest.register_on_joinplayer(function(player)
         sneak_glitch = true,
     })
 
-    --[[
-    style_type[button;bgcolor=#000000]
-    style_type[button_exit;bgcolor=#000000]
-    style_type[image_button;bgcolor=#000000]
-    style_type[item_image_button;bgcolor=#000000]
-    ]]
-
-    local button_theme_shared = "bgimg_middle=10;padding=-7,-7;font=mono"
-    local button_theme = {
-        [""] = button_theme_shared .. ";bgimg=theme_button.png",
-        [":hovered"] = button_theme_shared .. ";bgimg=theme_button_hovering.png",
-        [":focused"] = "gimg_middle=10;padding=-7,-7;bgimg=theme_button_focusing.png",
-        [":pressed"] = button_theme_shared .. ";bgimg=theme_button_pressing.png",
-    }
-    local button_theme_result = ""
-
-    for _, button_type in ipairs({ "item_image_button", "button", "button_exit", "image_button" }) do
-        for state, theme in pairs(button_theme) do
-            button_theme_result = button_theme_result .. ("style_type[%s%s;%s]"):format(button_type, state, theme)
-        end
-    end
-
-    local no_bg_util = "bgimg=blank.png"
-    local no_bg_util_result = ""
-    for _, state in ipairs { "", ":hovered", ":focused", ":pressed" } do
-        no_bg_util_result = no_bg_util_result .. ("style[%s%s;%s]"):format("no_bg", state, no_bg_util)
-    end
-
-    -- make it all mono except some elements like tables because they behave incorrectly when having font=mono
-    local mono_it_all_result = table.concat({
-        "label",
-        "vertlabel",
-        "button",
-        "button_exit",
-        "image_button",
-        "item_image_button",
-        "field",
-        "pwdfield",
-        "textarea",
-        "tabheader",
-        "textlist",
-    }, ",")
-
-    mono_it_all_result = "style_type[" .. mono_it_all_result .. ";font=mono]"
-
-
-    player:set_formspec_prepend(button_theme_result .. no_bg_util_result .. mono_it_all_result .. [[
-        bgcolor[#00000050;true]
-        background9[5,5;1,1;theme_background.png;true;16]
-        listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
-    ]])
-
     local pinfo = core.get_player_information(player:get_player_name())
     if pinfo.protocol_version < 44 then -- 44 = 5.9.0
         core.show_formspec(player:get_player_name(), "", [[
@@ -468,6 +416,7 @@ dofile(MP .. "/playtime_and_afk.lua")
 dofile(MP .. "/dwarf_orb_crafts.lua")
 dofile(MP .. "/toggle_areas_hud.lua")
 dofile(MP .. "/cache.lua")
+dofile(MP .. "/theming.lua")
 -- useless cuz of luanti metadata limitations
 dofile(MP .. "/serialize.lua")
 dofile(MP .. "/serialize_benchmark.lua")

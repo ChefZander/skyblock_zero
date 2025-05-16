@@ -384,19 +384,25 @@ function sbz_api.switching_station_sub_tick(start_pos)
     local machines = network.subticking_machines or {}
     local supply = network.supply
     local demand = network.demand
-
+    local profiler = network.profiler or {}
     for k, v in ipairs(machines) do
         local position = v[1]
         local node = v[2]
         touched_nodes[hash(position)] = os.time()
-        demand = demand + node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
+        local profiler_t0 = core.get_us_time()
+        local action_result = node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
+        demand = demand + action_result
+        profiler[node] = profiler[node] or {}
+        profiler[node].generated = (profiler[node].generated or 0) + action_result
+        profiler[node].lag = (profiler[node].lag or 0) + (core.get_us_time() - profiler_t0)
+        profiler[node].count = (profiler[node].count or 0) + 1
     end
 
     local t1 = minetest.get_us_time()
     network.lag = network.lag + (t1 - t0)
 
     network.demand = demand
-
+    network.profiler = profiler
     return true
 end
 

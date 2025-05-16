@@ -66,6 +66,24 @@ sbz_api.register_stateful_machine("sbz_power:item_sensor", unifieddyes.def {
             core.get_meta(pos):set_string("dir", dir)
         end
     end,
+    on_logic_send = function(pos, msg, from_pos)
+        local meta = core.get_meta(pos)
+        if type(msg) == "table" then
+            local direction = msg.direction
+            local item = msg.item
+
+            if direction and type(direction) == "string" then
+                if dir_to_real_dir[direction] then
+                    meta:set_string("dir", dir_to_index[direction])
+                end
+            end
+            if item and ItemStack(item) then
+                item = ItemStack(item)
+                meta:get_inventory():set_stack("can_insert", 1, item)
+            end
+            update_item_sensor_formspec(meta)
+        end
+    end,
     action_subtick = function(pos, _, meta)
         meta:set_string("infotext", "")
         local links = core.deserialize(meta:get_string("links"))

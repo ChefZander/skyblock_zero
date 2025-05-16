@@ -101,6 +101,7 @@ local function register_storinator(added_name, def)
             def_copy.on_metadata_inventory_take = update_node_texture
             def_copy.on_metadata_inventory_move = update_node_texture
             def_copy.info_extra = def_copy.slots .. " Slots"
+
             local dropname = "sbz_resources:storinator"
             if #added_name ~= 0 then
                 dropname = dropname .. "_" .. added_name
@@ -123,7 +124,7 @@ local function register_storinator(added_name, def)
                 insert_object = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
-                    update_node_texture(pos)
+                    --                    update_node_texture(pos)
                     return inv:add_item("main", stack)
                 end,
                 can_insert = function(pos, node, stack, direction)
@@ -132,7 +133,8 @@ local function register_storinator(added_name, def)
                     stack = stack:peek_item(1)
                     return inv:room_for_item("main", stack)
                 end,
-                connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 }
+                connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 },
+                ignore_metadata_inventory_take = true,
             }
 
             if def.allow_renaming then

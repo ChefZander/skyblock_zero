@@ -119,6 +119,25 @@ sbz_api.register_stateful_machine("sbz_power:light_sensor", unifieddyes.def {
         end
         return 1
     end,
+    on_logic_send = function(pos, msg, from_pos)
+        local meta = core.get_meta(pos)
+        if type(msg) == "table" then
+            local light_level = msg.light_level
+            local operation = msg.operation
+
+            if light_level and type(light_level) == "number" then
+                light_level = math.min(14, math.max(0, math.floor(tonumber(msg.light_level) or 0)))
+                meta:set_int("light_level", light_level)
+            end
+            if operation and type(operation) == "string" then
+                local index = index_by_operations[operation]
+                if index then
+                    meta:set_int("operation", index)
+                end
+            end
+            meta:set_string("formspec", get_light_sensor_formspec(pos, meta))
+        end
+    end
 }, {
     light_source = 0, -- so it doesn't actually emit light
     tiles = {
@@ -131,7 +150,7 @@ local function get_node_sensor_formspec(pos, meta)
 formspec_version[7]
 size[8,2]
 hypertext[0.5,0.75;2,0.5;;<b>Node Type</b>]
-hypertext[2.2,0.75;0.75,0.75;;<b><mono>=</mono></b>]
+hypertext[2.2,0.75;0.75,0.75;;<b><mono>==</mono></b>]
 
 style_type[field;font=mono]
 field_close_on_enter[node_type;false]
@@ -194,6 +213,13 @@ sbz_api.register_stateful_machine("sbz_power:node_sensor", unifieddyes.def {
         end
         return 1
     end,
+    on_logic_send = function(pos, msg, from_pos)
+        local meta = core.get_meta(pos)
+        if type(msg) == "string" then
+            meta:set_string("node_type", msg)
+            meta:set_string("formspec", get_node_sensor_formspec(pos, meta))
+        end
+    end
 }, {
     light_source = 14,
     tiles = {
