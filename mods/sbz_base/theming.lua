@@ -214,7 +214,6 @@ local labellike = {
     "label",
     "vertlabel",
     "checkbox",
-    --    "textarea",
     "textlist",
     "table"
 }
@@ -225,7 +224,8 @@ local buttonlike = {
     "item_image_button",
     "button_exit",
     -- "field",
-    -- "pwdfield"
+    -- "pwdfield",
+    -- "textarea",
 }
 
 local function exec_conf_function_or_string(thing, config)

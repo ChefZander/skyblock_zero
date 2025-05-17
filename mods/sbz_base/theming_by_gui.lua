@@ -100,8 +100,7 @@ core.register_on_player_receive_fields(function(player, formname, fields)
         if not sbz_api.themes[theme_name] then theme_name = sbz_api.default_theme end
         pmeta:set_string("theme_config_" .. theme_name, "")
     else -- changed config surely
-        local changed_key
-        local changed_value
+        local changes = {}
         local config = sbz_api.get_theme_config(player, true)
         for name, value in pairs(fields) do
             if name:sub(1, #"config_") == "config_" then
@@ -111,14 +110,10 @@ core.register_on_player_receive_fields(function(player, formname, fields)
                 elseif value == "false" then
                     value = false
                 end
-                if config[key] ~= value then
-                    changed_key = key
-                    changed_value = value
-                    break
-                end
+                changes[key] = value
             end
         end
-        if changed_key then
+        for changed_key, changed_value in pairs(changes) do
             local theme = sbz_api.get_theme(player)
             for config_name, value_definition in pairs(theme.config) do
                 if config_name == changed_key then
