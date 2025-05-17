@@ -214,7 +214,7 @@ local labellike = {
     "label",
     "vertlabel",
     "checkbox",
-    "textarea",
+    --    "textarea",
     "textlist",
     "table"
 }
