@@ -2,7 +2,8 @@
 
 sbz_api.themes = {
     ["builtin"] = { -- the very minimal theme
-        description = "Not really meant to be used lol... but it is here if you want it",
+        name = "builtin",
+        description = "Very minimal for sure...",
         theme_color = "white"
     }
 }
@@ -11,11 +12,14 @@ dofile(core.get_modpath("sbz_base") .. "/colors.lua")
 
 local themes = sbz_api.themes
 local theme_order = { "builtin" }
+sbz_api.theme_order = theme_order
 local default_theme = "builtin"
+sbz_api.default_theme = "builtin"
 function sbz_api.register_theme(name, def)
     themes[name] = def
     if def.default then
         default_theme = name
+        sbz_api.default_theme = name
     end
     if not def.unordered then -- use for themes which arent meant to be used
         theme_order[#theme_order + 1] = name
@@ -32,6 +36,7 @@ end
 local shift_color_by_vars_hue = function(color)
     local rgb = core.colorspec_to_table(color)
     return function(vars)
+        if not vars.HUE then vars.HUE = 0 end
         local new_rgb = sbz_api.rotate_hue(rgb, vars.HUE)
         return core.colorspec_to_colorstring(new_rgb)
     end
@@ -39,24 +44,25 @@ end
 
 sbz_api.register_theme("space", {
     default = true,
-    description = "[Default Theme] the skyblock zero theme",
+    name = "Space",
+    description = "[Default Theme] The sbz experience",
     config = {
         ["HUE"] = {
             default = "0", -- -60 for forest
             type = { "int", -180, 180 },
-            description = "Theme Hue",
+            description = "Theme Hue (An integer, from -180 to 180)",
         },
         ["FONT"] = { -- becomes @@FONT
             default = true,
             value_true = ";font=mono",
             value_false = "",
             type = { "bool" },
-            description = "Allow mono font."
+            description = "Force mono font"
         },
         ["LIGHT_BUTTONS"] = {
             default = false,
             type = { "bool" },
-            description = "Makes text in buttons lighter",
+            description = "Lighter button text color",
         },
     },
     button_theme = {
@@ -81,46 +87,28 @@ sbz_api.register_theme("space", {
         return shift_color_by_vars_hue(basecolor)(config)
     end,
     theme_color = shift_color_by_vars_hue("blue"),
-})
-
-sbz_api.register_theme("forest", {
-    description = "Simply the hue shifted space theme",
-    force_font = ";font=mono", -- => @@FONT
-    vars = {
-        ["COLOR"] = "^[hsl:-60"
-    },
-    config = {
-        ["FONT"] = {
-            default = true,
-            value_true = ";font=mono",
-            value_false = "",
-            type = { "bool" },
-            description = "Allow mono font."
-        }
-    },
-    button_theme = {
-        shared = "bgimg_middle=10;padding=-7,-7@@FONT",
-        states = {
-            [""] = ";bgimg=theme_space_button.png@@COLOR",
-            [":hovered"] = ";bgimg=theme_space_button_hovering.png@@COLOR",
-            [":focused"] = ";bgimg=theme_space_button_focusing.png@@COLOR",
-            [":pressed"] = ";bgimg=theme_space_button_pressing.png@@COLOR",
-        }
-    },
-    background = { name = "theme_space_background.png@@COLOR", middle = 16 },
-    background_color = "#00000050",
-    listcolors = "#00000069;#5A5A5A;#141318;#30434C;#FFF",
-    custom_formspec = "",
-    textcolor_labellike = "lightgreen",
-    textcolor_buttonlike = "#86da9b",
-    theme_color = "green",
+    box_theme = {
+        color = shift_color_by_vars_hue("#00b9b9"),
+        inner_color = shift_color_by_vars_hue("lightblue"),
+        width = "10",
+    }
 })
 
 sbz_api.register_theme("tilde", {
     default = false,
-    unordered = false,         -- I feel like it would be an insult to the website itself honestly this theme looks bad
-    description = "Theme inspired by https://tilde.team",
-    force_font = ";font=mono", -- => @@FONT
+    unordered = false, -- I feel like it would be an insult to the website itself honestly this theme looks bad
+    name = "Tilde",
+    description = "Theme inspired by https://tilde.team, some things may look ugly",
+    --    force_font = ";font=mono", -- => @@FONT
+    config = {
+        ["FONT"] = { -- becomes @@FONT
+            default = true,
+            value_true = ";font=mono",
+            value_false = "",
+            type = { "bool" },
+            description = "Force mono font"
+        },
+    },
     button_theme = {
         shared = "bgimg_middle=10;padding=-7,-7@@FONT",
         states = {
@@ -177,6 +165,12 @@ sbz_api.get_theme = function(player)
     local meta = player:get_meta()
     local theme = sbz_api.themes[meta:get_string("theme_name")]
     if not theme then theme = sbz_api.themes[default_theme] end
+    return theme
+end
+sbz_api.get_theme_name = function(player)
+    local meta = player:get_meta()
+    local theme = meta:get_string("theme_name")
+    if not sbz_api.themes[theme] then theme = default_theme end
     return theme
 end
 
@@ -315,6 +309,11 @@ sbz_api.prepend_from_theme = function(theme, config)
             exec_conf_function_or_string(theme.textcolor_buttonlike, config))
     end
 
+    if theme.box_theme then -- then there is a util to get default box color
+        prepend[#prepend + 1] = ("style_type[box;%s]"):format("bordercolors=" ..
+            exec_conf_function_or_string(theme.box_theme.color, config) .. ",borderwidths=" .. theme.box_theme.width)
+    end
+
     return table.concat(prepend)
 end
 
@@ -324,7 +323,9 @@ sbz_api.update_theme = function(player)
     if not theme then theme = sbz_api.themes[default_theme] end
 
     local config = sbz_api.get_theme_config(player)
-    player:set_formspec_prepend(sbz_api.prepend_from_theme(theme, config))
+    local prepend = sbz_api.prepend_from_theme(theme, config)
+    player:set_formspec_prepend(prepend)
+    return prepend
 end
 
 -- implement more as needed
@@ -349,9 +350,9 @@ sbz_api.validate_theme_config_input = function(value_def, value)
         return value
     elseif value_type == "bool" then
         local bool
-        if value == "true" or value == "1" or value == "y" or value == "yes" then
+        if value == "true" or value == "1" or value == "y" or value == "yes" or value == true then
             bool = true
-        elseif value == "false" or value == "0" or value == "-1" or value == "n" or value == "no" then
+        elseif value == "false" or value == "0" or value == "-1" or value == "n" or value == "no" or value == false then
             bool = false
         end
         if bool == nil then
@@ -386,6 +387,7 @@ core.register_chatcommand("theme", {
 })
 
 dofile(core.get_modpath("sbz_base") .. "/theming_by_terminal.lua")
+dofile(core.get_modpath("sbz_base") .. "/theming_by_gui.lua")
 -- Code helpers
 sbz_api.get_theme_background = function(player)
     local theme = sbz_api.get_theme(player)
@@ -397,4 +399,10 @@ sbz_api.get_theme_color = function(player)
     local theme = sbz_api.get_theme(player)
     if not theme.theme_color then theme = sbz_api.themes[default_theme] end
     return exec_conf_function_or_string(theme.theme_color, sbz_api.get_theme_config(player))
+end
+
+sbz_api.get_box_color = function(player)
+    local theme = sbz_api.get_theme(player)
+    if not theme.box_theme.inner_color then theme = sbz_api.themes[default_theme] end
+    return exec_conf_function_or_string(theme.box_theme.inner_color, sbz_api.get_theme_config(player))
 end

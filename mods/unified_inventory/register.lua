@@ -66,6 +66,12 @@ ui.register_button("clear_inv", {
 		return ui.is_creative(player:get_player_name())
 	end,
 })
+ui.register_button("theme", {
+	type = "image",
+	image = "ui_theme.png",
+	tooltip = "Customize the theme",
+	action = function(player) sbz_api.theme_editor_formspec(player) end, -- sbz_api is not loaded yet
+})
 
 ui.register_page("craft", {
 	get_formspec = function(player, perplayer_formspec)

@@ -11,7 +11,7 @@ core.register_chatcommand("theme_config_set", {
         local set_name, set_value = unpack(param:split(" "))
 
         local theme_name = meta:get_string("theme_name")
-        if not sbz_api.themes[theme_name] then theme_name = default_theme end
+        if not sbz_api.themes[theme_name] then theme_name = sbz_api.default_theme end
 
         local theme_config = core.deserialize(meta:get_string("theme_config_" .. theme_name)) or {}
         -- now fill it in with default values
@@ -48,7 +48,7 @@ core.register_chatcommand("theme_config", {
         if core.is_yes(param) then
             local pmeta = player:get_meta()
             local theme_name = pmeta:get_string("theme_name")
-            if not sbz_api.themes[theme_name] then theme_name = default_theme end
+            if not sbz_api.themes[theme_name] then theme_name = sbz_api.default_theme end
             pmeta:set_string("theme_config_" .. theme_name, "")
             sbz_api.update_theme(player)
             return true, "Re-set your theme to default settings"
