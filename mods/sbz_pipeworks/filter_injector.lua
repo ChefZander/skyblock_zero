@@ -281,7 +281,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     return false
                 end
             else
-                if filterfor.count and filterfor.count ~= 1 then taken = math.min(taken, filterfor.count) end
+                if filterfor.count and (gotfilterfor.count ~= 1 or exmatch_mode ~= 0) then
+                    taken = math.min(taken, filterfor.count)
+                end
                 if filterfor.count and (exmatch_mode == 1) and (filterfor.count > taken) then return false end
             end
 
