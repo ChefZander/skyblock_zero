@@ -1,11 +1,14 @@
 -- This code is responsible for the player's formspec prepend
 
 sbz_api.themes = {
-    ["builtin"] = {
+    ["builtin"] = { -- the very minimal theme
         description = "Not really meant to be used lol... but it is here if you want it",
         theme_color = "white"
     }
 }
+
+dofile(core.get_modpath("sbz_base") .. "/colors.lua")
+
 local themes = sbz_api.themes
 local theme_order = { "builtin" }
 local default_theme = "builtin"
@@ -25,34 +28,75 @@ end
     - It should have a theme color
 ]]
 -- SOME "PRE PACKAGED" THEMES
+
+local shift_color_by_vars_hue = function(color)
+    local rgb = core.colorspec_to_table(color)
+    return function(vars)
+        local new_rgb = sbz_api.rotate_hue(rgb, vars.HUE)
+        return core.colorspec_to_colorstring(new_rgb)
+    end
+end
+
 sbz_api.register_theme("space", {
     default = true,
     description = "[Default Theme] the skyblock zero theme",
-    force_font = ";font=mono", -- => @@FONT
+    config = {
+        ["HUE"] = {
+            default = "0", -- -60 for forest
+            type = { "int", -180, 180 },
+            description = "Theme Hue",
+        },
+        ["FONT"] = { -- becomes @@FONT
+            default = true,
+            value_true = ";font=mono",
+            value_false = "",
+            type = { "bool" },
+            description = "Allow mono font."
+        },
+        ["LIGHT_BUTTONS"] = {
+            default = false,
+            type = { "bool" },
+            description = "Makes text in buttons lighter",
+        },
+    },
     button_theme = {
         shared = "bgimg_middle=10;padding=-7,-7@@FONT",
         states = {
-            [""] = ";bgimg=theme_space_button.png",
-            [":hovered"] = ";bgimg=theme_space_button_hovering.png",
-            [":focused"] = ";bgimg=theme_space_button_focusing.png",
-            [":pressed"] = ";bgimg=theme_space_button_pressing.png",
+            [""] = ";bgimg=theme_space_button.png^[hsl:@@HUE",
+            [":hovered"] = ";bgimg=theme_space_button_hovering.png^[hsl:@@HUE",
+            [":focused"] = ";bgimg=theme_space_button_focusing.png^[hsl:@@HUE",
+            [":pressed"] = ";bgimg=theme_space_button_pressing.png^[hsl:@@HUE",
         }
     },
-    background = { name = "theme_space_background.png", middle = 16 },
+    background = { name = "theme_space_background.png^[hsl:@@HUE", middle = 16 },
     background_color = "#00000050",
     listcolors = "#00000069;#5A5A5A;#141318;#30434C;#FFF",
     custom_formspec = "",
-    textcolor_labellike = "lightblue",
-    textcolor_buttonlike = "#00b9b9",
-    theme_color = "blue",
+    textcolor_labellike = shift_color_by_vars_hue("lightblue"),
+    textcolor_buttonlike = function(config)
+        local basecolor = "#00b9b9"
+        if config.LIGHT_BUTTONS then
+            basecolor = "lightblue"
+        end
+        return shift_color_by_vars_hue(basecolor)(config)
+    end,
+    theme_color = shift_color_by_vars_hue("blue"),
 })
 
 sbz_api.register_theme("forest", {
-    default = true,
     description = "Simply the hue shifted space theme",
     force_font = ";font=mono", -- => @@FONT
     vars = {
         ["COLOR"] = "^[hsl:-60"
+    },
+    config = {
+        ["FONT"] = {
+            default = true,
+            value_true = ";font=mono",
+            value_false = "",
+            type = { "bool" },
+            description = "Allow mono font."
+        }
     },
     button_theme = {
         shared = "bgimg_middle=10;padding=-7,-7@@FONT",
@@ -128,6 +172,50 @@ local process_text = function(text, variables)
     end)
 end
 
+
+sbz_api.get_theme = function(player)
+    local meta = player:get_meta()
+    local theme = sbz_api.themes[meta:get_string("theme_name")]
+    if not theme then theme = sbz_api.themes[default_theme] end
+    return theme
+end
+
+-- includes theme vars which are immutable config
+sbz_api.get_theme_config = function(player, raw_config)
+    local meta = player:get_meta()
+    local theme = meta:get_string("theme_name")
+    if not sbz_api.themes[theme] then theme = default_theme end
+    local theme_config = core.deserialize(meta:get_string("theme_config_" .. theme)) or {}
+    -- now fill it in with default values
+    local theme_def = sbz_api.themes[theme]
+    if not theme_def.config then
+        return {}
+    end
+    for name, value in pairs(theme_def.config) do
+        local default = value.default
+        if theme_config[name] == nil then theme_config[name] = default end
+    end
+    if theme_def.vars and not raw_config then
+        for key, value in pairs(theme_def.vars) do
+            theme_config[key] = value
+        end
+    end
+
+    if not raw_config then
+        for name, value in pairs(theme_def.config) do
+            if value.type[1] == "bool" and value.value_true then -- basically switches 2 strings
+                if theme_config[name]
+                then
+                    theme_config[name] = value.value_true
+                else
+                    theme_config[name] = value.value_false
+                end
+            end
+        end
+    end
+    return theme_config
+end
+
 local labellike = {
     "label",
     "vertlabel",
@@ -146,19 +234,23 @@ local buttonlike = {
     -- "pwdfield"
 }
 
+local function exec_conf_function_or_string(thing, config)
+    if type(thing) == "function" then
+        return thing(config)
+    else
+        return process_text(thing, config)
+    end
+end
+
 local buttonlike_types = table.concat(buttonlike, ",")
 local labellike_types = table.concat(labellike, ",")
 
 sbz_api.prepend_from_theme = function(theme, config)
     local prepend = { prepend_utils }
-    local force_font = (not config.no_forced_font) and theme.force_font
 
-    local variables = table.copy(theme.vars or {})
-    if force_font then
-        variables["FONT"] = theme.force_font
-    else
-        variables["FONT"] = ""
-    end
+    local force_font = config.FONT ~= "" and config.FONT ~= nil
+
+    local variables = table.copy(config or {})
 
     if theme.button_theme then
         local shared = process_text(theme.button_theme.shared, variables)
@@ -193,7 +285,7 @@ sbz_api.prepend_from_theme = function(theme, config)
             "textlist",
         }, ",")
 
-        prepend[#prepend + 1] = "style_type[" .. force_font_types .. theme.force_font .. "]"
+        prepend[#prepend + 1] = "style_type[" .. force_font_types .. config.FONT .. "]"
     end
     if theme.background then
         prepend[#prepend + 1] = ("background9[0,0;0,0;%s;true;%s]"):format(
@@ -206,18 +298,21 @@ sbz_api.prepend_from_theme = function(theme, config)
         prepend[#prepend + 1] = theme.custom_formspec
     end
     if theme.background_color then
-        prepend[#prepend + 1] = ("bgcolor[%s;true]"):format(theme.background_color)
+        prepend[#prepend + 1] = ("bgcolor[%s;true]"):format(exec_conf_function_or_string(theme.background_color, config))
     end
     if theme.textcolor then
-        prepend[#prepend + 1] = ("style_type[*;textcolor=%s]"):format(theme.textcolor)
+        prepend[#prepend + 1] = ("style_type[*;textcolor=%s]"):format(exec_conf_function_or_string(theme.textcolor,
+            config))
     end
 
     if theme.textcolor_labellike then
-        prepend[#prepend + 1] = ("style_type[%s;textcolor=%s]"):format(labellike_types, theme.textcolor_labellike)
+        prepend[#prepend + 1] = ("style_type[%s;textcolor=%s]"):format(labellike_types,
+            exec_conf_function_or_string(theme.textcolor_labellike, config))
     end
 
     if theme.textcolor_buttonlike then
-        prepend[#prepend + 1] = ("style_type[%s;textcolor=%s]"):format(buttonlike_types, theme.textcolor_buttonlike)
+        prepend[#prepend + 1] = ("style_type[%s;textcolor=%s]"):format(buttonlike_types,
+            exec_conf_function_or_string(theme.textcolor_buttonlike, config))
     end
 
     return table.concat(prepend)
@@ -228,26 +323,55 @@ sbz_api.update_theme = function(player)
     local theme = sbz_api.themes[meta:get_string("theme_name")]
     if not theme then theme = sbz_api.themes[default_theme] end
 
-    local no_forced_font = meta:get_int("no_forced_font") == 1
+    local config = sbz_api.get_theme_config(player)
+    player:set_formspec_prepend(sbz_api.prepend_from_theme(theme, config))
+end
 
-    player:set_formspec_prepend(sbz_api.prepend_from_theme(theme, {
-        no_forced_font = no_forced_font
-    }))
+-- implement more as needed
+sbz_api.validate_theme_config_input = function(value_def, value)
+    local value_type = value_def.type[1]
+
+    if value_type == "int" then
+        local value_min, value_max = value_def.type[2], value_def.type[3]
+        value = tonumber(value)
+        if not value then
+            return false, "Value needs to be a number"
+        end
+        if value ~= math.floor(value) then
+            return false, "Value is an integer, meaning that it can't have a decimal part"
+        end
+        if value > value_max then
+            return false, "Value too large, max value: " .. value_max
+        end
+        if value < value_min then
+            return false, "Value too small, min value: " .. value_min
+        end
+        return value
+    elseif value_type == "bool" then
+        local bool
+        if value == "true" or value == "1" or value == "y" or value == "yes" then
+            bool = true
+        elseif value == "false" or value == "0" or value == "-1" or value == "n" or value == "no" then
+            bool = false
+        end
+        if bool == nil then
+            return false, "That was not a boolean, try something like yes/no or y/n"
+        end
+        return bool
+    end
 end
 
 core.register_on_joinplayer(sbz_api.update_theme)
 
 core.register_chatcommand("theme", {
-    params = "<name> [force_font]",
-    description = "Sets your theme, [force_font] determines if theme is allowed to force a font",
+    params = "<name>",
+    description = "Sets your theme",
     func = function(name, param)
         local player = core.get_player_by_name(name)
         if not player then
             return false, "Unfortunutely, you need to be online to use this command" -- for mt webui users
         end
-        local split = param:split(" ")
-        local theme_name = split[1]
-        local force_font = split[2]
+        local theme_name = param
 
         if not theme_name or (theme_name and not sbz_api.themes[theme_name]) then
             return false, "Need to provide a valid name, example: \"" .. default_theme .. "\""
@@ -255,32 +379,86 @@ core.register_chatcommand("theme", {
 
         local pmeta = player:get_meta()
         pmeta:set_string("theme_name", theme_name)
-        if force_font then
-            pmeta:set_int("no_force_font", not core.is_yes(force_font) and 1 or 0)
-        end
 
         sbz_api.update_theme(player)
         return true, "Updated your theme"
     end
 })
 
+core.register_chatcommand("theme_config_set", {
+    params = "<name> <value>",
+    description = "Sets the config values for your theme",
+    func = function(name, param)
+        local player = core.get_player_by_name(name)
+        if not player then
+            return false, "Unfortunutely, you need to be online to use this command" -- for mt webui users
+        end
+        local meta = player:get_meta()
+
+        local set_name, set_value = unpack(param:split(" "))
+
+        local theme_name = meta:get_string("theme_name")
+        if not sbz_api.themes[theme_name] then theme_name = default_theme end
+
+        local theme_config = core.deserialize(meta:get_string("theme_config_" .. theme_name)) or {}
+        -- now fill it in with default values
+        local theme_def = sbz_api.themes[theme_name]
+        if not theme_def.config then
+            return false, "That theme cannot be configured"
+        end
+
+        for config_name, value_definition in pairs(theme_def.config) do
+            if config_name == set_name then
+                local value, errmsg = sbz_api.validate_theme_config_input(value_definition, set_value)
+                if errmsg then
+                    return false, errmsg
+                end
+                theme_config[set_name] = value
+                meta:set_string("theme_config_" .. theme_name, core.serialize(theme_config))
+                sbz_api.update_theme(player)
+                return true, ("Successfuly updated config; " .. config_name .. "=" .. tostring(value))
+            end
+        end
+
+        return false, "That name is unsupported"
+    end
+})
+
+core.register_chatcommand("theme_config", {
+    params = "[reset to default]",
+    description = "Gives you your theme configuration",
+    func = function(name, param)
+        local player = core.get_player_by_name(name)
+        if not player then
+            return false, "Unfortunutely, you need to be online to use this command" -- for mt webui users
+        end
+        if core.is_yes(param) then
+            local pmeta = player:get_meta()
+            local theme_name = pmeta:get_string("theme_name")
+            if not sbz_api.themes[theme_name] then theme_name = default_theme end
+            pmeta:set_string("theme_config_" .. theme_name, "")
+            sbz_api.update_theme(player)
+            return true, "Re-set your theme to default settings"
+        end
+
+        local conf = sbz_api.get_theme_config(player, true)
+        local out = {}
+        for k, v in pairs(conf) do
+            out[#out + 1] = tostring(k) .. "=" .. tostring(v)
+        end
+        return true, table.concat(out, "\n")
+    end
+})
+
 -- Code helpers
-
-sbz_api.get_theme = function(player)
-    local meta = player:get_meta()
-    local theme = sbz_api.themes[meta:get_string("theme_name")]
-    if not theme then theme = sbz_api.themes[default_theme] end
-    return theme
-end
-
 sbz_api.get_theme_background = function(player)
     local theme = sbz_api.get_theme(player)
     if not theme.background then theme = sbz_api.themes[default_theme] end
-    return process_text(theme.background.name, theme.vars)
+    return process_text(theme.background.name, sbz_api.get_theme_config(player))
 end
 
 sbz_api.get_theme_color = function(player)
     local theme = sbz_api.get_theme(player)
     if not theme.theme_color then theme = sbz_api.themes[default_theme] end
-    return theme.theme_color
+    return exec_conf_function_or_string(theme.theme_color, sbz_api.get_theme_config(player))
 end

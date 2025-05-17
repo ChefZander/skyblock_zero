@@ -281,11 +281,11 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     return false
                 end
             else
-                if filterfor.count then taken = math.min(taken, filterfor.count) end
+                if filterfor.count and filterfor.count ~= 1 then taken = math.min(taken, filterfor.count) end
                 if filterfor.count and (exmatch_mode == 1) and (filterfor.count > taken) then return false end
             end
 
-            local take_multiple = filterfor.count and exmatch_mode ~= 2
+            local take_multiple = (filterfor.count ~= nil) and (exmatch_mode ~= 2)
             local real_taken = 0
             if fromtube.remove_items then
                 for i, spos in ipairs(sposes) do
