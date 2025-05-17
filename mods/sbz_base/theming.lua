@@ -126,9 +126,9 @@ sbz_api.register_theme("tilde", {
     },
     background = { name = "theme_tilde_background.png", middle = 16 },
     background_color = "#00000050",
-    listcolors = "#00000069;#5A5A5A;#141318;#30434C;#FFF",
+    listcolors = "#11111169;#5A5A5A;#243024;#020402;lightgreen",
     custom_formspec = "",
-    textcolor_labellike = "green",
+    textcolor_labellike = "lightgreen",
     textcolor_buttonlike = "black",
     theme_color = "green",
 })
