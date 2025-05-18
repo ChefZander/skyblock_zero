@@ -21,7 +21,7 @@ core.register_globalstep(function(dtime)
                     v:override_day_night_ratio(type_def.light / 14)
                 end
                 if type_def.invert_chance then
-                    local should_invert = data[2] % type_def.invert_chance
+                    local should_invert = data[2] % type_def.invert_chance == 0
                     if should_invert then
                         v:set_lighting {
                             saturation = -1,
