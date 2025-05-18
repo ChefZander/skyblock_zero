@@ -21,6 +21,10 @@ There are several in-game commands useful in survival:
 - /home - teleports you to home
 - /sethome - sets your home
 - /toggle_areas_hud - Toggles the areas hud, may be useful if you dont want to always see it.
+- /theme_gui - opens the theming gui, here you can customize the theme
+
+<b>Recomended for small screens</b>
+in /theme_gui, you can disable "Force mono font", this will make the font less cool but it will make it smaller.
 ]]
     },
     {
