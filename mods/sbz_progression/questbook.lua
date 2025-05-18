@@ -126,12 +126,12 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         formspec_version[7]
         size[17.25,12.8]
         padding[0.01,0.01]
-        label[0.1,0.3;Quest List]
-        textlist[0,0.7;5.8,11.3;quest_list;%s;%s]
+        label[0.2,0.4;Quest List]
+        textlist[0.2,0.7;5.6,11.3;quest_list;%s;%s]
         field_close_on_enter[search;false]
-        field[0,12;5.25,0.85;search;;%s]
-        image_button[5.25,12;0.85,0.85;ui_search_icon.png;dummybutton;]
-        image_button[6.1,12;0.85,0.85;ui_reset_icon.png;search_reset;]
+        field[0.2,12;5.25,0.5;search;;%s]
+        image_button[5.25,12;0.5,0.5;ui_search_icon.png;dummybutton;]
+        image_button[5.75,12;0.5,0.5;ui_reset_icon.png;search_reset;]
 ]]):format(quest_list, selected_quest_index, core.formspec_escape(search_text))
 
     if selected_quest then
@@ -178,7 +178,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             force_query = true
         end
 
-        if fields.quest_list or (fields.search and fields.search ~= "") or force_query then
+        if fields.quest_list or (fields.search) or force_query then
             local event = minetest.explode_textlist_event(fields.quest_list)
             local selected_quest_index = event.index or meta:get_int("selected_quest_index")
 

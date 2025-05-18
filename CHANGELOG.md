@@ -1,4 +1,4 @@
-Release 37
+Release 37 - sorry for the long wait :)
 - Fixed instatubes sometimes not working
 - Added bricks and wooden planks
 - Fixed one pixel of pebble being transparent (Yes, you weren't crazy!)
@@ -14,6 +14,11 @@ Release 37
 - Added paper and books
 - optimized instant tubes like a lot
 - Made wielder priority be smaller
+- Added a rare `secret :>` colorium planet variation
+- Added sensors and logic gates and machine controller and switches and yeah a lot of stuff
+- Added THEMING, ui doesn't look bad now
+- Fixed instatubes quest always being unlocked
+- Fixed bulk placer tool quest always being unlocked
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted

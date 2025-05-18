@@ -91,7 +91,8 @@ Right click => places the node, according to the mode
 Left click => Replaces the node, according to the mode
 
 It might behave weirdly with super powered lamps, be aware of that.
-]]
+]],
+        requires = { "Phlogiston Fuser" },
     },
 
     -- [[ SECRETS ]]

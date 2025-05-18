@@ -95,6 +95,16 @@ minetest.register_craft {
     }
 }
 
+minetest.register_craft {
+    type = "shapeless",
+    output = "sbz_resources:simple_logic_circuit",
+    recipe = {
+        "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust",
+        "sbz_resources:compressed_core_dust", "sbz_resources:simple_inverted_logic_circuit", "sbz_resources:compressed_core_dust",
+        "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust",
+    }
+}
+
 --- === PROCESSORS ===
 
 core.register_craftitem("sbz_resources:simple_processor", {

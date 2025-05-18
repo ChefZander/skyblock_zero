@@ -150,6 +150,14 @@ local achievement_table = {
     ["sbz_power:teleport_battery"] = "Teleport Battery",
     ["pipeworks:pattern_storinator"] = "Pattern Storinator",
     ["sbz_power:starlight_catcher"] = "Starlight Catchers",
+
+    ["sbz_power:sensor_linker"] = "Sensor Linker",
+    ["sbz_power:lgate_buffer_off"] = "Logic Gates",
+    ["sbz_power:delayer_off"] = "Delayer",
+    ["sbz_power:light_sensor_off"] = "Light Sensor",
+    ["sbz_power:node_sensor_off"] = "Node Sensor",
+    ["sbz_power:item_sensor_off"] = "Item Sensor",
+    ["sbz_power:switch_private_off"] = "Switches"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
