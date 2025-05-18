@@ -88,6 +88,9 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
     })
 
     local queue = Queue.new()
+    -- I ask: DO NOT CHANGE THIS TO A STACK in the quest of optimizing
+    -- It is there because with a breadth-first search it is easy to guess which machines execute in what order
+    -- With a depth first search??? not so much...
     queue:enqueue({ start_pos, vector.zero() })
     seen[start_pos] = true
     pos2network[h(start_pos)] = net_id

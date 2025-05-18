@@ -3,6 +3,7 @@ minetest.register_craftitem("sbz_resources:simple_circuit", {
     inventory_image = "simple_circuit.png",
     stack_max = 256,
 })
+
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:simple_circuit 2",
@@ -60,6 +61,41 @@ core.register_craft {
         "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium", "sbz_resources:raw_emittrium"
     }
 }
+
+
+minetest.register_craftitem("sbz_resources:simple_logic_circuit", {
+    description = "Simple Logic Circuit",
+    inventory_image = "simple_logic_circuit.png",
+    stack_max = 256,
+})
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "sbz_resources:simple_logic_circuit 12",
+    recipe = {
+        "sbz_bio:cleargrass", "sbz_bio:cleargrass", "sbz_bio:cleargrass",
+        "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit",
+        "sbz_bio:razorgrass", "sbz_bio:razorgrass", "sbz_bio:razorgrass",
+    }
+})
+
+minetest.register_craftitem("sbz_resources:simple_inverted_logic_circuit", {
+    description = "Simple Inverted Logic Circuit",
+    inventory_image = "simple_inverting_circuit.png",
+    stack_max = 256,
+})
+
+minetest.register_craft {
+    type = "shapeless",
+    output = "sbz_resources:simple_inverted_logic_circuit",
+    recipe = {
+        "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust",
+        "sbz_resources:compressed_core_dust", "sbz_resources:simple_logic_circuit", "sbz_resources:compressed_core_dust",
+        "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust",
+    }
+}
+
+--- === PROCESSORS ===
 
 core.register_craftitem("sbz_resources:simple_processor", {
     description = "Simple Processor",

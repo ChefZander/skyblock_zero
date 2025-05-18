@@ -145,6 +145,15 @@ sbz_api.register_stateful_machine("sbz_power:light_sensor", unifieddyes.def {
     }
 })
 
+core.register_craft {
+    output = "sbz_power:light_sensor_off",
+    recipe = {
+        { "sbz_power:sensor_casing_plate", "sbz_resources:shock_crystal",        "sbz_power:sensor_casing_plate", },
+        { "sbz_power:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_power:sensor_casing_plate", },
+        { "sbz_power:sensor_casing_plate", "sbz_power:sensor_casing_plate",      "sbz_power:sensor_casing_plate", },
+    }
+}
+
 local function get_node_sensor_formspec(pos, meta)
     return ([[
 formspec_version[7]
@@ -226,3 +235,12 @@ sbz_api.register_stateful_machine("sbz_power:node_sensor", unifieddyes.def {
         sbz_api.make_sensor_tex_on("node_detector")
     }
 })
+
+core.register_craft {
+    output = "sbz_power:node_sensor_off",
+    recipe = {
+        { "sbz_power:sensor_casing_plate", "sbz_resources:warp_crystal",         "sbz_power:sensor_casing_plate", },
+        { "sbz_power:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_power:sensor_casing_plate", },
+        { "sbz_power:sensor_casing_plate", "sbz_power:sensor_casing_plate",      "sbz_power:sensor_casing_plate", },
+    }
+}

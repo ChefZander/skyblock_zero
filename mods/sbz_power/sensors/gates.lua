@@ -273,3 +273,70 @@ sbz_api.register_stateful_machine("sbz_power:machine_controller", unifieddyes.de
         sbz_api.make_sensor_tex_on("machine_controller")
     }
 })
+
+-- ==RECIPES==
+core.register_craft {
+    output = "sbz_power:lgate_buffer_off",
+    recipe = {
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
+    },
+}
+
+local function register_inverted_craft(name1, name2)
+    core.register_craft {
+        type = "shapeless",
+        output = name1,
+        recipe = {
+            name2, "sbz_resources:simple_inverted_logic_circuit"
+        },
+    }
+    core.register_craft {
+        type = "shapeless",
+        output = name2,
+        recipe = {
+            name1, "sbz_resources:simple_inverted_logic_circuit"
+        },
+    }
+end
+
+-- Ok, now introducing: An elaborate multi-step process for crafting logic gates
+-- People are going to hate me for this
+
+register_inverted_craft("sbz_power:lgate_buffer_off", "sbz_power:lgate_not_off")
+register_inverted_craft("sbz_power:lgate_and_off", "sbz_power:lgate_nand_off")
+register_inverted_craft("sbz_power:lgate_or_off", "sbz_power:lgate_nor_off")
+register_inverted_craft("sbz_power:lgate_xor_off", "sbz_power:lgate_xnor_off")
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_power:lgate_or_off 2",
+    recipe = {
+        "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off",
+    }
+}
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_power:lgate_and_off 2",
+    recipe = {
+        "sbz_power:lgate_buffer_off", "sbz_power:lgate_not_off"
+    }
+}
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_power:lgate_xor_off 2",
+    recipe = {
+        "sbz_power:lgate_or_off", "sbz_power:lgate_and_off"
+    }
+}
+
+core.register_craft {
+    output = "sbz_power:machine_controller",
+    recipe = {
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_power:connector_off",           "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", },
+    }
+}

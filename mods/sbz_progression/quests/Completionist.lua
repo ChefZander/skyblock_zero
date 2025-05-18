@@ -114,7 +114,7 @@ It might behave weirdly with super powered lamps, be aware of that.
         type = "sercet",
         title = "AntiColorium Planets",
         text = [[
-Nice green terrain
-        ]] -- what could those oceans be?
+Nice green terrain and oceans of antiwater
+        ]] -- is it really antiwater?
     }
 }

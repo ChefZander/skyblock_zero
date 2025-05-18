@@ -245,8 +245,8 @@ minetest.register_craftitem("sbz_power:sensor_linker", {
 minetest.register_craft {
     output = "sbz_power:sensor_linker",
     recipe = {
-        { "sbz_resources:warp_crystal", },
-        { "sbz_resources:stone", },
-        { "sbz_resources:stone", },
+        { "sbz_resources:warp_crystal", "sbz_resources:stone", "sbz_resources:shock_crystal" },
+        { "",                           "sbz_resources:stone", "" },
+        { "",                           "sbz_resources:stone", "" },
     }
 }

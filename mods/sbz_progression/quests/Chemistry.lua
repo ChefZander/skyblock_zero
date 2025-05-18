@@ -260,6 +260,7 @@ You need at least 6 fuel rods for the reactor to power on.
         title = "Dust",
         text = [[
 Dust can grow plants at twice the speed of Dirt, but it decays after some time.
+You can also climb it, and it is great for scaffolding.
 ]],
         requires = { "Crusher", "Liquid Water" }
     },

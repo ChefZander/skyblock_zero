@@ -20,15 +20,16 @@ minetest.register_craft({
 })
 
 minetest.register_craftitem("sbz_resources:conversion_chamber", {
-    description = "Conversion Chamber (Deprecated, go throw it away)",
+    description = "Conversion chamber (!! DEPRECATED !! Throw it away!)",
     inventory_image = "conversion_chamber.png",
-    stack_max = 32,
+    stack_max = 1,
     groups = { not_in_creative_inventory = 1, }
 })
 
 minetest.register_craftitem("sbz_resources:pebble", {
     description = "Pebble",
     inventory_image = "pebble.png",
+    stack_max = 128,
 })
 
 minetest.register_craft({
@@ -107,6 +108,7 @@ core.register_craftitem("sbz_resources:heating_element", {
     description = "Heating Element",
     inventory_image = "heating_element.png",
 })
+
 core.register_craft {
     output = "sbz_resources:heating_element",
     recipe = {
@@ -115,3 +117,8 @@ core.register_craft {
         { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_circuit", }
     }
 }
+
+core.register_craftitem("sbz_resources:sensor_casing_plate", {
+    description = "Sensor Casing Plate",
+    inventory_image = "sensor_casing_plate.png"
+})

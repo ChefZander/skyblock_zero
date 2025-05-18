@@ -148,3 +148,12 @@ sbz_api.register_stateful_machine("sbz_power:item_sensor", unifieddyes.def {
         sbz_api.make_sensor_tex_on("item_sensor"),
     }
 })
+
+core.register_craft {
+    output = "sbz_power:item_sensor",
+    recipe = {
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:storinator",           "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
+    }
+}

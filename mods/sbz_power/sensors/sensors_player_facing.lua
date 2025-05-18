@@ -42,3 +42,29 @@ for _, variant in pairs { "public", "private" } do
         }
     })
 end
+
+
+core.register_craft {
+    output = "sbz_power:switch_private_off",
+    recipe = {
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_power:connector_off", },
+        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
+    }
+}
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_power:switch_public_off",
+    recipe = {
+        "sbz_power:switch_private_off"
+    }
+}
+
+core.register_craft {
+    type = "shapeless",
+    output = "sbz_power:switch_private_off",
+    recipe = {
+        "sbz_power:switch_public_off"
+    }
+}
