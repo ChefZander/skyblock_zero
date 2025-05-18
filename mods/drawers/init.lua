@@ -40,8 +40,6 @@ drawers.CHEST_ITEMSTRING = "sbz_resources:storinator"
 
 -- GUI
 
-drawers.gui_bg = "bgcolor[#080808BB;true]"
-drawers.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
 function drawers.inventory_list(posy)
 	local hotbar_row_posy = posy + 1.25
 	local inventory_list = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..

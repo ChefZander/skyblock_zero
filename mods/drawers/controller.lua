@@ -45,8 +45,6 @@ local S = core.get_translator('drawers')
 local function controller_formspec()
 	local formspec =
 		"size[9,8.5]" ..
-		drawers.gui_bg ..
-		drawers.gui_slots ..
 		"label[0,0;" .. S("Drawer Controller") .. "]" ..
 		"list[current_name;src;4,1.75;1,1;]" ..
 		drawers.inventory_list(4.25) ..
