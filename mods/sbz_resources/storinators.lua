@@ -55,6 +55,9 @@ local function register_storinator(added_name, def)
         "storinator_side.png",
         "storinator_empty.png"
     }
+    if added_name == "" then
+        def.info_extra = "Like a chest"
+    end
     if def.brighten_base then
         for i = 1, 6 do
             def.tiles[i] = def.tiles[i] .. "^[colorize:white:20"

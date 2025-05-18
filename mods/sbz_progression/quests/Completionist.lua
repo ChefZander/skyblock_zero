@@ -110,4 +110,11 @@ It might behave weirdly with super powered lamps, be aware of that.
         title = "Fragile",
         text = "You broke an Angel's Wing."
     },
+    {
+        type = "sercet",
+        title = "AntiColorium Planets",
+        text = [[
+Nice green terrain
+        ]] -- what could those oceans be?
+    }
 }

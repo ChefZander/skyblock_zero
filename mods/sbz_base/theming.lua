@@ -3,12 +3,10 @@
 sbz_api.themes = {
     ["builtin"] = { -- the very minimal theme
         name = "builtin",
-        description = "Very minimal for sure...",
+        description = "Very minimal for sure... NOT RECOMENDED TO USE",
         theme_color = "white"
     }
 }
-
-dofile(core.get_modpath("sbz_base") .. "/colors.lua")
 
 local themes = sbz_api.themes
 local theme_order = { "builtin" }
@@ -37,7 +35,7 @@ local shift_color_by_vars_hue = function(color)
     local rgb = core.colorspec_to_table(color)
     return function(vars)
         if not vars.HUE then vars.HUE = 0 end
-        local new_rgb = sbz_api.rotate_hue(rgb, vars.HUE)
+        local new_rgb = sbz_api.color.rotate_hue(rgb, vars.HUE)
         return core.colorspec_to_colorstring(new_rgb)
     end
 end
@@ -76,7 +74,25 @@ sbz_api.register_theme("space", {
     },
     background = { name = "theme_space_background.png^[hsl:@@HUE", middle = 16 },
     background_color = "#00000050",
-    listcolors = "#00000069;#5A5A5A;#141318;#30434C;#FFF",
+    listcolors = function(config)
+        local spec2table = core.colorspec_to_table
+        -- tilde colors: "#11111169;#5A5A5A;#243024;#020402;lightgreen"
+
+        local default_colors = { spec2table "#11111169", spec2table "#5A5A5A", spec2table "#242430", spec2table "#030d19",
+            spec2table "lightblue" }
+        local converted_colors = {}
+        for k, v in pairs(default_colors) do
+            converted_colors[#converted_colors + 1] = sbz_api.color.rotate_hue(v, config.HUE)
+            converted_colors[#converted_colors].a = v.a
+        end
+
+        local result = ""
+        for k, v in pairs(converted_colors) do
+            result = result .. core.colorspec_to_colorstring(v) .. ";"
+        end
+        result = result:sub(1, #result - 1) -- remove last ;
+        return result
+    end,
     custom_formspec = "",
     textcolor_labellike = shift_color_by_vars_hue("lightblue"),
     textcolor_buttonlike = function(config)
@@ -88,9 +104,9 @@ sbz_api.register_theme("space", {
     end,
     theme_color = shift_color_by_vars_hue("blue"),
     box_theme = {
-        color = shift_color_by_vars_hue("#00b9b9"),
-        inner_color = shift_color_by_vars_hue("lightblue"),
-        width = "10",
+        border_color = shift_color_by_vars_hue("#00b9b9"),
+        border_width = "10",
+        inner_color = shift_color_by_vars_hue("lightblue#10"),
     }
 })
 
@@ -130,7 +146,12 @@ sbz_api.register_theme("tilde", {
     custom_formspec = "",
     textcolor_labellike = "lightgreen",
     textcolor_buttonlike = "black",
-    theme_color = "green",
+    theme_color = "lightgreen",
+    box_theme = {
+        inner_color = "#262f26",
+        border_width = "0",
+        border_color = "#000"
+    }
 })
 
 -- Prepend Utils (e.g. the no_bg style)
@@ -175,6 +196,7 @@ sbz_api.get_theme_name = function(player)
 end
 
 -- includes theme vars which are immutable config
+-- TODO: CACHE THIS
 sbz_api.get_theme_config = function(player, raw_config)
     local meta = player:get_meta()
     local theme = meta:get_string("theme_name")
@@ -286,7 +308,7 @@ sbz_api.prepend_from_theme = function(theme, config)
             process_text(theme.background.name, variables), theme.background.middle)
     end
     if theme.listcolors then
-        prepend[#prepend + 1] = ("listcolors[%s]"):format(theme.listcolors)
+        prepend[#prepend + 1] = ("listcolors[%s]"):format(exec_conf_function_or_string(theme.listcolors, config))
     end
     if theme.custom_formspec then
         prepend[#prepend + 1] = theme.custom_formspec
@@ -311,7 +333,8 @@ sbz_api.prepend_from_theme = function(theme, config)
 
     if theme.box_theme then -- then there is a util to get default box color
         prepend[#prepend + 1] = ("style_type[box;%s]"):format("bordercolors=" ..
-            exec_conf_function_or_string(theme.box_theme.color, config) .. ",borderwidths=" .. theme.box_theme.width)
+            exec_conf_function_or_string(theme.box_theme.border_color, config) ..
+            ",borderwidths=" .. theme.box_theme.border_width)
     end
 
     return table.concat(prepend)
@@ -403,6 +426,6 @@ end
 
 sbz_api.get_box_color = function(player)
     local theme = sbz_api.get_theme(player)
-    if not theme.box_theme.inner_color then theme = sbz_api.themes[default_theme] end
+    if not theme.box_theme then theme = sbz_api.themes[default_theme] end
     return exec_conf_function_or_string(theme.box_theme.inner_color, sbz_api.get_theme_config(player))
 end

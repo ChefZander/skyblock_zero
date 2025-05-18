@@ -119,10 +119,8 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 		ui_peruser.form_header_y - 0.2
 	}
 
-	formspec[n] = string.format("background9[%f,%f;%f,%f;%s;false;16]",
-		ui_peruser.page_x - 0.15, categories_scroll_pos[2],
-		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1,
-		sbz_api.get_theme_background(player) .. ("^[colorize:%s:30"):format(sbz_api.get_theme_color(player)))
+	formspec[n] = sbz_api.ui.get_content_box(player, ui_peruser.page_x - 0.15, categories_scroll_pos[2],
+		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1)
 	n = n + 1
 
 

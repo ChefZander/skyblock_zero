@@ -110,7 +110,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                 quest_list[#quest_list + 1] = "#848484 ✕ " .. quest.title
             end
         elseif quest.info == true then -- info text
-            quest_list[#quest_list + 1] = "#a9b7fc  !  " .. quest.title
+            quest_list[#quest_list + 1] = "#a9b7fc ! " .. quest.title
         elseif quest.type == "text" then
             quest_list[#quest_list + 1] = "#a9fcf5 ≡ " .. quest.title
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then

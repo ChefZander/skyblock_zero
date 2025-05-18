@@ -250,7 +250,7 @@ core.register_node("sbz_chem:radon", {
     description = "radon",
     drawtype = "glasslike",
     paramtype = "light",
-    drops = "",
+    drop = "",
     tiles = { "radon.png" },
     light_source = 10,
     use_texture_alpha = "blend",

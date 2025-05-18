@@ -9,25 +9,14 @@
 ]]
 
 
-local formspec_left_side = [[
-formspec_version[10]
-size[20,20]
-style_type[label;font_size=20]
-
-box[0.5,0.5;5,19;#000]
-label[0.8,1;Themes]
-
-box[6,0.5;13.5,19;#000]
-label[6.2,1;Theme configuration]
-
-]] -- constant, includes also the constant part of right side
+local select_theme_buttons = [[]]
 
 core.register_on_mods_loaded(function()
     local y = 2.5
     local y_inc = 1.5 -- increases y
     for order, name in pairs(sbz_api.theme_order) do
         local theme_def = sbz_api.themes[name]
-        formspec_left_side = formspec_left_side ..
+        select_theme_buttons = select_theme_buttons ..
             ("button[0.95,%s;4,1;theme_%s;%s]"):format(y, name, theme_def.name or name)
         y = y + y_inc
     end
@@ -38,11 +27,18 @@ local function show_gui(player, prepend)
     local selected_theme = sbz_api.get_theme(player)
     local player_defaults = sbz_api.get_theme_config(player, true)
 
-    local fs = { formspec_left_side }
+    local fs = { "formspec_version[10]size[20,20]style_type[label;font_size=20]", }
 
     if prepend then
         table.insert(fs, "no_prepend[]" .. prepend)
     end
+    fs[#fs + 1] = sbz_api.ui.get_content_box(player, 0.5, 0.5, 5, 19)
+    fs[#fs + 1] = sbz_api.ui.get_content_box(player, 6, 0.5, 13.5, 19)
+    fs[#fs + 1] = select_theme_buttons
+    fs[#fs + 1] = [[
+label[0.8,1;Themes]
+label[6.2,1;Theme configuration]
+]]
 
     local config = selected_theme.config
     if not config then

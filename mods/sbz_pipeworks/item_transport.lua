@@ -33,7 +33,6 @@ end
 -- can_remove(pos,node,stack,dir) returns the maximum number of items of that stack that can be removed
 -- remove_items(pos,node,stack,dir,count) removes count items and returns them
 -- both optional w/ sensible defaults and fallback to normal allow_* function
--- XXX: possibly change insert_object to insert_item
 
 local default_adjlist = { { x = 0, y = 0, z = 1 }, { x = 0, y = 0, z = -1 }, { x = 0, y = 1, z = 0 }, { x = 0, y = -1, z = 0 }, { x = 1, y = 0, z = 0 }, { x = -1, y = 0, z = 0 } }
 
@@ -210,8 +209,6 @@ local function go_next(pos, velocity, stack, owner, tags)
 
 	-- pulled out and factored out into go_next_compat() above.
 	-- n is the new value of the cycle counter.
-	-- XXX: this probably needs cleaning up after being split out,
-	-- seven args is a bit too many
 	local n, found, new_velocity, multimode = go_next_compat(pos, cnode, cmeta, cycledir, vel, stack, owner, tags)
 
 	-- if not using output cycling,

@@ -10,7 +10,7 @@ local ruleset_chars = {
 }
 
 
-local this_is_a_zip_bomb_treshold = 500000 -- 500k characters
+local this_is_a_zip_bomb_treshold = 500 * 1024 -- 500kb of characters -- cuz THATS a bit crazy
 -- not exactly up to spec but good enough
 local function lsystem(start_pos, dna, owner, starting_angle)
     local random = PcgRandom(dna.seed or (start_pos.x * 2 + start_pos.y * 4 + start_pos.z))
@@ -110,10 +110,13 @@ local function lsystem(start_pos, dna, owner, starting_angle)
         local temp = {}
         for i = 1, #axiom do
             if string_size >= this_is_a_zip_bomb_treshold then
+                --[[
                 core.log("error",
                     "Tree at " ..
                     vector.to_string(start_pos) .. " was a \"\"zip bomb\"\", cannot grow, dna: " .. dump(dna))
                 return false
+                ]]
+                break -- silently fail :)
             end
             local char = string.sub(axiom, i, i)
             if ruleset_chars[char] then
@@ -127,7 +130,7 @@ local function lsystem(start_pos, dna, owner, starting_angle)
                 string_size = string_size + 1
             end
         end
-        axiom = table.concat(temp) -- took me a while to guess why this is there specifically, confusing code
+        axiom = table.concat(temp)
     end
 
     local pos = vector.copy(start_pos)
