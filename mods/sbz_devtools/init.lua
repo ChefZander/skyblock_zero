@@ -196,7 +196,7 @@ minetest.register_chatcommand("dev_craft", {
             return false, "Player not found!"
         end
 
-        if param == "item" then param = player:get_wielded_item():get_name() end
+        if param == "item" or param == "" then param = player:get_wielded_item():get_name() end
 
         for k, v in pairs(minetest.registered_on_crafts) do
             v(ItemStack(param), player)

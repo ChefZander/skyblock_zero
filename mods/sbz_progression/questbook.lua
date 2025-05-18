@@ -96,6 +96,8 @@ end
 
 -- Function to create the formspec
 local function get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
+    local player_ref = core.get_player_by_name(player_name)
+    if not player_ref then return "" end
     local selected_quest = quests_to_show[selected_quest_index]
     search_text = search_text or ""
     local quest_list = {}
@@ -133,6 +135,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         image_button[5.25,12;0.5,0.5;ui_search_icon.png;dummybutton;]
         image_button[5.75,12;0.5,0.5;ui_reset_icon.png;search_reset;]
 ]]):format(quest_list, selected_quest_index, core.formspec_escape(search_text))
+    formspec = formspec .. sbz_api.ui.get_content_box(player_ref, 6, 0.2, 11, 11.6)
 
     if selected_quest then
         if selected_quest.type == "quest" or (selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title)) then
