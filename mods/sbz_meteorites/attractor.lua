@@ -23,12 +23,14 @@ local function attract_meteorites(pos, dtime, t)
 
         local magnitude = 256
         if obj:is_player() then
-            local wielded_item = obj:get_wielded_item()
-            if wielded_item:is_empty() then return end
-            magnitude = (wielded_item:get_definition().groups or {}).attraction
-            if not magnitude then return end
-            magnitude = magnitude * wielded_item:get_count()
-            playereffects.apply_effect_type("attracted", 2, obj)
+            if not playereffects.has_effect_type(obj:get_player_name() ,"immune") then
+                local wielded_item = obj:get_wielded_item()
+                if wielded_item:is_empty() then return end
+                magnitude = (wielded_item:get_definition().groups or {}).attraction
+                if not magnitude then return end
+                magnitude = magnitude * wielded_item:get_count()
+                playereffects.apply_effect_type("attracted", 2, obj)
+            end
         end
         obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
         if elapsed > 1 then
