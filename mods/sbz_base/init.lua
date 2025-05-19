@@ -368,6 +368,8 @@ function is_air(pos)
     return reg.air or reg.air_equivalent or node == "air"
 end
 
+sbz_api.is_air = is_air
+
 function sbz_api.clamp(x, min, max)
     return math.max(math.min(x, max), min)
 end

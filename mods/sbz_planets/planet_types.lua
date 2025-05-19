@@ -347,7 +347,7 @@ sbz_api.planets.register_type {
     gravity = 1,
     light = 12,
     ring_chance = 12,
-    invert_chance = 25, -- 1 in 25
+    invert_chance = 25, -- 1 in 25.. so 4%
     num_planets = 300,
     mapgen = function(area, minp, maxp, seed, noises, data, pdata, center)
         local shapenoise = noises.shape.noise
