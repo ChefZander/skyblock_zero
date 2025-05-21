@@ -19,6 +19,8 @@ Release 37 - sorry for the long wait :)
 - Added THEMING, ui doesn't look bad now
 - Fixed instatubes quest always being unlocked
 - Fixed bulk placer tool quest always being unlocked
+- Made drawers undiggable when filled with anything
+
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted

@@ -1,4 +1,9 @@
-sbz_api.logic = {}
+sbz_api.logic = {
+    log = function(msg)
+        core.log("action", ("[sbz_logic] %s"):format(msg))
+    end
+}
+
 sbz_logic = sbz_api.logic
 
 local MP = minetest.get_modpath("sbz_logic")

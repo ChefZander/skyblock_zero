@@ -158,6 +158,7 @@ local function generate_id()
 end
 
 function logic.turn_on(pos)
+    logic.log("Turned on: " .. vector.to_string(pos))
     local meta = M(pos)
     if not logic.can_run(pos, meta) then
         return false
@@ -186,6 +187,7 @@ function logic.turn_on(pos)
 end
 
 function logic.send_event_to_sandbox(pos, event)
+    logic.log("Sent event to: " .. vector.to_string(pos))
     local t0 = minetest.get_us_time()
 
     local meta = M(pos)
@@ -208,10 +210,7 @@ function logic.send_event_to_sandbox(pos, event)
     local env = active_sandboxes[id].env
     logic.initialize_env(meta, env, pos)
 
-    -- :{ i KNOW its scuffed but you dont understand thats what is needed
-    -- and thats what programming sometimes requires
-    -- for great things you must do great crimes i guess
-    -- i dont know
+    -- :{ i KNOW its scuffed
     local old_sethook = debug.sethook
     if sbz_api.autohook then
         debug.sethook = function(...)
@@ -256,6 +255,7 @@ end
 
 -- editor is a different type of sandbox for simplicity
 function logic.send_editor_event(pos, meta, event)
+    logic.log("Editor event: " .. vector.to_string(pos))
     local t0 = minetest.get_us_time()
 
     if not logic.can_run(pos, meta, true) then

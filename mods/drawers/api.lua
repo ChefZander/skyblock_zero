@@ -91,7 +91,7 @@ function drawers.drawer_on_destruct(pos)
 	end
 end
 
--- drop all items
+-- don't drop all items
 function drawers.drawer_on_dig(pos, node, player)
 	local drawerType = 1
 	if core.registered_nodes[node.name] then
@@ -99,33 +99,19 @@ function drawers.drawer_on_dig(pos, node, player)
 	end
 	if core.is_protected(pos, player:get_player_name()) then
 		core.record_protection_violation(pos, player:get_player_name())
-		return 0
+		return false
 	end
-	local meta = core.get_meta(pos)
 
+
+	local meta = core.get_meta(pos)
 	local k = 1
 	while k <= drawerType do
 		-- don't add a number in meta fields for 1x1 drawers
 		local vid = tostring(k)
 		if drawerType == 1 then vid = "" end
 		local count = meta:get_int("count" .. vid)
-		local name = meta:get_string("name" .. vid)
-
-		-- drop the items
-		local stack_max = ItemStack(name):get_stack_max()
-
-		local j = math.floor(count / stack_max) + 1
-		local i = 1
-		while i <= j do
-			local rndpos = drawers.randomize_pos(pos)
-			if i ~= j then
-				core.add_item(rndpos, name .. " " .. stack_max)
-			else
-				core.add_item(rndpos, name .. " " .. count % stack_max)
-			end
-			i = i + 1
-		end
 		k = k + 1
+		if count > 0 then return end
 	end
 
 	-- drop all drawer upgrades
@@ -133,12 +119,10 @@ function drawers.drawer_on_dig(pos, node, player)
 	if upgrades then
 		for _, itemStack in pairs(upgrades) do
 			if itemStack:get_count() > 0 then
-				local rndpos = drawers.randomize_pos(pos)
-				core.add_item(rndpos, itemStack:get_name())
+				return false
 			end
 		end
 	end
-
 	-- remove node
 	core.node_dig(pos, node, player)
 end
@@ -373,7 +357,7 @@ function drawers.register_drawer(name, def)
 			drawers.spawn_visuals(to_pos)
 		end)
 	end
-	def = unifieddyes.def(def)
+	def = unifieddyes.def(def, false)
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
 		local def1 = table.copy(def)

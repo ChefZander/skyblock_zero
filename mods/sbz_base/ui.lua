@@ -5,5 +5,5 @@ local ui = sbz_api.ui
 
 ui.get_content_box = function(player, x, y, w, h)
     local boxcolor = sbz_api.get_box_color(player)
-    return ("box[%s,%s;%s,%s;%s]"):format(x, y, w, h, boxcolor)
+    return ("box[%s,%s;%s,%s;%s]"):format(x, y, w, h, "" --[[, boxcolor]])
 end

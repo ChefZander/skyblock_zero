@@ -105,7 +105,7 @@ sbz_api.register_theme("space", {
     theme_color = shift_color_by_vars_hue("blue"),
     box_theme = {
         border_color = shift_color_by_vars_hue("#00b9b9"),
-        border_width = "10",
+        border_width = "20",
         inner_color = shift_color_by_vars_hue("lightblue#10"),
     }
 })
@@ -332,9 +332,12 @@ sbz_api.prepend_from_theme = function(theme, config)
     end
 
     if theme.box_theme then -- then there is a util to get default box color
-        prepend[#prepend + 1] = ("style_type[box;%s]"):format("bordercolors=" ..
-            exec_conf_function_or_string(theme.box_theme.border_color, config) ..
-            ",borderwidths=" .. theme.box_theme.border_width)
+        prepend[#prepend + 1] = ("style_type[box;colors=%s;bordercolors=%s;borderwidths=%s]"):format(
+            exec_conf_function_or_string(theme.box_theme.inner_color, config),
+            exec_conf_function_or_string(theme.box_theme.border_color, config),
+            theme.box_theme.border_width
+        )
+        core.debug(dump(prepend[#prepend]))
     end
 
     return table.concat(prepend)

@@ -13,7 +13,7 @@ minetest.register_on_mods_loaded(function()
 
         if v.power_needed or v.info_power_needed or v.info_power_consume then
             new_desc[#new_desc + 1] = "Consumes " ..
-            (v.power_needed or v.info_power_needed or v.info_power_consume) .. " power"
+                (v.power_needed or v.info_power_needed or v.info_power_consume) .. " power"
         end
         if v.power_generated or v.info_generated then
             new_desc[#new_desc + 1] = "Generates " .. (v.power_generated or v.info_generated) .. " power"
@@ -87,7 +87,7 @@ minetest.register_on_mods_loaded(function()
 
         if #new_desc > 1 then
             for i = 2, #new_desc do
-                new_desc[i] = minetest.colorize("#333333", new_desc[i])
+                new_desc[i] = minetest.colorize("#777", new_desc[i])
             end
             minetest.override_item(k, {
                 description = table.concat(new_desc, "\n"),

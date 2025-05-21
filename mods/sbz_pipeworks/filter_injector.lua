@@ -267,6 +267,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                     ]]
                     local count = math.min(stack:get_count(), doRemove)
                     taken = taken + count
+                    if exmatch_mode == 0 then
+                        break
+                    end
                 end
             end
             if slotseq_mode == 2 then
@@ -280,11 +283,9 @@ minetest.register_node("pipeworks:automatic_filter_injector", {
                 else
                     return false
                 end
-            else
-                if filterfor.count and (filterfor.count ~= 1 or exmatch_mode ~= 0) then
-                    taken = math.min(taken, filterfor.count)
-                end
-                if filterfor.count and (exmatch_mode == 1) and (filterfor.count > taken) then return false end
+            elseif filterfor.count and exmatch_mode == 1 then
+                if (filterfor.count > taken) then return false end
+                taken = math.min(taken, filterfor.count)
             end
 
             local take_multiple = (filterfor.count ~= nil) and (exmatch_mode ~= 2)
