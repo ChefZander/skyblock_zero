@@ -58,6 +58,7 @@ They store 3200 of 1 type of item (without upgrades). With upgrades they can sto
 Drawers also come with 1x2 and 4x4 variants.
 
 <b>Tip: These support the automatic filter injector.</b>
+<b>Tip: Unlike the regular minetest-mods/drawers, these ones can't get dug when they contain something</b>
 ]],
         requires = { "Storinators" }
     },
