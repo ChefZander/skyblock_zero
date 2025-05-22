@@ -318,7 +318,7 @@ core.register_node("sbz_instatube:instant_tube", unifieddyes.def {
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },
@@ -363,7 +363,7 @@ core.register_node("sbz_instatube:one_way_instatube", unifieddyes.def {
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 80,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },
@@ -423,7 +423,7 @@ listring[]
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },
@@ -512,7 +512,7 @@ core.register_node("sbz_instatube:high_priority_instant_tube", unifieddyes.def {
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },
@@ -555,7 +555,7 @@ core.register_node("sbz_instatube:low_priority_instant_tube", unifieddyes.def {
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },
@@ -616,7 +616,7 @@ core.register_node("sbz_instatube:teleport_instant_tube", unifieddyes.def {
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
         tptube = 1,
@@ -693,7 +693,7 @@ core.register_node("sbz_instatube:randomized_input_instant_tube", unifieddyes.de
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },
@@ -735,7 +735,7 @@ core.register_node("sbz_instatube:cycling_input_instant_tube", unifieddyes.def {
         instatube = 1,
         cracky = 3,
         habitat_conducts = 1,
-        explody = 100,
+
         tubedevice_receiver = 1,
         tubedevice = 1,
     },

@@ -160,3 +160,17 @@ function sbz_api.get_attraction(pos1, pos2)
     local length = vector.length(dir)
     return vector.normalize(dir) * (length ~= 0 and (length ^ (-2)) or 0)
 end
+
+-- If for whatever reason the repulsors/attractors entities dissapeared:
+core.register_lbm {
+    label = "Restore entities of meteorite repulsors/attractors",
+    name = "sbz_meteorites:restore_attractors_repulsors",
+    nodenames = { "sbz_meteorites:gravitational_attractor", "sbz_meteorites:gravitational_repulsor" },
+    run_at_every_load = true,
+    action = function(pos, node, dtime_s)
+        local ents = core.get_objects_inside_radius(pos, 0.5)
+        if #ents == 0 then
+            minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
+        end
+    end
+}

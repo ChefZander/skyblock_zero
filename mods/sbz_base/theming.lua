@@ -104,8 +104,8 @@ sbz_api.register_theme("space", {
     end,
     theme_color = shift_color_by_vars_hue("blue"),
     box_theme = {
-        border_color = shift_color_by_vars_hue("#00b9b9"),
-        border_width = "20",
+        border_color = shift_color_by_vars_hue("#143464"),
+        border_width = "-2",
         inner_color = shift_color_by_vars_hue("lightblue#10"),
     }
 })
@@ -148,7 +148,7 @@ sbz_api.register_theme("tilde", {
     textcolor_buttonlike = "black",
     theme_color = "lightgreen",
     box_theme = {
-        inner_color = "#262f26",
+        inner_color = "#282828",
         border_width = "0",
         border_color = "#000"
     }
@@ -337,7 +337,6 @@ sbz_api.prepend_from_theme = function(theme, config)
             exec_conf_function_or_string(theme.box_theme.border_color, config),
             theme.box_theme.border_width
         )
-        core.debug(dump(prepend[#prepend]))
     end
 
     return table.concat(prepend)

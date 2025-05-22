@@ -43,17 +43,18 @@ sbz_api.crusher_drops = {}
 sbz_api.crusher_drops_enhanced = {}
 sbz_api.unused_chem = {}
 
-sbz_api.register_element = function(name, color, description, def)
+sbz_api.register_element = function(name, color, description, def, mod)
+    mod = mod or "sbz_chem:"
     def = def or {}
     local disabled, part_of_crusher_drops, radioactive = def.disabled, def.part_of_crusher_drops, def.radioactive
     if disabled == nil then disabled = false end
     local disabled_group = disabled and 1 or nil
-    core.register_craftitem("sbz_chem:" .. name .. "_powder", {
+    core.register_craftitem(mod .. name .. "_powder", {
         groups = { chem_element = 1, powder = 1, not_in_creative_inventory = disabled_group, chem_disabled = disabled_group, radioactive = radioactive },
         description = string.format(description, "Powder"),
         inventory_image = "powder.png^[colorize:" .. color .. ":150"
     })
-    core.register_craftitem("sbz_chem:" .. name .. "_ingot", {
+    core.register_craftitem(mod .. name .. "_ingot", {
         groups = { chem_element = 1, ingot = 1, not_in_creative_inventory = disabled_group, chem_disabled = disabled_group, radioactive = radioactive },
         description = string.format(description, "Ingot"),
         inventory_image = "ingot.png^[multiply:" .. color --[[.. ":150"]],
@@ -61,7 +62,7 @@ sbz_api.register_element = function(name, color, description, def)
     })
     local rad_resistance = def.radiation_resistance or 0
 
-    core.register_node("sbz_chem:" .. name .. "_block", unifieddyes.def {
+    core.register_node(mod .. name .. "_block", unifieddyes.def {
         groups = {
             chem_element = 1,
             chem_block = 1,
@@ -82,7 +83,7 @@ sbz_api.register_element = function(name, color, description, def)
 
     -- fluid
     if def.fluid then
-        core.register_node(("sbz_chem:%s_fluid_source"):format(name), {
+        core.register_node(("%s%s_fluid_source"):format(mod, name), {
             description = description:format("Fluid Source"),
             drawtype = "liquid",
             tiles = {
@@ -112,8 +113,8 @@ sbz_api.register_element = function(name, color, description, def)
             pointable = false,
             buildable_to = true,
             liquidtype = "source",
-            liquid_alternative_source = ("sbz_chem:%s_fluid_source"):format(name),
-            liquid_alternative_flowing = ("sbz_chem:%s_fluid_flowing"):format(name),
+            liquid_alternative_source = ("%s%s_fluid_source"):format(mod, name),
+            liquid_alternative_flowing = ("%s%s_fluid_flowing"):format(mod, name),
             drop = "",
             liquid_viscosity = 7,
             liquid_renewable = false,
@@ -122,7 +123,7 @@ sbz_api.register_element = function(name, color, description, def)
             },
             light_source = 14,
             liquid_range = 2,
-            chem_block_form = "sbz_chem:" .. name .. "_block"
+            chem_block_form = mod .. name .. "_block"
         })
 
         local animation = {
@@ -132,7 +133,7 @@ sbz_api.register_element = function(name, color, description, def)
             length = 8,
         }
 
-        minetest.register_node(("sbz_chem:%s_fluid_flowing"):format(name), {
+        minetest.register_node(("%s%s_fluid_flowing"):format(mod, name), {
             description = description:format("Fluid Flowing"),
             drawtype = "flowingliquid",
             tiles = { { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), } },
@@ -169,8 +170,8 @@ sbz_api.register_element = function(name, color, description, def)
             pointable = false,
             buildable_to = true,
             liquidtype = "flowing",
-            liquid_alternative_source = ("sbz_chem:%s_fluid_source"):format(name),
-            liquid_alternative_flowing = ("sbz_chem:%s_fluid_flowing"):format(name),
+            liquid_alternative_source = ("%s%s_fluid_source"):format(mod, name),
+            liquid_alternative_flowing = ("%s%s_fluid_flowing"):format(mod, name),
             drop = "",
             liquid_viscosity = 7,
             sbz_node_damage = {
@@ -179,11 +180,11 @@ sbz_api.register_element = function(name, color, description, def)
             liquid_renewable = false,
             light_source = 14,
             liquid_range = 2,
-            chem_block_form = "sbz_chem:" .. name .. "_block",
+            chem_block_form = mod .. name .. "_block",
 
         })
 
-        sbz_api.register_fluid_cell(("sbz_chem:%s_fluid_cell"):format(name), {
+        sbz_api.register_fluid_cell(("%s%s_fluid_cell"):format(mod, name), {
             description = description:format("Fluid Cell"),
             groups = {
                 chem_disabled = disabled_group,
@@ -191,10 +192,10 @@ sbz_api.register_element = function(name, color, description, def)
                 chem_fluid_source = 0,
                 not_in_creative_inventory = disabled_group,
             }
-        }, ("sbz_chem:%s_fluid_source"):format(name), color)
+        }, ("%s%s_fluid_source"):format(mod, name), color)
     end
     if not disabled then
-        stairs.register("sbz_chem:" .. name .. "_block", {
+        stairs.register(mod .. name .. "_block", {
             tiles = {
                 "block_full.png^[colorize:" .. color .. ":200",
                 "block_full.png^[colorize:" .. color .. ":200",
@@ -211,40 +212,40 @@ sbz_api.register_element = function(name, color, description, def)
         })
         minetest.register_craft({
             type = "cooking",
-            output = "sbz_chem:" .. name .. "_ingot",
-            recipe = "sbz_chem:" .. name .. "_powder",
+            output = mod .. name .. "_ingot",
+            recipe = mod .. name .. "_powder",
         })
         unified_inventory.register_craft {
             type = "crushing",
-            output = "sbz_chem:" .. name .. "_powder",
-            items = { "sbz_chem:" .. name .. "_ingot" }
+            output = mod .. name .. "_powder",
+            items = { mod .. name .. "_ingot" }
         }
 
         unified_inventory.register_craft {
             type = "compressing",
-            output = "sbz_chem:" .. name .. "_block",
-            items = { "sbz_chem:" .. name .. "_powder 9" }
+            output = mod .. name .. "_block",
+            items = { mod .. name .. "_powder 9" }
         }
         unified_inventory.register_craft {
             type = "compressing",
-            output = "sbz_chem:" .. name .. "_block",
-            items = { "sbz_chem:" .. name .. "_ingot 9" }
+            output = mod .. name .. "_block",
+            items = { mod .. name .. "_ingot 9" }
         }
 
         unified_inventory.register_craft {
             type = "crushing",
-            output = "sbz_chem:" .. name .. "_powder 9",
-            items = { "sbz_chem:" .. name .. "_block" }
+            output = mod .. name .. "_powder 9",
+            items = { mod .. name .. "_block" }
         }
 
         if part_of_crusher_drops == nil or part_of_crusher_drops == true then
-            sbz_api.crusher_drops[#sbz_api.crusher_drops + 1] = "sbz_chem:" .. name .. "_powder"
-            sbz_api.crusher_drops_enhanced[#sbz_api.crusher_drops_enhanced + 1] = "sbz_chem:" .. name .. "_powder"
+            sbz_api.crusher_drops[#sbz_api.crusher_drops + 1] = mod .. name .. "_powder"
+            sbz_api.crusher_drops_enhanced[#sbz_api.crusher_drops_enhanced + 1] = mod .. name .. "_powder"
         elseif def.part_of_enhanced_drops == true then
-            sbz_api.crusher_drops_enhanced[#sbz_api.crusher_drops_enhanced + 1] = "sbz_chem:" .. name .. "_powder"
+            sbz_api.crusher_drops_enhanced[#sbz_api.crusher_drops_enhanced + 1] = mod .. name .. "_powder"
         end
     else
-        sbz_api.unused_chem[#sbz_api.unused_chem + 1] = "sbz_chem:" .. name
+        sbz_api.unused_chem[#sbz_api.unused_chem + 1] = mod .. name
     end
 end
 
