@@ -128,7 +128,7 @@ local function use(pos, owner, item_def, inv, index, dir)
     stack = item_def.on_use(stack, player, pointed_thing) or stack
     player:set_wielded_item(stack)
 
-    dont_wear_out(stack, old_stack, player.def_item)
+    dont_wear_out(stack, old_stack, player, item_def)
 end
 
 local function see(pos, lc_from_pos, builder_from_pos)
