@@ -1,18 +1,14 @@
 local ie = minetest.request_insecure_environment()
 if ie == nil and (debug.getupvalue == nil and debug.getlocal == nil) then
     minetest.log("warning", [[
-===== ATTENTION (this is mainly for servers)=======
-Libox is not included in trusted mods,
-this means that libox cannot measure local variables and upvalues inside coroutine sandboxes
-(it needs debug.getlocal and debug.getupvalue to do it)
+====Hello, this message is for server owners====
+Libox needs to be a trusted mod for weighing of coroutine sandboxes to work properly.
+If it isn't, coroutine sandboxes could fill up your server's memory with local variables and upvalues.
 
-LIBOX WILL EXPOSE AND USE debug.getlocal AND debug.getupvalue
-also MAKE SURE TO TRUST ALL MODS IF YOU MAKE LIBOX A TRUSTED MOD
-
-If you don't use coroutine sandboxes, feel free to ignore this warning
-Libox can also reuse debug.getlocal and getupvalue if it is already avaliable in the environment
-========== ATTENTION END ==========
-        ]])
+Libox can re-use debug.getlocal and debug.getupvalue if it is already avaliable in the environment
+When adding libox to secure.trusted_mods, be aware that it will expose debug.getlocal and debug.getupvalue
+================================================
+]])
 elseif debug.getlocal == nil or debug.getupvalue == nil and ie ~= nil then
     -- luacheck:ignore
     debug.getlocal = ie.debug.getlocal

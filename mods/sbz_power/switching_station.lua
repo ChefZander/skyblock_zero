@@ -418,7 +418,7 @@ local function profiler_formspec(pos, username)
     local fs = [[
 formspec_version[7]
 size[10,11]
-tablecolumns[text,align=left;text,align=center;text,align=center;text,align=center]
+tablecolumns[text,align=left,width=12;text,align=center,padding=4;text,align=center;text,align=center]
 table[0,0;10,10;machines;Type,Amount,Lag,Power,%s;1]
 button_exit[0,10;10,1;exit;Exit]
 ]]

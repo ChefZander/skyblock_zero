@@ -1,13 +1,18 @@
-sbz_progression = {}
+-- sbz_progression = {}
 
 local modpath = minetest.get_modpath("sbz_progression")
 
+dofile(modpath .. "/quest_parser.lua")
 dofile(modpath .. "/quests.lua")
 dofile(modpath .. "/questbook.lua")
 dofile(modpath .. "/annoy.lua")
 
-local mod_storage = core.get_mod_storage()
-sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
+-- Do this if you want to make a unified quests.md for whatever reason
+--assert(io.open(modpath .. "/quests/quests.md", "w+")):write(sbz_api.quest_parser.encode(quests))
+
+
+-- local mod_storage = core.get_mod_storage()
+-- sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
 
 function sbz_api.displayDialogLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
@@ -170,7 +175,8 @@ minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
         -- pos stuff
         local pos = player:get_pos()
-        local safetynet_low = (player:get_meta():get_int("dynamic_safetynet") == 1) and sbz_progression.lowest_node or 0
+        -- local safetynet_low = (player:get_meta():get_int("dynamic_safetynet") == 1) and sbz_progression.lowest_node or 0
+        local safetynet_low = 0
         if pos.y < safetynet_low - 100 then
             unlock_achievement(player:get_player_name(), "Emptiness")
         end
@@ -260,9 +266,9 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
     end
 end)
 
-core.register_on_placenode(function(pos, newnode, _, _, _, _)
-    if newnode.name == "sbz_resources:emitter" then return end
-    if pos.y >= sbz_progression.lowest_node then return end
-    sbz_progression.lowest_node = pos.y
-    mod_storage:set_int("lowest_node", pos.y)
-end)
+-- core.register_on_placenode(function(pos, newnode, _, _, _, _)
+--     if newnode.name == "sbz_resources:emitter" then return end
+-- if pos.y >= sbz_progression.lowest_node then return end
+-- sbz_progression.lowest_node = pos.y
+-- mod_storage:set_int("lowest_node", pos.y)
+-- end)

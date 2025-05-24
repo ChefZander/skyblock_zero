@@ -23,7 +23,7 @@ local function attract_meteorites(pos, dtime, t)
 
         local magnitude = 256
         if obj:is_player() then
-            if not playereffects.has_effect_type(obj:get_player_name() ,"immune") then
+            if not playereffects.has_effect_type(obj:get_player_name(), "immune") then
                 local wielded_item = obj:get_wielded_item()
                 if wielded_item:is_empty() then return end
                 magnitude = (wielded_item:get_definition().groups or {}).attraction

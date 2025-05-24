@@ -106,15 +106,22 @@ sbz_api.register_theme("space", {
     box_theme = {
         border_color = shift_color_by_vars_hue("#143464"),
         border_width = "-2",
-        inner_color = shift_color_by_vars_hue("lightblue#10"),
+        inner_color = shift_color_by_vars_hue("#1C1D27"),
+    },
+    table_theme = {
+        background = shift_color_by_vars_hue("#1C1D27"),
+        color = shift_color_by_vars_hue("lightblue"),
+        highlight = shift_color_by_vars_hue("#143463"),
+        border = true, -- its a very faint and useless border
     }
 })
 
 sbz_api.register_theme("tilde", {
     default = false,
-    unordered = false, -- I feel like it would be an insult to the website itself honestly this theme looks bad
+    unordered = false, -- I feel like it would be an insult to the website itself honestly, the way i implemented this theme looks so bad
     name = "Tilde",
-    description = "Theme inspired by https://tilde.team, some things may look ugly",
+    description =
+    "Theme inspired by https://tilde.team, This theme will most likely change a lot in the future. Some things may look ugly.",
     --    force_font = ";font=mono", -- => @@FONT
     config = {
         ["FONT"] = { -- becomes @@FONT
@@ -149,8 +156,14 @@ sbz_api.register_theme("tilde", {
     theme_color = "lightgreen",
     box_theme = {
         inner_color = "#282828",
-        border_width = "0",
-        border_color = "#000"
+        border_width = "-2",
+        border_color = "#14A02E"
+    },
+    table_theme = {
+        background = "#282828",
+        color = "lightgreen",
+        highlight = "#14A02E",
+        border = true, -- its a very faint and useless border
     }
 })
 
@@ -299,10 +312,12 @@ sbz_api.prepend_from_theme = function(theme, config)
             "textarea",
             "tabheader",
             "textlist",
+            "table",
         }, ",")
 
         prepend[#prepend + 1] = "style_type[" .. force_font_types .. config.FONT .. "]"
     end
+
     if theme.background then
         prepend[#prepend + 1] = ("background9[0,0;0,0;%s;true;%s]"):format(
             process_text(theme.background.name, variables), theme.background.middle)
@@ -337,6 +352,15 @@ sbz_api.prepend_from_theme = function(theme, config)
             exec_conf_function_or_string(theme.box_theme.border_color, config),
             theme.box_theme.border_width
         )
+    end
+
+    if theme.table_theme then
+        local style = ""
+        for key, value in pairs(theme.table_theme) do
+            if type(value) == "boolean" then value = tostring(value) end
+            style = style .. key .. "=" .. exec_conf_function_or_string(value, config) .. ";"
+        end
+        prepend[#prepend + 1] = ("tableoptions[%s]"):format(string.sub(style, 1, #style - 1))
     end
 
     return table.concat(prepend)

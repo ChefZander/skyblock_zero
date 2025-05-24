@@ -20,14 +20,23 @@ local quest_files = {
     "Status_Effects",
 }
 
-local function foreach(t, f)
-    for k, v in ipairs(t) do f(v) end
-end
 
+--- Use markdown instead!
+--- So sbz_api.quests_from_file_md
+---@deprecated
 function sbz_api.quests_from_file(path)
-    foreach(assert(loadfile(path))(), sbz_api.register_quest)
+    table.foreach(assert(loadfile(path))(), sbz_api.register_quest, true)
 end
 
-foreach(quest_files, function(name)
-    sbz_api.quests_from_file(minetest.get_modpath("sbz_progression") .. "/quests/" .. name .. ".lua")
-end)
+function sbz_api.quests_from_file_md(path)
+    local file = assert(io.open(path))
+    local qdata = sbz_api.quest_parser.decode(file:read("*a"))
+    file:close()
+    table.foreach(qdata, sbz_api.register_quest, true)
+end
+
+local t0 = core.get_us_time()
+table.foreach(quest_files, function(name)
+    sbz_api.quests_from_file_md(minetest.get_modpath("sbz_progression") .. "/quests/" .. name .. ".md")
+end, true)
+core.log("action", "Loading quests from markdown took: " .. ((core.get_us_time() - t0) / 1000) .. "ms")

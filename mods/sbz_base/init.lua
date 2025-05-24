@@ -17,7 +17,7 @@ sbz_api = {
         end
         return false
     end,
-    accelerated_habitats = false, -- for debug
+    accelerated_habitats = false,
     debug = minetest.settings:get_bool("sbz_debug", false),
     logic_gate_linking_range = 15,
 }
@@ -73,11 +73,13 @@ end
 ---@diagnostic disable-next-line: duplicate-set-field
 table.foreach = function(t, f, key_last)
     for k, v in pairs(t) do
+        local ret
         if key_last then
-            f(v, k)
+            ret = f(v, k)
         else
-            f(k, v)
+            ret = f(k, v)
         end
+        if ret then t[k] = ret end
     end
     return t
 end

@@ -1,6 +1,8 @@
 sbz_api.logic = {
     log = function(msg)
-        core.log("action", ("[sbz_logic] %s"):format(msg))
+        if sbz_api.debug then
+            core.log("action", ("[sbz_logic] %s"):format(msg))
+        end
     end
 }
 
@@ -25,7 +27,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     description = "Lua Controller",
     info_extra = {
         "The most complex block in this game.",
-        "No like actually...",
+        "No like actually... it might be",
         "Punch with the basic editor disk to get started.",
     },
     disallow_pipeworks = true,
