@@ -118,11 +118,11 @@ local function formspec_add_categories(player, formspec, ui_peruser)
 		ui_peruser.page_x,
 		ui_peruser.form_header_y - 0.2
 	}
-
-	formspec[n] = sbz_api.ui.get_content_box(player, ui_peruser.page_x - 0.15, categories_scroll_pos[2],
+	sbz_api.ui.set_player(player)
+	formspec[n] = sbz_api.ui.box(ui_peruser.page_x - 0.15, categories_scroll_pos[2],
 		(ui_peruser.btn_spc * ui_peruser.pagecols) + 0.2, 1)
 	n = n + 1
-
+	sbz_api.ui.del_player(player)
 
 	-- formspec[n] = string.format("label[%f,%f;%s]",
 	-- 	ui_peruser.page_x,
@@ -166,10 +166,13 @@ local function formspec_add_search_box(player, formspec, ui_peruser)
 
 	formspec[n] = "field_close_on_enter[searchbox;false]"
 
-	formspec[n + 1] = string.format("field[%f,%f;%f,%f;searchbox;;%s]",
+	sbz_api.ui.set_player(player)
+	formspec[n + 1] = sbz_api.ui.field(
 		ui_peruser.page_buttons_x, ui_peruser.page_buttons_y,
 		ui_peruser.searchwidth - 0.1, ui_peruser.btn_size,
+		"searchbox", "",
 		F(ui.current_searchbox[player_name]))
+	sbz_api.ui.del_player(player)
 	formspec[n + 2] = string.format("image_button[%f,%f;%f,%f;ui_search_icon.png;searchbutton;]",
 		ui_peruser.page_buttons_x + ui_peruser.searchwidth, ui_peruser.page_buttons_y,
 		ui_peruser.btn_size, ui_peruser.btn_size)

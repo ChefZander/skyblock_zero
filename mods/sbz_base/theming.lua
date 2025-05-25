@@ -112,7 +112,18 @@ sbz_api.register_theme("space", {
         background = shift_color_by_vars_hue("#1C1D27"),
         color = shift_color_by_vars_hue("lightblue"),
         highlight = shift_color_by_vars_hue("#143463"),
-        border = true, -- its a very faint and useless border
+        border = false, -- its a very faint and useless border
+    },
+    hypertext_prepend = function(conf)
+        return ("<global color=%s %s>"):format(shift_color_by_vars_hue("lightblue")(conf),
+            conf.FONT and "font=mono" or "")
+    end,
+    big_hypertext_prepend = function(conf)
+        return ("<global color=%s %s>"):format(shift_color_by_vars_hue("#e8f4f8")(conf),
+            conf.FONT and "font=mono" or "")
+    end,
+    field_theme = {
+        use_box = true
     }
 })
 
@@ -163,7 +174,7 @@ sbz_api.register_theme("tilde", {
         background = "#282828",
         color = "lightgreen",
         highlight = "#14A02E",
-        border = true, -- its a very faint and useless border
+        border = false, -- its a very faint and useless border
     }
 })
 
@@ -244,6 +255,7 @@ sbz_api.get_theme_config = function(player, raw_config)
     end
     return theme_config
 end
+
 
 local labellike = {
     "label",
@@ -454,4 +466,18 @@ sbz_api.get_box_color = function(player)
     local theme = sbz_api.get_theme(player)
     if not theme.box_theme then theme = sbz_api.themes[default_theme] end
     return exec_conf_function_or_string(theme.box_theme.inner_color, sbz_api.get_theme_config(player))
+end
+
+sbz_api.get_hypertext_prepend = function(player, theme, config)
+    if not theme.hypertext_prepend then
+        return ""
+    end
+    return exec_conf_function_or_string(theme.hypertext_prepend, config)
+end
+
+sbz_api.get_big_hypertext_prepend = function(player, theme, config)
+    if not theme.big_hypertext_prepend then
+        return sbz_api.get_hypertext_prepend(player, theme, config)
+    end
+    return exec_conf_function_or_string(theme.big_hypertext_prepend, config)
 end

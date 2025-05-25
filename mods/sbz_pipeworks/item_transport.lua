@@ -111,8 +111,10 @@ end
 
 
 
+local adjlist_cache = {}
 -- compatibility behaviour for the existing can_go() callbacks,
 -- which can only specify a list of possible positions.
+-- the fact that minetest.deserialize used to be in this function just not cached hurts my soul
 local function go_next_compat(pos, cnode, cmeta, cycledir, vel, stack, owner, tags)
 	local next_positions = {}
 	local max_priority = 0
@@ -123,8 +125,19 @@ local function go_next_compat(pos, cnode, cmeta, cycledir, vel, stack, owner, ta
 		can_go = def.tube.can_go(pos, cnode, vel, stack, tags)
 	else
 		local adjlist_string = minetest.get_meta(pos):get_string("adjlist")
-		local adjlist = minetest.deserialize(adjlist_string) or
-			default_adjlist -- backward compat: if not found, use old behavior: all directions
+		local adjlist
+		if adjlist_string ~= "" then
+			adjlist = adjlist_cache[adjlist_string]
+			if not adjlist then
+				adjlist_cache[adjlist_string] = core.deserialize(adjlist_string)
+				adjlist = adjlist_cache[adjlist_string]
+			end
+		else
+			adjlist = default_adjlist
+		end
+		if not adjlist then
+			adjlist = default_adjlist
+		end
 
 		can_go = pipeworks.notvel(adjlist, vel)
 	end
