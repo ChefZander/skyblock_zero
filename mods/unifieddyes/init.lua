@@ -35,6 +35,7 @@ local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 dofile(modpath .. "/color-tables.lua")
 dofile(modpath .. "/api.lua")
+dofile(modpath .. "/nodes.lua")
 dofile(modpath .. "/airbrush.lua")
 
 print("[UnifiedDyes] Loaded!")

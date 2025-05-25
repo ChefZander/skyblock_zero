@@ -1,37 +1,3 @@
-minetest.register_craftitem("unifieddyes:colorium", {
-	description = "Colorium",
-	inventory_image = "colorium.png",
-})
-minetest.register_craft {
-	type = "cooking",
-	output = "unifieddyes:colorium",
-	recipe = "unifieddyes:colorium_powder",
-}
-
-minetest.register_craftitem("unifieddyes:colorium_powder", {
-	description = "Colorium Powder",
-	inventory_image = "powder.png^[mask:colorium.png",
-})
-minetest.register_node("unifieddyes:colorium_blob", unifieddyes.def {
-	description = "Colorium Blob",
-	tiles = {
-		"blank.png^[invert:rgba"
-	},
-	light_source = 14,
-	info_extra = "A pure white colorable node.",
-	groups = { matter = 1, antimatter = 1, charged = 1 }
-})
-minetest.register_craft {
-	output = "unifieddyes:colorium_blob",
-	recipe = {
-		{ "unifieddyes:colorium", "unifieddyes:colorium", "unifieddyes:colorium", },
-		{ "unifieddyes:colorium", "unifieddyes:colorium", "unifieddyes:colorium", },
-		{ "unifieddyes:colorium", "unifieddyes:colorium", "unifieddyes:colorium", },
-	}
-}
-
-stairs.register("unifieddyes:colorium_blob")
-
 local function sheet(t, sx, sy, x, y)
 	sx = sx + 1
 	sy = sy + 1
