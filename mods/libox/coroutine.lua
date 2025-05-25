@@ -9,7 +9,10 @@ api.settings = {
         number_of_sandboxes = 60,
         auto = false,
         interval = 60
-    }
+    },
+    autohook = {
+        enabled = false,
+    },
 }
 
 local settings = minetest.settings
@@ -40,6 +43,11 @@ end
 
 do_the_settings_thing("libox", api.settings)
 
+local attach_autohook
+if api.settings.autohook.enabled then
+    attach_autohook = libox_attach_autohook
+end
+
 local BYTE_A, BYTE_Z = string.byte("A"), string.byte("Z")
 local function rand_text(n)
     local out = ""
@@ -61,7 +69,8 @@ function api.create_sandbox(def)
         function_wrap = def.function_wrap or function(f) return f end,
         last_ran = os.clock(),                         -- for gc and logging
         hook_time = def.hook_time or libox.default_hook_time,
-        size_limit = def.size_limit or 1024 * 1024 * 5 -- 5 megabytes
+        size_limit = def.size_limit or 1024 * 1024 * 5, -- 5 megabytes
+        autohook = def.autohook or false,
     }
     return ID
 end
@@ -275,7 +284,17 @@ function api.run_sandbox(ID, value_passed)
     -- "nested pcall just in case" i knowww its bad and it sounds bad but yeah i had crashes when there wasnt a pcall adn yeaah
     local no_strange_bug_happened = pcall(function()
         pcall_ok, pcall_errmsg = pcall(function()
-            debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
+            if sandbox.autohook then
+                if attach_autohook then
+                    attach_autohook()
+                else
+                    core.log('warning', ([[Autohook failed! Creating coroutine sandbox %q without autohook...
+(Did you enable the libox.autohook.enabled setting?)]]):format(ID))
+                    debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
+                end
+            else
+                debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
+            end
             getmetatable("").__index = sandbox.env.string
             ok, errmsg_or_value = coroutine.resume(thread, value_passed)
             debug.sethook()

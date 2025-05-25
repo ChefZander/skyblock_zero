@@ -9,3 +9,8 @@ sbz_pipe_backface_culling (Tube backface culling) bool true
 # Enables Debug logging
 # Adds more logging basically
 sbz_debug (Debug Logging) bool false
+
+# Enables the experimental autohook feature for coroutine sandboxes.
+# This affects the Lua Controller's main sandbox.
+# Read more about it in knowledge station.
+libox.autohook.enabled (Enable experimental autohook coroutine sandboxes) bool false

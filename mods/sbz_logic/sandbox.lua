@@ -174,6 +174,7 @@ function logic.turn_on(pos)
         env = logic.get_env(pos, meta, id),
         size_limit = max_ram,
         time_limit = time_limit,
+        autohook = true,
     }
     meta:set_string("ID", id)
     meta:mark_as_private("ID")

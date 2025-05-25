@@ -15,13 +15,33 @@ elseif debug.getlocal == nil or debug.getupvalue == nil and ie ~= nil then
     debug.getupvalue = ie.debug.getupvalue
 end
 
-ie = nil -- luacheck: ignore
+if not ie then
+    core.log("warning", [[
+
+------------------------------- [LIBOX] ATTENTION ------------------------------
+You have not included libox in trusted mods. As such, the autohook feature will
+not work. This will cause autohook coroutine sandboxes to behave like regular
+coroutine sandboxes instead of one with auto-yielding.
+--------------------------------------------------------------------------------
+]])
+else
+    local MP = core.get_modpath("libox")
+    local lib
+    if jit.os == 'Windows' then
+        lib = MP .. "/autohook/autohook.dll"
+    else -- Linux/Unix-like
+        lib = MP .. "/autohook/autohook.so"
+    end
+    libox_attach_autohook = ie.package.loadlib(lib, "luaopen_autohook")().autohook
+end
 
 local MP = minetest.get_modpath(minetest.get_current_modname())
 dofile(MP .. "/main.lua")
 
 -- Files that are executed sync only, coroutine.lua and *.test.lua
 dofile(MP .. "/coroutine.lua")
+
+libox_attach_autohook = nil
 
 -- async files
 minetest.register_async_dofile(MP .. "/main.lua")
