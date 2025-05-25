@@ -158,6 +158,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         %s
         tablecolumns[color;tree,width=0.5;text;text]
         %s
+        %s
         table[0.2,0.7;5.6,11.3;quest_list;%s;%s]
         field_close_on_enter[search;false]
         %s
@@ -166,6 +167,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 ]]):format(
         sbz_api.ui.hypertext(0.3, 0.25, 5.6, 0.5, "", "Quest List"),
         sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
+        ("style_type[table%s]"):format(sbz_api.get_font_style(sbz_api.ui.get_player_and_theme_and_config())),
         quest_list,
         selected_quest_index,
         sbz_api.ui.field(0.2, 12, 5.25, 0.5, "search", "", search_text)

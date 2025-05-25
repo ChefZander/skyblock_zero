@@ -242,6 +242,10 @@ sbz_api.get_theme_config = function(player, raw_config)
     end
 
     if not raw_config then
+        local info = core.get_player_information(player:get_player_name())
+        if info then
+            theme_config.protocol_version = info.protocol_version or 0
+        end
         for name, value in pairs(theme_def.config) do
             if value.type[1] == "bool" and value.value_true then -- basically switches 2 strings
                 if theme_config[name]
@@ -324,8 +328,12 @@ sbz_api.prepend_from_theme = function(theme, config)
             "textarea",
             "tabheader",
             "textlist",
-            "table",
         }, ",")
+
+        if (config.protocol_version) > 48 then -- when this was written, a protocol version of 49 did not exist
+            -- i think
+            force_font_types = force_font_types .. ",table"
+        end
 
         prepend[#prepend + 1] = "style_type[" .. force_font_types .. config.FONT .. "]"
     end
@@ -480,4 +488,8 @@ sbz_api.get_big_hypertext_prepend = function(player, theme, config)
         return sbz_api.get_hypertext_prepend(player, theme, config)
     end
     return exec_conf_function_or_string(theme.big_hypertext_prepend, config)
+end
+
+sbz_api.get_font_style = function(player, theme, config)
+    return config.FONT or ""
 end

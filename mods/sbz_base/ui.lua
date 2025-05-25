@@ -8,7 +8,7 @@ local player, theme, config
 ui.set_player = function(set_player)
     player = set_player
     theme = sbz_api.get_theme(set_player)
-    config = sbz_api.get_theme_config(player, true)
+    config = sbz_api.get_theme_config(player, false)
 end
 
 ui.del_player = function()
@@ -17,8 +17,16 @@ ui.del_player = function()
     config = nil
 end
 
+ui.get_theme_config = function()
+    return config
+end
+
 ui.box = function(x, y, w, h)
     return ("box[%s,%s;%s,%s;]"):format(x, y, w, h)
+end
+
+function ui.get_player_and_theme_and_config()
+    return player, theme, config
 end
 
 --- Issue: it is different for each player
@@ -26,7 +34,7 @@ function ui.pixel_size(coord_name)
     local window_info = core.get_player_window_information(player:get_player_name())
 
     if not window_info then -- i want to BAN the player for causing me such TROUBLES, but unfortunutely, some people find that undesirable, so we are just going to say its 0.1
-        return 0.1
+        return 0.05
     end
     return window_info.max_formspec_size[coord_name] / window_info.size[coord_name]
 end
