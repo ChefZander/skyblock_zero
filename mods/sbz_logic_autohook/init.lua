@@ -1,7 +1,8 @@
 local IE = core.request_insecure_environment()
 if IE then
     local MP = core.get_modpath("sbz_logic_autohook")
-    sbz_api.autohook = IE.package.loadlib(MP .. "/bin/autohook.so", "luaopen_autohook")().autohook
+    IE.package.cpath = MP .. "/bin/?.so;" .. IE.package.cpath
+    sbz_api.autohook = IE.require("autohook").autohook
 end
 IE = nil
 
