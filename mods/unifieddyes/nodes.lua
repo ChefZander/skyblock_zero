@@ -76,7 +76,7 @@ minetest.register_craft {
 core.register_craft {
     type = "shapeless",
     output = "unifieddyes:antiblock",
-    recipe = { "unifieddyes:colorium", "sbz_resources:antimatter" }
+    recipe = { "unifieddyes:colorium_blob", "sbz_resources:antimatter_dust" }
 }
 
 core.register_craft {

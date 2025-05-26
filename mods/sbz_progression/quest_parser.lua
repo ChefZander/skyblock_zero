@@ -42,6 +42,7 @@ local secret_fmt = quest_fmt:format("Secret: %s")
 local meta_fmt = "\n### %s\n"
 local requires_fmt = "Requires: %s"
 local requires_sep = ", "
+local requires_sep_trim = requires_sep:trim()
 
 local function ltrim(text) -- trim each line seperately
     return table.concat(table.foreach(text:split("\n", true), function(v) return v:trim() end, true), "\n")
@@ -148,8 +149,13 @@ local function decode_text_and_meta(lines, line_index, quest)
                 line = lines[line_index]
                 if line == nil then break end
                 if starts_with(line, "Requires: ") then
-                    quest.requires = string.split(
-                        string.sub(line, #"Requires: " + 1), requires_sep .. "%s", false, math.huge, true)
+                    quest.requires = table.foreach(
+                        string.split(
+                            string.sub(line, #"Requires: " + 1), requires_sep_trim, false, math.huge, false
+                        ),
+                        string.trim, true
+                    )
+                    core.debug(dump(quest.requires))
                 end
                 if starts_with(line, "#") then
                     line_index = line_index - 1
@@ -196,6 +202,7 @@ function markdown_parser.decode(text)
             local secret = false
             if starts_with(line, "## Secret: ") then
                 name = string.sub(line, #"## Secret: " + 1)
+                secret = true
             end
             quest.type = secret and "secret" or "quest"
             quest.title = name:trim()

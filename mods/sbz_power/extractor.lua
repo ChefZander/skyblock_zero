@@ -1,4 +1,14 @@
 -- Simple Extractor Node
+
+local formspec = [[
+        formspec_version[7]
+        size[8.2,9]
+        style_type[list;spacing=.2;size=.8]
+        list[context;main;3.5,2;1,1;]
+        list[current_player;main;0.2,5;8,4;]
+        listring[]
+   ]]
+
 sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     description = "Simple Matter Extractor",
     tiles = { "simple_matter_extractor.png" },
@@ -6,19 +16,13 @@ sbz_api.register_machine("sbz_power:simple_matter_extractor", {
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
-        minetest.get_meta(pos):set_string("formspec", [[
-        formspec_version[7]
-        size[8.2,9]
-        style_type[list;spacing=.2;size=.8]
-        list[context;main;3.5,2;1,1;]
-        list[current_player;main;0.2,5;8,4;]
-        listring[]
-    ]])
+        minetest.get_meta(pos):set_string("formspec", formspec)
     end,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 1)
+        meta:set_string("formspec", formspec)
     end,
     action = function(pos, node, meta, supply, demand)
         local inv = meta:get_inventory()
@@ -62,6 +66,15 @@ minetest.register_craft({
         { "sbz_resources:core_dust",   "sbz_resources:matter_blob",        "sbz_resources:core_dust" }
     }
 })
+local advanced_formspec = [[
+        formspec_version[7]
+        size[8.2,9]
+        style_type[list;spacing=.2;size=.8]
+        list[context;main;2.5,2;3,1;]
+        list[current_player;main;0.2,5;8,4;]
+        listring[]
+   ]]
+
 
 -- Advanced Extractor Node
 sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
@@ -72,19 +85,13 @@ sbz_api.register_machine("sbz_power:advanced_matter_extractor", {
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
-        minetest.get_meta(pos):set_string("formspec", [[
-formspec_version[7]
-size[8.2,9]
-style_type[list;spacing=.2;size=.8]
-list[context;main;2.5,2;3,1;]
-list[current_player;main;0.2,5;8,4;]
-listring[]
-    ]])
+        minetest.get_meta(pos):set_string("formspec", advanced_formspec)
     end,
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 3)
+        meta:set_string("formspec", advanced_formspec)
     end,
     action = function(pos, node, meta)
         local inv = meta:get_inventory()

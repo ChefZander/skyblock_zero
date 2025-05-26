@@ -139,7 +139,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins(quest.title)
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then
             ins("#e3a9fc")
-            ins("1")
+            ins(default_indent)
             ins("✪")
             ins(quest.title)
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) == false then
@@ -193,10 +193,13 @@ label[7.35,12.25;%s]
                 )
         elseif selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title) == false then
             formspec = formspec ..
-                hypertext:format((is_achievement_unlocked(player_name, selected_quest.title) and "✔️You have completed this Quest." or "You have not completed this Quest."))
+                hypertext:format("???",
+                    "",
+                    (is_achievement_unlocked(player_name, selected_quest.title) and "✔Shhh... don't tell anyone :)" or "You have not completed this Quest.")
+                )
         elseif selected_quest.type == "text" then
             formspec = formspec ..
-                hypertext:format("<style color=#9ab7fc><big>" .. selected_quest.title .. "</big></style>",
+                hypertext:format("<style color=#9ab7fc>" .. selected_quest.title .. "</style>",
                     (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."),
                     "")
         end
@@ -232,17 +235,25 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
             local filtered_quests = {}
             if fields.search and fields.search ~= "" then
-                local real_search = fields.search:lower()
-                local quests_with_holes = table.copy(quests)
-                for k, v in pairs(quests_with_holes) do
-                    local title = v.title:lower()
-                    if not title:find(real_search, 1, true) then
-                        quests_with_holes[k] = nil
+                if fields.search == "reachable" then -- When re-working this, don't forget to update the questbook, it's in the introduction questline, last infopage
+                    for k, v in pairs(quests) do
+                        if is_quest_available(name, v.title) and v.type == "quest" and is_achievement_unlocked(name, v.title) == false then
+                            filtered_quests[#filtered_quests + 1] = v
+                        end
                     end
-                end
-                for i = 1, #quests do
-                    if quests_with_holes[i] then
-                        filtered_quests[#filtered_quests + 1] = quests_with_holes[i]
+                else
+                    local real_search = fields.search:lower()
+                    local quests_with_holes = table.copy(quests)
+                    for k, v in pairs(quests_with_holes) do
+                        local title = v.title:lower()
+                        if not title:find(real_search, 1, true) then
+                            quests_with_holes[k] = nil
+                        end
+                    end
+                    for i = 1, #quests do
+                        if quests_with_holes[i] then
+                            filtered_quests[#filtered_quests + 1] = quests_with_holes[i]
+                        end
                     end
                 end
             else

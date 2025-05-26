@@ -92,7 +92,7 @@ P.S. if you find anything that you'd like to be compatible with the copytool, do
 
 ### Meta
 
-Requires: Tubes
+Requires: Tubes, Phlogiston Fuser
 
 ## Bulk Placer Tool
 

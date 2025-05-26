@@ -1,3 +1,5 @@
+Hello, quest files contain spoilers.
+They are also meant to be viewed in the raw form, not in the graphical form. 
 
 # Questline: Introduction
 
@@ -15,17 +17,17 @@ You have 20 health points, you re-gain them usually eating food.
 If you die, your inventory stays with you, meaning there is no reason to worry about dying.  
   
 There are several in-game commands useful in survival:  
-- /bgm_volume \<percentage\> - sets the background music's volume  
+- `/bgm_volume` \<percentage\> - sets the background music's volume  
 - commands of the areas mod - protecting using areas using /protect has been disabled, but you can still do other things  
-- /drawers_fix - if drawers appear broken just run that, command was taken from pandorabox_custom  
-- /afk - marks you as afk  
-- /core - teleports you to the core  
-- /playtime - shows your, or other player's playtime  
-- /qb - gives you the questbook if you don't have one  
-- /home - teleports you to home  
-- /sethome - sets your home  
-- /toggle_areas_hud - Toggles the areas hud, may be useful if you dont want to always see it.  
-- /theme_gui - opens the theming gui, here you can customize the theme  
+- `/drawers_fix` - if drawers appear broken just run that, command was taken from pandorabox_custom  
+- `/afk` - marks you as afk  
+- `/core` - teleports you to the core  
+- `/playtime` - shows your, or other player's playtime  
+- `/qb` - gives you the questbook if you don't have one  
+- `/home` - teleports you to home  
+- `/sethome` - sets your home  
+- `/toggle_areas_hud` - Toggles the areas hud, may be useful if you dont want to always see it.  
+- `/theme_gui` - opens the theming gui, here you can customize the theme  
   
 **Recomended for small screens**  
 in /theme_gui, you can disable "Force mono font", this will make the font less cool but it will make it smaller.  
@@ -33,6 +35,24 @@ in /theme_gui, you can disable "Force mono font", this will make the font less c
 ### Meta
 
 Requires: 
+
+## Info: Navigating the inventory
+
+### Text
+
+This game uses unified inventory. You may be familiar with it if you have played modded minetest.  
+If you aren't familiar with it, here are some things to know:  
+- Top left: categories
+- Left side: A display of all the items
+**If you click on an item button, it will first show you what that item is used for.**  
+**If you click on it a second time, it will show you how to craft that item.**
+- Bottom left: Some navigation for the left side
+- Bottom right: Some miscellaneous buttons.
+- Top right: The player inventory and the crafting inventory. There are also some buttons related to crafting, feel free to play with them.
+
+### Meta
+
+Requires:
 
 ## Introduction
 
@@ -134,7 +154,12 @@ Requires: A bigger platform
 
 ### Text
 
-The Switching Station is an important node, because it is the heart of any Power Grid. You have to have exactly one per Power Grid, if you don't have one nothing will work, and if you have more than one, they will explode until there is only one in the power grid. The Switching Station also displays statistics about the Power Grid when hovered over in-world. When a machine says "no network found", it's not connected to the switching station and won't do anything.
+The Switching Station is an important node, because it is the heart of any Power Grid.  
+You need to have one switching station per power grid.  
+Every machine needs to be connected to a switching station.  
+The Switching Station also displays statistics about the Power Grid when hovered over in-world. When a machine says "no network found", it's not connected to the switching station and won't do anything.
+
+When you right-click a switching station, you will see a summary of all the machines connected.
 
 ### Meta
 
@@ -144,7 +169,7 @@ Requires: Matter Plates
 
 ### Text
 
-Unlike most power systems, in Skyblock: Zero's power system, almost all machines conducts power to other machines.  
+Unlike most power systems, in Skyblock: Zero's power system, almost all machines conducts power to other machines, so machines are like wires here.  
 Wires are useful when you have 2 far apart factories that you want to connect, for aesthetics, or for organization.  
 The power unit Cosmic Joules is abbreviated to Cj in most interfaces.  
 
@@ -156,12 +181,8 @@ Requires:
 
 ### Text
 
-Finally! Automation! Let's get on that, shall we? Here's what you'll need for a Simple Matter Extractor:  
-  
-One Matter Annihilator, four matter blobs and four bits of core dust.  
-Also, you may need to click 2 times for the UI to show up.  
-  
-TIP: Early game machines without power occasionally emit red particles.
+Finally! Automation! Let's get on that, shall we? You will need a simple matter extractor and some power for that.
+TIP: Early game machines without power emit red particles.
 
 ### Meta
 
@@ -204,7 +225,6 @@ Right now, you're probably using simple charged fields to generate your power, b
 To solve that, you can use a simple charge generator. It consumes core dust as fuel over time, and provides you with more power than simple charged fields do.  
   
 However, Generators are expensive. They require 4 simple charged fields, an antimatter dust, 3 matter blobs and 1 Matter Annihilator to craft.  
-  
 
 ### Meta
 
@@ -248,3 +268,23 @@ That said, it's made using 9 pebbles.
 ### Meta
 
 Requires: Pretty Pebbles
+
+## Info: What to do next?
+
+### Text
+
+The questbook isn't meant to be explored linearly. You should do quests in whichever order you like.
+If you have inventory issues, the storage questline is within your reach.
+If you want to explore more machines, check out the emittrium and chemistry questline.
+You should also check out the meteorites questline, if you don't, you will wish you saw it sooner.
+If you are a decorator, there is a questline for you too.
+If you want to actually automate (you know, the fun part), see the pipeworks questline. Do that as soon as you can.
+
+You can also filter reachable quests (Quests that you can see the descriptions of, but haven't completed yet) by typing "reachable" into the questbook search bar
+
+Tip: When setting a goal, explore other quests to see if that goal could be done faster by using the tools from those quests. 
+Example: Getting the very advanced battery would be greately helped by the pipeworks questline.
+
+### Meta
+
+Requires: Concrete Plan
