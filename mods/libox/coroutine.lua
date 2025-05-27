@@ -10,9 +10,6 @@ api.settings = {
         auto = false,
         interval = 60
     },
-    autohook = {
-        enabled = false,
-    },
 }
 
 local settings = minetest.settings
@@ -44,8 +41,12 @@ end
 do_the_settings_thing("libox", api.settings)
 
 local attach_autohook
-if api.settings.autohook.enabled then
+if libox_attach_autohook then
     attach_autohook = libox_attach_autohook
+else
+    attach_autohook = function(sandbox)
+        debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
+    end
 end
 
 local BYTE_A, BYTE_Z = string.byte("A"), string.byte("Z")
@@ -284,17 +285,7 @@ function api.run_sandbox(ID, value_passed)
     -- "nested pcall just in case" i knowww its bad and it sounds bad but yeah i had crashes when there wasnt a pcall adn yeaah
     local no_strange_bug_happened = pcall(function()
         pcall_ok, pcall_errmsg = pcall(function()
-            if sandbox.autohook then
-                if attach_autohook then
-                    attach_autohook()
-                else
-                    core.log('warning', ([[Autohook failed! Creating coroutine sandbox %q without autohook...
-(Did you enable the libox.autohook.enabled setting?)]]):format(ID))
-                    debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
-                end
-            else
-                debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
-            end
+            attach_autohook(sandbox)
             getmetatable("").__index = sandbox.env.string
             ok, errmsg_or_value = coroutine.resume(thread, value_passed)
             debug.sethook()

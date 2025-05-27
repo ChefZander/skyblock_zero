@@ -22,8 +22,3 @@ libox.gc.number_of_sandboxes (Garbage collection "number of sandboxes" treshold)
 # Only works when Automatic gc is enabled
 # (gc = garbage collection)
 libox.gc.interval (Garbage collection interval) int 60
-
-# Enables the experimental autohook feature for coroutine sandboxes.
-# You'll need to further enable this by setting the "def.autohook" field
-# in order to use it.
-libox.autohook.enabled (Enable experimental autohook coroutine sandboxes) bool false

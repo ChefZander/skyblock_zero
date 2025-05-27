@@ -35,6 +35,12 @@ static void hookf(lua_State *L, lua_Debug *ar) {
 }
 
 static int autohook(lua_State *L) {
+    int n = lua_gettop(L);
+    if (n < 1 || n > 1) {
+        return luaL_error(L, "attach autohook() takes 1 argument");
+    }
+
+    // TODO read the sandbox argument and respect its specs
     prev_time = get_time_ms();
     attempts = 0;
     lua_sethook(L, hookf, LUA_MASKCOUNT, 50);
