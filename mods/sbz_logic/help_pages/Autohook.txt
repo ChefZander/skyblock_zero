@@ -18,12 +18,7 @@ Also, autohook works only with luajit, but this isn't a problem as skyblock zero
 
 Requires:
 - Basic knowledge of how to use a terminal
-- Linux (figure it out if you are on windows)
-
+- A GNU/Linux system (figure it out if you are on windows)
 
 1) Add sbz_logic_autohook to your trusted mods. 
 2) Compile autohook (navigate to <.minetest>/games/skyblock_zero/sbz_logic_autohook, run `make clean all`)
-
-If luanti is randomly producing a segmentation fault (I am not sure what causes this, but this may fix it):
-1) Compile luanti (so that luanti uses your system's luaJIT)
-2) Use that compiled luanti
