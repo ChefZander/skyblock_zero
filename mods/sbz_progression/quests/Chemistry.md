@@ -63,7 +63,7 @@ Blocks made from chemicals cannot be dug with matter annihilators, you must use 
 
 ### Meta
 
-Requires: Crusher
+Requires: Crusher, Simple Alloy Furnace 
 
 ## Centrifuge
 
@@ -73,7 +73,7 @@ In the centrifuge you can get gold, silicon and white sand from normal sand, sil
 
 ### Meta
 
-Requires: Crusher
+Requires: Crusher, Simple Alloy Furnace
 
 ## Advanced Batteries
 

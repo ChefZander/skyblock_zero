@@ -1,4 +1,4 @@
-Release 37 - sorry for the long wait :)
+Release 37 - sorry for the long wait :) - the "Oh UI looks decent now... and what's that? it's not a buggy mess anymore?"
 - Fixed instatubes sometimes not working
 - Added bricks and wooden planks
 - Fixed one pixel of pebble being transparent (Yes, you weren't crazy!)
@@ -20,7 +20,7 @@ Release 37 - sorry for the long wait :)
 - Fixed instatubes quest always being unlocked
 - Fixed bulk placer tool quest always being unlocked
 - Made drawers undiggable when filled with anything
-
+- Changed questbooks
 
 Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted

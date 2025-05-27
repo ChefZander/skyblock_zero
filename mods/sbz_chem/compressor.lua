@@ -113,8 +113,8 @@ listring[context;dst]
 minetest.register_craft({
     output = "sbz_chem:compressor",
     recipe = {
-        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_circuit", "sbz_power:simple_charged_field" },
-        { "sbz_resources:matter_blob",      "sbz_resources:matter_plate",      "sbz_resources:matter_blob" },
-        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_circuit", "sbz_power:simple_charged_field" }
+        { "sbz_power:simple_charged_field", "sbz_chem:bronze_ingot",           "sbz_power:simple_charged_field" },
+        { "sbz_resources:matter_blob",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
+        { "sbz_power:simple_charged_field", "sbz_chem:invar_ingot",            "sbz_power:simple_charged_field" }
     }
 })

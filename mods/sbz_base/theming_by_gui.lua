@@ -24,6 +24,7 @@ end)
 
 
 local function show_gui(player, prepend)
+    sbz_api.ui.set_player(player)
     local selected_theme = sbz_api.get_theme(player)
     local player_defaults = sbz_api.get_theme_config(player, true)
 
@@ -32,8 +33,8 @@ local function show_gui(player, prepend)
     if prepend then
         table.insert(fs, "no_prepend[]" .. prepend)
     end
-    fs[#fs + 1] = sbz_api.ui.get_content_box(player, 0.5, 0.5, 5, 19)
-    fs[#fs + 1] = sbz_api.ui.get_content_box(player, 6, 0.5, 13.5, 19)
+    fs[#fs + 1] = sbz_api.ui.box(0.5, 0.5, 5, 19)
+    fs[#fs + 1] = sbz_api.ui.box(6, 0.5, 13.5, 19)
     fs[#fs + 1] = select_theme_buttons
     fs[#fs + 1] = [[
 label[0.8,1;Themes]
@@ -75,6 +76,7 @@ label[6.2,2;This theme cannot be configured]
                 .description))
     end
     core.show_formspec(player:get_player_name(), "sbz_base:theming_gui", table.concat(fs))
+    sbz_api.ui.del_player(player)
 end
 sbz_api.theme_editor_formspec = show_gui
 

@@ -74,6 +74,7 @@ function stairs.register(name, reg_def)
 
 	local has_color = def.paramtype2 == "color"
 	for k, v in ipairs { "slab", "stair", "stair_inner", "stair_outer" } do
+		local def_copy = table.copy(def)
 		local nb = {
 			type = "fixed"
 		}
@@ -99,7 +100,6 @@ function stairs.register(name, reg_def)
 			}
 		end
 
-		local def_copy = table.copy(def)
 		def_copy.groups[v] = 1
 		def_copy.groups.not_in_creative_inventory = 1
 		def_copy.groups.habitat_conducts = 1

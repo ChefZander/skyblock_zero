@@ -1,7 +1,7 @@
 
 # Questline: Status Effects
 
-This questline tells you all about status effects, *after* you get them.... :)
+This questline tells you all about status effects, **after** you get them :>
         
 
 ## Secret: Attracted
