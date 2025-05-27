@@ -28,11 +28,24 @@ else
     local MP = core.get_modpath("libox")
     local lib
     if jit.os == 'Windows' then
-        lib = MP .. "/autohook/autohook.dll"
+        lib = MP .. "/autohook/libautohook.dll"
     else -- Linux/Unix-like
-        lib = MP .. "/autohook/autohook.so"
+        lib = MP .. "/autohook/libautohook.so"
     end
-    libox_attach_autohook = ie.package.loadlib(lib, "luaopen_autohook")().autohook
+    local errmsg
+    libox_attach_autohook, errmsg = ie.package.loadlib(lib, "luaopen_autohook")().autohook
+    if errmsg or not libox_attach_autohook then
+        core.log("warning", ([[
+
+------------------------------- [LIBOX] ATTENTION ------------------------------
+Libox failed to load the autohook C module. As such, the autohook feature will
+not work. This will cause autohook coroutine sandboxes to behave like regular
+coroutine sandboxes instead of one with auto-yielding.
+
+package.loadlib() error: %s
+--------------------------------------------------------------------------------
+]]):format(errmsg))
+    end
 end
 
 local MP = minetest.get_modpath(minetest.get_current_modname())
