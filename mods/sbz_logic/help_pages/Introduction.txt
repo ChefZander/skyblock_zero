@@ -59,7 +59,7 @@ $C1end
 
 The main code is turned on/off by the editor, or it can be turned on by a <mono>send</mono> event.
 
-You can have up to $MAIN_RAM_LIMIT$ kilobytes in the main sandbox. This may be refered to as the "ram" limit. (all locals, functions, their upvalues, their locals, their functions...)
+You can have up to $MAIN_RAM_LIMIT$ kb in the main sandbox. This may be refered to as the "ram" limit. (all locals, functions, their upvalues, their locals, their functions...)
 
 <bigger>Editor Code</bigger>
 

@@ -1,14 +1,1 @@
-So... epidermis does support skinsDB, it's just that you need to have https://bitbucket.org/kingarthursteam/mt-skin-db/src/master/ and give it trust to use the http api???
-
-Otherwise, **skinsDB and epidermis should not mix**
-ill also copy what the code comments say in case you actually want to have skinsDB:
---[[
-Assumptions:
-- Skins are usually added
-- Skins are rarely removed by the admin / hoster
-- Skins are never changed
-- `GROUP BY` works like `ORDER BY` (otherwise no ordering is guaranteed)
-]]
-
-good luck
-And also, it may be a horrible idea to delete skinsDB in the future, that may break the paintables
+Ok so, if you choose to use skinsDB, epidermis won't be avaliable.

@@ -16,8 +16,9 @@ Also, autohook works only with luajit, but this isn't a problem as skyblock zero
 
 <big>How do i enable it? (For server admins/singleplayer world owners)</big>
 
-Add sbz_logic_autohook to your trusted mods. <b>Be aware that you will need to use linux unless you compile it yourself and add functionality to the mod that will recognize that dll.</b> 
+Requires:
+- Basic knowledge of how to use a terminal
+- A GNU/Linux system (figure it out if you are on windows)
 
-How to compile it? there is a makefile in that directory, so you can simply go to <gamedir>/mods/sbz_logic_autohook, then execute <mono>make clean all</mono> in the terminal.
-
-Why does this need to use luajit's C api? Because you cannot yield in regular debug hooks, that will result in a <mono>attempt to yield accross C-call boundary</mono> error.
+1) Add sbz_logic_autohook to your trusted mods. 
+2) Compile autohook (navigate to <.minetest>/games/skyblock_zero/sbz_logic_autohook, run `make clean all`)
