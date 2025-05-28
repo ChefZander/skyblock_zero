@@ -15,24 +15,25 @@ elseif debug.getlocal == nil or debug.getupvalue == nil and ie ~= nil then
     debug.getupvalue = ie.debug.getupvalue
 end
 
-if not ie then
-    core.log("warning", [[
-
-------------------------------- [LIBOX] ATTENTION ------------------------------
-You have not included libox in trusted mods. As such, the autohook feature will
-not work. This will cause autohook coroutine sandboxes to behave like regular
-coroutine sandboxes instead of one with auto-yielding.
---------------------------------------------------------------------------------
-]])
-else
+if ie and jit then
     local MP = core.get_modpath("libox")
     local lib
     if jit.os == 'Windows' then
-        ie.package.cpath = MP .. "/autohook/lib?.dll;" .. ie.package.cpath
+        lib = MP .. "/autohook/libautohook.dll"
     else -- Linux/Unix-like
-        ie.package.cpath = MP .. "/autohook/lib?.so;" .. ie.package.cpath
+        lib = MP .. "/autohook/libautohook.so"
     end
-    libox_attach_autohook = ie.require("autohook").autohook
+    -- Use package.loadlib() instad of require() to prevent using
+    -- system/other apps' libraries with the same name
+    local errmsg
+    libox_autohook_module, errmsg = ie.package.loadlib(lib, 'luaopen_autohook')()
+    if not libox_autohook_module or errmsg then
+        core.log("error", ('Autohook feature NOT available. Failed loading autohook C module %s:\n%s'):format(lib, errmsg))
+    else
+        core.log("info", 'Autohook feature available')
+    end
+else
+    core.log("info", 'Autohook feature NOT available')
 end
 
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -41,7 +42,7 @@ dofile(MP .. "/main.lua")
 -- Files that are executed sync only, coroutine.lua and *.test.lua
 dofile(MP .. "/coroutine.lua")
 
-libox_attach_autohook = nil
+libox_autohook_module = nil
 
 -- async files
 minetest.register_async_dofile(MP .. "/main.lua")

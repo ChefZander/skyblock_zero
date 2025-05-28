@@ -1,3 +1,7 @@
 coverage/*
 mods/sbz_debug
 test_formspec
+
+# rather whitelist than blacklist tbh
+.vscode/*
+~.vscode/settings.json
