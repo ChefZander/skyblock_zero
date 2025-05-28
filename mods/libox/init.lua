@@ -36,14 +36,18 @@ if ie and jit then
         local version_file = io.open(MP .. "/autohook/module-version.txt")
         local module_version = libox_autohook_module.version
         if not version_file or not module_version then
-            core.log("warning", 'Autohook feature available, but could not verify its C module compatibility')
+            core.log("error", 'Autohook feature NOT available, but could not verify its C module compatibility')
+            libox_autohook_module = nil
             break
         end
         local current_version = version_file:read("*n")
         version_file:close()
 
-        if current_version ~= libox_autohook_module.version() then
-            core.log("warning", 'Autohook feature available, but its C module version is incompatible')
+        local module_version = module_version()
+        if current_version ~= module_version then
+            core.log("error", 'Autohook feature NOT available, but its C module version is incompatible\n'
+                ..('current: %s | available: %s'):format(current_version, module_version))
+            libox_autohook_module = nil
             break
         end
 
