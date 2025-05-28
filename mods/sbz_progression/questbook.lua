@@ -190,15 +190,15 @@ label[7.35,12.25;%s]
                 hypertext:format(minetest.formspec_escape("<big>" .. selected_quest.title .. "</big>"),
                     (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."),
                     (is_achievement_unlocked(player_name, selected_quest.title) and (
-                        selected_quest.type == "secret" and "✔Shhh... don't tell anyone :)"
-                        or "✔You have completed this Quest."
+                        selected_quest.type == "secret" and "✔ Shhh... don't tell anyone :)"
+                        or "✔ You have completed this Quest."
                     ) or "You have not completed this Quest.")
                 )
         elseif selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title) == false then
             formspec = formspec ..
                 hypertext:format("???",
                     "",
-                    (is_achievement_unlocked(player_name, selected_quest.title) and "✔Shhh... don't tell anyone :)" or "You have not completed this Quest.")
+                    (is_achievement_unlocked(player_name, selected_quest.title) and "✔ Shhh... don't tell anyone :)" or "You have not completed this Quest.")
                 )
         elseif selected_quest.type == "text" then
             formspec = formspec ..
