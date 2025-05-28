@@ -161,11 +161,6 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         local item = items[math.random(#items)]
         unlock_achievement(puncher:get_player_name(), "Introduction")
 
-        if itemstack and itemstack:get_name() == item and itemstack:get_count() < 256 then -- case: wield item
-            itemstack:set_count(itemstack:get_count() + 1)
-            return itemstack
-        end
-
         local inv = puncher:get_inventory()
 
         if inv then
