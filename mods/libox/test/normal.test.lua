@@ -160,13 +160,24 @@ libox.test.describe("Normal sandbox (tests the environment, mostly)", function(i
             a = type_string
         }) == false
 
+        local result7 = not libox.type_check({
+            a = "b",
+        }, {
+            a = type_string,
+            b = type_string,
+            c = {
+                a = type_string,
+                b = type_string,
+            }
+        })
+
         local result6 = libox.type_check({
             a = ItemStack("")
         }, {
             a = type_string,
         }) == false
 
-        assert(result1 and result2 and result3 and result4 and result5 and result6)
+        assert(result1 and result2 and result3 and result4 and result5 and result6 and result7)
     end)
     it("Can check types (recursive)", function(assert)
         local table = {

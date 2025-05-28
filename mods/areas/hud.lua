@@ -61,7 +61,7 @@ minetest.register_globalstep(function(dtime)
 			areaString = areaString .. "\n" ..
 				table.concat(areaStrings, "\n")
 		end
-		if #areaStrings == 0 then
+		if #areaStrings == 0 or sbz_api.disabled_areas_hud[name] then
 			areaString = ""
 		end
 		local hud = areas.hud[name]

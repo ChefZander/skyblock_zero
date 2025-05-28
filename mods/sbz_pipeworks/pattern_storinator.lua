@@ -1,42 +1,13 @@
---[[
-16 slot storinator
-
-16 slots for storage, 16 slots for pattern
-
-Pattern = something that dictates how many items should be in each slot
-
-Once the storinator has been filled (=> no things can enter it, all the patterns satisfied), it will:
-- Dump: Dump the entire storinator's contents into one direction
-- thats it for now :3
-
-Just a tubedevice, not a machine
-]]
-
-local after_filled_behavior = function(pos, meta, inv)
-    if meta:get_string("after_filled") == "store" then
-        return -- literally do nothing lol, this mode may be accesible later when i feel like adding a button idk
+local function check_and_act_if_filled(pos, meta, storage_or_inv, pattern)
+    local storage
+    if type(storage_or_inv) == "userdata" then
+        local inv = storage_or_inv
+        pattern = inv:get_list("pattern")
+        storage = inv:get_list("storage")
     else
-        local storage = inv:get_list("storage")
-
-        inv:set_list("storage", {})
-        inv:set_size("storage", 16)
-        local dir = pipeworks.facedir_to_right_dir((sbz_api.get_node_force(pos) or {}).param2)
-        if not dir then return end
-        dir = vector.subtract(vector.zero(), dir)
-        local to_pos = vector.add(pos, dir)
-        local end_pos = vector.add(pos, vector.multiply(dir, 0.4))
-        for i = 1, #storage do
-            minetest.after(0, function() -- added so that 2 pattern storinators wont create an infinite loop
-                pipeworks.tube_inject_direct(pos, end_pos, to_pos, dir, storage[i], meta:get_string("owner"))
-            end)
-        end
+        storage = storage_or_inv
     end
-end
-
-local function check_and_act_if_filled(pos, meta, inv)
     local filled = true
-    local storage = inv:get_list("storage")
-    local pattern = inv:get_list("pattern")
 
     for index = 1, #pattern do
         if storage[index]:get_count() ~= pattern[index]:get_count() then
@@ -45,7 +16,7 @@ local function check_and_act_if_filled(pos, meta, inv)
         end
     end
     if filled then
-        after_filled_behavior(pos, meta, inv)
+        meta:set_int("output_mode", 1)
     end
     return filled
 end
@@ -72,7 +43,7 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
         { name = "pattern_storinator_side.png^[transformFX", animation = { type = "vertical_frames", length = 3 } },
         { name = "pattern_storinator_side.png^[transformFX", animation = { type = "vertical_frames", length = 3 } },
         "pattern_storinator_back.png",
-        "pattern_storinator_output.png",
+        "pattern_storinator_back.png",
         { name = "pattern_storinator_side.png",              animation = { type = "vertical_frames", length = 3 } },
         { name = "pattern_storinator_side.png^[transformFX", animation = { type = "vertical_frames", length = 3 } },
     },
@@ -80,38 +51,85 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
         input_inventory = "storage",
         insert_object = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
+            local can_insert = true
             local inv = meta:get_inventory()
             local storage = inv:get_list("storage")
             local pattern = inv:get_list("pattern")
 
-            for index = 1, #pattern do
-                if pattern[index]:get_name() == stack:get_name() then
+            if meta:get_int("output_mode") == 1 then
+                local is_storage_empty = true
+                for index = 1, #pattern do
                     local sstack = storage[index]
-                    sstack:add_item(stack)
-                    if sstack:get_count() <= pattern[index]:get_count() then
-                        inv:set_stack("storage", index, sstack)
-                        check_and_act_if_filled(pos, meta, inv)
-                        return ItemStack()
-                    elseif sstack:get_count() ~= sstack:get_stack_max() then
-                        local diffcount = sstack:get_count() - pattern[index]:get_count()
-                        local setstack = ItemStack(sstack)
-                        setstack:take_item(diffcount)
-                        inv:set_stack("storage", index, setstack)
-                        check_and_act_if_filled(pos, meta, inv)
-                        return sstack:peek_item(diffcount)
+                    if not sstack:is_empty() then
+                        is_storage_empty = false
+                        break
                     end
+                end
+                if is_storage_empty == true then
+                    meta:set_int("output_mode", 0)
+                else
+                    can_insert = false
                 end
             end
 
+
+            local stack_name = stack:get_name()
+            local stack_count = stack:get_count()
+            if can_insert then
+                local pattern_stack, storage_stack, storage_stack_count, pattern_stack_count
+                for index = 1, #pattern do
+                    pattern_stack = pattern[index]
+                    if pattern_stack:get_name() == stack_name then
+                        storage_stack = storage[index]
+                        storage_stack_count = storage_stack:get_count()
+                        pattern_stack_count = pattern_stack:get_count()
+
+                        if (storage_stack_count + stack_count) <= pattern_stack_count then
+                            storage_stack:set_count(storage_stack_count + stack_count)
+                            storage_stack:set_name(stack_name)
+                            inv:set_stack("storage", index, storage_stack)
+                            check_and_act_if_filled(pos, meta, storage, pattern)
+                            return ItemStack()
+                        elseif storage_stack_count < pattern_stack_count then
+                            local diffcount = (storage_stack_count + stack_count) - pattern_stack_count
+                            storage_stack:set_count(pattern_stack_count)
+                            storage_stack:set_name(stack_name)
+                            inv:set_stack("storage", index, storage_stack)
+                            check_and_act_if_filled(pos, meta, storage, pattern)
+                            storage_stack:set_count(diffcount)
+                            return storage_stack
+                        end
+                    end
+                end
+            end
             return stack
         end,
         can_insert = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            --            local oldstack = stack
-            stack = stack:peek_item(1)
+
             local storage = inv:get_list("storage")
             local pattern = inv:get_list("pattern")
+
+            if meta:get_int("output_mode") == 1 then
+                local is_storage_empty = true
+                for index = 1, #pattern do
+                    local sstack = storage[index]
+                    if not sstack:is_empty() then
+                        is_storage_empty = false
+                        break
+                    end
+                end
+                if is_storage_empty == true then
+                    meta:set_int("output_mode", 0)
+                else
+                    return false
+                end
+            end
+
+            --            local oldstack = stack
+            stack = stack:peek_item(1)
+
             if pattern then -- can be nil in really rare cases
                 for index = 1, #pattern do
                     if pattern[index]:get_name() == stack:get_name() then
@@ -123,7 +141,14 @@ core.register_node("pipeworks:pattern_storinator", unifieddyes.def {
             end
             return false
         end,
-        connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 }
+        connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 },
+        return_input_invref = function(pos, node, dir, owner)
+            local meta = core.get_meta(pos)
+            if meta:get_int("output_mode") == 1 then
+                return meta:get_inventory()
+            end
+            return nil -- explicit specifically so you KNOW its intentional
+        end,
     },
     on_construct = function(pos)
         local meta = core.get_meta(pos)

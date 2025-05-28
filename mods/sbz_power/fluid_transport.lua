@@ -137,7 +137,7 @@ function fluid_transport.assemble_network(start_pos, frompos)
 
     while not queue:is_empty() do
         local current_pos = queue:dequeue()
-        local node = (sbz_api.get_node_force(current_pos) or {}).name
+        local node = (sbz_api.get_or_load_node(current_pos) or {}).name
         local is_conducting = minetest.get_item_group(node, "sbz_fluid_conducts") == 1
         local is_storing = minetest.get_item_group(node, "fluid_pipe_stores") == 1
 

@@ -19,39 +19,13 @@ function sbz_api.add_tube_support(def)
                 insert_object = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
-                    if inv:get_list(def.input_inv) then
-                        return inv:add_item(def.input_inv, stack)
-                    end
-                    return stack
+                    return inv:add_item(def.input_inv, stack)
                 end,
                 can_insert = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
-
-                    if inv:get_list(def.input_inv or "") then
-                        stack = ItemStack(stack)
-                        local original_count = stack:get_count()
-                        if not inv:room_for_item(def.input_inv, stack) then
-                            -- local t0 = core.get_us_time()
-                            stack = stack:peek_item(1)
-                            if not inv:room_for_item(def.input_inv, stack) then return false end
-                            -- IM TOO DUMB FOR BINARY SEARCH
-                            --                            local t0 = core.get_us_time()
-                            for i = original_count, 1, -1 do
-                                stack:set_count(i)
-                                if inv:room_for_item(def.input_inv, stack) then
-                                    --                                    core.debug("Can_insert for sbz_api.add_pipeworks_support took " ..
-                                    --                                        core.get_us_time() - t0)
-                                    return true, original_count - i
-                                end
-                            end
-                            return false
-                        else
-                            return true
-                        end
-                        return inv:room_for_item(def.input_inv, stack)
-                    end
-                    return false
+                    stack = stack:peek_item(1)
+                    return inv:room_for_item(def.input_inv, stack)
                 end,
                 input_inventory = def.output_inv,
                 connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
@@ -236,7 +210,7 @@ function sbz_api.turn_off(pos)
     local node = minetest.get_node(pos)
     local nodename = node.name
     if not is_stateful(nodename) then return end
-    if string.sub(nodename, -3) == "_on" then
+    if string.sub(nodename, -3) == "_on" and core.get_item_group(nodename, "state_change_no_swap") ~= 1 then
         node.name = string.sub(nodename, 1, -4) .. "_off"
         minetest.swap_node(pos, node)
     end
@@ -250,7 +224,7 @@ function sbz_api.turn_on(pos)
     local node = minetest.get_node(pos)
     local nodename = node.name
     if not is_stateful(nodename) then return end
-    if string.sub(nodename, -4) == "_off" then
+    if string.sub(nodename, -4) == "_off" and core.get_item_group(nodename, "state_change_no_swap") ~= 1 then
         node.name = string.sub(nodename, 1, -5) .. "_on"
         minetest.swap_node(pos, node)
     end
@@ -266,9 +240,9 @@ function sbz_api.force_turn_off(pos, meta)
 end
 
 function sbz_api.force_turn_on(pos, meta)
-    if string.find(core.get_node(pos).name, "connector") ~= nil then -- i know, bad fix, you should create a group and all that, but it works so shush
-        sbz_api.turn_on(pos)
-    end
+    --    if string.find(sbz_api.get_or_load_node(pos).name, "connector") ~= nil then -- i know, bad fix, i should create a group and all that, but it works so shush
+    sbz_api.turn_on(pos)
+    --    end
     meta:set_int("force_off", 0)
 end
 
@@ -277,8 +251,19 @@ function sbz_api.is_machine(pos)
 end
 
 function sbz_api.is_on(pos)
-    local nodename = minetest.get_node(pos).name
+    local nodename = sbz_api.get_or_load_node(pos).name
+    local meta = core.get_meta(pos)
+    if meta:get_int("force_off") == 1 then
+        return false
+    end
     return string.sub(nodename, -3) == "_on"
+end
+
+function sbz_api.is_on_by_name_and_meta(name, meta)
+    if meta:get_int("force_off") == 1 then
+        return false
+    end
+    return string.sub(name, -3) == "_on"
 end
 
 --dofile(modpath .. "/vm.lua") -- moved to sbz_base
@@ -296,6 +281,14 @@ dofile(modpath .. "/ele_fab.lua")
 dofile(modpath .. "/lights.lua")
 dofile(modpath .. "/batteries.lua")
 dofile(modpath .. "/phlogiston_fuser.lua")
-
 dofile(modpath .. "/turret.lua")
+dofile(modpath .. "/starlight_catcher.lua")
 dofile(modpath .. "/testnodes.lua")
+
+local sensors = modpath .. "/sensors"
+dofile(sensors .. "/sensor_linker.lua")
+dofile(sensors .. "/gates.lua")
+dofile(sensors .. "/sensors_player_facing.lua") -- depends on gates.lua for its sbz_api.* funcs
+dofile(sensors .. "/node_sensors.lua")
+dofile(sensors .. "/delayer.lua")
+dofile(sensors .. "/item_sensor.lua")

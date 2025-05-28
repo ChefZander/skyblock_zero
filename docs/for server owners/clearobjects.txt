@@ -2,3 +2,5 @@ DO NOT RUN /clearobjects
 
 IT WILL MESS UP ALL GRAVITATIONAL ATTRACTORS/REPULSORS, making them need to be replaced or moved.
 IT WILL **NOT** HELP WITH LAG
+
+oh hey there is also /clearitems

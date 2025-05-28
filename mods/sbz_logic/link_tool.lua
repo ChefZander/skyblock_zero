@@ -36,10 +36,16 @@ local function render_individual_link(pos, name)
     end
 end
 
-local function render_links()
+local timer = 0
+local function render_links(dtime)
+    timer = timer + dtime
+    if timer < render_links_delay then return end
+    timer = 0
+
     for k, v in pairs(waypoint_ids) do
         sbz_api.remove_waypoint(v)
     end
+    waypoint_ids = {}
     for k, v in pairs(minetest.get_connected_players()) do
         local wielded_item = v:get_wielded_item()
         if wielded_item:get_name() == "sbz_logic:luacontroller_linker" then
@@ -67,15 +73,14 @@ local function render_links()
             end
         end
     end
-    minetest.after(render_links_delay, render_links)
 end
 
-minetest.after(0, render_links) -- me elegant!
+core.register_globalstep(render_links)
 
 local function try_to_link_to_luac(stack, pos, placer)
     local meta = stack:get_meta()
     local name = placer:get_player_name()
-    local node = sbz_api.get_node_force(pos)
+    local node = sbz_api.get_or_load_node(pos)
     if not node then return end
     node = node.name
     local ndef = minetest.registered_nodes[node]
@@ -197,6 +202,11 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     range = 10,
     liquids_pointable = true,
     on_place = function(stack, placer, pointed)
+        if pointed.type ~= "node" then return end
+        if core.is_protected(pointed.under, placer:get_player_name()) then
+            core.record_protection_violation(pointed.under, placer:get_player_name())
+            return
+        end
         if placer:get_player_control().aux1 == false then
             local target = pointed.under
             minetest.show_formspec(placer:get_player_name(), "sbz_logic:luacontroller_linker_form",
@@ -214,6 +224,10 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     end,
     on_use = function(stack, placer, pointed)
         if pointed.type ~= "node" then return end
+        if core.is_protected(pointed.under, placer:get_player_name()) then
+            core.record_protection_violation(pointed.under, placer:get_player_name())
+            return
+        end
         if placer:get_player_control().aux1 == false then
             local target = pointed.under
             make_link(stack:get_meta(), target, placer)

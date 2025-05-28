@@ -66,6 +66,12 @@ ui.register_button("clear_inv", {
 		return ui.is_creative(player:get_player_name())
 	end,
 })
+ui.register_button("theme", {
+	type = "image",
+	image = "ui_theme.png",
+	tooltip = "Customize the theme",
+	action = function(player) sbz_api.theme_editor_formspec(player) end, -- sbz_api is not loaded yet
+})
 
 ui.register_page("craft", {
 	get_formspec = function(player, perplayer_formspec)
@@ -202,8 +208,10 @@ ui.register_page("craftguide", {
 
 		local item_def = minetest.registered_items[item_name]
 		local item_name_shown
-		if item_def and item_def.description then
-			item_name_shown = S("@1 (@2)", item_def.description, item_name)
+
+		local desc = item_def.short_description or item_def.description
+		if item_def and desc then
+			item_name_shown = S("@1 (@2)", desc, item_name)
 		else
 			item_name_shown = item_name
 		end

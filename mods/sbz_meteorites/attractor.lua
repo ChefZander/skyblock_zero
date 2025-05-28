@@ -23,12 +23,14 @@ local function attract_meteorites(pos, dtime, t)
 
         local magnitude = 256
         if obj:is_player() then
-            local wielded_item = obj:get_wielded_item()
-            if wielded_item:is_empty() then return end
-            magnitude = (wielded_item:get_definition().groups or {}).attraction
-            if not magnitude then return end
-            magnitude = magnitude * wielded_item:get_count()
-            playereffects.apply_effect_type("attracted", 2, obj)
+            if not playereffects.has_effect_type(obj:get_player_name(), "immune") then
+                local wielded_item = obj:get_wielded_item()
+                if wielded_item:is_empty() then return end
+                magnitude = (wielded_item:get_definition().groups or {}).attraction
+                if not magnitude then return end
+                magnitude = magnitude * wielded_item:get_count()
+                playereffects.apply_effect_type("attracted", 2, obj)
+            end
         end
         obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
         if elapsed > 1 then
@@ -160,3 +162,17 @@ function sbz_api.get_attraction(pos1, pos2)
     local length = vector.length(dir)
     return vector.normalize(dir) * (length ~= 0 and (length ^ (-2)) or 0)
 end
+
+-- If for whatever reason the repulsors/attractors entities dissapeared:
+core.register_lbm {
+    label = "Restore entities of meteorite repulsors/attractors",
+    name = "sbz_meteorites:restore_attractors_repulsors",
+    nodenames = { "sbz_meteorites:gravitational_attractor", "sbz_meteorites:gravitational_repulsor" },
+    run_at_every_load = true,
+    action = function(pos, node, dtime_s)
+        local ents = core.get_objects_inside_radius(pos, 0.5)
+        if #ents == 0 then
+            minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
+        end
+    end
+}

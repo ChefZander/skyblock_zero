@@ -5,9 +5,10 @@ local function update_node_texture(pos)
     local count = 0
 
 
-    local invsize = inv:get_size("main")
-    for i = 1, inv:get_size("main") do
-        if not inv:get_stack("main", i):is_empty() then
+    local list = inv:get_list("main")
+    local invsize = #list
+    for i = 1, invsize do
+        if not list[i]:is_empty() then
             count = count + 1
         end
     end
@@ -24,7 +25,7 @@ local function update_node_texture(pos)
         new_texture = "storinator_full_3"
     end
 
-    local node = minetest.get_node(pos)
+    local node = sbz_api.get_or_load_node(pos)
 
     if storinator_upgrades[node.name] and #storinator_upgrades[node.name] ~= 0 then
         new_texture = new_texture .. "_" .. storinator_upgrades[node.name]
@@ -33,13 +34,12 @@ local function update_node_texture(pos)
     if minetest.get_item_group(node.name, "public") > 0 then
         new_texture = new_texture .. "_public"
     end
-
+    local old_nodename = node.name
     node.name = "sbz_resources:" .. new_texture
-
-    minetest.swap_node(pos, node)
+    if old_nodename ~= node.name then
+        minetest.swap_node(pos, node)
+    end
 end
-
-
 
 local recipe_tail = "sbz_resources:storinator"
 local function slots_lvl(x)
@@ -55,6 +55,9 @@ local function register_storinator(added_name, def)
         "storinator_side.png",
         "storinator_empty.png"
     }
+    if added_name == "" then
+        def.info_extra = "Like a chest"
+    end
     if def.brighten_base then
         for i = 1, 6 do
             def.tiles[i] = def.tiles[i] .. "^[colorize:white:20"
@@ -101,6 +104,7 @@ local function register_storinator(added_name, def)
             def_copy.on_metadata_inventory_take = update_node_texture
             def_copy.on_metadata_inventory_move = update_node_texture
             def_copy.info_extra = def_copy.slots .. " Slots"
+
             local dropname = "sbz_resources:storinator"
             if #added_name ~= 0 then
                 dropname = dropname .. "_" .. added_name
@@ -123,7 +127,7 @@ local function register_storinator(added_name, def)
                 insert_object = function(pos, node, stack, direction)
                     local meta = minetest.get_meta(pos)
                     local inv = meta:get_inventory()
-                    update_node_texture(pos)
+                    --                    update_node_texture(pos)
                     return inv:add_item("main", stack)
                 end,
                 can_insert = function(pos, node, stack, direction)
@@ -132,7 +136,8 @@ local function register_storinator(added_name, def)
                     stack = stack:peek_item(1)
                     return inv:room_for_item("main", stack)
                 end,
-                connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 }
+                connect_sides = { left = 1, right = 1, front = 1, back = 1, top = 1, bottom = 1 },
+                ignore_metadata_inventory_take = true,
             }
 
             if def.allow_renaming then

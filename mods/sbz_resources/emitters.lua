@@ -6,49 +6,52 @@ local action = function(pos, _, puncher)
     local can_extract_from_emitter = minetest.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
         if puncher.is_fake_player then return end
-        displayDialougeLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
+        sbz_api.displayDialogLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
     for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
         if math.random(1, 10) == 1 then
             puncher:get_inventory():add_item("main", "sbz_resources:raw_emittrium")
 
-            minetest.add_particlespawner({
-                amount = 50,
-                time = 1,
-                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                minvel = { x = -1, y = -1, z = -1 },
-                maxvel = { x = 1, y = 1, z = 1 },
-                minacc = { x = 0, y = 0, z = 0 },
-                maxacc = { x = 0, y = 0, z = 0 },
-                minexptime = 3,
-                maxexptime = 5,
-                minsize = 0.5,
-                maxsize = 1.0,
-                collisiondetection = false,
-                vertical = false,
-                texture = "raw_emittrium.png",
-                glow = 10
-            })
-            unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
+            if not puncher.is_fake_player then
+                minetest.add_particlespawner({
+                    amount = 50,
+                    time = 1,
+                    minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+                    maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+                    minvel = { x = -1, y = -1, z = -1 },
+                    maxvel = { x = 1, y = 1, z = 1 },
+                    minacc = { x = 0, y = 0, z = 0 },
+                    maxacc = { x = 0, y = 0, z = 0 },
+                    minexptime = 3,
+                    maxexptime = 5,
+                    minsize = 0.5,
+                    maxsize = 1.0,
+                    collisiondetection = false,
+                    vertical = false,
+                    texture = "raw_emittrium.png",
+                    glow = 10
+                })
+                unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
+            end
         else
-            sbz_api.play_sfx("punch_core", {
-                gain = 1,
-                max_hear_distance = 6,
-                pos = pos
-            })
+            if not puncher.is_fake_player then
+                sbz_api.play_sfx("punch_core", {
+                    gain = 1,
+                    max_hear_distance = 6,
+                    pos = pos
+                })
+            end
             local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
             local item = items[math.random(#items)]
 
-            if puncher and puncher:is_player() then
-                local inv = puncher:get_inventory()
-                if inv then
-                    local leftover = inv:add_item("main", item)
-                    if not leftover:is_empty() then
-                        minetest.add_item(pos, leftover)
-                    end
+            local inv = puncher:get_inventory()
+            if inv then
+                local leftover = inv:add_item("main", item)
+                if not leftover:is_empty() then
+                    minetest.add_item(pos, leftover)
                 end
-
+            end
+            if not puncher.is_fake_player then
                 unlock_achievement(puncher:get_player_name(), "Introduction")
             end
         end
@@ -137,7 +140,6 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         pointed_thing = itemstack
         itemstack = nil
     end
-
     sbz_api.play_sfx("punch_core", {
         gain = 1,
         max_hear_distance = 6,
@@ -146,8 +148,6 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
 
     itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
-
-
 
     local multi = minetest.get_item_group(tool_name, "core_drop_multi")
     local n = 1

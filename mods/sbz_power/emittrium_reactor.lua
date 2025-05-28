@@ -1,94 +1,7 @@
-local HEAT_MAX = 30
+-- This code is garbage, avoid it if you can
+-- Rewrite if you must
+
 local POWER_GEN = 1200
---[[
-local ghost_removal_delay = 5
-
-
-minetest.register_entity("sbz_power:node_ghost", {
-    initial_properties = {
-        hp_max = 1,
-        pointable = true,
-        visual = "cube",
-        use_texture_alpha = true,
-        glow = 14,
-        static_save = false,
-    },
-    on_activate = function(self, staticdata, dtime_s)
-        staticdata = minetest.deserialize(staticdata)
-        self.object:set_properties({ textures = staticdata })
-        minetest.after(ghost_removal_delay, function()
-            self.object:remove()
-        end)
-    end
-})
-
-local RS = "sbz_power:reactor_shell"
-local rs_line = { RS, RS, RS }                                  -- z
-sbz_api.emittrium_reactor_schem = {                             -- x
-    { rs_line, rs_line,                              rs_line }, -- y
-    { rs_line, { RS, "sbz_power:reactor_core", RS }, rs_line },
-    { rs_line, rs_line,                              rs_line },
-}
-
-
-
-function sbz_api.render_ghost(pos, textures)
-    if #textures == 1 then
-        local tex = textures[1]
-        textures = {
-            tex, tex, tex, tex, tex, tex
-        }
-    end
-    for k, v in ipairs(textures) do
-        textures[k] = textures[k] .. "^[colorize:blue:10^[opacity:127"
-    end
-    minetest.add_entity(pos, "sbz_power:node_ghost", minetest.serialize(textures))
-end
-
-function sbz_api.render_schem_ghost(start_pos, schem)
-    local xlen, ylen, zlen = #schem, #schem[1], #schem[1][1]
-    local s_x, s_y, s_z = start_pos.x - 1, start_pos.y - 1, start_pos.z - 1
-
-    for x = 1, xlen do
-        for y = 1, ylen do
-            for z = 1, zlen do
-                local node = schem[x][y][z]
-                local textures = minetest.registered_nodes[node].tiles
-                local drawtype = minetest.registered_nodes[node].drawtype
-                if drawtype == "glasslike_framed" then
-                    textures = { textures[2] .. "^" .. textures[1] }
-                end
-                sbz_api.render_ghost({
-                    x = x + s_x,
-                    y = y + s_y,
-                    z = z + s_z
-                }, textures)
-            end
-        end
-    end
-end
-
-
-local function show_reactor_builder_ghost(pos)
-    sbz_api.render_schem_ghost(vector.add(pos, { x = -1, y = 1, z = -1 }), sbz_api.emittrium_reactor_schem)
-end
-
-minetest.register_node("sbz_power:reactor_builder", {
-    description = "Reactor Builder",
-    info_extra = "Builds an emittrium reactor",
-    paramtype2 = "4dir",
-    tiles = {
-        "reactor_builder_top.png",
-        "reactor_builder_side.png",
-        "reactor_builder_side.png",
-    },
-    groups = { matter = 1 },
-    on_punch = show_reactor_builder_ghost
-})
-
--- dont remove maybe idk
---]]
-
 local offset = vector.new(3, 3, 3)
 
 local function try_linking(pos, meta)
@@ -228,29 +141,24 @@ minetest.register_craft {
 
 local function make_infoscreen_on_formspec(meta)
     local function barchart_this_number(x, max)
-        return 0.2 + (x / max) * 9
+        return (x / max) * 9
     end
 
     return string.format([[
 formspec_version[7]
 size[12,12]
 
-label[0.2,1;Heat]
-box[0.2,2;1,9;grey]
-box[0.2,2;1,%s;red]
+label[0.2,2.5;Coolant]
+box[2.2,2;9,1;grey]
+box[2.2,2;%s,1;blue]
 
-label[1.7,1;Coolant]
-box[1.7,2;1,9;grey]
-box[1.7,2;1,%s;blue]
-
-label[3.2,1;Emittrium]
-box[3.2,2;1,9;grey]
-box[3.2,2;1,%s;cyan]
-button[0.2,11;3,1;turn_off;Turn off the reactor]
-button[3.2,11;3,1;relink;Re-Link]
+label[0.2,3.6;Emittrium]
+box[2.2,3.2;9,1;grey]
+box[2.2,3.2;%s,1;cyan]
+button[0.2,10.8;5,1;turn_off;Turn off the reactor]
+button[6.8,10.8;5,1;relink;Re-Link]
 tooltip[relink;Use if 2 infoscreens are linked to the same reactor core]
 ]],
-        barchart_this_number(meta:get_int("heat"), HEAT_MAX),
         barchart_this_number(meta:get_int("water_level"), 100),
         barchart_this_number(meta:get_int("emittrium_level"), 256))
 end
@@ -258,14 +166,16 @@ end
 local function make_infoscreen_off_formspec(meta)
     local err = meta:get_string("err")
     if err ~= "" then
-        err = "label[0,2.5;Error: " .. err .. "]"
+        err = "label[0.2,2.5;Error: " .. err .. "]"
     end
+    local size = 3
+    if err == "" then size = 2 end
     return string.format([[
     formspec_version[7]
-    size[6,3]
+    size[6,%s]
     button[0,0;6,2;turn_on;Turn on the reactor]
     %s
-]], err)
+]], size, err)
 end
 
 minetest.register_node("sbz_power:reactor_infoscreen", {
@@ -568,29 +478,19 @@ local function core_tick(pos)
     infometa:set_string("err", err or "")
 
     if not err then
-        local heat = meta:get_int("heat")
-
         local powermeta = minetest.get_meta(nodes.power)
         powermeta:set_string("linked_coords", vector.to_string(pos))
         local water = nodes.coolant
         local watermeta = minetest.get_meta(water)
         local waterinv = minetest.deserialize(watermeta:get_string("liquid_inv"))
         if waterinv[1].count == 0 then
-            heat = heat + 2
-        else
-            heat = math.max(heat - 1, 0)
+            sbz_api.turn_off(pos)
+            return
         end
 
         waterinv[1].count = math.max(waterinv[1].count - 1, 0)
         watermeta:set_string("liquid_inv", minetest.serialize(waterinv))
 
-        if heat > HEAT_MAX then
-            explode(pos)
-        end
-
-        meta:set_int("heat", heat)
-
-        infometa:set_int("heat", math.max(0, heat))
         infometa:set_int("water_level", waterinv[1].count)
         infometa:set_int("emittrium_level", emittrium_stack:get_count())
         minetest.registered_nodes["sbz_power:reactor_infoscreen"].on_reactor_update(nodes.info)

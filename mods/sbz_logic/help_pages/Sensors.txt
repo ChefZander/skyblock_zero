@@ -1,0 +1,17 @@
+<big>Sensors</big>
+
+<b>Light Sensor</b>
+Use: <mono>send_to(links.light_sensor, { operation = ">=", light_level = 14 })</mono>
+Valid values for the "operation" field: ">", ">=", "<", "<=", "="
+
+<b>Node Sensor</b>
+Use: <mono>send_to(links.node_sensor, "air")</mono>
+
+<b>Item Sensor</b>
+Use: <mono>send_to(links.item_sensor, {item = "sbz_resources:matter_blob 99", direction = "Up" })</mono>
+Where item is any ItemStack in any form
+Where valid values for direction are those you see in the dropdown
+
+<b>Delayer</b> (technically not a sensor but still included)
+Use: <mono>send_to(links.delayer, delay)</mono>, where <mono>delay</mono> is a number.
+It will set the delay of the delayer.

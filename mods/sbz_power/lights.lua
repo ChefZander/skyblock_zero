@@ -27,7 +27,7 @@ minetest.register_node("sbz_power:funny_air", {
     "You weren't technically supposed to obtain this but you can, if you have added some mod soup on top of this.",
     drawtype = "airlike",
     paramtype = "light",
-    -- drops = "" -- nope, intentionally commented out hehehehe, technic did the same thing, i mean this isnt a mod soup so you probably wont be able to obtain it but like yea, heheheheehe
+    -- drop = "" -- nope, intentionally commented out hehehehe, technic did the same thing, i mean this isnt a mod soup so you probably wont be able to obtain it but like yea, heheheheehe
     light_source = 14,
     diggable = false,
     groups = { not_in_creative_inventory = 1, habitat_conducts = 1, explody = 10000, airlike = 1 },

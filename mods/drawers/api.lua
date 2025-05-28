@@ -40,8 +40,6 @@ drawers.drawer_formspec = "size[9,6.7]" ..
 	drawers.inventory_list(2.5) ..
 	"listring[context;upgrades]" ..
 	"listring[current_player;main]" ..
-	drawers.gui_bg ..
-	drawers.gui_slots ..
 	drawers.get_upgrade_slots_bg(2, 0.5)
 
 -- construct drawer
@@ -93,7 +91,7 @@ function drawers.drawer_on_destruct(pos)
 	end
 end
 
--- drop all items
+-- don't drop all items
 function drawers.drawer_on_dig(pos, node, player)
 	local drawerType = 1
 	if core.registered_nodes[node.name] then
@@ -101,33 +99,19 @@ function drawers.drawer_on_dig(pos, node, player)
 	end
 	if core.is_protected(pos, player:get_player_name()) then
 		core.record_protection_violation(pos, player:get_player_name())
-		return 0
+		return false
 	end
-	local meta = core.get_meta(pos)
 
+
+	local meta = core.get_meta(pos)
 	local k = 1
 	while k <= drawerType do
 		-- don't add a number in meta fields for 1x1 drawers
 		local vid = tostring(k)
 		if drawerType == 1 then vid = "" end
 		local count = meta:get_int("count" .. vid)
-		local name = meta:get_string("name" .. vid)
-
-		-- drop the items
-		local stack_max = ItemStack(name):get_stack_max()
-
-		local j = math.floor(count / stack_max) + 1
-		local i = 1
-		while i <= j do
-			local rndpos = drawers.randomize_pos(pos)
-			if i ~= j then
-				core.add_item(rndpos, name .. " " .. stack_max)
-			else
-				core.add_item(rndpos, name .. " " .. count % stack_max)
-			end
-			i = i + 1
-		end
 		k = k + 1
+		if count > 0 then return end
 	end
 
 	-- drop all drawer upgrades
@@ -135,12 +119,10 @@ function drawers.drawer_on_dig(pos, node, player)
 	if upgrades then
 		for _, itemStack in pairs(upgrades) do
 			if itemStack:get_count() > 0 then
-				local rndpos = drawers.randomize_pos(pos)
-				core.add_item(rndpos, itemStack:get_name())
+				return false
 			end
 		end
 	end
-
 	-- remove node
 	core.node_dig(pos, node, player)
 end
@@ -305,6 +287,7 @@ function drawers.register_drawer(name, def)
 	if minetest.get_modpath("pipeworks") and pipeworks then
 		def.groups.tubedevice = 1
 		def.groups.tubedevice_receiver = 1
+		def.groups.tubedevice_use_item_entities = 1
 		def.tube = def.tube or {}
 		def.tube.insert_object = def.tube.insert_object or
 			drawers.drawer_insert_object_from_tube
@@ -320,18 +303,21 @@ function drawers.register_drawer(name, def)
 		}
 		def.after_place_node = pipeworks.after_place
 		def.after_dig_node = pipeworks.after_dig
+
 		def.tube.return_input_invref = function(pos, node, dir, owner)
-			local inv = fakelib.create_inventory()
+			local inv = core.get_meta(pos):get_inventory() -- fakelib.create_inventory() -- fakelib is WEEIRD
 			local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
 			if not vis then return false end
 			for i = 1, 4 do
 				local this_vis = vis[i]
 				if not this_vis then break end
+
 				local content = drawers.drawer_get_content(pos, this_vis.visualId)
 				local stack = ItemStack({
 					name = content.name,
 					count = math.min(content.count, ItemStack(content.name):get_stack_max())
 				})
+
 				inv:set_size("slot" .. i, 1)
 				inv:set_size("old_slot" .. i, 1)
 				inv:set_stack("slot" .. i, 1, stack)
@@ -339,9 +325,28 @@ function drawers.register_drawer(name, def)
 			end
 			return inv
 		end
-		def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos)
-			return drawers.drawer_take_item(pos, stack)
+		def.tube.after_filter = function(pos, inv)
+			local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
+			for i = 1, 4 do
+				local this_vis = vis[i]
+				if not this_vis then break end
+				local stack = inv:get_stack("slot" .. i, 1)
+				local old_stack = inv:get_stack("old_slot" .. i, 1)
+				local diff = old_stack:get_count() - stack:get_count()
+				old_stack:set_count(diff)
+				drawers.drawer_take_item(pos, old_stack)
+				-- local content = drawers.drawer_get_content(pos, this_vis.visualId)
+				-- local count = content.count - diff
+			end
 		end
+		-- def.tube.remove_items = function(pos, node, stack, dir, count, invname, spos, inv)
+		-- 	local oldstack = inv:get_stack(invname, 1)
+		-- 	oldstack:set_count(oldstack:get_count() - stack:get_count())
+		-- 	inv:set_stack(invname, 1, oldstack)
+		-- 	core.debug(inv:get_stack(invname, 1):to_string())
+		-- 	return stack
+		-- end
+
 		def.tube.ignore_metadata_inventory_take = true
 		def.tube.input_inventory = {
 			"slot1", "slot2", "slot3", "slot4"
@@ -352,7 +357,7 @@ function drawers.register_drawer(name, def)
 			drawers.spawn_visuals(to_pos)
 		end)
 	end
-	def = unifieddyes.def(def)
+	def = unifieddyes.def(def, false)
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
 		local def1 = table.copy(def)

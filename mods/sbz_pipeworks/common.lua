@@ -112,6 +112,7 @@ function pipeworks.facedir_to_top_dir(facedir)
 end
 
 function pipeworks.facedir_to_right_dir(facedir)
+	facedir = facedir - (core.strip_param2_color(facedir, "colorfacedir") or 0)
 	return vector.cross(
 		pipeworks.facedir_to_top_dir(facedir),
 		minetest.facedir_to_dir(facedir)

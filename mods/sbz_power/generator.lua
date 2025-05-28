@@ -121,6 +121,7 @@ sbz_api.register_generator("sbz_power:simple_charged_field", {
     end,
     info_extra = "Decays after some time"
 })
+
 minetest.register_craft({
     output = "sbz_power:simple_charged_field",
     recipe = {
@@ -129,32 +130,36 @@ minetest.register_craft({
         { "sbz_resources:charged_particle", "sbz_resources:charged_particle", "sbz_resources:charged_particle" }
     }
 })
-minetest.register_abm({
-    label = "Simple Charged Field Particles",
-    nodenames = { "sbz_power:simple_charged_field" },
-    interval = 1,
-    chance = 1,
-    action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.add_particlespawner({
-            amount = 5,
-            time = 1,
-            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-            minvel = { x = -2, y = -2, z = -2 },
-            maxvel = { x = 2, y = 2, z = 2 },
-            minacc = { x = 0, y = 0, z = 0 },
-            maxacc = { x = 0, y = 0, z = 0 },
-            minexptime = 10,
-            maxexptime = 20,
-            minsize = 0.5,
-            maxsize = 1.0,
-            collisiondetection = false,
-            vertical = false,
-            texture = "charged_particle.png",
-            glow = 10
-        })
-    end,
-})
+
+if not sbz_api.server_optimizations then
+    minetest.register_abm({
+        label = "Simple Charged Field Particles",
+        nodenames = { "sbz_power:simple_charged_field" },
+        interval = 1,
+        chance = 1,
+        action = function(pos, node, active_object_count, active_object_count_wider)
+            minetest.add_particlespawner({
+                amount = 5,
+                time = 1,
+                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+                minvel = { x = -2, y = -2, z = -2 },
+                maxvel = { x = 2, y = 2, z = 2 },
+                minacc = { x = 0, y = 0, z = 0 },
+                maxacc = { x = 0, y = 0, z = 0 },
+                minexptime = 10,
+                maxexptime = 20,
+                minsize = 0.5,
+                maxsize = 1.0,
+                collisiondetection = false,
+                vertical = false,
+                texture = "charged_particle.png",
+                glow = 10
+            })
+        end,
+    })
+end
+
 minetest.register_abm({
     label = "Simple Charged Field Decay",
     nodenames = { "sbz_power:simple_charged_field" },
@@ -197,11 +202,13 @@ minetest.register_node("sbz_power:charged_field_residue", {
     tiles = { "charged_field_residue.png" },
     groups = { unbreakable = 1, charged_field = 1, },
     sunlight_propagates = true,
+    diggable = false,
+    drop = "",
     paramtype = "light",
     walkable = true,
     on_punch = function(pos, node, puncher, pointed_thing)
         if puncher.is_fake_player then return end
-        displayDialougeLine(puncher:get_player_name(), "The residue is still decaying.")
+        sbz_api.displayDialogLine(puncher:get_player_name(), "The residue is still decaying.")
     end,
 })
 minetest.register_abm({
@@ -245,7 +252,7 @@ sbz_api.register_generator("sbz_power:starlight_collector", {
     description = "Starlight Collector",
     drawtype = "nodebox",
     tiles = { "starlight_collector.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png", "matter_blob.png" },
-    groups = { matter = 1, pipe_connects = 1 },
+    groups = { matter = 1, pipe_connects = 1, network_always_found = 1 },
     sunlight_propagates = true,
     walkable = true,
     node_box = {
@@ -256,7 +263,6 @@ sbz_api.register_generator("sbz_power:starlight_collector", {
     use_texture_alpha = "clip",
     action_interval = 1,
     action = function(pos, node, meta)
-        meta:set_string("infotext", "")
         local r = math.random(0, 2)
         if r == 1 then return 1 end
         return 0

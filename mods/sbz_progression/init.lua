@@ -1,32 +1,26 @@
-sbz_progression = {}
+-- sbz_progression = {}
 
 local modpath = minetest.get_modpath("sbz_progression")
 
+dofile(modpath .. "/quest_parser.lua")
 dofile(modpath .. "/quests.lua")
 dofile(modpath .. "/questbook.lua")
 dofile(modpath .. "/annoy.lua")
 
-local mod_storage = core.get_mod_storage()
-sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
+-- Do this if you want to make a unified quests.md for whatever reason
+--assert(io.open(modpath .. "/quests/quests.md", "w+")):write(sbz_api.quest_parser.encode(quests))
 
-function displayDialogueLine(player_name, text)
+
+-- local mod_storage = core.get_mod_storage()
+-- sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
+
+function sbz_api.displayDialogLine(player_name, text)
     minetest.chat_send_player(player_name, "⌠ " .. text .. " ⌡")
     minetest.sound_play("dialouge", {
         to_player = player_name,
         gain = 1,
     })
 end
-
-function displayGlobalDialogueLine(text)
-    minetest.chat_send_all("⌠ " .. text .. " ⌡")
-    minetest.sound_play("dialouge", {
-        gain = 1,
-    })
-end
-
-displayDialougeLine = displayDialogueLine
-displayGlobalDialougeLine = displayGlobalDialogueLine
-
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
 local achievement_table = {
@@ -160,6 +154,15 @@ local achievement_table = {
     ["sbz_instatube:instant_tube"] = "Instatubes",
     ["sbz_power:teleport_battery"] = "Teleport Battery",
     ["pipeworks:pattern_storinator"] = "Pattern Storinator",
+    ["sbz_power:starlight_catcher"] = "Starlight Catchers",
+
+    ["sbz_power:sensor_linker"] = "Sensor Linker",
+    ["sbz_power:lgate_buffer_off"] = "Logic Gates",
+    ["sbz_power:delayer_off"] = "Delayer",
+    ["sbz_power:light_sensor_off"] = "Light Sensor",
+    ["sbz_power:node_sensor_off"] = "Node Sensor",
+    ["sbz_power:item_sensor_off"] = "Item Sensor",
+    ["sbz_power:switch_private_off"] = "Switches"
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -172,12 +175,13 @@ minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
         -- pos stuff
         local pos = player:get_pos()
-        local safetynet_low = (player:get_meta():get_int("dynamic_safetynet") == 1) and sbz_progression.lowest_node or 0
+        -- local safetynet_low = (player:get_meta():get_int("dynamic_safetynet") == 1) and sbz_progression.lowest_node or 0
+        local safetynet_low = 0
         if pos.y < safetynet_low - 100 then
             unlock_achievement(player:get_player_name(), "Emptiness")
         end
-        if pos.y < safetynet_low - 110 and pos.y > safetynet_low - 210 then
-            displayDialougeLine(player:get_player_name(), "You fell off the platform.")
+        if pos.y < safetynet_low - 300 then
+            sbz_api.displayDialogLine(player:get_player_name(), "You fell off the platform.")
             player:set_pos({ x = 0, y = 1, z = 0 })
         end
     end
@@ -262,9 +266,9 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
     end
 end)
 
-core.register_on_placenode(function(pos, newnode, _, _, _, _)
-    if newnode.name == "sbz_resources:emitter" then return end
-    if pos.y >= sbz_progression.lowest_node then return end
-    sbz_progression.lowest_node = pos.y
-    mod_storage:set_int("lowest_node", pos.y)
-end)
+-- core.register_on_placenode(function(pos, newnode, _, _, _, _)
+--     if newnode.name == "sbz_resources:emitter" then return end
+-- if pos.y >= sbz_progression.lowest_node then return end
+-- sbz_progression.lowest_node = pos.y
+-- mod_storage:set_int("lowest_node", pos.y)
+-- end)

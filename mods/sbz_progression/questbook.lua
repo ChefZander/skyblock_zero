@@ -96,65 +96,112 @@ end
 
 -- Function to create the formspec
 local function get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
+    local player_ref = core.get_player_by_name(player_name)
+    sbz_api.ui.set_player(player_ref)
+    if not player_ref then return "" end
     local selected_quest = quests_to_show[selected_quest_index]
     search_text = search_text or ""
     local quest_list = {}
+    local ins = function(element)
+        table.insert(quest_list, element)
+    end
+
+    local default_indent = "1"
+    if search_text ~= "" then default_indent = "0" end
 
     for i, quest in ipairs(quests_to_show) do
         if quest.type == "quest" then
             if is_achievement_unlocked(player_name, quest.title) then
-                quest_list[#quest_list + 1] = "#d4fcd6 ✓ " .. quest.title
+                ins("#d4fcd6")
+                ins(default_indent)
+                ins("✓")
+                ins(quest.title)
             elseif is_quest_available(player_name, quest.title) then
-                quest_list[#quest_list + 1] = "► " .. quest.title
+                ins("#fff")
+                ins(default_indent)
+                ins("►")
+                ins(quest.title)
             else
-                quest_list[#quest_list + 1] = "#848484 ✕ " .. quest.title
+                ins("#848484")
+                ins(default_indent)
+                ins("✕")
+                ins(quest.title)
             end
         elseif quest.info == true then -- info text
-            quest_list[#quest_list + 1] = "#a9b7fc  !  " .. quest.title
+            ins("#a9b7fc")
+            ins(default_indent)
+            ins("!")
+            ins(quest.title)
         elseif quest.type == "text" then
-            quest_list[#quest_list + 1] = "#a9fcf5 ≡ " .. quest.title
+            ins("#a9fcf5")
+            ins("0")
+            ins("≡")
+            ins(quest.title)
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) then
-            quest_list[#quest_list + 1] = "#e3a9fc ✪ " .. quest.title
+            ins("#e3a9fc")
+            ins(default_indent)
+            ins("✪")
+            ins(quest.title)
         elseif quest.type == "secret" and is_achievement_unlocked(player_name, quest.title) == false then
-            quest_list[#quest_list + 1] = "#e3a9fc ✪ ???"
+            ins("#e3a9fc")
+            ins(default_indent)
+            ins("✪")
+            ins("???")
         end
     end
     ---@diagnostic disable-next-line: cast-local-type
     quest_list = table.concat(quest_list, ",")
-
     local formspec = ([[
         formspec_version[7]
         size[17.25,12.8]
         padding[0.01,0.01]
-        label[0.1,0.3;Quest List]
-        textlist[0,0.7;5.8,11.3;quest_list;%s;%s]
+        %s
+        tablecolumns[color;tree,width=0.5;text;text]
+        %s
+        %s
+        table[0.2,0.7;5.6,11.3;quest_list;%s;%s]
         field_close_on_enter[search;false]
-        field[0,12;5.25,0.85;search;;%s]
-        image_button[5.25,12;0.85,0.85;ui_search_icon.png;dummybutton;]
-        image_button[6.1,12;0.85,0.85;ui_reset_icon.png;search_reset;]
-]]):format(quest_list, selected_quest_index, core.formspec_escape(search_text))
+        %s
+        image_button[5.25,12;0.5,0.5;ui_search_icon.png;dummybutton;]
+        image_button[5.75,12;0.5,0.5;ui_reset_icon.png;search_reset;]
+]]):format(
+        sbz_api.ui.hypertext(0.3, 0.25, 5.6, 0.5, "", "Quest List"),
+        sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
+        ("style_type[table%s]"):format(sbz_api.get_font_style(sbz_api.ui.get_player_and_theme_and_config())),
+        quest_list,
+        selected_quest_index,
+        sbz_api.ui.field(0.2, 12, 5.25, 0.5, "search", "", search_text)
+    )
+    formspec = formspec .. sbz_api.ui.box(6, 0.2, 11, 11.6)
+
+    local hypertext = ([[
+%s
+%s
+label[7.35,12.25;%s]
+]]):format(
+        sbz_api.ui.big_hypertext(6, 0.3, 100, 100, "", "%s"),
+        sbz_api.ui.hypertext(6.1, 1.3, 10.8, 10.3, "", "%s"),
+        "%s"
+    )
 
     if selected_quest then
         if selected_quest.type == "quest" or (selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title)) then
-            formspec = formspec .. ([[
-            hypertext[6,0.3;69,420;;%s]
-            hypertext[6,1.3;11.24,10.5;;%s]
-            label[7.35,12.25;%s]
-    ]]):format(minetest.formspec_escape("<big>" .. selected_quest.title .. "</big>"),
-                (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."),
-                (is_achievement_unlocked(player_name, selected_quest.title) and "✔️You have completed this Quest." or "You have not completed this Quest.")
-            )
+            formspec = formspec ..
+                hypertext:format(minetest.formspec_escape("<big>" .. selected_quest.title .. "</big>"),
+                    (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."),
+                    (is_achievement_unlocked(player_name, selected_quest.title) and "✔️You have completed this Quest." or "You have not completed this Quest.")
+                )
         elseif selected_quest.type == "secret" and is_achievement_unlocked(player_name, selected_quest.title) == false then
-            formspec = formspec .. ([[
-        hypertext[6,0.3;69,420;;<big>???]
-        textarea[6,1.3;11.24,10.5;;;???]
-        label[7.35,12.25;%s]
-    ]]):format((is_achievement_unlocked(player_name, selected_quest.title) and "✔️You have completed this Quest." or "You have not completed this Quest."))
+            formspec = formspec ..
+                hypertext:format("???",
+                    "",
+                    (is_achievement_unlocked(player_name, selected_quest.title) and "✔Shhh... don't tell anyone :)" or "You have not completed this Quest.")
+                )
         elseif selected_quest.type == "text" then
             formspec = formspec ..
-                ("hypertext[6,0.3;69,420;;%s]"):format("<style color=#9ab7fc><big>" ..
-                    selected_quest.title .. "</big></style>") ..
-                ([[hypertext[6,1.3;11.24,10.5;;%s] ]]):format((is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."))
+                hypertext:format("<style color=#9ab7fc>" .. selected_quest.title .. "</style>",
+                    (is_quest_available(player_name, selected_quest.title) and minetest.formspec_escape(selected_quest.text) or "Complete " .. combineWithAnd(selected_quest.requires) .. " to unlock."),
+                    "")
         end
     end
 
@@ -163,7 +210,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         to_player = player_name,
         gain = 1,
     })
-
+    sbz_api.ui.del_player()
     return formspec
 end
 
@@ -178,10 +225,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             force_query = true
         end
 
-        if fields.quest_list or (fields.search and fields.search ~= "") or force_query then
-            local event = minetest.explode_textlist_event(fields.quest_list)
-            local selected_quest_index = event.index or meta:get_int("selected_quest_index")
-
+        if fields.quest_list or (fields.search) or force_query then
+            local event = minetest.explode_table_event(fields.quest_list)
+            local selected_quest_index = event.row or meta:get_int("selected_quest_index")
             -- set selected quest index
             if meta then
                 meta:set_int("selected_quest_index", selected_quest_index)
@@ -189,17 +235,25 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
             local filtered_quests = {}
             if fields.search and fields.search ~= "" then
-                local real_search = fields.search:lower()
-                local quests_with_holes = table.copy(quests)
-                for k, v in pairs(quests_with_holes) do
-                    local title = v.title:lower()
-                    if not title:find(real_search, 1, true) then
-                        quests_with_holes[k] = nil
+                if fields.search == "reachable" then -- When re-working this, don't forget to update the questbook, it's in the introduction questline, last infopage
+                    for k, v in pairs(quests) do
+                        if is_quest_available(name, v.title) and v.type == "quest" and is_achievement_unlocked(name, v.title) == false then
+                            filtered_quests[#filtered_quests + 1] = v
+                        end
                     end
-                end
-                for i = 1, #quests do
-                    if quests_with_holes[i] then
-                        filtered_quests[#filtered_quests + 1] = quests_with_holes[i]
+                else
+                    local real_search = fields.search:lower()
+                    local quests_with_holes = table.copy(quests)
+                    for k, v in pairs(quests_with_holes) do
+                        local title = v.title:lower()
+                        if not title:find(real_search, 1, true) then
+                            quests_with_holes[k] = nil
+                        end
+                    end
+                    for i = 1, #quests do
+                        if quests_with_holes[i] then
+                            filtered_quests[#filtered_quests + 1] = quests_with_holes[i]
+                        end
                     end
                 end
             else

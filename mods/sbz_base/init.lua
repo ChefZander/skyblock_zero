@@ -17,8 +17,9 @@ sbz_api = {
         end
         return false
     end,
-    accelerated_habitats = false, -- for debug
+    accelerated_habitats = false,
     debug = minetest.settings:get_bool("sbz_debug", false),
+    logic_gate_linking_range = 15,
 }
 
 if sbz_api.server_optimizations == "auto" then
@@ -72,11 +73,13 @@ end
 ---@diagnostic disable-next-line: duplicate-set-field
 table.foreach = function(t, f, key_last)
     for k, v in pairs(t) do
+        local ret
         if key_last then
-            f(v, k)
+            ret = f(v, k)
         else
-            f(k, v)
+            ret = f(k, v)
         end
+        if ret then t[k] = ret end
     end
     return t
 end
@@ -94,13 +97,7 @@ table.foreachi = function(t, f, key_last)
     return t
 end
 
--- REASONING BEHIND NOT USING core.wallmounted_to_dir(i)
--- IT CAUSED A NASTY BUG, NASTY, NASTY, BUG.
--- BECAUSE SOMETIMES, IT JUST FORGOT THAT THE DOWN DIRECTION WAS A THING
--- I DONT KNOW WHY
--- frog
-
-local wallmounted_to_dir_is_fake_bad = {
+local wallmounted_to_dir = {
     [0] = vector.new(0, 1, 0),
     [1] = vector.new(0, -1, 0),
     [2] = vector.new(1, 0, 0),
@@ -111,11 +108,22 @@ local wallmounted_to_dir_is_fake_bad = {
 
 function iterate_around_pos(pos, func, include_self)
     for i = 0, 5 do
-        local dir = vector.copy(wallmounted_to_dir_is_fake_bad[i])
+        local dir = vector.copy(wallmounted_to_dir[i])
         func(pos + dir, dir)
     end
     if include_self then
         func(pos, vector.zero())
+    end
+end
+
+local vzero = vector.zero()
+function sbz_api.iterate_around_pos_nocopy(pos, func, include_self) -- for small optimizations where you know that it wont get polluted
+    for i = 0, 5 do
+        local dir = wallmounted_to_dir[i]
+        func(pos + dir, dir)
+    end
+    if include_self then
+        func(pos, vzero)
     end
 end
 
@@ -139,13 +147,12 @@ minetest.register_on_newplayer(function(player)
     local name = player:get_player_name()
     if inv then
         if inv:contains_item("main", "sbz_progression:questbook") then
-            displayDialougeLine(name, "You already had a questbook before joining.")
+            sbz_api.displayDialogLine(name, "You already had a questbook before joining.")
         else
             if inv:room_for_item("main", "sbz_progression:questbook") then
                 inv:add_item("main", "sbz_progression:questbook")
-                -- displayDialougeLine(name, "You have been given a Quest Book.")
             else
-                displayDialougeLine(name,
+                sbz_api.displayDialogLine(name,
                     "Your inventory is full. Can't give you a questbook. Use /qb")
             end
         end
@@ -162,11 +169,12 @@ minetest.register_on_joinplayer(function(ref, last_login)
 end)
 
 minetest.register_chatcommand("core", {
-    description = "Go back to the core, if you fell off.",
+    description = "Go back to the core.",
     privs = {},
     func = function(name, param)
         minetest.get_player_by_name(name):set_pos({ x = 0, y = 1, z = 0 })
-        displayDialougeLine(name, "Beamed you back to the Core.")
+        sbz_api.displayDialogLine(name, "Sent you back to the Core.") -- i think me renaming "Beamed" to "Sent" is going to make zander mad but i geniuenly have no idea what "Beamed" means so i think most people have no idea too
+        -- me, frog, renaming it will also most likely make people investigate its meaning, so we will see :)
     end,
 })
 
@@ -292,12 +300,6 @@ minetest.register_on_joinplayer(function(player)
         sneak_glitch = true,
     })
 
-    player:set_formspec_prepend([[
-        bgcolor[#080808BB;true]
-        background9[5,5;1,1;theme_background.png^\[colorize:purple:50;true;10]
-        listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
-    ]])
-
     local pinfo = core.get_player_information(player:get_player_name())
     if pinfo.protocol_version < 44 then -- 44 = 5.9.0
         core.show_formspec(player:get_player_name(), "", [[
@@ -340,7 +342,7 @@ core.register_chatcommand("killme", {
 minetest.register_on_chat_message(function(name, message)
     local players = minetest.get_connected_players()
     if #players == 1 then
-        displayDialougeLine(name, "You talk. But there is no one to listen.")
+        sbz_api.displayDialogLine(name, "You talk. But there is no one to listen.")
         unlock_achievement(name, "Desolate")
     end
     return false
@@ -368,6 +370,8 @@ function is_air(pos)
     return reg.air or reg.air_equivalent or node == "air"
 end
 
+sbz_api.is_air = is_air
+
 function sbz_api.clamp(x, min, max)
     return math.max(math.min(x, max), min)
 end
@@ -390,6 +394,19 @@ function sbz_api.make_immutable(t)
     return t
 end
 
+--[[
+    These 4 lines of code that can pretty much replace vm.lua are from:
+    https://github.com/mt-mods/technic/blob/379bedc20d7ab11c758afa52d5916b23dced5354/technic/helpers.lua#L102 to line 107
+]]
+
+local get_or_load_node_node
+function sbz_api.get_or_load_node(pos)
+    get_or_load_node_node = core.get_node_or_nil(pos)
+    if get_or_load_node_node then return get_or_load_node_node end
+    core.load_area(pos)
+    return core.get_node(pos)
+end
+
 local MP = minetest.get_modpath("sbz_base")
 
 dofile(MP .. "/override_for_areas.lua")
@@ -403,6 +420,15 @@ dofile(MP .. "/sbz_on_hover.lua")
 dofile(MP .. "/sbz_player_inside.lua")
 dofile(MP .. "/playtime_and_afk.lua")
 dofile(MP .. "/dwarf_orb_crafts.lua")
+dofile(MP .. "/toggle_areas_hud.lua")
+dofile(MP .. "/cache.lua")
+dofile(MP .. "/color.lua")
+dofile(MP .. "/theming.lua")
+dofile(MP .. "/ui.lua")
+-- useless cuz of luanti metadata limitations
+dofile(MP .. "/serialize.lua")
+dofile(MP .. "/serialize_benchmark.lua")
+
 --vector.random_direction was added in 5.10-dev, but I use 5.9, so make sure this exists
 --code borrowed from builtin/vector.lua in 5.10-dev
 if not vector.random_direction then
@@ -643,6 +669,12 @@ function sbz_api.get_pos_with_eye_height(placer)
         p.y = p.y + (placer:get_properties().eye_height or 0)
     end
     return p
+end
+
+function sbz_api.benchmark(name, f)
+    local t0 = os.clock()
+    f()
+    core.debug(name .. " TOOK: " .. (os.clock() - t0) * 1000 .. "ms")
 end
 
 core.register_entity("sbz_base:debug_entity", {

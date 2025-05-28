@@ -222,8 +222,16 @@ local function on_mvps_move(moved_nodes)
 end
 
 sbz_api.move_node = function(A, B)
+    for k, v in pairs(sbz_api.all_caches) do
+        local expires = v.expire_on_jump_or_move
+        if expires then
+            v.data = {}
+            v.timer = 0
+        end
+    end
+
     sbz_api.vm_begin()
-    local nodeA = sbz_api.get_node_force(A) or { name = "" }
+    local nodeA = sbz_api.get_or_load_node(A)
     local nodeAdef = core.registered_nodes[nodeA]
 
     if not nodeAdef then return false end
@@ -231,7 +239,7 @@ sbz_api.move_node = function(A, B)
         return false
     end
 
-    local nodeB = sbz_api.get_node_force(B) or { name = "" }
+    local nodeB = sbz_api.get_or_load_node(B)
     local nodeBdef = minetest.registered_nodes[nodeB.name]
     if not nodeBdef then
         return false

@@ -117,6 +117,7 @@ function pipeworks.register_wielder(def)
             can_remove = function(pos, node, stack)
                 return stack:get_count()
             end,
+            priority = 50,
         },
         on_construct = function(pos)
             local meta = minetest.get_meta(pos)
@@ -134,7 +135,7 @@ function pipeworks.register_wielder(def)
             end
             local node = minetest.get_node(pos)
             node.param2 = minetest.dir_to_facedir(placer:get_look_dir(), true)
-            minetest.set_node(pos, node)
+            minetest.swap_node(pos, node)
             minetest.get_meta(pos):set_string("owner", placer:get_player_name())
         end,
         after_dig_node = function(pos, oldnode, oldmetadata, digger)

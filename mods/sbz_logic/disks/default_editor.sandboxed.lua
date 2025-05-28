@@ -31,12 +31,12 @@ local function finalizer()
     local did_err = {}
     if mem and dirty_mem then
         local ok, errmsg = write_mem(mem)
-        if errmsg then did_err[#did_err+1] = errmsg end
+        if errmsg then did_err[#did_err + 1] = errmsg end
     end
 
     for slot, _ in pairs(dirty_disks) do
         local ok, errmsg = write_disk(slot, disks[slot])
-        if errmsg then did_err[#did_err+1] = errmsg end
+        if errmsg then did_err[#did_err + 1] = errmsg end
     end
     if #did_err > 0 then
         error('Editor error: ' .. table.concat(did_err, '\n'))
@@ -79,7 +79,7 @@ if editor_errmsg then
 end
 
 local function render_formspec_term()
-    local terminal_text = E(tostring(main_env.terminal_text) or "")
+    local terminal_text = E(tostring(main_env.terminal_text or "") or "")
     return string.format(prepend, 2) .. string.format([[
 box[0,0;20,15;black]
 textarea[0,0;20,15;;;%s]
@@ -109,7 +109,7 @@ local function render_formspec_disk()
 style_type[box;colors=#42beef69]
 box[0.1,%s;1.2,1.2;]
 image_button[0.2,%s;1,1;data_disk.png;%s;]
-]=], Y-0.1, Y, slot)
+]=], Y - 0.1, Y, slot)
         else
             fs[#fs + 1] = string.format(
                 "image_button[0.2,%s;1,1;data_disk.png;%s;]", Y, slot)
@@ -143,7 +143,7 @@ image_button[0.2,%s;1,1;data_disk.png;%s;]
     if not disk.immutable then -- writable disk
         local is_editable = type(disk.data) == "string" or disk.data == nil
         local non_editable_msg =
-            "\nCan't edit it here because it's a non-string type, can't show it but here is the dumped version:\n"
+        "\nCan't edit it here because it's a non-string type, can't show it but here is the dumped version:\n"
 
         fs[#fs + 1] = string.format([=[
 field[2,1;10,1;write_disk_name;Disk Name;%s]
@@ -162,7 +162,6 @@ button[13,12;3,1;save;Save]]=],
             tostring(disk.punches_editor),
             tostring(disk.punches_code),
             tostring(math.floor(disk.max / 1024)))
-
     else -- immutable disk
         fs[#fs + 1] = string.format([=[
 style_type[box;colors=#ff71718f]
@@ -189,7 +188,6 @@ if event.type == "program" then -- load this editor
     dirty_mem = true
     mem.current_tab = 1
     editor.formspec = render_formspec_edit()
-
 elseif (event.type == "gui" or event.type == "off" or event.type == "on") or
     (event.type == "ran" and mem.current_tab == 2 and mem.old_terminal_text ~= main_env.terminal_text) then
     local fields = event.fields or {}
@@ -205,13 +203,10 @@ elseif (event.type == "gui" or event.type == "off" or event.type == "on") or
     if tab == 1 then
         editor.formspec = render_formspec_edit()
         if fields.code then editor.code = fields.code end
-
     elseif tab == 2 then
         editor.formspec = render_formspec_term()
-
     elseif tab == 3 then
         editor.formspec = render_formspec_inventory()
-
     elseif tab == 4 then
         disk_slots = available_disks()
         disk_names = available_disk_names()

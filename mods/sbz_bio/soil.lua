@@ -1,6 +1,7 @@
-minetest.register_node("sbz_bio:dirt", {
+minetest.register_node("sbz_bio:dirt", unifieddyes.def {
     description = "Dirt",
     tiles = { "dirt.png" },
+    paramtype2 = "color",
     groups = {
         explody = 100,
         matter = 2,
@@ -40,7 +41,8 @@ unified_inventory.register_craft {
     items = { "sbz_bio:dirt" }
 }
 
-minetest.register_node("sbz_bio:fertilized_dirt", {
+minetest.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
+    paramtype2 = "color",
     description = "Fertilized Dirt",
     tiles = { "fertilized_dirt.png" },
     groups = {
@@ -68,7 +70,8 @@ minetest.register_craft {
 }
 
 
-minetest.register_node("sbz_bio:dirt_with_grass", {
+minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
+    paramtype2 = "color",
     description = "Dirt With Pyrograss",
     tiles = {
         "dirt_with_grass_y.png",
@@ -97,7 +100,8 @@ minetest.register_node("sbz_bio:dirt_with_grass", {
     end,
 })
 
-sbz_api.register_stateful_machine("sbz_bio:electric_soil", {
+sbz_api.register_stateful_machine("sbz_bio:electric_soil", unifieddyes.def {
+    paramtype2 = "colorwallmounted",
     description = "Electric Soil",
     groups = {
         matter = 1,

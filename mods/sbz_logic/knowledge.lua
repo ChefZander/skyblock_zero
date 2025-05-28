@@ -30,6 +30,7 @@ sbz_api.help_pages_by_index = {
     "Teleport Tube",
     "Memory Controller",
     "Teleport Batteries",
+    "Autohook",
 }
 
 local function edit_text(t)
@@ -39,8 +40,9 @@ local function edit_text(t)
     t = string.gsub(t, "%$EDITOR_MS_LIMIT%$", f(logic.editor_limit))
     t = string.gsub(t, "%$MAIN_MS_LIMIT%$", f(logic.main_limit))
     t = string.gsub(t, "%$COMBINED_MS_LIMIT%$", f(logic.combined_limit))
-    t = string.gsub(t, "%$MAIN_RAM_LIMIT%$", f(logic.max_ram / 1024))
-    t = string.gsub(t, "%$C1", string.char(1)) -- needed because minetest hypertext is insanely dumb
+    t = string.gsub(t, "%$MAIN_RAM_LIMIT%$", f((logic.max_ram / 1024) * 1000)) -- *1000 added to bypass f()
+    t = string.gsub(t, "%$C1", string.char(1))                               -- needed because minetest hypertext is weird
+    t = string.gsub(t, "%$AUTOHOOK_ENABLED%$", sbz_api.autohook and "Enabled" or "Disabled")
     return t
 end
 

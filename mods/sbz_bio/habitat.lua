@@ -3,11 +3,28 @@ local touched_nodes = {}
 
 local habitat_max_size = 4096
 
+local stack = {}
+
+local wallmounted_to_dir = {
+    [0] = { 0, 1, 0 },
+    [1] = { 0, -1, 0 },
+    [2] = { 1, 0, 0 },
+    [3] = { -1, 0, 0 },
+    [4] = { 0, 0, 1 },
+    [5] = { 0, 0, -1 },
+}
+
+-- this function is cancer
+-- used to be*
+-- maybe kinda is?
 function sbz_api.assemble_habitat(start_pos, seen)
     seen = seen or {}
 
-    local queue = Queue.new()
-    queue:enqueue(start_pos)
+    local index = 0
+
+    index = index + 1
+    stack[index] = start_pos
+
     seen[hash(start_pos)] = true
 
     local size = 0
@@ -16,17 +33,24 @@ function sbz_api.assemble_habitat(start_pos, seen)
     local power_generated = 0
     local plants = {}
     local co2_sources = {}
-
+    local pos, node, name, def, to_add, cpos, hcpos
     sbz_api.vm_begin()
 
-    while not queue:is_empty() and size < habitat_max_size do
-        local pos = queue:dequeue()
-        local node = sbz_api.get_node_force(pos) or { name = "ignore" }
-        local name = node.name
-        if minetest.get_item_group(name, "plant") > 0 then
-            local d = minetest.get_item_group(name, "needs_co2")
+    local IG = core.get_item_group
+    local get_node = sbz_api.get_or_load_node
+
+
+    while index > 0 and size < habitat_max_size do
+        pos = stack[index]
+        index = index - 1
+
+        node = get_node(pos)
+        name = node.name
+
+        if IG(name, "plant") > 0 then
+            local d = IG(name, "needs_co2")
             local under = vector.subtract(pos, vector.new(0, 1, 0))
-            local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "invalid" }).name, "soil")
+            local soil = IG(get_node(under).name, "soil")
             d = math.ceil(d * math.max(1, soil))
             table.insert(plants, { pos, node, d })
             demand = demand + d
@@ -34,19 +58,27 @@ function sbz_api.assemble_habitat(start_pos, seen)
             if def.power_per_co2 then
                 power_generated = power_generated + math.floor(def.power_per_co2 * d)
             end
-        elseif minetest.get_item_group(name, "co2_source") > 0 then
+        elseif IG(name, "co2_source") > 0 then
             table.insert(co2_sources, { pos, node })
         end
 
-        local def = core.registered_nodes[name]
+        def = core.registered_nodes[name]
         if def then
-            if (name == "air" or minetest.get_item_group(name, "habitat_conducts") > 0 or pos == start_pos or def.walkable == false or def.collision_box ~= nil or def.node_box ~= nil) and name ~= "sbz_bio:airlock" then
-                iterate_around_pos(pos, function(cpos)
-                    if not seen[hash(cpos)] then
-                        queue:enqueue(cpos)
-                        seen[hash(cpos)] = true
+            if (name == "air" or IG(name, "habitat_conducts") > 0 or pos == start_pos or def.walkable == false or def.collision_box ~= nil or def.node_box ~= nil) and name ~= "sbz_bio:airlock" then
+                for i = 0, 5 do
+                    to_add = wallmounted_to_dir[i]
+                    cpos = {
+                        x = pos.x + to_add[1],
+                        y = pos.y + to_add[2],
+                        z = pos.z + to_add[3]
+                    }
+                    hcpos = hash(cpos)
+                    if not seen[hcpos] then
+                        seen[hcpos] = true
+                        index = index + 1
+                        stack[index] = cpos
                     end
-                end)
+                end
                 size = size + 1
                 storage = storage + 1
             end
@@ -59,7 +91,8 @@ function sbz_api.assemble_habitat(start_pos, seen)
         end
     end
 
-    if not queue:is_empty() then
+
+    if index > 0 then
         core.add_particlespawner {
             amount = 20,
             time = 1,
@@ -84,18 +117,17 @@ function sbz_api.assemble_habitat(start_pos, seen)
         size = size - 1,
         demand = demand,
         storage = storage,
-        power_generated =
-            power_generated
+        power_generated = power_generated
     }
 end
 
 function sbz_api.habitat_tick(start_pos, meta, stage)
     local time = os.time()
+    local lag_timer = core.get_us_time()
     local habitat = sbz_api.assemble_habitat(start_pos)
     if not habitat then
         meta:set_string("infotext",
-            (
-                [[
+            ([[
 Habitat unenclosed or too large (max size is %s nodes) or there are multiple habitat regulators in the same habitat.
 Make sure the habitat is fully sealed. And make sure things like slabs or non-airtight power wires aren't in the walls.
 ]])
@@ -133,7 +165,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
     for _, v in ipairs(habitat.plants) do
         local pos, node, demand = unpack(v)
         local under = vector.subtract(pos, vector.new(0, 1, 0))
-        local soil = minetest.get_item_group((sbz_api.get_node_force(under) or { name = "" }).name, "soil")
+        local soil = minetest.get_item_group((sbz_api.get_or_load_node(under) or { name = "" }).name, "soil")
 
         if (stage == PcgRandom(hash(pos)):next(0, 9)) or sbz_api.accelerated_habitats then
             if co2 - demand >= 0 then
@@ -155,7 +187,8 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
         "\nHabitat CO2: ", co2 .. "/" .. habitat.storage,
         "\nHabitat size: ", habitat.size,
         habitat.power_generated > 0 and
-        ("\nPower Generated: " .. sbz_api.format_power(habitat.power_generated)) or ""
+        ("\nPower Generated: " .. sbz_api.format_power(habitat.power_generated)) or "",
+        "\nHabitat lag: " .. math.floor((core.get_us_time() - lag_timer) / 1000) .. "ms"
     }))
     return habitat.power_generated
 end

@@ -44,8 +44,7 @@ local function transport_items_inner(pos, e) -- e=event
     local items = {}
 
     table.foreachi(take_from, function(v)
-        -- i bet you WILL NOT LIKE this way of doing checks but it sure looks good, no?
-        local node = sbz_api.get_node_force(v); if not node then return end
+        local node = sbz_api.get_or_load_node(v); if not node then return end
         local node_def = minetest.registered_nodes[node.name]; if not node_def then return end
         if not node_def.tube then return end
         local meta = minetest.get_meta(v)
@@ -208,11 +207,11 @@ end
 local function transport_items(pos, e)
     local ok, errmsg = pcall(transport_items_inner, pos, e)
     if not ok then
-        sbz_api.logic.send_event_to_sandbox(pos, {
+        sbz_api.queue:add_action(pos, "logic_wait", { {
             type = "error",
             error_type = "yield_error",
             errmsg = errmsg,
-        })
+        } }, 0)
     end
 end
 

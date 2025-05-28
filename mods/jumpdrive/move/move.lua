@@ -1,6 +1,14 @@
 -- moves the source to the target area
 -- no protection- or overlap checking is done here
 function jumpdrive.move(source_pos1, source_pos2, target_pos1, target_pos2)
+	for k, v in pairs(sbz_api.all_caches) do
+		local expires = v.expire_on_jump_or_move
+		if expires then
+			v.data = {}
+			v.timer = 0
+		end
+	end
+
 	minetest.log("action", "[jumpdrive] initiating jump (" ..
 		minetest.pos_to_string(source_pos1) .. "-" .. minetest.pos_to_string(source_pos2) ..
 		") (" .. minetest.pos_to_string(target_pos1) .. "-" .. minetest.pos_to_string(target_pos2) .. ")")

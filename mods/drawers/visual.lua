@@ -340,7 +340,8 @@ core.register_entity("drawers:visual", {
 	updateInfotext = function(self)
 		local itemDescription = ""
 		if core.registered_items[self.itemName] then
-			itemDescription = core.registered_items[self.itemName].description
+			itemDescription = core.registered_items[self.itemName].short_description or
+				core.registered_items[self.itemName].description
 		end
 
 		if self.count <= 0 then
@@ -400,7 +401,6 @@ core.register_entity("drawers:visual", {
 			-- count
 			local stack = ItemStack(self.itemName)
 			stack:set_count(removeCount)
-			print(stack:to_string())
 			-- drop the stack
 			self:dropStack(stack)
 		end

@@ -4,10 +4,10 @@ local M = minetest.get_meta
 local libox_coroutine = libox.coroutine
 local active_sandboxes = libox_coroutine.active_sandboxes
 
-local time_limit = 10e3              -- 10ms
-local editor_time_limit = 3e3        -- 3ms
-local max_us_per_second = 100e3      -- 100ms
-local max_ram = 400 * 1024           -- 400kb
+local time_limit = 10e3         -- 10ms
+local editor_time_limit = 3e3   -- 3ms
+local max_us_per_second = 100e3 -- 100ms
+local max_ram = 400 * 1024      -- 400kb
 
 logic.main_limit = time_limit
 logic.editor_limit = editor_time_limit
@@ -44,7 +44,7 @@ function logic.turn_off(pos)
     sbz_api.turn_off(pos) -- nah, no special logic needed yet
 end
 
-function logic.can_run(pos, meta, editor)
+function logic.can_run(pos, meta, editor, no_off_events)
     if meta:get_int("bill") ~= 0 then
         return false
     end
@@ -55,9 +55,13 @@ function logic.can_run(pos, meta, editor)
         if libox_coroutine.is_sandbox_dead(meta:get_string("ID")) then
             return true
         else
-            active_sandboxes[meta:get_string("ID")] = nil
-            logic.send_editor_event(pos, meta, { type = "off" })
-            return true
+            if not no_off_events then
+                active_sandboxes[meta:get_string("ID")] = nil
+                logic.send_editor_event(pos, meta, { type = "off" })
+                return true
+            else
+                return true
+            end
         end
     end
     return true
@@ -95,7 +99,7 @@ logic.post_runs = {
             direction = function(x) return x == nil or libox.type_vector(x) end,
         },
         f = transport_items,
-    }
+    },
 }
 
 function logic.is_on(pos)
@@ -154,6 +158,7 @@ local function generate_id()
 end
 
 function logic.turn_on(pos)
+    logic.log("Turned on: " .. vector.to_string(pos))
     local meta = M(pos)
     if not logic.can_run(pos, meta) then
         return false
@@ -167,8 +172,8 @@ function logic.turn_on(pos)
         ID = id,
         code = meta:get_string("code"),
         env = logic.get_env(pos, meta, id),
-        time_limit = time_limit,
         size_limit = max_ram,
+        time_limit = time_limit,
     }
     meta:set_string("ID", id)
     meta:mark_as_private("ID")
@@ -182,10 +187,15 @@ function logic.turn_on(pos)
 end
 
 function logic.send_event_to_sandbox(pos, event)
+    logic.log("Sent event to: " .. vector.to_string(pos))
     local t0 = minetest.get_us_time()
 
     local meta = M(pos)
     if not logic.receives_events(pos, event) then
+        return false
+    end
+
+    if not logic.can_run(pos, meta, false, true) then
         return false
     end
 
@@ -200,8 +210,25 @@ function logic.send_event_to_sandbox(pos, event)
     local env = active_sandboxes[id].env
     logic.initialize_env(meta, env, pos)
 
-    -- Calculate time cost
+    -- :{ i KNOW its scuffed
+    local old_sethook = debug.sethook
+    if sbz_api.autohook then
+        debug.sethook = function(...)
+            local vararg = { ... }
+            if #vararg > 0 then
+                sbz_api.autohook()
+            else
+                old_sethook()
+                debug.sethook = old_sethook
+            end -- // warcrime over
+        end
+    end
+
+    --    local true_t0 = core.get_us_time()
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
+    --    core.debug(dump(core.get_us_time() - true_t0))
+    debug.sethook = old_sethook
+
     meta:set_float("microseconds_taken_main_sandbox",
         meta:get_float("microseconds_taken_main_sandbox") + (minetest.get_us_time() - t0))
 
@@ -228,6 +255,7 @@ end
 
 -- editor is a different type of sandbox for simplicity
 function logic.send_editor_event(pos, meta, event)
+    logic.log("Editor event: " .. vector.to_string(pos))
     local t0 = minetest.get_us_time()
 
     if not logic.can_run(pos, meta, true) then
@@ -340,7 +368,7 @@ function logic.on_tick(pos, node, meta, supply, demand)
         string.format("Editor lag: %s\nMain sandbox lag: %s\nCombined: %s\nBill: %s Cj\nCan run: %s",
             format_us(us_taken_editor), format_us(us_taken_main), format_us(us_taken_editor + us_taken_main), bill,
             logic.can_run(pos, meta, true) and "yes" or
-            "no (probably hasn't paid the bill? or you used more than 100 miliseconds)"))
+            "no (didn't pay bill or used more than 100ms)"))
 
     meta:set_float("microseconds_taken_main_sandbox", 0)
     meta:set_float("microseconds_taken_editor_sandbox", 0)

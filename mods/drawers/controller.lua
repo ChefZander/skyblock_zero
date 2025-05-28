@@ -45,8 +45,6 @@ local S = core.get_translator('drawers')
 local function controller_formspec()
 	local formspec =
 		"size[9,8.5]" ..
-		drawers.gui_bg ..
-		drawers.gui_slots ..
 		"label[0,0;" .. S("Drawer Controller") .. "]" ..
 		"list[current_name;src;4,1.75;1,1;]" ..
 		drawers.inventory_list(4.25) ..
@@ -72,19 +70,6 @@ local function controller_index_slot(pos, visualid)
 		drawer_pos = pos,
 		visualid = visualid
 	}
-end
-
-local function compare_pos(pos1, pos2)
-	return pos1.x == pos2.x and pos1.y == pos2.y and pos1.z == pos2.z
-end
-
-local function contains_pos(list, p)
-	for _, v in ipairs(list) do
-		if compare_pos(v, p) then
-			return true
-		end
-	end
-	return false
 end
 
 
@@ -151,28 +136,41 @@ local function add_drawer_to_inventory(controllerInventory, pos)
 	end
 end
 
-local function find_connected_drawers(controller_pos, pos, foundPositions)
-	foundPositions = foundPositions or {}
-	pos = pos or controller_pos
+-- optimized in sbz
+-- the original function literally put a FLAME in the flame graph like legit https://discord.com/channels/1274459478712123423/1311060385507442829/1366433551054143589
 
-	local newPositions = core.find_nodes_in_area(
-		{ x = pos.x - 1, y = pos.y - 1, z = pos.z - 1 },
-		{ x = pos.x + 1, y = pos.y + 1, z = pos.z + 1 },
-		{ "group:drawer", "group:drawer_connector" }
-	)
+local h = core.hash_node_position
+local drawer_networks = {}
 
-	for _, p in ipairs(newPositions) do
-		-- check that this node hasn't been scanned yet
-		if not compare_pos(pos, p) and not contains_pos(foundPositions, p)
-			and pos_in_range(controller_pos, pos) then
-			-- add new position
-			table.insert(foundPositions, p)
-			-- search for other drawers from the new pos
-			find_connected_drawers(controller_pos, p, foundPositions)
+local search_stack = {}
+local function find_connected_drawers(controller_pos)
+	local IG = core.get_item_group
+	local connected = {}
+	local seen = {}
+	local index = 0
+
+	index = index + 1
+	search_stack[index] = controller_pos
+
+	while index > 0 do
+		local pos = search_stack[index]
+		index = index - 1
+
+		if not seen[h(pos)] and pos_in_range(controller_pos, pos) then
+			seen[h(pos)] = true
+			local node = sbz_api.get_or_load_node(pos)
+			if (IG(node.name, "drawer") > 0 or IG(node.name, "drawer_connector") > 0) or vector.equals(controller_pos, pos) then
+				iterate_around_pos(pos, function(ipos)
+					if not seen[h(ipos)] then
+						index = index + 1
+						search_stack[index] = ipos
+					end
+				end)
+				connected[#connected + 1] = pos
+			end
 		end
 	end
-
-	return foundPositions
+	return connected
 end
 
 local function index_drawers(pos)
@@ -203,28 +201,24 @@ end
 	the network is reindexed.
 ]]
 local function controller_get_drawer_index(pos, itemstring)
-	local meta = core.get_meta(pos)
-
 	-- If the index has not been created, the item isn't in the index, the
 	-- item in the drawer is no longer the same item in the index, or the item
 	-- is in the index but it's full, run the index_drawers function.
-	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
-
+	local drawer_net_index = drawer_networks[h(pos)]
 	-- If the index has not been created
 	-- If the item isn't in the index (or the index is corrupted)
 	if not is_valid_drawer_index_slot(drawer_net_index, itemstring) then
 		drawer_net_index = index_drawers(pos)
-		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
-
-		-- There is a valid entry in the index: check that the entry is still up-to-date
+		drawer_networks[h(pos)] = drawer_net_index
 	else
+		-- There is a valid entry in the index: check that the entry is still up-to-date
 		local content = drawers.drawer_get_content(
 			drawer_net_index[itemstring].drawer_pos,
 			drawer_net_index[itemstring].visualid)
 
-		if content.name ~= itemstring or content.count >= content.maxCount then
+		if content.name ~= itemstring or content.count > content.maxCount then
 			drawer_net_index = index_drawers(pos)
-			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+			drawer_networks[h(pos)] = drawer_net_index
 		end
 	end
 

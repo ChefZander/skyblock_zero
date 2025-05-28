@@ -92,22 +92,33 @@ local function get_craft(pos, inventory, hash)
     return craft
 end
 
-local function reserve_slots(meta)
+local global_reserved_slots = {}
+local h = core.hash_node_position
+
+local function reserve_slots(pos, meta)
     local inv = meta:get_inventory()
     local recipe_inv = inv:get_list("recipe")
-
     local reserved_slots = {}
     for i = 1, 9 do
         reserved_slots[i] = recipe_inv[i]:get_name()
         reserved_slots[recipe_inv[i]:get_name()] = i
-        meta:set_string("reserved_slots", minetest.serialize(reserved_slots))
     end
+    global_reserved_slots[h(pos)] = reserved_slots
 end
 
-local function reserved_items_formspec(meta)
+local function get_reserved_slots_or_reserve_them(pos)
+    local reserved_slots = global_reserved_slots[h(pos)]
+    if not reserved_slots then
+        reserve_slots(pos, core.get_meta(pos))
+        reserved_slots = global_reserved_slots[h(pos)]
+    end
+    return reserved_slots
+end
+
+local function reserved_items_formspec(pos)
     local fs = {}
     local offset = { 0.22, 5 }
-    local reserved_slots = minetest.deserialize(meta:get_string("reserved_slots"))
+    local reserved_slots = get_reserved_slots_or_reserve_them(pos)
     for i = 1, 9 do
         local name = reserved_slots[i]
         fs[#fs + 1] = string.format("item_image[%s,%s;1,1;%s]", offset[1], offset[2], name)
@@ -304,7 +315,7 @@ local function after_recipe_change(pos, inventory)
     local output_item = craft.output.item
     local description, name = get_item_info(output_item)
     inventory:set_stack("output", 1, output_item)
-    reserve_slots(meta)
+    reserve_slots(pos, meta)
 end
 
 -- clean out unknown items and groups, which would be handled like unknown
@@ -347,8 +358,8 @@ end
 
 -- returns false if we shouldn't bother attempting to start the timer again
 -- after this
-local function update_meta(meta)
-    reserve_slots(meta)
+local function update_meta(pos, meta)
+    reserve_slots(pos, meta)
     local fs =
         "formspec_version[7]" ..
         "size[11.4,14]" ..
@@ -356,7 +367,7 @@ local function update_meta(meta)
         "image[4,1.45;1,1;[combine:16x16^[noalpha^[colorize:#141318:255]" ..
         "list[context;output;4,1.45;1,1;]" ..
         "list[context;dst;5.28,0.22;4,3;]" ..
-        reserved_items_formspec(meta) ..
+        reserved_items_formspec(pos) ..
         "list[context;src;0.22,5;9,1;]" ..
         pipeworks.fs_helpers.get_inv(9) ..
         "listring[current_player;main]" ..
@@ -386,6 +397,7 @@ local function update_meta(meta)
     return true
 end
 
+local inv_cache = sbz_api.make_cache("inv_cache") -- USE ONLY inv_cache.data, nothing else, as it wont get cleared that way
 
 minetest.register_node("pipeworks:autocrafter", {
     description = S("Autocrafter"),
@@ -395,32 +407,38 @@ minetest.register_node("pipeworks:autocrafter", {
     is_ground_content = false,
     tube = {
         insert_object = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
-            local slots = minetest.deserialize(meta:get_string("reserved_slots"))
-            if not slots[stack:get_name()] then
+            local slots = get_reserved_slots_or_reserve_them(pos)
+            if slots == nil then return stack end
+            local stackname = stack:get_name()
+            if not slots[stackname] then
                 return stack
             end
-            local inv = meta:get_inventory()
 
+            local inv = inv_cache.data[h(pos)]
+            if not inv then
+                inv_cache.data[h(pos)] = core.get_meta(pos):get_inventory()
+                inv = inv_cache.data[h(pos)]
+            end
+            local srclist = inv:get_list("src")
+            local that_stack, leftover
             for i = 1, 9 do
-                if slots[i] == stack:get_name() then
-                    local that_stack = inv:get_stack("src", i)
-                    local leftover = that_stack:add_item(stack):get_count()
-                    inv:set_stack("src", i, that_stack)
+                if slots[i] == stackname then
+                    that_stack = srclist[i]
+                    leftover = that_stack:add_item(stack):get_count()
+                    srclist[i] = that_stack
                     stack:set_count(leftover)
-                    --[[
-                    if stack:set_count(leftover) then
-                        break
-                    end
-                    --]]
                 end
             end
+            inv:set_list("src", srclist)
             return stack
         end,
         can_insert = function(pos, node, stack, direction)
             local meta = minetest.get_meta(pos)
             local inv = meta:get_inventory()
-            local slots = minetest.deserialize(meta:get_string("reserved_slots"))
+            local slots = get_reserved_slots_or_reserve_them(pos)
+            if slots == nil then
+                return false
+            end
             if not slots[stack:get_name()] then
                 return false
             end
@@ -448,10 +466,10 @@ minetest.register_node("pipeworks:autocrafter", {
         inv:set_size("dst", 4 * 3)
         inv:set_size("output", 1)
         meta:set_int("maxpow", 1)
-        update_meta(meta)
+        update_meta(pos, meta)
     end,
     on_rightclick = function(pos)
-        update_meta(minetest.get_meta(pos))
+        update_meta(pos, minetest.get_meta(pos))
     end,
     on_receive_fields = function(pos, formname, fields, sender)
         if (fields.quit and not fields.key_enter_field)
@@ -463,7 +481,7 @@ minetest.register_node("pipeworks:autocrafter", {
         if fields.maxpow and tonumber(fields.maxpow) and (tonumber(fields.maxpow) > 0) then
             local meta = minetest.get_meta(pos)
             meta:set_int("maxpow", math.floor(fields.maxpow))
-            update_meta(meta)
+            update_meta(pos, meta)
         end
     end,
     can_dig = function(pos, player)
@@ -491,7 +509,7 @@ minetest.register_node("pipeworks:autocrafter", {
             return 0
         elseif listname == "src" then
             local meta = minetest.get_meta(pos)
-            local reserved_slot = minetest.deserialize(meta:get_string("reserved_slots"))
+            local reserved_slot = get_reserved_slots_or_reserve_them(pos)
             if not reserved_slot then return stack:get_count() end
             local stackname = stack:get_name()
             if stackname ~= reserved_slot[index] then
@@ -548,7 +566,7 @@ minetest.register_node("pipeworks:autocrafter", {
 
         if to_list == "src" then
             local meta = minetest.get_meta(pos)
-            local reserved_slot = minetest.deserialize(meta:get_string("reserved_slots"))
+            local reserved_slot = get_reserved_slots_or_reserve_them(pos)
             if not reserved_slot then return stack:get_count() end
             local stackname = stack:get_name()
             if stackname ~= reserved_slot[to_index] then
@@ -614,7 +632,7 @@ minetest.register_node("pipeworks:autocrafter", {
         local inv = meta:get_inventory()
         inv:set_list("recipe", list)
         after_recipe_change(pos, inv)
-        update_meta(meta)
+        update_meta(pos, meta)
     end
 })
 

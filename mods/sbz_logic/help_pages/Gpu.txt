@@ -57,7 +57,7 @@ $C1    type = "send",
 $C1    index = 1,
 $C1    to_pos = vector.add(pos, links.matrix_screen[1][1]) -- an absolute position, if it's nil it will send to the luacontroller
 $C1})</mono>
-Sends a buffer to to_pos, the buffer is a table indexed by x[y][x], the color is in format "#RRGGBB"
+Sends a buffer to to_pos, the buffer is a table indexed by buffer[y][x], the color is in format "#RRGGBB"
 
 <b>send_region</b>
 $C1<mono>send_to(links.gpu,{
@@ -153,7 +153,18 @@ $C1    type = "load",
 $C1    index = 1,
 $C1    buffer = <buffer>,
 $C1})</mono>
-Similar to createbuffer, puts the buffer in the command (indexed x[y][x]) into the gpu, at buffer index described in the command.
+Similar to createbuffer, puts the buffer in the command (indexed <mono>color = buffer[y][x]</mono>) into the gpu, at buffer index described in the command.
+
+<b>load_flat</b>
+<mono>send_to(links.gpu,{
+$C1    type = "load_flat",
+$C1    index = 1,
+$C1    buffer = <flat buffer>,
+$C1    xsize = 128,
+$C1    ysize = 128,
+})</mono>
+Similar to <mono>load</mono>, but accepts a flat buffer instead.
+The flat buffer is indexed <mono>color = [(y - 1) * xsize + x]</mono>
 
 <b>send_packed</b>
 $C1<mono>send_to(links.gpu,{

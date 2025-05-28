@@ -168,31 +168,33 @@ function sbz_api.register_leaves(name, def)
             })
         end,
         on_dig = function(pos, node, digger)
-            local drops = def.tree_drop
-            for _, item in ipairs(drops) do
-                if math.random() <= 1 / item.rarity then
-                    if digger and digger:is_player() then
-                        local leftover = digger:get_inventory():add_item("main", item.item)
-                        if leftover then
+            if not core.is_protected(pos, digger:get_player_name()) then
+                local drops = def.tree_drop
+                for _, item in ipairs(drops) do
+                    if math.random() <= 1 / item.rarity then
+                        if digger and digger:is_player() then
+                            local leftover = digger:get_inventory():add_item("main", item.item)
+                            if leftover then
+                                minetest.add_item({
+                                    x = pos.x - 0.5 + math.random(),
+                                    y = pos.y - 0.5 + math.random(),
+                                    z = pos.z - 0.5 + math.random(),
+                                }, leftover)
+                            end
+                        else
                             minetest.add_item({
                                 x = pos.x - 0.5 + math.random(),
                                 y = pos.y - 0.5 + math.random(),
                                 z = pos.z - 0.5 + math.random(),
-                            }, leftover)
+                            }, ItemStack(item.item))
                         end
-                    else
-                        minetest.add_item({
-                            x = pos.x - 0.5 + math.random(),
-                            y = pos.y - 0.5 + math.random(),
-                            z = pos.z - 0.5 + math.random(),
-                        }, ItemStack(item.item))
+                        break
                     end
-                    break
                 end
-            end
 
-            minetest.remove_node(pos)
-            minetest.check_for_falling(pos)
+                minetest.remove_node(pos)
+                minetest.check_for_falling(pos)
+            end
         end,
     } do
         def[k] = v
@@ -368,6 +370,22 @@ core.register_craft {
     }
 }
 
+-- purely decor
+minetest.register_node("sbz_bio:colorium_planks", unifieddyes.def {
+    description = "Colorium Planks",
+    tiles = { "colorium_planks.png" },
+    paramtype2 = "color",
+    groups = { matter = 3, oddly_breakable_by_hand = 2, burn = 1, transparent = 1, explody = 10, },
+    sounds = sbz_api.sounds.tree(),
+})
+
+core.register_craft({
+    type = "shapeless",
+    recipe = { "sbz_bio:colorium_tree" },
+    output = "sbz_bio:colorium_planks 4",
+})
+
+stairs.register("sbz_bio:colorium_planks")
 
 local vowels = "aeiyou"                        -- 6
 local everything_else = "bcdfghjklmnpqrstvwxz" -- 20

@@ -144,6 +144,7 @@ local function make_schem(pos, meta)
     return schem
 end
 
+
 -- contains storage
 core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
     description = "Blast Furnace Controller",
@@ -395,7 +396,6 @@ core.register_node("sbz_multiblocks:blast_furnace_heater", ud {
     info_power_needed = 5, -- they do not connect to cables directly
     groups = {
         matter = 1,
-        explody = -100,
     },
     drawtype = "glasslike_framed",
     paramtype = "light",
@@ -571,8 +571,14 @@ core.register_node("sbz_multiblocks:blast_furnace_item_output", ud {
     before_movenode = sbz_api.multiblocks.before_movenode,
 })
 
--- yey... 566 lines of codes in... need to do RECIPES [imagine it pronounced wrong in this comment]
+-- wrench blacklist
+wrench.blacklist_item("sbz_multiblocks:blast_furnace_controller")
+wrench.blacklist_item("sbz_multiblocks:blast_furnace_casing")
+wrench.blacklist_item("sbz_multiblocks:blast_furnace_heater")
+wrench.blacklist_item("sbz_multiblocks:blast_furnace_item_output")
+wrench.blacklist_item("sbz_multiblocks:blast_furnace_item_input")
 
+-- yey... 566 lines of codes in...
 core.register_craft {
     output = "sbz_multiblocks:blast_furnace_casing 9",
     recipe = {

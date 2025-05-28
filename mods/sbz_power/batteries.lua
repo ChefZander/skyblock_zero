@@ -11,8 +11,19 @@ function sbz_power.register_battery(name, def)
         local current_power = meta:get_int("power")
         meta:set_string("infotext",
             string.format("Battery: %s power", sbz_api.format_power(current_power, max)))
-        meta:set_string("formspec",
-            sbz_api.battery_fs(sbz_power.round_power(current_power), sbz_power.round_power(max)))
+        meta:set_string("formspec", "")
+    end
+    if not def.no_battery_formspec then
+        def.on_rightclick = function(pos, node, clicker, stack, pointed)
+            local meta = core.get_meta(pos)
+            local power = meta:get_int("power")
+            local max_power = def.battery_max
+            if def.get_battery_max then
+                max_power = def.get_battery_max(pos, meta)
+            end
+            core.show_formspec(clicker:get_player_name(), "sbz_power:battery_fs",
+                sbz_api.battery_fs(sbz_power.round_power(power), sbz_power.round_power(max_power)))
+        end
     end
     minetest.register_node(name, def)
 end
@@ -86,6 +97,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
     description = "Teleport Battery",
     tiles = { "teleport_battery.png" },
     groups = { matter = 1, level = 2 },
+    no_battery_formspec = true,
     battery_max = 10000,
     on_construct = function(pos)
         set_tp_battery_formspec(pos)
@@ -166,7 +178,7 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
         end
     end,
     on_logic_send = function(pos, msg, from_pos)
-        local node = sbz_api.get_node_force(from_pos) -- get even if its unloaded
+        local node = sbz_api.get_or_load_node(from_pos) -- get even if its unloaded
         if not node then return end
         local controller_meta = core.get_meta(from_pos)
         local owner = controller_meta:get_string("owner")

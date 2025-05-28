@@ -9,18 +9,19 @@ minetest.register_entity("sbz_power:turret_entity", {
         pointable = false,
         textures = {
             "turret.png",
-        }
+        },
+
     },
     on_activate = function(self)
-        local node = minetest.get_node(vector.round(self.object:get_pos())).name
+        self.object:set_armor_groups { no_move = 1, immortal = 1 }
+        local node = sbz_api.get_or_load_node(vector.round(self.object:get_pos())).name
         if node ~= "sbz_power:turret" then
             self.object:remove()
         end
-        -- self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
     end,
     on_step = function(self, dtime)
         local pos = self.object:get_pos()
-        local node = minetest.get_node(vector.round(pos)).name
+        local node = sbz_api.get_or_load_node(vector.round(pos)).name
         if node ~= "sbz_power:turret" then
             self.object:remove()
         end
@@ -47,6 +48,7 @@ end
 
 --- Side effect: creates turret entity when its not found
 local function get_turret_entity(pos)
+    sbz_api.get_or_load_node(pos)
     local entities = core.get_objects_inside_radius(pos, 0.5)
     for k, v in pairs(entities) do
         if v:get_luaentity() then

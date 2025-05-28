@@ -9,7 +9,8 @@ local action = function(pos, _, puncher)
             pos = pos
         })
         if puncher.is_fake_player then return end
-        displayDialougeLine(puncher:get_player_name(), "Colorium Emitters can only be mined using tools or machines.")
+        sbz_api.displayDialogLine(puncher:get_player_name(),
+            "Colorium Emitters can only be mined using tools or machines.")
     end
     for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
         minetest.sound_play("punch_core", {

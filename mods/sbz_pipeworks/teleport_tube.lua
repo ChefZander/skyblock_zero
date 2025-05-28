@@ -8,7 +8,6 @@ local enable_logging = minetest.settings:get_bool("pipeworks_log_teleport_tubes"
 local tube_db_version = 4
 local tube_db = {}
 local receiver_cache = {}
-
 local function hash_pos(pos)
     vector.round(pos)
     return string.format("%.0f", minetest.hash_node_position(pos))
@@ -64,6 +63,26 @@ local function read_tube_db()
     tube_db.version = nil
 end
 
+
+local function on_update_channel(channel) -- for tptube instant tubes, and also delete senders that are not real
+    --    local cache = receiver_cache[channel]
+
+    for k, v in pairs(tube_db) do
+        local node = sbz_api.get_or_load_node(v)
+        if node then
+            if v.cr == 1 and v.channel == channel then
+                if node.name == "sbz_instatube:teleport_instant_tube" then
+                    sbz_api.instatube.remove_all_nets_around(v)
+                end
+            elseif v.cr == 0 then -- get_receivers takes care of v.cr == 1 nodes
+                if not node.name:find("pipeworks:teleport_tube") and core.get_item_group(node.name, "tptube") ~= 1 then
+                    remove_tube(v)
+                end
+            end
+        end
+    end
+end
+
 local function set_tube(pos, channel, cr)
     local hash = hash_pos(pos)
     local tube = tube_db[hash]
@@ -72,10 +91,12 @@ local function set_tube(pos, channel, cr)
             tube.channel = channel
             tube.cr = cr
             save_tube(hash)
+            on_update_channel(channel)
         end
     else
         tube_db[hash] = { x = pos.x, y = pos.y, z = pos.z, channel = channel, cr = cr }
         save_tube(hash)
+        on_update_channel(channel)
     end
 end
 
@@ -90,7 +111,7 @@ local function get_receivers(pos, channel)
         if val.cr == 1 and val.channel == channel and not vector.equals(val, pos) then
             minetest.load_area(val)
             local node_name = minetest.get_node(val).name
-            if node_name:find("pipeworks:teleport_tube") or core.get_item_group(node_name, "tptube") then
+            if node_name:find("pipeworks:teleport_tube") or core.get_item_group(node_name, "tptube") == 1 then
                 table.insert(receivers, val)
             else
                 remove_tube(val)
@@ -101,6 +122,8 @@ local function get_receivers(pos, channel)
     receiver_cache[channel] = cache
     return receivers
 end
+
+
 
 local help_text = minetest.formspec_escape(
     S("Channels are public by default") .. "\n" ..
@@ -155,6 +178,9 @@ local function update_tube(pos, channel, cr, player_name)
             return
         end
     end
+
+    local old_channel = meta:get_string("channel")
+    receiver_cache[old_channel] = nil
     meta:set_string("channel", channel)
     meta:set_int("can_receive", cr)
     set_tube(pos, channel, cr)
@@ -309,3 +335,14 @@ pipeworks.tptube = {
 
 -- Load the database
 read_tube_db()
+
+-- DEBUG TOOL, used with //luatransform
+function pipeworks.tptube.restore(pos)
+    local node = sbz_api.get_or_load_node(pos)
+    local meta = core.get_meta(pos)
+    local channel = meta:get_string("channel")
+    local cr = meta:get_int("can_receive")
+    if channel ~= "" then
+        set_tube(pos, channel, cr)
+    end
+end

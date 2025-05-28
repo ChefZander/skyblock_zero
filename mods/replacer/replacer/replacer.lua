@@ -107,50 +107,11 @@ function replacer.set_data(stack, node, mode)
 	return short_description
 end -- set_data
 
---[[
-if r.has_technic_mod then
-	if technic.plus then
-		replacer.get_charge = technic.get_RE_charge
-		replacer.set_charge = technic.set_RE_charge
-	else
-		-- technic still stores data serialized, so this is the nearest we get to current standard
-		function replacer.get_charge(itemstack)
-			local meta = deserialize(itemstack:get_meta():get_string(''))
-			if (not meta) or (not meta.charge) then
-				return 0
-			end
-			return meta.charge
-		end
-
-		function replacer.set_charge(itemstack, charge, maximum)
-			technic.set_RE_wear(itemstack, charge, maximum)
-			local meta = itemstack:get_meta()
-			local data = deserialize(meta:get_string(''))
-			if (not data) or (not data.charge) then
-				data = { charge = 0 }
-			end
-			data.charge = charge
-			meta:set_string('', serialize(data))
-		end
-	end
-
-	function replacer.discharge(itemstack, charge, num_nodes, has_creative_or_give)
-		if (not technic.creative_mode) and (not has_creative_or_give) then
-			charge = charge - r.charge_per_node * num_nodes
-			r.set_charge(itemstack, charge, r.max_charge)
-			return itemstack
-		end
-	end
-else
-]]
 function replacer.set_charge(stack, charge, maximum) end
 
 function replacer.discharge(stack, charge, num_nodes, has_creative_or_give) end
 
 function replacer.get_charge(stack) return r.max_charge end
-
---end
-
 
 -- replaces one node with another one and returns if it was successful
 function replacer.replace_single_node(pos, node_old, node_new, player,

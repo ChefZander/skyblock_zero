@@ -40,8 +40,6 @@ drawers.CHEST_ITEMSTRING = "sbz_resources:storinator"
 
 -- GUI
 
-drawers.gui_bg = "bgcolor[#080808BB;true]"
-drawers.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
 function drawers.inventory_list(posy)
 	local hotbar_row_posy = posy + 1.25
 	local inventory_list = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..
@@ -86,14 +84,14 @@ drawers.register_drawer_upgrade("drawers:bronze_upgrade", {
 })
 
 drawers.register_drawer_upgrade("drawers:stemfruit_upgrade", {
-	description = S("Stemfruit Drawer Upgrade (x3)"),
+	description = S("Stemfruit Drawer Upgrade (3x)"),
 	inventory_image = "drawers_upgrade_stemfruit.png",
 	groups = { drawer_upgrade = 200 },
 	recipe_item = "sbz_bio:stemfruit"
 })
 
 drawers.register_drawer_upgrade("drawers:upgrade_colorium", {
-	description = S("Colorium Drawer Upgrade (x4)"),
+	description = S("Colorium Drawer Upgrade (4x)"),
 	inventory_image = "drawers_upgrade_colorium.png",
 	groups = { drawer_upgrade = 300 },
 	recipe_item = "unifieddyes:colorium_blob",

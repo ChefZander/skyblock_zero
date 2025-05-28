@@ -107,6 +107,6 @@ minetest.register_craft({
     recipe = {
         { "sbz_power:simple_charged_field", "sbz_resources:matter_dust",       "sbz_power:simple_charged_field" },
         { "sbz_resources:matter_blob",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
-        { "sbz_power:simple_charged_field", "sbz_resources:matter_blob",       "sbz_power:simple_charged_field" }
+        { "sbz_power:simple_charged_field", "sbz_chem:tin_powder",             "sbz_power:simple_charged_field" }
     }
 })

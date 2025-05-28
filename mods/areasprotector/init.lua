@@ -47,6 +47,7 @@ checkbox[0.2,14;open;Open;%s]
 
 	local fs = { ifs }
 
+
 	local max_y = 1
 	for i = 1, #owners do -- max 13
 		fs[#fs + 1] = string.format("box[0.2,%s;5.6,1;grey]", i)
@@ -153,10 +154,11 @@ end
 
 local function on_place(itemstack, player, pointed, radius, height, sizeword)
 	local pos = pointed.above
+	if not sbz_api.is_air(pos) then
+		return itemstack
+	end
 	local pos1 = vector.add(pos, vector.new(radius, height, radius))
 	local pos2 = vector.add(pos, vector.new(-radius, -height, -radius))
-
-
 
 	local name = player:get_player_name()
 	local perm, err = areas:canPlayerAddArea(pos1, pos2, name)

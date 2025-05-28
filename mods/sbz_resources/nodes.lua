@@ -20,11 +20,12 @@ stairs.register("sbz_resources:matter_blob")
 minetest.register_alias("sbz_resources:matter_stair", "sbz_resources:matter_blob_stair")
 minetest.register_alias("sbz_resources:matter_slab", "sbz_resources:matter_blob_slab")
 
-minetest.register_node("sbz_resources:matter_platform", {
+minetest.register_node("sbz_resources:matter_platform", unifieddyes.def {
     description = "Matter Platform",
     tiles = { "matter_blob.png^platform_overlay.png^[makealpha:255,0,0" },
     use_texture_alpha = "clip",
     drawtype = "nodebox",
+    paramtype2 = "color",
     node_box = {
         type = "fixed",
         fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 }
@@ -72,10 +73,11 @@ stairs.register("sbz_resources:antimatter_blob")
 minetest.register_alias("sbz_resources:antimatter_stair", "sbz_resources:antimatter_blob_stair")
 minetest.register_alias("sbz_resources:antimatter_slab", "sbz_resources:antimatter_blob_slab")
 
-minetest.register_node("sbz_resources:antimatter_platform", {
+minetest.register_node("sbz_resources:antimatter_platform", unifieddyes.def {
     description = "Antimatter Platform",
     tiles = { "antimatter_blob.png^platform_overlay.png^[makealpha:255,0,0" },
     use_texture_alpha = "clip",
+    paramtype2 = "color",
     light_source = 2,
     drawtype = "nodebox",
     node_box = {
@@ -395,9 +397,12 @@ minetest.register_node("sbz_resources:gravel", {
 
 minetest.register_node("sbz_resources:dust", {
     description = "Dust",
-    tiles = { "dust.png" }, -- Needs retexture by artist
-    groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
-    walkable = true,
+    info_extra =
+    "Great for scaffolding (no seriously, you can climb it).\nIt is temporary, it will go away after some time.",
+    tiles = { "dust.png" },
+    groups = { matter = 1, charged = 1, sand = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
+    walkable = false,
+    climbable = true,
     sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
@@ -406,35 +411,33 @@ minetest.register_abm({
     label = "Dust Decay",
     nodenames = { "sbz_resources:dust" },
     interval = 100,
-    chance = 20,
+    chance = 10,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.after(1, function()
-            -- field decayed
-            minetest.set_node(pos, { name = "air" })
+        -- field decayed
+        minetest.set_node(pos, { name = "air" })
 
-            -- plop
-            minetest.sound_play("decay", { pos = pos, gain = 1.0 })
+        -- plop
+        minetest.sound_play("decay", { pos = pos, gain = 1.0 })
 
-            -- more particles!
-            minetest.add_particlespawner({
-                amount = 100,
-                time = 1,
-                minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
-                maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
-                minvel = { x = -5, y = -5, z = -5 },
-                maxvel = { x = 5, y = 5, z = 5 },
-                minacc = { x = 0, y = 0, z = 0 },
-                maxacc = { x = 0, y = 0, z = 0 },
-                minexptime = 10,
-                maxexptime = 20,
-                minsize = 0.5,
-                maxsize = 1.0,
-                collisiondetection = false,
-                vertical = false,
-                texture = "dust.png",
-                glow = 10
-            })
-        end)
+        -- more particles!
+        minetest.add_particlespawner({
+            amount = 100,
+            time = 1,
+            minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
+            maxpos = { x = pos.x + 0.5, y = pos.y + 0.5, z = pos.z + 0.5 },
+            minvel = { x = -5, y = -5, z = -5 },
+            maxvel = { x = 5, y = 5, z = 5 },
+            minacc = { x = 0, y = 0, z = 0 },
+            maxacc = { x = 0, y = 0, z = 0 },
+            minexptime = 10,
+            maxexptime = 20,
+            minsize = 0.5,
+            maxsize = 1.0,
+            collisiondetection = false,
+            vertical = false,
+            texture = "dust.png",
+            glow = 10
+        })
     end,
 })
 
@@ -447,9 +450,10 @@ minetest.register_node("sbz_resources:clay", {
     light_source = 3,
 })
 
-minetest.register_node("sbz_resources:bricks", {
+minetest.register_node("sbz_resources:bricks", unifieddyes.def {
     description = "Bricks",
-    tiles = { "bricks.png" }, -- Needs retexture by artist
+    tiles = { "bricks.png" },
+    drawtype = "color",
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1, },
     walkable = true,
     sounds = sbz_api.sounds.sand(),
@@ -461,6 +465,8 @@ minetest.register_craft({
     output = "sbz_resources:bricks",
     recipe = "sbz_resources:clay",
 })
+
+stairs.register("sbz_resources:bricks")
 
 core.register_node("sbz_resources:dark_sand", {
     description = "Dark Sand",

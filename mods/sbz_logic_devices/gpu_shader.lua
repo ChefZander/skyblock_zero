@@ -18,20 +18,25 @@ local function apply_shader(buffer, shader, pos, from_pos)
     for i = 1, threads do thread_data[i] = {} end
     -- alright... now... validate shader code so that there are no strings
     -- yeah... i know... im sooo lame
-    if #shader > 1000 then return end
-    if string.find(shader, "\"", 1, true) and not sbz_api.debug then
+    if #shader > 1000 then
+        return notify({
+            type = "shader_error",
+            err = "Shader is too large, it must be smaller than 1000 characters."
+        })
+    end
+    if string.find(shader, "\"", 1, true) then
         return notify({
             type = "shader_error",
             err = "Shader must not have strings"
         })
     end
-    if string.find(shader, "'", 1, true) and not sbz_api.debug then
+    if string.find(shader, "'", 1, true) then
         return notify({
             type = "shader_error",
             err = "Shader must not have strings"
         })
     end
-    if string.find(shader, "[[", 1, true) and not sbz_api.debug then
+    if string.find(shader, "[[", 1, true) then
         return notify({
             type = "shader_error",
             err = "Shader must not have strings (or blocky comments... sorry :p)"
@@ -45,18 +50,11 @@ local function apply_shader(buffer, shader, pos, from_pos)
                 local t0 = minetest.get_us_time()
                 local new_buffer = {}
 
-                local function make_immutable(t)
-                    return setmetatable({}, {
-                        __newindex = {},
-                        __index = t
-                    })
-                end
-
-
                 local function make_safe(x)
                     x.randomseed = nil
                     return x
                 end
+
                 local env = setmetatable({}, {
                     __newindex = {},
                     __index = {
@@ -88,9 +86,10 @@ local function apply_shader(buffer, shader, pos, from_pos)
                 local env_index = getmetatable(env).__index
 
                 local f, errmsg = loadstring(shader)
-                if f == nil then
-                    return nil, nil, false
+                if not f then
+                    return nil, nil, false, errmsg
                 end
+
                 setfenv(f, env)
                 jit.off(f, true)
 
@@ -201,6 +200,7 @@ local function apply_shader(buffer, shader, pos, from_pos)
                 notify {
                     type = "shader_complete",
                     err = errors,
+                    success = all_successful,
                 }
 
                 if all_successful == false then return end

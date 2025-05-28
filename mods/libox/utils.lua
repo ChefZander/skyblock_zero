@@ -241,7 +241,13 @@ function libox.type_check(initial_thing, initial_check)
 
         for k, v in pairs(check) do
             if thing[k] == nil then
-                if v(nil) == false then return false, k end
+                if type(v) == "function" then
+                    if v(nil) == false then
+                        return false, k
+                    end
+                else
+                    return false
+                end
             elseif type(v) == "table" then
                 if (internal(thing[k], v, seen)) == false then return false, k end
                 seen[thing[k]] = true

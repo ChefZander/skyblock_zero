@@ -31,6 +31,7 @@ local function make_nofall(name)
     def.groups.falling_node = 0
     def.groups.not_in_creative_inventory = 1
     def.drop = name
+    def.on_dig = minetest.on_dig
     core.register_node(new_name, def)
 end
 

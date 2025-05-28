@@ -32,8 +32,8 @@
 - reverse = unchanged,
 - sub = unchanged,
 - upper = unchanged,
-- trim = unchanged, from minetest
-- split = forced to not match patterns, from minetest
+- trim = unchanged, from luanti
+- split = forced to not match patterns, from luanti
 
 # Table library (table.*)
 
@@ -41,11 +41,11 @@
 - maxn = unchanged
 - remove = unchanged
 - sort = unchanged
-- indexof = unchanged, from minetest
-- copy = unchanged, from minetest
-- insert_all = unchanged, from minetest
-- key_value_swap = unchanged, from minetest
-- shuffle = unchanged, from minetest
+- indexof = unchanged, from luanti
+- copy = unchanged, from luanti
+- insert_all = unchanged, from luanti
+- key_value_swap = unchanged, from luanti
+- shuffle = unchanged, from luanti
 - move = unchanged, LUAJIT ONLY
 - concat = unchanged
 
@@ -55,7 +55,7 @@
 - `fmod`, `frexp`, `huge`, `ldexp`, `log`, `log10`, `max`, `min`, `modf`, `pi`, `pow`,
 - `rad`, `random`, `sin`, `sinh`, `sqrt`, `tan`, `tanh`,
 
--  `hypot`, `sign`, `factorial`, `round`  - from minetest
+-  `hypot`, `sign`, `factorial`, `round`  - from luanti
 
 # Bit library (bit.*)
 - Copied, unchanged
@@ -72,7 +72,7 @@
 - date = mooncontroller's safe_date, made to prevent segfaults,
 
 
-# minetest library (minetest.*)
+# luanti library (core.* or minetest.*)
 
 - formspec_escape = unchanged*,
 - explode_table_event = unchanged*,
@@ -89,7 +89,7 @@
 
 # pattern library (pat.*)
 - Pure lua implementations of functions `find`, `match`, `gmatch`, and they support patterns
-# extra environment stuffs (*) mostly from minetest
+# extra environment stuffs (*) mostly from luanti
 - `dump` `dump2` = unchanged
 - `PcgRandom` = you are given an interface, where `rand_normal_dist` has limited amount of tries and you call the functions by doing `my_random.func` not `my_random:func`
 - `PerlinNoise` = Changed to give an interface, call it like `my_perlin.func` not `my_perlin:func`, also the types in the noiseparams are strict, if it detects a type mismatch it will give you 2 values: `false` and a string, that string being the faulty element (its shallow)

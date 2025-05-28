@@ -7,9 +7,9 @@ minetest.register_globalstep(function(dtime)
             local inv = player:get_inventory()
             if inv then
                 if not inv:contains_item("main", "sbz_progression:questbook") then
-
                     if player:get_meta():get_int("questbookwarning") == 0 then
-                        displayDialougeLine(player:get_player_name(), "Lost your questbook? Use /qb to get it back.")
+                        sbz_api.displayDialogLine(player:get_player_name(),
+                            "Lost your questbook? Use /qb to get it back.")
                         player:get_meta():set_int("questbookwarning", 1)
                     end
                 end
@@ -25,13 +25,13 @@ minetest.register_chatcommand("qb", {
         local inv = minetest.get_player_by_name(name):get_inventory()
         if inv then
             if inv:contains_item("main", "sbz_progression:questbook") then
-                displayDialougeLine(name, "You already have a Quest Book.")
+                sbz_api.displayDialogLine(name, "You already have a Quest Book.")
             else
                 if inv:room_for_item("main", "sbz_progression:questbook") then
                     inv:add_item("main", "sbz_progression:questbook")
-                    displayDialougeLine(name, "You have been given a Quest Book.")
+                    sbz_api.displayDialogLine(name, "You have been given a Quest Book.")
                 else
-                    displayDialougeLine(name, "Your inventory is full.")
+                    sbz_api.displayDialogLine(name, "Your inventory is full.")
                 end
             end
         end

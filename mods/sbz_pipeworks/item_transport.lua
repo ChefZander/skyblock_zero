@@ -16,7 +16,7 @@ function pipeworks.tube_inject_item(pos, start_pos, velocity, item, owner)
 end
 
 function pipeworks.tube_inject_direct(pos, start_pos, to_pos, velocity, item, owner) -- function needed because monitoring pipeworks.tube_inject_item
-	local node = sbz_api.get_node_force(to_pos)
+	local node = sbz_api.get_or_load_node(to_pos)
 	local stack = ItemStack(item)
 	if node and core.registered_nodes[node.name] then
 		local def = core.registered_nodes[node.name]
@@ -33,7 +33,6 @@ end
 -- can_remove(pos,node,stack,dir) returns the maximum number of items of that stack that can be removed
 -- remove_items(pos,node,stack,dir,count) removes count items and returns them
 -- both optional w/ sensible defaults and fallback to normal allow_* function
--- XXX: possibly change insert_object to insert_item
 
 local default_adjlist = { { x = 0, y = 0, z = 1 }, { x = 0, y = 0, z = -1 }, { x = 0, y = 1, z = 0 }, { x = 0, y = -1, z = 0 }, { x = 1, y = 0, z = 0 }, { x = -1, y = 0, z = 0 } }
 
@@ -112,8 +111,10 @@ end
 
 
 
+local adjlist_cache = {}
 -- compatibility behaviour for the existing can_go() callbacks,
 -- which can only specify a list of possible positions.
+-- the fact that minetest.deserialize used to be in this function just not cached hurts my soul
 local function go_next_compat(pos, cnode, cmeta, cycledir, vel, stack, owner, tags)
 	local next_positions = {}
 	local max_priority = 0
@@ -124,8 +125,19 @@ local function go_next_compat(pos, cnode, cmeta, cycledir, vel, stack, owner, ta
 		can_go = def.tube.can_go(pos, cnode, vel, stack, tags)
 	else
 		local adjlist_string = minetest.get_meta(pos):get_string("adjlist")
-		local adjlist = minetest.deserialize(adjlist_string) or
-			default_adjlist -- backward compat: if not found, use old behavior: all directions
+		local adjlist
+		if adjlist_string ~= "" then
+			adjlist = adjlist_cache[adjlist_string]
+			if not adjlist then
+				adjlist_cache[adjlist_string] = core.deserialize(adjlist_string)
+				adjlist = adjlist_cache[adjlist_string]
+			end
+		else
+			adjlist = default_adjlist
+		end
+		if not adjlist then
+			adjlist = default_adjlist
+		end
 
 		can_go = pipeworks.notvel(adjlist, vel)
 	end
@@ -210,8 +222,6 @@ local function go_next(pos, velocity, stack, owner, tags)
 
 	-- pulled out and factored out into go_next_compat() above.
 	-- n is the new value of the cycle counter.
-	-- XXX: this probably needs cleaning up after being split out,
-	-- seven args is a bit too many
 	local n, found, new_velocity, multimode = go_next_compat(pos, cnode, cmeta, cycledir, vel, stack, owner, tags)
 
 	-- if not using output cycling,

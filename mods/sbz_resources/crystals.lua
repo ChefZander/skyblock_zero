@@ -109,3 +109,15 @@ for k, v in pairs({ "powder", "ingot" }) do
         items = { ("sbz_chem:uranium_%s 8"):format(v) }
     }
 end
+
+-- TODO: make it actually shock,  by that i mean knock back you and give you shocked fx
+core.register_craftitem("sbz_resources:shock_crystal", {
+    description = "Shock Crystal",
+    inventory_image = "shock_crystal.png",
+})
+
+unified_inventory.register_craft {
+    type = "crystal_growing",
+    output = "sbz_resources:shock_crystal",
+    items = { "sbz_bio:shockshroom 9" }
+}

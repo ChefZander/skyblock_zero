@@ -216,3 +216,4 @@ local mp = core.get_modpath(core.get_current_modname())
 
 dofile(mp .. "/visuals.lua")
 dofile(mp .. "/blast_furnace.lua")
+dofile(mp .. "/blast_furnace_recipes.lua")
