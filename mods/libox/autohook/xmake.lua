@@ -19,6 +19,12 @@ target("autohook")
     end
 
     on_load(function(target)
+        for line in io.lines("autohook.c") do
+            if line:startswith('#define AUTOHOOK_VERSION ') then
+                io.writefile("module-version.txt", line:match('%d+', 25))
+            end
+        end
+
         local luajit_root = get_config("luajit-root")
         if luajit_root then
             local include_dir = path.join(luajit_root, "include", "luajit-2.1")

@@ -27,10 +27,28 @@ if ie and jit then
     -- system/other apps' libraries with the same name
     local errmsg
     libox_autohook_module, errmsg = ie.package.loadlib(lib, 'luaopen_autohook')()
-    if not libox_autohook_module or errmsg then
-        core.log("error", ('Autohook feature NOT available. Failed loading autohook C module %s:\n%s'):format(lib, errmsg))
-    else
+    while true do
+        if not libox_autohook_module or errmsg then
+            core.log("error", ('Autohook feature NOT available. Failed loading autohook C module %s:\n%s'):format(lib, errmsg))
+            break
+        end
+
+        local version_file = io.open(MP .. "/autohook/module-version.txt")
+        local module_version = libox_autohook_module.version
+        if not version_file or not module_version then
+            core.log("warning", 'Autohook feature available, but could not verify its C module compatibility')
+            break
+        end
+        local current_version = version_file:read("*n")
+        version_file:close()
+
+        if current_version ~= libox_autohook_module.version() then
+            core.log("warning", 'Autohook feature available, but its C module version is incompatible')
+            break
+        end
+
         core.log("info", 'Autohook feature available')
+        break
     end
 else
     core.log("info", 'Autohook feature NOT available')
