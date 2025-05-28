@@ -1,3 +1,4 @@
 coverage/*
 mods/sbz_debug
 test_formspec
+mods/sbz_logic_autohook/bin/autohook.so

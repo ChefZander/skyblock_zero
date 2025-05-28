@@ -155,7 +155,6 @@ local function decode_text_and_meta(lines, line_index, quest)
                         ),
                         string.trim, true
                     )
-                    -- core.debug(dump(quest.requires))
                 end
                 if starts_with(line, "#") then
                     line_index = line_index - 1
