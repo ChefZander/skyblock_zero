@@ -43,9 +43,14 @@ do_the_settings_thing("libox", api.settings)
 local attach_autohook = libox_autohook_module and libox_autohook_module.autohook
 local function attach_hook(sandbox)
     if sandbox.autohook and attach_autohook then
+        local hook
+        if sandbox.in_hook then
+            hook = sandbox.in_hook()
+        end
         attach_autohook(
             sandbox.hook_time or libox.default_hook_time,
-            (sandbox.time_limit or libox.default_time_limit) / 1000)
+            (sandbox.time_limit or libox.default_time_limit) / 1000,
+            hook)
     else
         debug.sethook(sandbox.in_hook(), "", sandbox.hook_time or libox.default_hook_time)
     end
@@ -64,13 +69,15 @@ end
 
 function api.create_sandbox(def)
     local ID = def.ID or rand_text(10)
+    local in_hook = def.in_hook
+    if not (def.autohook and attach_autohook) then
+        in_hook = in_hook or libox.coroutine.get_default_hook(def.time_limit or libox.default_time_limit)
+    end
     active_sandboxes[ID] = {
         code = def.code,
         is_garbage_collected = def.is_garbage_collected or true,
         env = def.env or {},
-        -- TODO def.in_hook isn't called if autohook is available+enabled
-        -- whatever it wants to do is ignored in that case
-        in_hook = def.in_hook or libox.coroutine.get_default_hook(def.time_limit or libox.default_time_limit),
+        in_hook = in_hook,
         function_wrap = def.function_wrap or function(f) return f end,
         last_ran = os.clock(),                         -- for gc and logging
         hook_time = def.hook_time or libox.default_hook_time,

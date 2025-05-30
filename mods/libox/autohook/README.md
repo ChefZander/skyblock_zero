@@ -7,7 +7,12 @@ To enable this feature, game and mod developers need to do a couple of things:
 2. Ask players to put libox in trusted mods list. An error message will be logged if libox found the C module but encountered problems loading it.
 3. Ask players to compile the `libautohook.so/.dll` linking with the same LuaJIT library used with Luanti. Players, please read further below on how to compile it.
 
-If any of the conditions needed for autohook to work is unfulfilled, autohook is NOT available. As such, libox will safely fallback to regular coroutine sandbox behaviour where manual `yield()` is required. This is reflected in `libox.has_autohook`.
+If any of the conditions needed for autohook to work is unfulfilled, autohook is NOT available. As such, libox will safely fallback to regular coroutine sandbox behaviour where manual `yield()` is required. Check `libox.has_autohook`.
+
+# C Hook behaviour
+The autohook uses `def.hook_time` in a normal way to set the C hook, being instruction counts needed to trigger the hook. The default autohook checks if the sandbox has elapsed `def.time_limit` and yields it. It is the auto-yielding form of `libox.coroutine.get_default_hook(def.time_limit or libox.default_time_limit)`.
+
+If `def.in_hook` is a function, then the C hook will call it instead of its default behaviour. Whenever `def.in_hook` throws an error, the C hook will yield. To kill the sandbox from `def.in_hook`, start your error message with `SANDBOX KILL`. This means that by default, `def.in_hook` unaware of the kill command will always yield. Please update `def.in_hook` accordingly when you enable autohook.
 
 # Compile the autohook C module
 ## Compile: Linux/Unix-like systems

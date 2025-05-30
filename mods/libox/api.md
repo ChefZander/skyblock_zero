@@ -26,6 +26,8 @@
 
 `libox.disabled = true/false` - use when you want to disable libox (e.g. when using jitprofiler)
 
+`libox.has_autohook = true/false` - Is autohook available or not?
+
 **functions**
 
 `libox.type_check(thing, check)`
@@ -103,15 +105,15 @@ All of theese are configurable by the user
 - `def.code` - the code
 - `def.is_garbage_collected` - if this sandbox should be garbage collected, by default true
 - `def.env` - the environment, by default a blank table
-- `def.in_hook` - the function that runs in the hook, by default `libox.coroutine.get_default_hook(def.time_limit or 3000)`, see `libox.coroutine.get_default_hook` on how to use, it is different to how normal sandbox handles it
+- `def.in_hook` - hook builder function, by default `libox.coroutine.get_default_hook(def.time_limit or libox.default_time_limit)` or `nil` if autohook is available+enabled. See `libox.coroutine.get_default_hook` on how to use, it is different to how normal sandbox handles it.
 - `def.time_limit` - used if `debug.in_hook` is not avaliable, by default 3000
 - `last_ran` - not set by you, but is the last time the sandbox was ran, used for garbage collection
 - `def.hook_time` - The hook function will execute every `def.hook_time` instructions, by default 10
 - `def.size_limit` - in *bytes*, the size limit of the sandbox, if trusted then upvalues and local variables are counted in too, by default 5 *megabytes*, aka `1024*1024*5` bytes
 - `def.function_wrap` - transforms a function, by default `function(f) return f end`
-- `def.autohook` - enables/disables auto-yielding inside sandboxes, respecting `def_hook_time` and `def.time_limit`. Please read `autohook/README.md` document for more info. By default, this is disabled (`false`).
+- `def.autohook` - enables/disables auto-yielding inside sandboxes, respecting `def.hook_time` and `def.time_limit`. `def.in_hook` behaves a bit differently. Please read `autohook/README.md` document for more info. By default, this is disabled (`false`).
 
-`libox.coroutine.get_default_hook(max_time)` - a function that returns a function that returns a function.... ok but no what it really is is that it just yeah...
+`libox.coroutine.get_default_hook(max_time)` - returns a hook builder function. The created hook performs a time limit check whether to raise an error or not. Raising an error kills the sandbox.
 
 `libox.coroutine.run_sandbox(ID, value_passed)`
 - `value_passed` - the value passed to the coroutine.resume function, so that in the sandbox it could: `local vals = coroutine.yield("blabla")`
