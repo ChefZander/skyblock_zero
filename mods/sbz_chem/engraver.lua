@@ -10,12 +10,11 @@ local function allow_metadata_inventory_move(pos, from_list, from_index, to_list
     return count
 end
 
-unified_inventory.register_craft_type("engraver", {
+sbz_api.recipe.register_craft_type({
+    type = "engraver",
     description = "Engraving",
     icon = "engraver.png^[verticalframe:24:1",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
+    single = true,
 })
 
 sbz_api.register_stateful_machine("sbz_chem:engraver", {
@@ -68,27 +67,8 @@ listring[context;dst]
             meta:set_string("infotext", "Engraving... Using 3400Cj")
 
             local src = inv:get_list("src")
+            local out, count, decremented, index = sbz_api.recipe.resolve_craft(src, "engraver", true)
 
-            local out, decremented_input, index
-            for i = 1, 2 do
-                local recipe_outputs = unified_inventory.get_usage_list(src[i]:get_name())
-                local out_inner = ItemStack("")
-                local input = ItemStack("")
-
-                for _, v in pairs(recipe_outputs or {}) do
-                    if v.type == "engraver" then
-                        out_inner = ItemStack(v.output)
-                        input = ItemStack(v.items[1])
-                        break
-                    end
-                end
-                if not out_inner:is_empty() and (src[i]:get_count() >= input:get_count()) then
-                    out, decremented_input = out_inner, ItemStack(src[i])
-                    decremented_input:take_item(input:get_count())
-                    index = i
-                    break
-                end
-            end
             if out == nil then
                 meta:set_string("infotext", "Invalid/no recipe")
                 return 0
@@ -99,7 +79,9 @@ listring[context;dst]
                 return 0
             end
 
-            inv:set_stack("src", index, decremented_input)
+            local new_src = inv:get_stack("src", index)
+            new_src:set_count(new_src:get_count() - decremented)
+            inv:set_stack("src", index, new_src)
             inv:add_item("dst", out)
             sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed

@@ -2,7 +2,15 @@ local IE = core.request_insecure_environment()
 if IE then
     local MP = core.get_modpath("sbz_logic_autohook")
     IE.package.cpath = MP .. "/bin/?.so;" .. IE.package.cpath
-    sbz_api.autohook = IE.require("autohook").autohook
+    local ok, errmsg = IE.pcall(function()
+        sbz_api.autohook = IE.require("autohook").autohook
+    end)
+    if not ok then
+        core.log("warning",
+            "[sbz_logic_autohook] - You have trusted this mod but didn't compile the C parts, autohook.so could not load, error message: \n" ..
+            errmsg
+        )
+    end
 end
 IE = nil
 

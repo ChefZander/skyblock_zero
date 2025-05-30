@@ -88,14 +88,16 @@ function multiblocks.render_ghost(pos, itemname, render_slightly_bigger, no_name
     })
 end
 
-function multiblocks.draw_schematic(start_pos, schematic, category_represent)
+function multiblocks.draw_schematic(start_pos, schematic)
     for pos, node_match in pairs(schematic.data) do
         pos = vector.add(start_pos, uh(pos))
         local node = sbz_api.get_node_force(pos)
         if node then
             local visual_item_name = node_match
             if type(visual_item_name) == "function" then visual_item_name = "unifieddyes:colorium_blob" end
-            if category_represent[visual_item_name] then visual_item_name = category_represent[visual_item_name] end
+            if schematic.categories[visual_item_name] then
+                visual_item_name = schematic.categories[visual_item_name].default
+            end
             local correct
             if type(node_match) == "function" then
                 correct = node_match(pos, node)
