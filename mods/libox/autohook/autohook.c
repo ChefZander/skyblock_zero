@@ -1,10 +1,13 @@
-#include <luajit-2.1/lua.h>
-#include <luajit-2.1/lauxlib.h>
-#include <luajit-2.1/luajit.h>
+#include <lua.h>
+#include <lauxlib.h>
+#include <luajit.h>
+#include <stdio.h>
+#include <time.h>
+#include "autohook.h"
 
-// TODO find a less fragile approach
-// Bump this number everytime this file changes meaningfully
-#define AUTOHOOK_VERSION 1
+// module-version.txt tracks the current autohook.c hash, so always re-build the C module
+// for any change. OR if you can't (or too lazy) do that, just do something like:
+// sha256sum autohook.c | awk '{ print $1 }' >module-version.txt
 
 // like home
 #define nil NULL
@@ -13,8 +16,6 @@
     var = check(L, narg); \
     if (var < 0) return luaL_error(L, "argument must be a positive integer")
 
-#include <stdio.h>
-#include <time.h>
 
 static double prev_time = 0;
 static double get_time_ms() {
@@ -25,7 +26,6 @@ static double get_time_ms() {
 
 static double time_limit = 0;
 static int attempts = 0; // THIS is to avoid a "yield across C-call boundary" error
-// this is like a weird "const" in javascript, i like it
 #define MAX_ATTEMPTS 10
 
 static void hookf(lua_State *L, lua_Debug *ar) {
@@ -62,7 +62,7 @@ static int autohook(lua_State *L) {
 }
 
 static int version(lua_State *L) {
-    lua_pushnumber(L, AUTOHOOK_VERSION);
+    lua_pushstring(L, AUTOHOOK_HASH);
     return 1;
 }
 

@@ -30,22 +30,26 @@ if ie and jit then
     while true do
         if not libox_autohook_module or errmsg then
             core.log("error", ('Autohook feature NOT available. Failed loading autohook C module %s:\n%s'):format(lib, errmsg))
-            break
-        end
-
-        local version_file = io.open(MP .. "/autohook/module-version.txt")
-        local module_version = libox_autohook_module.version
-        if not version_file or not module_version then
-            core.log("error", 'Autohook feature NOT available, but could not verify its C module compatibility')
             libox_autohook_module = nil
             break
         end
-        local current_version = version_file:read("*n")
+
+        -- module-version.txt tracks the current autohook.c hash, so always re-build the C module
+        -- for any change. OR if you can't (or too lazy) do that, just do something like:
+        -- sha256sum autohook.c | awk '{ print $1 }' >module-version.txt
+        local version_file = io.open(MP .. "/autohook/module-version.txt")
+        local module_version = libox_autohook_module.version
+        if not version_file or not module_version then
+            core.log("error", 'Autohook feature NOT available, could not verify its C module compatibility')
+            libox_autohook_module = nil
+            break
+        end
+        local current_version = version_file:read("*l")
         version_file:close()
 
         local module_version = module_version()
         if current_version ~= module_version then
-            core.log("error", 'Autohook feature NOT available, but its C module version is incompatible\n'
+            core.log("error", 'Autohook feature NOT available, its C module version is incompatible\n'
                 ..('current: %s | available: %s'):format(current_version, module_version))
             libox_autohook_module = nil
             break

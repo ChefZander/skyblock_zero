@@ -1,0 +1,2 @@
+// This number is tied to the latest commit's UNIX time
+#define AUTOHOOK_HASH "${AUTOHOOK_HASH}"

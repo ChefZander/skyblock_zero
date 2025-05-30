@@ -1,2 +1,5 @@
 .xmake
 build
+autohook.h
+*.dll
+*.so

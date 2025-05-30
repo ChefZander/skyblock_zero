@@ -7,6 +7,10 @@ libox = {
     in_sandbox = false,
 }
 
+if libox_autohook_module then
+    libox.has_autohook = true
+end
+
 local MP = minetest.get_modpath("libox")
 dofile(MP .. "/env.lua")
 dofile(MP .. "/utils.lua")
