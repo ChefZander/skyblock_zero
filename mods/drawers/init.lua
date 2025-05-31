@@ -160,6 +160,7 @@ core.register_craft({
 
 
 --[[
+(Btw i modified the code below slightly)
 The code under this line is licensed under:
 
 MIT License
@@ -191,7 +192,7 @@ minetest.register_chatcommand("drawers_fix", {
 		if not player then
 			return
 		end
-		local t1 = minetest.get_us_time()
+		local t1 = sbz_api.clock_ms()
 
 		local ppos = player:get_pos()
 		local pos1 = vector.subtract(ppos, 10)
@@ -204,9 +205,9 @@ minetest.register_chatcommand("drawers_fix", {
 			drawers.spawn_visuals(pos)
 		end
 
-		local t2 = minetest.get_us_time()
+		local t2 = sbz_api.clock_ms()
 		local diff = t2 - t1
-		local millis = diff / 1000
+		local millis = diff
 
 		return true, "Restored " .. #poslist .. " drawers in " .. millis .. " ms"
 	end

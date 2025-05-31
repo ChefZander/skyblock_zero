@@ -41,7 +41,7 @@ end
 ---@param start_pos vector
 ---@param seen table|nil
 function sbz_api.assemble_network(start_pos, seen, parent_net_id)
-    local t0 = minetest.get_us_time()
+    local t0 = sbz_api.clock_ms()
     local by_connector = parent_net_id
     seen = seen or {}
 
@@ -153,7 +153,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
         end
     end
 
-    network.lag = minetest.get_us_time() - t0
+    network.lag = sbz_api.clock_ms() - t0
     network.lagstamp = os.time()
     if not by_connector then
         return net_id
@@ -230,7 +230,7 @@ function sbz_api.switching_station_tick(start_pos)
                 sbz_api.format_power(network_before.supply - network_before.battery_supply_only),
                 sbz_api.format_power(network_before.demand),
                 sbz_api.format_power(network_before.battery_supply_only, network_before.battery_max),
-                math.floor(network_before.lag / 1000), network_size
+                math.floor(network_before.lag), network_size
             )
         )
     end
@@ -247,7 +247,7 @@ function sbz_api.switching_station_tick(start_pos)
         network = networks[net_id]
     end
 
-    local t0 = minetest.get_us_time()
+    local t0 = sbz_api.clock_ms()
 
     local generators = network.generators
     local machines = network.machines
@@ -297,6 +297,7 @@ function sbz_api.switching_station_tick(start_pos)
             ids[id] = true
         end
         if meta:get_int("force_off") ~= 1 and id_good then
+            local profiler_t0 = sbz_api.clock_ms()
             touched_nodes[hash(position)] = os.time()
 
             v[4] = d.battery_max
@@ -312,6 +313,10 @@ function sbz_api.switching_station_tick(start_pos)
 
             battery_max = battery_max + v[4]
             supply = supply + battery_power
+            profiler[node] = profiler[node] or {}
+            --            profiler[node].generated = ...
+            profiler[node].lag = (profiler[node].lag or 0) + (sbz_api.clock_ms() - profiler_t0)
+            profiler[node].count = (profiler[node].count or 0) + 1
         end
     end
 
@@ -323,14 +328,14 @@ function sbz_api.switching_station_tick(start_pos)
         if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
             touched_nodes[hash(position)] = os.time()
 
-            local profiler_t0 = core.get_us_time()
+            local profiler_t0 = sbz_api.clock_ms()
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
             supply = supply + action_result
 
             profiler[node] = profiler[node] or {}
             profiler[node].generated = (profiler[node].generated or 0) + action_result
-            profiler[node].lag = (profiler[node].lag or 0) + (core.get_us_time() - profiler_t0)
+            profiler[node].lag = (profiler[node].lag or 0) + (sbz_api.clock_ms() - profiler_t0)
             profiler[node].count = (profiler[node].count or 0) + 1
         end
     end
@@ -342,7 +347,7 @@ function sbz_api.switching_station_tick(start_pos)
         if minetest.get_meta(v[1]):get_int("force_off") ~= 1 then
             touched_nodes[hash(position)] = os.time()
 
-            local profiler_t0 = core.get_us_time()
+            local profiler_t0 = sbz_api.clock_ms()
 
             local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
             assert(action_result, "You need to return something in the action function... fauly node: " .. node)
@@ -354,12 +359,12 @@ function sbz_api.switching_station_tick(start_pos)
 
             profiler[node] = profiler[node] or {}
             profiler[node].generated = (profiler[node].generated or 0) - action_result
-            profiler[node].lag = (profiler[node].lag or 0) + (core.get_us_time() - profiler_t0)
+            profiler[node].lag = (profiler[node].lag or 0) + (sbz_api.clock_ms() - profiler_t0)
             profiler[node].count = (profiler[node].count or 0) + 1
         end
     end
 
-    local t1 = minetest.get_us_time()
+    local t1 = sbz_api.clock_ms()
     local lag = t1 - t0
     if network.lagstamp == os.time() then
         network.lag = network.lag + lag
@@ -376,7 +381,7 @@ function sbz_api.switching_station_tick(start_pos)
 end
 
 function sbz_api.switching_station_sub_tick(start_pos)
-    local t0 = minetest.get_us_time()
+    local t0 = sbz_api.clock_ms()
 
     local network = get_network(start_pos)
     if network == nil then return end
@@ -392,16 +397,16 @@ function sbz_api.switching_station_sub_tick(start_pos)
         local position = v[1]
         local node = v[2]
         touched_nodes[hash(position)] = os.time()
-        local profiler_t0 = core.get_us_time()
+        local profiler_t0 = sbz_api.clock_ms()
         local action_result = node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
         demand = demand + action_result
         profiler[node] = profiler[node] or {}
         profiler[node].generated = (profiler[node].generated or 0) + action_result
-        profiler[node].lag = (profiler[node].lag or 0) + (core.get_us_time() - profiler_t0)
+        profiler[node].lag = (profiler[node].lag or 0) + (sbz_api.clock_ms() - profiler_t0)
         profiler[node].count = (profiler[node].count or 0) + 1
     end
 
-    local t1 = minetest.get_us_time()
+    local t1 = sbz_api.clock_ms()
     network.lag = network.lag + (t1 - t0)
 
     network.demand = demand
@@ -427,8 +432,8 @@ button_exit[0,10;10,1;exit;Exit]
     for k, v in pairs(net.profiler) do
         table_text[#table_text + 1] = k
         table_text[#table_text + 1] = v.count
-        table_text[#table_text + 1] = math.floor(v.lag / 1000) .. "ms"
-        table_text[#table_text + 1] = v.generated
+        table_text[#table_text + 1] = v.lag and (math.floor(v.lag) .. "ms") or "-"
+        table_text[#table_text + 1] = v.generated or "-"
     end
     fs = string.format(fs, table.concat(table_text, ","))
     core.show_formspec(username, "sbz_power:switching_station_profiler", fs)

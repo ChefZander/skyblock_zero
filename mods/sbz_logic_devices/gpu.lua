@@ -810,9 +810,9 @@ core.register_node("sbz_logic_devices:gpu", {
             if lag > max_ms_use then -- sorry :/
                 break
             end
-            local t0 = minetest.get_us_time()
+            local t0 = sbz_api.clock_ms()
             exec_command(buffers, msg[i], pos, from_pos)
-            lag = math.floor(lag + (minetest.get_us_time() - t0) / 1000)
+            lag = math.floor(lag + (sbz_api.clock_ms() - t0))
         end
 
         if last_measured ~= os.time() then

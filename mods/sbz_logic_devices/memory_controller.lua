@@ -9,7 +9,7 @@ end
 
 local key_size_limit = 128
 local size_limit = 64 * 1024 * 1024 * 1024 -- 64MB
-local lag_limit = 50 * 1000                -- 50ms
+local lag_limit = 50
 
 local default_index_state = {
     size = 0,
@@ -20,7 +20,7 @@ core.register_node("sbz_logic_devices:memcontroller", {
     info_extra = {
         "Holds " .. (size_limit / 1024 ^ 3) .. "mb",
         "Capable of compressing data",
-        "Limited to " .. (lag_limit / 1000) .. "ms/s",
+        "Limited to " .. (lag_limit) .. "ms/s",
     },
     tiles = {
         "memcontroller_top.png",
@@ -49,7 +49,7 @@ core.register_node("sbz_logic_devices:memcontroller", {
         if lag > lag_limit and measurement_time ~= os.time() then return end
 
         local notify = sbz_api.logic.get_notify(from_pos, pos)
-        local t0 = core.get_us_time()
+        local t0 = sbz_api.clock_ms()
         msg.type = msg.type:lower()
 
         local INDEX = core.deserialize(meta:get_string("INDEX"))
@@ -58,10 +58,12 @@ core.register_node("sbz_logic_devices:memcontroller", {
             meta:set_string("INDEX", core.serialize(table.copy(default_index_state))); meta:mark_as_private("INDEX")
             INDEX = default_index_state
         end
+
         local index_dirty = false
         if type(msg.key) == "string" and #msg.key <= key_size_limit then
             local internal_name = "d_" .. msg.key
             local entry = INDEX[internal_name]
+
             if msg.type == "get" then
                 if not entry then
                     notify {
@@ -89,10 +91,13 @@ core.register_node("sbz_logic_devices:memcontroller", {
                 if entry then
                     old_size = entry.size
                 end
+
                 if should_compress then
                     value = compress(value)
                 end
+
                 local new_size = #msg.key + #value
+
                 if (INDEX.size - old_size + new_size) > size_limit then
                     notify {
                         type = msg.type,
@@ -107,6 +112,7 @@ core.register_node("sbz_logic_devices:memcontroller", {
                         size = new_size,
                         compressed = should_compress,
                     }
+
                     INDEX.size = INDEX.size - old_size + new_size
                     index_dirty = true
                     meta:set_string(internal_name, value)
@@ -130,10 +136,10 @@ core.register_node("sbz_logic_devices:memcontroller", {
             meta:set_string("INDEX", core.serialize(INDEX))
             meta:mark_as_private("INDEX")
         end
-        local t = core.get_us_time() - t0
+        local t = sbz_api.clock_ms() - t0
         meta:set_float("lag", lag + t)
         meta:set_int("measurement_time", os.time())
-        meta:set_string("infotext", ("Memory Controller\nLag: %sms/%sms"):format((lag + t) / 1000, lag_limit / 1000))
+        meta:set_string("infotext", ("Memory Controller\nLag: %sms/%sms"):format(math.floor(lag + t), lag_limit))
     end,
 })
 
