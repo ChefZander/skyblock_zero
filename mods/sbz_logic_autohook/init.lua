@@ -1,5 +1,6 @@
 local IE = core.request_insecure_environment()
-if IE then
+local DISABLED = true
+if IE and not DISABLED then
     local MP = core.get_modpath("sbz_logic_autohook")
     IE.package.cpath = MP .. "/bin/?.so;" .. IE.package.cpath
     local ok, errmsg = IE.pcall(function()
