@@ -50,12 +50,18 @@ end
 local function get_turret_entity(pos)
     sbz_api.get_or_load_node(pos)
     local entities = core.get_objects_inside_radius(pos, 0.5)
+
+    local turret_entities = {}
     for k, v in pairs(entities) do
         if v:get_luaentity() then
             if v:get_luaentity().name == "sbz_power:turret_entity" then
-                return v
+                turret_entities[#turret_entities + 1] = v
             end
         end
+    end
+    for id, turret in ipairs(turret_entities) do
+        if id == #turret_entities then return turret end
+        turret:remove() -- remove excess turrets
     end
 
     return minetest.add_entity(pos, "sbz_power:turret_entity")

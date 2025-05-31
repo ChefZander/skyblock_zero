@@ -4,6 +4,7 @@
 - In the various "lag" statues, switched away from using core.get_us_time, and instead using os.clock()
 ### The main stuff:
 - Large Liquid Storage - another multiblock, you won't guess what it does
+- Fixed meteorite attractors sometimes just multiplying
 
 
 
