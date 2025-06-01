@@ -4,4 +4,4 @@ test_formspec
 
 # rather whitelist than blacklist tbh
 .vscode/*
-~.vscode/settings.json
+!.vscode/settings.json
