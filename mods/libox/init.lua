@@ -29,37 +29,40 @@ if ie and jit then
     libox_autohook_module, errmsg = ie.package.loadlib(lib, 'luaopen_autohook')()
     while true do
         if not libox_autohook_module or errmsg then
-            core.log("error", ('Autohook feature NOT available. Failed loading autohook C module %s:\n%s'):format(lib, errmsg))
+            core.log("error", ('[libox] Autohook feature NOT available. Failed loading autohook C module %s:\n%s'):format(lib, errmsg))
             libox_autohook_module = nil
             break
         end
 
-        -- module-version.txt tracks the current autohook.c hash, so always re-build the C module
-        -- for any change. OR if you can't (or too lazy) do that, just do something like:
-        -- sha256sum autohook.c | awk '{ print $1 }' >module-version.txt
         local version_file = io.open(MP .. "/autohook/module-version.txt")
         local module_version = libox_autohook_module.version
         if not version_file or not module_version then
-            core.log("error", 'Autohook feature NOT available, could not verify its C module compatibility')
+            core.log("error", '[libox] Autohook feature NOT available, could not verify its C module compatibility')
             libox_autohook_module = nil
             break
         end
         local current_version = version_file:read("*l")
         version_file:close()
 
-        local module_version = module_version()
+        local module_version, jit_version = module_version()
         if current_version ~= module_version then
-            core.log("error", 'Autohook feature NOT available, its C module version is incompatible\n'
+            core.log("error", '[libox] Autohook feature NOT available, its C module version is incompatible\n'
                 ..('current: %s | available: %s'):format(current_version, module_version))
             libox_autohook_module = nil
             break
         end
 
-        core.log("info", 'Autohook feature available')
+        if jit_version ~= jit.version then
+            core.log("error", '[libox] Autohook feature NOT available, its compiled against a different LuaJIT version than Luanti\n'
+                ..('Luanti: %s | autohook: %s'):format(jit.version, jit_version))
+            libox_autohook_module = nil
+        end
+
+        core.log("info", '[libox] Autohook feature available')
         break
     end
 else
-    core.log("info", 'Autohook feature NOT available')
+    core.log("info", '[libox] Autohook feature NOT available')
 end
 
 local MP = minetest.get_modpath(minetest.get_current_modname())

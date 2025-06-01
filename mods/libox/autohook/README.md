@@ -46,15 +46,35 @@ For now, we'll be going with a simpler setup on Windows natively. You will build
 6. Done! You may even uninstall MSYS2 if you like, but I suggest keeping it for future Luanti versions. You can also clean up by deleting these directories and files: `rm -r .xmake build*`
 
 # For developers
-module-version.txt tracks the current autohook.c hash, so always re-build the C module
+## C module versioning
+`module-version.txt` tracks the current C source hash, so always re-build the C module
 for any change. OR if you can't (or too lazy) do that, just do something like:
 
 ```sh
-sha256sum autohook.c | awk '{ print $1 }' >module-version.txt
+cat autohook.c utils.c | sha256sum | awk '{ print $1 }' >module-version.txt
 ```
 
 or on powershell:
 
 ```pwsh
-(Get-FileHash -Algorithm SHA256 autohook.c).Hash > module-version.txt
+pwsh hash.ps1 autohook.c utils.c > module-version.txt
+```
+
+## Debug builds
+On release builds, the C module disables its own logging capabilities. Logging
+occurs through `core.log`, bypassing the sandbox. Logging capabilities is
+available in debug builds. So, if you want to log things from the autohook, you
+should create a debug build:
+
+```
+xmake config -m debug -c && xmake
+```
+
+## Obtaining `compile_commands.json`
+Pretty much all C/C++ LSPs/IDEs make use of this in order to know all the
+required C source code, headers, library, etc. needed to build your target. It's
+how any build system can "communicate" with your LSP. You can generate one by running:
+
+```sh
+xmake project -k compile_commands
 ```

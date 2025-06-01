@@ -19,9 +19,23 @@ target('autohook')
     set_kind('shared')
     set_basename('autohook')
     set_targetdir('.')
-    add_files('autohook.c')
+    add_files('autohook.c', 'utils.c')
     set_configdir('.')
     add_configfiles('autohook.h.in')
+
+    add_cflags("-Wall", "-Wextra", "-Wpedantic", "-Weverything",
+        -- useless/meh warnings --
+        "-Wno-extra-semi-stmt", "-Wno-newline-eof",
+        "-Wno-declaration-after-statement", "-Wno-unused-parameter",
+        "-Wno-unused-function", "-Wno-missing-prototypes", "-Wno-unused-macros",
+        "-Wno-switch-default",
+        -- other warnings --
+        -- only a problem if you're using some wacky compiler
+        "-Wno-gnu-zero-variadic-macro-arguments",
+
+        -- C + Lua doesn't provide easy ways to protect from this. ignoring...
+        "-Wno-unsafe-buffer-usage")
+    set_languages("c11")
 
     if not get_config('Iluajit') and not get_config('Lluajit') then
         add_packages('luajit')
@@ -49,7 +63,7 @@ target('autohook')
         end
 
         import('helpers')
-        local hash = helpers.get_sha256('autohook.c')
+        local hash = helpers.get_sha256{'autohook.c', 'utils.c'}
         target:set('configvar', 'AUTOHOOK_HASH', hash)
         io.writefile("module-version.txt", hash)
     end)

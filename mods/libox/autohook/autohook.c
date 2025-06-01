@@ -1,79 +1,114 @@
 #include <lua.h>
 #include <lauxlib.h>
 #include <luajit.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
 #include "autohook.h"
+#include "utils.c"
 
-// module-version.txt tracks the current autohook.c hash, so always re-build the C module
+// module-version.txt tracks the current C source hash, so always re-build the C module
 // for any change. OR if you can't (or too lazy) do that, just do something like:
-// sha256sum autohook.c | awk '{ print $1 }' >module-version.txt
-
-// i'm over-documenting the lua equivalents so it's easy for people
-// unexperienced with using Lua from C to understand what's going on. - ACorp
-
-// TODO debug macro variable that enables core.log from C.
-
-// like home
-#define nil NULL
-
-#define LUA_POSITIVE(var, check, stackpos) \
-    var = check(L, stackpos); \
-    if (var < 0) luaL_error(L, "argument must be a positive integer")
-
-static bool string_startswith(
-    const char *restrict s1, size_t ch_count1,
-    const char *restrict s2, size_t ch_count2) {
-
-    size_t shortest = ch_count1 < ch_count2 ? ch_count1 : ch_count2;
-    for (size_t i = 0; i < shortest; ++i) {
-        if (s1[i] != s2[i]) { return false; }
-    }
-    return true;
-}
+// cat autohook.c utils.c | sha256sum | awk '{ print $1 }' >module-version.txt
+// or on powershell: hash.ps1 autohook.c utils.c > module-version.txt
 
 static double prev_time = 0;
-static double get_time_ms() {
+static double get_time_ms(void) {
     // On Windows, clock_t is 32-bit, meaning after 24 days and 20 hours it
     // becomes UB. So uh... don't run your server for longer than that. - ACorp
-    return ((double)clock()) / CLOCKS_PER_SEC * 1000.0L;
+    clock_t now = clock();
+    return ((double)now) / CLOCKS_PER_SEC * 1000.0;
 }
 
 static double time_limit = 0;
 static int attempts = 0; // THIS is to avoid a "yield across C-call boundary" error
 #define MAX_ATTEMPTS 10
-#define MODULE_KEY "__libox_autohook"
-#define IN_HOOK_KEY "in_hook"
+
+static lua_Subidx module_idx = LUA_NOREF;
+enum ModuleIdxs {
+    IN_HOOK_IDX = 1,
+    MAX_IDX,
+};
+
 #define KILL_CMD "SANDBOX KILL"
+
+// checks error message (stack peek) starts with given msg
+// lua errors is in this format "<source>:<line>: <message>"
+static bool lua_error_startswith(lua_State *L, lua_Idx idx, cstr msg, size_t count) {
+    assert_ptr(msg, 3);
+    L_assert_string(idx);
+
+    // lua manages the string, so we don't need to free() it ourselves :D
+    size_t errfull_count;
+    cstr errfull = lua_tolstring(L, idx, &errfull_count);
+
+    if (errfull_count < count) { return false; }
+    if (errfull_count == count ) {
+        return string_eq(errfull, errfull_count, msg, count);
+    }
+
+    // 0: initial search
+    // 1: past <source>:
+    // 2: past <line>:
+    int state = 0;
+    cstr errmsg = errfull;
+    for (size_t i = 0; state < 3 && i < errfull_count - count; ++i) {
+        switch (state) {
+        case 0:
+        case 1:
+            if (errfull[i] == ':') {
+                ++state;
+                if (i < errfull_count - count) {
+                    errmsg = errfull + i + 1; // if there's no whitespace, just search here
+                }
+            }
+            break;
+
+        case 2:
+            if (errfull[i] != ' ') {
+                ++state;
+                errmsg = errfull + i;
+            }
+            break;
+        }
+    }
+
+    return string_startswith(errmsg,
+        errfull_count - (size_t)(errmsg - errfull), msg, count);
+}
+
+#ifdef DEBUG
+// lua: $globals.core.log(level, msg)
+static void luanti_log(lua_State *L, cstr restrict level, cstr restrict msg) {
+    assert_str(level, 2);
+    assert_ptr(msg, 4);
+
+    if (L_deepget_field(LUA_GLOBALS, "core", "log")) {
+        luaL_error(L, "Unable to deep get $global.core.log");
+    }
+    lua_pushstring(L, level);
+    lua_pushstring(L, msg);
+    lua_call(L, 2, 0);
+}
+#else
+#define luanti_log(...)
+#endif
 
 static void hookf(lua_State *L, lua_Debug *ar) {
     // TODO: find a way for this hook to detect whether it's inside a libox coroutine sandbox or not.
-    int reset = lua_gettop(L);
+    const int reset = lua_gettop(L);
 
-    // lua: (alias) in_hook = __cregistry[MODULE][IN_HOOK]
-    // lua: if isfunction(in_hook) then ... end
-    lua_getfield(L, LUA_REGISTRYINDEX, MODULE_KEY);
-    lua_getfield(L, -1, IN_HOOK_KEY);
+    if (L_deepget_subi(LUA_CREGISTRY, module_idx, IN_HOOK_IDX)) {
+        luaL_error(L, "Unable to deep get $module[IN_HOOK_IDX]");
+    }
     if (lua_isfunction(L, -1)) {
-        // lua: errcode, errmsg = pcall(in_hook)
-        // lua: if not errcode then ... end
+        // lua: errcode, (stack push) = pcall(in_hook)
         const int errcode = lua_pcall(L, 0, 0, 0);
-        if (errcode != LUA_OK) {
-            // lua: if ~isstring(errmsg) then error(...) end
-            if (!lua_isstring(L, -1)) {
-                lua_pushstring(L, "bad error type from in_hook() hook: expected a string");
+        if (errcode != 0) {
+            // lua: errmsg_len, errmsg = #(stack peek), (stack peek)
+            if (lua_error_startswith(L, -1, KILL_CMD, CSTR_COUNT(KILL_CMD))) {
                 lua_error(L);
-            }
-
-            // lua: errmsg_len = #errmsg
-            size_t errmsg_len;
-            const char* errmsg = lua_tolstring(L, -1, &errmsg_len);
-            // lua: if errmsg:startswith(KILL_CMD) then error(errmsg)
             // lua: else debug.sethook(); yield(); end
-            if (errmsg == nil || string_startswith(errmsg, errmsg_len, KILL_CMD, sizeof(KILL_CMD) - 1)) {
-                lua_error(L);
             } else {
                 lua_settop(L, reset);
                 lua_sethook(L, nil, 0, 0);
@@ -87,6 +122,7 @@ static void hookf(lua_State *L, lua_Debug *ar) {
     if (get_time_ms() - prev_time > time_limit) {
         if (lua_isyieldable(L) || attempts >= MAX_ATTEMPTS) {
             prev_time = get_time_ms();
+            lua_settop(L, reset);
             lua_sethook(L, nil, 0, 0);
             lua_yield(L, 0);
         } else {
@@ -100,28 +136,29 @@ static void hookf(lua_State *L, lua_Debug *ar) {
 /// time_limit: same as in libox.coroutine.create_sandbox, but in ms.
 ///     Allowed execution time limit for the coroutine sandbox in milliseconds(!)
 static int autohook(lua_State *L) {
-    const int n = lua_gettop(L);
+    const lua_Idx n = lua_gettop(L);
     if (n < 2 || n > 3) {
         luaL_error(L, "attach autohook() takes 2 or 3 arguments");
     }
 
-    lua_Integer hook_time;
-    LUA_POSITIVE(hook_time, luaL_checkinteger, 1);
-    LUA_POSITIVE(time_limit, luaL_checknumber, 2);
-
-    if (lua_isnoneornil(L, 3)) {
-        // lua: __cregistry[MODULE][IN_HOOK] = nil
-        lua_getfield(L, LUA_REGISTRYINDEX, MODULE_KEY);
-        lua_pushnil(L);
-        lua_setfield(L, -2, IN_HOOK_KEY);
-    } else if (lua_isfunction(L, 3)) {
-        // lua: __cregistry[MODULE][IN_HOOK] = args[3]
-        lua_getfield(L, LUA_REGISTRYINDEX, MODULE_KEY);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, -2, IN_HOOK_KEY);
-    } else {
-        luaL_typerror(L, 3, "function or nil");
+    int hook_time;
+    L_assert_number(1);
+    L_assert_number(2);
+    if ((hook_time = (int)lua_tointeger(L, 1)) < 0) {
+        L_arg_expect_ll(1, "positive number", "negative number");
     }
+    if ((time_limit = lua_tonumber(L, 2)) < 0) {
+        L_arg_expect_ll(2, "positive number", "negative number");
+    }
+
+    if (lua_isfunction(L, 3)) {
+        if (L_deepset_subi(LUA_CREGISTRY, module_idx, IN_HOOK_IDX)) {
+            luaL_error(L, "Unable to deep set $module[IN_HOOK_IDX]");
+        }
+    } else if (!lua_isnoneornil(L, 3)) {
+        L_arg_expect_la(3, "function or nil");
+    }
+    lua_settop(L, 0);
 
     prev_time = get_time_ms();
     attempts = 0;
@@ -131,7 +168,8 @@ static int autohook(lua_State *L) {
 
 static int version(lua_State *L) {
     lua_pushstring(L, AUTOHOOK_HASH);
-    return 1;
+    lua_pushstring(L, LUAJIT_VERSION);
+    return 2;
 }
 
 // the autohook module's table
@@ -142,12 +180,8 @@ static const luaL_Reg funcs [] = {
 };
 
 int luaopen_autohook(lua_State *L) {;
-    // lua: __cregistry[MODULE] = {}
-    lua_createtable(L, 0, 2);
-    lua_setfield(L, LUA_REGISTRYINDEX, MODULE_KEY);
-
+    lua_createtable(L, MAX_IDX, 0);
+    module_idx = L_stack2ref();
     luaL_register(L, "autohook", funcs);
     return 1;
-};
-
-// ngl its nice being here but take me back to luajit please
+}
