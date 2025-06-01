@@ -2,7 +2,7 @@
 
 Status: $AUTOHOOK_ENABLED$
 
-When autohook is enabled, when a luacontroller takes too much time to execute before yielding, instead of throwing an error, the debug hook will instead yield.
+When autohook is enabled, when a luacontroller takes too much time to execute before yielding, instead of throwing an error, the debug hook will instead yield. You can check whether it's enabled from the sandbox by checking for <mono>has_autohook</mono>.
 
 <b>(small) Downsides</b>
 What this means in practice, that you don't have to have pointless <mono>wait(0)</mono> calls anymore, as autohook will simply yield automatically. However, there are unyieldable places such as <mono>return x, y, z</mono> or <mono>table.sort(x, function() ... end)</mono>. To prevent you from abusing this, autohook will respect this limitation at most 10 times. Afterwards, it'll forcefully yield it. This is a very rare error, so it's impractical to try abusing this error.
