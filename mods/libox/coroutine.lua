@@ -94,7 +94,7 @@ function api.create_thread(sandbox)
         -- *mod security would prevent it anyway* but just in case someone turned that off
     end
 
-    local f, msg = loadstring(sandbox.code)
+    local f, msg = loadstring(sandbox.code, "(libox sandbox: coroutine)")
     if not f then
         return false, msg
     end

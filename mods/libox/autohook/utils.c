@@ -38,6 +38,13 @@ static bool string_startswith(
     return true;
 }
 
+// finds length via the zero terminator
+static size_t string_count(cstr s) {
+    size_t i = 0;
+    while (s[i] != '\0') { ++i; }
+    return i;
+}
+
 #define LUA_CREGISTRY LUA_REGISTRYINDEX
 #define LUA_GLOBALS LUA_GLOBALSINDEX
 

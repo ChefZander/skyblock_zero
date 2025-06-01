@@ -66,8 +66,16 @@ occurs through `core.log`, bypassing the sandbox. Logging capabilities is
 available in debug builds. So, if you want to log things from the autohook, you
 should create a debug build:
 
-```
+```sh
 xmake config -m debug -c && xmake
+```
+
+## All diagnostics when building
+By default, xmake cuts off the diagnostics to a certain number of lines. To see
+all of them:
+
+```sh
+xmake config -c && xmake -D
 ```
 
 ## Obtaining `compile_commands.json`
