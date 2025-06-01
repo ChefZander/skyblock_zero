@@ -1,5 +1,5 @@
 # Autohook
-Autohook is a work-in-progress experimental feature that allows coroutine sandboxes to automatically yield once they've reached their limits, controlled by `def.time_limit` in coroutine sandbox spec. The way this works is by hooking to the Lua runtime through its C API in order to bypass `yield across C-call boundary` limitation by yielding in C instead of Lua. Because of this, the C module is a bit system-dependent and may require knowledge in C and the general build process to troubleshoot it.
+Autohook is a feature that allows coroutine sandboxes to automatically yield once they've reached their limits, controlled by `def.time_limit` in coroutine sandbox spec. The way this works is by hooking to the Lua runtime through its C API in order to bypass `yield across C-call boundary` limitation by yielding in C instead of Lua. Because of this, the C module is a bit system-dependent and may require knowledge in C and the general build process to troubleshoot it.
 
 To enable this feature, game and mod developers need to do a couple of things:
 
