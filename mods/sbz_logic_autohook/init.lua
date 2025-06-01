@@ -13,6 +13,7 @@ if IE and not DISABLED then
         )
     end
 end
+
 IE = nil
 
 

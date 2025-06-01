@@ -6,7 +6,7 @@ core.register_craftitem("sbz_instatube:instantinium", {
 })
 
 for _, v in pairs { "powder", "ingot" } do
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         output = "sbz_instatube:instantinium 12",
         type = "blast_furnace",
         items = {
@@ -14,21 +14,6 @@ for _, v in pairs { "powder", "ingot" } do
             "sbz_chem:aluminum_" .. v .. " 8",
             "sbz_chem:silicon_" .. v .. " 3"
         },
-    }
-
-    sbz_api.blast_furnace_recipes[#sbz_api.blast_furnace_recipes + 1] = {
-        recipe = {
-            "sbz_chem:silver_" .. v,
-            "sbz_chem:aluminum_" .. v .. " 8",
-            "sbz_chem:silicon_" .. v .. " 3"
-        },
-        names = {
-            "sbz_chem:silver_" .. v,
-            "sbz_chem:aluminum_" .. v,
-            "sbz_chem:silicon_" .. v
-        },
-        output = "sbz_instatube:instantinium 12",
-        chance = 1 / (9 * 2)
     }
 end
 

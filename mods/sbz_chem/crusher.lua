@@ -1,5 +1,12 @@
+sbz_api.recipe.register_craft_type({
+    type = "crushing",
+    description = "Crushing",
+    icon = "crusher_top.png^[verticalframe:4:1",
+    single = true,
+})
+
 for k, v in pairs(sbz_api.crusher_drops) do
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         output = v,
         type = "crushing",
         items = {
@@ -14,7 +21,7 @@ core.register_craftitem("sbz_chem:enhanced_pebble", {
 })
 
 for k, v in pairs(sbz_api.crusher_drops_enhanced) do
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         output = v,
         type = "crushing",
         items = {
@@ -26,7 +33,7 @@ end
 -- stone -> 2 gravel
 -- gravel -> 2 sand
 -- centrifuging sand: 90% chance of 4 Silicon, 10% chance of 1 gold
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_resources:gravel 2",
     type = "crushing",
     items = {
@@ -34,7 +41,7 @@ unified_inventory.register_craft {
     }
 }
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_resources:sand 2",
     type = "crushing",
     items = {
@@ -42,7 +49,7 @@ unified_inventory.register_craft {
     }
 }
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_resources:dust 2",
     type = "crushing",
     items = {
@@ -50,6 +57,8 @@ unified_inventory.register_craft {
     }
 }
 
+
+local crusher_power_consume = 5
 sbz_api.register_stateful_machine("sbz_chem:crusher", {
     description = "Crusher",
     tiles = {
@@ -74,63 +83,51 @@ list[current_player;main;0.2,5;8,4;]
 listring[current_player;main]listring[context;input]listring[current_player;main]listring[context;output]listring[current_player;main]
 ]])
     end,
-    info_power_consume = 5,
+    info_power_consume = crusher_power_consume,
     autostate = true,
     action = function(pos, node, meta, supply, demand)
-        local power_needed = 5
         local inv = meta:get_inventory()
-
         local itemname = inv:get_stack("input", 1):get_name()
 
-        local recipe_outputs = unified_inventory.get_usage_list(itemname)
+        local out, count, decremented = sbz_api.recipe.resolve_craft(inv:get_stack("input", 1), "crushing", false)
 
-
-        local possible_outputs = {}
-
-        for k, v in pairs(recipe_outputs or {}) do
-            if v.type == "crushing" then
-                possible_outputs[#possible_outputs + 1] = v.output
-            end
-        end
-
-        if #possible_outputs == 0 then
+        if out == nil then
             meta:set_string("infotext", "Inactive")
             return 0
         end
 
-        if demand + power_needed > supply then
+        if demand + crusher_power_consume > supply then
             meta:set_string("infotext", "Not enough power")
-            return power_needed, false
+            return crusher_power_consume, false
         end
 
         meta:set_string("infotext", "Crushing...")
         sbz_api.play_sfx({ name = "050597_ice-crusher-38522" }, { pos = pos, max_hear_distance = 8, gain = 0.8 })
 
-        -- NOTE!!! early exit on this branch
-        if itemname == "sbz_resources:sand" and inv:contains_item("output", "sbz_chem:water_fluid_cell") then
-            inv:remove_item("input", itemname)
-            inv:remove_item("output", "sbz_chem:water_fluid_cell")
-            inv:add_item("output", "sbz_resources:clay")
+        -- if itemname == "sbz_resources:sand" and inv:contains_item("output", "sbz_chem:water_fluid_cell") then
+        --     inv:remove_item("input", itemname)
+        --     inv:remove_item("output", "sbz_chem:water_fluid_cell")
+        --     inv:add_item("output", "sbz_resources:clay")
 
-            if inv:room_for_item("output", "sbz_chem:empty_fluid_cell") then
-                inv:add_item("output", "sbz_chem:empty_fluid_cell")
-            else
-                minetest.add_item(pos, "sbz_chem:empty_fluid_cell")
-            end
+        --     if inv:room_for_item("output", "sbz_chem:empty_fluid_cell") then
+        --         inv:add_item("output", "sbz_chem:empty_fluid_cell")
+        --     else
+        --         minetest.add_item(pos, "sbz_chem:empty_fluid_cell")
+        --     end
 
-            return power_needed
-        end
+        --     return crusher_power_consume
+        -- end
 
-        local selected_item = possible_outputs[math.random(1, #possible_outputs)]
-
-        if inv:room_for_item("output", selected_item) then
-            inv:remove_item("input", itemname)
-            inv:add_item("output", selected_item)
+        if inv:room_for_item("output", out) then
+            local input = inv:get_stack("input", 1)
+            input:set_count(input:get_count() - decremented)
+            inv:set_stack("input", 1, input)
+            inv:add_item("output", out)
         else
             meta:set_string("infotext", "Output inventory full")
             return 0
         end
-        if itemname == "sbz_resources:pebble" then
+        if itemname == "sbz_resources:pebble" then -- HACK: FIXME: TODO: WHATEVER: THIS IS HORRIBLE
             if inv:contains_item("output", "sbz_chem:empty_fluid_cell") then
                 inv:remove_item("output", "sbz_chem:empty_fluid_cell")
                 if inv:room_for_item("output", "sbz_chem:water_fluid_cell") then
@@ -141,7 +138,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
             end
         end
 
-        return power_needed
+        return crusher_power_consume
     end,
     input_inv = "input",
     output_inv = "output",

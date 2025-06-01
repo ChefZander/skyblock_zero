@@ -6,7 +6,7 @@ core.register_craftitem("sbz_chem:thorium_fuel_rod", {
     inventory_image = "fuel_rod.png^[multiply:#d633af"
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "compressing",
     output = "sbz_chem:thorium_fuel_rod",
     items = { "sbz_chem:thorium_block 8" }
@@ -18,7 +18,7 @@ core.register_craftitem("sbz_chem:uranium_fuel_rod", {
     inventory_image = "fuel_rod.png^[multiply:#47681e"
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "compressing",
     output = "sbz_chem:uranium_fuel_rod",
     items = { "sbz_chem:uranium_block 8" }
@@ -30,7 +30,7 @@ core.register_craftitem("sbz_chem:plutonium_fuel_rod", {
     info_extra = "Not for noobs...",
     inventory_image = "fuel_rod.png^[multiply:#1d2aba"
 })
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "compressing",
     output = "sbz_chem:plutonium_fuel_rod",
     items = { "sbz_chem:plutonium_block 8" }

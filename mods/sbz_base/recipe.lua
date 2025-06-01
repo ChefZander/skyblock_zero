@@ -80,13 +80,13 @@ function sbz_api.recipe.resolve_craft(item_or_list, type, is_list)
 
 
     if craft_def.single then
-        local item  = ItemStack(item_or_list)
-        local name  = item:get_name()
-        local count = item:get_count()
-        local craft = reg_crafts_by_type_single[type][name]
-        if not craft then return end
-        craft = craft[1] -- If multiple elements then use resolve_craft_raw_single
+        local item   = ItemStack(item_or_list)
+        local name   = item:get_name()
+        local count  = item:get_count()
+        local crafts = reg_crafts_by_type_single[type][name]
+        if not crafts then return end
 
+        local craft = crafts[math.random(1, #crafts)]
         local input_count = craft.input_count
         if input_count > count then
             return
@@ -99,22 +99,25 @@ function sbz_api.recipe.resolve_craft(item_or_list, type, is_list)
     local function inner_loop(craft)
         -- Need to compare list to craft.items
         -- Is this O(n^2): Yes, but ehh whatever i'm no leetcoder
+        -- jokes aside this geniuenly sounds like a leetcode problem
 
+        local decremented = {}
         local max_count = 65535 -- that's a lot ya know
-        for _, compare_item in pairs(craft.items) do
+        for ci, compare_item in pairs(craft.items) do
             compare_item = ItemStack(compare_item)
             local matched = false
-            for _, item in pairs(list) do
+            for li, item in pairs(list) do
                 if item:get_name() == compare_item:get_name() then
                     matched = true
                     max_count = math.min(max_count, math.floor(item:get_count() / compare_item:get_count()))
                     if max_count < 1 then return end
+                    decremented[li] = craft.items[ci]
                 end
             end
             if not matched then return end
         end
 
-        return ItemStack(craft.output), max_count, craft.items
+        return ItemStack(craft.output), max_count, decremented
     end
     local crafts = reg_crafts_by_type[type]
     for _, craft in ipairs(crafts) do
@@ -148,4 +151,8 @@ function sbz_api.recipe.resolve_craft_raw_single(item_or_list, type, is_list)
     local crafts = reg_crafts_by_type_single[type][name]
     if not crafts then return {}, false end
     return crafts, true
+end
+
+function sbz_api.recipe.get_all_crafts_of_type(type)
+    return reg_crafts_by_type[type]
 end
