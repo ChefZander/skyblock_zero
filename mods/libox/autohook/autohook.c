@@ -128,9 +128,14 @@ static void hookf(lua_State *L, lua_Debug *ar) {
                 lua_error(L);
             // lua: else debug.sethook(); yield(); end
             } else {
-                lua_settop(L, reset);
-                lua_sethook(L, nil, 0, 0);
-                lua_yield(L, 0);
+                if (lua_isyieldable(L) || attempts >= MAX_ATTEMPTS) {
+                    lua_settop(L, reset);
+                    lua_sethook(L, nil, 0, 0);
+                    lua_yield(L, 0);
+                    return;
+                } else {
+                    ++attempts;
+                }
                 return;
             }
         }

@@ -225,24 +225,7 @@ function logic.send_event_to_sandbox(pos, event)
     local env = active_sandboxes[id].env
     logic.initialize_env(meta, env, pos)
 
-    -- :{ i KNOW its scuffed
-    local old_sethook = debug.sethook
-    if sbz_api.autohook then
-        debug.sethook = function(...)
-            local vararg = { ... }
-            if #vararg > 0 then
-                sbz_api.autohook()
-            else
-                old_sethook()
-                debug.sethook = old_sethook
-            end -- // warcrime over
-        end
-    end
-
-    --    local true_t0 = sbz_api.clock_ms()
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
-    --    core.debug(dump(sbz_api.clock_ms() - true_t0))
-    debug.sethook = old_sethook
 
     meta:set_float("microseconds_taken_main_sandbox",
         meta:get_float("microseconds_taken_main_sandbox") + (sbz_api.clock_ms() - t0))
