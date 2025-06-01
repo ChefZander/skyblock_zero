@@ -170,8 +170,17 @@ core.register_lbm {
     nodenames = { "sbz_meteorites:gravitational_attractor", "sbz_meteorites:gravitational_repulsor" },
     run_at_every_load = true,
     action = function(pos, node, dtime_s)
+        local _ = sbz_api.get_or_load_node(pos)
         local ents = core.get_objects_inside_radius(pos, 0.5)
         if #ents == 0 then
+            minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
+        elseif #ents > 2 then
+            for k, v in ipairs(ents) do
+                local luaent = v:get_luaentity()
+                if luaent and luaent.name == "sbz_meteorites:gravitational_attractor_entity" then
+                    v:remove()
+                end
+            end
             minetest.add_entity(pos, "sbz_meteorites:gravitational_attractor_entity")
         end
     end

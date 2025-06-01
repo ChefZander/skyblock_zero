@@ -8,6 +8,7 @@ function sbz_api.register_fluid_cell(name, def, source_name, cellcolor)
     def.liquids_pointable = true
     def.groups = def.groups or {}
     def.groups.chem_element = 1
+    def.groups.no_chem_ui = 1
     if cellcolor then
         def.inventory_image = "fluid_cell.png^[fill:1x4:6,5:" .. cellcolor
     end
@@ -67,26 +68,6 @@ minetest.register_craft({
 
 sbz_api.register_fluid_cell("sbz_chem:water_fluid_cell", {
     description = "Water Fluid Cell (H₂O)",
+    cooled_form = "sbz_planets:ice",
+    liquid_form = "sbz_resources:water_source"
 }, "sbz_resources:water_source", "#87CEEB")
---[[
--- Water (H₂O)
-minetest.register_craftitem("sbz_chem:water_fluid_cell", {
-    description = "Water Fluid Cell (H₂O)",
-    inventory_image = "fluid_cell.png^[fill:1x4:6,5:#87CEEB",
-    on_place = function(itemstack, user, pointed)
-        local _, pos = minetest.item_place_node(ItemStack("sbz_resources:water_source"), user, pointed)
-        if pos then
-            itemstack:take_item()
-            if itemstack:is_empty() then return ItemStack(empty_cell) end
-            local inv = user:get_inventory()
-            if inv:room_for_item("main", empty_cell) then
-                inv:add_item("main", empty_cell)
-            else
-                minetest.add_item(user:get_pos(), empty_cell)
-            end
-            return itemstack
-        end
-        minetest.item_place(ItemStack("sbz_resources:matter_dust"), user, pointed)
-    end
-})
---]]

@@ -123,7 +123,7 @@ end
 
 function sbz_api.habitat_tick(start_pos, meta, stage)
     local time = os.time()
-    local lag_timer = core.get_us_time()
+    local lag_timer = sbz_api.clock_ms()
     local habitat = sbz_api.assemble_habitat(start_pos)
     if not habitat then
         meta:set_string("infotext",
@@ -188,7 +188,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
         "\nHabitat size: ", habitat.size,
         habitat.power_generated > 0 and
         ("\nPower Generated: " .. sbz_api.format_power(habitat.power_generated)) or "",
-        "\nHabitat lag: " .. math.floor((core.get_us_time() - lag_timer) / 1000) .. "ms"
+        "\nHabitat lag: " .. math.floor((sbz_api.clock_ms() - lag_timer)) .. "ms"
     }))
     return habitat.power_generated
 end

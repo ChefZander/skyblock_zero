@@ -88,6 +88,7 @@ local function make_schem(pos, meta)
     if cached_schems[heater_rows] then return cached_schems[heater_rows] end
     meta = nil
     pos = nil
+
     -- should be only f(heater_rows) => schem, nothing else, no pos, no meta.
     local schemdata = {}
     local schem = {
@@ -98,6 +99,7 @@ local function make_schem(pos, meta)
                 ["sbz_multiblocks:blast_furnace_power_port"] = true,
                 ["sbz_multiblocks:blast_furnace_item_input"] = true,
                 ["sbz_multiblocks:blast_furnace_item_output"] = true,
+                default = "sbz_multiblocks:blast_furnace_casing"
             }
         },
         limits = {
@@ -184,9 +186,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
                 local last_used = meta:get_int("last_used_build_helper")
                 if os.difftime(os.time(), last_used) >= default_expiration then
                     local schem = make_schem(pos)
-                    sbz_api.multiblocks.draw_schematic(pos, schem, {
-                        ["machine_casing"] = "sbz_multiblocks:blast_furnace_casing"
-                    })
+                    sbz_api.multiblocks.draw_schematic(pos, schem)
                     meta:set_int("last_used_build_helper", os.time())
                 else
                     core.chat_send_player(sender:get_player_name(),
@@ -303,7 +303,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
             end
         end
         if not out or out:is_empty() then return false end
-        -- S M E L T
+        -- S M E L T, TODO: yeah i'm sure this can be easily optimized but ehh a for loop "woorks"
         for i = 1, efficiency do
             if inventory:contains_item("src1", cost[1]) and
                 (not cost[2] or inventory:contains_item("src2", cost[2])) and

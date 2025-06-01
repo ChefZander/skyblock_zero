@@ -15,6 +15,11 @@ unified_inventory.register_category('chem', {
 	label = S("Chemistry")
 })
 
+unified_inventory.register_category('fluids', {
+	symbol = "sbz_chem:empty_fluid_cell",
+	label = S("Fluids")
+})
+
 unified_inventory.register_category('deco', {
 	symbol = "sbz_decor:factory_warning",
 	label = S("Decorations")
@@ -70,14 +75,17 @@ local function register_automatic_categorization()
 			if string.sub(name, 1, #"sbz_decor") == "sbz_decor" or def.mod_origin == "sbz_decor" then
 				unified_inventory.add_category_item('deco', name)
 			end
-			if group.chem_element then
+			if group.chem_element and not group.no_chem_ui then
 				unified_inventory.add_category_item("chem", name)
 			end
 			if group.sbz_machine then
 				unified_inventory.add_category_item("machines", name)
 			end
-			if string.sub(name, 1, #"pipeworks") == "pipeworks" or group.ui_fluid then
+			if string.sub(name, 1, #"pipeworks") == "pipeworks" then
 				unified_inventory.add_category_item("pipeworks", name)
+			end
+			if group.ui_fluid then
+				unified_inventory.add_category_item("fluids", name)
 			end
 			if group.ui_logic then
 				unified_inventory.add_category_item("lua", name)

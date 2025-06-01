@@ -39,6 +39,22 @@ OR
     power_port = <pos>,
 }
 ]]
+-- i mean, i'm not going to rotate it with those weird angles am i
+-- ok it's the easiest way
+local h = core.hash_node_position
+function multiblocks.rotate_schematic(schem, dir)
+    local angles = vector.dir_to_rotation(dir)
+    local newdata = {}
+    for k, v in pairs(schem.data) do
+        -- yup simple
+        newdata[
+        h(vector.rotate(core.get_position_from_hash(k), angles))
+        ] = v
+    end
+    schem.data = newdata
+    return schem
+end
+
 local uh = core.get_position_from_hash
 local h = core.hash_node_position
 function multiblocks.form_multiblock(pos, schem)
@@ -164,11 +180,14 @@ function multiblocks.break_multiblock(pos, schem)
             end
             meta:set_string("controller_positions", core.serialize(controller_positions))
         else
-            meta:set_string("controller_pos", "")
+            local controller_pos = vector.from_string(meta:get_string("controller_pos"))
+            if controller_pos and vector.equals(controller_pos, pos) then
+                meta:set_string("controller_pos", "")
+            end
         end
-        if core.get_item_group(node.name, "multiblock_controller") == 1 then
-            core.registered_nodes[node.name].on_multiblock_break(pos, meta)
-        end
+        -- if core.get_item_group(node.name, "multiblock_controller") == 1 then
+        --     core.registered_nodes[node.name].on_multiblock_break(pos, meta)
+        -- end
     end
 end
 
@@ -202,11 +221,12 @@ end
 function multiblocks.after_dig_controller(name)
     return function(pos, oldnode, oldmeta, digger)
         local def = core.registered_nodes[name]
-        local schem = def.get_schematic(pos, oldmeta)
+        local schem = def.get_schematic(pos, oldmeta, oldnode)
         multiblocks.break_multiblock(pos, schem)
     end
 end
 
+local _ = nil
 function multiblocks.before_movenode(from_pos, to_pos)
     local meta = core.get_meta(from_pos)
     multiblocks.after_dig(_, _, meta:to_table(), _)
@@ -217,3 +237,39 @@ local mp = core.get_modpath(core.get_current_modname())
 dofile(mp .. "/visuals.lua")
 dofile(mp .. "/blast_furnace.lua")
 dofile(mp .. "/blast_furnace_recipes.lua")
+dofile(mp .. "/large_liquid_storage.lua")
+
+core.register_chatcommand("build_multiblock", {
+    description = "Build out a multiblock controller's build plan",
+    privs = {
+        ["server"] = true,
+    },
+    params = "<pos | \"here\">",
+    func = function(name, param)
+        local player = core.get_player_by_name(name)
+        if not player then return false end
+        local pos = vector.from_string(param)
+        if pos == nil then
+            pos = player:get_pos()
+        end
+        local node = core.get_node(pos)
+        local nodename = node.name
+        local reg = core.registered_nodes[nodename]
+        if reg.get_schematic then
+            local schem = reg.get_schematic(pos)
+            local data = schem.data
+            local uh = core.get_position_from_hash
+            for k, v in pairs(schem.data) do
+                local node_pos = uh(k)
+                local node_name = v
+                if not core.registered_nodes[node_name] then
+                    node_name = schem.categories[node_name].default
+                end
+                core.set_node(vector.add(node_pos, pos), { name = node_name })
+            end
+            return true, "Done (But this doesn't guarantee a valid multiblock.)"
+        else
+            return false, "That node isn't a multiblock controller"
+        end
+    end,
+})

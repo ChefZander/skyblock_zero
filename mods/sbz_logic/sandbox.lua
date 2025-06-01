@@ -4,10 +4,10 @@ local M = minetest.get_meta
 local libox_coroutine = libox.coroutine
 local active_sandboxes = libox_coroutine.active_sandboxes
 
-local time_limit = 10e3         -- 10ms
-local editor_time_limit = 3e3   -- 3ms
-local max_us_per_second = 100e3 -- 100ms
-local max_ram = 400 * 1024      -- 400kb
+local time_limit = 10         -- 10ms
+local editor_time_limit = 3   -- 3ms
+local max_us_per_second = 100 -- 100ms
+local max_ram = 400 * 1024    -- 400kb
 
 logic.main_limit = time_limit
 logic.editor_limit = editor_time_limit
@@ -175,6 +175,20 @@ function logic.turn_on(pos)
         size_limit = max_ram,
         time_limit = time_limit,
         autohook = true,
+        in_hook = function()
+            local clock = os.clock
+            local t0 = clock()
+            local limit = time_limit / 1000
+            return function()
+                if clock() - t0 > limit then
+                    debug.sethook()
+                    error("Code timed out! Reason: Time limit exceeded, the limit:" ..
+                        tostring(limit * 1000) ..
+                        "ms, the program took:" .. tostring(math.floor((clock() - t0) * 1000)) .. "ms",
+                        2)
+                end
+            end
+        end,
     }
     meta:set_string("ID", id)
     meta:mark_as_private("ID")
@@ -189,7 +203,7 @@ end
 
 function logic.send_event_to_sandbox(pos, event)
     logic.log("Sent event to: " .. vector.to_string(pos))
-    local t0 = minetest.get_us_time()
+    local t0 = sbz_api.clock_ms()
 
     local meta = M(pos)
     if not logic.receives_events(pos, event) then
@@ -225,13 +239,13 @@ function logic.send_event_to_sandbox(pos, event)
         end
     end
 
-    --    local true_t0 = core.get_us_time()
+    --    local true_t0 = sbz_api.clock_ms()
     local ok, errmsg = libox_coroutine.run_sandbox(id, event)
-    --    core.debug(dump(core.get_us_time() - true_t0))
+    --    core.debug(dump(sbz_api.clock_ms() - true_t0))
     debug.sethook = old_sethook
 
     meta:set_float("microseconds_taken_main_sandbox",
-        meta:get_float("microseconds_taken_main_sandbox") + (minetest.get_us_time() - t0))
+        meta:get_float("microseconds_taken_main_sandbox") + (sbz_api.clock_ms() - t0))
 
     -- Keep this running
     meta:set_int("force_off", 0)
@@ -257,7 +271,7 @@ end
 -- editor is a different type of sandbox for simplicity
 function logic.send_editor_event(pos, meta, event)
     logic.log("Editor event: " .. vector.to_string(pos))
-    local t0 = minetest.get_us_time()
+    local t0 = sbz_api.clock_ms()
 
     if not logic.can_run(pos, meta, true) then
         return false
@@ -270,14 +284,14 @@ function logic.send_editor_event(pos, meta, event)
     local ok, errmsg = libox.normal_sandbox {
         code = meta:get_string("editor_code"),
         env = env,
-        max_time = editor_time_limit,
+        max_time = editor_time_limit * 1000,
     }
 
     -- Keep this running
     meta:set_int("force_off", 0)
 
     meta:set_float("microseconds_taken_editor_sandbox",
-        meta:get_float("microseconds_taken_editor_sandbox") + (minetest.get_us_time() - t0))
+        meta:get_float("microseconds_taken_editor_sandbox") + (sbz_api.clock_ms() - t0))
 
     if not ok then
         meta:set_string("infotext", "Error in editor code:" .. tostring(errmsg))
@@ -333,7 +347,7 @@ sbz_api.queue:add_function("logic_turn_on", logic.turn_on)
 
 
 function logic.calculate_bill(us_taken_main, us_taken_editor)
-    return math.ceil((us_taken_main + us_taken_editor) / 1000) * 4
+    return math.ceil((us_taken_main + us_taken_editor)) * 4
 end
 
 -- switching station action
@@ -362,12 +376,12 @@ function logic.on_tick(pos, node, meta, supply, demand)
         meta:set_int("bill", 0)
         return_value = bill
     end
-    local function format_us(x)
-        return tostring(math.floor(x / 1000)) .. "ms"
+    local function format_lag(x)
+        return tostring(math.floor(x)) .. "ms"
     end
     meta:set_string("infotext",
         string.format("Editor lag: %s\nMain sandbox lag: %s\nCombined: %s\nBill: %s Cj\nCan run: %s",
-            format_us(us_taken_editor), format_us(us_taken_main), format_us(us_taken_editor + us_taken_main), bill,
+            format_lag(us_taken_editor), format_lag(us_taken_main), format_lag(us_taken_editor + us_taken_main), bill,
             logic.can_run(pos, meta, true) and "yes" or
             "no (didn't pay bill or used more than 100ms)"))
 
