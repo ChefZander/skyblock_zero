@@ -35,7 +35,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         local out, count, decremented = sbz_api.recipe.resolve_craft(inv:get_stack("input", 1), "decay_accelerating",
             false)
 
-        if out == 0 then
+        if out == nil then
             meta:set_string("infotext", "Inactive")
             return 0
         end

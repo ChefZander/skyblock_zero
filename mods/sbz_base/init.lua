@@ -1,3 +1,4 @@
+-- Oh yeah, i forgot
 sbz_api = {
     version = 38,
     is_version_dev = true,
@@ -29,6 +30,21 @@ elseif sbz_api.server_optimizations == "on" then
 elseif sbz_api.server_optimizations == "off" then
     sbz_api.server_optimizations = false
 end
+
+-- Generated with figlet
+print(([[
+%s[0;32m
+ ____  _          _     _            _        _____
+/ ___|| | ___   _| |__ | | ___   ___| | ___  |__  /___ _ __ ___
+\___ \| |/ / | | | '_ \| |/ _ \ / __| |/ (_)   / // _ \ '__/ _ \
+ ___) |   <| |_| | |_) | | (_) | (__|   < _   / /|  __/ | | (_) |
+|____/|_|\_\\__, |_.__/|_|\___/ \___|_|\_(_) /____\___|_|  \___/
+            |___/
+Version: %s
+Dev: %s
+Server Optimizations: %s
+%s[0m
+]]):format("\x1b", sbz_api.version, sbz_api.is_version_dev and "true" or "false", sbz_api.server_optimizations, "\x1b"))
 
 sbz_api.get_version_string = function()
     local gamename = "SkyBlock: Zero "
