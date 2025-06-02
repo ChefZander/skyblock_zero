@@ -18,6 +18,7 @@
 - loadstring(code) = libox.safe.get_loadstring(env) => does the lame sandboxing stuff like limiting environment, turning off JIT optimizations for the function, also you can't provide a chunkname
 - _G = points back to the sandbox environment
 - traceback = libox.traceback
+- has_autohook = libox.has_autohook
 
 # String library (string.* or (""):* )
 

@@ -17,5 +17,12 @@
         "lowercase-global",
     ],
     "Lua.completion.autoRequire": false,
-    "todo-tree.tree.scanMode": "workspace"
+    "C_Cpp.files.exclude": {
+        "**/.vscode": true,
+        "**/.vs": true,
+        "**.h.in": true,
+    },
+    "C_Cpp.default.compileCommands": [
+        "${workspaceFolder}/mods/libox/autohook/compile_commands.json"
+    ]
 }

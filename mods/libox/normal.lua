@@ -16,7 +16,7 @@ function libox.normal_sandbox(def)
         return false, "Bytecode is not allowed." -- mod security prevents it anyway, just making sure
     end
 
-    local f, msg = loadstring(code)
+    local f, msg = loadstring(code, "(libox sandbox: normal)")
     if not f then return nil, msg end
     setfenv(f, env)
 

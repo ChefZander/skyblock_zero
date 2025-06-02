@@ -1,0 +1,6 @@
+.xmake
+build
+compile_commands.json
+autohook.h
+*.dll
+*.so
