@@ -1,22 +1,30 @@
-local simple_alloy_furnace_recipes = {
-    { recipe = { "sbz_chem:copper_powder", "sbz_chem:tin_powder" },        output = { "sbz_chem:bronze_powder" } },
-    --    { recipe = { "sbz_chem:copper_powder", "sbz_chem:zinc_powder" },       output = { "sbz_chem:brass_powder" } },
-    { recipe = { "sbz_chem:iron_powder", "sbz_chem:nickel_powder" },       output = { "sbz_chem:invar_powder" } },
-    { recipe = { "sbz_chem:titanium_powder", "sbz_chem:aluminum_powder" }, output = { "sbz_chem:titanium_alloy_powder" } },
-    --    { recipe = { "sbz_chem:gold_powder", "sbz_chem:nickel_powder" },       output = { "sbz_chem:white_gold_powder" } },
-    -- uncomment to enable white gold or brass
-}
-minetest.after(0, function()
-    for k, v in ipairs(simple_alloy_furnace_recipes) do
-        unified_inventory.register_craft {
-            output = v.output[1],
-            type = "alloying",
-            items = v.recipe
-        }
-    end
-end)
+sbz_api.recipe.register_craft_type({
+    type = "alloying",
+    description = "Alloying",
+    icon = "simple_alloy_furnace.png^[verticalframe:13:1",
+    width = 2,
+    height = 1,
+    uses_crafting_grid = false,
+    single = false,
+})
 
-sbz_api.simple_alloy_furnace_recipes = simple_alloy_furnace_recipes
+sbz_api.recipe.register_craft {
+    output = "sbz_chem:bronze_powder",
+    items = { "sbz_chem:copper_powder", "sbz_chem:tin_powder" },
+    type = "alloying",
+}
+
+sbz_api.recipe.register_craft {
+    output = "sbz_chem:invar_powder",
+    items = { "sbz_chem:iron_powder", "sbz_chem:nickel_powder" },
+    type = "alloying",
+}
+
+sbz_api.recipe.register_craft {
+    output = "sbz_chem:titanium_alloy_powder",
+    items = { "sbz_chem:titanium_powder", "sbz_chem:aluminum_powder" },
+    type = "alloying",
+}
 
 sbz_api.register_stateful_machine("sbz_chem:simple_alloy_furnace", {
     description = "Simple Alloy Furnace",
@@ -50,21 +58,10 @@ listring[current_player;main]
         local power_needed = 10
         local inv = meta:get_inventory()
 
-        local input_1 = inv:get_stack("input", 1):get_name()
-        local input_2 = inv:get_stack("input", 2):get_name()
-
-        local function is_valid_recipe(input1, input2)
-            for _, recipe in ipairs(simple_alloy_furnace_recipes) do
-                local r = recipe.recipe
-                if (input1 == r[1] and input2 == r[2]) or (input1 == r[2] and input2 == r[1]) then
-                    return recipe.output[1]
-                end
-            end
-            return nil
-        end
-
-        local selected_item = is_valid_recipe(input_1, input_2)
-        if selected_item == nil then
+        -- the good old solution:tm:
+        ---@type any, any, any
+        local out, count, decremented, _ = sbz_api.recipe.resolve_craft(inv:get_list("input"), "alloying", true)
+        if out == nil then
             meta:set_string("infotext", "Inactive")
             return 0
         end
@@ -73,13 +70,14 @@ listring[current_player;main]
             meta:set_string("infotext", "Not enough power")
             return power_needed, false
         else
-            if inv:room_for_item("output", selected_item) then
+            if inv:room_for_item("output", out) then
                 meta:set_string("infotext", "Alloying")
                 sbz_api.play_sfx("simple_alloy_furnace_running.ogg", { pos = pos })
 
-                inv:add_item("output", selected_item)
-                inv:remove_item("input", input_1)
-                inv:remove_item("input", input_2)
+                inv:add_item("output", out)
+                for _, item in pairs(decremented) do
+                    inv:remove_item("input", item)
+                end
             else
                 meta:set_string("infotext", "Output inventory full")
                 return 0

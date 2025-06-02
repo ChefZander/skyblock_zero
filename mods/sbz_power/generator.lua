@@ -241,7 +241,7 @@ core.register_node("sbz_power:solid_charged_field", {
     end,
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "compressing",
     output = "sbz_power:solid_charged_field",
     items = { "sbz_power:simple_charged_field 9" }
