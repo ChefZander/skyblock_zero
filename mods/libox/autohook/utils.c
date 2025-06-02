@@ -38,13 +38,6 @@ static bool string_startswith(
     return true;
 }
 
-// finds length via the zero terminator
-static size_t string_count(cstr s) {
-    size_t i = 0;
-    while (s[i] != '\0') { ++i; }
-    return i;
-}
-
 #define LUA_CREGISTRY LUA_REGISTRYINDEX
 #define LUA_GLOBALS LUA_GLOBALSINDEX
 
@@ -98,93 +91,6 @@ static bool lua_is_container(lua_State *L, const lua_Idx idx) {
     if (!lua_isstring(L, (idx))) { L_arg_expect_la(idx, "string"); }
 
 /* ------------------------ deep getters and setters ------------------------ */
-
-static bool lua_deepget_field(lua_State *L, const lua_Idx idx, const size_t count, cstr* fields) {
-    L_assert_container(idx);
-    assert_ptr(fields, 4);
-    if (count < 1) {
-        L_carg_expect_xll(3, "positive number of fields", "bad number of fields");
-    }
-    if (count == 1) {
-        lua_getfield(L, idx, fields[0]);
-        // waste of compute... bro just use getfield
-        return false;
-    }
-
-    const lua_Idx reset = lua_gettop(L);
-    lua_getfield(L, idx, fields[0]);
-    for (size_t i = 1; i < count; ++i) {
-        if (!lua_istable(L, -1)) {
-            lua_settop(L, reset);
-            return true;
-        }
-        lua_getfield(L, -1, fields[i]);
-    }
-    const lua_Idx got = L_stack2ref();
-    lua_settop(L, reset);
-    L_ref2stack(got);
-    return false;
-}
-// lua: (push stack) = (table at idx)[field1][field2][field3][...]
-#define L_deepget_field(idx, ...) \
-    lua_deepget_field(L, (idx), VA_COUNT(__VA_ARGS__), (cstr[]){ __VA_ARGS__ })
-
-static bool lua_deepset_fields(lua_State *L, const lua_Idx idx, bool fill_in, const size_t count, cstr* fields) {
-    L_assert_container(idx);
-    assert_ptr(fields, 5);
-    if (count < 1) {
-        L_carg_expect_xll(4, "positive number of subidx", "bad number of subidx");
-    }
-    if (count == 1) {
-        lua_setfield(L, idx, fields[0]);
-        // waste of compute... bro just use rawseti
-        return true;
-    }
-
-    bool filling_in = false;
-    const lua_Idx value = L_stack2ref();
-    const lua_Idx reset = lua_gettop(L);
-    lua_getfield(L, idx, fields[0]);
-    if (!lua_istable(L, -1)) {
-        if (!(filling_in || (fill_in && lua_isnil(L, -1)))) {
-            lua_settop(L, reset);
-            return true;
-        }
-        filling_in = true;
-        lua_pop(L, 1);
-        lua_createtable(L, 0, 1);
-        lua_pushvalue(L, -1);
-        lua_setfield(L, idx, fields[0]);
-    }
-
-    const size_t last = count - 1;
-    for (size_t i = 1; i < last; ++i) {
-        lua_getfield(L, -1, fields[i]);
-        if (!lua_istable(L, -1)) {
-            if (!(filling_in || (fill_in && lua_isnil(L, -1)))) {
-                lua_settop(L, reset);
-                return true;
-            }
-            filling_in = true;
-            lua_pop(L, 1);
-            lua_createtable(L, 0, 1);
-            lua_pushvalue(L, -1);
-            lua_setfield(L, -2, fields[0]);
-        }
-    }
-    L_ref2stack(value);
-    lua_setfield(L, -2, fields[last]);
-    lua_settop(L, reset);
-    return false;
-}
-// lua: (table at idx)[field1][field2][field3][...] = (stack pop)
-#define L_deepset_fields(idx, ...) \
-    lua_deepset_fields(L, (idx), false, VA_COUNT(__VA_ARGS__), (lua_Subidx[]){ __VA_ARGS__ })
-// lua: (table at idx)[field1][field2][field3][...] = (stack pop)
-// fills the subtable in if it's created yet. good for initializing table
-#define L_deepset_fill_fields(idx, ...) \
-    lua_deepset_fields(L, (idx), true, VA_COUNT(__VA_ARGS__), (lua_Subidx[]){ __VA_ARGS__ })
-
 
 static bool lua_deepget_subi(lua_State *L, lua_Idx idx, size_t count, const lua_Subidx* subis) {
     L_assert_container(idx);

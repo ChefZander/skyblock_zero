@@ -380,7 +380,6 @@ function logic.get_env(initial_pos, initial_meta, id)
         pos = vector.copy(initial_pos),
         yield = coroutine.yield,
         wait_for_event_type = wait_for_event_type,
-        has_autohook = libox.has_autohook,
         chat_debug = logic.get_chat_debug_function(id, owner),
         wait = function(t)
             local e = coroutine.yield({
@@ -460,7 +459,6 @@ function logic.get_editor_env(pos, meta, event)
         event = event,
         pos = vector.copy(pos),
         origin = vector.new(0, 0, 0),
-        has_autohook = libox.has_autohook,
         chat_debug = logic.get_chat_debug_function(nil, owner, pos),
         turn_on = libf(function()
             sbz_api.queue:add_action(pos, "logic_turn_on", {})

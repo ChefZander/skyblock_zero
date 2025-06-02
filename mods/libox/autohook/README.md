@@ -78,6 +78,16 @@ all of them:
 xmake config -c && xmake -D
 ```
 
+## Verbose xmake configure and building
+In order to debug and inspect what might go wrong in the xmake configuration and
+build steps, you can use flags like so:
+
+```sh
+xmake config -c -vD && xmake -vD
+```
+
+It is very noisy, so perhaps you should each step one-by-one.
+
 ## Obtaining `compile_commands.json`
 Pretty much all C/C++ LSPs/IDEs make use of this in order to know all the
 required C source code, headers, library, etc. needed to build your target. It's

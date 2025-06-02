@@ -13,6 +13,25 @@ option_end()
 
 add_requires('luajit', { system = true, configs = { shared = false }, optional = true})
 
+local clang_flags = {
+    "-Wall", "-Wextra", "-Wpedantic", "-Weverything",
+    -- useless/meh warnings --
+    "-Wno-extra-semi-stmt", "-Wno-newline-eof",
+    "-Wno-declaration-after-statement", "-Wno-unused-parameter",
+    "-Wno-unused-function", "-Wno-missing-prototypes", "-Wno-unused-macros",
+    "-Wno-switch-default",
+    -- other warnings --
+    -- only a problem if you're using some wacky compiler
+    "-Wno-gnu-zero-variadic-macro-arguments",
+
+    -- C + Lua doesn't provide easy ways to protect from this. ignoring...
+    "-Wno-unsafe-buffer-usage"
+}
+local gcc_flags = {
+    "-Wall", "-Wextra", "-Wpedantic",
+    -- uhh idk
+}
+
 target('autohook')
     set_kind('shared')
     set_basename('autohook')
@@ -21,23 +40,23 @@ target('autohook')
     set_configdir('.')
     add_configfiles('autohook.h.in')
 
-    add_cflags("-Wall", "-Wextra", "-Wpedantic", "-Weverything",
-        -- useless/meh warnings --
-        "-Wno-extra-semi-stmt", "-Wno-newline-eof",
-        "-Wno-declaration-after-statement", "-Wno-unused-parameter",
-        "-Wno-unused-function", "-Wno-missing-prototypes", "-Wno-unused-macros",
-        "-Wno-switch-default",
-        -- other warnings --
-        -- only a problem if you're using some wacky compiler
-        "-Wno-gnu-zero-variadic-macro-arguments",
-
-        -- C + Lua doesn't provide easy ways to protect from this. ignoring...
-        "-Wno-unsafe-buffer-usage")
     set_languages("c11")
 
     add_packages('luajit')
 
     on_load(function(target)
+        import('core.tool.compiler')
+        local cc = compiler.compargv('dummy.c', { target = target })
+        if cc and path.basename(cc):match('clang') then
+            for i=1,#clang_flags do
+                target:add('cflags', clang_flags[i])
+            end
+        else
+            for i=1,#gcc_flags do
+                target:add('cflags', gcc_flags[i])
+            end
+        end
+
         local luajit_include = get_config('Iluajit')
         if luajit_include then
             assert(os.isfile(path.join(luajit_include, 'luajit.h')),

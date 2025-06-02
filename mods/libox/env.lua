@@ -176,6 +176,7 @@ function libox.create_basic_environment()
         tostring = tostring,
         type = type,
 
+        has_autohook = libox.has_autohook,
     }
     env.loadstring = libox.safe.get_loadstring(env)
     env._G = env

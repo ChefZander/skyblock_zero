@@ -30,7 +30,6 @@ enum ModuleIdxs {
     MAX_IDX,
 };
 
-#define CHUNK_NAME "(libox sandbox:"
 #define KILL_CMD "SANDBOX KILL"
 
 // checks error message (stack peek) starts with given msg
@@ -97,24 +96,6 @@ static void luanti_log(lua_State *L, cstr restrict level, cstr restrict msg) {
 
 static void hookf(lua_State *L, lua_Debug *ar) {
     const lua_Idx reset = lua_gettop(L);
-
-    lua_Debug parent;
-    int level = -1;
-    bool inside_sandbox = false;
-    while (lua_getstack(L, ++level, &parent)) {
-        lua_getinfo(L, "S", &parent);
-        if (string_startswith(
-                parent.source, string_count(parent.source),
-                CHUNK_NAME, CSTR_COUNT(CHUNK_NAME))) {
-            inside_sandbox = true;
-            break;
-        }
-    }
-
-    if (!inside_sandbox) {
-        luanti_log(L, "info", lua_pushfstring(L, "hook escaped the sandbox! %s at level %d after %d triggers", parent.source, level));
-        return;
-    }
 
     if (L_deepget_subi(LUA_CREGISTRY, module_idx, IN_HOOK_IDX)) {
         luaL_error(L, "Unable to deep get $module[IN_HOOK_IDX]");
