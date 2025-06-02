@@ -67,3 +67,34 @@ target('autohook')
         target:set('configvar', 'AUTOHOOK_HASH', hash)
         io.writefile("module-version.txt", hash)
     end)
+
+
+    on_config(function(target)
+        local get_luajit_version = [[
+#include <stdio.h>
+#include <luajit.h>
+int main(int argc, char** argv) {
+    puts(LUAJIT_VERSION);
+    return 0;
+}]]
+        local ok, luajit_version = target:check_csnippets({ test = get_luajit_version }, {
+            tryrun = true,
+            output = true,
+            -- includes = {"path/to/headers.h"},
+            configs = {languages = 'c11'}})
+
+        local errmsg = ('Outdated LuaJIT version! Please update it or build a LuaJIT rolling release (current: %s)'):format(luajit_version)
+
+        -- must at least be 2.1.*
+        assert(luajit_version:startswith('LuaJIT 2.1.'), errmsg)
+
+        -- this is exactly how LuaJIT developer wants downstream users to check
+        -- the rolling release versions. the beta versions are 2.1.0. but it's
+        -- more robust if we can just put which commit to cut off support. Also
+        -- people might build LuaJIT version that default to 2.1.ROLLING cuz
+        -- they didn't allow the build script to determine the last commit
+        -- timestamp.
+        local supported = 1692580715 -- commit c3459468 first 2.1.ROLLING release
+        assert(luajit_version == 'LuaJIT 2.1.ROLLING'
+            or tonumber(luajit_version:sub(12):match('^%d+')) >= supported, errmsg)
+    end)

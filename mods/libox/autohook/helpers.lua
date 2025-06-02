@@ -28,7 +28,7 @@ function get_sha256(filepaths)
         cmd = 'cat ' ..all_files ..' | ' find_program('shasum') " -a 256 | awk '{ print $1 }'"
     end
 
-    -- this is so fucking cursed, and without select() it's not possible to bring pcall back...
+    -- this is so so so cursed, and without select() it's not possible to bring pcall back...
     local result
     try { function()
         result = os.iorun(cmd)
