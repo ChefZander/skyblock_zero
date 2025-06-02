@@ -11,9 +11,7 @@ option('Lluajit')
     set_description('Custom LuaJIT libs/ directory')
 option_end()
 
-if not get_config('Iluajit') and not get_config('Lluajit') then
-    add_requires('luajit', { system = true, configs = { shared = false } })
-end
+add_requires('luajit', { system = true, configs = { shared = false }, optional = true})
 
 target('autohook')
     set_kind('shared')
@@ -37,9 +35,7 @@ target('autohook')
         "-Wno-unsafe-buffer-usage")
     set_languages("c11")
 
-    if not get_config('Iluajit') and not get_config('Lluajit') then
-        add_packages('luajit')
-    end
+    add_packages('luajit')
 
     on_load(function(target)
         local luajit_include = get_config('Iluajit')
@@ -69,7 +65,9 @@ target('autohook')
     end)
 
 
-    on_config(function(target)
+    before_build(function(target)
+        printf('checking for LuaJIT version ... ')
+
         local get_luajit_version = [[
 #include <stdio.h>
 #include <luajit.h>
@@ -97,4 +95,6 @@ int main(int argc, char** argv) {
         local supported = 1692580715 -- commit c3459468 first 2.1.ROLLING release
         assert(luajit_version == 'LuaJIT 2.1.ROLLING'
             or tonumber(luajit_version:sub(12):match('^%d+')) >= supported, errmsg)
+
+        cprint('${bright green}' ..luajit_version)
     end)
