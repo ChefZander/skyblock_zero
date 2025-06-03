@@ -66,7 +66,7 @@ sbz_api.register_element = function(name, color, description, def, mod)
             chem_fluid = 1,
             chem_fluid_source = 1,
             chem_element = 1,
-            radioactive = (radioactive or 0) * 2,
+            radioactive = (radioactive or 0) * 4,
             hot = 50,
             radiation_resistance = rad_resistance * 16,
         },

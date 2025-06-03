@@ -7,21 +7,21 @@
     Yeah
 ]]
 
-unified_inventory.register_craft_type("melting", {
+sbz_api.recipe.register_craft_type({
+    type = "melting",
     description = "Melting",
-    icon = "melter.png",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
+    icon = "melter_front_off.png",
+    single = true
 })
 
-unified_inventory.register_craft_type("cooling", {
+
+sbz_api.recipe.register_craft_type({
+    type = "cooling",
     description = "Cooling",
     icon = "cooler.png",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
+    single = true
 })
+
 
 for source, fluid_cell in pairs(sbz_api.sources2fluid_cells) do
     local def = core.registered_items[fluid_cell]
@@ -30,13 +30,13 @@ for source, fluid_cell in pairs(sbz_api.sources2fluid_cells) do
     local source_stack = ItemStack(def.liquid_form)
     source_stack:get_meta():set_string("count_meta", "1kL")
 
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         type = "melting",
         output = source_stack,
         items = { item }
     }
 
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         type = "cooling",
         output = item,
         items = { source_stack }
@@ -49,14 +49,19 @@ sbz_api.register_stateful_machine("sbz_chem:melter", {
     description = "Melter",
     info_extra = "Melts blocks into liquids",
     tiles = {
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_front_off.png",
+        "melter_top.png",
+        "melter_top.png",
+        "melter_top.png",
+        "melter_top.png",
+        "melter_top.png",
+        "melter_front_off.png",
     },
-    groups = { matter = 1 },
+    groups = {
+        matter = 1,
+        fluid_pipe_connects = 1,
+        fluid_pipe_stores = 1,
+        ui_fluid = 1
+    },
     paramtype2 = "4dir",
 
     input_inv = "src",
@@ -65,14 +70,21 @@ sbz_api.register_stateful_machine("sbz_chem:melter", {
         local inv = meta:get_inventory()
         inv:set_size("src", 1)
 
+        meta:set_string("liquid_inv", minetest.serialize({
+            max_count_in_each_stack = 10,
+            [1] = {
+                name = "any",
+                count = 0,
+                can_change_name = true,
+            },
+        }))
+
         meta:set_string("formspec", [[
 formspec_version[7]
 size[8.2,9]
 style_type[list;spacing=.2;size=.8]
 list[current_player;main;0.2,5;8,4;]
 list[context;src;2.5,2;1,1;]
-box[5,2,.9,.9;black#8]
-item_image[5,2;.9,.9;]
 listring[]
     ]])
     end,
@@ -86,56 +98,145 @@ listring[]
             meta:set_string("infotext", "Not enough power")
             return power_needed, false
         else
-            meta:set_string("infotext", "Smelting...")
+            local out, count, decremented = sbz_api.recipe.resolve_craft(inv:get_stack("src", 1), "melting", false)
 
-            local src = inv:get_list("src")
-
-            local out, decremented_input, index
-            for i = 1, 4 do
-                local out_inner, decremented_input_inner = minetest.get_craft_result({
-                    method = "cooking",
-                    width = 1,
-                    items = { src[i] },
-                })
-                if not out_inner.item:is_empty() then
-                    out, decremented_input = out_inner, decremented_input_inner
-                    index = i
-                    break
-                end
-            end
             if out == nil then
                 meta:set_string("infotext", "Invalid/no recipe")
                 return 0
             end
 
-            if not inv:room_for_item("dst", out.item) then
+            local lqinv = core.deserialize(meta:get_string("liquid_inv"))
+            local slot = lqinv[1]
+
+            if slot.name ~= out:get_name() and slot.name ~= "any" then
+                meta:set_string("infotext",
+                    "Cannot melt, there is already " .. slot.name .. " in the melter, have one melter for each metal.")
+                return 0
+            end
+
+            if slot.count >= lqinv.max_count_in_each_stack then
                 meta:set_string("infotext", "Full")
                 return 0
             end
 
-            inv:set_stack("src", index, decremented_input.items[1])
-            inv:add_item("dst", out.item)
+            local src = inv:get_stack("src", 1)
+            src:set_count(src:get_count() - decremented)
+            inv:set_stack("src", 1, src)
+
+            slot.count = slot.count + out:get_count()
+            slot.name = out:get_name()
+            meta:set_string("liquid_inv", core.serialize(lqinv)) -- EWWW: TODO: re-work the entire liquid inventory system to not use this stupid serialize crap
+            meta:set_string("infotext", "Melting - Inside: " .. slot.count .. " " .. slot.name)
+
             sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed
         end
     end,
 }, {
     tiles = {
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_top.png",
-        "hpef_top.png",
-        { name = "hpef_front.png", animation = { type = "vertical_frames", length = 0.7 } },
+        "melter_top.png",
+        "melter_top.png",
+        "melter_top.png",
+        "melter_top.png",
+        "melter_top.png",
+        { name = "melter_front_on.png", animation = { type = "vertical_frames", length = 1 } },
     },
-    light_source = 10,
+    light_source = 14,
 })
 
-minetest.register_craft({
-    output = "sbz_chem:high_power_electric_furnace",
-    recipe = {
-        { "sbz_power:simple_charged_field", "sbz_resources:matter_dust",       "sbz_power:simple_charged_field" },
-        { "sbz_resources:matter_blob",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
-        { "sbz_power:simple_charged_field", "sbz_chem:tin_powder",             "sbz_power:simple_charged_field" }
-    }
+sbz_api.register_stateful_machine("sbz_chem:cooler", {
+    description = "Cooler",
+    info_extra = "Cools down liquids into blocks",
+    tiles = {
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_front_off.png",
+    },
+    groups = {
+        matter = 1,
+        fluid_pipe_connects = 1,
+        fluid_pipe_stores = 1,
+        ui_fluid = 1
+    },
+    paramtype2 = "4dir",
+
+    output_inv = "dst",
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_size("dst", 1)
+
+        meta:set_string("liquid_inv", minetest.serialize({
+            max_count_in_each_stack = 10,
+            [1] = {
+                name = "any",
+                count = 0,
+                can_change_name = true,
+            },
+        }))
+
+        meta:set_string("formspec", [[
+formspec_version[7]
+size[8.2,9]
+style_type[list;spacing=.2;size=.8]
+list[current_player;main;0.2,5;8,4;]
+list[context;dst;4.5,2;1,1;]
+listring[]
+    ]])
+    end,
+    after_place_node = pipeworks.after_place,
+    autostate = true,
+    action = function(pos, node, meta, supply, demand)
+        local power_needed = 15
+        local inv = meta:get_inventory()
+
+        if demand + power_needed > supply then
+            meta:set_string("infotext", "Not enough power")
+            return power_needed, false
+        else
+            local lqinv = core.deserialize(meta:get_string("liquid_inv"))
+
+            local slot = lqinv[1]
+
+            if slot.name == "any" or slot.count <= 0 then
+                meta:set_string("infotext", "There is nothing to cool")
+                return 0
+            end
+
+            local out, count, decremented = sbz_api.recipe.resolve_craft(ItemStack(slot.name), "cooling", false)
+
+            if out == nil then
+                meta:set_string("infotext", "Invalid/no recipe")
+                return 0
+            end
+
+            if not inv:room_for_item("dst", out) then
+                meta:set_string("infotext", "Full")
+                return 0
+            end
+
+            inv:add_item("dst", out)
+
+            slot.count = slot.count - decremented
+
+            meta:set_string("liquid_inv", core.serialize(lqinv)) -- EWWW: TODO: re-work the entire liquid inventory system to not use this stupid serialize crap
+            meta:set_string("infotext", "Cooling - Inside: " .. slot.count .. " " .. slot.name)
+
+            sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
+            return power_needed
+        end
+    end,
+}, {
+    tiles = {
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_top.png",
+        "cooler_top.png",
+        { name = "cooler_front_on.png", animation = { type = "vertical_frames", length = 1 } },
+    },
+    light_source = 14,
 })
