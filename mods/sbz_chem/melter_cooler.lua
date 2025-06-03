@@ -18,7 +18,7 @@ sbz_api.recipe.register_craft_type({
 sbz_api.recipe.register_craft_type({
     type = "cooling",
     description = "Cooling",
-    icon = "cooler.png",
+    icon = "cooler_front_off.png",
     single = true
 })
 
