@@ -12,6 +12,7 @@ minetest.register_craftitem("unifieddyes:colorium_powder", {
     description = "Colorium Powder",
     inventory_image = "powder.png^[mask:colorium.png",
 })
+
 minetest.register_node("unifieddyes:colorium_blob", unifieddyes.def {
     description = "Colorium Blob",
     tiles = {
@@ -64,6 +65,20 @@ core.register_node("unifieddyes:antiblock", unifieddyes.def {
     groups = { matter = 3, antimatter = 1, charged = 1 },
 })
 
+core.register_node("unifieddyes:airlike_antiblock", unifieddyes.def {
+    description = "Airlike Antiblock",
+    tiles = {
+        "blank.png"
+    },
+    drawtype = "normal", -- ITS NOT AIRLIKE HAHAHAHAAHAH.... ok no thats not funny
+    walkable = false,    -- This is the thing thats important
+    paramtype = "light",
+    use_texture_alpha = "clip",
+    light_source = 14,
+    info_extra = "What???",
+    groups = { matter = 3, antimatter = 1, charged = 1 },
+})
+
 minetest.register_craft {
     output = "unifieddyes:colorium_blob",
     recipe = {
@@ -77,6 +92,12 @@ core.register_craft {
     type = "shapeless",
     output = "unifieddyes:antiblock",
     recipe = { "unifieddyes:colorium_blob", "sbz_resources:antimatter_dust" }
+}
+
+core.register_craft {
+    type = "shapeless",
+    output = "unifieddyes:airlike_antiblock",
+    recipe = { "unifieddyes:antiblock" }
 }
 
 core.register_craft {
