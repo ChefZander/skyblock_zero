@@ -19,6 +19,9 @@ local function check_and_act_if_filled(pos, meta, storage_or_inv, pattern)
     return filled
 end
 
+local inv_cache = sbz_api.make_cache('pattern_storinator', 1, true)
+local h = core.hash_node_position
+
 core.register_node(
     'pipeworks:pattern_storinator',
     unifieddyes.def {
@@ -49,13 +52,22 @@ core.register_node(
         },
         tube = {
             input_inventory = 'storage',
-            insert_object = function(pos, _, stack, _)
-                local meta = minetest.get_meta(pos)
-                local can_insert = true
-                local inv = meta:get_inventory()
+            insert_object = function(pos, _, stack, _) -- Optimized to be fast
+                local cache = inv_cache.data[h(pos)] or {}
+                if not cache.inv then
+                    cache.meta = core.get_meta(pos)
+                    cache.inv = cache.meta:get_inventory()
+                end -- originally: 1.6%
 
-                local storage = inv:get_list 'storage'
-                local pattern = inv:get_list 'pattern'
+                local meta, inv = cache.meta, cache.inv
+                local can_insert = true
+
+                if not cache.storage then
+                    cache.storage = inv:get_list 'storage'
+                    cache.pattern = inv:get_list 'pattern'
+                end
+                inv_cache.data[h(pos)] = cache
+                local storage, pattern = cache.storage, cache.pattern
 
                 if meta:get_int 'output_mode' == 1 then
                     local is_storage_empty = true
@@ -145,6 +157,9 @@ core.register_node(
                 local meta = core.get_meta(pos)
                 if meta:get_int 'output_mode' == 1 then return meta:get_inventory() end
                 return nil -- explicit specifically so you KNOW its intentional
+            end,
+            before_filter = function(pos) -- Void the cache
+                inv_cache[h(pos)] = nil
             end,
         },
         on_construct = function(pos)
