@@ -1,10 +1,15 @@
 ## Release 38
 ### Internal Improvements:
+
 - Instead of using a hacky crafting system dependant on unified inventory, sbz now has it's own way of doing crushing/centrifuging/whatever with machines 
 - In the various "lag" statues, switched away from using core.get_us_time, and instead using os.clock()
+- Slightly changed how teams work
+
 ### The main stuff:
 - Large Liquid Storage - another multiblock, you won't guess what it does
 - Fixed meteorite attractor entities sometimes just multiplying
+- Added a gruvbox theme
+- Optimized pattern storinators
 
 
 

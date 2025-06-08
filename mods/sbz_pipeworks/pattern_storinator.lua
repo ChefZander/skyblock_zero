@@ -19,7 +19,7 @@ local function check_and_act_if_filled(pos, meta, storage_or_inv, pattern)
     return filled
 end
 
-local inv_cache = sbz_api.make_cache('pattern_storinator', 1, true)
+local inv_cache = sbz_api.make_cache('pattern_storinator', 0, true)
 local h = core.hash_node_position
 
 core.register_node(
@@ -159,7 +159,7 @@ core.register_node(
                 return nil -- explicit specifically so you KNOW its intentional
             end,
             before_filter = function(pos) -- Void the cache
-                inv_cache[h(pos)] = nil
+                inv_cache.data[h(pos)] = nil
             end,
         },
         on_construct = function(pos)
