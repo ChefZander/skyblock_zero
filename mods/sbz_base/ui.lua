@@ -1,28 +1,35 @@
 sbz_api.ui = {}
 local ui = sbz_api.ui
+
 -- TODO : more UI stuffs here
 -- TODO: Cache theme config
 
-local player, theme, config
+local player, theme, config, colors
 
 ui.set_player = function(set_player)
     player = set_player
     theme = sbz_api.get_theme(set_player)
     config = sbz_api.get_theme_config(player, false)
+    colors = sbz_api.get_theme_colors(player)
 end
 
 ui.del_player = function()
     player = nil
     theme = nil
     config = nil
+    colors = nil
 end
 
 ui.get_theme_config = function()
     return config
 end
 
+ui.get_theme = function()
+    return theme
+end
+
 ui.box = function(x, y, w, h)
-    return ("box[%s,%s;%s,%s;]"):format(x, y, w, h)
+    return ('box[%s,%s;%s,%s;]'):format(x, y, w, h)
 end
 
 function ui.get_player_and_theme_and_config()
@@ -43,38 +50,42 @@ end
 --- BECAUSE LUANTI FOR SOME REASON CANNOT DO THAT
 --- ok so the width is in pixels
 ui.box_shadow = function(x, y, w, h, width)
-    local wx, wy = width * ui.pixel_size("x"), width * ui.pixel_size("y")
+    local wx, wy = width * ui.pixel_size 'x', width * ui.pixel_size 'y'
     x = x - wx
     y = y - wy
-    w = w + wx * 2
-    h = h + wy * 2
-    return ("box[%s,%s;%s,%s;]"):format(x, y, w, h)
+    w = w + (wx * 2)
+    h = h + (wy * 2)
+    return ('box[%s,%s;%s,%s;]'):format(x, y, w, h)
 end
 
 ui.field = function(x, y, w, h, name, label, default)
-    local extra = ""
-    if theme.field_theme and theme.field_theme.use_box then
-        extra = extra .. ("style[%s;%s]"):format(name, "border=false")
-        extra = extra .. ("box[%s,%s;%s,%s;]"):format(x, y, w, h)
+    local extra = ''
+    if colors.box then
+        extra = extra .. ('style[%s;%s]'):format(name, 'border=false')
+        extra = extra .. ('box[%s,%s;%s,%s;]'):format(x, y, w, h)
     end
-    return extra .. ("field[%s,%s;%s,%s;%s;%s;%s]"):format(x, y, w, h, name, label, core.formspec_escape(default))
+    return extra .. ('field[%s,%s;%s,%s;%s;%s;%s]'):format(x, y, w, h, name, label, core.formspec_escape(default))
 end
 
-
 ui.wrap = {
-    center = "<center>%s</center>",
-    big = "<big>%s</big>"
+    center = '<center>%s</center>',
+    big = '<big>%s</big>',
 }
 ---@param wrap string|nil
 ui.hypertext = function(x, y, w, h, name, text, wrap)
     local prepend = sbz_api.get_hypertext_prepend(player, theme, config)
-    wrap = wrap or "%s"
-    return ("hypertext[%s,%s;%s,%s;%s;%s]"):format(x, y, w, h, name,
-        prepend .. wrap:format(core.formspec_escape(text)))
+    wrap = wrap or '%s'
+    return ('hypertext[%s,%s;%s,%s;%s;%s]'):format(x, y, w, h, name, prepend .. wrap:format(core.formspec_escape(text)))
 end
 
 ui.big_hypertext = function(x, y, w, h, name, text)
-    local prepend = sbz_api.get_big_hypertext_prepend(player, theme, config)
-    return ("hypertext[%s,%s;%s,%s;%s;%s]"):format(x, y, w, h, name,
-        prepend .. (ui.wrap.big):format(core.formspec_escape(text)))
+    local prepend = sbz_api.get_hypertext_prepend(player, theme, config)
+    return ('hypertext[%s,%s;%s,%s;%s;%s]'):format(
+        x,
+        y,
+        w,
+        h,
+        name,
+        prepend .. (ui.wrap.big):format(core.formspec_escape(text))
+    )
 end

@@ -67,15 +67,21 @@ core.register_node("unifieddyes:antiblock", unifieddyes.def {
 
 core.register_node("unifieddyes:airlike_antiblock", unifieddyes.def {
     description = "Airlike Antiblock",
+    -- I tried to make it work without noclip but failed so ehh you get magic airlike antiblock that's not airlike and kinda lame
+    overlay_tiles = {
+        { name = "blank.png", backface_culling = false }
+    },
     tiles = {
-        "blank.png"
+        { name = "blank.png", backface_culling = false }
     },
     drawtype = "normal", -- ITS NOT AIRLIKE HAHAHAHAAHAH.... ok no thats not funny
     walkable = false,    -- This is the thing thats important
+    sunlight_propagates = true,
     paramtype = "light",
-    use_texture_alpha = "clip",
+    use_texture_alpha = "blend",
     light_source = 14,
     info_extra = "What???",
+    post_effect_color = "#00000000",
     groups = { matter = 3, antimatter = 1, charged = 1 },
 })
 

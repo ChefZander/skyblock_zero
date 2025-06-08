@@ -3,31 +3,29 @@ sbz_api = {
     version = 38,
     is_version_dev = true,
     gravity = 9.8 / 2,
-    server_optimizations = (core.settings:get("sbz_server_mode") or "auto"),
+    server_optimizations = (core.settings:get 'sbz_server_mode' or 'auto'),
     deg2rad = math.pi / 180,
     rad2deg = 180 / math.pi,
     enable_switching_station_globalstep = true,
-    spawn_zone = core.settings:get("spawn_zone_range") or 300,
+    spawn_zone = core.settings:get 'spawn_zone_range' or 300,
     is_in_spawn_zone = function(pos) -- you can override
         -- check bounds
         local a = math.abs
-        if a(pos.x) <= sbz_api.spawn_zone
-            and a(pos.y) <= sbz_api.spawn_zone
-            and a(pos.z) <= sbz_api.spawn_zone then
+        if a(pos.x) <= sbz_api.spawn_zone and a(pos.y) <= sbz_api.spawn_zone and a(pos.z) <= sbz_api.spawn_zone then
             return true
         end
         return false
     end,
     accelerated_habitats = false,
-    debug = minetest.settings:get_bool("sbz_debug", false),
+    debug = minetest.settings:get_bool('sbz_debug', false),
     logic_gate_linking_range = 15,
 }
 
-if sbz_api.server_optimizations == "auto" then
+if sbz_api.server_optimizations == 'auto' then
     sbz_api.server_optimizations = not core.is_singleplayer()
-elseif sbz_api.server_optimizations == "on" then
+elseif sbz_api.server_optimizations == 'on' then
     sbz_api.server_optimizations = true
-elseif sbz_api.server_optimizations == "off" then
+elseif sbz_api.server_optimizations == 'off' then
     sbz_api.server_optimizations = false
 end
 
@@ -44,26 +42,20 @@ Version: %s
 Dev: %s
 Server Optimizations: %s
 %s[0m
-]]):format("\x1b", sbz_api.version, sbz_api.is_version_dev and "true" or "false", sbz_api.server_optimizations, "\x1b"))
+]]):format('\x1b', sbz_api.version, sbz_api.is_version_dev and 'true' or 'false', sbz_api.server_optimizations, '\x1b'))
 
 sbz_api.get_version_string = function()
-    local gamename = "SkyBlock: Zero "
-    local version_string = "Release " .. sbz_api.version
-    if sbz_api.is_version_dev then
-        version_string = version_string .. "-dev"
-    end
+    local gamename = 'SkyBlock: Zero '
+    local version_string = 'Release ' .. sbz_api.version
+    if sbz_api.is_version_dev then version_string = version_string .. '-dev' end
 
-    if sbz_api.debug then
-        version_string = version_string .. " debug "
-    end
-    if sbz_api.server_optimizations then
-        version_string = version_string .. " server-optimized "
-    end
+    if sbz_api.debug then version_string = version_string .. ' debug ' end
+    if sbz_api.server_optimizations then version_string = version_string .. ' server-optimized ' end
 
-    return gamename .. "(" .. version_string .. ")"
+    return gamename .. '(' .. version_string .. ')'
 end
 sbz_api.get_simple_version_string = function()
-    return "SkyBlock: Zero (Release " .. sbz_api.version .. (sbz_api.is_version_dev and "-dev" or "") .. ")"
+    return 'SkyBlock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
 
 --vector.random_direction was added in 5.10-dev, but this is defined here for support
@@ -127,9 +119,7 @@ function iterate_around_pos(pos, func, include_self)
         local dir = vector.copy(wallmounted_to_dir[i])
         func(pos + dir, dir)
     end
-    if include_self then
-        func(pos, vector.zero())
-    end
+    if include_self then func(pos, vector.zero()) end
 end
 
 local vzero = vector.zero()
@@ -138,9 +128,7 @@ function sbz_api.iterate_around_pos_nocopy(pos, func, include_self) -- for small
         local dir = wallmounted_to_dir[i]
         func(pos + dir, dir)
     end
-    if include_self then
-        func(pos, vzero)
-    end
+    if include_self then func(pos, vzero) end
 end
 
 function iterate_around_radius(pos, func, rad)
@@ -157,19 +145,18 @@ function iterate_around_radius(pos, func, rad)
 end
 
 minetest.register_on_newplayer(function(player)
-    player:set_pos({ x = 0, y = 1, z = 0 })
+    player:set_pos { x = 0, y = 1, z = 0 }
 
     local inv = player:get_inventory()
     local name = player:get_player_name()
     if inv then
-        if inv:contains_item("main", "sbz_progression:questbook") then
-            sbz_api.displayDialogLine(name, "You already had a questbook before joining.")
+        if inv:contains_item('main', 'sbz_progression:questbook') then
+            sbz_api.displayDialogLine(name, 'You already had a questbook before joining.')
         else
-            if inv:room_for_item("main", "sbz_progression:questbook") then
-                inv:add_item("main", "sbz_progression:questbook")
+            if inv:room_for_item('main', 'sbz_progression:questbook') then
+                inv:add_item('main', 'sbz_progression:questbook')
             else
-                sbz_api.displayDialogLine(name,
-                    "Your inventory is full. Can't give you a questbook. Use /qb")
+                sbz_api.displayDialogLine(name, "Your inventory is full. Can't give you a questbook. Use /qb")
             end
         end
     end
@@ -184,23 +171,23 @@ minetest.register_on_joinplayer(function(ref, last_login)
     ref:override_day_night_ratio(0)
 end)
 
-minetest.register_chatcommand("core", {
-    description = "Go back to the core.",
+minetest.register_chatcommand('core', {
+    description = 'Go back to the core.',
     privs = {},
     func = function(name, param)
-        minetest.get_player_by_name(name):set_pos({ x = 0, y = 1, z = 0 })
-        sbz_api.displayDialogLine(name, "Sent you back to the Core.") -- i think me renaming "Beamed" to "Sent" is going to make zander mad but i geniuenly have no idea what "Beamed" means so i think most people have no idea too
+        minetest.get_player_by_name(name):set_pos { x = 0, y = 1, z = 0 }
+        sbz_api.displayDialogLine(name, 'Sent you back to the Core.') -- i think me renaming "Beamed" to "Sent" is going to make zander mad but i geniuenly have no idea what "Beamed" means so i think most people have no idea too
         -- me, frog, renaming it will also most likely make people investigate its meaning, so we will see :)
     end,
 })
 
 -- bgm stuffs
 local bgm_sounds = {
-    "bgm1",
-    "bgm2",
-    "bgm3",
-    "bgm4",
-    "bgm5",
+    'bgm1',
+    'bgm2',
+    'bgm3',
+    'bgm4',
+    'bgm5',
 }
 local bgm_lengths = {
     280,
@@ -222,103 +209,110 @@ local function playRandomBGM(player)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
     if handles[player_name] then minetest.sound_stop(handles[player_name]) end
-    local volume = player:get_meta():get_int("volume") / 100
-    if volume == 0 and player:get_meta():get_int("has_set_volume") == 0 then
-        volume = 1
-    end
+    local volume = player:get_meta():get_int 'volume' / 100
+    if volume == 0 and player:get_meta():get_int 'has_set_volume' == 0 then volume = 1 end
     handles[player_name] = minetest.sound_play(sound_name, {
         to_player = player_name,
         gain = volume,
     })
-    minetest.after(sound_length + math.random(10, 100),
+    minetest.after(
+        sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
             playRandomBGM(player)
-        end)
+        end
+    )
 end
 
-minetest.register_chatcommand("bgm_volume", {
-    description = "Adjusts volume of background music",
-    params = "[volume, 0 to 200%]",
+minetest.register_chatcommand('bgm_volume', {
+    description = 'Adjusts volume of background music',
+    params = '[volume, 0 to 200%]',
     func = function(name, param)
         local volume = tonumber(param)
         if volume == nil or volume < 0 or volume > 200 then
-            return false, "Needs to be a number between 0 and 200, 100 is the default volume."
+            return false, 'Needs to be a number between 0 and 200, 100 is the default volume.'
         end
-        local player = minetest.get_player_by_name(name or "")
+        local player = minetest.get_player_by_name(name or '')
         if not player then return end
         local meta = player:get_meta()
-        meta:set_int("volume", volume)
-        meta:set_int("has_set_volume", 1)
+        meta:set_int('volume', volume)
+        meta:set_int('has_set_volume', 1)
         return true,
-            "Set the volume to " ..
-            volume ..
-            "%, the current background music will stay at the value that was before this command, but the next background music's volume will change."
-    end
-
+            'Set the volume to '
+                .. volume
+                .. "%, the current background music will stay at the value that was before this command, but the next background music's volume will change."
+    end,
 })
 
 minetest.register_on_joinplayer(function(player)
     -- send welcome messages
     minetest.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
-    minetest.chat_send_player(player:get_player_name(),
-        "‼ reminder: If you fall off, use /core to teleport back to the core.")
-    minetest.chat_send_player(player:get_player_name(), "‼ reminder: If lose your Quest Book, use /qb to get it back.")
+    minetest.chat_send_player(
+        player:get_player_name(),
+        '‼ reminder: If you fall off, use /core to teleport back to the core.'
+    )
+    minetest.chat_send_player(
+        player:get_player_name(),
+        '‼ reminder: If lose your Quest Book, use /qb to get it back.'
+    )
     --    minetest.chat_send_player(player:get_player_name(),
     --        "‼ Also, you can hold right click on the core, instead of having to spam your mouse, on mobile you might need to just hold tap")
     -- play bgm
     playRandomBGM(player)
 
     -- disable the sun, moon, clouds, stars and sky
-    player:set_sky({
-        base_color = "#000000",
-        type = "skybox",
-        textures = { "sb_top.png", "sb_bot.png", "sb_front.png", "sb_back.png", "sb_right.png", "sb_left.png" },
+    player:set_sky {
+        base_color = '#000000',
+        type = 'skybox',
+        textures = { 'sb_top.png', 'sb_bot.png', 'sb_front.png', 'sb_back.png', 'sb_right.png', 'sb_left.png' },
         sky_color = {
-            day_sky = "#000000",
-            day_horizon = "#000000",
-            dawn_sky = "#000000",
-            dawn_horizon = "#000000",
-            night_sky = "#000000",
-            night_horizon = "#000000",
-            indoors = "#000000",
+            day_sky = '#000000',
+            day_horizon = '#000000',
+            dawn_sky = '#000000',
+            dawn_horizon = '#000000',
+            night_sky = '#000000',
+            night_horizon = '#000000',
+            indoors = '#000000',
         },
-    })
+    }
 
-    player:set_sun({
+    player:set_sun {
         visible = false,
         sunrise_visible = false,
-    })
+    }
 
-    player:set_moon({
+    player:set_moon {
         visible = false,
-    })
+    }
 
-    player:set_clouds({
+    player:set_clouds {
         density = 0,
-        color = "#00000000",
-        ambient = "#00000000",
-    })
+        color = '#00000000',
+        ambient = '#00000000',
+    }
 
-    player:set_stars({
+    player:set_stars {
         visible = false,
-    })
+    }
 
     -- make player invisible
-    player:set_properties({
+    player:set_properties {
         zoom_fov = 15, -- allow zooming
-    })
+    }
 
     -- set hotbar
-    player:hud_set_hotbar_image("hotbar.png")
-    player:hud_set_hotbar_selected_image("hotbar_selected.png")
+    player:hud_set_hotbar_image 'hotbar.png'
+    player:hud_set_hotbar_selected_image 'hotbar_selected.png'
 
-    player:set_physics_override({
+    player:set_physics_override {
         sneak_glitch = true,
-    })
+    }
 
     local pinfo = core.get_player_information(player:get_player_name())
     if pinfo.protocol_version < 44 then -- 44 = 5.9.0
-        core.show_formspec(player:get_player_name(), "", [[
+        core.show_formspec(
+            player:get_player_name(),
+            '',
+            [[
 size[20,18]
 real_coordinates[true]
 hypertext[0.2,0.2;19.6,17.8;h;<center><bigger>Warning!</bigger></center>
@@ -335,31 +329,32 @@ The only fix for this is to update your client to Luanti 5.9.0 <b>or above</b>. 
 If you are on Multicraft, or other luanti clients, try switching to regular Luanti instead.
 ]
 button_exit[0.2,16.2;19.6,1.5;exit;Continue to play]
-    ]])
+    ]]
+        )
     end
 end)
 
 core.register_on_respawnplayer(function(ref)
-    ref:set_pos({ x = 0, y = 2, z = 0 })
+    ref:set_pos { x = 0, y = 2, z = 0 }
     return true
 end)
 
-core.register_chatcommand("killme", {
-    description = "Kills you.",
-    privs = { ["interact"] = true },
+core.register_chatcommand('killme', {
+    description = 'Kills you.',
+    privs = { ['interact'] = true },
     func = function(name)
         local player = core.get_player_by_name(name)
-        if not player then return false, "No player?" end
-        player:set_hp(0, "/killme")
-    end
+        if not player then return false, 'No player?' end
+        player:set_hp(0, '/killme')
+    end,
 })
 
 -- for the immersion
 minetest.register_on_chat_message(function(name, message)
     local players = minetest.get_connected_players()
     if #players == 1 then
-        sbz_api.displayDialogLine(name, "You talk. But there is no one to listen.")
-        unlock_achievement(name, "Desolate")
+        sbz_api.displayDialogLine(name, 'You talk. But there is no one to listen.')
+        unlock_achievement(name, 'Desolate')
     end
     return false
 end)
@@ -383,7 +378,7 @@ end
 function is_air(pos)
     local node = core.get_node(pos).name
     local reg = minetest.registered_nodes[node]
-    return reg.air or reg.air_equivalent or node == "air"
+    return reg.air or reg.air_equivalent or node == 'air'
 end
 
 sbz_api.is_air = is_air
@@ -394,13 +389,13 @@ end
 
 function sbz_api.make_immutable(t)
     for k, v in pairs(t) do
-        if type(v) == "table" then
+        if type(v) == 'table' then
             sbz_api.make_immutable(v)
             local mt = table.copy(getmetatable(v) or {})
             if not mt.immutable then
                 mt.immutable = true
                 mt.newindex = function(t_, k_, v_)
-                    error("Immutable!", 2)
+                    error('Immutable!', 2)
                 end
                 mt.index = v
                 setmetatable(v, mt)
@@ -423,33 +418,33 @@ function sbz_api.get_or_load_node(pos)
     return core.get_node(pos)
 end
 
-local MP = minetest.get_modpath("sbz_base")
+local MP = minetest.get_modpath 'sbz_base'
 
-dofile(MP .. "/override_for_areas.lua")
-dofile(MP .. "/override_descriptions.lua")
-dofile(MP .. "/vm.lua")
-dofile(MP .. "/queue.lua")
-dofile(MP .. "/override_for_other.lua")
-dofile(MP .. "/lag_delayer.lua")
-dofile(MP .. "/sbz_node_damage.lua")
-dofile(MP .. "/sbz_on_hover.lua")
-dofile(MP .. "/sbz_player_inside.lua")
-dofile(MP .. "/playtime_and_afk.lua")
-dofile(MP .. "/dwarf_orb_crafts.lua")
-dofile(MP .. "/toggle_areas_hud.lua")
-dofile(MP .. "/cache.lua")
-dofile(MP .. "/color.lua")
-dofile(MP .. "/theming.lua")
-dofile(MP .. "/ui.lua")
-dofile(MP .. "/recipe.lua")
+dofile(MP .. '/override_for_areas.lua')
+dofile(MP .. '/override_descriptions.lua')
+dofile(MP .. '/vm.lua')
+dofile(MP .. '/queue.lua')
+dofile(MP .. '/override_for_other.lua')
+dofile(MP .. '/lag_delayer.lua')
+dofile(MP .. '/sbz_node_damage.lua')
+dofile(MP .. '/sbz_on_hover.lua')
+dofile(MP .. '/sbz_player_inside.lua')
+dofile(MP .. '/playtime_and_afk.lua')
+dofile(MP .. '/dwarf_orb_crafts.lua')
+dofile(MP .. '/toggle_areas_hud.lua')
+dofile(MP .. '/cache.lua')
+dofile(MP .. '/color.lua')
+dofile(MP .. '/theming.lua')
+dofile(MP .. '/default_themes.lua')
+dofile(MP .. '/ui.lua')
+dofile(MP .. '/recipe.lua')
 -- useless cuz of luanti metadata limitations
-dofile(MP .. "/serialize.lua")
-dofile(MP .. "/serialize_benchmark.lua")
-
+dofile(MP .. '/serialize.lua')
+dofile(MP .. '/serialize_benchmark.lua')
 
 -- yeah you actually have to do this
 -- definition copied from mtg
-minetest.override_item("", {
+minetest.override_item('', {
     --    wield_scale = { x = 1, y = 1, z = 2.5 },
     tool_capabilities = {
         full_punch_interval = 0.9,
@@ -457,12 +452,11 @@ minetest.override_item("", {
         groupcaps = {
             crumbly = { times = { [2] = 3.00, [3] = 0.70 }, uses = 0, maxlevel = 1 },
             snappy = { times = { [3] = 0.40 }, uses = 0, maxlevel = 1 },
-            oddly_breakable_by_hand = { times = { [1] = 3.50, [2] = 2.00, [3] = 0.70 }, uses = 0 }
+            oddly_breakable_by_hand = { times = { [1] = 3.50, [2] = 2.00, [3] = 0.70 }, uses = 0 },
         },
         damage_groups = { fleshy = 1 },
-    }
+    },
 })
-
 
 function table.override(x, y)
     if y == nil then return x end
@@ -473,7 +467,7 @@ function table.override(x, y)
     return x
 end
 
-dofile(MP .. "/sound_api.lua")
+dofile(MP .. '/sound_api.lua')
 
 sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, break_after_one_result)
     local returning = {}
@@ -531,9 +525,10 @@ function sbz_api.punch(target, hitter, time_from_last_punch, tool_caps, dir)
         local damage = 0
         local armor_groups = target:get_armor_groups()
         for group, gdamage in pairs(tool_caps.damage_groups or {}) do
-            damage = damage +
-                gdamage * sbz_api.clamp(time_from_last_punch / (tool_caps.full_punch_interval or 0), 0, 1) *
-                ((armor_groups[group] or 0) / 100)
+            damage = damage
+                + gdamage
+                    * sbz_api.clamp(time_from_last_punch / (tool_caps.full_punch_interval or 0), 0, 1)
+                    * ((armor_groups[group] or 0) / 100)
         end
         target:set_hp(math.max(0, target:get_hp() - damage))
     end
@@ -553,25 +548,25 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
     end
     extra_damage = extra_damage or power
     knockback_strength = knockback_strength or 2.5
-    owner = owner or ""
+    owner = owner or ''
 
     for _ = 1, 500 do
         local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false, true)
         local wear = 0
         for pointed in raycast do
-            if pointed.type == "node" then
+            if pointed.type == 'node' then
                 local target_pos = pointed.under
                 local nodename = minetest.get_node(target_pos).name
                 local ndef = core.registered_nodes[nodename]
                 if not ndef then break end
-                wear = wear + (1 / minetest.get_item_group(nodename, "explody"))
+                wear = wear + (1 / minetest.get_item_group(nodename, 'explody'))
                 --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                 --although this is very random
                 if wear > power or minetest.is_protected(target_pos, owner) then break end
                 if ndef.on_blast then
                     ndef.on_blast(target_pos, power, pos, owner, r)
                 else
-                    minetest.set_node(target_pos, { name = ndef._exploded or "air" })
+                    minetest.set_node(target_pos, { name = ndef._exploded or 'air' })
                 end
             end
         end
@@ -604,7 +599,7 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
         end
     end
     if sound then
-        core.sound_play("tnt_explode", {
+        core.sound_play('tnt_explode', {
             gain = 2.5,
             max_hear_distance = 128,
             pos = pos,
@@ -612,20 +607,19 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
     end
 end
 
-
 sbz_api.on_place_recharge = function(charge_per_1_wear, after)
     return function(stack, user, pointed)
-        if pointed.type ~= "node" then return end
+        if pointed.type ~= 'node' then return end
         local target = pointed.under
         if core.is_protected(target, user:get_player_name()) then
             return core.record_protection_violation(target, user:get_player_name())
         end
 
         local target_node_name = minetest.get_node(target).name
-        if minetest.get_item_group(target_node_name, "sbz_battery") == 0 then return end
+        if minetest.get_item_group(target_node_name, 'sbz_battery') == 0 then return end
 
         local target_meta = minetest.get_meta(target)
-        local targets_power = target_meta:get_int("power")
+        local targets_power = target_meta:get_int 'power'
 
         local wear = stack:get_wear()
         -- wear repaired = min(wear calculation (may return bigger than wear), the entire wear)
@@ -634,13 +628,11 @@ sbz_api.on_place_recharge = function(charge_per_1_wear, after)
         targets_power = targets_power - (wear_repaired * charge_per_1_wear)
         local targes_def = minetest.registered_nodes[target_node_name]
 
-        target_meta:set_int("power", targets_power)
+        target_meta:set_int('power', targets_power)
         targes_def.action(target, target_node_name, target_meta, 0, wear_repaired * charge_per_1_wear)
 
         stack:set_wear((wear - wear_repaired))
-        if after then
-            after(stack, user, pointed)
-        end
+        if after then after(stack, user, pointed) end
         return stack
     end
 end
@@ -667,9 +659,7 @@ end
 
 function sbz_api.get_pos_with_eye_height(placer)
     local p = placer:get_pos()
-    if not placer.is_fake_player then
-        p.y = p.y + (placer:get_properties().eye_height or 0)
-    end
+    if not placer.is_fake_player then p.y = p.y + (placer:get_properties().eye_height or 0) end
     return p
 end
 
@@ -683,32 +673,32 @@ end
 function sbz_api.benchmark(name, f)
     local t0 = os.clock()
     f()
-    core.debug(name .. " TOOK: " .. (os.clock() - t0) * 1000 .. "ms")
+    core.debug(name .. ' TOOK: ' .. (os.clock() - t0) * 1000 .. 'ms')
 end
 
-core.register_entity("sbz_base:debug_entity", {
+core.register_entity('sbz_base:debug_entity', {
     initial_properties = {
         static_save = false,
         pointable = false,
-        visual = "cube",
+        visual = 'cube',
         visual_size = { x = 1.2, y = 1.2, z = 1.2 },
         use_texture_alpha = true,
         glow = 14,
-        damage_texture_modifier = "",
+        damage_texture_modifier = '',
         shaded = false,
         backface_culling = true,
         textures = {
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-            "matter_blob.png^[opacity:200",
-        }
+            'matter_blob.png^[opacity:200',
+            'matter_blob.png^[opacity:200',
+            'matter_blob.png^[opacity:200',
+            'matter_blob.png^[opacity:200',
+            'matter_blob.png^[opacity:200',
+            'matter_blob.png^[opacity:200',
+        },
     },
     on_activate = function(self, staticdata, dtime_s)
         if staticdata and #staticdata ~= 0 then
-            self.object:set_properties({
+            self.object:set_properties {
                 colors = {
                     staticdata,
                     staticdata,
@@ -716,13 +706,11 @@ core.register_entity("sbz_base:debug_entity", {
                     staticdata,
                     staticdata,
                     staticdata,
-                }
-            })
+                },
+            }
         end
         core.after(8, function()
-            if self.object:is_valid() then
-                self.object:remove()
-            end
+            if self.object:is_valid() then self.object:remove() end
         end)
     end,
 })
@@ -731,10 +719,12 @@ core.register_entity("sbz_base:debug_entity", {
 local old_handler = core.error_handler
 
 core.error_handler = function(error, stack_level)
-    return (old_handler(error, stack_level) or "") ..
-        ("\n==============\n%s\n=============="):format(sbz_api.get_version_string())
+    return (old_handler(error, stack_level) or '')
+        .. ('\n==============\n%s\n=============='):format(sbz_api.get_version_string())
 end
 
-core.log("action", "Skyblock: Zero's Base Mod has finished loading.")
-core.log("info",
-    "If you see warnings about ABMs taking a long time, don't worry, its most likely just trees being generated.")
+core.log('action', "Skyblock: Zero's Base Mod has finished loading.")
+core.log(
+    'info',
+    "If you see warnings about ABMs taking a long time, don't worry, its most likely just trees being generated."
+)
