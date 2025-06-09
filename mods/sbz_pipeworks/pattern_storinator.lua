@@ -70,14 +70,7 @@ core.register_node(
                 local storage, pattern = cache.storage, cache.pattern
 
                 if meta:get_int 'output_mode' == 1 then
-                    local is_storage_empty = true
-                    for index = 1, #pattern do
-                        local sstack = storage[index]
-                        if not sstack:is_empty() then
-                            is_storage_empty = false
-                            break
-                        end
-                    end
+                    local is_storage_empty = inv:is_empty 'storage'
                     if is_storage_empty == true then
                         meta:set_int('output_mode', 0)
                     else
@@ -111,6 +104,7 @@ core.register_node(
                                 return storage_stack
                             end
                         end
+                        check_and_act_if_filled(pos, meta, storage, pattern)
                     end
                 end
                 return stack
@@ -158,7 +152,7 @@ core.register_node(
                 if meta:get_int 'output_mode' == 1 then return meta:get_inventory() end
                 return nil -- explicit specifically so you KNOW its intentional
             end,
-            before_filter = function(pos) -- Void the cache
+            before_filter = function(pos) -- remove the cache entry, makes stuff work:tm:
                 inv_cache.data[h(pos)] = nil
             end,
         },

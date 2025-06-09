@@ -441,6 +441,7 @@ dofile(MP .. '/recipe.lua')
 -- useless cuz of luanti metadata limitations
 dofile(MP .. '/serialize.lua')
 dofile(MP .. '/serialize_benchmark.lua')
+dofile(MP .. '/space_movement.lua')
 
 -- yeah you actually have to do this
 -- definition copied from mtg
