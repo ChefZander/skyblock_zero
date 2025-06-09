@@ -81,12 +81,14 @@ core.register_node(
                 local stack_count = stack:get_count()
                 if can_insert then
                     local pattern_stack, storage_stack, storage_stack_count, pattern_stack_count
+                    local should_check_if_filled = false
                     for index = 1, #pattern do
                         pattern_stack = pattern[index]
                         if pattern_stack:get_name() == stack_name then
                             storage_stack = storage[index]
                             storage_stack_count = storage_stack:get_count()
                             pattern_stack_count = pattern_stack:get_count()
+                            should_check_if_filled = true
 
                             if (storage_stack_count + stack_count) <= pattern_stack_count then
                                 storage_stack:set_count(storage_stack_count + stack_count)
@@ -104,8 +106,8 @@ core.register_node(
                                 return storage_stack
                             end
                         end
-                        check_and_act_if_filled(pos, meta, storage, pattern)
                     end
+                    if should_check_if_filled then check_and_act_if_filled(pos, meta, storage, pattern) end
                 end
                 return stack
             end,
@@ -185,6 +187,7 @@ listring[]
             if listname == 'main' then return stack:get_count() end -- case: player
             local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
+            inv_cache.data[h(pos)] = nil
             if listname == 'pattern' then
                 local stack_copy = ItemStack(stack) -- i saw this in item sorters soo, yeah im doing that too
                 local stack_at_index = inv:get_stack('pattern', index)
@@ -214,6 +217,8 @@ listring[]
             if listname == 'main' then return stack:get_count() end -- case: player
             local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
+            inv_cache.data[h(pos)] = nil
+
             if listname == 'pattern' then
                 local stack_copy = ItemStack(stack) -- i saw this in item sorters soo, yeah im doing that too
                 local stack_at_index = inv:get_stack('pattern', index)

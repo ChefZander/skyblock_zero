@@ -1,4 +1,4 @@
-local timer_max = 0.1
+local timer_max = 0
 local timer = 0
 
 local function space_movement_step()
