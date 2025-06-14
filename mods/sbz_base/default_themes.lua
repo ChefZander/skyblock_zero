@@ -204,7 +204,7 @@ local gruvbox_colors = {
 sbz_api.register_theme('gruvbox', {
     default = true,
     name = 'Gruvbox',
-    description = 'Colors from https://github.com/morhetz/gruvbox - amazing theme',
+    description = 'Gruvbox theme ported to sbz. Probably the only theme here with actually good colors.',
     config = {
         ['FONT'] = { -- becomes @@FONT
             default = true,

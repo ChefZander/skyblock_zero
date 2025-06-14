@@ -1,4 +1,5 @@
 -- Oh yeah, i forgot
+---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
     version = 38,
     is_version_dev = true,
@@ -434,6 +435,7 @@ dofile(MP .. '/dwarf_orb_crafts.lua')
 dofile(MP .. '/toggle_areas_hud.lua')
 dofile(MP .. '/cache.lua')
 dofile(MP .. '/color.lua')
+dofile(MP .. '/settings.lua')
 dofile(MP .. '/theming.lua')
 dofile(MP .. '/default_themes.lua')
 dofile(MP .. '/ui.lua')

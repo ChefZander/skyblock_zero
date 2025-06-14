@@ -297,30 +297,7 @@ end
 
 core.register_on_joinplayer(sbz_api.update_theme)
 
-core.register_chatcommand('theme', {
-    params = '<name>',
-    description = 'Sets your theme',
-    func = function(name, param)
-        local player = core.get_player_by_name(name)
-        if not player then
-            return false, 'Unfortunutely, you need to be online to use this command' -- for mt webui users
-        end
-        local theme_name = param
-
-        if not theme_name or (theme_name and not sbz_api.themes[theme_name]) then
-            return false, 'Need to provide a valid name, example: "' .. default_theme .. '"'
-        end
-
-        local pmeta = player:get_meta()
-        pmeta:set_string('theme_name', theme_name)
-
-        sbz_api.update_theme(player)
-        return true, 'Updated your theme'
-    end,
-})
-
-dofile(core.get_modpath 'sbz_base' .. '/theming_by_terminal.lua')
-dofile(core.get_modpath 'sbz_base' .. '/theming_by_gui.lua')
+dofile(core.get_modpath 'sbz_base' .. '/theming_gui.lua')
 -- Code helpers
 sbz_api.get_theme_background = function(player)
     local theme = sbz_api.get_theme(player)

@@ -1,43 +1,67 @@
 sbz_api.ui = {}
-local ui = sbz_api.ui
 
 -- TODO : more UI stuffs here
 -- TODO: Cache theme config
 
 local player, theme, config, colors
 
-ui.set_player = function(set_player)
+sbz_api.ui.set_player = function(set_player)
     player = set_player
     theme = sbz_api.get_theme(set_player)
     config = sbz_api.get_theme_config(player, false)
     colors = sbz_api.get_theme_colors(player)
 end
 
-ui.del_player = function()
+sbz_api.ui.del_player = function()
     player = nil
     theme = nil
     config = nil
     colors = nil
 end
 
-ui.get_theme_config = function()
+sbz_api.ui.get_theme_config = function()
     return config
 end
 
-ui.get_theme = function()
+sbz_api.ui.get_theme = function()
     return theme
 end
 
-ui.box = function(x, y, w, h)
-    return ('box[%s,%s;%s,%s;]'):format(x, y, w, h)
-end
-
-function ui.get_player_and_theme_and_config()
+function sbz_api.ui.get_player_and_theme_and_config()
     return player, theme, config
 end
 
+-- Playerdata - basically, temporary player data
+-- Clears up on leaveplayer
+-- lol
+sbz_api.ui.playerdata = {}
+local playerdata = sbz_api.ui.playerdata
+
+function sbz_api.ui.get_playerdata(formname)
+    playerdata[formname] = playerdata[formname] or {}
+    return playerdata[formname][player:get_player_name()]
+end
+
+function sbz_api.ui.set_playerdata(formname, set_playerdata)
+    playerdata[formname] = playerdata[formname] or {}
+    playerdata[formname][player:get_player_name()] = set_playerdata
+end
+
+core.register_on_leaveplayer(function(left_player)
+    local left_player_name = left_player:get_player_name()
+    for _, data in pairs(playerdata) do
+        data[left_player_name] = nil
+    end
+end)
+
+-- Ok now random elements
+
+sbz_api.ui.box = function(x, y, w, h)
+    return ('box[%s,%s;%s,%s;]'):format(x, y, w, h)
+end
+
 --- Issue: it is different for each player
-function ui.pixel_size(coord_name)
+function sbz_api.ui.pixel_size(coord_name)
     local window_info = core.get_player_window_information(player:get_player_name())
 
     if not window_info then -- i want to BAN the player for causing me such TROUBLES, but unfortunutely, some people find that undesirable, so we are just going to say its 0.1
@@ -49,8 +73,8 @@ end
 --- Meant to shadow over elements, like give tables that great border
 --- BECAUSE LUANTI FOR SOME REASON CANNOT DO THAT
 --- ok so the width is in pixels
-ui.box_shadow = function(x, y, w, h, width)
-    local wx, wy = width * ui.pixel_size 'x', width * ui.pixel_size 'y'
+sbz_api.ui.box_shadow = function(x, y, w, h, width)
+    local wx, wy = width * sbz_api.ui.pixel_size 'x', width * sbz_api.ui.pixel_size 'y'
     x = x - wx
     y = y - wy
     w = w + (wx * 2)
@@ -58,7 +82,7 @@ ui.box_shadow = function(x, y, w, h, width)
     return ('box[%s,%s;%s,%s;]'):format(x, y, w, h)
 end
 
-ui.field = function(x, y, w, h, name, label, default)
+sbz_api.ui.field = function(x, y, w, h, name, label, default)
     local extra = ''
     if colors.box then
         extra = extra .. ('style[%s;%s]'):format(name, 'border=false')
@@ -67,18 +91,18 @@ ui.field = function(x, y, w, h, name, label, default)
     return extra .. ('field[%s,%s;%s,%s;%s;%s;%s]'):format(x, y, w, h, name, label, core.formspec_escape(default))
 end
 
-ui.wrap = {
+sbz_api.ui.wrap = {
     center = '<center>%s</center>',
     big = '<big>%s</big>',
 }
 ---@param wrap string|nil
-ui.hypertext = function(x, y, w, h, name, text, wrap)
+sbz_api.ui.hypertext = function(x, y, w, h, name, text, wrap)
     local prepend = sbz_api.get_hypertext_prepend(player, theme, config)
     wrap = wrap or '%s'
     return ('hypertext[%s,%s;%s,%s;%s;%s]'):format(x, y, w, h, name, prepend .. wrap:format(core.formspec_escape(text)))
 end
 
-ui.big_hypertext = function(x, y, w, h, name, text)
+sbz_api.ui.big_hypertext = function(x, y, w, h, name, text)
     local prepend = sbz_api.get_hypertext_prepend(player, theme, config)
     return ('hypertext[%s,%s;%s,%s;%s;%s]'):format(
         x,
@@ -86,6 +110,6 @@ ui.big_hypertext = function(x, y, w, h, name, text)
         w,
         h,
         name,
-        prepend .. (ui.wrap.big):format(core.formspec_escape(text))
+        prepend .. (sbz_api.ui.wrap.big):format(core.formspec_escape(text))
     )
 end
