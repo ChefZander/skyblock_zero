@@ -113,3 +113,27 @@ sbz_api.ui.big_hypertext = function(x, y, w, h, name, text)
         prepend .. (sbz_api.ui.wrap.big):format(core.formspec_escape(text))
     )
 end
+
+sbz_api.ui.scrollbar = function(x, y, w, h, orientation, name, value) -- MAY GET CHANGED IN THE FUTURE TO ALLOW HACK-STYLING (A term i made up just now describing the way i style fields)
+    -- Also, scrollbars look scary
+    -- Just look at the amount of stuff thats like... required here
+    -- i like having a function for scary
+    return ('scrollbar[%s,%s;%s,%s;%s;%s;%s]'):format(x, y, w, h, orientation, name, value)
+end
+
+-- WINDOW STUFF!
+
+--- End window with container_end[]
+sbz_api.ui.window = function(x, y, w, h)
+    return ([[
+box[0,0;1000,1000;#00000080]
+allow_close[false]
+container[%s,%s]
+%s
+button[%s,0.2;1,1;try_quit;X]
+        ]]):format(x, y, sbz_api.ui.box(0, 0, w, h), w - 1.2)
+end
+
+sbz_api.ui.window_end = function()
+    return 'container_end[]'
+end -- for completeness

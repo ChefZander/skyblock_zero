@@ -224,6 +224,8 @@ local function playRandomBGM(player)
     )
 end
 
+sbz_api.bgm_handles = handles
+
 minetest.register_chatcommand('bgm_volume', {
     description = 'Adjusts volume of background music',
     params = '[volume, 0 to 200%]',
