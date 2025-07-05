@@ -9,12 +9,27 @@ playereffects.register_effect_type("wet", "Wet", "fx_wet.png", { "speed" }, func
 
 local water_color = "#576ee180"
 
+local source_animation = {
+    type = "vertical_frames",
+    aspect_w = 16,
+    aspect_h = 16,
+    length = 3.0,
+}
+
 minetest.register_node("sbz_resources:water_source", {
     description = "Water Source",
     drawtype = "liquid",
     tiles = {
-        { name = "water.png", backface_culling = false, },
-        { name = "water.png", backface_culling = true, },
+        {
+            name = "water_animated.png^[opacity:200",
+            backface_culling = false,
+            animation = source_animation,
+        },
+        {
+            name = "water_animated.png^[opacity:200",
+            backface_culling = true,
+            animation = source_animation,
+        },
     },
     inventory_image = minetest.inventorycube "water.png",
     use_texture_alpha = "blend",
@@ -36,7 +51,7 @@ minetest.register_node("sbz_resources:water_source", {
     end
 })
 
-local animation = {
+local flowing_animation = {
     type = "vertical_frames",
     aspect_w = 16,
     aspect_h = 16,
@@ -49,14 +64,14 @@ minetest.register_node("sbz_resources:water_flowing", {
     tiles = { "water.png" },
     special_tiles = {
         {
-            name = "flowing_water.png",
+            name = "flowing_water.png^[opacity:200",
             backface_culling = false,
-            animation = animation
+            animation = flowing_animation,
         },
         {
-            name = "flowing_water.png",
+            name = "flowing_water.png^[opacity:200",
             backface_culling = true,
-            animation = animation
+            animation = flowing_animation,
         }
     },
     use_texture_alpha = "blend",

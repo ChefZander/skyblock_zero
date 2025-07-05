@@ -344,6 +344,7 @@ core.register_node("sbz_chem:radioactive_water", {
     drawtype = "liquid",
     tiles = {
         { name = "water.png^[multiply:" .. water_color .. "^[opacity:200", backface_culling = false },
+        { name = "water.png^[multiply:" .. water_color .. "^[opacity:200", backface_culling = true },
     },
     use_texture_alpha = "blend",
     groups = { liquid = 3, habitat_conducts = 1, not_in_creative_inventory = 1, weak_radioactive = 80 },
