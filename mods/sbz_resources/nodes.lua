@@ -344,7 +344,7 @@ core.register_craft {
 }
 
 minetest.register_node("sbz_resources:compressed_core_dust", {
-    description = "Compressed core dust",
+    description = "Compressed Core Dust",
     tiles = {
         "compressed_core_dust.png"
     },
