@@ -476,7 +476,7 @@ unified_inventory.register_craft {
 
 local power_needed = 85
 sbz_api.register_stateful_machine("sbz_bio:dna_extractor", {
-    description = "DNA extractor",
+    description = "DNA Extractor",
     info_extra = "Copies DNA from tree cores, puts it into saplings",
     paramtype2 = "facedir",
     tiles = {

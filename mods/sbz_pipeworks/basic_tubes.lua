@@ -142,7 +142,7 @@ minetest.register_craft({
 
 
 minetest.register_node("pipeworks:one_way_tube", {
-    description = "One way tube",
+    description = "One-Way Tube",
     tiles = {
         { name = "one_way_tube_top.png",              backface_culling = pipeworks.tube_backface_culling },
         { name = "one_way_tube_top.png",              backface_culling = pipeworks.tube_backface_culling },

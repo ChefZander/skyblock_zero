@@ -45,7 +45,7 @@ end
 local wire_size = 3 / 16
 
 minetest.register_node("sbz_power:fluid_pipe", {
-    description = "Fluid pipe",
+    description = "Fluid Pipe",
     info_extra = "Transports liquid",
 
     connects_to = { "group:fluid_pipe_connects" },
@@ -190,7 +190,7 @@ function fluid_transport.pump(start_pos, liquid_stack, frompos)
 end
 
 sbz_api.register_stateful_machine("sbz_power:pump", {
-    description = "Fluid pump",
+    description = "Fluid Pump",
     autostate = true,
     paramtype2 = "facedir",
     after_place_node = function(pos)

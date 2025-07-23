@@ -240,7 +240,7 @@ listring[]
 -- the scary
 local xray_demand = 1800
 sbz_api.register_stateful_machine("sbz_chem:xray", {
-    description = "X-ray emitter",
+    description = "X-ray Emitter",
     tiles = {
         "xray_top.png",
         "xray_top.png",
