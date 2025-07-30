@@ -58,12 +58,13 @@ core.register_craftitem("sbz_resources:bomb_stick", {
     end
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "compressing",
     output = "sbz_resources:bomb",
     items = { "sbz_resources:bomb_stick 9" }
 }
-unified_inventory.register_craft {
+
+sbz_api.recipe.register_craft {
     type = "compressing",
     output = "sbz_resources:bomb_stick",
     items = { "sbz_bio:pyrograss 9" }

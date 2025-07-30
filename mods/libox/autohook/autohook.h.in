@@ -1,0 +1,6 @@
+// This number is tied to the latest commit's UNIX time
+#define AUTOHOOK_HASH "${AUTOHOOK_HASH}"
+${define DEBUG}
+#if DEBUG == 0
+#undef DEBUG
+#endif

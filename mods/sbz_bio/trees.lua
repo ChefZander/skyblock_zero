@@ -462,13 +462,13 @@ core.register_node("sbz_bio:colorium_tree_core", {
 })
 
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "crushing",
     output = "unifieddyes:colorium_powder",
     items = { "sbz_bio:colorium_leaves" }
 }
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "crushing",
     output = "sbz_bio:colorium_leaves 4",
     items = { "sbz_bio:colorium_tree" }

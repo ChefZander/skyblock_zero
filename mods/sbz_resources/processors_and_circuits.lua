@@ -112,7 +112,7 @@ core.register_craftitem("sbz_resources:simple_processor", {
     inventory_image = "simple_procesor.png" -- someone correct the typo lmfao
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "engraver",
     output = "sbz_resources:simple_processor",
     items = { "sbz_chem:silicon_crystal 8" }

@@ -279,11 +279,13 @@ listring[]
     end,
 
     on_logic_send = function(pos, msg, from_pos)
-        local queued_events = builder_queues[core.hash_node_position(pos)] or {}
-        if #queued_events <= queue_max then
-            queued_events[#queued_events + 1] = msg
-            msg.from_pos = from_pos
-            builder_queues[core.hash_node_position(pos)] = queued_events
+        if type(msg) == "table" then
+            local queued_events = builder_queues[core.hash_node_position(pos)] or {}
+            if #queued_events <= queue_max then
+                queued_events[#queued_events + 1] = msg
+                msg.from_pos = from_pos
+                builder_queues[core.hash_node_position(pos)] = queued_events
+            end
         end
     end
 })

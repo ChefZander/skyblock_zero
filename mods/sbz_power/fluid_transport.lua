@@ -324,6 +324,7 @@ minetest.register_node("sbz_power:fluid_tank", {
         local meta = minetest.get_meta(pos)
         if lqinv[1].name == "any" then
             meta:set_string("infotext", "Waiting for a liquid...")
+            return
         end
         local def = minetest.registered_nodes[lqinv[1].name]
         local desc = string.gsub(def.short_description or def.description or lqinv[1].name, " Source", "")
@@ -380,7 +381,7 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
         local expect = lqinv[1].name
 
         if expect ~= "any" and expect ~= up_node then
-            meta:set_string("infotext", "Can't accept that liquid")
+            meta:set_string("infotext", "Can't accept that liquid, replace the fluid capturer")
             return 0
         end
 
@@ -416,7 +417,6 @@ minetest.register_craft({
 })
 
 
-local fluid_cell_filler_consumbtion = 10
 sbz_api.register_machine("sbz_power:fluid_cell_filler", {
     description = "Fluid Cell Filler",
     tiles = {
@@ -438,13 +438,11 @@ sbz_api.register_machine("sbz_power:fluid_cell_filler", {
         local inv = meta:get_inventory()
         inv:set_size("input", 1)
         inv:set_size("output", 1)
-    end,
-    on_rightclick = function(pos)
-        minetest.get_meta(pos):set_string("formspec", [[
+        meta:set_string("formspec", [[
 formspec_version[7]
 size[8.2,9]
 style_type[list;spacing=.2;size=.8]
-item_image[2.4,1.9;1,1;sbz_chem:empty_fluid_cell]
+item_image[2.5,2;0.8,0.8;sbz_chem:empty_fluid_cell]
 list[context;input;2.5,2;1,1;]
 list[context;output;4.5,2;1,1;]
 list[current_player;main;0.2,5;8,4;]
@@ -489,8 +487,8 @@ listring[context;input]listring[]
     output_inv = "output",
     action = function(pos, node, meta, supply, demand)
         if supply < demand + fluid_capturer_demand then
-            meta:set_string("infotext", "Not enough power")
-            return fluid_cell_filler_consumbtion, false
+            meta:set_string("infotext", "Not enough power, needs 40")
+            return 40, false
         end
         local inv = meta:get_inventory()
         local input = inv:get_stack("input", 1)
@@ -524,7 +522,7 @@ listring[context;input]listring[]
         meta:set_string("liquid_inv", minetest.serialize(lqinv))
 
         meta:set_string("infotext", "Running")
-        return fluid_cell_filler_consumbtion
+        return 40
     end,
     on_liquid_inv_update = function() end,
 })

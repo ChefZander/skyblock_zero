@@ -74,7 +74,7 @@ function sbz_api.register_machine(name, def)
     def.groups.sbz_machine = 1
     def.groups.pipe_conducts = def.groups.pipe_conducts or 1
     def.groups.pipe_connects = 1
-    def.sounds = sbz_api.sounds.machine()
+    def.sounds = def.sounds or sbz_api.sounds.machine()
 
     sbz_api.add_tube_support(def)
     if not def.control_action_raw then

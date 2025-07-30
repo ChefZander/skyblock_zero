@@ -32,20 +32,10 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         local power_needed = 64
         local inv = meta:get_inventory()
 
-        local itemname = inv:get_stack("input", 1):get_name()
+        local out, count, decremented = sbz_api.recipe.resolve_craft(inv:get_stack("input", 1), "decay_accelerating",
+            false)
 
-        local recipe_outputs = unified_inventory.get_usage_list(itemname)
-
-
-        local possible_outputs = {}
-
-        for k, v in pairs(recipe_outputs or {}) do
-            if v.type == "decay_accelerating" then
-                possible_outputs[#possible_outputs + 1] = v.output
-            end
-        end
-
-        if #possible_outputs == 0 then
+        if out == nil then
             meta:set_string("infotext", "Inactive")
             return 0
         end
@@ -57,12 +47,11 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
         meta:set_string("infotext", "Active")
 
-        local selected_item = possible_outputs[math.random(1, #possible_outputs)]
-
-
-        if inv:room_for_item("output", selected_item) then
-            inv:remove_item("input", itemname)
-            inv:add_item("output", selected_item)
+        if inv:room_for_item("output", out) then
+            local input = inv:get_stack("input", 1)
+            input:set_count(input:get_count() - decremented)
+            inv:set_stack("input", 1, input)
+            inv:add_item("output", out)
             return power_needed
         else
             meta:set_string("infotext", "Output inventory full")

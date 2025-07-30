@@ -8,7 +8,7 @@
 - microsecond: milisecond * 1000
 - hook: a lua function that runs every `n` instructions
 - environment: The values that the sandboxed code can work with
-- string sandbox: when the `__index` field of a string's metatable gets replaced with the sandboxes `string` (basically, a thing to prevent the sandbox from using unsafe string functions through `"":unsafe_function()`) 
+- string sandbox: when the `__index` field of a string's metatable gets replaced with the sandboxes `string` (basically, a thing to prevent the sandbox from using unsafe string functions through `"":unsafe_function()`)
 
 ## Differences from luac-like sandboxing
 - The basic environment is much more permissive (but still maintains safety)
@@ -22,9 +22,11 @@
 
 `msg, cost = libox.digiline_sanitize(input, allow_functions, wrap)` - use this instead of your own clean_and_weigh_digiline_message implementation, `wrap` is a function that accepts a function and returns another one, this gets called on user functions
 
-`libox.sandbox_lib_f(f, ...)` - use this if you want to escape the string sandbox (do this if you are not 100% sure that your code is free of `"":this_stuff()`) **don't use this on functions that run user 
+`libox.sandbox_lib_f(f, ...)` - use this if you want to escape the string sandbox (do this if you are not 100% sure that your code is free of `"":this_stuff()`) **don't use this on functions that run user
 
-`libox.disabled = true/false` - use when you want to disable libox (e.g. when using jitprofiler) 
+`libox.disabled = true/false` - use when you want to disable libox (e.g. when using jitprofiler)
+
+`libox.has_autohook = true/false` - Is autohook available or not?
 
 **functions**
 
@@ -63,13 +65,13 @@
 `libox.normal_sandbox(def)`
 - A sandbox that executes lua code securely based on parameters in `def` (table)
 ### The def table
-`def.code` - the code...  
-`def.env` - The environment of the function  
-`def.error_handler` - A function inside the `xpcall`, by default `libox.traceback`  
-`def.in_hook` - The hook function, by default `libox.get_default_hook(def.max_time)`  
-`def.max_time` - Maximum allowed execution time, in microseconds, only used if `def.in_hook` was not defined  
-`def.hook_time` - The hook function will execute every `def.hook_time` instructions, by default 50
-`def.function_wrap` - transforms a function, by default `function(f) return f end`
+- `def.code` - the code...
+- `def.env` - The environment of the function
+- `def.error_handler` - A function inside the `xpcall`, by default `libox.traceback`
+- `def.in_hook` - The hook function, by default `libox.get_default_hook(def.max_time)`
+- `def.max_time` - Maximum allowed execution time, in microseconds, only used if `def.in_hook` was not defined
+- `def.hook_time` - The hook function will execute every `def.hook_time` instructions, by default 50
+- `def.function_wrap` - transforms a function, by default `function(f) return f end`
 
 ## "Coroutine" sandbox
 - Optionally requires trusted environment for weighing local variables and upvalues
@@ -78,14 +80,13 @@
 ### What is it?
 A sandbox that allows the user to **yield** => temporarily stop execution; then be able to resume from that point
 
-
 ### garbage collection
 `libox.coroutine.settings`
 - memory_treshold: in gigabytes, if lua's memory reaches above this limit, the hook will error, the user is meant to configure this to their needs *also this is what i meant about those overfill protections, not exactly reliable*
 - gc settings:
     - time_treshold: if a sandbox has been untouched for this long, collect it, in seconds
     - number_of_sandboxes: the garbage collection will trigger if the number of stored sandboxes is above this limit
-    - auto: if true, garbage collection will automatically activate, i don't think this is nessesary if you have trusted the libox mod 
+    - auto: if true, garbage collection will automatically activate, i don't think this is nessesary if you have trusted the libox mod
     - interval: in seconds, when to trigger the garbage collection
 
 All of theese are configurable by the user
@@ -104,14 +105,15 @@ All of theese are configurable by the user
 - `def.code` - the code
 - `def.is_garbage_collected` - if this sandbox should be garbage collected, by default true
 - `def.env` - the environment, by default a blank table
-- `def.in_hook` - the function that runs in the hook, by default `libox.coroutine.get_default_hook(def.time_limit or 3000)`, see `libox.coroutine.get_default_hook` on how to use, it is different to how normal sandbox handles it
-- `def.time_limit` - used if debug.in_hook is not avaliable, by default 3000
+- `def.in_hook` - hook builder function, by default `libox.coroutine.get_default_hook(def.time_limit or libox.default_time_limit)` or `nil` if autohook is available+enabled. See `libox.coroutine.get_default_hook` on how to use, it is different to how normal sandbox handles it.
+- `def.time_limit` - used if `debug.in_hook` is not avaliable, by default 3000
 - `last_ran` - not set by you, but is the last time the sandbox was ran, used for garbage collection
 - `def.hook_time` - The hook function will execute every `def.hook_time` instructions, by default 10
 - `def.size_limit` - in *bytes*, the size limit of the sandbox, if trusted then upvalues and local variables are counted in too, by default 5 *megabytes*, aka `1024*1024*5` bytes
 - `def.function_wrap` - transforms a function, by default `function(f) return f end`
+- `def.autohook` - enables/disables auto-yielding inside sandboxes, respecting `def.hook_time` and `def.time_limit`. `def.in_hook` behaves a bit differently. Please read `autohook/README.md` document for more info. By default, this is disabled (`false`).
 
-`libox.coroutine.get_default_hook(max_time)` - a function that returns a function that returns a function.... ok but no what it really is is that it just yeah...
+`libox.coroutine.get_default_hook(max_time)` - returns a hook builder function. The created hook performs a time limit check whether to raise an error or not. Raising an error kills the sandbox.
 
 `libox.coroutine.run_sandbox(ID, value_passed)`
 - `value_passed` - the value passed to the coroutine.resume function, so that in the sandbox it could: `local vals = coroutine.yield("blabla")`
@@ -124,7 +126,7 @@ All of theese are configurable by the user
 - returns if its size (computed using `get_size`) is less than the lim
 - used internally
 
-`libox.coroutine.get_size(env, seen, thread, recursed)` 
+`libox.coroutine.get_size(env, seen, thread, recursed)`
 - get the size in bytes of a thread, used by size_check
 - normal usage: `libox.coroutine.get_size(env, {}, thread, false)`
 
@@ -135,7 +137,7 @@ All of theese are configurable by the user
 # Async
 - everything else other than the coroutine sandbox is avaliable in both sync and async environments
 
-coroutine sandbox is not avaliable in async because 
+coroutine sandbox is not avaliable in async because
 
 1) I cannot import the debug.getlocal and debug.getupvalue functions into the async environment
 2) I cannot import a coroutine in the async environment

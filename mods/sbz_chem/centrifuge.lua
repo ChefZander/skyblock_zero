@@ -1,9 +1,8 @@
-unified_inventory.register_craft_type("centrifugeing", {
+sbz_api.recipe.register_craft_type({
+    type = "centrifugeing",
     description = "Seperating",
     icon = "centrifuge.png^[verticalframe:12:1",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
+    single = true
 })
 
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
@@ -20,7 +19,7 @@ end
 
 -- sand recipes
 -- sand => 50% Silicon 2, 10% Gold, 100% white sand
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:silicon_powder 2",
     type = "centrifugeing",
     chance = 50, -- 50%
@@ -28,7 +27,7 @@ unified_inventory.register_craft {
         "sbz_resources:sand"
     }
 }
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:gold_powder",
     type = "centrifugeing",
     chance = 10, -- 10%
@@ -36,7 +35,7 @@ unified_inventory.register_craft {
         "sbz_resources:sand"
     }
 }
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_resources:white_sand",
     type = "centrifugeing",
     items = {
@@ -46,7 +45,7 @@ unified_inventory.register_craft {
 
 -- white sand => 100% dark sand, 5% silver
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_resources:dark_sand",
     type = "centrifugeing",
     items = {
@@ -54,7 +53,7 @@ unified_inventory.register_craft {
     }
 }
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:silver_powder",
     chance = 5,
     type = "centrifugeing",
@@ -65,7 +64,7 @@ unified_inventory.register_craft {
 
 -- dark sand => 100% black sand, 1% silver
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_resources:black_sand",
     type = "centrifugeing",
     items = {
@@ -73,7 +72,7 @@ unified_inventory.register_craft {
     }
 }
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:silver_powder",
     chance = 1,
     type = "centrifugeing",
@@ -83,7 +82,7 @@ unified_inventory.register_craft {
 }
 
 -- gravel => 10% cobalt, 10% titanium, 10% lithium, 100% 1 pebble, 75% pebble, 50% pebble, 25% pebble, 5% pebble, 1% pebble
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:cobalt_powder",
     chance = 10,
     type = "centrifugeing",
@@ -91,7 +90,7 @@ unified_inventory.register_craft {
         "sbz_resources:gravel"
     }
 }
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:lithium_powder",
     chance = 10,
     type = "centrifugeing",
@@ -99,7 +98,7 @@ unified_inventory.register_craft {
         "sbz_resources:gravel"
     }
 }
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     output = "sbz_chem:titanium_powder",
     chance = 10,
     type = "centrifugeing",
@@ -111,7 +110,7 @@ unified_inventory.register_craft {
 for k, v in ipairs {
     100, 75, 50, 25, 1
 } do
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         output = "sbz_resources:pebble",
         chance = v,
         type = "centrifugeing",
@@ -168,22 +167,19 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
             meta:set_string("infotext", "Working...")
 
             local src = inv:get_list("src")
-
-            local decremented_input = ItemStack(src[1])
-            local recipe_outputs = unified_inventory.get_usage_list(src[1]:get_name())
-            local outputs = {}
-
-            for _, v in pairs(recipe_outputs or {}) do
-                if v.type == "centrifugeing" then
-                    if not v.chance or math.random() <= v.chance / 100 then
-                        outputs[#outputs + 1] = ItemStack(v.output)
-                    end
-                end
-            end
-
-            if #outputs == 0 then
+            local crafts, success, slot = sbz_api.recipe.resolve_craft_raw_single(src, "centrifugeing", true)
+            if not success then
                 meta:set_string("infotext", "Invalid/no recipe")
                 return 0
+            end
+
+            local decremented_input = ItemStack(src[1])
+            local outputs = {}
+
+            for _, v in pairs(crafts) do
+                if not v.chance or math.random() <= v.chance / 100 then
+                    outputs[#outputs + 1] = ItemStack(v.output)
+                end
             end
 
 
@@ -202,8 +198,6 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
             end
 
             decremented_input:take_item(1)
-
-
             inv:set_stack("src", 1, decremented_input)
             sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed

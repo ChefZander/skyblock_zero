@@ -1,3 +1,10 @@
+sbz_api.recipe.register_craft_type({
+    type = "crystal_growing",
+    description = "Crystal Growing",
+    icon = "crystal_grower.png^[verticalframe:17:1",
+    single = true
+})
+
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
     if listname == "dst" then
         return 0
@@ -62,26 +69,7 @@ listring[context;dst]
 
             local src = inv:get_list("src")
 
-            local out, decremented_input, index
-            for i = 1, 4 do
-                local recipe_outputs = unified_inventory.get_usage_list(src[i]:get_name())
-                local out_inner = ItemStack("")
-                local input = ItemStack("")
-
-                for _, v in pairs(recipe_outputs or {}) do
-                    if v.type == "crystal_growing" then
-                        out_inner = ItemStack(v.output)
-                        input = ItemStack(v.items[1])
-                        break
-                    end
-                end
-                if not out_inner:is_empty() and (src[i]:get_count() >= input:get_count()) then
-                    out, decremented_input = out_inner, ItemStack(src[i])
-                    decremented_input:take_item(input:get_count())
-                    index = i
-                    break
-                end
-            end
+            local out, count, decremented, index = sbz_api.recipe.resolve_craft(src, "crystal_growing", true)
             if out == nil then
                 meta:set_string("infotext", "Invalid/no recipe")
                 return 0
@@ -91,8 +79,9 @@ listring[context;dst]
                 meta:set_string("infotext", "Full")
                 return 0
             end
-
-            inv:set_stack("src", index, decremented_input)
+            local input = inv:get_stack("src", index)
+            input:set_count(input:get_count() - decremented)
+            inv:set_stack("src", index, input)
             inv:add_item("dst", out)
             sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed

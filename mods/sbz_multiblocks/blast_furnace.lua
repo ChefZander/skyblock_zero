@@ -1,6 +1,17 @@
 -- controller, machine casing, furnace heaters
 -- item I/O, power input
 
+sbz_api.recipe.register_craft_type({
+    type = "blast_furnace",
+    description = "Blast Furnace",
+    icon = "blast_furnace_heater_inner.png^blast_furnace_heater_frame.png",
+    width = 3,
+    height = 1,
+    uses_crafting_grid = false,
+    single = false
+})
+
+
 local ud = unifieddyes.def -- Why not!
 
 local function get_furnce_controller_formspec(pos)
@@ -88,6 +99,7 @@ local function make_schem(pos, meta)
     if cached_schems[heater_rows] then return cached_schems[heater_rows] end
     meta = nil
     pos = nil
+
     -- should be only f(heater_rows) => schem, nothing else, no pos, no meta.
     local schemdata = {}
     local schem = {
@@ -98,6 +110,7 @@ local function make_schem(pos, meta)
                 ["sbz_multiblocks:blast_furnace_power_port"] = true,
                 ["sbz_multiblocks:blast_furnace_item_input"] = true,
                 ["sbz_multiblocks:blast_furnace_item_output"] = true,
+                default = "sbz_multiblocks:blast_furnace_casing"
             }
         },
         limits = {
@@ -184,9 +197,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
                 local last_used = meta:get_int("last_used_build_helper")
                 if os.difftime(os.time(), last_used) >= default_expiration then
                     local schem = make_schem(pos)
-                    sbz_api.multiblocks.draw_schematic(pos, schem, {
-                        ["machine_casing"] = "sbz_multiblocks:blast_furnace_casing"
-                    })
+                    sbz_api.multiblocks.draw_schematic(pos, schem)
                     meta:set_int("last_used_build_helper", os.time())
                 else
                     core.chat_send_player(sender:get_player_name(),
@@ -252,30 +263,18 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
         elseif mode == "Alloyer" then
             local inp1 = inventory:get_stack("src1", 1)
             local inp2 = inventory:get_stack("src2", 1)
-            local inp1name, inp2name = inp1:get_name(), inp2:get_name()
-            for _, recipe in pairs(sbz_api.simple_alloy_furnace_recipes) do
-                local r = recipe.recipe
-                if (r[1] == inp1name and r[2] == inp2name) or (r[1] == inp2name and r[2] == inp1name) then
-                    out = ItemStack(recipe.output[1])
-                    cost = table.copy(r)
-                    if r[1] == inp2name then
-                        local t = cost[1]
-                        cost[1] = cost[2]
-                        cost[2] = t
-                    end
-                    for k, v in ipairs(cost) do
-                        cost[k] = ItemStack(v)
-                    end
-                end
-            end
+            local count
+            out, count, cost = sbz_api.recipe.resolve_craft({ inp1, inp2 }, "alloying", true)
         elseif mode == "Blast" then
             local inp1 = inventory:get_stack("src1", 1)
             local inp2 = inventory:get_stack("src2", 1)
             local inp3 = inventory:get_stack("src3", 1)
+
             local inp1name, inp2name, inp3name = inp1:get_name(), inp2:get_name(), inp3:get_name()
-            for _, recipe in pairs(sbz_api.blast_furnace_recipes) do
-                local r = recipe.names
-                -- great :)
+            for _, recipe in pairs(sbz_api.recipe.get_all_crafts_of_type("blast_furnace")) do
+                local r = table.copy(recipe.items)
+                for k, v in pairs(r) do r[k] = ItemStack(v):get_name() end
+                -- great :), you love to see it
                 if (r[1] == inp1name and r[2] == inp2name and r[3] == inp3name) or
                     (r[1] == inp1name and r[2] == inp3name and r[3] == inp2name) or
                     (r[1] == inp2name and r[2] == inp3name and r[3] == inp1name) or
@@ -284,7 +283,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
                     (r[1] == inp3name and r[2] == inp2name and r[3] == inp1name)
                 then
                     out = ItemStack(recipe.output)
-                    cost = table.copy(recipe.recipe)
+                    cost = table.copy(recipe.items)
                     for k, v in pairs(cost) do
                         cost[k] = ItemStack(v)
                     end
@@ -303,7 +302,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
             end
         end
         if not out or out:is_empty() then return false end
-        -- S M E L T
+        -- S M E L T, TODO: yeah i'm sure this can be easily optimized but ehh a for loop "woorks"
         for i = 1, efficiency do
             if inventory:contains_item("src1", cost[1]) and
                 (not cost[2] or inventory:contains_item("src2", cost[2])) and

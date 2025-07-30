@@ -69,7 +69,7 @@ core.register_craftitem("sbz_resources:warp_crystal", {
     end
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "crystal_growing",
     output = "sbz_resources:warp_crystal",
     items = { "sbz_bio:warpshroom 9" }
@@ -91,19 +91,19 @@ core.register_craftitem(":sbz_chem:silicon_crystal", {
 })
 
 for k, v in pairs({ "powder", "ingot" }) do
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         type = "crystal_growing",
         output = "sbz_chem:silicon_crystal",
         items = { ("sbz_chem:silicon_%s 64"):format(v) }
     }
 
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         type = "crystal_growing",
         output = "sbz_chem:thorium_crystal",
         items = { ("sbz_chem:thorium_%s 8"):format(v) }
     }
 
-    unified_inventory.register_craft {
+    sbz_api.recipe.register_craft {
         type = "crystal_growing",
         output = "sbz_chem:uranium_crystal",
         items = { ("sbz_chem:uranium_%s 8"):format(v) }
@@ -116,7 +116,7 @@ core.register_craftitem("sbz_resources:shock_crystal", {
     inventory_image = "shock_crystal.png",
 })
 
-unified_inventory.register_craft {
+sbz_api.recipe.register_craft {
     type = "crystal_growing",
     output = "sbz_resources:shock_crystal",
     items = { "sbz_bio:shockshroom 9" }

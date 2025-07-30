@@ -1,0 +1,7 @@
+{
+    "runtime.version": "LuaJIT",
+    "workspace.library": [
+        "types/core.d.lua",
+    ],
+    "diagnostic.disable": [],
+}

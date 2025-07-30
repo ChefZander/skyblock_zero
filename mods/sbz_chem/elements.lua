@@ -1,42 +1,3 @@
-unified_inventory.register_craft_type("crushing", {
-    description = "Crushing",
-    icon = "crusher_top.png^[verticalframe:4:1",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
-})
-
-unified_inventory.register_craft_type("alloying", {
-    description = "Alloying",
-    icon = "simple_alloy_furnace.png^[verticalframe:13:1",
-    width = 2,
-    height = 1,
-    uses_crafting_grid = false,
-})
-
-unified_inventory.register_craft_type("compressing", {
-    description = "Compressing",
-    icon = "compressor.png^[verticalframe:11:1",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
-})
-
-unified_inventory.register_craft_type("crystal_growing", {
-    description = "Crystal Growing",
-    icon = "crystal_grower.png^[verticalframe:17:1",
-    width = 1,
-    height = 1,
-    uses_crafting_grid = false,
-})
-
-unified_inventory.register_craft_type("blast_furnace", {
-    description = "Blast Furnace",
-    icon = "blast_furnace_heater_inner.png^blast_furnace_heater_frame.png",
-    width = 3,
-    height = 1,
-    uses_crafting_grid = false,
-})
 sbz_api.blast_furnace_recipes = {}
 
 sbz_api.crusher_drops = {}
@@ -82,118 +43,124 @@ sbz_api.register_element = function(name, color, description, def, mod)
 
 
     -- fluid
-    if def.fluid then
-        core.register_node(("%s%s_fluid_source"):format(mod, name), {
-            description = description:format("Fluid Source"),
-            drawtype = "liquid",
-            tiles = {
-                { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = false, },
-                { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = true, }
-            },
-            inventory_image = minetest.inventorycube(("flowing_chemical_source.png^[multiply:%s"):format(color)),
-            --       use_texture_alpha = "blend",
-            groups = {
-                liquid = 3,
-                habitat_conducts = 1,
-                transparent = 1,
-                liquid_capturable = 1,
-                water = 0,
-                not_in_creative_inventory = disabled_group,
-                chem_disabled = disabled_group,
-                chem_fluid = 1,
-                chem_fluid_source = 1,
-                chem_element = 1,
-                radioactive = (radioactive or 0) * 2,
-                hot = 50,
-                radiation_resistance = rad_resistance * 16,
-            },
-            post_effect_color = color .. "7F",
-            paramtype = "light",
-            walkable = false,
-            pointable = false,
-            buildable_to = true,
-            liquidtype = "source",
-            liquid_alternative_source = ("%s%s_fluid_source"):format(mod, name),
-            liquid_alternative_flowing = ("%s%s_fluid_flowing"):format(mod, name),
-            drop = "",
-            liquid_viscosity = 7,
-            liquid_renewable = false,
-            sbz_node_damage = {
-                matter = 5, -- 5hp/second
-            },
-            light_source = 14,
-            liquid_range = 2,
-            chem_block_form = mod .. name .. "_block"
-        })
+    -- if def.fluid then
+    core.register_node(("%s%s_fluid_source"):format(mod, name), {
+        description = description:format("Fluid Source"),
+        drawtype = "liquid",
+        tiles = {
+            { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = false, },
+            { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), backface_culling = true, }
+        },
+        inventory_image = ("flowing_chemical_source.png^[multiply:%s"):format(color),
+        --       use_texture_alpha = "blend",
+        groups = {
+            no_chem_ui = 1,
+            ui_fluid = 1,
+            liquid = 3,
+            habitat_conducts = 1,
+            transparent = 1,
+            liquid_capturable = 1,
+            water = 0,
+            not_in_creative_inventory = disabled_group,
+            chem_disabled = disabled_group,
+            chem_fluid = 1,
+            chem_fluid_source = 1,
+            chem_element = 1,
+            radioactive = (radioactive or 0) * 4,
+            hot = 50,
+            radiation_resistance = rad_resistance * 16,
+        },
+        post_effect_color = color .. "7F",
+        paramtype = "light",
+        walkable = false,
+        pointable = false,
+        buildable_to = true,
+        liquidtype = "source",
+        liquid_alternative_source = ("%s%s_fluid_source"):format(mod, name),
+        liquid_alternative_flowing = ("%s%s_fluid_flowing"):format(mod, name),
+        drop = "",
+        liquid_viscosity = 7,
+        liquid_renewable = false,
+        sbz_node_damage = {
+            matter = 5, -- 5hp/second
+        },
+        light_source = 14,
+        liquid_range = 2,
+        chem_block_form = mod .. name .. "_block"
+    })
 
-        local animation = {
-            type = "vertical_frames",
-            aspect_w = 16,
-            aspect_h = 16,
-            length = 8,
-        }
+    local animation = {
+        type = "vertical_frames",
+        aspect_w = 16,
+        aspect_h = 16,
+        length = 8,
+    }
 
-        minetest.register_node(("%s%s_fluid_flowing"):format(mod, name), {
-            description = description:format("Fluid Flowing"),
-            drawtype = "flowingliquid",
-            tiles = { { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), } },
-            special_tiles = {
-                {
-                    name = ("flowing_chemical.png^[multiply:%s"):format(color),
-                    backface_culling = false,
-                    animation = animation,
-                },
-                {
-                    name = ("flowing_chemical.png^[multiply:%s"):format(color),
-                    backface_culling = true,
-                    animation = animation,
-                }
+    minetest.register_node(("%s%s_fluid_flowing"):format(mod, name), {
+        description = description:format("Fluid Flowing"),
+        drawtype = "flowingliquid",
+        tiles = { { name = ("flowing_chemical_source.png^[multiply:%s"):format(color), } },
+        special_tiles = {
+            {
+                name = ("flowing_chemical.png^[multiply:%s"):format(color),
+                backface_culling = false,
+                animation = animation,
             },
-            --          use_texture_alpha = "blend",
-            groups = {
-                liquid = 3,
-                habitat_conducts = 1,
-                transparent = 1,
-                not_in_creative_inventory = 1,
-                water = 0,
-                hot = 10,
-                chem_disabled = disabled_group,
-                chem_fluid = 1,
-                chem_fluid_source = 0,
-                radioactive = radioactive,
-                radiation_resistance = rad_resistance,
-            },
-            post_effect_color = color .. "7F",
-            paramtype = "light",
-            paramtype2 = "flowingliquid",
-            walkable = false,
-            pointable = false,
-            buildable_to = true,
-            liquidtype = "flowing",
-            liquid_alternative_source = ("%s%s_fluid_source"):format(mod, name),
-            liquid_alternative_flowing = ("%s%s_fluid_flowing"):format(mod, name),
-            drop = "",
-            liquid_viscosity = 7,
-            sbz_node_damage = {
-                matter = 3, -- 3hp/second
-            },
-            liquid_renewable = false,
-            light_source = 14,
-            liquid_range = 2,
-            chem_block_form = mod .. name .. "_block",
-
-        })
-
-        sbz_api.register_fluid_cell(("%s%s_fluid_cell"):format(mod, name), {
-            description = description:format("Fluid Cell"),
-            groups = {
-                chem_disabled = disabled_group,
-                chem_fluid_cell = 1,
-                chem_fluid_source = 0,
-                not_in_creative_inventory = disabled_group,
+            {
+                name = ("flowing_chemical.png^[multiply:%s"):format(color),
+                backface_culling = true,
+                animation = animation,
             }
-        }, ("%s%s_fluid_source"):format(mod, name), color)
-    end
+        },
+        --          use_texture_alpha = "blend",
+        groups = {
+            liquid = 3,
+            no_chem_ui = 1,
+            habitat_conducts = 1,
+            transparent = 1,
+            not_in_creative_inventory = 1,
+            water = 0,
+            hot = 10,
+            chem_disabled = disabled_group,
+            chem_fluid = 1,
+            chem_fluid_source = 0,
+            radioactive = radioactive,
+            radiation_resistance = rad_resistance,
+        },
+        post_effect_color = color .. "7F",
+        paramtype = "light",
+        paramtype2 = "flowingliquid",
+        walkable = false,
+        pointable = false,
+        buildable_to = true,
+        liquidtype = "flowing",
+        liquid_alternative_source = ("%s%s_fluid_source"):format(mod, name),
+        liquid_alternative_flowing = ("%s%s_fluid_flowing"):format(mod, name),
+        drop = "",
+        liquid_viscosity = 7,
+        sbz_node_damage = {
+            matter = 3, -- 3hp/second
+        },
+        liquid_renewable = false,
+        light_source = 14,
+        liquid_range = 2,
+        chem_block_form = mod .. name .. "_block",
+    })
+
+    sbz_api.register_fluid_cell(("%s%s_fluid_cell"):format(mod, name), {
+        description = description:format("Fluid Cell"),
+        groups = {
+            chem_disabled = disabled_group,
+            ui_fluid = 2,
+            chem_fluid_cell = 1,
+            chem_fluid_source = 0,
+            not_in_creative_inventory = disabled_group,
+        },
+        stack_max = 4,
+        cooled_form = mod .. name .. "_block",
+        liquid_form = mod .. name .. "_fluid_source"
+    }, ("%s%s_fluid_source"):format(mod, name), color)
+    -- end
     if not disabled then
         stairs.register(mod .. name .. "_block", {
             tiles = {
@@ -215,24 +182,23 @@ sbz_api.register_element = function(name, color, description, def, mod)
             output = mod .. name .. "_ingot",
             recipe = mod .. name .. "_powder",
         })
-        unified_inventory.register_craft {
+
+        sbz_api.recipe.register_craft {
             type = "crushing",
             output = mod .. name .. "_powder",
             items = { mod .. name .. "_ingot" }
         }
-
-        unified_inventory.register_craft {
+        sbz_api.recipe.register_craft {
             type = "compressing",
             output = mod .. name .. "_block",
             items = { mod .. name .. "_powder 9" }
         }
-        unified_inventory.register_craft {
+        sbz_api.recipe.register_craft {
             type = "compressing",
             output = mod .. name .. "_block",
             items = { mod .. name .. "_ingot 9" }
         }
-
-        unified_inventory.register_craft {
+        sbz_api.recipe.register_craft {
             type = "crushing",
             output = mod .. name .. "_powder 9",
             items = { mod .. name .. "_block" }
