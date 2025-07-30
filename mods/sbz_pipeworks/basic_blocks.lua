@@ -52,7 +52,7 @@ local function item_sorter_formspec(pos)
 end
 
 minetest.register_node("pipeworks:item_sorter", {
-    description = "Item sorter",
+    description = "Item Sorter",
     tiles = {
         { name = "itemsorter.png", color = "green" },
         { name = "itemsorter.png", color = "yellow" },
@@ -182,7 +182,7 @@ minetest.register_craft({
 })
 
 minetest.register_node("pipeworks:item_void", {
-    description = "Item void",
+    description = "Item Void",
     tiles = { { name = "trashcan.png" } },
     groups = { cracky = 3, matter = 3, tubedevice = 1, tubedevice_receiver = 1 },
     tube = {

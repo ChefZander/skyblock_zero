@@ -29,7 +29,7 @@ end
 
 minetest.register_node("sbz_decor:cnc", --[[sbz_api.add_tube_support, nope, im not adding tube support, at least not yet]]
     {
-        description = "CNC machine",
+        description = "CNC Machine",
         info = "Use it to cut stairs/slabs out of nodes.",
         tiles = { "cnc_top.png", "cnc_top.png", "cnc_side.png" },
         groups = { matter = 1, },
