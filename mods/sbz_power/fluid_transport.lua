@@ -144,7 +144,8 @@ function fluid_transport.assemble_network(start_pos, frompos)
         local is_conducting = core.get_item_group(node, "sbz_fluid_conducts") == 1
         local is_storing = core.get_item_group(node, "fluid_pipe_stores") == 1
 
-        if is_storing and h(current_pos) ~= h(frompos) then
+        -- frompos may be nil, no check needed in that case
+        if is_storing and (not frompos or h(current_pos) ~= h(frompos)) then
             net[#net + 1] = current_pos
         end
 
@@ -227,12 +228,12 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
             local fromnode = (sbz_api.get_node_force(frompos) or {}).name or ""
             local tonode = (sbz_api.get_node_force(topos) or {}).name or ""
 
-            if not core.get_item_group(fromnode, "fluid_pipe_stores") then
+            if core.get_item_group(fromnode, "fluid_pipe_stores") < 1 then
                 meta:set_string("infotext", "Can't pull from that node")
                 return 0
             end
 
-            if not core.get_item_group(tonode, "fluid_pipe_connects") then
+            if core.get_item_group(tonode, "fluid_pipe_connects") < 1 then
                 meta:set_string("infotext", "Can't push to that node")
                 return 0
             end
@@ -300,6 +301,154 @@ core.register_craft({
     }
 })
 
+-- returns a lazily populated list of all capturable liquids
+local get_liquid_list
+do
+    local list = {}
+
+    get_liquid_list = function()
+        if 0 == #list then
+            local non_water_liquids = {}
+            for name, def in pairs(core.registered_nodes) do
+                if core.get_item_group(name, "liquid_capturable") > 0 then
+                    -- tries to put water-y stuff first
+                    if name:find("water") then
+                        list[#list + 1] = name
+                    else
+                        non_water_liquids[#non_water_liquids + 1] = name
+                    end
+                end
+            end
+
+            -- default string sorting, ASCII order i guess
+            table.sort(non_water_liquids)
+            table.insert_all(list, non_water_liquids)
+        end
+
+        return list
+    end
+end
+
+sbz_api.register_stateful_machine("sbz_power:creative_pump", {
+    description = "Creative Pump",
+    autostate = true,
+    paramtype2 = "facedir",
+    disallow_pipeworks = true,
+    tiles = {
+        "creative_pump_side.png",
+        "creative_pump_side.png",
+        "pump_output.png",
+        "fluid_tank_top.png",
+        "creative_pump_side.png^[transformFX",
+        "creative_pump_side.png",
+    },
+    groups = {matter=1, fluid_pipe_connects=1, ui_fluid=1},
+
+    after_place_node = function(pos)
+        local node = core.get_node(pos)
+        node.param2 = node.param2 + 1
+        core.swap_node(pos, node)
+    end,
+
+    on_construct = function(pos)
+        local meta = core.get_meta(pos)
+        meta:set_int("flow", 1)
+        meta:set_int("is_open", 1)
+
+        local liquid_list = get_liquid_list()
+        meta:set_string("selected_liquid", liquid_list[1])
+
+        meta:set_string("formspec",
+            sbz_api.creative_pump_fs(liquid_list, liquid_list[1], 1, true))
+    end,
+
+    action = function(pos, node, meta, supply, demand)
+        node = sbz_api.get_node_force(pos)
+        if not node then return 0 end
+
+        if meta:get_int("is_open") == 0 then
+            meta:set_string("infotext", "Inactive")
+            return 0
+        end
+
+        local dir = pipeworks.facedir_to_right_dir(node.param2)
+        local topos = vector.add(pos, dir)
+        local tonode = (sbz_api.get_node_force(topos) or {}).name or ""
+
+        if core.get_item_group(tonode, "fluid_pipe_connects") < 1 then
+            meta:set_string("infotext", "Can't push to that node")
+            return 0
+        end
+
+        local liquid = meta:get_string("selected_liquid")
+        local flow = meta:get_int("flow")
+        local stack = {name=liquid, count=flow}
+
+        fluid_transport.pump(topos, stack)
+
+        if stack.count == flow then
+            meta:set_string("infotext", "Can't push - everything that can be filled is")
+            return 0
+        end
+
+        local def = core.registered_nodes[liquid]
+        meta:set_string("infotext",
+            "Pushing " .. sbz_api.human_readable_liquid(def, liquid))
+        return 0, true
+    end,
+
+    on_receive_fields = function(pos, _, fields, sender)
+        if (fields.quit and not fields.key_enter_field)
+            or not pipeworks.may_configure(pos, sender)
+        then
+            return
+        end
+
+        local list = get_liquid_list()
+
+        local meta = core.get_meta(pos)
+        local selected_liquid = meta:get_string("selected_liquid")
+        local def = core.registered_nodes[selected_liquid]
+
+        for key,value in pairs(fields) do
+            local match1,match2 = key:match("^creative_pump_fs_(.-)__(.*)")
+            if match2 then
+                -- For security, check again if the node has the group we want
+                -- A non-existent mod/node will return 0 as well,
+                -- so it does every needed check at once
+                local liquid_name = match1 .. ":" .. match2
+                if core.get_item_group(liquid_name, "liquid_capturable") > 0 then
+                    meta:set_string("selected_liquid", liquid_name)
+                    selected_liquid = liquid_name
+                end
+                break
+            end
+        end
+
+        local flow = meta:get_int("flow")
+
+        if fields.flow then
+            local field_flow = math.floor(tonumber(fields.flow) or flow)
+            field_flow = math.max(1, math.min(def.stack_max, field_flow))
+            meta:set_int("flow", field_flow)
+            flow = field_flow
+        end
+
+        local is_open = meta:get_int("is_open")
+        if fields.toggle then
+            -- Look mum i'm doing booleans
+            is_open = 1 - is_open
+            meta:set_int("is_open", is_open)
+        end
+
+        meta:set_string("formspec", sbz_api.creative_pump_fs(
+            list, selected_liquid, flow, is_open
+        ))
+    end,
+}, {
+    light_source = 3,
+})
+
 core.register_node("sbz_power:fluid_tank", {
     description = "Fluid Storage Tank",
     groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1 },
@@ -330,7 +479,7 @@ core.register_node("sbz_power:fluid_tank", {
             return
         end
         local def = core.registered_nodes[lqinv[1].name]
-        local desc = string.gsub(def.short_description or def.description or lqinv[1].name, " Source", "")
+        local desc = sbz_api.human_readable_liquid(def, lqinv[1].name)
         meta:set_string("infotext", ("Storing %s : %s/%s"):format(desc, lqinv[1].count, lqinv.max_count_in_each_stack))
         meta:set_string("formspec", sbz_api.liquid_storage_fs(lqinv[1].count, lqinv.max_count_in_each_stack))
     end
