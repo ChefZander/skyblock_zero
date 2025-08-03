@@ -183,6 +183,10 @@ listring[]
 ]]
             )
         end,
+        allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+            if from_list == 'pattern' and to_list == 'storage' then return 0 end -- There TOTALLY wasn't a crash bug with this...
+            return count
+        end,
         allow_metadata_inventory_put = function(pos, listname, index, stack, player)
             if listname == 'main' then return stack:get_count() end -- case: player
             local meta = core.get_meta(pos)
