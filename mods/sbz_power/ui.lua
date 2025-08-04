@@ -147,18 +147,20 @@ function sbz_api.liquid_storage_fs(has, max)
 end
 
 function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
-    -- TODO scrollbar or pagination when the number of liquids is too high
-    local fs_buttons = {}
+    local BUTTONS_PER_ROW = 7
 
+    local fs_buttons = {}
+    -- TODO find a way to highlight the button matching the selected liquid
     local n = #liquid_list
     for i,liquid in ipairs(liquid_list) do
         local iz = i - 1
-        local padding = (iz >= n - n % 8) and (8 - n % 8) / 2 or 0
+        local padding = (iz >= n - n % BUTTONS_PER_ROW) and
+            (BUTTONS_PER_ROW - n % BUTTONS_PER_ROW) / 2 or 0
         local escaped_liquid = core.formspec_escape(liquid)
         fs_buttons[#fs_buttons + 1] =
             ("item_image_button[%f,%f;0.8,0.8;%s;%s;]"):format(
-                0.2 + (iz % 8) + padding,
-                1.0 + math.floor(iz / 8),
+                0.2 + (iz % BUTTONS_PER_ROW) + padding,
+                math.floor(iz / BUTTONS_PER_ROW),
                 escaped_liquid,
                 "creative_pump_fs_" .. escaped_liquid:gsub(":", "__")
             )
@@ -166,54 +168,57 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
 
     local liquid_def = core.registered_nodes[selected_liquid]
 
-    local container_y, tap_x, tap_y, tap_w, tap_h, anim_x, anim_y, anim_size
     -- hardcoded values partying hard
-    if n < 8 then
-        container_y = 2
-        tap_x = 2.7018
-        tap_y = 2.3806
-        tap_w = 1.7382
-        tap_h = 1.2659
-        anim_x    = 3.4009
-        anim_y    = 3.8166
-        anim_size = 1.3982
-    else
-        container_y = 3
-        tap_x = 3.1553
-        tap_y = 2.3618
-        tap_w = 1.1714
-        tap_h = 0.8691
-        anim_x    = 3.6276
-        anim_y    = 3.3065
-        anim_size = 0.9447
-    end
+    local pipe_x = 1.568
+    local pipe_y = 6.178
+    local pipe_w = 5.064
+    local pipe_h = 1.247
+    local pipe_window_x = 3.3253
+    local pipe_window_y = 6.4240
+    local pipe_window_w = 1.5493
+    local pipe_window_h = 0.7558
 
-    local anim_px = 74 -- idk if there's a way to detect texture size dynamically
+    local tile_px = 16 -- is there a way to detect texture size dynamically?
     local anim_frames = 8
+    local anim_ms = 120 -- milliseconds per frame
 
-    -- construct animated image for the fluid flowing
-    local animated_image = ""
+    -- construct an image for the fluid visible through the pipe window
+    local fluid_fs_part
+    local tile = liquid_def.tiles[1] or ""
+    if "table" == type(tile) then tile = tile.name or "" end
+    tile = sbz_api.escape_texture_modifier(tile)
+
     if is_open ~= 0 then
-        local tile = liquid_def.tiles[1] or ""
-        if "table" == type(tile) then tile = tile.name or "" end
-        tile = sbz_api.escape_texture_modifier(tile)
-
+        local ppf = tile_px / anim_frames -- pixels per frame
         local frame_chunks = {
-            ("[combine:%dx%d"):format(anim_px, anim_px * anim_frames)
+            ("[combine:%dx%d:0,0=%s:%d,0=%s"):format(
+                tile_px * 2, tile_px * anim_frames,
+                tile,
+                tile_px, tile
+            )
         }
-        for i = 0, anim_frames - 1 do
-            -- sadly, i need to upscale before blitting,
-            -- otherwise there are visible inaccuracies
-            table.insert(frame_chunks, ("0,%d=%s\\^[resize\\:%dx%d")
-                :format(anim_px * i, tile, anim_px, anim_px))
+        for i = 1, anim_frames - 1 do
+            frame_chunks[i + 1] = ("%d,%d=%s:%d,%d=%s:%d,%d=%s"):format(
+                ppf * i          , tile_px * i, tile,
+                ppf * i - tile_px, tile_px * i, tile,
+                ppf * i + tile_px, tile_px * i, tile
+            )
         end
-        local final_texture = core.formspec_escape(
-            table.concat(frame_chunks, ":") .. "^[mask:creative_pump_mask.png"
-        )
 
-        animated_image = ("animated_image[%f,%f;%f,%f;;%s;%d;400]"):format(
-            anim_x, anim_y, anim_size, anim_size,
-            final_texture, anim_frames
+        fluid_fs_part = ("animated_image[%f,%f;%f,%f;;%s;%d;%d]"):format(
+            pipe_window_x, pipe_window_y, pipe_window_w, pipe_window_h,
+            core.formspec_escape(table.concat(frame_chunks, ":")),
+            anim_frames, anim_ms
+        )
+    else
+        -- if turned off, render immobile fluid
+        fluid_fs_part = ("image[%f,%f;%f,%f;%s;]"):format(
+            pipe_window_x, pipe_window_y, pipe_window_w, pipe_window_h,
+            core.formspec_escape(
+                ("[combine:%dx%d:0,0=%s:%d,0=%s"):format(
+                    tile_px * 2, tile_px, tile, tile_px, tile
+                )
+            )
         )
     end
 
@@ -221,24 +226,25 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
     formspec_version[7]
     size[8.2,9]
     label[0.2,0.5;Liquid to output: %s]
+    scroll_container[0.2,1;7.8,3;liquid_list_scrollbar;vertical;;0]
     %s
-    container[0,%d]
-    label[0.2,0.5;Flow in nodes/s (1–%d):]
-    field[0.2,1;3.9,0.8;flow;;%d]
-    button[4.1,1;3.9,0.8;set_flow_button;Set]
-    image[%f,%f;%f,%f;creative_pump_tap.png^[screen:#5b6ee1]
+    scroll_container_end[]
+    scrollbar[7.5,1;0.5,3;vertical;liquid_list_scrollbar;]
+    label[0.2,4.5;Flow in nodes/s (1–%d):]
+    field[0.2,5;3.9,0.8;flow;;%d]
+    button[4.1,5;3.9,0.8;set_flow_button;Set]
     %s
-    container_end[]
+    image[%f,%f;%f,%f;%s;]
     button[0.2,7.8;7.8,1;toggle;%s]
     ]]):format(
         core.formspec_escape(
-            sbz_api.human_readable_liquid(liquid_def, selected_liquid)),
+            sbz_api.human_readable_liquid(liquid_def, selected_liquid)
+        ),
         table.concat(fs_buttons),
-        container_y,
         liquid_def.stack_max,
         flow,
-        tap_x, tap_y, tap_w, tap_h,
-        animated_image,
+        fluid_fs_part,
+        pipe_x, pipe_y, pipe_w, pipe_h, "creative_pump_pipe.png",
         is_open ~= 0 and "Turn off" or "Turn on"
     )
 end
