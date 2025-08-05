@@ -185,7 +185,13 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
     -- construct an image for the fluid visible through the pipe window
     local fluid_fs_part
     local tile = liquid_def.tiles[1] or ""
-    if "table" == type(tile) then tile = tile.name or "" end
+    if "table" == type(tile) then
+        if tile.animation then
+            tile = ("[combine:%dx%d:0,0=%s"):format(tile_px, tile_px, tile.name)
+        else
+            tile = tile.name
+        end
+    end
     tile = sbz_api.escape_texture_modifier(tile)
 
     if is_open ~= 0 then
