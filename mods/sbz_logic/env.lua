@@ -133,7 +133,7 @@ function logic.get_chat_debug_function(id, owner, provided_pos)
         if owner == "" then
             error("No owner of luacontroller? Solution: re-build the luacontroller")
         end
-        if not core.is_protected(pos, "") or core.is_protected(pos, owner) then
+        if not core.is_protected(pos, "") or not core.is_protected(pos, owner) then
             error("For " .. owner .. "'s safety, the area must be protected by them")
         end
         if not core.get_player_by_name(owner) then
