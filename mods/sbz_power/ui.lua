@@ -146,24 +146,27 @@ function sbz_api.liquid_storage_fs(has, max)
         )
 end
 
-function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open, scroll_value)
+function sbz_api.creative_pump_fs(player, liquid_list, selected_liquid, flow, is_open, scroll_value)
     local BUTTONS_PER_ROW = 7
 
     local fs_buttons = {}
-    -- TODO find a way to highlight the button matching the selected liquid
     local n = #liquid_list
     for i,liquid in ipairs(liquid_list) do
         local iz = i - 1
         local padding = (iz >= n - n % BUTTONS_PER_ROW) and
             (BUTTONS_PER_ROW - n % BUTTONS_PER_ROW) / 2 or 0
+        local x = 0.2 + (iz % BUTTONS_PER_ROW) + padding
+        local y = 0.2 + math.floor(iz / BUTTONS_PER_ROW)
         local escaped_liquid = core.formspec_escape(liquid)
-        fs_buttons[#fs_buttons + 1] =
-            ("item_image_button[%f,%f;0.8,0.8;%s;%s;]"):format(
-                0.2 + (iz % BUTTONS_PER_ROW) + padding,
-                math.floor(iz / BUTTONS_PER_ROW),
-                escaped_liquid,
-                "creative_pump_fs_" .. escaped_liquid:gsub(":", "__")
-            )
+        fs_buttons[i + 1] = ("item_image_button[%f,%f;0.8,0.8;%s;%s;]"):format(
+            x, y,
+            escaped_liquid,
+            "item_" .. escaped_liquid:gsub(":", "__")
+        )
+
+        if liquid == selected_liquid then
+            fs_buttons[1] = ("box[%f,%f;0.96,0.96;]"):format(x - 0.08, y - 0.08)
+        end
     end
 
     local liquid_def = core.registered_nodes[selected_liquid]
@@ -228,11 +231,34 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open, s
         )
     end
 
+    -- find theme border styling; fallback to hardcoded if not found
+    local border_colors = "#ffffffc0"
+    local border_widths = -2
+    if player then
+        local colors = sbz_api.get_theme_colors(player)
+        if colors.box_border then
+            if "function" == type(colors.box_border.color) then
+                local config = sbz_api.get_theme_config(player)
+                border_colors = colors.box_border.color(config)
+            else
+                border_colors = colors.box_border.color
+            end
+        end
+        if colors.box_border then
+            border_widths = colors.box_border.width
+        end
+    end
+
+    -- a fixed size, invisible box is needed inside the scroll container
+    -- to prevent it from recalculating its contents size when the
+    -- “selected button” box is in the bottom row
     return ([[
     formspec_version[7]
     size[8.2,9]
+    style_type[box;bordercolors=%s;borderwidths=%d]
     label[0.2,0.5;Liquid to output: %s]
     scroll_container[0.2,1;7.8,3;scroll;vertical;;0]
+    box[0,0;1,%f;#0000]
     %s
     scroll_container_end[]
     scrollbar[7.5,1;0.5,3;vertical;scroll;%s]
@@ -243,9 +269,11 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open, s
     image[%f,%f;%f,%f;%s;]
     button[0.2,7.8;7.8,1;toggle;%s]
     ]]):format(
+        border_colors, border_widths,
         core.formspec_escape(
             sbz_api.human_readable_liquid(liquid_def, selected_liquid)
         ),
+        0.2 + math.ceil(n / BUTTONS_PER_ROW),
         table.concat(fs_buttons),
         scroll_value or "", -- do NOT reaffect a value if not explicit
         liquid_def.stack_max,

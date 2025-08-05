@@ -344,13 +344,14 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
     },
     groups = {matter=1, fluid_pipe_connects=1, ui_fluid=1},
 
-    after_place_node = function(pos)
+    after_place_node = function(pos, placer, itemstack, pointed_thing)
         local node = core.get_node(pos)
         node.param2 = node.param2 + 1
         core.swap_node(pos, node)
-    end,
 
-    on_construct = function(pos)
+        -- using `after_place_node` instead of `on_construct` because we'd
+        -- like to know the player and pass it to the fs function for theme
+        -- detection
         local meta = core.get_meta(pos)
         meta:set_int("flow", 1)
         meta:set_int("is_open", 1)
@@ -358,8 +359,9 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
         local liquid_list = get_liquid_list()
         meta:set_string("selected_liquid", liquid_list[1])
 
+        -- placer may still be nil, it will be checked in the function
         meta:set_string("formspec",
-            sbz_api.creative_pump_fs(liquid_list, liquid_list[1], 1, true))
+            sbz_api.creative_pump_fs(placer, liquid_list, liquid_list[1], 1, true))
     end,
 
     action = function(pos, node, meta, supply, demand)
@@ -411,7 +413,7 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
         local def = core.registered_nodes[selected_liquid]
 
         for key,value in pairs(fields) do
-            local match1,match2 = key:match("^creative_pump_fs_(.-)__(.*)")
+            local match1,match2 = key:match("^item_(.-)__(.*)")
             if match2 then
                 -- For security, check again if the node has the group we want
                 -- A non-existent mod/node will return 0 as well,
@@ -451,7 +453,7 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
         end -- no else; allow scroll_value to be nil
 
         meta:set_string("formspec", sbz_api.creative_pump_fs(
-            list, selected_liquid, flow, is_open, scroll_value
+            sender, list, selected_liquid, flow, is_open, scroll_value
         ))
     end,
 }, {
