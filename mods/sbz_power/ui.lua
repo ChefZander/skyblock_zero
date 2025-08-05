@@ -146,7 +146,7 @@ function sbz_api.liquid_storage_fs(has, max)
         )
 end
 
-function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
+function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open, scroll_value)
     local BUTTONS_PER_ROW = 7
 
     local fs_buttons = {}
@@ -232,10 +232,10 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
     formspec_version[7]
     size[8.2,9]
     label[0.2,0.5;Liquid to output: %s]
-    scroll_container[0.2,1;7.8,3;liquid_list_scrollbar;vertical;;0]
+    scroll_container[0.2,1;7.8,3;scroll;vertical;;0]
     %s
     scroll_container_end[]
-    scrollbar[7.5,1;0.5,3;vertical;liquid_list_scrollbar;]
+    scrollbar[7.5,1;0.5,3;vertical;scroll;%s]
     label[0.2,4.5;Flow in nodes/s (1–%d):]
     field[0.2,5;3.9,0.8;flow;;%d]
     button[4.1,5;3.9,0.8;set_flow_button;Set]
@@ -247,6 +247,7 @@ function sbz_api.creative_pump_fs(liquid_list, selected_liquid, flow, is_open)
             sbz_api.human_readable_liquid(liquid_def, selected_liquid)
         ),
         table.concat(fs_buttons),
+        scroll_value or "", -- do NOT reaffect a value if not explicit
         liquid_def.stack_max,
         flow,
         fluid_fs_part,

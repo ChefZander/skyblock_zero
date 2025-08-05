@@ -441,8 +441,17 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
             meta:set_int("is_open", is_open)
         end
 
+        local scroll_value
+        if fields.scroll then
+            local scroll_tab = core.explode_scrollbar_event(fields.scroll)
+            if scroll_tab.type == "VAL" then
+                -- Don't handle CHG, otherwise it disrupts smooth scrolling
+                scroll_value = scroll_tab.value
+            end
+        end -- no else; allow scroll_value to be nil
+
         meta:set_string("formspec", sbz_api.creative_pump_fs(
-            list, selected_liquid, flow, is_open
+            list, selected_liquid, flow, is_open, scroll_value
         ))
     end,
 }, {
