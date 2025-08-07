@@ -11,7 +11,7 @@ core.register_node("chunkloader:loader_inf", {
         chunkloader.img("sides_bottom")
     },
     is_ground_content = false,
-    groups = { antimatter = 1 },
+    groups = { unbreakable = 1 },
     drop = "chunkloader:loader_inf",
     on_construct = function(pos, _)
         local meta = core.get_meta(pos)
@@ -20,6 +20,5 @@ core.register_node("chunkloader:loader_inf", {
     end,
     on_destruct = function(pos, _)
         core.forceload_free_block(pos)
-    end,
-    action = chunkloader.action
+    end
 })
