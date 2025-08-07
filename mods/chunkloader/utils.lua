@@ -21,4 +21,23 @@ function chunkloader.player_online(username)
     return false
 end
 
+function chunkloader.config_exists()
+    local f = io.open(chunkloader.config_path, "rb")
+    if f then f:close() end
+    return f ~= nil
+end
+
+function chunkloader.create_config()
+    file = io.open(chunkloader.config_path, "w")
+    local default_config = {
+        chunkloaders_per_player = 10
+    }
+    file:write(core.serialize(default_config))
+    file:close()
+end
+
+function chunkloader.read_config()
+    return core.deserialize(io.open(chunkloader.config_path, "r"):read())
+end
+
 chunkloader.log("Version: " .. chunkloader.version)
