@@ -53,6 +53,20 @@ function sbz_api.format_power(n, n2)
     --        (n2 and (" / " .. sbz_power.round_power(n2 / divider_to_use) .. " " .. prefix_to_use) or "")
 end
 
+function sbz_api.human_readable_liquid(def, name)
+    -- trim extra return values
+    local value = string.gsub(def.short_description or def.description or name,
+        " Source", "")
+    return value
+end
+
+function sbz_api.escape_texture_modifier(modifier)
+    -- trim extra return values
+    local value = string.gsub(modifier, ".",
+        {["\\"] = "\\\\", ["^"] = "\\^", [":"] = "\\:"})
+    return value
+end
+
 ---@param consumed { n:number, text: string }
 ---@param max {n:number, text:string }
 ---@return string
@@ -101,7 +115,6 @@ local function bar(consumed, max, x, y, w, h, title, tooltip_text)
 end
 
 
-
 ---@generic formspec: string
 ---@param consumed number
 ---@param max number
@@ -131,4 +144,142 @@ function sbz_api.liquid_storage_fs(has, max)
             { n = max, text = max .. " source blocks" },
             0, 0, 5, 5, "Liquid Storage", ""
         )
+end
+
+function sbz_api.creative_pump_fs(player, liquid_list, selected_liquid, flow, is_open, scroll_value)
+    local BUTTONS_PER_ROW = 7
+
+    local fs_buttons = {}
+    local n = #liquid_list
+    for i,liquid in ipairs(liquid_list) do
+        local iz = i - 1
+        local padding = (iz >= n - n % BUTTONS_PER_ROW) and
+            (BUTTONS_PER_ROW - n % BUTTONS_PER_ROW) / 2 or 0
+        local x = 0.2 + (iz % BUTTONS_PER_ROW) + padding
+        local y = 0.2 + math.floor(iz / BUTTONS_PER_ROW)
+        local escaped_liquid = core.formspec_escape(liquid)
+        fs_buttons[i + 1] = ("item_image_button[%f,%f;0.8,0.8;%s;%s;]"):format(
+            x, y,
+            escaped_liquid,
+            "item_" .. escaped_liquid:gsub(":", "__")
+        )
+
+        if liquid == selected_liquid then
+            fs_buttons[1] = ("box[%f,%f;0.96,0.96;]"):format(x - 0.08, y - 0.08)
+        end
+    end
+
+    local liquid_def = core.registered_nodes[selected_liquid]
+
+    -- hardcoded values partying hard
+    local pipe_x = 1.568
+    local pipe_y = 6.178
+    local pipe_w = 5.064
+    local pipe_h = 1.247
+    local pipe_window_x = 3.3253
+    local pipe_window_y = 6.4240
+    local pipe_window_w = 1.5493
+    local pipe_window_h = 0.7558
+
+    local tile_px = 16 -- is there a way to detect texture size dynamically?
+    local anim_frames = 8
+    local anim_ms = 120 -- milliseconds per frame
+
+    -- construct an image for the fluid visible through the pipe window
+    local fluid_fs_part
+    local tile = liquid_def.tiles[1] or ""
+    if "table" == type(tile) then
+        if tile.animation then
+            tile = ("[combine:%dx%d:0,0=%s"):format(tile_px, tile_px, tile.name)
+        else
+            tile = tile.name
+        end
+    end
+    tile = sbz_api.escape_texture_modifier(tile)
+
+    if is_open ~= 0 then
+        local ppf = tile_px / anim_frames -- pixels per frame
+        local frame_chunks = {
+            ("[combine:%dx%d:0,0=%s:%d,0=%s"):format(
+                tile_px * 2, tile_px * anim_frames,
+                tile,
+                tile_px, tile
+            )
+        }
+        for i = 1, anim_frames - 1 do
+            frame_chunks[i + 1] = ("%d,%d=%s:%d,%d=%s:%d,%d=%s"):format(
+                ppf * i          , tile_px * i, tile,
+                ppf * i - tile_px, tile_px * i, tile,
+                ppf * i + tile_px, tile_px * i, tile
+            )
+        end
+
+        fluid_fs_part = ("animated_image[%f,%f;%f,%f;;%s;%d;%d]"):format(
+            pipe_window_x, pipe_window_y, pipe_window_w, pipe_window_h,
+            core.formspec_escape(table.concat(frame_chunks, ":")),
+            anim_frames, anim_ms
+        )
+    else
+        -- if turned off, render immobile fluid
+        fluid_fs_part = ("image[%f,%f;%f,%f;%s;]"):format(
+            pipe_window_x, pipe_window_y, pipe_window_w, pipe_window_h,
+            core.formspec_escape(
+                ("[combine:%dx%d:0,0=%s:%d,0=%s"):format(
+                    tile_px * 2, tile_px, tile, tile_px, tile
+                )
+            )
+        )
+    end
+
+    -- find theme border styling; fallback to hardcoded if not found
+    local border_colors = "#ffffffc0"
+    local border_widths = -2
+    if player then
+        local colors = sbz_api.get_theme_colors(player)
+        if colors.box_border then
+            if "function" == type(colors.box_border.color) then
+                local config = sbz_api.get_theme_config(player)
+                border_colors = colors.box_border.color(config)
+            else
+                border_colors = colors.box_border.color
+            end
+        end
+        if colors.box_border then
+            border_widths = colors.box_border.width
+        end
+    end
+
+    -- a fixed size, invisible box is needed inside the scroll container
+    -- to prevent it from recalculating its contents size when the
+    -- “selected button” box is in the bottom row
+    return ([[
+    formspec_version[7]
+    size[8.2,9]
+    style_type[box;bordercolors=%s;borderwidths=%d]
+    label[0.2,0.5;Liquid to output: %s]
+    scroll_container[0.2,1;7.8,3;scroll;vertical;;0]
+    box[0,0;1,%f;#0000]
+    %s
+    scroll_container_end[]
+    scrollbar[7.5,1;0.5,3;vertical;scroll;%s]
+    label[0.2,4.5;Flow in nodes/s (1–%d):]
+    field[0.2,5;3.9,0.8;flow;;%d]
+    button[4.1,5;3.9,0.8;set_flow_button;Set]
+    %s
+    image[%f,%f;%f,%f;%s;]
+    button[0.2,7.8;7.8,1;toggle;%s]
+    ]]):format(
+        border_colors, border_widths,
+        core.formspec_escape(
+            sbz_api.human_readable_liquid(liquid_def, selected_liquid)
+        ),
+        0.2 + math.ceil(n / BUTTONS_PER_ROW),
+        table.concat(fs_buttons),
+        scroll_value or "", -- do NOT reaffect a value if not explicit
+        liquid_def.stack_max,
+        flow,
+        fluid_fs_part,
+        pipe_x, pipe_y, pipe_w, pipe_h, "creative_pump_pipe.png",
+        is_open ~= 0 and "Turn off" or "Turn on"
+    )
 end
