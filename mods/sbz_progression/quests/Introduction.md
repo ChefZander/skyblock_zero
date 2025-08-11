@@ -93,7 +93,8 @@ Requires: Introduction
 
 ### Text
 
-Unfortunately, you don't seem to be strong enough to destroy that node once you place it (Assuming you placed it already). That kind of sucks, so let's craft something that can. Craft some 'Antimatter Dust', we'll need it for later.\nDon't know how to craft it? The search bar in your inventory will help.
+Unfortunately, you don't seem to be strong enough to destroy that node once you place it (Assuming you placed it already). That kind of sucks, so let's craft something that can. Craft some 'Antimatter Dust', we'll need it for later.
+Don't know how to craft it? The search bar in your inventory will help.
 
 ### Meta
 
