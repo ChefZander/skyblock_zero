@@ -23,7 +23,6 @@ sbz_api.register_stateful_machine("mapblockloader:loader", {
         local limit = config.mapblockloaders_per_player
 
         local placed_mapblockloaders = mapblockloader.storage:get_int(placer:get_player_name())
-        core.chat_send_player(placer:get_player_name(), tostring(placed_mapblockloaders))
         if placed_mapblockloaders >= limit then
             core.chat_send_player(placer:get_player_name(),
                 "You can only place " .. tostring(limit) .. " mapblockloader nodes per player")
