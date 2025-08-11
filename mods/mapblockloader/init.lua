@@ -11,7 +11,7 @@ end
 mapblockloader.dofile("utils")
 mapblockloader.dofile("logic")
 mapblockloader.dofile("mapblockloader")
-mapblockloader.dofile("perpetual_mapblockloader")
+mapblockloader.dofile("creative_mapblockloader")
 mapblockloader.dofile("crafting")
 
 if not mapblockloader.config_exists() then

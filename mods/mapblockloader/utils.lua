@@ -1,17 +1,17 @@
-function chunkloader.img(name)
-    return "chunkloader_" .. name .. ".png"
+function mapblockloader.img(name)
+    return "mapblockloader_" .. name .. ".png"
 end
 
-function chunkloader.log(msg)
+function mapblockloader.log(msg)
     if type(msg) == "table" then
         msg = core.serialize(msg)
     elseif type(msg) ~= "string" then
         msg = tostring(msg)
     end
-    core.log("action", "[chunkloader] " .. msg)
+    core.log("action", "[mapblockloader] " .. msg)
 end
 
-function chunkloader.player_online(username)
+function mapblockloader.player_online(username)
     for _, player in pairs(core.get_connected_players()) do
         local player_name = player:get_player_name()
         if player_name == username then
@@ -21,23 +21,23 @@ function chunkloader.player_online(username)
     return false
 end
 
-function chunkloader.config_exists()
-    local f = io.open(chunkloader.config_path, "rb")
+function mapblockloader.config_exists()
+    local f = io.open(mapblockloader.config_path, "rb")
     if f then f:close() end
     return f ~= nil
 end
 
-function chunkloader.create_config()
-    file = io.open(chunkloader.config_path, "w")
+function mapblockloader.create_config()
+    file = io.open(mapblockloader.config_path, "w")
     local default_config = {
-        chunkloaders_per_player = 10
+        mapblockloaders_per_player = 10
     }
     file:write(core.serialize(default_config))
     file:close()
 end
 
-function chunkloader.read_config()
-    return core.deserialize(io.open(chunkloader.config_path, "r"):read())
+function mapblockloader.read_config()
+    return core.deserialize(io.open(mapblockloader.config_path, "r"):read())
 end
 
-chunkloader.log("Version: " .. chunkloader.version)
+mapblockloader.log("Version: " .. mapblockloader.version)
