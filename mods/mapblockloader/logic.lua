@@ -1,4 +1,4 @@
-chunkloader.action = function(pos, _, meta, supply, demand)
+mapblockloader.action = function(pos, _, meta, supply, demand)
     local meta = core.get_meta(pos)
     local run = meta:get_int("running") == 1
     local prev_state = meta:get_int("prev_state") == 1
@@ -6,7 +6,7 @@ chunkloader.action = function(pos, _, meta, supply, demand)
 
     local power_needed = 300
 
-    if not chunkloader.player_online(owner) then
+    if not mapblockloader.player_online(owner) then
         meta:set_int("prev_state", meta:get_int("running"))
         meta:set_int("running", 0)
         return power_needed, false

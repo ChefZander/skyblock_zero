@@ -4,4 +4,18 @@
         "types/core.d.lua",
     ],
     "diagnostic.disable": [],
+    "diagnostics.globals": [
+        "minetest",
+        "core",
+        "PcgRandom",
+        "PerlinNoise",
+        "vector",
+        "ItemStack",
+        "table",
+        "dump",
+        "VoxelArea",
+        "factions",
+        "dbg",
+        "DIR_DELIM"
+    ],
 }
