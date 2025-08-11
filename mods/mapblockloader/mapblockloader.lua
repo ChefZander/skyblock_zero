@@ -50,7 +50,8 @@ sbz_api.register_stateful_machine("mapblockloader:loader", {
             )
         end
     end,
-    action = mapblockloader.action
+    action = mapblockloader.action,
+    on_punch = mapblockloader.on_punch
 }, {
     tiles = {
         { name = mapblockloader.img("top_on_animated"), animation = { type = "vertical_frames", length = 2 } },

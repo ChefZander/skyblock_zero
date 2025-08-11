@@ -20,5 +20,6 @@ core.register_node("mapblockloader:creative_loader", {
     end,
     on_destruct = function(pos, _)
         core.forceload_free_block(pos)
-    end
+    end,
+    on_punch = mapblockloader.on_punch
 })

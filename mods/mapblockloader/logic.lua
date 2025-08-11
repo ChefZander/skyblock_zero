@@ -30,3 +30,28 @@ mapblockloader.action = function(pos, _, meta, supply, demand)
 
     return power_needed
 end
+
+local has_vizlib = core.get_modpath("vizlib")
+
+mapblockloader.on_punch = has_vizlib and function(pos, _, player)
+    if not player or player:get_wielded_item():get_name() ~= "" then
+        -- Only show loaded area when using an empty hand
+        return
+    end
+    local blockpos = {
+        x = math.floor(pos.x / core.MAP_BLOCKSIZE),
+        y = math.floor(pos.y / core.MAP_BLOCKSIZE),
+        z = math.floor(pos.z / core.MAP_BLOCKSIZE)
+    }
+    local min = {
+        x = blockpos.x * core.MAP_BLOCKSIZE - 0.5,
+        y = blockpos.y * core.MAP_BLOCKSIZE - 0.5,
+        z = blockpos.z * core.MAP_BLOCKSIZE - 0.5,
+    }
+    local max = {
+        x = (blockpos.x + 1) * core.MAP_BLOCKSIZE - 0.5,
+        y = (blockpos.y + 1) * core.MAP_BLOCKSIZE - 0.5,
+        z = (blockpos.z + 1) * core.MAP_BLOCKSIZE - 0.5
+    }
+    vizlib.draw_area(min, max, { color = "#00ff00", player = player })
+end or nil
