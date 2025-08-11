@@ -134,6 +134,8 @@ local achievement_table = {
     ["jumpdrive:warp_device"] = "Warp Device",
     ["jumpdrive:station"] = "Jumpdrive Stations",
 
+    ["mapblockloader:loader_off"] = "Mapblock loader",
+
     ["sbz_bio:dna_extractor_off"] = "Dna Extractor",
     ["sbz_chem:centrifuge_off"] = "Centrifuge",
     ["sbz_power:phlogiston_fuser_off"] = "Phlogiston Fuser",
