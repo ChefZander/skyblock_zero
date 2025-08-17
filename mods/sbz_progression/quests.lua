@@ -15,7 +15,6 @@ local quest_files = {
     "Pipeworks_and_fluid_transport",
     "Reactor",
     "Jumpdrive",
-    "Mapblock_loaders",
     "Sensors",
     "Completionist",
     "Status_Effects",

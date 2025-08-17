@@ -51,6 +51,19 @@ Large protectors are like the small protectors but bigger.
 
 Requires: Small Protectors
 
+## Mapblock loader
+
+### Text
+
+Imagine you want to create a huge factory that would be self-contained and moreover produce something (like power or resouces) but you don't want to take the entire factory with you using jumpdrives. The mapblock loader is meant just for you!
+But it only works if its owner is online.
+Also, there is a default limit of 10 loaders for one player per world, but you can tweak it in mapblockloader.cfg in your world directory.
+You can create it using 4 warp crystals, 4 phlogiston circuits and one phlogiston crystal.
+
+### Meta
+
+Requires: Phlogiston Fuser
+
 ## Node Preserver
 
 ### Text

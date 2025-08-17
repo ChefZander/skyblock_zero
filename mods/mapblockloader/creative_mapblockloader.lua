@@ -1,7 +1,7 @@
 core.register_node("mapblockloader:creative_loader", {
     short_description = "Creative Mapblock Loader",
     description =
-    "Creative mapblock Loader\nKeeps the mapblock it's located active.\nDoes not consume power.\nInfinite.\nOnly for admins.\nAnd mods maybe\nMods like moderators, not ones that are written in Lua.",
+    "Forces the mapblock to be always loaded",
     tiles = {
         { name = mapblockloader.img("top_on_animated"), animation = { type = "vertical_frames", length = 2 } },
         mapblockloader.img("sides_bottom"),

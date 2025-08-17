@@ -1,6 +1,6 @@
 sbz_api.register_stateful_machine("mapblockloader:loader", {
-    short_description = "mapblock Loader",
-    description = "mapblock Loader\nKeeps the mapblock it's located in active\nConsumes power.",
+    short_description = "Mapblock Loader",
+    description = "Forces the mapblock that it is inside of to be loaded, only works when the owner of it is online",
     tiles = {
         mapblockloader.img("top_off"), -- Top
         mapblockloader.img("sides_bottom"),
