@@ -1,4 +1,0 @@
-[epidermis.skindb]
-
-# Automatically sync with SkinDB at startup, continue syncing during game
-epidermis.skindb.autosync (Epidermis Skindb Autosync) bool true

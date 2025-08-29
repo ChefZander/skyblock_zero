@@ -423,6 +423,7 @@ end
 
 local MP = minetest.get_modpath 'sbz_base'
 
+dofile(MP .. '/legacy.lua')
 dofile(MP .. '/override_for_areas.lua')
 dofile(MP .. '/override_descriptions.lua')
 dofile(MP .. '/vm.lua')

@@ -1,4 +1,4 @@
-local modpath = minetest.get_modpath("sbz_power")
+local modpath = minetest.get_modpath 'sbz_power'
 
 sbz_power = {} -- todo: migrate the codebase over to sbz_power.*
 
@@ -15,26 +15,28 @@ function sbz_api.add_tube_support(def)
         if def.input_inv or def.output_inv then
             def.input_inv = def.input_inv or def.output_inv
             def.output_inv = def.output_inv or def.input_inv
-            def.tube = def.tube or {
-                insert_object = function(pos, node, stack, direction)
-                    local meta = minetest.get_meta(pos)
-                    local inv = meta:get_inventory()
-                    return inv:add_item(def.input_inv, stack)
-                end,
-                can_insert = function(pos, node, stack, direction)
-                    local meta = minetest.get_meta(pos)
-                    local inv = meta:get_inventory()
-                    stack = stack:peek_item(1)
-                    return inv:room_for_item(def.input_inv, stack)
-                end,
-                input_inventory = def.output_inv,
-                connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
-            }
+            def.tube = def.tube
+                or {
+                    insert_object = function(pos, node, stack, direction)
+                        local meta = minetest.get_meta(pos)
+                        local inv = meta:get_inventory()
+                        return inv:add_item(def.input_inv, stack)
+                    end,
+                    can_insert = function(pos, node, stack, direction)
+                        local meta = minetest.get_meta(pos)
+                        local inv = meta:get_inventory()
+                        stack = stack:peek_item(1)
+                        return inv:room_for_item(def.input_inv, stack)
+                    end,
+                    input_inventory = def.output_inv,
+                    connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
+                }
         elseif def.output_inv then
-            def.tube = def.tube or {
-                input_inventory = def.output_inv,
-                connect_sides = {},
-            }
+            def.tube = def.tube
+                or {
+                    input_inventory = def.output_inv,
+                    connect_sides = {},
+                }
         end
 
         if def.tube then
@@ -59,7 +61,7 @@ end
 
 local function overwrite(original, overwrites)
     for k, v in pairs(overwrites) do
-        if type(overwrites[k]) == "table" and type(original[k]) == "table" then
+        if type(overwrites[k]) == 'table' and type(original[k]) == 'table' then
             overwrite(original[k], overwrites[k])
         else
             original[k] = overwrites[k]
@@ -82,11 +84,12 @@ function sbz_api.register_machine(name, def)
             local old_action = def.action
             function def.action(pos, node, meta, supply, demand)
                 if (demand + def.power_needed) > supply then
-                    meta:set_string("infotext", "Not enough power, needs: " .. def.power_needed)
+                    meta:set_string('infotext', 'Not enough power, needs: ' .. def.power_needed)
                     return def.power_needed
                 else
-                    meta:set_string("infotext", "Running")
-                    local power_consumed = old_action(pos, node, meta, supply, demand) or def.idle_consume
+                    meta:set_string('infotext', 'Running')
+                    local power_consumed = old_action(pos, node, meta, supply, demand)
+                        or def.idle_consume
                         or def.power_needed
 
                     return power_consumed
@@ -97,14 +100,14 @@ function sbz_api.register_machine(name, def)
         if def.action_interval then
             local old_action = def.action
             function def.action(pos, node, meta, supply, demand)
-                local count = meta:get_int("count") + 1
+                local count = meta:get_int 'count' + 1
                 if count >= def.action_interval then
-                    meta:set_int("power_consumed", old_action(pos, node, meta, supply, demand))
-                    meta:set_int("count", 0)
+                    meta:set_int('power_consumed', old_action(pos, node, meta, supply, demand))
+                    meta:set_int('count', 0)
                 else
-                    meta:set_int("count", count + 1)
+                    meta:set_int('count', count + 1)
                 end
-                return meta:get_int("power_consumed")
+                return meta:get_int 'power_consumed'
             end
         end
         if def.autostate then
@@ -140,19 +143,17 @@ function sbz_api.register_generator(name, def)
 
     if def.power_generated then
         def.action = function(pos, node, meta, ...)
-            meta:set_string("infotext", "Running")
+            meta:set_string('infotext', 'Running')
             return def.power_generated
         end
         def.disallow_pipeworks = true
     else -- not just a static solar panel but also something that like.. yeah
         local old_action = def.action
         def.action = function(pos, node, meta, ...)
-            if meta:get_int("count") <= 0 then
+            if meta:get_int 'count' <= 0 then
                 local power_generated, no_restart_count = old_action(pos, node, meta, ...)
-                meta:set_int("power_generated", power_generated)
-                if not no_restart_count then
-                    meta:set_int("count", def.action_interval or 0)
-                end
+                meta:set_int('power_generated', power_generated)
+                if not no_restart_count then meta:set_int('count', def.action_interval or 0) end
                 -- autostate :D
                 if def.stateful and def.autostate then
                     if power_generated <= 0 then
@@ -162,9 +163,9 @@ function sbz_api.register_generator(name, def)
                     end
                 end
             else
-                meta:set_int("count", meta:get_int("count") - 1)
+                meta:set_int('count', meta:get_int 'count' - 1)
             end
-            return meta:get_int("power_generated")
+            return meta:get_int 'power_generated'
         end
     end
     sbz_api.add_tube_support(def)
@@ -173,8 +174,8 @@ function sbz_api.register_generator(name, def)
 end
 
 local function register_stateful_internal(name, def, on_def, off_def, func)
-    local name_off = name .. "_off"
-    local name_on = name .. "_on"
+    local name_off = name .. '_off'
+    local name_on = name .. '_on'
 
     def.stateful = true
 
@@ -203,92 +204,84 @@ local ndef = minetest.registered_nodes
 -- easier manipulating of stateful machines
 
 local function is_stateful(nodename)
-    return string.sub(nodename, -3) == "_on" or string.sub(nodename, -4) == "_off"
+    return string.sub(nodename, -3) == '_on' or string.sub(nodename, -4) == '_off'
 end
 
 function sbz_api.turn_off(pos)
     local node = minetest.get_node(pos)
     local nodename = node.name
     if not is_stateful(nodename) then return end
-    if string.sub(nodename, -3) == "_on" and core.get_item_group(nodename, "state_change_no_swap") ~= 1 then
-        node.name = string.sub(nodename, 1, -4) .. "_off"
+    if string.sub(nodename, -3) == '_on' and core.get_item_group(nodename, 'state_change_no_swap') ~= 1 then
+        node.name = string.sub(nodename, 1, -4) .. '_off'
         minetest.swap_node(pos, node)
     end
     local ndef_nodename = ndef[nodename]
-    if ndef_nodename and ndef_nodename.on_turn_off then
-        ndef_nodename.on_turn_off(pos)
-    end
+    if ndef_nodename and ndef_nodename.on_turn_off then ndef_nodename.on_turn_off(pos) end
 end
 
 function sbz_api.turn_on(pos)
     local node = minetest.get_node(pos)
     local nodename = node.name
     if not is_stateful(nodename) then return end
-    if string.sub(nodename, -4) == "_off" and core.get_item_group(nodename, "state_change_no_swap") ~= 1 then
-        node.name = string.sub(nodename, 1, -5) .. "_on"
+    if string.sub(nodename, -4) == '_off' and core.get_item_group(nodename, 'state_change_no_swap') ~= 1 then
+        node.name = string.sub(nodename, 1, -5) .. '_on'
         minetest.swap_node(pos, node)
     end
     local ndef_nodename = ndef[nodename]
-    if ndef_nodename and ndef_nodename.on_turn_on then
-        ndef_nodename.on_turn_on(pos)
-    end
+    if ndef_nodename and ndef_nodename.on_turn_on then ndef_nodename.on_turn_on(pos) end
 end
 
 function sbz_api.force_turn_off(pos, meta)
     sbz_api.turn_off(pos)
-    meta:set_int("force_off", 1)
+    meta:set_int('force_off', 1)
 end
 
 function sbz_api.force_turn_on(pos, meta)
     --    if string.find(sbz_api.get_or_load_node(pos).name, "connector") ~= nil then -- i know, bad fix, i should create a group and all that, but it works so shush
     sbz_api.turn_on(pos)
     --    end
-    meta:set_int("force_off", 0)
+    meta:set_int('force_off', 0)
 end
 
 function sbz_api.is_machine(pos)
-    return minetest.get_item_group(minetest.get_node(pos).name, "sbz_machine") == 1
+    return minetest.get_item_group(minetest.get_node(pos).name, 'sbz_machine') == 1
 end
 
 function sbz_api.is_on(pos)
     local nodename = sbz_api.get_or_load_node(pos).name
     local meta = core.get_meta(pos)
-    if meta:get_int("force_off") == 1 then
-        return false
-    end
-    return string.sub(nodename, -3) == "_on"
+    if meta:get_int 'force_off' == 1 then return false end
+    return string.sub(nodename, -3) == '_on'
 end
 
 function sbz_api.is_on_by_name_and_meta(name, meta)
-    if meta:get_int("force_off") == 1 then
-        return false
-    end
-    return string.sub(name, -3) == "_on"
+    if meta:get_int 'force_off' == 1 then return false end
+    return string.sub(name, -3) == '_on'
 end
 
 --dofile(modpath .. "/vm.lua") -- moved to sbz_base
-dofile(modpath .. "/switching_station.lua")
-dofile(modpath .. "/ui.lua")
-dofile(modpath .. "/fluid_transport.lua")
-dofile(modpath .. "/power_pipes.lua")
-dofile(modpath .. "/extractor.lua")
-dofile(modpath .. "/generator.lua")
-dofile(modpath .. "/connectors.lua")
-dofile(modpath .. "/infinite_storinator.lua")
-dofile(modpath .. "/misc.lua")
-dofile(modpath .. "/emittrium_reactor.lua")
-dofile(modpath .. "/ele_fab.lua")
-dofile(modpath .. "/lights.lua")
-dofile(modpath .. "/batteries.lua")
-dofile(modpath .. "/phlogiston_fuser.lua")
-dofile(modpath .. "/turret.lua")
-dofile(modpath .. "/starlight_catcher.lua")
-dofile(modpath .. "/testnodes.lua")
+dofile(modpath .. '/switching_station.lua')
+dofile(modpath .. '/ui.lua')
+dofile(modpath .. '/fluid_transport.lua')
+dofile(modpath .. '/power_pipes.lua')
+dofile(modpath .. '/extractor.lua')
+dofile(modpath .. '/generator.lua')
+dofile(modpath .. '/connectors.lua')
+dofile(modpath .. '/infinite_storinator.lua')
+dofile(modpath .. '/misc.lua')
+dofile(modpath .. '/emittrium_reactor.lua')
+dofile(modpath .. '/ele_fab.lua')
+dofile(modpath .. '/lights.lua')
+dofile(modpath .. '/batteries.lua')
+dofile(modpath .. '/phlogiston_fuser.lua')
+dofile(modpath .. '/turret.lua')
+dofile(modpath .. '/starlight_catcher.lua')
+dofile(modpath .. '/testnodes.lua')
 
-local sensors = modpath .. "/sensors"
-dofile(sensors .. "/sensor_linker.lua")
-dofile(sensors .. "/gates.lua")
-dofile(sensors .. "/sensors_player_facing.lua") -- depends on gates.lua for its sbz_api.* funcs
-dofile(sensors .. "/node_sensors.lua")
-dofile(sensors .. "/delayer.lua")
-dofile(sensors .. "/item_sensor.lua")
+local sensors = modpath .. '/sensors'
+dofile(sensors .. '/sensor_linker.lua')
+dofile(sensors .. '/gates.lua')
+dofile(sensors .. '/sensors_player_facing.lua') -- depends on gates.lua for its sbz_api.* funcs
+dofile(sensors .. '/node_sensors.lua')
+dofile(sensors .. '/delayer.lua')
+dofile(sensors .. '/item_sensor.lua')
