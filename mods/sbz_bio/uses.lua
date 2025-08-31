@@ -11,7 +11,7 @@ minetest.register_node("sbz_bio:rope", {
     wield_image = "rope_inventory.png",
     groups = { matter = 3, burn = 1, habitat_conducts = 1, transparent = 1 },
     node_placement_prediction = "",
-    on_place = function(itemstack, user, pointed)
+    on_place = sbz_api.on_place_precedence(function(itemstack, user, pointed)
         if pointed.type ~= "node" then return end
         if pointed.above.y < pointed.under.y then
             minetest.set_node(pointed.above, { name = "sbz_bio:rope" })
@@ -32,7 +32,7 @@ minetest.register_node("sbz_bio:rope", {
         end
         itemstack:take_item()
         return itemstack
-    end,
+    end),
     after_dig_node = function(pos, node, meta, user)
         while true do
             pos.y = pos.y - 1

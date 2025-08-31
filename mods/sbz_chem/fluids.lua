@@ -12,7 +12,7 @@ function sbz_api.register_fluid_cell(name, def, source_name, cellcolor)
     if cellcolor then
         def.inventory_image = "fluid_cell.png^[fill:1x4:6,5:" .. cellcolor
     end
-    def.on_place = function(itemstack, user, pointed)
+    def.on_place = sbz_api.on_place_precedence(function(itemstack, user, pointed)
         if pointed.type ~= "node" then return end
         local _, pos = minetest.item_place_node(ItemStack(source_name), user, pointed)
         if pos then
@@ -27,7 +27,7 @@ function sbz_api.register_fluid_cell(name, def, source_name, cellcolor)
             return itemstack
         end
         minetest.item_place(ItemStack("sbz_resources:matter_dust"), user, pointed) -- this is to handle callbacks - idealist
-    end
+    end)
     minetest.register_craftitem(name, def)
 end
 

@@ -113,7 +113,7 @@ dofile(MP .. "/cnc.lua")
 local ladder_autoplace_limit = 16
 
 local get_ladder_on_place = function(ladder_name)
-    return function(stack, placer, pointed, recursed)
+    return sbz_api.on_place_precedence(function(stack, placer, pointed, recursed)
         if (recursed or 0) > ladder_autoplace_limit then return end
         if pointed.type == "node" then
             local target = pointed.under
@@ -132,7 +132,7 @@ local get_ladder_on_place = function(ladder_name)
             end
         end
         return core.item_place_node(stack, placer, pointed)
-    end
+    end)
 end
 
 core.register_node("sbz_decor:ladder", unifieddyes.def {

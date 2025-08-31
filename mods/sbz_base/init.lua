@@ -386,6 +386,25 @@ end
 
 sbz_api.is_air = is_air
 
+-- Use this for on_place functions if you want the pointed node's on_rightclick to take precedence,
+-- like it is the case when placing a normal node that has no on_place definition.
+-- (Should be used if you don't do something with the under node, e.g. when only placing a node above.)
+function sbz_api.on_place_precedence(on_place)
+	return function(...)
+		local itemstack, placer, pointed_thing = ...
+		local under = pointed_thing.under
+		if under then
+			local node = core.get_node(under)
+			local def = core.registered_nodes[node.name]
+			if def and def.on_rightclick and
+					not (placer and placer:is_player() and placer:get_player_control().sneak) then
+				return def.on_rightclick(under, node, placer, itemstack, pointed_thing) or itemstack
+			end
+		end
+		return on_place(...)
+	end
+end
+
 function sbz_api.clamp(x, min, max)
     return math.max(math.min(x, max), min)
 end

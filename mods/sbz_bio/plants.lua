@@ -142,7 +142,7 @@ function sbz_api.plant_wilt(stages)
 end
 
 function sbz_api.plant_plant(plant, nodes)
-    return function(itemstack, user, pointed)
+    return sbz_api.on_place_precedence(function(itemstack, user, pointed)
         for _, node in ipairs(nodes) do
             local use_pointed = "above"
             if pointed.switched then
@@ -159,7 +159,7 @@ function sbz_api.plant_plant(plant, nodes)
                 return
             end
         end
-    end
+    end)
 end
 
 function sbz_api.register_plant(name, defs)
@@ -376,7 +376,7 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
     description = "Stemfruit",
     inventory_image = "stemfruit.png",
     groups = { burn = 12, eat = 5 },
-    on_place = function(itemstack, user, pointed)
+    on_place = sbz_api.on_place_precedence(function(itemstack, user, pointed)
         local use_pointed = "above"
         if pointed.switched then
             use_pointed = "under"
@@ -394,7 +394,7 @@ minetest.register_craftitem("sbz_bio:stemfruit", {
             end
             return
         end
-    end --sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
+    end) --sbz_api.plant_plant("sbz_bio:stemfruit_plant_1", { "group:soil" })
 })
 
 
