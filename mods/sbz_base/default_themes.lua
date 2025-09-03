@@ -202,7 +202,7 @@ local gruvbox_colors = {
 }
 
 sbz_api.register_theme('gruvbox', {
-    default = true,
+    default = false,
     name = 'Gruvbox',
     description = 'Gruvbox theme ported to sbz. Probably the only theme here with actually good colors.',
     config = {
