@@ -6,6 +6,7 @@
 - Optimized pattern storinators
 - **Removed epidermis** due to it being buggy
 - Added manual crafters, you can learn more in questbook
+- Added hotbar switching, see questbook's `General Info` quest
 
 ### Internal Improvements:
 
