@@ -8,7 +8,12 @@ local function deprecate_entity(name)
 end
 
 local function deprecate_item(name)
-    core.register_alias(name, '')
+    core.register_craftitem(':' .. name, {
+        description = 'Deprecated item, throw away',
+        inventory_image = 'blank.png',
+        stack_max = 1,
+        groups = { not_in_creative_inventory = 1 },
+    })
 end
 
 -- Epidermis - removed due to being buggy, and me(frog) not understanding the code

@@ -1,15 +1,17 @@
 ## Release 38
-### Internal Improvements:
-
-- Instead of using a hacky crafting system dependant on unified inventory, sbz now has it's own way of doing crushing/centrifuging/whatever with machines 
-- In the various "lag" statues, switched away from using core.get_us_time, and instead using os.clock(), i don't know if this is actually better
-
 ### The main stuff:
 - Large Liquid Storage - another multiblock, you won't guess what it does
 - Fixed meteorite attractor entities sometimes just multiplying
-- Added a gruvbox theme
+- Added a gruvbox theme 
 - Optimized pattern storinators
-- **Removed epidermis**
+- **Removed epidermis** due to it being buggy
+- Added manual crafters, you can learn more in questbook
+
+### Internal Improvements:
+
+- Instead of using a hacky crafting system dependant on unified inventory, sbz now has it's own way of doing crushing/centrifuging/whatever with machines 
+- In the various lag statues, switched away from using `core.get_us_time`, and instead using `os.clock`, i don't know if this is actually better
+- sbz now has more lua lsp annotations so the development experience should be better
 
 
 Release 37 - sorry for the long wait :) - the "Oh UI looks decent now... and what's that? it's not a buggy mess anymore?"

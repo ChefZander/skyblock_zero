@@ -28,9 +28,14 @@ There are several in-game commands useful in survival:
 - `/sethome` - sets your home  
 - `/toggle_areas_hud` - Toggles the areas hud, may be useful if you dont want to always see it.  
 - `/theme_gui` - opens the theming gui, here you can customize the theme  
+
+**Hotbar switching**  
+You can switch your hotbar row to another one by pressing `sneak` + `aux1` (usually `e`) + `left mouse button`, to cycle your hotbar in the opposite direction use `sneak` + `aux1` + `right mouse button`.
   
 **Recomended for small screens**  
 in /theme_gui, you can disable "Force mono font", this will make the font less cool but it will make it smaller.  
+
+
 
 ### Meta
 
@@ -216,6 +221,23 @@ To craft a Simple Circuit, you'll need one core dust and one matter blob. You'll
 ### Meta
 
 Requires: A bigger platform
+
+## Manual Crafters
+
+### Text
+
+Manual crafters are nodes that allow you to craft things very quickly. They do not require power, and can't be used with automation.  
+They also won't work with crafting recipes that have "replacements", it will instead simply consume those items. (Recipes like that are very rare in sbz.)  
+
+**Controls:**  
+- `place`: Configure  
+- `punch`: Craft one item  
+- `sneak+punch`: Craft 10 items  
+- `aux1+punch` (usually `e+punch`): Craft all items  
+
+### Meta
+
+Requires: Circuitry
 
 ## Generators
 

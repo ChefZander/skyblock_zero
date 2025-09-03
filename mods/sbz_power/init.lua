@@ -277,6 +277,7 @@ dofile(modpath .. '/phlogiston_fuser.lua')
 dofile(modpath .. '/turret.lua')
 dofile(modpath .. '/starlight_catcher.lua')
 dofile(modpath .. '/testnodes.lua')
+dofile(modpath .. '/manual_crafter.lua')
 
 local sensors = modpath .. '/sensors'
 dofile(sensors .. '/sensor_linker.lua')
