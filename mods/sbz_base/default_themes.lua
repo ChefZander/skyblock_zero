@@ -96,7 +96,7 @@ sbz_api.register_theme('space', {
             spec2table '#5A5A5A',
             spec2table '#242430',
             spec2table '#030d19',
-            spec2table 'lightblue',
+            spec2table(space_colors.text),
         }
         local converted_colors = {}
         for _, v in ipairs(default_colors) do
@@ -119,7 +119,7 @@ sbz_api.register_theme('space', {
         button_background = shift_color_by_vars_hue(space_colors.button_bg),
         box = shift_color_by_vars_hue(space_colors.box),
         box_border = { width = -2, color = shift_color_by_vars_hue(space_colors.border) }, -- If defined, no luanti border on listlikes
-        highlight_bg = shift_color_by_vars_hue(space_colors.box),
+        highlight_bg = shift_color_by_vars_hue(space_colors.textlist_highlight),
         highlight_fg = shift_color_by_vars_hue(space_colors.text),
 
         title = shift_color_by_vars_hue(space_colors.title),
@@ -238,6 +238,7 @@ local gruvbox_colors = {
 }
 
 sbz_api.register_theme('gruvbox', {
+    default = false,
     name = 'Gruvbox',
     description = 'Gruvbox colorscheme ported to sbz.',
     config = {
