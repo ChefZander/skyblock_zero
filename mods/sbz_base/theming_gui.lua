@@ -117,7 +117,7 @@ core.register_on_player_receive_fields(function(player, formname, fields)
                 if config_name == changed_key then
                     local value, errmsg = sbz_api.validate_theme_config_input(value_definition, changed_value)
                     if errmsg then
-                        core.chat_send_player(player:get_player_name(), 'Error while configuring: ' .. errmsg)
+                        core.chat_send_player(player:get_player_name(), 'Issue while configuring: ' .. errmsg)
                     else
                         config[changed_key] = value
                         player

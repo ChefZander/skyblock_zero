@@ -99,43 +99,43 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     local default_indent = '1'
     if search_text ~= '' then default_indent = '0' end
 
-    local pal = sbz_api.ui.get_theme().palette or {}
+    local pal = sbz_api.ui.get_theme().palette or sbz_api.default_palette
 
-    for i, quest in ipairs(quests_to_show) do
+    for _, quest in ipairs(quests_to_show) do
         if quest.type == 'quest' then
             if is_achievement_unlocked(player_name, quest.title) then
-                ins(pal.bright_green or '#d4fcd6')
+                ins(pal.bright_green)
                 ins(default_indent)
                 ins '✓'
                 ins(quest.title)
             elseif is_quest_available(player_name, quest.title) then
-                ins(pal.light1 or '#fff')
+                ins(pal.light1)
                 ins(default_indent)
                 ins '►'
                 ins(quest.title)
             else
-                ins(pal.light4 or '#848484')
+                ins(pal.light4)
                 ins(default_indent)
                 ins '✕'
                 ins(quest.title)
             end
         elseif quest.info == true then -- info text
-            ins(pal.bright_blue or '#a9b7fc')
+            ins(pal.bright_blue)
             ins(default_indent)
             ins '!'
             ins(quest.title)
         elseif quest.type == 'text' then
-            ins(pal.bright_aqua or '#a9fcf5')
+            ins(pal.bright_aqua)
             ins '0'
             ins '≡'
             ins(quest.title)
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) then
-            ins(pal.bright_purple or '#e3a9fc')
+            ins(pal.bright_purple)
             ins(default_indent)
             ins '✪'
             ins(quest.title)
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) == false then
-            ins(pal.bright_purple or '#e3a9fc')
+            ins(pal.bright_purple)
             ins(default_indent)
             ins '✪'
             ins '???'

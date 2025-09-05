@@ -1,3 +1,44 @@
+--- default palette
+sbz_api.default_palette = {
+    dark0 = '#1d1d1d',
+    dark1 = '#3c3c3c',
+    dark2 = '#504945',
+    dark3 = '#665c54',
+    dark4 = '#7c6f64',
+
+    gray = '#928374',
+
+    light0 = '#f9f9d9',
+    light1 = '#ebebeb',
+    light2 = '#d5d5d5',
+    light3 = '#bdbdbd',
+    light4 = '#a8a8a8',
+
+    bright_red = '#fb4934',
+    bright_green = '#D6F264',
+    bright_yellow = '#FFFC40',
+    bright_blue = '#9EAEFF',
+    bright_purple = '#BC4A9B', -- "b-but thats not purple" yes
+    bright_aqua = '#A6FCDB',
+    bright_orange = '#FFD541',
+
+    neutral_red = '#cc241d',
+    neutral_green = '#98971a',
+    neutral_yellow = '#d79921',
+    neutral_blue = '#458588',
+    neutral_purple = '#b16286',
+    neutral_aqua = '#689d6a',
+    neutral_orange = '#d65d0e',
+
+    faded_red = '#9d0006',
+    faded_green = '#79740e',
+    faded_yellow = '#b57614',
+    faded_blue = '#076678',
+    faded_purple = '#8f3f71',
+    faded_aqua = '#427b58',
+    faded_orange = '#af3a03',
+}
+
 local shift_color_by_vars_hue = function(color)
     local rgb = core.colorspec_to_table(color)
     return function(vars)
@@ -7,15 +48,26 @@ local shift_color_by_vars_hue = function(color)
     end
 end
 
+local space_colors = {
+    bg = '#181621',
+    text = '#ede5ff',
+    button_bg = '#242234',
+    box = '#1d1b28',
+    border = '#403353',
+    title = '#BC4A9B',
+    mono = '#5DAF8D',
+    textlist_highlight = '#382E4A',
+}
+
 sbz_api.register_theme('space', {
     default = true,
     name = 'Space',
-    description = '[Default Theme] The sbz experience',
+    description = '[Default Theme] The default sbz experience',
     config = {
         ['HUE'] = {
-            default = '0', -- -60 for forest
+            default = '0',
             type = { 'int', -180, 180 },
-            description = 'Theme Hue (An integer, from -180 to 180)',
+            description = 'Theme Hue (a number from -180 to 180)',
         },
         ['FONT'] = { -- becomes @@FONT
             default = true,
@@ -23,11 +75,6 @@ sbz_api.register_theme('space', {
             value_false = '',
             type = { 'bool' },
             description = 'Force mono font',
-        },
-        ['LIGHT_BUTTONS'] = {
-            default = false,
-            type = { 'bool' },
-            description = 'Lighter button text color',
         },
     },
     button_theme = {
@@ -43,7 +90,6 @@ sbz_api.register_theme('space', {
     background_color = '#00000050',
     listcolors = function(config)
         local spec2table = core.colorspec_to_table
-        -- tilde colors: "#11111169;#5A5A5A;#243024;#020402;lightgreen"
 
         local default_colors = {
             spec2table '#11111169',
@@ -66,30 +112,27 @@ sbz_api.register_theme('space', {
         return result
     end,
     colors = {
-        background = shift_color_by_vars_hue '#12111a',
-        text = shift_color_by_vars_hue 'lightblue',
-        button_text = function(config)
-            if config.LIGHT_BUTTONS then return config.colors.text(config) end
-            return shift_color_by_vars_hue '#00b9bb'(config)
-        end,
+        background = shift_color_by_vars_hue(space_colors.bg),
+        text = shift_color_by_vars_hue(space_colors.text),
+        button_text = shift_color_by_vars_hue(space_colors.text),
         field_text = shift_color_by_vars_hue '#000000',
-        button_background = shift_color_by_vars_hue '#0a1b33',
-        box = shift_color_by_vars_hue '#1C1D27', -- Box color = listlike color, if defined, fields automatically use box
-        box_border = { width = -2, color = shift_color_by_vars_hue '#143464' }, -- If defined, no border on listlikes
-        highlight_bg = shift_color_by_vars_hue '#143463',
-        highlight_fg = shift_color_by_vars_hue 'lightblue',
-        title = shift_color_by_vars_hue '#e8f4f8',
-        mono = function(conf)
-            return conf.colors.text(conf)
-        end,
+        button_background = shift_color_by_vars_hue(space_colors.button_bg),
+        box = shift_color_by_vars_hue(space_colors.box),
+        box_border = { width = -2, color = shift_color_by_vars_hue(space_colors.border) }, -- If defined, no luanti border on listlikes
+        highlight_bg = shift_color_by_vars_hue(space_colors.box),
+        highlight_fg = shift_color_by_vars_hue(space_colors.text),
+
+        title = shift_color_by_vars_hue(space_colors.title),
+        mono = shift_color_by_vars_hue(space_colors.mono),
     },
     -- custom_formspec = '',
     hypertext_prepend = function(conf)
-        return ('<global %s color=%s><tag name=big color=%s size=24><tag name=bigger color=%s size=36>'):format(
+        return ('<global %s color=%s><tag name=big color=%s size=24><tag name=bigger color=%s size=36><tag name=mono color=%s font=mono>'):format(
             conf.FONT and 'font=mono' or '',
             conf.colors.text(conf),
             conf.colors.title(conf),
-            conf.colors.title(conf)
+            conf.colors.title(conf),
+            conf.colors.mono(conf)
         )
     end,
 })
@@ -153,14 +196,9 @@ sbz_api.register_theme('tilde', {
     end,
 })
 
--- I love vim substitution (:%s/blabla/blabla)
--- But i think macros are better
 -- Original: https://github.com/morhetz/gruvbox/blob/master/colors/gruvbox.vim#L89
-
 local gruvbox_colors = {
-    dark0_hard = '#1d2021',
-    dark0 = '#282828',
-    dark0_soft = '#32302f',
+    dark0 = '#1d2021',
     dark1 = '#3c3836',
     dark2 = '#504945',
     dark3 = '#665c54',
@@ -168,9 +206,7 @@ local gruvbox_colors = {
 
     gray = '#928374',
 
-    light0_hard = '#f9f5d7',
-    light0 = '#fbf1c7',
-    light0_soft = '#f2e5bc',
+    light0 = '#f9f5d7',
     light1 = '#ebdbb2',
     light2 = '#d5c4a1',
     light3 = '#bdae93',
@@ -202,9 +238,8 @@ local gruvbox_colors = {
 }
 
 sbz_api.register_theme('gruvbox', {
-    default = false,
     name = 'Gruvbox',
-    description = 'Gruvbox theme ported to sbz. Probably the only theme here with actually good colors.',
+    description = 'Gruvbox colorscheme ported to sbz.',
     config = {
         ['FONT'] = { -- becomes @@FONT
             default = true,

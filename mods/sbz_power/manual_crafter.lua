@@ -1,5 +1,4 @@
---- The manual crafter only supports a subset of recipes that the crafting table can
---- Namely, no replacing stacks
+--- The manual crafter doesn't support replacing stacks in recipes
 
 local notify = core.chat_send_player
 

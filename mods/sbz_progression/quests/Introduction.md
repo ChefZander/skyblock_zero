@@ -11,12 +11,10 @@ To expand one of those questlines, use the arrow keys or double click on the que
 
 ### Text
 
-By holding aux1 (usually "e"), you can sprint.  
-  
-You have 20 health points, you re-gain them usually eating food.  
-If you die, your inventory stays with you, meaning there is no reason to worry about dying.  
-  
-There are several in-game commands useful in survival:  
+By holding `aux1` (usually the "`e`" key), you can sprint.  
+You have 20hp. If you die, your inventory stays with you, meaning there is no reason to worry about dying.  
+
+Some commands useful for survival:
 - `/bgm_volume` \<percentage\> - sets the background music's volume  
 - commands of the areas mod - protecting using areas using /protect has been disabled, but you can still do other things  
 - `/drawers_fix` - if drawers appear broken just run that, command was taken from pandorabox_custom  
