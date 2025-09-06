@@ -589,7 +589,7 @@ end
 local function update_health(player)
     local hp_max = player:get_properties().hp_max
     local hp = math.min(player:get_hp(), hp_max)
-    if hp >= hp_max then
+    if hp >= hp_max and player:get_meta():get_int 'no_autohide_hp' == 0 then
         hb.hide_hudbar(player, 'health')
     else
         hb.unhide_hudbar(player, 'health')

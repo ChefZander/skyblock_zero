@@ -108,18 +108,19 @@ end
 -- Job: markdown -> mt hypertext, but specifically made to decode quest text, so "#"'s won't be supported
 function markdown_parser.decode_text(text)
     local closing_tag = false
-    text = text:gsub('%*%*', function(match)
-        if closing_tag == true then
-            closing_tag = false
-            return '</b>'
-        else
-            closing_tag = true
-            return '<b>'
-        end
-    end)
+    text = text
+        :gsub('%*%*', function(_)
+            if closing_tag == true then
+                closing_tag = false
+                return '</b>'
+            else
+                closing_tag = true
+                return '<b>'
+            end
+        end)
         :gsub('\\<', '<')
         :gsub('\\>', '>')
-        :gsub('`', function(match)
+        :gsub('`', function(_)
             if closing_tag == true then
                 closing_tag = false
                 return '</mono>'
@@ -127,6 +128,12 @@ function markdown_parser.decode_text(text)
                 closing_tag = true
                 return '<mono>'
             end
+        end)
+        -- highlights all "*", "-", "<digit>)" or "digit." with <dash>
+        :gsub('%-', '<dash>-</dash>')
+        :gsub('%*', '<dash>*</dash>')
+        :gsub('%d+[%.%)]', function(match) -- mystery
+            return ('<dash>%s</dash>'):format(match)
         end)
     return text
 end

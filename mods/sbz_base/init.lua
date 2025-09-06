@@ -55,6 +55,7 @@ sbz_api.get_version_string = function()
 
     return gamename .. '(' .. version_string .. ')'
 end
+
 sbz_api.get_simple_version_string = function()
     return 'SkyBlock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
@@ -437,7 +438,6 @@ dofile(MP .. '/dwarf_orb_crafts.lua')
 dofile(MP .. '/toggle_areas_hud.lua')
 dofile(MP .. '/cache.lua')
 dofile(MP .. '/color.lua')
-dofile(MP .. '/settings.lua')
 dofile(MP .. '/theming.lua')
 dofile(MP .. '/default_themes.lua')
 dofile(MP .. '/ui.lua')

@@ -1,5 +1,3 @@
--- SETTINGS!!
--- For now: background music and themes
 -- Layout:
 --[[
 +--------+-------------------+
@@ -12,22 +10,43 @@
 +--------+-------------------+
 --]]
 
+local mp = core.get_modpath(core.get_current_modname())
+dofile(mp .. '/theming_settings.lua')
+dofile(mp .. '/apply.lua')
+
 local settings_prepend = [[
 formspec_version[10]
 size[26,20]
 ]]
 
-local buttons = {}
-local buttons_by_name = {}
-
-core.register_on_mods_loaded(function()
-    table.insert(buttons, {
+local buttons = {
+    {
         display_name = 'Themes',
         name = 'themes',
         get_formspec = sbz_api.get_theme_settings_ui,
-    })
+    },
+    {
+        display_name = 'HUD/Inventory',
+        name = 'hud',
+        get_formspec = function(player, _)
+            local fs = {
+                sbz_api.ui.box(0.4, 0.4, 19, 19.2),
+                'container[0.6,1]',
 
-    table.insert(buttons, {
+                ('checkbox[0,0;autohide_hp;Autohide HP;%s]'):format(
+                    player:get_meta():get_int 'no_autohide_hp' == 1 and 'false' or 'true'
+                ),
+
+                'field_close_on_enter[hotbar_size;false]',
+                'field_enter_after_edit[hotbar_size;true]',
+                sbz_api.ui.field(0, 1.5, 5, 1, 'hotbar_size', 'Hotbar Size', player:hud_get_hotbar_itemcount()),
+
+                'container_end[]',
+            }
+            return table.concat(fs)
+        end,
+    },
+    {
         display_name = 'BGM volume',
         name = 'bgm',
         get_formspec = function(player, _)
@@ -41,6 +60,7 @@ core.register_on_mods_loaded(function()
 
             local pmeta = player:get_meta()
             local volume = pmeta:get_int 'bgm_volume'
+
             table.insert(fs, 'scrollbaroptions[min=0;max=200]')
             table.insert(fs, sbz_api.ui.scrollbar(0.2, 1.5, w - 0.4, 0.5, 'horizontal', 'bgm_slider', volume))
             table.insert(fs, ('label[0.2,2.5;%s]'):format('Volume: ' .. volume .. '%'))
@@ -49,8 +69,11 @@ core.register_on_mods_loaded(function()
             return table.concat(fs)
         end,
         no_container = true,
-    })
+    },
+}
 
+local buttons_by_name = {}
+core.register_on_mods_loaded(function()
     for _, v in pairs(buttons) do
         buttons_by_name[v.name] = v
     end
@@ -60,19 +83,19 @@ local formname = 'sbz_base:player_settings'
 
 local function display_settings_formspec(fields, player, prepend)
     sbz_api.ui.set_player(player)
-    local pal = sbz_api.ui.get_theme().palette or {}
 
-    local data = sbz_api.ui.get_playerdata(formname) or { selected = 'themes' }
+    local pal = sbz_api.ui.get_theme().palette or sbz_api.default_palette
+    local data = sbz_api.ui.get_playerdata(formname) or { selected = buttons[1].name }
 
     local formspec = { settings_prepend }
-    if prepend then table.insert(formspec, 'no_prepend[]' .. prepend) end
+    if prepend then table.insert(formspec, 'no_prepend[]' .. prepend) end -- for themes
 
-    table.insert(formspec, 'box[0.4,0.4;5.6,19.2;]')
+    table.insert(formspec, sbz_api.ui.box(0.4, 0.4, 5.6, 19.2))
     table.insert(formspec, sbz_api.ui.big_hypertext(0.6, 0.6, 5.8, 2, '_', 'Player Settings'))
 
     local selected_button_data = buttons_by_name[data.selected]
 
-    table.insert(formspec, ('style[%s;bgcolor=%s]'):format(selected_button_data.name, pal.neutral_green or '#AC4FC6'))
+    table.insert(formspec, ('style[%s;bgcolor=%s]'):format(selected_button_data.name, pal.neutral_green))
 
     local y = 2.5
     for _, button_data in pairs(buttons) do
@@ -86,6 +109,7 @@ local function display_settings_formspec(fields, player, prepend)
 
     core.show_formspec(player:get_player_name(), formname .. '_' .. data.selected, table.concat(formspec))
     sbz_api.ui.set_playerdata(formname, data)
+
     sbz_api.ui.del_player()
 end
 
@@ -113,22 +137,6 @@ core.register_on_player_receive_fields(function(player, supplied_formname, field
             sbz_api.ui.del_player()
             sbz_api.show_settings_formspec(fields, player)
             return true
-        end
-    end
-end)
-
--- BGM VOLUME SETTING (Since its so basic its included here for convenience)
-
-core.register_on_player_receive_fields(function(player, supplied_formname, fields)
-    if supplied_formname == formname .. '_bgm' then
-        local scrollbar = core.explode_scrollbar_event(fields.bgm_slider)
-        if scrollbar.type == 'CHG' then
-            local pmeta = player:get_meta()
-            local new_value = math.min(200, math.max(0, scrollbar.value))
-            pmeta:set_int('bgm_volume', new_value)
-            local handle = sbz_api.bgm_handles[player:get_player_name()]
-            if handle then core.sound_fade(handle, 4, (new_value / 100) + 0.001) end -- HACK: +0.001 so that it doesn't delete the sound
-            sbz_api.show_settings_formspec(fields, player)
         end
     end
 end)

@@ -7,12 +7,15 @@
 - **Removed epidermis** due to it being buggy
 - Added manual crafters, you can learn more in questbook
 - Added hotbar switching, see questbook's `General Info` quest
+- Stamina and HP will get automatically hidden when full.
+
+#### More player settings (See inventory -> settings icon)
+- Finally made hotbar size be customizable
+- HP gets automatically hidden when full by default, disable it in player settings
 
 ### Internal Improvements:
-
 - Instead of using a hacky crafting system dependant on unified inventory, sbz now has it's own way of doing crushing/centrifuging/whatever with machines 
 - In the various lag statues, switched away from using `core.get_us_time`, and instead using `os.clock`, i don't know if this is actually better
-- sbz now has more lua lsp annotations so the development experience should be better
 
 
 Release 37 - sorry for the long wait :) - the "Oh UI looks decent now... and what's that? it's not a buggy mess anymore?"

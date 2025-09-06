@@ -15,25 +15,25 @@ By holding `aux1` (usually the "`e`" key), you can sprint.
 You have 20hp. If you die, your inventory stays with you, meaning there is no reason to worry about dying.  
 
 Some commands useful for survival:
-- `/bgm_volume` \<percentage\> - sets the background music's volume  
 - commands of the areas mod - protecting using areas using /protect has been disabled, but you can still do other things  
-- `/drawers_fix` - if drawers appear broken just run that, command was taken from pandorabox_custom  
-- `/afk` - marks you as afk  
 - `/core` - teleports you to the core  
+- `/afk` - marks you as afk  
 - `/playtime` - shows your, or other player's playtime  
 - `/qb` - gives you the questbook if you don't have one  
 - `/home` - teleports you to home  
 - `/sethome` - sets your home  
+- `/drawers_fix` - if drawers appear broken just run that, command was taken from pandorabox_custom  
 - `/toggle_areas_hud` - Toggles the areas hud, may be useful if you dont want to always see it.  
-- `/theme_gui` - opens the theming gui, here you can customize the theme  
+- `/bgm_volume` \<percentage\> - sets the background music's volume  
 
 **Hotbar switching**  
 You can switch your hotbar row to another one by pressing `sneak` + `aux1` (usually `e`) + `left mouse button`, to cycle your hotbar in the opposite direction use `sneak` + `aux1` + `right mouse button`.
-  
+
 **Recomended for small screens**  
-in /theme_gui, you can disable "Force mono font", this will make the font less cool but it will make it smaller.  
+in theme settings, you can disable "Force mono font", this will make the font less good but it will make it smaller.  
 
-
+**Player settings**
+In your inventory, you can see a settings icon at the bottom. Clicking that takes you to player settings.
 
 ### Meta
 
