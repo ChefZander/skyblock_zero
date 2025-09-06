@@ -239,10 +239,9 @@ minetest.register_chatcommand('bgm_volume', {
         local meta = player:get_meta()
         meta:set_int('volume', volume)
         meta:set_int('has_set_volume', 1)
-        return true,
-            'Set the volume to '
-                .. volume
-                .. "%, the current background music will stay at the value that was before this command, but the next background music's volume will change."
+        local handle = sbz_api.bgm_handles[player:get_player_name()]
+        if handle then core.sound_fade(handle, 4, (volume / 100) + 0.001) end -- HACK: +0.001 so it doesn't delete the sound xDD
+        return true, 'Set the background volume to ' .. volume
     end,
 })
 

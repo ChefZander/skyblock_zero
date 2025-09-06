@@ -589,7 +589,12 @@ end
 local function update_health(player)
     local hp_max = player:get_properties().hp_max
     local hp = math.min(player:get_hp(), hp_max)
-    hb.change_hudbar(player, 'health', hp, hp_max)
+    if hp >= hp_max then
+        hb.hide_hudbar(player, 'health')
+    else
+        hb.unhide_hudbar(player, 'health')
+        hb.change_hudbar(player, 'health', hp, hp_max)
+    end
 end
 
 -- update built-in HUD bars
@@ -597,8 +602,8 @@ local function update_hud(player)
     if not player_exists(player) then return end
     if minetest.settings:get_bool 'enable_damage' then
         if hb.settings.forceload_default_hudbars then hb.unhide_hudbar(player, 'health') end
-        --air
         local breath_max = player:get_properties().breath_max
+
         local breath = player:get_breath()
 
         if breath >= breath_max and hb.settings.autohide_breath == true then
