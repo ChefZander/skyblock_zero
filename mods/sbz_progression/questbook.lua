@@ -89,9 +89,11 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     local player_ref = core.get_player_by_name(player_name)
     sbz_api.ui.set_player(player_ref)
     if not player_ref then return '' end
+
     local selected_quest = quests_to_show[selected_quest_index]
     search_text = search_text or ''
     local quest_list = {}
+
     local ins = function(element)
         table.insert(quest_list, element)
     end
@@ -99,43 +101,43 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     local default_indent = '1'
     if search_text ~= '' then default_indent = '0' end
 
-    local pal = sbz_api.ui.get_theme().palette or {}
+    local pal = sbz_api.ui.get_theme().palette or sbz_api.default_palette
 
-    for i, quest in ipairs(quests_to_show) do
+    for _, quest in ipairs(quests_to_show) do
         if quest.type == 'quest' then
             if is_achievement_unlocked(player_name, quest.title) then
-                ins(pal.bright_green or '#d4fcd6')
+                ins(pal.bright_green)
                 ins(default_indent)
                 ins '✓'
                 ins(quest.title)
             elseif is_quest_available(player_name, quest.title) then
-                ins(pal.light1 or '#fff')
+                ins(pal.light1)
                 ins(default_indent)
                 ins '►'
                 ins(quest.title)
             else
-                ins(pal.light4 or '#848484')
+                ins(pal.light4)
                 ins(default_indent)
                 ins '✕'
                 ins(quest.title)
             end
         elseif quest.info == true then -- info text
-            ins(pal.bright_blue or '#a9b7fc')
+            ins(pal.bright_blue)
             ins(default_indent)
             ins '!'
             ins(quest.title)
         elseif quest.type == 'text' then
-            ins(pal.bright_aqua or '#a9fcf5')
+            ins(pal.bright_aqua)
             ins '0'
             ins '≡'
             ins(quest.title)
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) then
-            ins(pal.bright_purple or '#e3a9fc')
+            ins(pal.bright_purple)
             ins(default_indent)
             ins '✪'
             ins(quest.title)
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) == false then
-            ins(pal.bright_purple or '#e3a9fc')
+            ins(pal.bright_purple)
             ins(default_indent)
             ins '✪'
             ins '???'
@@ -160,6 +162,11 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         %s
         image_button[5.25,12;0.5,0.5;ui_search_icon.png;dummybutton;]
         image_button[5.75,12;0.5,0.5;ui_reset_icon.png;search_reset;]
+
+		button[5.25,0.35;0.3,0.3;font_add;+]
+		button[5.55,0.35;0.3,0.3;font_sub;-]
+		tooltip[font_add;Makes font larger]
+		tooltip[font_sub;Makes font smaller]
 ]]):format(
         sbz_api.ui.hypertext(0.3, 0.25, 5.6, 0.5, '', 'Quest List'),
         sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
@@ -168,15 +175,28 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         selected_quest_index,
         sbz_api.ui.field(0.2, 12, 5.25, 0.5, 'search', '', search_text)
     )
-    formspec = formspec .. sbz_api.ui.box(6, 0.2, 11, 11.6)
+    formspec = formspec .. sbz_api.ui.box(5.85, 0.2, 11.2, 11.8)
 
+    local font_size = player_ref:get_meta():get_int 'font_size'
+    if font_size == 0 then font_size = 16 end -- the default font size according to some undocumented C++ luanti code
+    -- thanks luanti
+
+    --- so, this is something like hypertext[blabla;%s]
+    --- where the %s gets filled in later, so dont worry about it
     local hypertext = ([[
-%s
-%s
-label[7.35,12.25;%s]
-]]):format(
+    %s
+    %s
+    label[7.35,12.25;%s]
+    ]]):format(
         sbz_api.ui.big_hypertext(6, 0.3, 100, 100, '', '%s'),
-        sbz_api.ui.hypertext(6.1, 1.3, 10.8, 10.3, '', '%s'),
+        sbz_api.ui.hypertext(
+            6.1,
+            1.3,
+            10.8,
+            10.3,
+            '',
+            ('<global size=%s><tag name=dash color=%s>%%s'):format(font_size, pal.bright_orange)
+        ),
         '%s'
     )
 
@@ -208,7 +228,7 @@ label[7.35,12.25;%s]
                     '',
                     (
                         is_achievement_unlocked(player_name, selected_quest.title)
-                            and "✔ Shhh... don't tell anyone :)"
+                            and "✔ Shhh... don't tell anyone"
                         or 'You have not completed this Quest.'
                     )
                 )
@@ -246,11 +266,29 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             force_query = true
         end
 
-        if fields.quest_list or fields.search or force_query then
+        if fields.font_add or fields.font_sub then
+            local font_size = player:get_meta():get_int 'font_size'
+            if font_size == 0 then font_size = 16 end
+
+            if fields.font_add then
+                font_size = font_size + 1
+            else
+                font_size = font_size - 1
+            end
+            font_size = sbz_api.clamp(font_size, 6, 24)
+            player:get_meta():set_int('font_size', font_size)
+        end
+
+        if fields.quest_list or fields.search or force_query or (fields.font_add or fields.font_sub) then
             local event = minetest.explode_table_event(fields.quest_list)
-            local selected_quest_index = event.row or meta:get_int 'selected_quest_index'
-            -- set selected quest index
-            if meta then meta:set_int('selected_quest_index', selected_quest_index) end
+
+            local selected_quest_index
+            if event.row and event.row ~= 0 or (fields.search and fields.search ~= '') then
+                selected_quest_index = event.row or 0
+            else
+                selected_quest_index = meta:get_int 'selected_quest_index'
+            end
+            meta:set_int('selected_quest_index', selected_quest_index)
 
             local filtered_quests = {}
             if fields.search and fields.search ~= '' then
@@ -278,7 +316,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
             else
                 filtered_quests = table.copy(quests)
             end
-            minetest.show_formspec(
+            core.show_formspec(
                 name,
                 'questbook:main',
                 get_questbook_formspec(selected_quest_index, player:get_player_name(), filtered_quests, fields.search)

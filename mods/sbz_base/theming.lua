@@ -297,7 +297,6 @@ end
 
 core.register_on_joinplayer(sbz_api.update_theme)
 
-dofile(core.get_modpath 'sbz_base' .. '/theming_gui.lua')
 -- Code helpers
 sbz_api.get_theme_background = function(player)
     local theme = sbz_api.get_theme(player)

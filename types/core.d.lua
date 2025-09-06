@@ -13,7 +13,6 @@ vector = {}
 
 ---@alias vectorT table|vector
 
-
 ---@param x number
 ---@param y number
 ---@param z number
@@ -147,7 +146,6 @@ function core.hash_node_position(pos) end
 
 ---@class ObjectRef
 
-
 core = {}
 
 ---@deprecated
@@ -212,7 +210,6 @@ core.registered_nodes = {}
 --- when there are *no* neighbours to the sides
 ---@field disconnected_sides box_or_boxes
 
-
 ---@alias pointed_thing { type: "nothing" } | { type: "node", under: vector, above: vector, intersection_point: vector | nil, box_id: integer, intersection_normal: vector | nil} | { type: "object", ref: ObjectRef, intersection_point: vector | nil, box_id: integer, intersection_normal: vector | nil }
 
 ---@class ItemStack_table
@@ -256,7 +253,6 @@ function core.get_item_group(itemname, groupname) end
 ---Named colors are also supported and are equivalent to CSS Color Module Level 4. To specify the value of the alpha channel, append #A or #AA to the end of the color name (e.g. colorname#08).
 ---@class ColorString:string
 
-
 ---A ColorSpec specifies a 32-bit color. It can be written in any of the following forms:
 ---    table form: Each element ranging from 0..255 (a, if absent, defaults to 255):
 ---        colorspec = {a=255, r=0, g=255, b=0}
@@ -265,7 +261,6 @@ function core.get_item_group(itemname, groupname) end
 ---    string form: A ColorString (defined above):
 ---        colorspec = "green"
 ---@alias ColorSpec string|table|integer
-
 
 ---@param color ColorString
 ---@return string
@@ -447,7 +442,6 @@ function core.get_translated_string(lang_code, string) end
 ---@field persistence integer
 ---@field lacunarity integer
 ---@field flags table|string|nil
-
 
 ---@param p1 vector?
 ---@param p2 vector?

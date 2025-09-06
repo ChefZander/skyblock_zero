@@ -348,7 +348,7 @@ You can also climb it, and it is great for scaffolding.
 
 ### Meta
 
-Requires: Crusher, Liquid Water
+Requires: Crusher
 
 <!-- ## Clay
 
