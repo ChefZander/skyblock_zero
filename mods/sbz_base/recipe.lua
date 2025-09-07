@@ -22,7 +22,7 @@ local reg_crafts_by_type = sbz_api.recipe.registered_crafts_by_type
 local reg_craft_types = sbz_api.recipe.registered_craft_types
 
 function sbz_api.recipe.register_craft_type(def)
-    assert(def.type, "It needs a name")
+    assert(def.type, 'It needs a name')
     reg_craft_types[def.type] = def
     if def.single then
         reg_crafts_by_type_single[def.type] = {}
@@ -36,14 +36,14 @@ function sbz_api.recipe.register_craft_type(def)
 end
 
 function sbz_api.recipe.register_craft(def)
-    core.after(0, function() -- allows for registering crafts for craft types which haven't loaded in yet
+    -- i know i know its a HACK: - it allows for registering crafts for craft types which haven't loaded in yet
+    core.after(0, function()
         table.insert(reg_crafts, def)
         unified_inventory.register_craft(def)
 
         local type = def.type
         local craft_def = reg_craft_types[type]
-        assert(craft_def, type .. " is not a valid craft type")
-
+        assert(craft_def, type .. ' is not a valid craft type')
 
         table.insert(reg_crafts_by_type[type], def)
 
@@ -66,31 +66,26 @@ end
 ---@return ItemStack?, integer?, integer|ItemStack[]?, integer?
 function sbz_api.recipe.resolve_craft(item_or_list, type, is_list)
     local craft_def = reg_craft_types[type]
-    assert(craft_def, type .. " is not a valid craft type")
+    assert(craft_def, type .. ' is not a valid craft type')
 
     if is_list and craft_def.single then
         for slot, stack in pairs(item_or_list) do
             local name, count, decremented = sbz_api.recipe.resolve_craft(stack, type, false)
-            if name then
-                return name, count, decremented, slot
-            end
+            if name then return name, count, decremented, slot end
         end
         return
     end
 
-
     if craft_def.single then
-        local item   = ItemStack(item_or_list)
-        local name   = item:get_name()
-        local count  = item:get_count()
+        local item = ItemStack(item_or_list)
+        local name = item:get_name()
+        local count = item:get_count()
         local crafts = reg_crafts_by_type_single[type][name]
         if not crafts then return end
 
         local craft = crafts[math.random(1, #crafts)]
         local input_count = craft.input_count
-        if input_count > count then
-            return
-        end
+        if input_count > count then return end
         return ItemStack(craft.output), math.floor(count / input_count), input_count
     end
 
@@ -133,21 +128,19 @@ end
 ---@return table, boolean, integer?
 function sbz_api.recipe.resolve_craft_raw_single(item_or_list, type, is_list)
     local craft_def = reg_craft_types[type]
-    assert(craft_def, type .. " is not a valid craft type")
+    assert(craft_def, type .. ' is not a valid craft type')
 
     if is_list and craft_def.single then
         for slot, stack in pairs(item_or_list) do
             local crafts, success = sbz_api.recipe.resolve_craft_raw_single(stack, type, false)
-            if success then
-                return crafts, true, slot
-            end
+            if success then return crafts, true, slot end
         end
         return {}, false
     end
 
-    local item   = ItemStack(item_or_list)
-    local name   = item:get_name()
-    local count  = item:get_count()
+    local item = ItemStack(item_or_list)
+    local name = item:get_name()
+    local count = item:get_count()
     local crafts = reg_crafts_by_type_single[type][name]
     if not crafts then return {}, false end
     return crafts, true

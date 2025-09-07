@@ -176,6 +176,7 @@ core.register_node('sbz_power:manual_crafter', {
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         if listname == 'configure_craft' or listname == 'configure_craft_output' then
             local from_inv = core.get_meta(pos):get_inventory()
+            stack:set_count(1)
             from_inv:set_stack(listname, index, stack)
             if listname == 'configure_craft_output' then configure_from_craft_output(pos, player) end
             validate_craft(pos)
