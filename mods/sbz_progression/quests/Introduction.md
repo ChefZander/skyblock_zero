@@ -66,7 +66,7 @@ Welcome, player. This is the Quest Book. Here, you can check out what tasks you 
 You can also just ignore the Quest Book if you are an experienced player.  
   
 Now, to get started: look down at the core. Punching it will give you some of your first resources.  
-You can also just right-click the core, it will be easier on you.  
+You can also just **hold right-click on the core**, it will be easier on you.  
   
 These quests are in no particular order, but you might need items from one quest for another.  
 The Introduction questline is designed to get you started into a couple other questlines, so it is recommended you jump between questlines occasionally.  
@@ -270,7 +270,7 @@ Requires: Antimatter, Circuitry
 
 We're making the jump from generic matter to stone now! Here is where building a space station gets fun!  
   
-First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring three matter blobs, so **having at least 4 advanced matter extractors is recommended**.  
+First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring three matter blobs, so **having at least 4 advanced matter extractors is recommended**, as you will need a lot of pebbles.  
 Pebbles will unlock a lot of decorational nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!
 
 ### Meta
