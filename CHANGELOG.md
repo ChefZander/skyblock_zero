@@ -8,6 +8,11 @@
 - Added manual crafters, you can learn more in questbook
 - Added hotbar switching, see questbook's `General Info` quest
 - Stamina and HP will get automatically hidden when full.
+- Made meteorite nodes expire after 3 hours (from 1 hour)
+- Made meteorite nodes drop a lot more stuff
+- Made CNC machines support automation, *you can now automate stairs :D*
+- Split up the completionist questline, made a `Secrets` questline
+- Fixed the immune effect giving you a small amount of meteorite attraction
 
 #### More player settings (See inventory -> settings icon)
 - Finally made hotbar size be customizable
