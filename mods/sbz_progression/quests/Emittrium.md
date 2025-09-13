@@ -86,6 +86,16 @@ IMPORTANT: Make sure that only one of the two or more joined networks has a swit
 
 Requires: Emittrium Circuits, Reinforced Matter
 
+## Angel's Wing
+
+### Text
+
+The Angel's Wing can make you fly. Right-Click to use, it has 100 uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.
+
+### Meta
+
+Requires: Emittrium Circuits, Concrete Plan
+
 ## Ele Fabs
 
 ### Text

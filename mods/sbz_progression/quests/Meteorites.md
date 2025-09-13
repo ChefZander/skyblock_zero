@@ -37,6 +37,19 @@ To complete this quest, make a gravitational attractor, or a repulsor.
 
 Requires: Meteorites
 
+## Antineutronium
+
+### Text
+
+Sometimes, meteorites whizzing by will be made of antimatter instead of regular matter. These meteorites have Antineutronium in their core.  
+Antineutronium can be crafted into a Gravitational Repulsor, which repulses meteorites.  
+  
+TIP: Build a shield out of compressed core dust to protect against antimatter meteorites.
+
+### Meta
+
+Requires: Meteorites
+
 ## Meteorite Maker
 
 ### Text
