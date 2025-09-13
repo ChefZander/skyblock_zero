@@ -12,7 +12,7 @@
 - Made meteorite nodes drop a lot more stuff
 - Made CNC machines support automation, *you can now automate stairs :D*
 - Split up the completionist questline, made a `Secrets` questline
-- Fixed the immune effect giving you a small amount of meteorite attraction
+- Made screen inverter potions work in certain colorium planets
 
 #### More player settings (See inventory -> settings icon)
 - Finally made hotbar size be customizable

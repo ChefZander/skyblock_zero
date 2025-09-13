@@ -34,7 +34,11 @@ Requires:
 
 ### Text
 
-Nice green terrain and oceans of antiwater  
+Colorium planets, but something is wrong with them.
+
+Hint: You need to have enabled post processing in luanti's settings, or this won't work. This requires shaders to be enabled. It may not be avaliable on some weaker devices.
+
+Hint 2: Use a screen inverter potion to reverse the effect, at the cost of a mild saturation increase.
 
 ### Meta
 

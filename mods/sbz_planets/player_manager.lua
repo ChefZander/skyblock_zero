@@ -22,20 +22,12 @@ core.register_globalstep(function(dtime)
 
                 if type_def.invert_chance then -- Anticolorium planets! yey
                     local should_invert = data[2] % type_def.invert_chance == 0
-                    if should_invert then
-                        v:set_lighting {
-                            saturation = -1,
-                        }
-                    end
+                    if should_invert then player_monoids.saturation:add_change(v, -1, 'sbz_planets:saturation') end
                     unlock_achievement(v:get_player_name(), 'AntiColorium Planets')
                 end
             else
                 if not sbz_api.forced_light[v:get_player_name()] then v:override_day_night_ratio(0) end
-                if (v:get_lighting().saturation or 0) == -1 then
-                    v:set_lighting {
-                        saturation = 1,
-                    }
-                end
+                player_monoids.saturation:del_change(v, 'sbz_planets:saturation')
             end
         end
     end
