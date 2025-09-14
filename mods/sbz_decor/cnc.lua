@@ -36,6 +36,7 @@ end
 minetest.register_node(
     'sbz_decor:cnc',
     sbz_api.add_tube_support {
+        _after_dig_drop = false, -- To prevent duping
         description = 'CNC Machine',
         info = 'Use it to cut stairs/slabs out of nodes.',
         tiles = { 'cnc_top.png', 'cnc_top.png', 'cnc_side.png' },

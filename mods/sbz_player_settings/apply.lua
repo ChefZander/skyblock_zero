@@ -23,8 +23,10 @@ end)
 receive(function(player, formname, fields)
     if formname ~= (base_formname .. '_hud') then return end
     if fields.quit then return end
+
     local autohide_hp = fields.autohide_hp
     local hotbar_size = fields.hotbar_size
+    local zoom_fov = fields.zoom_fov
 
     if autohide_hp == 'true' or autohide_hp == 'false' then
         player:get_meta():set_int('no_autohide_hp', autohide_hp == 'true' and 0 or 1)
@@ -35,6 +37,10 @@ receive(function(player, formname, fields)
         player:hud_set_hotbar_itemcount(hotbar_size)
         player:get_meta():set_int('hotbar_size', hotbar_size)
     end
+    if tonumber(zoom_fov) then
+        player:get_meta():set_float('zoom_fov', zoom_fov)
+        player:set_properties { zoom_fov = zoom_fov }
+    end
     sbz_api.show_settings_formspec(fields, player)
 end)
 
@@ -42,4 +48,13 @@ end)
 on_join(function(player)
     local pm = player:get_meta()
     if pm:get_int 'hotbar_size' ~= 0 then player:hud_set_hotbar_itemcount(pm:get_int 'hotbar_size') end
+end)
+
+-- Apply zoom fov on join
+on_join(function(player)
+    local zoom_fov = player:get_meta():get_float 'zoom_fov'
+    if zoom_fov == 0 then zoom_fov = 15 end
+    player:set_properties {
+        zoom_fov = zoom_fov,
+    }
 end)

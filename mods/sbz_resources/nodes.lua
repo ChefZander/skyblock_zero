@@ -15,6 +15,16 @@ stairs.register 'sbz_resources:matter_blob'
 minetest.register_alias('sbz_resources:matter_stair', 'sbz_resources:matter_blob_stair')
 minetest.register_alias('sbz_resources:matter_slab', 'sbz_resources:matter_blob_slab')
 
+local platform_nodebox = {
+    type = 'fixed',
+    fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 },
+}
+
+local platform_selbox = {
+    type = 'fixed',
+    fixed = { -0.5, 0.25, -0.5, 0.5, 0.5, 0.5 },
+}
+
 minetest.register_node(
     'sbz_resources:matter_platform',
     unifieddyes.def {
@@ -23,10 +33,8 @@ minetest.register_node(
         use_texture_alpha = 'clip',
         drawtype = 'nodebox',
         paramtype2 = 'color',
-        node_box = {
-            type = 'fixed',
-            fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 },
-        },
+        node_box = platform_nodebox,
+        selection_box = platform_selbox,
         groups = { matter = 2, cracky = 3, explody = 8, moss_growable = 1 },
         paramtype = 'light',
         sunlight_propagates = true,
@@ -105,10 +113,8 @@ minetest.register_node(
         paramtype2 = 'color',
         light_source = 2,
         drawtype = 'nodebox',
-        node_box = {
-            type = 'fixed',
-            fixed = { -0.5, 0.375, -0.5, 0.5, 0.5, 0.5 },
-        },
+        node_box = platform_nodebox,
+        selection_box = platform_selbox,
         groups = { antimatter = 2, cracky = 3, explody = 100 },
         paramtype = 'light',
         sunlight_propagates = true,

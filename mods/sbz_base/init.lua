@@ -1,4 +1,3 @@
--- Oh yeah, i forgot
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
     version = 38,
@@ -30,7 +29,7 @@ elseif sbz_api.server_optimizations == 'off' then
     sbz_api.server_optimizations = false
 end
 
--- Generated with figlet
+-- That text art was generated with figlet
 print(([[
 %s[0;32m
  ____  _          _     _            _        _____
@@ -77,7 +76,7 @@ if not vector.random_direction then
     end
 end
 
--- not the exact implementations but BETTER!!
+-- not the exact implementations
 
 ---@param key_last boolean
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -125,7 +124,7 @@ function iterate_around_pos(pos, func, include_self)
 end
 
 local vzero = vector.zero()
-function sbz_api.iterate_around_pos_nocopy(pos, func, include_self) -- for small optimizations where you know that it wont get polluted
+function sbz_api.iterate_around_pos_nocopy(pos, func, include_self) -- for small optimizations where you know that the vector wont get changed
     for i = 0, 5 do
         local dir = wallmounted_to_dir[i]
         func(pos + dir, dir)
@@ -297,21 +296,17 @@ minetest.register_on_joinplayer(function(player)
         visible = false,
     }
 
-    -- make player invisible
-    player:set_properties {
-        zoom_fov = 15, -- allow zooming
-    }
-
     -- set hotbar
     player:hud_set_hotbar_image 'hotbar.png'
     player:hud_set_hotbar_selected_image 'hotbar_selected.png'
 
     player:set_physics_override {
-        sneak_glitch = true,
+        sneak_glitch = true, -- allow fun
     }
 
     local pinfo = core.get_player_information(player:get_player_name())
     if pinfo.protocol_version < 44 then -- 44 = 5.9.0
+        -- <b>bold</b> of me to be using hypertext haha
         core.show_formspec(
             player:get_player_name(),
             '',
@@ -319,7 +314,7 @@ minetest.register_on_joinplayer(function(player)
 size[20,18]
 real_coordinates[true]
 hypertext[0.2,0.2;19.6,17.8;h;<center><bigger>Warning!</bigger></center>
-It appears like you are using an outdated version of Luanti/Minetest, or a client based on Luanti/Minetest that hasn't been keeping up to date.
+It appears like you are using an outdated version of Luanti, or a client based on Luantithat hasn't been keeping up to date.
 Skyblock Zero on multiplayer is playable with your client, but you may experience errors in the chat, or things not working how they should.
 
 Issues that may arise:
@@ -328,8 +323,8 @@ Issues that may arise:
 - Some entities not rendering (like the turret)
 - UI being broken
 
-The only fix for this is to update your client to Luanti 5.9.0 <b>or above</b>. <style size=0>or spoof your protocol version if you are smart and lazy</style>
-If you are on Multicraft, or other luanti clients, try switching to regular Luanti instead.
+The only fix for this is to update your client to Luanti 5.9.0 <b>or above</b>.
+If you are on Multicraft, or other types of Luanti clients, try switching to regular Luanti instead.
 ]
 button_exit[0.2,16.2;19.6,1.5;exit;Continue to play]
     ]]
@@ -347,7 +342,7 @@ core.register_chatcommand('killme', {
     privs = { ['interact'] = true },
     func = function(name)
         local player = core.get_player_by_name(name)
-        if not player then return false, 'No player?' end
+        if not player then return false, '???' end
         player:set_hp(0, '/killme')
     end,
 })
@@ -409,7 +404,7 @@ function sbz_api.make_immutable(t)
 end
 
 --[[
-    These 4 lines of code that can pretty much replace vm.lua are from:
+    These 4 lines of code that can pretty much replace vm.lua, are from:
     https://github.com/mt-mods/technic/blob/379bedc20d7ab11c758afa52d5916b23dced5354/technic/helpers.lua#L102 to line 107
 ]]
 
@@ -439,7 +434,6 @@ dofile(MP .. '/toggle_areas_hud.lua')
 dofile(MP .. '/cache.lua')
 dofile(MP .. '/color.lua')
 dofile(MP .. '/recipe.lua')
--- useless cuz of luanti metadata limitations
 dofile(MP .. '/serialize.lua')
 dofile(MP .. '/serialize_benchmark.lua')
 dofile(MP .. '/space_movement.lua')
@@ -665,8 +659,7 @@ function sbz_api.get_pos_with_eye_height(placer)
     return p
 end
 
--- USE THIS AS A LAG MEASURING FUNCTION
--- Do not use core.get_us_time()
+-- use this as a lag measuring function
 ---@return number
 function sbz_api.clock_ms()
     return os.clock() * 1000
@@ -726,7 +719,3 @@ core.error_handler = function(error, stack_level)
 end
 
 core.log('action', "Skyblock: Zero's Base Mod has finished loading.")
-core.log(
-    'info',
-    "If you see warnings about ABMs taking a long time, don't worry, its most likely just trees being generated."
-)

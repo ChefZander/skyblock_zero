@@ -11,7 +11,7 @@ Have you ever wanted to automatically move items around without input?
   
 Now you can!  
   
-Tubes are, well, tubes that can transport items around! Currently, you can't interact with them: but just have some lying around, the next and future quests utilize them.  
+Tubes are, well, tubes that can transport items around! Currently, you can't interact with them: but just have some lying around, the next and future quests use them.  
   
 TIP: Items in tubes will go into directions with higher tube priority. The default tube priority is 100.
 

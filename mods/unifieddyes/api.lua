@@ -605,8 +605,6 @@ function unifieddyes.def(d, on_dig)
     d.paramtype2 = d.paramtype2 or 'color'
     d.palette = unifieddyes.palettes[d.paramtype2]
 
-    core.after(0, function()
-        if d.on_dig == nil or on_dig == false and d.drop == nil then d.on_dig = node_dig_without_color end
-    end)
+    if d.on_dig == nil or on_dig == false then d.on_dig = node_dig_without_color end
     return d
 end
