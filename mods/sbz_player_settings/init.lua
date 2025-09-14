@@ -41,6 +41,18 @@ local buttons = {
                 'field_enter_after_edit[hotbar_size;true]',
                 sbz_api.ui.field(0, 1.5, 5, 1, 'hotbar_size', 'Hotbar Size', player:hud_get_hotbar_itemcount()),
 
+                'field_close_on_enter[zoom_fov;false]',
+                'field_enter_after_edit[zoom_fov;true]',
+                sbz_api.ui.field(
+                    0,
+                    3.5,
+                    8,
+                    1,
+                    'zoom_fov',
+                    'Zoom FOV (smaller => more zoom, you can go crazy with it)',
+                    player:get_properties().zoom_fov
+                ),
+
                 'container_end[]',
             }
             return table.concat(fs)

@@ -26,7 +26,7 @@ Requires:
 
 ### Text
 
-Craft the high power electric furnace (H.P.E.F for short), it allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes.
+The High Power Electric Furnace (H.P.E.F for short), allows you to smelt any powder into an ingot, ingots are heavily used in crafting recipes. You may need to set up another generator to power it.
 
 ### Meta
 
@@ -47,7 +47,7 @@ Requires: Crusher, Emittrium Circuits, Antimatter, Charged Field
 
 ### Text
 
-Congratulations, Commander! You've just unlocked the Bronze Age—because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing [REDACTED] and [REDACTED] is still rocket science. Good luck, Space Caveman!
+Congratulations, Commander! You've just unlocked the Bronze Age, because nothing says 'cutting-edge space exploration' like struggling to make a metal our ancestors figured out 5,000 years ago. Sure, you've mastered faster-than-light travel, but apparently mixing `[REDACTED]` and `[REDACTED]` is still rocket science. Good luck, Space Caveman!
 
 ### Meta
 
@@ -58,8 +58,9 @@ Requires: Simple Alloy Furnace, Crusher
 ### Text
 
 Have you ever wanted to turn your metals into blocks? Now you can!  
-Craft this wonderful compressor, insert in 9 powder, or 9 ingots, and watch as it makes your blocks.  
-Blocks made from chemicals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.  
+Craft this wonderful compressor, insert 9 powder, or 9 ingots, and watch as it makes blocks out of them.  
+
+Blocks made from metals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.  
 
 ### Meta
 

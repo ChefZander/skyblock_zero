@@ -13,6 +13,12 @@
 - Made CNC machines support automation, *you can now automate stairs :D*
 - Split up the completionist questline, made a `Secrets` questline
 - Made screen inverter potions work in certain colorium planets
+- Made the high power electric furnace consume 30 power
+- When you break a container with items, the items will now try to go to your inventory before dropping on the ground
+- Added a way to craft matter platforms back into matter blobs
+    - Extended the matter platform selection box
+- Fixed bugs where colorable items that were dug, did not stack with the ones that were freshly crafted
+- Added a zoom fov setting
 
 #### More player settings (See inventory -> settings icon)
 - Finally made hotbar size be customizable

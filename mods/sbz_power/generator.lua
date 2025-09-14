@@ -277,6 +277,7 @@ sbz_api.register_generator('sbz_power:starlight_collector', {
     use_texture_alpha = 'clip',
     action_interval = 1,
     action = function(pos, node, meta)
+        meta:set_string('infotext', '')
         local r = math.random(0, 2)
         if r == 1 then return 1 end
         return 0
