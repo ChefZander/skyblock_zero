@@ -314,7 +314,7 @@ minetest.register_on_joinplayer(function(player)
 size[20,18]
 real_coordinates[true]
 hypertext[0.2,0.2;19.6,17.8;h;<center><bigger>Warning!</bigger></center>
-It appears like you are using an outdated version of Luanti, or a client based on Luantithat hasn't been keeping up to date.
+It appears like you are using an outdated version of Luanti, or a client based on Luanti that hasn't been keeping up to date.
 Skyblock Zero on multiplayer is playable with your client, but you may experience errors in the chat, or things not working how they should.
 
 Issues that may arise:
