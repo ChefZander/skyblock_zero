@@ -55,6 +55,7 @@ sbz_api.get_version_string = function()
 
     return gamename .. '(' .. version_string .. ')'
 end
+
 sbz_api.get_simple_version_string = function()
     return 'SkyBlock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
@@ -239,10 +240,9 @@ minetest.register_chatcommand('bgm_volume', {
         local meta = player:get_meta()
         meta:set_int('volume', volume)
         meta:set_int('has_set_volume', 1)
-        return true,
-            'Set the volume to '
-                .. volume
-                .. "%, the current background music will stay at the value that was before this command, but the next background music's volume will change."
+        local handle = sbz_api.bgm_handles[player:get_player_name()]
+        if handle then core.sound_fade(handle, 4, (volume / 100) + 0.001) end -- HACK: +0.001 so it doesn't delete the sound xDD
+        return true, 'Set the background volume to ' .. volume
     end,
 })
 
@@ -442,6 +442,7 @@ end
 
 local MP = minetest.get_modpath 'sbz_base'
 
+dofile(MP .. '/legacy.lua')
 dofile(MP .. '/override_for_areas.lua')
 dofile(MP .. '/override_descriptions.lua')
 dofile(MP .. '/vm.lua')
@@ -456,10 +457,6 @@ dofile(MP .. '/dwarf_orb_crafts.lua')
 dofile(MP .. '/toggle_areas_hud.lua')
 dofile(MP .. '/cache.lua')
 dofile(MP .. '/color.lua')
-dofile(MP .. '/settings.lua')
-dofile(MP .. '/theming.lua')
-dofile(MP .. '/default_themes.lua')
-dofile(MP .. '/ui.lua')
 dofile(MP .. '/recipe.lua')
 -- useless cuz of luanti metadata limitations
 dofile(MP .. '/serialize.lua')

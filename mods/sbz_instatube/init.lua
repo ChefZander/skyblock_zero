@@ -657,7 +657,10 @@ core.register_node(
             meta:set_int('can_receive', 1) -- Enabled by default
             pipeworks.tptube.update_meta(meta)
         end,
-        on_logic_send = pipeworks.tptube.logic_action,
+        on_logic_send = function(pos, msg, sender)
+            remove_all_nets_around(pos)
+            return pipeworks.tptube.logic_action(pos, msg, sender)
+        end,
         on_destruct = pipeworks.tptube.remove_tube,
         on_receive_fields = function(pos, ...)
             remove_all_nets_around(pos)

@@ -3,10 +3,12 @@
 
 local sounds = setmetatable({}, {
     __index = function(t, k)
-        return rawget(t, k) or function(input) return table.override({}, input) end
-    end
+        return rawget(t, k) or function(input)
+            return table.override({}, input)
+        end
+    end,
 })
----@type fun(inp:table?)[]
+---@type table<string, fun(inp:table?)>
 sbz_api.sounds = sounds
 
 local function register_sound_function(name, sounds_to_use)
@@ -22,49 +24,49 @@ local function csound(x, g)
     return { name = x, gain = g }
 end
 
-register_sound_function("matter", { -- also could be node_stone_defaults
-    footstep = csound("step", 2),
-    place = csound("step", 2),
+register_sound_function('matter', { -- also could be node_stone_defaults
+    footstep = csound('step', 2),
+    place = csound('step', 2),
 })
-register_sound_function("metal", {
-    footstep = csound("step", 2),
-    place = csound("step", 2),
-})
-
-register_sound_function("glass", {
-    footstep = csound("step", 2),
-    place = csound("step", 2),
+register_sound_function('metal', {
+    footstep = csound('step', 2),
+    place = csound('step', 2),
 })
 
-register_sound_function("dirt", {
-    footstep = csound("step", 2),
-    place = csound("step", 2),
+register_sound_function('glass', {
+    footstep = csound('step', 2),
+    place = csound('step', 2),
 })
 
-register_sound_function("tree", {
-    footstep = csound("step", 2),
-    place = csound("step", 2),
+register_sound_function('dirt', {
+    footstep = csound('step', 2),
+    place = csound('step', 2),
 })
 
-register_sound_function("leaves", {
+register_sound_function('tree', {
+    footstep = csound('step', 2),
+    place = csound('step', 2),
+})
+
+register_sound_function('leaves', {
     --    footstep = csound("step", 2),
     --    place = csound("step", 2),
 })
 
-register_sound_function("antimatter", {
-    footstep = g1("antistep"),
-    place = g1("antistep"),
+register_sound_function('antimatter', {
+    footstep = g1 'antistep',
+    place = g1 'antistep',
 })
 
-register_sound_function("strange", {
-    footstep = g1("antistep"),
-    place = g1("antistep"),
+register_sound_function('strange', {
+    footstep = g1 'antistep',
+    place = g1 'antistep',
 })
 
-register_sound_function("machine", {
-    footstep = csound("step", 2),
-    place = g1("machine_build"),
-    rightclick = g1("machine_open"),
+register_sound_function('machine', {
+    footstep = csound('step', 2),
+    place = g1 'machine_build',
+    rightclick = g1 'machine_open',
 })
 
 -- allow for a rightclick parameter too, so that its less annoying
@@ -73,7 +75,7 @@ minetest.register_on_mods_loaded(function()
         if v.sounds and v.sounds.rightclick then
             local old_rightclick = v.on_rightclick or function(pos, node, clicker, itemstack, pointed_thing) end
             local function new_rightclick(pos, node, clicker, stack, pointed)
-                if minetest.get_meta(pos):get_string("formspec") ~= "" then
+                if minetest.get_meta(pos):get_string 'formspec' ~= '' then
                     minetest.sound_play(v.sounds.rightclick, {
                         pos = pos,
                     })

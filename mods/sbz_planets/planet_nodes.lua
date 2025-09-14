@@ -26,7 +26,7 @@ Where liquid chemicals would be registered in sbz_chem
 
 -- sands
 local function make_nofall(name)
-    local new_name = "sbz_planets:" .. name:sub(name.find(name, ":") + 1, -1) .. "_nofall"
+    local new_name = 'sbz_planets:' .. name:sub(name.find(name, ':') + 1, -1) .. '_nofall'
     local def = table.copy(core.registered_nodes[name])
     def.groups.falling_node = 0
     def.groups.not_in_creative_inventory = 1
@@ -35,103 +35,103 @@ local function make_nofall(name)
     core.register_node(new_name, def)
 end
 
-make_nofall("sbz_resources:sand")
-make_nofall("sbz_resources:red_sand")
-make_nofall("sbz_resources:gravel")
-make_nofall("sbz_resources:dark_sand")
-make_nofall("sbz_resources:black_sand")
-make_nofall("sbz_resources:white_sand")
+make_nofall 'sbz_resources:sand'
+make_nofall 'sbz_resources:red_sand'
+make_nofall 'sbz_resources:gravel'
+make_nofall 'sbz_resources:dark_sand'
+make_nofall 'sbz_resources:black_sand'
+make_nofall 'sbz_resources:white_sand'
 
-core.register_node("sbz_planets:marble", unifieddyes.def {
-    description = "Marble",
-    tiles = { { name = "marble.png", scale = 2, align_style = "world" } },
+core.register_node(
+    'sbz_planets:marble',
+    unifieddyes.def {
+        description = 'Marble',
+        tiles = { { name = 'marble.png', scale = 2, align_style = 'world' } },
+        groups = { matter = 1, charged = 1, explody = 10 },
+        sounds = sbz_api.sounds.matter(),
+    }
+)
+
+stairs.register 'sbz_planets:marble'
+
+core.register_node('sbz_planets:basalt', {
+    description = 'Basalt',
+    tiles = { { name = 'basalt.png' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
-stairs.register("sbz_planets:marble")
+stairs.register 'sbz_planets:basalt'
 
-
-
-core.register_node("sbz_planets:basalt", {
-    description = "Basalt",
-    tiles = { { name = "basalt.png", } },
-    groups = { matter = 1, charged = 1, explody = 10, },
-    sounds = sbz_api.sounds.matter(),
-})
-stairs.register("sbz_planets:basalt")
-
-core.register_node("sbz_planets:red_stone", {
-    description = "Red Stone",
-    tiles = { { name = "red_stone.png", } },
+core.register_node('sbz_planets:red_stone', {
+    description = 'Red Stone',
+    tiles = { { name = 'red_stone.png' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
-stairs.register("sbz_planets:red_stone")
+stairs.register 'sbz_planets:red_stone'
 
-core.register_node("sbz_planets:red_stone", {
-    description = "Red Stone",
-    tiles = { { name = "red_stone.png", } },
+core.register_node('sbz_planets:red_stone', {
+    description = 'Red Stone',
+    tiles = { { name = 'red_stone.png' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
 
-core.register_node("sbz_planets:thorium_ore", {
-    description = "Thorium Ore",
-    tiles = { { name = "thorium_ore.png", } },
+core.register_node('sbz_planets:thorium_ore', {
+    description = 'Thorium Ore',
+    tiles = { { name = 'thorium_ore.png' } },
     groups = { matter = 1, charged = 1, explody = 10, silktouch = 1, level = 2, ore = 1, radioactive = 1 },
     sounds = sbz_api.sounds.matter(),
-    drop = "sbz_chem:thorium_powder",
-
+    drop = 'sbz_chem:thorium_powder',
 })
 core.register_ore {
-    ore_type = "scatter",
-    ore = "sbz_planets:thorium_ore",
-    wherein = "sbz_planets:red_stone",
+    ore_type = 'scatter',
+    ore = 'sbz_planets:thorium_ore',
+    wherein = 'sbz_planets:red_stone',
     clust_scarcity = 12 ^ 3,
     clust_num_ores = 8,
     clust_size = 3,
     y_min = 2000,
 }
-core.register_node("sbz_planets:blue_stone", {
-    description = "Blue Stone",
-    tiles = { { name = "stone.png^[colorize:blue:128", } },
+core.register_node('sbz_planets:blue_stone', {
+    description = 'Blue Stone',
+    tiles = { { name = 'stone.png^[colorize:blue:128' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
 
-core.register_node("sbz_planets:uranium_ore", {
-    description = "Uranium Ore",
-    tiles = { { name = "uranium_ore.png", } },
+core.register_node('sbz_planets:uranium_ore', {
+    description = 'Uranium Ore',
+    tiles = { { name = 'uranium_ore.png' } },
     groups = { matter = 1, charged = 1, explody = 10, silktouch = 1, level = 2, ore = 1, radioactive = 1 },
     sounds = sbz_api.sounds.matter(),
-    drop = "sbz_chem:uranium_powder",
+    drop = 'sbz_chem:uranium_powder',
     light_source = 8,
 })
 
 core.register_ore {
-    ore_type = "scatter",
-    ore = "sbz_planets:uranium_ore",
-    wherein = "sbz_planets:blue_stone",
+    ore_type = 'scatter',
+    ore = 'sbz_planets:uranium_ore',
+    wherein = 'sbz_planets:blue_stone',
     clust_scarcity = 12 ^ 3,
     clust_num_ores = 8,
     clust_size = 3,
     y_min = 2000,
 }
 
+stairs.register 'sbz_planets:blue_stone'
 
-stairs.register("sbz_planets:blue_stone")
-
-core.register_node("sbz_planets:granite", {
-    description = "Granite",
-    tiles = { { name = "granite.png", align_style = "world", scale = 2 } },
+core.register_node('sbz_planets:granite', {
+    description = 'Granite',
+    tiles = { { name = 'granite.png', align_style = 'world', scale = 2 } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
-stairs.register("sbz_planets:granite")
+stairs.register 'sbz_planets:granite'
 
-core.register_node("sbz_planets:dead_core", {
-    description = "Dead Core Piece",
-    tiles = { "dead_core_piece.png" },
+core.register_node('sbz_planets:dead_core', {
+    description = 'Dead Core Piece',
+    tiles = { 'dead_core_piece.png' },
     groups = { matter = 1, charged = 1, explody = 1, level = 2 },
     sounds = sbz_api.sounds.matter(),
     light_source = 14,
@@ -141,118 +141,237 @@ core.register_node("sbz_planets:dead_core", {
 -- ice planet:
 -- +gravel
 
-core.register_node("sbz_planets:ice", {
-    description = "Ice",
-    tiles = { "ice.png" },
+core.register_node('sbz_planets:ice', {
+    description = 'Ice',
+    tiles = { 'ice.png' },
     groups = { matter = 1, water = 1, cold = 20, charged = 1, slippery = 5, explody = 20 },
     sounds = sbz_api.sounds.ice(),
     light_source = 1,
 })
-stairs.register("sbz_planets:ice")
+stairs.register 'sbz_planets:ice'
 
-core.register_node("sbz_planets:ice_core", {
-    description = "Ice Core Piece - deprecatred",
-    tiles = { "ice_core_piece.png" },
+core.register_node('sbz_planets:ice_core', {
+    description = 'Ice Core Piece - deprecatred',
+    tiles = { 'ice_core_piece.png' },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 10, level = 2 },
     sounds = sbz_api.sounds.ice(),
     light_source = core.LIGHT_MAX,
-    drop = "sbz_resources:movable_emitter"
+    drop = 'sbz_resources:movable_emitter',
 })
 
-
-
-core.register_node("sbz_planets:snow", {
-    description = "Snow",
-    tiles = { "snow.png" },
-    drawtype = "liquid",
-    paramtype = "light",
-    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, cold = 10, charged = 1, explody = 100, },
+core.register_node('sbz_planets:snow', {
+    description = 'Snow',
+    tiles = { 'snow.png' },
+    drawtype = 'liquid',
+    paramtype = 'light',
+    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, cold = 10, charged = 1, explody = 100 },
     sounds = sbz_api.sounds.snow(),
     walkable = false,
     climbable = true,
     move_resistance = 1,
-    post_effect_color = "#ffffff9f",
+    post_effect_color = '#ffffff9f',
     sunlight_propagates = true,
     drowning = 0.5,
-    liquid_alternative_flowing = "sbz_planets:snow_layer",
-    liquid_alternative_source = "sbz_planets:snow"
+    liquid_alternative_flowing = 'sbz_planets:snow_layer',
+    liquid_alternative_source = 'sbz_planets:snow',
 })
 
-stairs.register("sbz_planets:snow")
+stairs.register 'sbz_planets:snow'
 
 local snowbox = {
-    type = "fixed",
+    type = 'fixed',
     fixed = {
-        -0.5, -0.5, -0.5, 0.5, -(5 / 16), 0.5
+        -0.5,
+        -0.5,
+        -0.5,
+        0.5,
+        -(5 / 16),
+        0.5,
     },
 }
 
-core.register_node("sbz_planets:snow_layer", {
-    description = "Snow layer",
-    tiles = { "snow.png", "blank.png", "snow.png" },
-    use_texture_alpha = "clip",
-    drawtype = "nodebox",
-    paramtype2 = "wallmounted",
-    paramtype = "light",
-    groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, cold = 1, charged = 1, explody = 1000, not_in_creative_inventory = 1, attached_node = 1, },
+core.register_node('sbz_planets:snow_layer', {
+    description = 'Snow layer',
+    tiles = { 'snow.png', 'blank.png', 'snow.png' },
+    use_texture_alpha = 'clip',
+    drawtype = 'nodebox',
+    paramtype2 = 'wallmounted',
+    paramtype = 'light',
+    groups = {
+        oddly_breakable_by_hand = 1,
+        matter = 3,
+        water = 1,
+        cold = 1,
+        charged = 1,
+        explody = 1000,
+        not_in_creative_inventory = 1,
+        attached_node = 1,
+    },
     sounds = sbz_api.sounds.snow(),
     node_box = snowbox,
     collision_box = snowbox,
     walkable = false,
     climbable = false,
-    post_effect_color = "#ffffff9f",
+    post_effect_color = '#ffffff9f',
     sunlight_propagates = true,
-    drop = "sbz_planets:snowball"
+    drop = 'sbz_planets:snowball',
 })
 
-core.register_craftitem("sbz_planets:snowball", {
-    description = "Snowball",
-    inventory_image = "snowball.png"
+core.register_craftitem('sbz_planets:snowball', {
+    description = 'Snowball',
+    inventory_image = 'snowball.png',
 })
 
-core.register_node("sbz_planets:colorium_core", {
-    description = "Colorium Core Piece - Deprecated",
-    tiles = { "blank.png^[invert:rgba" },
+core.register_node('sbz_planets:colorium_core', {
+    description = 'Colorium Core Piece - Deprecated',
+    tiles = { 'blank.png^[invert:rgba' },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 1, level = 2, not_in_creative_inventory = 1 },
     sounds = sbz_api.sounds.matter(),
     light_source = core.LIGHT_MAX,
-    drop = "sbz_bio:colorium_emitter"
+    drop = 'sbz_bio:colorium_emitter',
 })
 
-local water_color = "#576ee180"
+local water_color = '#576ee180'
 
-core.register_node("sbz_planets:water_source_nofall", {
-    description = "Not Water",
-    drawtype = "liquid",
+core.register_node('sbz_planets:water_source_nofall', {
+    description = 'Not Water',
+    drawtype = 'liquid',
     tiles = {
-        { name = "water.png", backface_culling = false },
-        { name = "water.png", backface_culling = true }
+        { name = 'water.png', backface_culling = false },
+        { name = 'water.png', backface_culling = true },
     },
-    inventory_image = (minetest.inventorycube "water.png") .. "^[colorize:blue:50",
-    use_texture_alpha = "blend",
+    inventory_image = (minetest.inventorycube 'water.png') .. '^[colorize:blue:50',
+    use_texture_alpha = 'blend',
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 0, water = 1 },
     post_effect_color = water_color,
-    paramtype = "light",
+    paramtype = 'light',
     walkable = false,
     pointable = false,
     climbable = true,
     buildable_to = true,
     liquid_renewable = false,
-    liquidtype = "none",
+    liquidtype = 'none',
     liquid_viscosity = 1,
     drowning = 1,
 })
 
-core.register_node("sbz_planets:colorium_mapgen_sapling", {
-    description = "Mapgen Sapling (i guess you just got an insant sapling lol)",
+core.register_node('sbz_planets:colorium_mapgen_sapling', {
+    description = 'Mapgen Sapling (i guess you just got an insant sapling lol)',
     -- drop = "",
     groups = { not_in_creative_inventory = 1 },
-    drawtype = "allfaces",
+    drawtype = 'allfaces',
     tiles = {
-        { name = "colorium_sapling.png", backface_culling = false }
+        { name = 'colorium_sapling.png', backface_culling = false },
     },
-    use_texture_alpha = "clip",
+    use_texture_alpha = 'clip',
 })
+
+--- ===== crafting recipes ===== ----
+
+local pebble = 'sbz_resources:pebble'
+
+core.register_craft {
+    output = 'sbz_planets:blue_stone',
+    recipe = {
+        { pebble, pebble, pebble },
+        { pebble, 'sbz_resources:raw_emittrium', pebble },
+        { pebble, pebble, pebble },
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:red_stone',
+    recipe = {
+        { pebble, pebble, pebble },
+        { pebble, 'sbz_resources:core_dust', pebble },
+        { pebble, pebble, pebble },
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:basalt',
+    recipe = {
+        { pebble, pebble, pebble },
+        { pebble, 'sbz_resources:charged_particle', pebble },
+        { pebble, pebble, pebble },
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:marble',
+    recipe = {
+        { pebble, pebble, pebble },
+        { pebble, 'sbz_resources:white_sand', pebble },
+        { pebble, pebble, pebble },
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:granite',
+    recipe = {
+        { pebble, pebble, pebble },
+        { pebble, 'sbz_resources:sand', pebble },
+        { pebble, pebble, pebble },
+    },
+}
+sbz_api.recipe.register_craft {
+    type = 'crushing',
+    items = { 'sbz_planets:ice' },
+    output = 'sbz_planets:snow 2',
+}
+
+sbz_api.recipe.register_craft {
+    type = 'compressing',
+    items = { 'sbz_planets:snow 2' },
+    output = 'sbz_planets:ice',
+}
+
+core.register_craft {
+    type = 'shapeless',
+    output = 'sbz_planets:snowball 9',
+    recipe = {
+        'sbz_planets:snow',
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:snow',
+    recipe = {
+        { 'sbz_planets:snowball', 'sbz_planets:snowball', 'sbz_planets:snowball' },
+        { 'sbz_planets:snowball', 'sbz_planets:snowball', 'sbz_planets:snowball' },
+        { 'sbz_planets:snowball', 'sbz_planets:snowball', 'sbz_planets:snowball' },
+    },
+}
+
+-- now at last, the ores
+-- intentionally not worth it to craft
+
+core.register_craft {
+    output = 'sbz_planets:thorium_ore',
+    recipe = {
+        { 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder' },
+        { 'sbz_chem:thorium_powder', 'sbz_planets:red_stone', 'sbz_chem:thorium_powder' },
+        { 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder' },
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:uranium_ore',
+    recipe = {
+        { 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder' },
+        { 'sbz_chem:uranium_powder', 'sbz_planets:blue_stone', 'sbz_chem:uranium_powder' },
+        { 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder' },
+    },
+}
+
+core.register_craft {
+    output = 'sbz_planets:dwarf_orb_ore',
+    recipe = {
+        { 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb' },
+        { 'sbz_planets:dwarf_orb', 'sbz_resources:stone', 'sbz_planets:dwarf_orb' },
+        { 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb' },
+    },
+}
 
 --[[
     THE FOLLOWING 2 FUNCTIONS and the moves string ARE FROM STELLUA - though heavily modified
@@ -281,30 +400,26 @@ These functions have been modified.
 Anything else besides those functions is licensed normally.
 ]]
 
-local MOVES = "FfffTTTABCDabcd++--&&^^//**"
+local MOVES = 'FfffTTTABCDabcd++--&&^^//**'
 
 --Create random axiom recursively
 local axioms = 0
 
 local function make_axiom_internal(rand, depth)
     axioms = axioms + 1
-    if axioms >= 10 then
-        return ""
-    end
-    if depth >= 3 then return "" end
+    if axioms >= 10 then return '' end
+    if depth >= 3 then return '' end
     depth = depth or 0
     local out = {}
     for _ = 1, rand:next(4, 8) do
         local char = rand:next(-1, string.len(MOVES))
         if char <= 0 then
-            out[#out + 1] = "[" .. make_axiom_internal(rand, depth + 1) .. "]"
+            out[#out + 1] = '[' .. make_axiom_internal(rand, depth + 1) .. ']'
         else
             out[#out + 1] = string.sub(MOVES, char, char)
         end
     end
-    if axioms < 1 then
-        out[#out + 1] = make_axiom_internal(rand, 0)
-    end
+    if axioms < 1 then out[#out + 1] = make_axiom_internal(rand, 0) end
     return table.concat(out)
 end
 
@@ -324,17 +439,17 @@ local function make_treedef(rand)
         rules_b = make_axiom(rand),
         rules_c = make_axiom(rand),
         rules_d = make_axiom(rand),
-        trunk = "sbz_bio:colorium_tree",
-        leaves = "sbz_bio:colorium_leaves",
+        trunk = 'sbz_bio:colorium_tree',
+        leaves = 'sbz_bio:colorium_leaves',
         angle = rand:next(10, 50),
         -- map iterations to 3 to 7, with 3 being the most likely
         iterations = math.round(3 + (4 * ((rand:next(0, random_enough) / random_enough) ^ 1.4))),
         random_level = rand:next(0, 3),
-        trunk_type = ({ "single", "single", "single", "double", "crossed" })[rand:next(1, 5)],
+        trunk_type = ({ 'single', 'single', 'single', 'double', 'crossed' })[rand:next(1, 5)],
         thin_branches = true,
         fruit_chance = 0,
         seed = rand:next(),
-        tree_core = "sbz_bio:colorium_tree_core",
+        tree_core = 'sbz_bio:colorium_tree_core',
         max_size = 4000,
     }
 end
@@ -344,21 +459,19 @@ sbz_api.make_treedef = make_treedef
 sbz_api.make_axiom = make_axiom
 
 core.register_abm {
-    label = "Colorium mapgen sapling",
-    nodenames = { "sbz_planets:colorium_mapgen_sapling" },
+    label = 'Colorium mapgen sapling',
+    nodenames = { 'sbz_planets:colorium_mapgen_sapling' },
     interval = 1,
     chance = 1,
     catch_up = false,
     action = function(pos, node, aoc, aocw)
         local planet = select(2, next(sbz_api.planets.area:get_areas_for_pos(pos, true, false)))
-        if planet == nil then
-            return core.remove_node(pos)
-        end
+        if planet == nil then return core.remove_node(pos) end
 
         local center = (vector.subtract(planet.max, planet.min) / 2) + planet.min
         local angle = vector.dir_to_rotation(vector.normalize(vector.subtract(center, pos)))
         core.remove_node(pos)
         local dna = make_treedef(PcgRandom(math.floor(pos.x) + math.ceil(pos.y) + math.round(pos.z)))
-        sbz_api.spawn_tree(pos, dna, "", angle)
-    end
+        sbz_api.spawn_tree(pos, dna, '', angle)
+    end,
 }

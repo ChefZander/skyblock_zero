@@ -356,7 +356,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
             if
                 core.get_item_group(tonode.name, 'tubedevice_receiver') == 1
                 and core.get_item_group(tonode.name, 'tubedevice_use_item_entities') == 0
-            then -- xD - instatubes and everything else... WHY DID I NOT THINK OF THIS EARLIER OMG
+            then
                 item = todef.tube.insert_object(topos, tonode, item, vel, owner)
                 frominv:add_item(frominvname, item)
                 return true

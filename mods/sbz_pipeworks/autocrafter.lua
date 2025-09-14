@@ -410,11 +410,15 @@ minetest.register_node('pipeworks:autocrafter', {
                     that_stack = srclist[i]
                     new_count = that_stack:get_count() + stack:get_count()
                     if that_stack:get_name() == '' then that_stack:set_name(stackname) end
-                    if that_stack:get_name() == stackname then
+                    -- BUGFIX #167
+                    -- that_stack will still be empty if it's a tool for some reason?
+                    -- weeird
+                    if that_stack:get_name() == stackname or that_stack:get_name() == '' then
                         leftover = math.max(0, new_count - stack_max)
                         that_stack:set_count(new_count - leftover)
                         srclist[i] = that_stack
                         stack:set_count(leftover)
+                        stack:set_name(stackname)
                         if leftover == 0 then break end
                     end
                 end
@@ -437,6 +441,7 @@ minetest.register_node('pipeworks:autocrafter', {
                     compare_stack:set_count(leftover)
                 end
             end
+
             return compare_stack:get_count() == 0
         end,
         input_inventory = 'dst',

@@ -1,7 +1,6 @@
 {
     "runtime.version": "LuaJIT",
-    "workspace.library": [
-        "types/core.d.lua",
-    ],
-    "diagnostic.disable": [],
+    "completion.autoRequire": false,
+    "workspace.library": [ "types/core.d.lua" ],
+    "diagnostic.disable": [ "lowercase-global" ]
 }

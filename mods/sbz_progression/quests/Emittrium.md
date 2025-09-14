@@ -24,7 +24,8 @@ Requires: Annihilator
 
 To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate.  
 The cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.  
-Also, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in very specific cases (like automation).
+Also, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in some cases.  
+For example, if you have one area for plants, one area for manifacturing, cables are the nicest option to bridge the areas.
 
 ### Meta
 
@@ -45,8 +46,8 @@ Requires: Obtain Emittrium
 ### Text
 
 Starlight Catchers are similar starlight collectors but more compact, generating 1Cj/s.  
-But unlike starlight collectors, they need Photon-Energy converters, to convert their energy into usable power.  
-They won't do anything if you connect them directly to a switching station.  
+But unlike starlight collectors, they need **Photon-Energy converters**, to convert their energy into usable power.  
+They won't do anything if you connect them directly to a switching station, as they provide power though the photon-energy converter.  
 
 ### Meta
 
@@ -56,7 +57,7 @@ Requires: Starlight Collectors
 
 ### Text
 
-For almost all recipes related to storing or transferring Cosmic Joules (power), you'll need Emittrium Circuits. They're a shapeless craft using Raw Emittrium, a Charged Particle, a Retaining Circuit and a matter plate.
+For some recipes related to storing or transferring power, you'll need Emittrium Circuits. 
 
 ### Meta
 
@@ -67,6 +68,8 @@ Requires: Matter Plates, Obtain Emittrium, Retaining Circuits
 ### Text
 
 Sometimes, you'll need to temporarily buffer some energy. That's what the Battery is for. It stores up to 5 kCj of energy. You can craft it by surrounding a Emittrium Circuit with matter blobs.
+
+TIP: Without batteries, all power that isn't being used for machines is wasted, with batteries you can store some of it.
 
 ### Meta
 
@@ -82,6 +85,16 @@ IMPORTANT: Make sure that only one of the two or more joined networks has a swit
 ### Meta
 
 Requires: Emittrium Circuits, Reinforced Matter
+
+## Angel's Wing
+
+### Text
+
+The Angel's Wing can make you fly. Right-Click to use, it has 100 uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.
+
+### Meta
+
+Requires: Emittrium Circuits, Concrete Plan
 
 ## Ele Fabs
 
