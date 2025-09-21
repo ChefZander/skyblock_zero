@@ -241,6 +241,7 @@ core.registered_nodes = {}
 
 ---@param itemname string
 ---@param groupname string
+---@nodiscard
 ---@return integer
 function core.get_item_group(itemname, groupname) end
 

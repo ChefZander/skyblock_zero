@@ -408,10 +408,9 @@ end
     https://github.com/mt-mods/technic/blob/379bedc20d7ab11c758afa52d5916b23dced5354/technic/helpers.lua#L102 to line 107
 ]]
 
-local get_or_load_node_node
 function sbz_api.get_or_load_node(pos)
-    get_or_load_node_node = core.get_node_or_nil(pos)
-    if get_or_load_node_node then return get_or_load_node_node end
+    local node = core.get_node_or_nil(pos)
+    if node then return node end
     core.load_area(pos)
     return core.get_node(pos)
 end

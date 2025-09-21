@@ -243,7 +243,7 @@ local instatube_insert_object = function(pos, _, stack, _, owner, ordering)
                 if machine.tube.insert_object then
                     stack = machine.tube.insert_object(mpos, mnode, stack, { x = 0, y = 0, z = 0, speed = 1 }, owner)
                 end
-            else -- its a tupe, dump the stack in
+            else -- its a tube, dump the stack in
                 local entity = pipeworks.tube_inject_item(
                     mpos,
                     vector.subtract(mpos, machine.dir),

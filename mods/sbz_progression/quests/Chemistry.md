@@ -53,6 +53,19 @@ Congratulations, Commander! You've just unlocked the Bronze Age, because nothing
 
 Requires: Simple Alloy Furnace, Crusher
 
+## Centrifuge
+
+### Text
+
+In the centrifuge you can get:
+- sand -> silicon, gold, white sand
+- gravel -> titanium, lithium, cobalt, pebbles
+- white sand/dark sand -> silver, darker variation of said sand
+
+### Meta
+
+Requires: Crusher, Simple Alloy Furnace
+
 ## Compressor
 
 ### Text
@@ -61,20 +74,10 @@ Have you ever wanted to turn your metals into blocks? Now you can!
 Craft this wonderful compressor, insert 9 powder, or 9 ingots, and watch as it makes blocks out of them.  
 
 Blocks made from metals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.  
-
 ### Meta
 
 Requires: Crusher, Simple Alloy Furnace 
 
-## Centrifuge
-
-### Text
-
-In the centrifuge you can get gold, silicon and white sand from normal sand, silver from some sand shades, and rare metals (titanium, lithium and cobalt) from gravel.  
-
-### Meta
-
-Requires: Crusher, Simple Alloy Furnace
 
 ## Advanced Batteries
 
@@ -90,7 +93,7 @@ Requires: Batteries, Furnace, Centrifuge
 
 ### Text
 
-If you have lots of metals this is the battery for you!  
+If you have **lots of metals** this is the battery for you! If you don't, then those metals can be put into better uses.  
 
 ### Meta
 
@@ -165,7 +168,6 @@ Requires: Furnace
 ### Text
 
 The elecric drill has 500 uses and is powered by electricity.  
-What does that mean?  
   
 If you "place" it on a battery (sneak+right click), it will take power from the battery and charge the drill! (Just like the jetpack)  
 It needs 1 power per 1 use.  
@@ -358,9 +360,10 @@ Requires: Crusher
 Small protectors protect a decently sized area.  
 Unwanted people won't be able to take items from machines or modify filter injectors or... like... do anything in your land... if the area is protected. Also this can't be placed anywhere near cores.  
   
-Special names ("owners") that you can add to protectors (no player can name themselvs these):  
+Special names ("owners") that you can add to protectors (no player can name themselves these):  
 **.meteorite** - meteorites will now explode in your area  
 **.strange_blob_spread** - strange blobs will spread in your area  
+
 
 ### Meta
 
