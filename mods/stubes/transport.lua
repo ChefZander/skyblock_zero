@@ -3,6 +3,7 @@ local h, uh = core.hash_node_position, core.get_position_from_hash
 --- The state of an active tube, doesn't update if the node does, so things like `dir` should not be there
 ---@class stube.TubeState
 ---@field items table<integer, ItemStack> Not an array
+---@field entities? table<integer, userdata> Not an array
 ---@field updated_at integer
 ---@field to_remove? boolean
 
@@ -12,14 +13,16 @@ stube.all_stubes = stubes
 stube.current_update_time = 0 -- used in tubed items
 
 local timers = {}
-for name, def in pairs(stube.registered_tubes) do
-    timers[name] = { current = 0, max = def.speed }
-    stubes[name] = {}
-end
+core.register_on_mods_loaded(function()
+    for name, def in pairs(stube.registered_tubes) do
+        timers[name] = { current = 0, max = def.speed }
+        stubes[name] = {}
+    end
+end)
 
 local IG = core.get_item_group
 
---- Transfer items to foreign nodes (anything not part of STubes), The owner field in pipeworks isn't tracked
+--- Transfer items to foreign nodes (pipeworks receivers), The owner field in pipeworks isn't tracked
 function stube.transfer_items(tube_state, tube_def, transfer_to_node, transfer_to_pos, tube_dir)
     local next_node_def = core.registered_nodes[transfer_to_node.name]
     if next_node_def.tube and next_node_def.tube.insert_object then
@@ -39,8 +42,8 @@ function stube.transfer_items(tube_state, tube_def, transfer_to_node, transfer_t
     end
 end
 
---- Problem: can't trust table length or table.insert, so uh... umm
---- yeah...
+--- Problem: can't trust table length or table.insert with tables that have holes
+--- so this has to be the solution, does not seem to be a good one though
 local function insert_item(t, v, c)
     for i = 1, c do
         if t[i] == nil then
@@ -64,12 +67,11 @@ local function push_items_to_next_tube(next_node, next_pos, tube_def, tube_state
         local items = next_tube_state.items
 
         for i = 1, next_tube_def.capacity do
-            if items[i] then can_insert = can_insert + 1 end
+            if items[i] == nil then can_insert = can_insert + 1 end
         end
     end
 
     if is_empty then
-        -- uhh, guess we will have to make an entry? since we are inserting stuff, and it needs to be there
         stubes[prefix][next_tube_hpos] = {
             items = {},
             updated_at = stube.current_update_time,
@@ -85,7 +87,7 @@ local function push_items_to_next_tube(next_node, next_pos, tube_def, tube_state
                 inserted = inserted + 1
                 if inserted > can_insert then break end
 
-                insert_item(next_tube_state.items, item, tube_def.capacity)
+                insert_item(next_tube_state.items, item, next_tube_def.capacity)
                 tube_state.items[i] = nil
             end
         end
@@ -192,4 +194,19 @@ function stube.add_tubed_item(pos, stack)
     end
 
     return insert_item(tube_state.items, stack, stube.registered_tubes[prefix].capacity)
+end
+
+function stube.tube_input_insert_object(pos, node, stack, vel, owner)
+    local prefix = stube.get_prefix_tube_name(node.name)
+    local all_stubes_of_our_type = stubes[prefix]
+    local hpos = h(pos)
+    local tube_state = all_stubes_of_our_type[hpos]
+    if not tube_state then
+        all_stubes_of_our_type[hpos] = {
+            items = {},
+            updated_at = stube.current_update_time,
+        }
+        tube_state = all_stubes_of_our_type[hpos]
+    end
+    if insert_item(tube_state.items, stack, stube.registered_tubes[prefix].capacity) == false then return stack end
 end

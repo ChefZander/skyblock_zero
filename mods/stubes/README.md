@@ -5,12 +5,11 @@ Though, they are in a weird stage of still being dependant on pipeworks.
 
 I am using 32x32 textures for the tubes, because i could not fit a recognizable arrow into a 32x32 texture without making the node bigger.
 
-A lot of the aproaches were from pipeworks.
+This mod was heavily inspired by pipeworks.
 
-# Docs
+# Docs - TODO: THEY ARE INACCURATE CURRENTLY
 ## Groups
 - `stube=1` - if it's an stube
-- `stube_input=1` - if it can input into an stube
 - `tubedevice`/`tubedevice_receiver` - these are groups from pipeworks
 ## Functions
 ### Registration

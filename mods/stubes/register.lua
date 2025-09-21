@@ -1,6 +1,6 @@
 ---@class stube.TubeDef
 ---@field textures table
----@field speed number
+---@field speed number The amount of time between updates, lower is faster
 ---@field capacity integer The amount of ItemStacks that can fit
 ---@field should_update fun(tube_hpos:integer, tube_state:stube.TubeState, node:node):boolean
 ---@field get_next_pos_and_node fun(tube_hpos:integer, tube_state:stube.TubeState, dir:integer):vector, node
@@ -175,14 +175,12 @@ function stube.register_tube(name, def, tubedef)
     def.groups.stube = 1
 
     -- pipeworks -> stube compatibility
-    -- i love when an api isn't documented at all
     --- FIXME: Implement insert_object/can_insert functions
     def.groups.tubedevice = 1
     def.groups.tubedevice_receiver = 1
     def.tube = {
-        insert_object = function(pos, node, stack, dir) end,
-        can_insert = function(pos, node, stack, dir) end,
-        connect_sides = { back = 1 },
+        insert_object = stube.tube_input_insert_object,
+        can_insert = stube.tube_input_can_insert,
     }
 
     -- Alias
@@ -285,7 +283,7 @@ function stube.join_tube_name(split)
     return split.prefix .. '_' .. split.dir .. table.concat(split.connections, '')
 end
 
-function stube.default_should_update(tube_hpos, tube_state, node)
+function stube.default_should_update_tube(tube_hpos, tube_state, node)
     -- Don't update if its a short tube
     local split = stube.split_tube_name(node.name)
     local amount_of_connections = 0
@@ -298,23 +296,3 @@ function stube.default_should_update(tube_hpos, tube_state, node)
     end
     return true
 end
-
-stube.register_tube('stubes:test_tube', {
-    description = 'Test Tube',
-    drawtype = 'nodebox',
-    sunlight_propagates = true,
-    use_texture_alpha = 'blend',
-    groups = { matter = 1 },
-    after_dig_node = stube.update_placement,
-    on_punch = stube.default_tube_punch,
-}, {
-    textures = stube.make_tube_textures_from 'stube_basic_tube.png',
-    speed = 1, -- 1 stack/s
-    capacity = 3,
-    should_update = stube.default_should_update,
-    get_next_pos_and_node = function(tube_hpos, tube_state, tube_dir)
-        local cdir = core.wallmounted_to_dir(tube_dir)
-        local pos = core.get_position_from_hash(tube_hpos) + cdir
-        return pos, stube.get_or_load_node(pos)
-    end,
-})
