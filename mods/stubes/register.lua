@@ -1,7 +1,7 @@
+--- Tube capacity is always <the number of connections>+1
 ---@class stube.TubeDef
 ---@field textures table
 ---@field speed number The amount of time between updates, lower is faster
----@field capacity integer The amount of ItemStacks that can fit
 ---@field should_update fun(tube_hpos:integer, tube_state:stube.TubeState, node:node):boolean
 ---@field get_next_pos_and_node fun(tube_hpos:integer, tube_state:stube.TubeState, dir:integer):vector, node
 
@@ -26,7 +26,7 @@ local function tube_nodebox(len, stretch_to)
     end
     return base_box
 end
-local tube_size = 3 / 16
+stube.tube_size = 3 / 16
 
 --- e* -> expected
 --- so edir = expected dir
@@ -88,15 +88,20 @@ local function register_single_tube(name, def, tubedef, dir, xc, yc, zc, nxc, ny
     local nodebox = { type = 'fixed', fixed = {} }
     local fixed = nodebox.fixed
 
-    if yc == 1 then table.insert(fixed, tube_nodebox(tube_size, 'top')) end
-    if nyc == 1 then table.insert(fixed, tube_nodebox(tube_size, 'bottom')) end
+    if yc == 1 then table.insert(fixed, tube_nodebox(stube.tube_size, 'top')) end
+    if nyc == 1 then table.insert(fixed, tube_nodebox(stube.tube_size, 'bottom')) end
 
-    if xc == 1 then table.insert(fixed, tube_nodebox(tube_size, 'right')) end
-    if nxc == 1 then table.insert(fixed, tube_nodebox(tube_size, 'left')) end
+    if xc == 1 then table.insert(fixed, tube_nodebox(stube.tube_size, 'right')) end
+    if nxc == 1 then table.insert(fixed, tube_nodebox(stube.tube_size, 'left')) end
 
-    if zc == 1 then table.insert(fixed, tube_nodebox(tube_size, 'back')) end
-    if nzc == 1 then table.insert(fixed, tube_nodebox(tube_size, 'front')) end
-    if visible then table.insert(fixed, { -tube_size, -tube_size, -tube_size, tube_size, tube_size, tube_size }) end
+    if zc == 1 then table.insert(fixed, tube_nodebox(stube.tube_size, 'back')) end
+    if nzc == 1 then table.insert(fixed, tube_nodebox(stube.tube_size, 'front')) end
+    if visible then
+        table.insert(
+            fixed,
+            { -stube.tube_size, -stube.tube_size, -stube.tube_size, stube.tube_size, stube.tube_size, stube.tube_size }
+        )
+    end
     def.node_box = nodebox
 
     -- okay...... now the textures
@@ -175,19 +180,16 @@ function stube.register_tube(name, def, tubedef)
     def.groups.stube = 1
 
     -- pipeworks -> stube compatibility
-    --- FIXME: Implement insert_object/can_insert functions
     def.groups.tubedevice = 1
     def.groups.tubedevice_receiver = 1
     def.tube = {
         insert_object = stube.tube_input_insert_object,
-        can_insert = stube.tube_input_can_insert,
+        --can_insert = stube.tube_input_can_insert, NYI: TODO:? maybe? i mean who will use this with pipeworks tubes wtf
     }
 
     -- Alias
     core.register_alias('stubes:test_tube', 'stubes:test_tube_0000000')
     def.drop = 'stubes:test_tube'
-
-    -- pipeworks compat ends
 
     -- i saw what pipeworks was doing, so i think i am going with whatever this "old aproach" is https://github.com/mt-mods/pipeworks/blob/6e11868d1b32d316d60061c78460d260ac92ed6a/tubes/registration.lua#L176
     -- because it mentioned something about "the textures must be rotated" with the "new aproach", and uh i think that will complicate things, and i don't want to deal with rotating them.
@@ -250,15 +252,30 @@ end
 --    name = name .. '_' .. dir .. xc .. yc .. zc .. nxc .. nyc .. nzc
 --    so last 7 characters
 function stube.get_tube_name_info(name)
-    local str_params = name:sub(-7, -1)
     local ret = {}
+    local start = #name - 7
     for i = 1, 7 do
-        ret[i] = assert(
-            tonumber(string.sub(str_params, i, i)),
-            'Something went very wrong, please check relevant line of code and report this'
-        )
+        ret[i] = tonumber(string.sub(name, start + i, start + i))
     end
     return ret
+end
+
+local is_short_tube_memo = {}
+
+function stube.is_short_tube(name)
+    if is_short_tube_memo[name] ~= nil then return is_short_tube_memo[name] end
+
+    local info = stube.get_tube_name_info(name)
+    local amount_of_connections = 0
+    for i = 2, 7 do -- info[1] is direction
+        if info[i] == 1 then amount_of_connections = amount_of_connections + 1 end
+    end
+
+    local straight_tube_index = (stube.wallmounted_to_connections_index[info[1]] + 3) % 6 -- the index opposite to the dir, if that makes sense
+    if straight_tube_index == 0 then straight_tube_index = 6 end
+
+    is_short_tube_memo[name] = amount_of_connections == 1 and info[1 + straight_tube_index] == 1
+    return is_short_tube_memo[name]
 end
 
 function stube.get_prefix_tube_name(name)
@@ -285,14 +302,5 @@ end
 
 function stube.default_should_update_tube(tube_hpos, tube_state, node)
     -- Don't update if its a short tube
-    local split = stube.split_tube_name(node.name)
-    local amount_of_connections = 0
-    for i = 1, 6 do
-        if split.connections[i] == 1 then amount_of_connections = amount_of_connections + 1 end
-    end
-    if amount_of_connections == 0 then return false end
-    if amount_of_connections == 1 and split.connections[stube.wallmounted_to_connections_index[split.dir]] == 0 then -- if its a short tube
-        return false
-    end
-    return true
+    return not stube.is_short_tube(node.name)
 end

@@ -7,6 +7,10 @@ I am using 32x32 textures for the tubes, because i could not fit a recognizable 
 
 This mod was heavily inspired by pipeworks.
 
+## Performance
+- Tubed item visuals which aren't near the player aren't shown (so that gets rid of the need to perform costly `move_to` calls)
+- It should be able to handle 10 000 items quite easily
+
 # Docs - TODO: THEY ARE INACCURATE CURRENTLY
 ## Groups
 - `stube=1` - if it's an stube

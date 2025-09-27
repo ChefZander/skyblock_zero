@@ -1,3 +1,7 @@
+-- Okay so this code is kinda messy? probably better than pipeworks
+-- just uh be aware
+-- if you don't understand it thats fine, message me (frog) and i could make a comment explaining
+
 --- If it's a tube device, and is NOT an stube
 function stube.is_tubedevice(node_name)
     local reg = core.registered_nodes[node_name]
@@ -7,12 +11,13 @@ function stube.is_tubedevice(node_name)
     return true
 end
 
+-- pipeworks has a better solution im not doing for the sake of licensing
 function stube.process_pipeworks_connect_sides(connect_sides, neighbor_dir, neighbor_node)
     local neighbor_facedir = neighbor_node.param2
     local neighbor_facedir_dir = core.facedir_to_dir(neighbor_facedir)
     if neighbor_facedir > 23 then neighbor_facedir = 0 end
     local rotate_by = -vector.dir_to_rotation(neighbor_facedir_dir)
-    if rotate_by.y < -1 then rotate_by.x = -90 end -- HACK, that i am not going to fix, this was derived from brute force, it allows placing tubes to tubedevices from above work, specifically filter injectors
+    if math.floor(neighbor_facedir / 4) ~= 0 and rotate_by.y < -1 then rotate_by.x = -(math.pi / 2) end -- HACK, that i am not going to fix, this was derived from brute force, it allows placing tubes to tubedevices from above work, specifically filter injectors
     local correct_dir = vector.rotate(neighbor_dir, rotate_by)
     local wallmounted_dir = core.dir_to_wallmounted(correct_dir)
 
@@ -33,7 +38,8 @@ local function has_no_connections(connections)
 end
 
 -- the order in which i chose the connections was kinda stupid, because it isn't the wallmounted direction
--- so i have to do this sort of thing instead of just doing connections[dir]=1
+-- so i have to do this sort of thing instead of just doing connections[wallmounted]=1
+-- This table is {[wallmounted] = STube connection}
 stube.wallmounted_to_connections_index = {
     [0] = 2,
     [1] = 5,
@@ -344,6 +350,10 @@ end
 -- Change the direction to the one we are pointing to
 -- Needs sneak+punch
 function stube.default_tube_punch(pos, node, puncher, pointed_thing)
+    if core.is_protected(pos, puncher) then
+        core.record_protection_violation(pos, puncher)
+        return
+    end
     if puncher and puncher:get_player_control().sneak then
         local split = stube.split_tube_name(node.name)
         split.dir = core.dir_to_wallmounted(pointed_thing.above - pointed_thing.under)
@@ -354,8 +364,7 @@ function stube.default_tube_punch(pos, node, puncher, pointed_thing)
 end
 
 if core.global_exists 'pipeworks' then -- hijack pipeworks for our benefit nyehehe
-    local old_scan_for_tube_objects = pipeworks.scan_for_tube_objects
-    local pipeworks = pipeworks
+    local old_scan_for_tube_objects = pipeworks.scan_for_tube_objects -- this runs when ANY PIPEWORKS TUBE OR TUBEDEVICE GETS PLACED, really convenient
 
     ---@diagnostic disable-next-line: duplicate-set-field
     function pipeworks.scan_for_tube_objects(pos)
