@@ -36,7 +36,7 @@ end
 minetest.register_craftitem("sbz_bio:fertilizer", {
     description = "Fertilizer",
     inventory_image = "fertilizer.png",
-    on_place = fert_use,
+    on_place = sbz_api.on_place_precedence(fert_use),
     on_use = fert_use,
     groups = { ui_bio = 1 },
 })

@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
     version = 38,
-    is_version_dev = true,
+    is_version_dev = false,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get 'sbz_server_mode' or 'auto'),
     deg2rad = math.pi / 180,
@@ -17,7 +17,7 @@ sbz_api = {
         return false
     end,
     accelerated_habitats = false,
-    debug = minetest.settings:get_bool('sbz_debug', false),
+    debug = core.settings:get_bool('sbz_debug', false),
     logic_gate_linking_range = 15,
 }
 
@@ -145,7 +145,7 @@ function iterate_around_radius(pos, func, rad)
     end
 end
 
-minetest.register_on_newplayer(function(player)
+core.register_on_newplayer(function(player)
     player:set_pos { x = 0, y = 1, z = 0 }
 
     local inv = player:get_inventory()
@@ -163,20 +163,20 @@ minetest.register_on_newplayer(function(player)
     end
 end)
 
-minetest.register_on_joinplayer(function(ref, last_login)
-    local privs = minetest.get_player_privs(ref:get_player_name())
+core.register_on_joinplayer(function(ref, last_login)
+    local privs = core.get_player_privs(ref:get_player_name())
     privs.home = true
     privs.tp = true
-    minetest.set_player_privs(ref:get_player_name(), privs)
+    core.set_player_privs(ref:get_player_name(), privs)
 
     ref:override_day_night_ratio(0)
 end)
 
-minetest.register_chatcommand('core', {
+core.register_chatcommand('core', {
     description = 'Go back to the core.',
     privs = {},
     func = function(name, param)
-        minetest.get_player_by_name(name):set_pos { x = 0, y = 1, z = 0 }
+        core.get_player_by_name(name):set_pos { x = 0, y = 1, z = 0 }
         sbz_api.displayDialogLine(name, 'Sent you back to the Core.') -- i think me renaming "Beamed" to "Sent" is going to make zander mad but i geniuenly have no idea what "Beamed" means so i think most people have no idea too
         -- me, frog, renaming it will also most likely make people investigate its meaning, so we will see :)
     end,
@@ -209,14 +209,14 @@ local function playRandomBGM(player)
     local random_index = math.random(1, #bgm_sounds)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
-    if handles[player_name] then minetest.sound_stop(handles[player_name]) end
+    if handles[player_name] then core.sound_stop(handles[player_name]) end
     local volume = player:get_meta():get_int 'volume' / 100
     if volume == 0 and player:get_meta():get_int 'has_set_volume' == 0 then volume = 1 end
-    handles[player_name] = minetest.sound_play(sound_name, {
+    handles[player_name] = core.sound_play(sound_name, {
         to_player = player_name,
         gain = volume,
     })
-    minetest.after(
+    core.after(
         sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
             playRandomBGM(player)
@@ -226,7 +226,7 @@ end
 
 sbz_api.bgm_handles = handles
 
-minetest.register_chatcommand('bgm_volume', {
+core.register_chatcommand('bgm_volume', {
     description = 'Adjusts volume of background music',
     params = '[volume, 0 to 200%]',
     func = function(name, param)
@@ -234,7 +234,7 @@ minetest.register_chatcommand('bgm_volume', {
         if volume == nil or volume < 0 or volume > 200 then
             return false, 'Needs to be a number between 0 and 200, 100 is the default volume.'
         end
-        local player = minetest.get_player_by_name(name or '')
+        local player = core.get_player_by_name(name or '')
         if not player then return end
         local meta = player:get_meta()
         meta:set_int('volume', volume)
@@ -245,18 +245,18 @@ minetest.register_chatcommand('bgm_volume', {
     end,
 })
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
     -- send welcome messages
-    minetest.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
-    minetest.chat_send_player(
+    core.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
+    core.chat_send_player(
         player:get_player_name(),
         '‼ reminder: If you fall off, use /core to teleport back to the core.'
     )
-    minetest.chat_send_player(
+    core.chat_send_player(
         player:get_player_name(),
         '‼ reminder: If lose your Quest Book, use /qb to get it back.'
     )
-    --    minetest.chat_send_player(player:get_player_name(),
+    --    core.chat_send_player(player:get_player_name(),
     --        "‼ Also, you can hold right click on the core, instead of having to spam your mouse, on mobile you might need to just hold tap")
     -- play bgm
     playRandomBGM(player)
@@ -348,8 +348,8 @@ core.register_chatcommand('killme', {
 })
 
 -- for the immersion
-minetest.register_on_chat_message(function(name, message)
-    local players = minetest.get_connected_players()
+core.register_on_chat_message(function(name, message)
+    local players = core.get_connected_players()
     if #players == 1 then
         sbz_api.displayDialogLine(name, 'You talk. But there is no one to listen.')
         unlock_achievement(name, 'Desolate')
@@ -357,8 +357,8 @@ minetest.register_on_chat_message(function(name, message)
     return false
 end)
 
-minetest.register_globalstep(function(_)
-    minetest.set_timeofday(0)
+core.register_globalstep(function(_)
+    core.set_timeofday(0)
 end)
 
 -- inter-mod utils
@@ -375,11 +375,30 @@ end
 
 function is_air(pos)
     local node = core.get_node(pos).name
-    local reg = minetest.registered_nodes[node]
+    local reg = core.registered_nodes[node]
     return reg.air or reg.air_equivalent or node == 'air'
 end
 
 sbz_api.is_air = is_air
+
+-- Use this for on_place functions if you want the pointed node's on_rightclick to take precedence,
+-- like it is the case when placing a normal node that has no on_place definition.
+-- (Should be used if you don't do something with the under node, e.g. when only placing a node above.)
+function sbz_api.on_place_precedence(on_place)
+    return function(...)
+        local itemstack, placer, pointed_thing = ...
+        local under = pointed_thing.under
+        if under then
+            local node = core.get_node(under)
+            local def = core.registered_nodes[node.name]
+            if def and def.on_rightclick and
+                not (placer and placer:is_player() and placer:get_player_control().sneak) then
+                return def.on_rightclick(under, node, placer, itemstack, pointed_thing) or itemstack
+            end
+        end
+        return on_place(...)
+    end
+end
 
 function sbz_api.clamp(x, min, max)
     return math.max(math.min(x, max), min)
@@ -415,7 +434,7 @@ function sbz_api.get_or_load_node(pos)
     return core.get_node(pos)
 end
 
-local MP = minetest.get_modpath 'sbz_base'
+local MP = core.get_modpath 'sbz_base'
 
 dofile(MP .. '/legacy.lua')
 dofile(MP .. '/override_for_areas.lua')
@@ -439,7 +458,7 @@ dofile(MP .. '/space_movement.lua')
 
 -- yeah you actually have to do this
 -- definition copied from mtg
-minetest.override_item('', {
+core.override_item('', {
     --    wield_scale = { x = 1, y = 1, z = 2.5 },
     tool_capabilities = {
         full_punch_interval = 0.9,
@@ -546,22 +565,22 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
     owner = owner or ''
 
     for _ = 1, 500 do
-        local raycast = minetest.raycast(pos, pos + vector.random_direction() * r, false, true)
+        local raycast = core.raycast(pos, pos + vector.random_direction() * r, false, true)
         local wear = 0
         for pointed in raycast do
             if pointed.type == 'node' then
                 local target_pos = pointed.under
-                local nodename = minetest.get_node(target_pos).name
+                local nodename = core.get_node(target_pos).name
                 local ndef = core.registered_nodes[nodename]
                 if not ndef then break end
-                wear = wear + (1 / minetest.get_item_group(nodename, 'explody'))
+                wear = wear + (1 / core.get_item_group(nodename, 'explody'))
                 --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                 --although this is very random
-                if wear > power or minetest.is_protected(target_pos, owner) then break end
+                if wear > power or core.is_protected(target_pos, owner) then break end
                 if ndef.on_blast then
                     ndef.on_blast(target_pos, power, pos, owner, r)
                 else
-                    minetest.set_node(target_pos, { name = ndef._exploded or 'air' })
+                    core.set_node(target_pos, { name = ndef._exploded or 'air' })
                 end
             end
         end
@@ -610,10 +629,24 @@ sbz_api.on_place_recharge = function(charge_per_1_wear, after)
             return core.record_protection_violation(target, user:get_player_name())
         end
 
-        local target_node_name = minetest.get_node(target).name
-        if minetest.get_item_group(target_node_name, 'sbz_battery') == 0 then return end
+        local target_node = core.get_node(target)
+        local target_node_name = target_node.name
+        if core.get_item_group(target_node_name, 'sbz_battery') == 0 then
+            sbz_api.on_place_precedence(function() end)(stack, user, pointed)
+            return
+        end
 
-        local target_meta = minetest.get_meta(target)
+        if user and user:is_player() and user:get_player_control().sneak then
+            -- pointed node is a battery and user is sneaking
+            -- => don't recharge, display UI
+            local def = core.registered_nodes[target_node_name]
+            if def and def.on_rightclick then
+                def.on_rightclick(target, target_node, user, stack, pointed)
+                return
+            end
+        end
+
+        local target_meta = core.get_meta(target)
         local targets_power = target_meta:get_int 'power'
 
         local wear = stack:get_wear()
@@ -621,10 +654,10 @@ sbz_api.on_place_recharge = function(charge_per_1_wear, after)
         -- ok this is confusing i knoww, but just remember that wear_repaired is subtracted
         local wear_repaired = math.min(math.floor(targets_power / charge_per_1_wear), wear)
         targets_power = targets_power - (wear_repaired * charge_per_1_wear)
-        local targes_def = minetest.registered_nodes[target_node_name]
+        local target_def = core.registered_nodes[target_node_name]
 
         target_meta:set_int('power', targets_power)
-        targes_def.action(target, target_node_name, target_meta, 0, wear_repaired * charge_per_1_wear)
+        target_def.action(target, target_node_name, target_meta, 0, wear_repaired * charge_per_1_wear)
 
         stack:set_wear((wear - wear_repaired))
         if after then after(stack, user, pointed) end

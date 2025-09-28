@@ -89,7 +89,7 @@ Requires: Automatic Filter-Injectors, Bear Arms, Emittrium Circuits
 
 ### Text
 
-Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts/s.
+Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts.
 
 ### Meta
 
