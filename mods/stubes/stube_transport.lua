@@ -189,7 +189,6 @@ function stube.update_tube(tube_hpos, tube_def, tube_state, prefix)
     tube_state.updated_at = stube.current_update_time
 
     local tube_vpos = uh(tube_hpos)
-    core.debug('U:' .. tube_vpos.z .. ',' .. tube_state.updated_at .. ' ')
 
     local this_node = stube.get_or_load_node(tube_vpos)
     if stube.get_prefix_tube_name(this_node.name) ~= prefix then

@@ -26,7 +26,6 @@ local function tube_nodebox(len, stretch_to)
     end
     return base_box
 end
-stube.tube_size = 3 / 16
 
 --- e* -> expected
 --- so edir = expected dir
@@ -188,7 +187,7 @@ function stube.register_tube(name, def, tubedef)
     }
 
     -- Alias
-    core.register_alias('stubes:test_tube', 'stubes:test_tube_0000000')
+    core.register_alias(name, name .. '_0000000')
     def.drop = 'stubes:test_tube'
 
     -- i saw what pipeworks was doing, so i think i am going with whatever this "old aproach" is https://github.com/mt-mods/pipeworks/blob/6e11868d1b32d316d60061c78460d260ac92ed6a/tubes/registration.lua#L176
@@ -303,4 +302,9 @@ end
 function stube.default_should_update_tube(tube_hpos, tube_state, node)
     -- Don't update if its a short tube
     return not stube.is_short_tube(node.name)
+end
+function stube.default_get_next_pos_and_node(tube_hpos, tube_state, tube_dir)
+    local cdir = core.wallmounted_to_dir(tube_dir)
+    local pos = core.get_position_from_hash(tube_hpos) + cdir
+    return pos, stube.get_or_load_node(pos)
 end

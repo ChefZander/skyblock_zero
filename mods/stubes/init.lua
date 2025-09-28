@@ -15,6 +15,9 @@ stube = {
 
     -- The globalstep for creating/removing entities will be run every <that value> seconds
     entity_creation_globalstep_time = 1,
+
+    -- For simplicity, each tube must be the same size (simplicity in: each tubed item has to be the same size)
+    tube_size = 3 / 16,
 }
 
 --- Creating a utils file is silly, so i am putting it here
