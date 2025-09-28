@@ -120,6 +120,28 @@ minetest.register_craft({
     recipe = {"sbz_bio:habitat_regulator", "sbz_bio:screen_inverter_potion", "sbz_chem:thorium_fluid_cell"}
 })
 
+minetest.register_node("sbz_decor:large_server_rack", {
+    description = "Large Server Rack",
+    tiles = { -- how do i make it turn depending on how the player places it?
+        { name = "large_server_rack_back.png" },
+        { name = "large_server_rack_back.png" },
+        { name = "large_server_rack.png", animation = { type = "vertical_frames", length = 3 } },
+        { name = "large_server_rack_back.png" },
+        { name = "large_server_rack_back.png" },
+        { name = "large_server_rack_back.png" },
+    },
+    groups = { matter = 1, cracky = 3, explody = 3},
+    light_source = 10,
+    sunlight_propagates = true,
+    walkable = true,
+    sounds = sbz_api.sounds.matter(),
+})
+minetest.register_craft({
+    output = "sbz_decor:large_server_rack",
+    type = "shapeless",
+    recipe = {"sbz_resources:simple_processor 100", "sbz_logic:lua_controller_off", "sbz_resources:ram_stick_1mb 100"}
+})
+
 local MP = minetest.get_modpath("sbz_decor")
 dofile(MP .. "/signs.lua")
 dofile(MP .. "/cnc.lua")
