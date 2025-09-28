@@ -186,3 +186,13 @@ More fancy traditional bricks to build with.
 ### Meta
 
 Requires: Clay
+
+## Mystery Terrarium
+
+### Text
+
+I wonder what's in there...
+
+### Meta
+
+Requires: Growing Plants, Planet Ores

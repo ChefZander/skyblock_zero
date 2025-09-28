@@ -109,6 +109,7 @@ local achievement_table = {
     ['sbz_power:powered_lamp_off'] = 'Powered Lights',
     ['sbz_power:super_powered_lamp_off'] = 'Powered Lights',
     ['unifieddyes:coloring_tool'] = 'Coloring Tool',
+    ['sbz_decor:mystery_terrarium'] = 'Mystery Terrarium',
     ['sbz_resources:jetpack'] = 'Jetpack',
     ['sbz_resources:drill'] = 'Electric Drill',
     ['sbz_meteorites:meteorite_maker_off'] = 'Meteorite Maker',

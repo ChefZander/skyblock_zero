@@ -104,6 +104,22 @@ minetest.register_craft({
     recipe = { "sbz_decor:factory_floor", "sbz_decor:factory_floor", "sbz_chem:gold_powder", "sbz_chem:gold_powder" }
 })
 
+minetest.register_node("sbz_decor:mystery_terrarium", {
+    description = "Mystery Terrarium",
+    tiles = {
+        { name = "mystery_terrarium.png", animation = { type = "vertical_frames", length = 1 } },
+    },
+    groups = { matter = 1, cracky = 3, explody = 3},
+    sunlight_propagates = true,
+    walkable = true,
+    sounds = sbz_api.sounds.matter(),
+})
+minetest.register_craft({
+    output = "sbz_decor:mystery_terrarium",
+    type = "shapeless",
+    recipe = {"sbz_bio:habitat_regulator", "sbz_bio:screen_inverter_potion", "sbz_chem:thorium_fluid_cell"}
+})
+
 local MP = minetest.get_modpath("sbz_decor")
 dofile(MP .. "/signs.lua")
 dofile(MP .. "/cnc.lua")
