@@ -164,7 +164,9 @@ local function register_single_tube(name, def, tubedef, dir, xc, yc, zc, nxc, ny
         end
     end
 
-    if not stube.debug then def.groups.not_in_creative_inventory = visible and 0 or 1 end
+    if not stube.debug and not def.groups.not_in_creative_inventory then
+        def.groups.not_in_creative_inventory = visible and 0 or 1
+    end
     if visible then def.after_place_node = stube.tube_after_place end
 
     core.register_node(name, def)
