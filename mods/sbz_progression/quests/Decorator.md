@@ -186,3 +186,23 @@ More fancy traditional bricks to build with.
 ### Meta
 
 Requires: Clay
+
+## Mystery Terrarium
+
+### Text
+
+I wonder what's in there...
+
+### Meta
+
+Requires: Growing Plants, Planet Ores
+
+## Large Server Rack
+
+### Text
+
+A decor node that looks like a server rack, with rainbow LEDs.
+
+### Meta
+
+Requires: Engraver, Knowledge Stations, Ele Fabs

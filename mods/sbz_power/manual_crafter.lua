@@ -154,13 +154,13 @@ core.register_node('sbz_power:manual_crafter', {
         meta:set_string(
             'formspec',
             [[
-				formspec_version[8]
-				size[10.25,9.6]
-				list[context;configure_craft;0.25,0.25;3,3]
-				list[context;configure_craft_output;5.25,1.525;1,1]
-				list[current_player;main;0.25,4.6;8,4]
-				button[8,0.25;2,1;configure;Configure]
-			]]
+                formspec_version[8]
+                size[10.25,9.6]
+                list[context;configure_craft;0.25,0.25;3,3]
+                list[context;configure_craft_output;5.25,1.525;1,1]
+                list[current_player;main;0.25,4.6;8,4]
+                button[8,0.25;2,1;configure;Configure]
+            ]]
         )
     end,
     groups = { matter = 2 },
@@ -169,8 +169,12 @@ core.register_node('sbz_power:manual_crafter', {
     end,
 
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-        validate_craft(pos)
+        if from_list ~= to_list then return 0 end
         return count
+    end,
+
+    on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+        validate_craft(pos)
     end,
 
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
@@ -178,8 +182,11 @@ core.register_node('sbz_power:manual_crafter', {
             local from_inv = core.get_meta(pos):get_inventory()
             stack:set_count(1)
             from_inv:set_stack(listname, index, stack)
-            if listname == 'configure_craft_output' then configure_from_craft_output(pos, player) end
-            validate_craft(pos)
+            if listname == 'configure_craft_output' then
+                configure_from_craft_output(pos, player)
+            else
+                validate_craft(pos)
+            end
         end
         return 0
     end,
@@ -188,7 +195,13 @@ core.register_node('sbz_power:manual_crafter', {
         if listname == 'configure_craft' or listname == 'configure_craft_output' then
             local from_inv = core.get_meta(pos):get_inventory()
             from_inv:set_stack(listname, index, '')
-            validate_craft(pos)
+            if listname == 'configure_craft_output' then
+                from_inv:set_list('configure_craft', { '', '', '',
+                                                       '', '', '',
+                                                       '', '', '' })
+            else
+                validate_craft(pos)
+            end
         end
         return 0
     end,
