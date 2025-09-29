@@ -306,6 +306,7 @@ local function on_output_change(pos, inventory, stack)
     else
         local input = minetest.get_craft_recipe(stack:get_name())
         if not input.items or input.type ~= 'normal' then return end
+
         local items, width = normalize(input.items), input.width
         local item_idx, width_idx = 1, 1
         for i = 1, 9 do
@@ -434,13 +435,16 @@ minetest.register_node('pipeworks:autocrafter', {
             if not slots[stack:get_name()] then return false end
             -- next up, check if we actually can insert
             local compare_stack = ItemStack(stack)
+            core.debug('first:' .. compare_stack:to_string())
             for i = 1, 9 do
                 if slots[i] == stack:get_name() then
                     local that_stack = inv:get_stack('src', i)
+                    if that_stack:get_name() == '' then that_stack:set_count(0) end -- FIX #189
                     local leftover = that_stack:add_item(stack):get_count()
                     compare_stack:set_count(leftover)
                 end
             end
+            core.debug('second:' .. compare_stack:get_count())
 
             return compare_stack:get_count() == 0
         end,
