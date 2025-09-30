@@ -91,7 +91,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     if not player_ref then return '' end
 
     local selected_quest = quests_to_show[selected_quest_index]
-    local quest_count = #quests_to_show -- we subtract uncompletable quests from this later, like infotexts
+    local quest_count = #quests -- we subtract uncompletable quests from this later, like infotexts
     local completed_count = 0
     local available_count = 0
 
