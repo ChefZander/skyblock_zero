@@ -180,7 +180,7 @@ The power unit is Cosmic Joules, and is abbreviated to Cj in most interfaces.
 
 ### Meta
 
-Requires: 
+Requires: Switching Station
 
 ## Automation
 
