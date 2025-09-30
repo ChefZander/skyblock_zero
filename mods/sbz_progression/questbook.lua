@@ -132,6 +132,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins(default_indent)
             ins '!'
             ins(quest.title)
+            quest_count = quest_count - 1
         elseif quest.type == 'text' then
             ins(pal.bright_aqua)
             ins '0'
@@ -140,13 +141,27 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             quest_count = quest_count - 1
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) then
             ins(pal.bright_purple)
-            ins(default_indent)
+
+            -- just for the credits quest
+            if (quest.istoplevel) then 
+                ins '0'
+            else 
+                ins(default_indent)
+            end
+
             ins '✪'
             ins(quest.title)
             completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) == false then
             ins(pal.bright_purple)
-            ins(default_indent)
+
+            -- just for the credits quest
+            if (quest.istoplevel) then 
+                ins '0'
+            else 
+                ins(default_indent)
+            end
+
             ins '✪'
             ins '???'
             available_count = available_count + 1
@@ -255,12 +270,25 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         end
     end
 
+    if available_count == 1 and (quest_count - completed_count) == 1 then
+        unlock_achievement(player_name, "Credits")
+
+        -- okay let me explain
+        -- this will be called only once
+        -- to refresh the questbook
+        -- if i dont do this, the quest will be granted but show up as not complete in the book
+        -- so by refreshing it once here, itll show up correct
+        -- it looks so ugly though...
+        return get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
+    end
+
     -- play page sound lol
     minetest.sound_play('questbook', {
         to_player = player_name,
         gain = 1,
     })
     sbz_api.ui.del_player()
+
     return formspec
 end
 
