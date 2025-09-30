@@ -112,7 +112,7 @@ end
 
 local function reserved_items_formspec(pos)
     local fs = {}
-    local offset = { 0.22, 5 }
+    local offset = { 0.22, 4 }
     local reserved_slots = get_reserved_slots_or_reserve_them(pos)
     for i = 1, 9 do
         local name = reserved_slots[i]
@@ -328,30 +328,32 @@ end
 local function update_meta(pos, meta)
     reserve_slots(pos, meta)
     local fs = 'formspec_version[7]'
-        .. 'size[11.4,14]'
+        .. 'size[11.4,10.5]'
         .. 'list[context;recipe;0.22,0.22;3,3;]'
         .. 'image[4,1.45;1,1;[combine:16x16^[noalpha^[colorize:#141318:255]'
         .. 'list[context;output;4,1.45;1,1;]'
+        .. 'list[context;processor;4,2.7;1,1;]'
         .. 'list[context;dst;5.28,0.22;4,3;]'
         .. reserved_items_formspec(pos)
-        .. 'list[context;src;0.22,5;9,1;]'
-        .. pipeworks.fs_helpers.get_inv(9)
+        .. 'list[context;src;0.22,4;9,1;]'
+        .. pipeworks.fs_helpers.get_inv(5.5)
         .. 'listring[current_player;main]'
         .. 'listring[context;src]'
         .. 'listring[current_player;main]'
         .. 'listring[context;dst]'
         .. 'listring[current_player;main]'
-        .. 'field_enter_after_edit[maxpow;true]'
-        .. string.format('field[0.22,7;7,0.8;maxpow;Crafts/s (consumes more power);%s]', meta:get_int 'maxpow')
-        .. 'button[7.22,7;3,0.8;dummy_button_for_mobile_palyers;Set]'
     meta:set_string('formspec', fs)
 
     -- toggling the button doesn't quite call for running a recipe change check
     -- so instead we run a minimal version for infotext setting only
     -- this might be more written code, but actually executes less
     local output = meta:get_inventory():get_stack('output', 1)
+    local processor = meta:get_inventory():get_stack('processor', 1)
     if output:is_empty() then -- doesn't matter if paused or not
         meta:set_string('infotext', S 'unconfigured Autocrafter')
+        return false
+    elseif processor:is_empty() then 
+        meta:set_string("infotext", S 'No crafting processor.')
         return false
     end
 
@@ -364,6 +366,16 @@ end
 
 local inv_cache = sbz_api.make_cache 'inv_cache' -- USE ONLY inv_cache.data, nothing else, as it wont get cleared that way
 local list_cache = sbz_api.make_cache('list_cache', 0, true)
+
+-- crafting processors & stats
+-- might want to introduce a register_crafting_processor function sometime
+local processor_stats_map = {
+    ["sbz_resources:simple_crafting_processor"] = { crafts = 1, power = 10 },
+    ["sbz_resources:quick_crafting_processor"] = { crafts = 2, power = 25 },
+    ["sbz_resources:fast_crafting_processor"] = { crafts = 4, power = 50 },
+    ["sbz_resources:accelerated_silicon_crafting_processor"] = { crafts = 8, power = 100 },
+    ["sbz_resources:nuclear_crafting_processor"] = { crafts = 16, power = 175 },
+}
 
 minetest.register_node('pipeworks:autocrafter', {
     description = S 'Autocrafter',
@@ -462,25 +474,16 @@ minetest.register_node('pipeworks:autocrafter', {
         inv:set_size('recipe', 3 * 3)
         inv:set_size('dst', 4 * 3)
         inv:set_size('output', 1)
-        meta:set_int('maxpow', 1)
+        inv:set_size('processor', 1)
         update_meta(pos, meta)
     end,
     on_rightclick = function(pos)
         update_meta(pos, minetest.get_meta(pos))
     end,
-    on_receive_fields = function(pos, formname, fields, sender)
-        if (fields.quit and not fields.key_enter_field) or not pipeworks.may_configure(pos, sender) then return end
-
-        if fields.maxpow and tonumber(fields.maxpow) and (tonumber(fields.maxpow) > 0) then
-            local meta = minetest.get_meta(pos)
-            meta:set_int('maxpow', math.floor(fields.maxpow))
-            update_meta(pos, meta)
-        end
-    end,
     can_dig = function(pos, player)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        return (inv:is_empty 'src' and inv:is_empty 'dst')
+        return (inv:is_empty 'src' and inv:is_empty 'dst' and inv:is_empty 'processor')
     end,
     after_place_node = pipeworks.scan_for_tube_objects,
     after_dig_node = function(pos)
@@ -567,35 +570,67 @@ minetest.register_node('pipeworks:autocrafter', {
         end
         return count
     end,
-    info_extra = '1 power per 1 craft. Can craft unlimited** things per second.',
+    info_extra = 'Requires a crafting processor to work.',
     action = function(pos, node, meta, supply, demand)
-        if supply <= demand then
-            meta:set_string('infotext', 'Not enough power')
+        local inv = meta:get_inventory()
+        local processor_stack = inv:get_stack("processor", 1)
+
+        if processor_stack:is_empty() then
+            meta:set_string('infotext', 'No crafting processor.')
             return 0
         end
 
-        local max_crafts = (supply - demand)
-        max_crafts = math.min(max_crafts, meta:get_int 'maxpow')
-        local result
-        if max_crafts == 0 then return 0 end
+        local item_name = processor_stack:get_name()
+        local stats = processor_stats_map[item_name]
+
+        if not stats then
+            meta:set_string('infotext', 'This item is not a crafting processor.')
+            return 0
+        end
+
+        local max_crafts = stats.crafts
+        local power_demand = stats.power
+
+        if supply < power_demand then
+            meta:set_string('infotext', 'Not enough power (' .. supply .. '/' .. power_demand .. ')')
+            return 0
+        end
 
         local gi
         local broken = false
         for i = 1, max_crafts do
             gi = i
-            result = run_autocrafter(pos)
-            if result == false then
+            if not run_autocrafter(pos) then
                 broken = true
                 break
             end
         end
-        if (gi == 1 and (not max_crafts == 1)) or (gi == 1 and broken) then
-            meta:set_string('infotext', "Can't craft")
+
+        if not gi or (gi == 1 and broken) then
+            meta:set_string('infotext', "Can't craft (check recipe/output)")
             return 0
         end
 
-        meta:set_string('infotext', 'Active, consuming: ' .. gi .. ' power')
-        return gi
+        local crafts_succeeded = gi
+        if broken then
+            crafts_succeeded = gi - 1 -- last craft failed
+        end
+
+        local usage_percent = 0
+        if max_crafts > 0 then
+            usage_percent = math.floor((crafts_succeeded / max_crafts) * 100)
+        end
+
+        local infotext = string.format(
+            "Active, consuming %d power. | CPU Usage: %d%% (%d/%d)",
+            power_demand,
+            usage_percent,
+            crafts_succeeded,
+            max_crafts
+        )
+        meta:set_string('infotext', infotext)
+
+        return power_demand
     end,
     on_logic_send = function(pos, msg, from_pos)
         local ok, faulty = libox.type_check(msg, {

@@ -206,3 +206,24 @@ A decor node that looks like a server rack, with rainbow LEDs.
 ### Meta
 
 Requires: Engraver, Knowledge Stations, Ele Fabs
+
+## Ground Line
+
+### Text
+
+A line on the ground. Not fully 2D. Can be colored.
+
+### Meta
+
+Requires: Colorium Trees
+
+## Antiblocks
+
+### Text
+
+Antiblock: Fully transparent node, which hides the faces of nodes behind them, allowing you to see through walls.
+Airlike Antiblock: The same properties as the regular Antiblock, but you can walk through it.
+
+### Meta
+
+Requires: Colorium Trees, Antimatter

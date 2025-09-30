@@ -42,6 +42,10 @@ core.register_on_player_receive_fields(function(user, formname, fields)
         end
         if fields.text then
             book_item_meta:set_string("text", fields.text)
+
+            if #(fields.text or "") > 1000 then
+                unlock_achievement(user:get_player_name(), 'Alive Poets Society')
+            end
         end
         if fields.title then
             book_item_meta:set_string("description", "Book: " .. fields.title)

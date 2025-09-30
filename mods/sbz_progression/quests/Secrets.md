@@ -43,3 +43,23 @@ Hint 2: Use a screen inverter potion to reverse the effect, at the cost of a mil
 ### Meta
 
 Requires: 
+
+## Secret: Craftageddon
+
+### Text
+
+What would ever justify this investment??
+
+### Meta
+
+Requires: 
+
+## Secret: Alive Poets Society
+
+### Text
+
+"Carpe diem. Seize the day, boys. Make your lives extraordinary." -John Keating
+
+### Meta
+
+Requires: 
