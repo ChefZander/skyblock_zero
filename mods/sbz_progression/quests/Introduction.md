@@ -5,7 +5,7 @@ Maybe someone could make a parser that removes all the ### Text ### Meta stuffs
 
 The first questline, to introduce you to the game. Your adventure will start here.
 
-To expand one of those questlines, use the arrow keys or double click on the questline.
+To expand one of those questlines, click the plus next to the name, use the arrow keys or double click on the questline.
 
 ## Info: General Info
 
@@ -180,7 +180,7 @@ The power unit is Cosmic Joules, and is abbreviated to Cj in most interfaces.
 
 ### Meta
 
-Requires: 
+Requires: Switching Station
 
 ## Automation
 

@@ -89,11 +89,27 @@ Requires: Automatic Filter-Injectors, Bear Arms, Emittrium Circuits
 
 ### Text
 
-Autocrafters automatically craft. You can make them craft as fast as possible, but they consume more power depending on the current crafts.
+Autocrafters automatically craft. They require a crafting processor to run, which you can upgrade as you progress through the game, to increase crafting speed.
 
 ### Meta
 
 Requires: Bear Arms, Neutronium, Emittrium Circuits, Automatic Filter-Injectors
+
+## Simple Crafting Processors
+
+### Text
+
+The first tier of Crafting Processors. This one crafts at a speed of one item per second, for 10 power. The higher tiers of crafting processors will not have quests associated with them, so here are their stats:
+
+Simple Crafting Processor: 1 item/s & 10 power
+Quick Crafting Processor: 2 items/s & 25 power
+Fast Crafting Processor: 4 items/s & 50 power
+Accelerated Silicon Crafting Processor: 8 items/s & 100 power
+Nuclear Crafting Processor: 16 items/s & 175 power
+
+### Meta
+
+Requires: Autocrafters
 
 ## Item Voids
 

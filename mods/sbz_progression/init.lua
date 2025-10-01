@@ -72,6 +72,7 @@ local achievement_table = {
     ['pipeworks:deployer'] = 'Deployers',
     ['pipeworks:puncher'] = 'Punchers',
     ['pipeworks:autocrafter'] = 'Autocrafters',
+    ['sbz_resources:simple_crafting_processor'] = "Simple Crafting Processors",
     ['pipeworks:item_void'] = 'Item Voids',
     ['sbz_power:item_vacuum'] = 'Item Vacuums',
     ['screwdriver:screwdriver'] = 'Screwdriver',
@@ -111,6 +112,8 @@ local achievement_table = {
     ['unifieddyes:coloring_tool'] = 'Coloring Tool',
     ['sbz_decor:mystery_terrarium'] = 'Mystery Terrarium',
     ['sbz_decor:large_server_rack'] = 'Large Server Rack',
+    ['unifieddyes:colorium_ground_line'] = 'Ground Line',
+    ['unifieddyes:antiblock'] = "Antiblocks",
     ['sbz_resources:jetpack'] = 'Jetpack',
     ['sbz_resources:drill'] = 'Electric Drill',
     ['sbz_meteorites:meteorite_maker_off'] = 'Meteorite Maker',
@@ -166,6 +169,7 @@ local achievement_table = {
     ['sbz_power:switch_private_off'] = 'Switches',
 
     ['sbz_power:manual_crafter'] = 'Manual Crafters',
+    ['sbz_resources:nuclear_crafting_processor'] = 'Craftageddon',
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)

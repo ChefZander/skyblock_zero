@@ -91,6 +91,10 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     if not player_ref then return '' end
 
     local selected_quest = quests_to_show[selected_quest_index]
+    local quest_count = #quests -- we subtract uncompletable quests from this later, like infotexts
+    local completed_count = 0
+    local available_count = 0
+
     search_text = search_text or ''
     local quest_list = {}
 
@@ -110,11 +114,13 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                 ins(default_indent)
                 ins '✓'
                 ins(quest.title)
+                completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
             elseif is_quest_available(player_name, quest.title) then
                 ins(pal.light1)
                 ins(default_indent)
                 ins '►'
                 ins(quest.title)
+                available_count = available_count + 1
             else
                 ins(pal.light4)
                 ins(default_indent)
@@ -126,21 +132,39 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins(default_indent)
             ins '!'
             ins(quest.title)
+            quest_count = quest_count - 1
         elseif quest.type == 'text' then
             ins(pal.bright_aqua)
             ins '0'
             ins '≡'
             ins(quest.title)
+            quest_count = quest_count - 1
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) then
             ins(pal.bright_purple)
-            ins(default_indent)
+
+            -- just for the credits quest
+            if (quest.istoplevel) then 
+                ins '0'
+            else 
+                ins(default_indent)
+            end
+
             ins '✪'
             ins(quest.title)
+            completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) == false then
             ins(pal.bright_purple)
-            ins(default_indent)
+
+            -- just for the credits quest
+            if (quest.istoplevel) then 
+                ins '0'
+            else 
+                ins(default_indent)
+            end
+
             ins '✪'
             ins '???'
+            available_count = available_count + 1
         end
     end
     ---@diagnostic disable-next-line: cast-local-type
@@ -168,7 +192,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 		tooltip[font_add;Makes font larger]
 		tooltip[font_sub;Makes font smaller]
 ]]):format(
-        sbz_api.ui.hypertext(0.3, 0.25, 5.6, 0.5, '', 'Quest List'),
+        sbz_api.ui.hypertext(0.3, 0.25, 5.6, 0.5, '', "Quest List (✓ " .. completed_count .. " / ► " ..available_count.." / ✕ " .. (quest_count - completed_count) .. ")"),
         sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
         table_style,
         quest_list,
@@ -246,12 +270,25 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         end
     end
 
+    if available_count == 1 and (quest_count - completed_count) == 1 then
+        unlock_achievement(player_name, "Credits")
+
+        -- okay let me explain
+        -- this will be called only once
+        -- to refresh the questbook
+        -- if i dont do this, the quest will be granted but show up as not complete in the book
+        -- so by refreshing it once here, itll show up correct
+        -- it looks so ugly though...
+        return get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
+    end
+
     -- play page sound lol
     minetest.sound_play('questbook', {
         to_player = player_name,
         gain = 1,
     })
     sbz_api.ui.del_player()
+
     return formspec
 end
 
