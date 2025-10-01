@@ -251,6 +251,7 @@ function stube.globalstep(dtime)
             timer.current = 0
         end
     end
+    stube.routing_globalstep(dtime)
 end
 core.register_globalstep(stube.globalstep)
 
@@ -304,3 +305,6 @@ function stube.tube_input_insert_object(pos, node, stack, vel, owner)
         return stack
     end
 end
+
+--- Called by stube.globalstep
+function stube.routing_globalstep(dtime) end
