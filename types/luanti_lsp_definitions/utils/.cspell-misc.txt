@@ -1,7 +1,0 @@
-emmylua
-fgaz
-luarc
-nvim
-burnti
-FFFFFAFFBF
-voronoi
