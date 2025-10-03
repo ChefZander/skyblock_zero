@@ -28,3 +28,9 @@
 [submodule "mods/controls"]
 	path = mods/controls
 	url = https://github.com/mt-mods/controls
+[submodule "mods/minetest-fmod"]
+	path = mods/minetest-fmod
+	url = https://github.com/fluxionary/minetest-fmod
+[submodule "mods/minetest-futil"]
+	path = mods/minetest-futil
+	url = https://github.com/fluxionary/minetest-futil
