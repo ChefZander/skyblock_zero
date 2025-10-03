@@ -1,6 +1,6 @@
 {
     "runtime.version": "LuaJIT",
     "completion.autoRequire": false,
-    "workspace.library": [ "types/core.d.lua" ],
+    "workspace.library": [ "luanti_lsp_definitions/" ],
     "diagnostic.disable": [ "lowercase-global" ]
 }

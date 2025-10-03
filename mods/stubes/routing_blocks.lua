@@ -2,13 +2,14 @@
 -- Transport is handled in stube_transport.lua
 
 ---@class stube.RoutingState: table
----@field items { [any]: stube.TubedItem } Routing nodes can organize items hovewer they like
+---@field items table Routing nodes can store tubes hovewer they like
 ---@field updated_at number
 ---@field to_remove? boolean
 
 ---@class stube.RoutingNodeDef
 ---@field update fun(state:stube.RoutingState, hpos: number):nil
 ---@field accept fun(state:stube.RoutingState, tubed_item:stube.TubedItem, dir: table):boolean
+---@field iterate_items fun(state:stube.RoutingState, f:fun(item:stube.TubedItem, dir:vector?):nil) Used when deleting all items or something
 ---@field speed number Delay between updates, but routing nodes always update after tubes
 
 ---@type { [string]: stube.RoutingNodeDef }
