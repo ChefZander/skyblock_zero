@@ -1,5 +1,0 @@
-{
-    files = {
-        "autohook.h.in"
-    }
-}

@@ -4,3 +4,18 @@
 [submodule "luanti_lsp_definitions"]
 	path = luanti_lsp_definitions
 	url = https://github.com/corpserot/luanti_lsp_definitions/
+[submodule "mods/unified_inventory_plus"]
+	path = mods/unified_inventory_plus
+	url = https://github.com/mt-mods/unified_inventory_plus
+[submodule "mods/libox"]
+	path = mods/libox
+	url = https://github.com/TheEt1234/libox
+[submodule "mods/fakelib"]
+	path = mods/fakelib
+	url = https://github.com/OgelGames/fakelib
+[submodule "mods/player_api"]
+	path = mods/player_api
+	url = https://github.com/minetest-game/player_api
+[submodule "mods/sethome"]
+	path = mods/sethome
+	url = https://github.com/minetest-game/sethome

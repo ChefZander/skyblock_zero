@@ -1,8 +1,0 @@
-unified_inventory_plus.enable_craft_all (enable "all" button) bool true
-unified_inventory_plus.enable_craft_organize (enable template buttons) bool true
-unified_inventory_plus.enable_craft_rotate (enable rotate buttons) bool true
-unified_inventory_plus.enable_craft_clear (enable "clear" button) bool true
-
-# Disable the "craft all" feature if saturation (from the stamina mod) is below a given value.
-# Set to -1 always allow "craft all".
-unified_inventory_plus.craft_all_min_saturation (Minimum saturation for "craft all") int 1 -1 20
