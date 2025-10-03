@@ -22,3 +22,9 @@
 [submodule "mods/modlib"]
 	path = mods/modlib
 	url = https://github.com/appgurueu/modlib
+[submodule "mods/visible_wielditem"]
+	path = mods/visible_wielditem
+	url = https://github.com/appgurueu/visible_wielditem
+[submodule "mods/controls"]
+	path = mods/controls
+	url = https://github.com/mt-mods/controls
