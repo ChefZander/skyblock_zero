@@ -19,3 +19,6 @@
 [submodule "mods/sethome"]
 	path = mods/sethome
 	url = https://github.com/minetest-game/sethome
+[submodule "mods/modlib"]
+	path = mods/modlib
+	url = https://github.com/appgurueu/modlib
