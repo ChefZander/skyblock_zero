@@ -353,8 +353,8 @@ local function update_meta(pos, meta)
     if output:is_empty() then -- doesn't matter if paused or not
         meta:set_string('infotext', S 'unconfigured Autocrafter')
         return false
-    elseif processor:is_empty() then 
-        meta:set_string("infotext", S 'No crafting processor.')
+    elseif processor:is_empty() then
+        meta:set_string('infotext', S 'No crafting processor.')
         return false
     end
 
@@ -371,11 +371,11 @@ local list_cache = sbz_api.make_cache('list_cache', 0, true)
 -- crafting processors & stats
 -- might want to introduce a register_crafting_processor function sometime
 local processor_stats_map = {
-    ["sbz_resources:simple_crafting_processor"] = { crafts = 1, power = 10 },
-    ["sbz_resources:quick_crafting_processor"] = { crafts = 2, power = 25 },
-    ["sbz_resources:fast_crafting_processor"] = { crafts = 4, power = 50 },
-    ["sbz_resources:accelerated_silicon_crafting_processor"] = { crafts = 8, power = 100 },
-    ["sbz_resources:nuclear_crafting_processor"] = { crafts = 16, power = 175 },
+    ['sbz_resources:simple_crafting_processor'] = { crafts = 1, power = 10 },
+    ['sbz_resources:quick_crafting_processor'] = { crafts = 2, power = 25 },
+    ['sbz_resources:fast_crafting_processor'] = { crafts = 4, power = 50 },
+    ['sbz_resources:accelerated_silicon_crafting_processor'] = { crafts = 8, power = 100 },
+    ['sbz_resources:nuclear_crafting_processor'] = { crafts = 16, power = 175 },
 }
 
 minetest.register_node('pipeworks:autocrafter', {
@@ -447,7 +447,6 @@ minetest.register_node('pipeworks:autocrafter', {
             if not slots[stack:get_name()] then return false end
             -- next up, check if we actually can insert
             local compare_stack = ItemStack(stack)
-            core.debug('first:' .. compare_stack:to_string())
             for i = 1, 9 do
                 if slots[i] == stack:get_name() then
                     local that_stack = inv:get_stack('src', i)
@@ -456,7 +455,6 @@ minetest.register_node('pipeworks:autocrafter', {
                     compare_stack:set_count(leftover)
                 end
             end
-            core.debug('second:' .. compare_stack:get_count())
 
             return compare_stack:get_count() == 0
         end,
@@ -577,7 +575,7 @@ minetest.register_node('pipeworks:autocrafter', {
     info_extra = 'Requires a crafting processor to work.',
     action = function(pos, node, meta, supply, demand)
         local inv = meta:get_inventory()
-        local processor_stack = inv:get_stack("processor", 1)
+        local processor_stack = inv:get_stack('processor', 1)
 
         if processor_stack:is_empty() then
             meta:set_string('infotext', 'No crafting processor.')
@@ -621,12 +619,10 @@ minetest.register_node('pipeworks:autocrafter', {
         end
 
         local usage_percent = 0
-        if max_crafts > 0 then
-            usage_percent = math.floor((crafts_succeeded / max_crafts) * 100)
-        end
+        if max_crafts > 0 then usage_percent = math.floor((crafts_succeeded / max_crafts) * 100) end
 
         local infotext = string.format(
-            "Active, consuming %d power. | CPU Usage: %d%% (%d/%d)",
+            'Active, consuming %d power. | CPU Usage: %d%% (%d/%d)',
             power_demand,
             usage_percent,
             crafts_succeeded,

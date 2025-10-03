@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
     version = 39,
-    is_version_dev = false,
+    is_version_dev = true,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get 'sbz_server_mode' or 'auto'),
     deg2rad = math.pi / 180,
@@ -252,10 +252,7 @@ core.register_on_joinplayer(function(player)
         player:get_player_name(),
         '‼ reminder: If you fall off, use /core to teleport back to the core.'
     )
-    core.chat_send_player(
-        player:get_player_name(),
-        '‼ reminder: If lose your Quest Book, use /qb to get it back.'
-    )
+    core.chat_send_player(player:get_player_name(), '‼ reminder: If lose your Quest Book, use /qb to get it back.')
     --    core.chat_send_player(player:get_player_name(),
     --        "‼ Also, you can hold right click on the core, instead of having to spam your mouse, on mobile you might need to just hold tap")
     -- play bgm
@@ -391,8 +388,11 @@ function sbz_api.on_place_precedence(on_place)
         if under then
             local node = core.get_node(under)
             local def = core.registered_nodes[node.name]
-            if def and def.on_rightclick and
-                not (placer and placer:is_player() and placer:get_player_control().sneak) then
+            if
+                def
+                and def.on_rightclick
+                and not (placer and placer:is_player() and placer:get_player_control().sneak)
+            then
                 return def.on_rightclick(under, node, placer, itemstack, pointed_thing) or itemstack
             end
         end
@@ -455,6 +455,7 @@ dofile(MP .. '/recipe.lua')
 dofile(MP .. '/serialize.lua')
 dofile(MP .. '/serialize_benchmark.lua')
 dofile(MP .. '/space_movement.lua')
+dofile(MP .. '/pick_block.lua')
 
 -- yeah you actually have to do this
 -- definition copied from mtg

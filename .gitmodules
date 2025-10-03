@@ -1,0 +1,3 @@
+[submodule "mods/hotbar_switching"]
+	path = mods/hotbar_switching
+	url = https://github.com/TheEt1234/hotbar_switching
