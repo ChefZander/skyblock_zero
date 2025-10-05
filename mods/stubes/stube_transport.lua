@@ -2,10 +2,10 @@
 
 local h, uh = core.hash_node_position, core.get_position_from_hash
 
----@class stube.TubedItem
----@field stack ItemStack
+---@class stube.TubedItem:table
+---@field stack core.ItemStack
 ---@field owner? string
----@field entity? userdata
+---@field entity? core.Entity
 
 --- The state of any active tube
 --- The node underneeth a tube state can be anything, and it can change at any time
@@ -28,10 +28,12 @@ core.register_on_mods_loaded(function()
     end
 end)
 
-local function opposite_wallmounted(wallmounted)
-    return core.dir_to_wallmounted(-core.wallmounted_to_dir(wallmounted)) -- efficiency :D (joke)
+---@param wallmounted integer
+function stube.opposite_wallmounted(wallmounted)
+    return core.dir_to_wallmounted(-core.wallmounted_to_dir(wallmounted))
 end
 
+---@return ivec
 function stube.tube_state_connection_to_dir(connection)
     if connection == 6 then
         return vector.zero() -- The center
@@ -124,7 +126,7 @@ local function push_items_to_next_tube(next_node, next_pos, tube_state, tube_dir
     local is_empty = next_tube_state == nil
     local can_insert = true
     local next_tube_dir = stube.get_tube_dir(next_node.name)
-    local opposite_tube_dir = opposite_wallmounted(tube_dir)
+    local opposite_tube_dir = stube.opposite_wallmounted(tube_dir)
 
     if is_empty == false then
         can_insert = next_tube_state.connections[opposite_tube_dir] == nil -- If there isn't an item in the way
@@ -225,6 +227,18 @@ function stube.update_tube(tube_hpos, tube_def, tube_state, prefix)
                 push_items_to_next_tube(next_node, next_pos, tube_state, tube_dir, tube_vpos)
                 delete_if_empty_state(tube_hpos, tube_state, stubes[prefix])
             end
+        elseif IG(next_node.name, 'stube_routing_node') == 1 then
+            local def = stube.registered_routing_node[next_node.name]
+            local next_poshash = h(next_pos)
+
+            local state = stube.routing_states[next_node.name][next_poshash]
+            if not state then
+                stube.routing_states[next_node.name][next_poshash] = { items = {}, updated_at = 0 }
+                state = stube.routing_states[next_node.name][next_poshash]
+            end
+
+            local accepted = def.accept(state, tube_state.connections[tube_dir], tube_dir, next_pos)
+            if accepted then tube_state.connections[tube_dir] = nil end
         elseif IG(next_node.name, 'tubedevice_receiver') == 1 then
             stube.transfer_items(tube_state, next_node, next_pos, tube_dir)
         end
@@ -244,6 +258,7 @@ end
 ---@return nil
 function stube.globalstep(dtime)
     stube.current_update_time = stube.current_update_time + 1
+    stube.routing_globalstep(dtime)
     for name, timer in pairs(timers) do
         timer.current = timer.current + dtime
         if timer.current >= timer.max then
@@ -251,7 +266,6 @@ function stube.globalstep(dtime)
             timer.current = 0
         end
     end
-    stube.routing_globalstep(dtime)
 end
 core.register_globalstep(stube.globalstep)
 
@@ -305,6 +319,3 @@ function stube.tube_input_insert_object(pos, node, stack, vel, owner)
         return stack
     end
 end
-
---- Called by stube.globalstep
-function stube.routing_globalstep(dtime) end

@@ -1,10 +1,9 @@
-local testing = 1
 --- FIXME: Unified dyes support
 stube.register_tube('stubes:basic_tube', {
     paramtype2 = 'color',
     description = 'Basic Item Tube',
     use_texture_alpha = 'blend',
-    groups = { matter = 1, not_in_creative_inventory = testing },
+    groups = { matter = 1 },
     after_dig_node = stube.update_placement,
     on_punch = stube.default_tube_punch,
 
@@ -25,7 +24,7 @@ stube.register_tube('stubes:fast_tube', {
     paramtype2 = 'color',
     description = 'Fast Item Tube',
     use_texture_alpha = 'blend',
-    groups = { matter = 1, not_in_creative_inventory = testing },
+    groups = { matter = 1 },
     after_dig_node = stube.update_placement,
     on_punch = stube.default_tube_punch,
 
@@ -45,7 +44,7 @@ stube.register_tube('stubes:fast_tube', {
 stube.register_tube('stubes:very_fast_tube', {
     description = core.colorize('cyan', 'Very ') .. 'Fast Item Tube',
     use_texture_alpha = 'blend',
-    groups = { matter = 1, not_in_creative_inventory = testing },
+    groups = { matter = 1 },
     after_dig_node = stube.update_placement,
     on_punch = stube.default_tube_punch,
 

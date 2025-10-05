@@ -138,38 +138,47 @@ function stube.place_tube(name, pos, tube_dir, pointed_thing, sneaking)
         end
     end
 
-    --- Automatically connect any tubedevices
+    --- Automatically connect any tubedevices or routing blocks
     if not sneaking then
         for i = 0, 5 do
             local neighbor_dir = core.wallmounted_to_dir(i)
             local neighbor_pos = vector.add(pos, neighbor_dir)
             local neighbor_node = stube.get_or_load_node(neighbor_pos)
 
+            local should_connect = false
             if stube.is_tubedevice(neighbor_node.name) == true then
                 local connect_sides = core.registered_nodes[neighbor_node.name].tube.connect_sides
-                local should_connect = true
                 if connect_sides then
                     should_connect = stube.process_pipeworks_connect_sides(connect_sides, -neighbor_dir, neighbor_node)
+                else
+                    should_connect = true
                 end
-                if should_connect then make_connection(connections, i) end
+            elseif core.get_item_group(neighbor_node.name, 'stube_routing_node') == 1 then
+                should_connect = true
             end
+            if should_connect then make_connection(connections, i) end
         end
     else -- Only connect the tubedevice we are sneaking at
         local under_node = stube.get_or_load_node(pointed_thing.under)
         local under_dir = vector.subtract(pointed_thing.above, pointed_thing.under)
 
+        local should_connect = false
         if stube.is_tubedevice(under_node.name) == true then
             local connect_sides = core.registered_nodes[under_node.name].tube.connect_sides
-            local should_connect = true
             if connect_sides then
                 should_connect = stube.process_pipeworks_connect_sides(connect_sides, under_dir, under_node)
+            else
+                should_connect = true
             end
-            if should_connect then
-                make_connection(
-                    connections,
-                    core.dir_to_wallmounted(vector.subtract(pointed_thing.under, pointed_thing.above))
-                )
-            end
+        elseif core.get_item_group(under_node.name, 'stube_routing_node') == 1 then
+            should_connect = true
+        end
+
+        if should_connect then
+            make_connection(
+                connections,
+                core.dir_to_wallmounted(vector.subtract(pointed_thing.under, pointed_thing.above))
+            )
         end
     end
 
@@ -251,7 +260,13 @@ function stube.update_placement_single(pos)
 
         if connection == 1 then
             -- first case: pointing to air/incompatible node
-            if not (ig(connection_node.name, 'stube') == 1 or stube.is_tubedevice(connection_node.name) == true) then
+            if
+                not (
+                    ig(connection_node.name, 'stube') == 1
+                    or stube.is_tubedevice(connection_node.name) == true
+                    or ig(connection_node.name, 'stube_routing_node') == 1
+                )
+            then
                 split.connections[i] = 0
             end
 
@@ -283,7 +298,7 @@ function stube.update_placement_single(pos)
     local straight_tube_index = (stube.wallmounted_to_connections_index[split.dir] + 3) % 6 -- the index opposite to the dir, if that makes sense
     if straight_tube_index == 0 then straight_tube_index = 6 end
 
-    -- case 2.5: "We could totally be connected to that tubedevice right now actually, we don't need to be a short tube"
+    -- case 2.5: "We could totally be connected to that tubedevice/routing block right now actually, we don't need to be a short tube"
     if amount_of_connections == 1 and split.connections[straight_tube_index] == 1 then
         local dir = core.wallmounted_to_dir(split.dir)
         local next_pos = pos + dir
@@ -299,6 +314,8 @@ function stube.update_placement_single(pos)
                 )
             end
             if should_connect then make_connection(split.connections, split.dir) end
+        elseif core.get_item_group(next_node.name, 'stube_routing_node') == 1 then
+            make_connection(split.connections, split.dir)
         end
     end
 

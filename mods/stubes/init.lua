@@ -22,8 +22,8 @@ stube = {
 
 --- Creating a utils file is silly, so i am putting it here
 --- ALSO: This is a trick from the mt-mods/technic luanti mod
----@param pos vector
----@return node
+---@param pos ivec
+---@return core.Node.get
 stube.get_or_load_node = function(pos)
     local get_or_load_node_node = core.get_node_or_nil(pos)
     if get_or_load_node_node then return get_or_load_node_node end
@@ -39,6 +39,8 @@ dofile(mp .. '/register.lua') -- Registering all the variants
 dofile(mp .. '/stube_transport.lua') -- Moving tubed items and their entities, named "stube_transport.lua" for easier debugging (As there may be multiple transpurt.luas)
 dofile(mp .. '/entity.lua') -- Only for defining the entity, and spawning/despawning them when needed
 dofile(mp .. '/hud.lua') -- When hovering over a tube with items you can see the counts
+dofile(mp .. '/register_routing_blocks.lua')
 
 --- Content:
 dofile(mp .. '/basic_tubes.lua')
+dofile(mp .. '/basic_routing_blocks.lua')

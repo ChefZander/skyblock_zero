@@ -46,6 +46,7 @@ end
 
 controls.register_on_press(function(player, key)
     if not (key == 'LMB' or key == 'RMB') then return end
+    if not player:get_player_control().zoom then return end
     local node_name = get_pointed_node_type(player)
     if node_name then pick_block(player, node_name) end
 end)

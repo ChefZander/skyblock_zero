@@ -2,8 +2,8 @@
 ---@class stube.TubeDef
 ---@field textures table
 ---@field speed number The amount of time between updates, lower is faster
----@field should_update fun(tube_hpos:integer, tube_state:stube.TubeState, node:node):boolean
----@field get_next_pos_and_node fun(tube_hpos:integer, tube_state:stube.TubeState, dir:integer):vector, node
+---@field should_update fun(tube_hpos:integer, tube_state:stube.TubeState, node:core.Node.Get):boolean
+---@field get_next_pos_and_node fun(tube_hpos:integer, tube_state:stube.TubeState, dir:integer):vector, core.Node.get
 
 ---@type {[string]: stube.TubeDef }
 stube.registered_tubes = {}
@@ -190,7 +190,7 @@ function stube.register_tube(name, def, tubedef)
 
     -- Alias
     core.register_alias(name, name .. '_0000000')
-    def.drop = 'stubes:test_tube'
+    def.drop = name
 
     -- i saw what pipeworks was doing, so i think i am going with whatever this "old aproach" is https://github.com/mt-mods/pipeworks/blob/6e11868d1b32d316d60061c78460d260ac92ed6a/tubes/registration.lua#L176
     -- because it mentioned something about "the textures must be rotated" with the "new aproach", and uh i think that will complicate things, and i don't want to deal with rotating them.
