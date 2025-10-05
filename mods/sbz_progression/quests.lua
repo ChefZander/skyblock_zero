@@ -83,6 +83,9 @@ sbz_api.register_quest({
     .. "- 'A Choice With Many Regrets' by Tsorthan Grove"
     .. "\n"
 
+    .. "Skybox was made by StumpyStrust.\n"
+    .. "\n"
+
     .. "You've finished the Questbook, but the game has only just begun.\n"
     .. "",
 })
