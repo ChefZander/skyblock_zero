@@ -80,6 +80,7 @@ sbz_api.register_quest({
     .. "- 'Bleeding Out' by Brandon Morris\n"
     .. "- 'Factory Ambiance' by yd\n"
     .. "- 'Galactic Temple' by yd\n"
+    .. "- 'A Choice With Many Regrets' by Tsorthan Grove"
     .. "\n"
 
     .. "You've finished the Questbook, but the game has only just begun.\n"

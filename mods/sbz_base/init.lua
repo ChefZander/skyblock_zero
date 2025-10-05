@@ -189,6 +189,7 @@ local bgm_sounds = {
     'bgm3',
     'bgm4',
     'bgm5',
+    'bgm6',
 }
 local bgm_lengths = {
     280,
@@ -196,6 +197,7 @@ local bgm_lengths = {
     143,
     121,
     151,
+    106,
 }
 
 local handles = {}
