@@ -58,7 +58,7 @@ sbz_api.register_quest({
     .. "- frogTheSecond\n"
     .. "- theidealist\n"
     .. "- birdlover32767\n"
-    .. "- ACorp / corpserot\n"
+    .. "- ACorp \"0 coolant - not great, not terrible\"\n"
     .. "- lnee\n"
     .. "- The4codeblocks\n"
     .. "- watilin\n"
