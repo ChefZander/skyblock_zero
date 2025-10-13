@@ -53,6 +53,7 @@ end
 -- aux1+punch -- craft 10
 -- punch - craft 1
 -- Do not use to implement some sort of autocrafter this may perform badly at scale
+---@param user core.PlayerRef
 local function craft(user, meta)
     local control = user:get_player_control()
     local craft_amount = 1
@@ -112,12 +113,24 @@ local function craft(user, meta)
     local items_crafted = can_craft * craft_result:get_count() -- the amount of items that gets crafted
     can_craft = math.floor(math.min(max_space, items_crafted) / craft_result:get_count())
 
-    -- okay.. so we just craft
-    for name, amount in pairs(required_items) do
-        user_inv:remove_item('main', name .. ' ' .. tonumber(amount * can_craft))
-    end
-
     if can_craft > 0 then
+        --- Prepare for crafting
+        for name, amount in pairs(required_items) do
+            local remove_amount = tonumber(amount * can_craft)
+            local max_stack = ItemStack(name):get_stack_max()
+
+            local stacks = remove_amount / max_stack
+            local remaining = (stacks - math.floor(stacks)) * max_stack
+            stacks = math.floor(stacks)
+
+            if stacks > 0 then
+                for _ = 1, stacks do
+                    user_inv:remove_item('main', name .. ' ' .. max_stack)
+                end
+            end
+            if remaining > 0 then user_inv:remove_item('main', name .. ' ' .. remaining) end
+        end
+
         items_crafted = can_craft * craft_result:get_count()
         local split_into = math.floor(items_crafted / craft_result_max)
         if split_into > 0 then
@@ -196,9 +209,17 @@ core.register_node('sbz_power:manual_crafter', {
             local from_inv = core.get_meta(pos):get_inventory()
             from_inv:set_stack(listname, index, '')
             if listname == 'configure_craft_output' then
-                from_inv:set_list('configure_craft', { '', '', '',
-                                                       '', '', '',
-                                                       '', '', '' })
+                from_inv:set_list('configure_craft', {
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                })
             else
                 validate_craft(pos)
             end
