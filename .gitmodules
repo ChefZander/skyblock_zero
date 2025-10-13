@@ -34,3 +34,6 @@
 [submodule "mods/minetest-futil"]
 	path = mods/minetest-futil
 	url = https://github.com/fluxionary/minetest-futil
+[submodule "mods/stubes"]
+	path = mods/stubes
+	url = https://github.com/TheEt1234/luanti-stubes
