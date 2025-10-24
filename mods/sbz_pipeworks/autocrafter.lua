@@ -429,6 +429,7 @@ minetest.register_node('pipeworks:autocrafter', {
                     if that_stack:get_name() == stackname or that_stack:get_name() == '' then
                         leftover = math.max(0, new_count - stack_max)
                         that_stack:set_count(new_count - leftover)
+                        that_stack:set_name(stackname)
                         srclist[i] = that_stack
                         stack:set_count(leftover)
                         stack:set_name(stackname)
