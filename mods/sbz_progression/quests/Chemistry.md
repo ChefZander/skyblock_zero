@@ -140,7 +140,7 @@ If you press/hold both jump and shift or aux1:
 The mode you are flying in can also be seen by how many particles are getting spawned.  
 The wear is setup such that it lasts you 3 minutes of constant flying  
   
-You can re-fuel your jetpack by clicking on a battery, full repair costs 1000 Cj  
+You can re-fuel your jetpack by right-clicking on a battery, full repair costs 1000 Cj  
   
 Jetpack gets de-activated when you move it in your inventory during flight, or when it runs out of charge.  
   
@@ -167,7 +167,7 @@ Requires: Furnace
 The elecric drill has 500 uses and is powered by electricity.  
 What does that mean?  
   
-If you "place" it on a battery (sneak+right click), it will take power from the battery and charge the drill! (Just like the jetpack)  
+If you right click on a battery with the electric drill in your hand, it will take power from the battery and charge the drill! (Just like the jetpack)  
 It needs 1 power per 1 use.  
   
 It also digs 2x faster than the robotic arm.  
