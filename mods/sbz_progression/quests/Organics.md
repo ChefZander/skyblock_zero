@@ -55,6 +55,8 @@ If they don't get these things, they'll start to wilt and die instead of growing
   
 Also, you can use the airtight power cable to deliver power to the switching station and make sure to not put things like slabs or stairs in the walls.  
   
+To complete this quest, place a Habitate Regulator inside your habitat.
+  
 **Tip: make the habitat walls out of solid nodes (emittrium glass is one of the cheapest), and airlocks, do not use things like stairs, or meteorite radars in the construction of your habitat. At most, use things that look like solid-full cubes. Also make sure that the habitat regulator isn't inside the wall, but inside the room you built.**  
 
 ### Meta

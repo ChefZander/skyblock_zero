@@ -19,7 +19,7 @@ Requires: Simple Alloy Furnace, Emittrium Circuits
 Soo... i'm guessing you would have a lot of trouble getting to the meteorites by bridging...  
 Well don't fear, there is the laser now...  
   
-To charge the laser, "place it" into a battery. (shift+place to battery)  
+To charge the laser, "place it" into a battery. (right-click the battery with it in your hand)  
 It also does some damage to other players if PVP is enabled.  
 
 ### Meta
