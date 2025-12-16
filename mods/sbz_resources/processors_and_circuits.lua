@@ -141,7 +141,7 @@ core.register_craftitem("sbz_resources:simple_crafting_processor", {
 minetest.register_craft({
     type = "shapeless",
     output = "sbz_resources:simple_crafting_processor",
-    recipe = { "sbz_resources:mosfet 10", "sbz_resources:simple_circuit 10" }
+    recipe = { "sbz_resources:mosfet", "sbz_resources:simple_circuit", "sbz_meteorites:neutronium" }
 })
 
 
@@ -155,9 +155,9 @@ minetest.register_craft({
     type = "shaped",
     output = "sbz_resources:quick_crafting_processor",
     recipe = {
-        {"sbz_resources:simple_crafting_processor", "sbz_resources:prediction_circuit 10", "sbz_resources:simple_crafting_processor"},
-        {"", "sbz_resources:mosfet 10", ""},
-        {"sbz_resources:simple_crafting_processor", "", "sbz_resources:simple_crafting_processor"},
+        {"sbz_resources:simple_crafting_processor", "sbz_resources:prediction_circuit", "sbz_resources:simple_crafting_processor"},
+        {"sbz_meteorites:neutronium", "sbz_resources:mosfet", "sbz_meteorites:neutronium"},
+        {"sbz_resources:simple_crafting_processor", "sbz_meteorites:neutronium", "sbz_resources:simple_crafting_processor"},
     }
 })
 
@@ -172,9 +172,9 @@ minetest.register_craft({
     type = "shaped",
     output = "sbz_resources:fast_crafting_processor",
     recipe = {
-        {"sbz_resources:quick_crafting_processor", "sbz_resources:emittrium_circuit 25", "sbz_resources:quick_crafting_processor"},
-        {"sbz_resources:mosfet 10",                "sbz_resources:emittrium_circuit 25", "sbz_resources:mosfet 10"},
-        {"sbz_resources:quick_crafting_processor", "sbz_resources:emittrium_circuit 25", "sbz_resources:quick_crafting_processor"},
+        {"sbz_resources:quick_crafting_processor", "sbz_resources:emittrium_circuit", "sbz_resources:quick_crafting_processor"},
+        {"sbz_resources:mosfet",                "sbz_resources:emittrium_circuit", "sbz_resources:mosfet"},
+        {"sbz_resources:quick_crafting_processor", "sbz_resources:emittrium_circuit", "sbz_resources:quick_crafting_processor"},
     }
 })
 
@@ -189,9 +189,9 @@ minetest.register_craft({
     type = "shaped",
     output = "sbz_resources:accelerated_silicon_crafting_processor",
     recipe = {
-        {"sbz_resources:fast_crafting_processor", "sbz_chem:silicon_crystal 25",   "sbz_resources:fast_crafting_processor"},
-        {"sbz_resources:mosfet 25",               "sbz_resources:mosfet 25",       "sbz_resources:mosfet 25"},
-        {"sbz_resources:fast_crafting_processor", "",   "sbz_resources:fast_crafting_processor"},
+        {"sbz_resources:fast_crafting_processor", "sbz_chem:silicon_crystal",   "sbz_resources:fast_crafting_processor"},
+        {"sbz_resources:mosfet",               "sbz_resources:mosfet",       "sbz_resources:mosfet"},
+        {"sbz_resources:fast_crafting_processor", "sbz_meteorites:neutronium",   "sbz_resources:fast_crafting_processor"},
     }
 })
 
@@ -206,8 +206,8 @@ minetest.register_craft({
     type = "shaped",
     output = "sbz_resources:nuclear_crafting_processor",
     recipe = {
-        {"sbz_resources:accelerated_silicon_crafting_processor", "sbz_resources:phlogiston_circuit 10", "sbz_resources:accelerated_silicon_crafting_processor"},
-        {"sbz_resources:mosfet 64",                              "sbz_resources:mosfet 64",               "sbz_resources:mosfet 64"},
-        {"sbz_resources:accelerated_silicon_crafting_processor", "sbz_meteorites:neutronium 10",          "sbz_resources:accelerated_silicon_crafting_processor"},
+        {"sbz_resources:accelerated_silicon_crafting_processor", "sbz_resources:phlogiston_circuit", "sbz_resources:accelerated_silicon_crafting_processor"},
+        {"sbz_resources:mosfet",                              "sbz_resources:mosfet",               "sbz_resources:mosfet"},
+        {"sbz_resources:accelerated_silicon_crafting_processor", "sbz_meteorites:neutronium",          "sbz_resources:accelerated_silicon_crafting_processor"},
     }
 })
