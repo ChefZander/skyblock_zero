@@ -281,7 +281,7 @@ minetest.register_node("areasprotector:protector_large", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		return on_receive_fields(pos, formname, fields, sender, radius_large, height_large)
 	end,
-	groups = { cracky = 1, matter = 1, protector = 1 },
+	groups = { cracky = 1, matter = 1, protector = 1, no_spread = 1 },
 	tiles = {
 		"areasprotector_big.png",
 		"areasprotector_big.png",
@@ -305,7 +305,7 @@ minetest.register_node("areasprotector:protector_small", {
 	on_receive_fields = function(pos, formname, fields, sender)
 		return on_receive_fields(pos, formname, fields, sender, radius_small, height_small)
 	end,
-	groups = { cracky = 1, matter = 1, protector = 1 },
+	groups = { cracky = 1, matter = 1, protector = 1, no_spread = 1 },
 	tiles = {
 		"areasprotector_small.png",
 		"areasprotector_small.png",
