@@ -114,7 +114,8 @@ local function craft(user, meta)
 
     -- okay.. so we just craft
     for name, amount in pairs(required_items) do
-        for i = 1, amount do
+        local j = amount * can_craft
+        for i = 1, j do
             user_inv:remove_item('main', name)
         end
     end
