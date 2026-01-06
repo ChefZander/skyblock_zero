@@ -1,6 +1,6 @@
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
-    version = 39,
+    version = 40,
     is_version_dev = true,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get 'sbz_server_mode' or 'auto'),
@@ -189,6 +189,7 @@ local bgm_sounds = {
     'bgm3',
     'bgm4',
     'bgm5',
+    'bgm6',
 }
 local bgm_lengths = {
     280,
@@ -196,6 +197,7 @@ local bgm_lengths = {
     143,
     121,
     151,
+    106,
 }
 
 local handles = {}

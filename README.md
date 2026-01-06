@@ -27,6 +27,7 @@ Art by StumpyStrust, CC0, https://opengameart.org/content/space-skyboxes-0
 - Bleeding Out by Brandon Morris, CC0, https://opengameart.org/content/bleeding-out
 - Factory Ambiance by yd, CC0, https://opengameart.org/content/factory-ambiance
 - Galactic Temple by yd, CC0, https://opengameart.org/content/galactic-temple
+- A Choice With Many Regrets by Tsorthan Grove, CC-BY 4.0, https://opengameart.org/content/a-choice-with-many-regrets
 
 #### SFX
 - hard_drive_shut_down_01.wav by Noisehag -- https://freesound.org/s/110552/ -- License: Creative Commons 0

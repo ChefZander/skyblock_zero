@@ -58,7 +58,7 @@ sbz_api.register_quest({
     .. "- frogTheSecond\n"
     .. "- theidealist\n"
     .. "- birdlover32767\n"
-    .. "- ACorp / corpserot\n"
+    .. "- ACorp \"0 coolant - not great, not terrible\"\n"
     .. "- lnee\n"
     .. "- The4codeblocks\n"
     .. "- watilin\n"
@@ -80,6 +80,10 @@ sbz_api.register_quest({
     .. "- 'Bleeding Out' by Brandon Morris\n"
     .. "- 'Factory Ambiance' by yd\n"
     .. "- 'Galactic Temple' by yd\n"
+    .. "- 'A Choice With Many Regrets' by Tsorthan Grove"
+    .. "\n"
+
+    .. "Skybox was made by StumpyStrust.\n"
     .. "\n"
 
     .. "You've finished the Questbook, but the game has only just begun.\n"
