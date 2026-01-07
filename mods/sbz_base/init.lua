@@ -208,16 +208,22 @@ local function playRandomBGM(player)
     if player:get_meta() == nil then return end
 
     local player_name = player:get_player_name()
+    local player_meta = player:get_meta()
+
     local random_index = math.random(1, #bgm_sounds)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
     if handles[player_name] then core.sound_stop(handles[player_name]) end
-    local volume = player:get_meta():get_int 'volume' / 100
-    if volume == 0 and player:get_meta():get_int 'has_set_volume' == 0 then volume = 1 end
+
+    local volume = player_meta:get_int 'bgm_volume' / 100
+    if volume == 0 and player_meta:get_int 'has_set_volume' == 0 then volume = 1 end
+
+    core.debug('PLAYING: ' .. dump(volume))
     handles[player_name] = core.sound_play(sound_name, {
         to_player = player_name,
         gain = volume,
     })
+
     core.after(
         sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
@@ -239,7 +245,7 @@ core.register_chatcommand('bgm_volume', {
         local player = core.get_player_by_name(name or '')
         if not player then return end
         local meta = player:get_meta()
-        meta:set_int('volume', volume)
+        meta:set_int('bgm_volume', volume)
         meta:set_int('has_set_volume', 1)
         local handle = sbz_api.bgm_handles[player:get_player_name()]
         if handle then core.sound_fade(handle, 4, (volume / 100) + 0.001) end -- HACK: +0.001 so it doesn't delete the sound xDD
@@ -255,8 +261,7 @@ core.register_on_joinplayer(function(player)
         '‼ reminder: If you fall off, use /core to teleport back to the core.'
     )
     core.chat_send_player(player:get_player_name(), '‼ reminder: If lose your Quest Book, use /qb to get it back.')
-    --    core.chat_send_player(player:get_player_name(),
-    --        "‼ Also, you can hold right click on the core, instead of having to spam your mouse, on mobile you might need to just hold tap")
+
     -- play bgm
     playRandomBGM(player)
 

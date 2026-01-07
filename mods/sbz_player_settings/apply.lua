@@ -5,6 +5,7 @@ local on_join = core.register_on_joinplayer
 --- BGM
 receive(function(player, formname, fields)
     if formname ~= (base_formname .. '_bgm') then return end
+    core.debug 'HERE'
 
     local scrollbar = core.explode_scrollbar_event(fields.bgm_slider)
     if scrollbar.type ~= 'CHG' then return end
@@ -12,6 +13,7 @@ receive(function(player, formname, fields)
     local pmeta = player:get_meta()
     local new_value = math.min(200, math.max(0, scrollbar.value))
     pmeta:set_int('bgm_volume', new_value)
+    pmeta:set_int('has_set_volume', 1)
 
     local handle = sbz_api.bgm_handles[player:get_player_name()]
     if handle then core.sound_fade(handle, 4, (new_value / 100) + 0.001) end -- HACK: +0.001 so that it doesn't delete the sound
