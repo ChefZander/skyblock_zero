@@ -831,6 +831,7 @@ instatube.show_network = function(p1, p2, net)
     end
 end
 
+--- This is a function meant for debugging
 instatube.get_machine = function(pos, net_id)
     local net = instatube.networks[net_id]
     for k, v in pairs(net.machines) do

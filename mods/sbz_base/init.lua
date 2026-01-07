@@ -218,7 +218,6 @@ local function playRandomBGM(player)
     local volume = player_meta:get_int 'bgm_volume' / 100
     if volume == 0 and player_meta:get_int 'has_set_volume' == 0 then volume = 1 end
 
-    core.debug('PLAYING: ' .. dump(volume))
     handles[player_name] = core.sound_play(sound_name, {
         to_player = player_name,
         gain = volume,

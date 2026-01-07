@@ -5,7 +5,6 @@ local on_join = core.register_on_joinplayer
 --- BGM
 receive(function(player, formname, fields)
     if formname ~= (base_formname .. '_bgm') then return end
-    core.debug 'HERE'
 
     local scrollbar = core.explode_scrollbar_event(fields.bgm_slider)
     if scrollbar.type ~= 'CHG' then return end
