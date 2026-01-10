@@ -329,15 +329,16 @@ end
 local function update_meta(pos, meta)
     reserve_slots(pos, meta)
     local fs = 'formspec_version[7]'
-        .. 'size[11.4,10.5]'
+        .. 'size[11.4,11]'
         .. 'list[context;recipe;0.22,0.22;3,3;]'
         .. 'image[4,1.45;1,1;[combine:16x16^[noalpha^[colorize:#141318:255]'
         .. 'list[context;output;4,1.45;1,1;]'
+        .. 'item_image[4,2.7;1,1;sbz_resources:simple_crafting_processor]'
         .. 'list[context;processor;4,2.7;1,1;]'
         .. 'list[context;dst;5.28,0.22;4,3;]'
         .. reserved_items_formspec(pos)
-        .. 'list[context;src;0.22,4;9,1;]'
-        .. pipeworks.fs_helpers.get_inv(5.5)
+        .. 'list[context;src;0.22,4.3;9,1;]'
+        .. pipeworks.fs_helpers.get_inv(6)
         .. 'listring[current_player;main]'
         .. 'listring[context;src]'
         .. 'listring[current_player;main]'
@@ -370,13 +371,7 @@ local list_cache = sbz_api.make_cache('list_cache', 0, true)
 
 -- crafting processors & stats
 -- might want to introduce a register_crafting_processor function sometime
-local processor_stats_map = {
-    ['sbz_resources:simple_crafting_processor'] = { crafts = 1, power = 10 },
-    ['sbz_resources:quick_crafting_processor'] = { crafts = 2, power = 25 },
-    ['sbz_resources:fast_crafting_processor'] = { crafts = 4, power = 50 },
-    ['sbz_resources:accelerated_silicon_crafting_processor'] = { crafts = 8, power = 100 },
-    ['sbz_resources:nuclear_crafting_processor'] = { crafts = 16, power = 175 },
-}
+-- WARN: sbz_api.crafting_processor_stats moved to sbz_resources/processors_and_circuits.lua and this depends on them
 
 minetest.register_node('pipeworks:autocrafter', {
     description = S 'Autocrafter',
@@ -584,7 +579,7 @@ minetest.register_node('pipeworks:autocrafter', {
         end
 
         local item_name = processor_stack:get_name()
-        local stats = processor_stats_map[item_name]
+        local stats = sbz_api.crafting_processor_stats[item_name]
 
         if not stats then
             meta:set_string('infotext', 'This item is not a crafting processor.')
@@ -668,4 +663,20 @@ minetest.register_craft {
         { 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit' },
         { 'sbz_chem:titanium_alloy_ingot', 'sbz_meteorites:neutronium', 'sbz_chem:titanium_alloy_ingot' },
     },
+}
+
+-- legacy compatibility
+core.register_lbm {
+    label = 'Upgrade autocrafters, and give them a free processor',
+    name = 'pipeworks:update_autocrafters',
+    nodenames = { 'pipeworks:autocrafter' },
+    action = function(pos, node, dtime_s)
+        local meta = core.get_meta(pos)
+        local inv = meta:get_inventory()
+        local has_processor = inv:get_size 'processor' ~= 0
+        if not has_processor then
+            inv:set_size('processor', 1)
+            inv:set_stack('processor', 1, 'sbz_resources:simple_crafting_processor 1')
+        end
+    end,
 }

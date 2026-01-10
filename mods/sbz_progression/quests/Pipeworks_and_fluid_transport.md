@@ -89,7 +89,7 @@ Requires: Automatic Filter-Injectors, Bear Arms, Emittrium Circuits
 
 ### Text
 
-Autocrafters automatically craft. They require a crafting processor to run, which you can upgrade as you progress through the game, to increase crafting speed.
+Autocrafters automatically craft. They require a crafting processor item to run, which you can upgrade as you progress through the game, to increase crafting speed.
 
 ### Meta
 
@@ -116,7 +116,6 @@ Requires: Autocrafters
 ### Text
 
 Item voids delete every item that goes in, and yes these are pipeworks trash cans. But unlike pipeworks trash cans, they show the amount of items they've destroyed.  
-That number can "overflow" into the negatives, if you actually manage to do this, don't consider it a bug, but consider it an achievement :)
 
 ### Meta
 
@@ -133,15 +132,15 @@ Then, there might be an issue with it if the storinator that we are putting item
 In cases where there is only one tube, the item will simply drop, but when there are at least 2 tubes, the items will wonder around, until eventually there will be too many of them. In that case, the tubes will break.  
   
 How do we prevent our tubes breaking, or items dropping?  
-Well... a simple answer would be to have more storinators :D... but that's not practical  
+Wel a simple answer would be to have more storinators :D..... but that's not practical  
   
 **Instead, consider using item voids like this:**  
 \<img name=questbook_image_overflow_handling.png\>  
 Item voids have the lowest priority, so items really don't want to go there.  
-Storinator, has a higher priority than the item void, so if the storinator isn't full, items will go there.  
+Storinator, has a higher priority than the item void, so if the storinator isn't full, items will want to go there.  
 Item voids, have a lower priority, so if the item can't go to the storinator, it will go into the item void.  
   
-The default priority is 100.  
+The default priority of nodes is 100.  
 
 ### Meta
 

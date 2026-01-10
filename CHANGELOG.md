@@ -1,4 +1,12 @@
 # Release 40
+- Development resumed again!
+    - We are still looking for contributors, if you enjoy SBZ and want to contribute, please do so!
+- **Fixed various bugs** - main point of the release
+- Added new background music
+- Reworked autocrafters (They now require a crafting processor, old autocrafters will remain functioning with 1 craft/s speed)
+- Made robotic arms and annihilators stackable, and removed wear from them
+- Made manual crafters slightly cheaper
+- Re-worded some quests to be more..... readable
 
 
 # Release 38

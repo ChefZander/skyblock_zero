@@ -3,16 +3,16 @@ Start from absolutely nothing in a skyblock world. Time is your resource. Get lo
 
 ## Playing
 There is an in-game Quest Book to get you started. Have fun!<br>
-- **Please report bugs in the package threads, i will fix them ASAP.**
+- **Please report bugs in the package threads or github issues, i will fix them ASAP.**
 <br>
 I have included a CHANGELOG.md with the download for those interested.
 
 ## Licenses
-Code: Zander (content db: @zanderdev) GPL-3.0<br>
-Textures: Zander (content db: @zanderdev) CC BY-SA 4.0<br>
-See LICENSE.txt (for code) and LICENSE-TEXTURES.txt for more information.
-IMPORTANT: Part of the code may be licensed diffrently. Make sure to check if there are any other notices.
-This Game uses part of the code of Mesecons, Minetest Game, and potentially others. Their licenses can be found inside the repository.
+Code: Zander and contributors GPL-3.0<br>
+Textures: Zander and contributors CC BY-SA 4.0<br>
+See LICENSE.txt (for code) and LICENSE-TEXTURES.txt for more information.<br>
+
+Also: Parts of the code/other mods may be licensed differently. Make sure to check if there are any other notices.
 
 ## Soundtrack & SFX
 #### Main Menu
@@ -30,6 +30,7 @@ Art by StumpyStrust, CC0, https://opengameart.org/content/space-skyboxes-0
 - A Choice With Many Regrets by Tsorthan Grove, CC-BY 4.0, https://opengameart.org/content/a-choice-with-many-regrets
 
 #### SFX
+
 - hard_drive_shut_down_01.wav by Noisehag -- https://freesound.org/s/110552/ -- License: Creative Commons 0
 - [SFX Hit] deep kick boom by waveplaySFX -- https://freesound.org/s/231349/ -- License: Attribution 4.0
 - 5.wav by steveygos93 -- https://freesound.org/s/103585/ -- License: Attribution 3.0
@@ -39,10 +40,10 @@ Art by StumpyStrust, CC0, https://opengameart.org/content/space-skyboxes-0
 - MP5 Mag In (2) pt2.ogg by smill.and.welson -- https://freesound.org/s/698840/ -- License: Attribution 4.0
 - pop.ogg by dodrio -- https://freesound.org/s/554022/ -- License: Creative Commons 0
 - Page Turn by redagee -- https://freesound.org/s/737004/ -- License: Creative Commons 0
-- https://pixabay.com/sound-effects/rocket-loop-99748/
-- https://pixabay.com/sound-effects/distant-explosion-47562/ & https://pixabay.com/sound-effects/explosion-80108/ (edited)
-- https://pixabay.com/sound-effects/door-lock-43124/
-- https://pixabay.com/sound-effects/050597-ice-crusher-38522/ (edited)
+- Rocket Loop by Mozfoo -- https://freesound.org/s/458377/ -- License: Creative Commons 0
+- Explosion by morganpurkis -- https://freesound.org/s/397691/ -- License: Creative Commons 0 *AND* Distant Explosion by VanEngelen -- https://freesound.org/s/784660/ -- License: Creative Commons 0 (edited togheter)
+- Door Lock by dster777 -- https://freesound.org/s/344551/ -- License: Creative Commons 0
+- Ice Crusher by karinalarasart -- https://freesound.org/s/440759/ -- License: Creative Commons 0 (edited)
 - https://freesound.org/people/dibko/sounds/619103/ -- License: Attribution 4.0 (edited)
 - https://freesound.org/people/newlocknew/sounds/536655/  -- License: Attribution 4.0
 - https://freesound.org/people/MilanKovanda/sounds/624414/  -- License: Attribution 4.0

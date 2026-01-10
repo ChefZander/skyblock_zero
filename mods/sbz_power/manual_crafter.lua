@@ -237,12 +237,13 @@ core.register_node('sbz_power:manual_crafter', {
 })
 
 local blob = 'sbz_resources:matter_blob'
+local emit = 'sbz_resources:raw_emittrium'
 core.register_craft {
     type = 'shaped',
     output = 'sbz_power:manual_crafter',
     recipe = {
-        { blob, blob, blob },
+        { emit, blob, emit },
         { blob, 'sbz_resources:simple_circuit', blob },
-        { blob, blob, blob },
+        { emit, blob, emit },
     },
 }
