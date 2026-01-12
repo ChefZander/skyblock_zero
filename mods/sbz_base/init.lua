@@ -365,10 +365,12 @@ core.register_globalstep(function(_)
 end)
 
 -- inter-mod utils
+-- use sbz_api.count_nodes_within_radius this is deprecated
 function count_nodes_within_radius(pos, nodenames, radius)
     local radius_vector = vector.new(radius, radius, radius)
     return #core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)
 end
+sbz_api.count_nodes_within_radius = count_nodes_within_radius
 
 -- returns the first node pos
 function is_node_within_radius(pos, nodenames, radius)

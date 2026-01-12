@@ -112,7 +112,7 @@ end
 
 local function reserved_items_formspec(pos)
     local fs = {}
-    local offset = { 0.22, 4 }
+    local offset = { 0.22, 4.3 }
     local reserved_slots = get_reserved_slots_or_reserve_them(pos)
     for i = 1, 9 do
         local name = reserved_slots[i]
