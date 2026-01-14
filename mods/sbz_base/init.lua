@@ -59,24 +59,34 @@ sbz_api.get_simple_version_string = function()
     return 'SkyBlock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
 
---vector.random_direction was added in 5.10-dev, but this is defined here for support
---code borrowed from builtin/vector.lua in 5.10-dev
-if not vector.random_direction then
-    ---@return vector
-    function vector.random_direction()
-        -- Generate a random direction of unit length, via rejection sampling
-        local x, y, z, l2
-        repeat -- expected less than two attempts on average (volume sphere vs. cube)
-            x, y, z = math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1
-            l2 = x * x + y * y + z * z
-        until l2 <= 1 and l2 >= 1e-6
-        -- normalize
-        local l = math.sqrt(l2)
-        return vector.new(x / l, y / l, z / l)
-    end
-end
+-- /community is added here, because it's what a fork is likely to change
+core.register_chatcommand('community', {
+    privs = { ['interact'] = true }, -- useful in a server i guess? if someone has had their interact taken away, they might not have the best things to add to discussions
+    func = function(name, param)
+        core.show_formspec(
+            name,
+            'sbz_base:blabla_does_not_matter_and_i_am_thankful_for_it',
+            [[
+formspec_version[8]
+size[15,5]
 
--- not the exact implementations
+container[0.2,0.2]
+hypertext[0,0;14.8,4.8;_;
+<global font=mono>
+<tag name=url color=cyan hovercolor=blue>
+If you have any bug reports or suggestions for Skyblock: Zero, or simply just want to talk about it with other people, you may reach out to these places:
+
+<b>Github</b>: <action name=gh url=https://github.com/ChefZander/skyblock_zero><url>https://github.com/ChefZander/skyblock_zero</url></action>
+<b>Discord</b>: <action name=dc url=https://discord.gg/kHPbzrfcJ4><url>https://discord.gg/kHPbzrfcJ4</url></action>
+]
+container_end[]
+        ]]
+        )
+    end,
+})
+
+-- not the exact implementations of table.foreach/i
+-- try not using them i guess, only when its really elegant and you are like proud of it
 
 ---@param key_last boolean
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -253,13 +263,12 @@ core.register_chatcommand('bgm_volume', {
 })
 
 core.register_on_joinplayer(function(player)
+    local player_name = player:get_player_name()
     -- send welcome messages
-    core.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
-    core.chat_send_player(
-        player:get_player_name(),
-        '‼ reminder: If you fall off, use /core to teleport back to the core.'
-    )
-    core.chat_send_player(player:get_player_name(), '‼ reminder: If lose your Quest Book, use /qb to get it back.')
+    core.chat_send_player(player_name, sbz_api.get_simple_version_string())
+    core.chat_send_player(player_name, '‼ reminder: If you fall off, use /core to teleport back to the core.')
+    core.chat_send_player(player_name, '‼ reminder: If lose your Quest Book, use /qb to get it back.')
+    core.chat_send_player(player_name, '!! If you have any suggestions/bug reports to Skyblock Zero, see /community')
 
     -- play bgm
     playRandomBGM(player)
