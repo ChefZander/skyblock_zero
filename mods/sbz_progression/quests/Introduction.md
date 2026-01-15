@@ -22,8 +22,8 @@ Some commands useful for survival:
 - `/qb` - gives you the questbook if you don't have one  
 - `/home` - teleports you to home  
 - `/sethome` - sets your home  
-- `/drawers_fix` - if drawers appear broken just run that, command was taken from pandorabox_custom  
-- `/toggle_areas_hud` - Toggles the areas hud, may be useful if you dont want to always see it.  
+- `/drawers_fix` - if drawers appear broken just run that, yes that command is from pandorabox_custom
+- `/toggle_areas_hud` - Toggles the areas hud, useful if you don't want to always see it.  
 - `/bgm_volume` \<percentage\> - sets the background music's volume  
 
 **Hotbar switching**  
@@ -61,18 +61,18 @@ Requires:
 
 ### Text
 
-Welcome, player. This is the Quest Book. Here, you can check out what tasks you have to do, and the materials you will need for each quest.  
-  
+Welcome, player. This is the Quest Book. Here, you can check out what tasks you can do and information about them.
+
 You can also just ignore the Quest Book if you are an experienced player.  
-  
+
 Now, to get started: look down at the core. Punching it will give you some of your first resources.  
-You can also just **hold right-click on the core**, it will be easier on you.  
-  
+You can also **hold right-click on the core**, it will be easier on you.  
+
 These quests are in no particular order, but you might need items from one quest for another.  
 The Introduction questline is designed to get you started into a couple other questlines, so it is recommended you jump between questlines occasionally.  
-  
+
 If you need to know a recipe, search the item in the inventory, and click on it, it will bring up what it can be used for or how it can be crafted.  
-  
+
 TIP: If you lose your Quest Book, you can use /qb to get it back.
 
 ### Meta
@@ -84,7 +84,7 @@ Requires:
 ### Text
 
 Isn't this one node a little too crammed? Let's do something about that.  
-  
+
 Punch the Core a little more. With nine 'Matter Dust', you can craft yourself a 'Matter Blob'.  
 If you are unable to place a matter blob next to the core, try sneaking while placing it. On multiplayer servers the area around the core may be protected.  
 
@@ -108,7 +108,6 @@ Requires: Introduction
 ### Text
 
 Doesn't it feel weird to be holding antimatter? To break nodes you'll need a **Matter** Annihilator, you should craft it up now since it's used in some other crafts down the line.  
-TIP: Half-broken Annihilators can also be used to craft with.  
 
 Also, make sure you are crafting the **Matter** annihilator, not the **Anti**matter annihilator.
 
@@ -160,7 +159,7 @@ Requires: A bigger platform
 ### Text
 
 The Switching Station is an important node, because it is the heart of any Power Grid.  
-You need to have one switching station per power grid.  
+You **need** to have **one** switching station per power grid.  
 Every machine needs to be connected to a switching station.  
 The Switching Station also displays statistics about the Power Grid when hovered over in-world. When a machine says "no network found", it's not connected to the switching station and won't do anything.
 
@@ -225,8 +224,8 @@ Requires: A bigger platform
 
 ### Text
 
-Manual crafters are nodes that allow you to craft things very quickly. They do not require power, and **CANNOT be used with automation**.  
-They also won't work with crafting recipes that have "replacements", it will instead simply consume those items. (Recipes like that are very rare in sbz.)  
+Manual crafters are nodes that allow you to craft things very quickly. They do not require power, and **cannot** be used with automation.  
+They also won't work with crafting recipes that have "replacements", it will instead simply consume those items. (Recipes like that are very rare in sbz, unless you modified it.)  
 
 **Controls:**  
 - `place`: Configure  
@@ -260,6 +259,8 @@ Retaining Circuits are a type of Circuit often used in nodes which store items, 
   
 Unlike Simple Circuits, this will only craft one Retaining Circuit.
 
+TIP: With retaining circuits, you can craft **storinators** to permanently store items outside of your inventory. (They are documented in the storage questline)
+
 ### Meta
 
 Requires: Antimatter, Circuitry
@@ -270,7 +271,7 @@ Requires: Antimatter, Circuitry
 
 We're making the jump from generic matter to stone now! Here is where building a space station gets fun!  
   
-First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring three matter blobs, so **having at least 4 advanced matter extractors is recommended**, as you will need a lot of pebbles.  
+First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring **three matter blobs**, so **having at least 4 advanced matter extractors is recommended**, as you will need a lot of pebbles.  
 Pebbles will unlock a lot of decorational nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!
 
 ### Meta
@@ -296,9 +297,9 @@ Requires: Pretty Pebbles
 The questbook isn't meant to be explored linearly. You should do quests in whichever order you like.
 If you have inventory issues, the storage questline is within your reach.
 If you want to explore more machines, check out the emittrium and chemistry questline.
-You should also check out the meteorites questline, if you don't, you will wish you saw it sooner.
+You should also check out the meteorites questline, if you don't, you might wish that you saw it sooner.
 If you are a decorator, there is a questline for you too.
-If you want to actually automate (you know, the fun part), see the pipeworks questline. **Do that as soon as you can.**
+If you want to actually automate (you know, the fun part), see the pipeworks questline. Do that as soon as you can.
 
 You can also filter reachable quests (Quests that you can see the descriptions of, but haven't completed yet) by typing "reachable" into the questbook search bar
 

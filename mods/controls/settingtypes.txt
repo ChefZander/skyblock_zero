@@ -1,2 +1,0 @@
-# Enable debug mod for player controls. Sends chat messages to the player when callbacks are called.
-controls_enable_debug (Enable debug mode) bool false

@@ -87,10 +87,10 @@ function sbz_api.register_machine(name, def)
                     meta:set_string('infotext', 'Not enough power, needs: ' .. def.power_needed)
                     return def.power_needed
                 else
-                    meta:set_string('infotext', 'Running')
                     local power_consumed = old_action(pos, node, meta, supply, demand)
                         or def.idle_consume
                         or def.power_needed
+                    meta:set_string('infotext', ('Running (%s)'):format(sbz_api.format_power(power_consumed)))
 
                     return power_consumed
                 end

@@ -1,25 +1,27 @@
-sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
+sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
     disallow_pipeworks = true,
-    description = "Meteorite Radar",
-    drawtype = "mesh",
-    paramtype = "light",
-    mesh = "meteorite_radar.obj",
-    tiles = { "meteorite_radar.png" },
+    description = 'Meteorite Radar',
+    info_extra = "Detects if meteorites are nearby. Uses 10Cj if there aren't, uses 40Cj if there are.",
+    drawtype = 'mesh',
+    paramtype = 'light',
+    mesh = 'meteorite_radar.obj',
+    tiles = { 'meteorite_radar.png' },
     collision_box = {
-        type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0.25, 0.5 }
+        type = 'fixed',
+        fixed = { -0.5, -0.5, -0.5, 0.5, 0.25, 0.5 },
     },
     selection_box = {
-        type = "fixed",
-        fixed = { -0.5, -0.5, -0.5, 0.5, 0.25, 0.5 }
+        type = 'fixed',
+        fixed = { -0.5, -0.5, -0.5, 0.5, 0.25, 0.5 },
     },
     groups = { matter = 1 },
-    power_needed = 20,
-    action_interval = 0,
+    power_needed = 40,
     on_construct = function(pos)
-        minetest.sound_play({ name = "machine_build" }, { pos = pos })
+        minetest.sound_play({ name = 'machine_build' }, { pos = pos })
     end,
     action = function(radar_pos)
+        local power_consume = 10
+
         local players = {}
         local meteorites = {}
         local attractors = {}
@@ -28,31 +30,28 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
             if obj then
                 local entity = obj:get_luaentity()
                 if not entity then
-                    if obj:is_player() then
-                        table.insert(players, obj:get_player_name())
-                    end
-                elseif entity.name == "sbz_meteorites:meteorite" then
+                    if obj:is_player() then table.insert(players, obj:get_player_name()) end
+                elseif entity.name == 'sbz_meteorites:meteorite' then
                     table.insert(meteorites, obj)
-                elseif entity.name == "sbz_meteorites:gravitational_attractor_entity" then
+                elseif entity.name == 'sbz_meteorites:gravitational_attractor_entity' then
                     table.insert(entity.type < 0 and repulsors or attractors, vector.round(obj:get_pos()))
                 end
             end
         end
         if #meteorites > 0 then
-            minetest.add_particle({
+            minetest.add_particle {
                 pos = radar_pos + vector.new(0, 1.5, 0),
                 expiration_time = 1,
                 size = 10,
-                texture = "antenna.png",
-                animation = { type = "vertical_frames", aspect_width = 18, aspect_height = 18, length = 0.5 },
-                glow = 14
-            })
+                texture = 'antenna.png',
+                animation = { type = 'vertical_frames', aspect_width = 18, aspect_height = 18, length = 0.5 },
+                glow = 14,
+            }
 
-            minetest.sound_play(
-                { name = "alarm", gain = 0.7 },
-                { pos = radar_pos, max_hear_distance = 64 }
-            )
+            minetest.sound_play({ name = 'alarm', gain = 0.7 }, { pos = radar_pos, max_hear_distance = 64 })
+            power_consume = 40
         end
+
         for _, obj in ipairs(meteorites) do
             obj:get_luaentity():show_waypoint()
             local pos = obj:get_pos()
@@ -69,27 +68,28 @@ sbz_api.register_machine("sbz_meteorites:meteorite_radar", {
                 end
                 local collides = minetest.registered_nodes[minetest.get_node(vector.round(pos)).name].walkable
                 for _, player in ipairs(players) do
-                    minetest.add_particle({
+                    minetest.add_particle {
                         pos = pos,
                         expiration_time = 1,
                         size = collides and 50 or 10,
-                        texture = "visualiser_trail.png",
-                        animation = { type = "vertical_frames", aspect_width = 8, aspect_height = 8, length = 0.2 },
+                        texture = 'visualiser_trail.png',
+                        animation = { type = 'vertical_frames', aspect_width = 8, aspect_height = 8, length = 0.2 },
                         glow = 14,
-                        playername = player
-                    })
+                        playername = player,
+                    }
                 end
                 if collides then break end
             end
         end
-    end
+        return power_consume
+    end,
 })
 
 core.register_craft {
-    output = "sbz_meteorites:meteorite_radar",
+    output = 'sbz_meteorites:meteorite_radar',
     recipe = {
-        { "",                                "sbz_chem:titanium_alloy_ingot",    "" },
-        { "",                                "sbz_chem:titanium_alloy_ingot",    "" },
-        { "sbz_resources:reinforced_matter", "sbz_resources:prediction_circuit", "sbz_resources:reinforced_matter" }
-    }
+        { '', 'sbz_chem:titanium_alloy_ingot', '' },
+        { '', 'sbz_chem:titanium_alloy_ingot', '' },
+        { 'sbz_resources:reinforced_matter', 'sbz_resources:prediction_circuit', 'sbz_resources:reinforced_matter' },
+    },
 }

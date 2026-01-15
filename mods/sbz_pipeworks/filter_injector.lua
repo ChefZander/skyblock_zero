@@ -42,7 +42,7 @@ local animation_def = {
 
 minetest.register_node('pipeworks:automatic_filter_injector', {
     description = 'Automatic Filter-Injector',
-    info_extra = 'Pushes items out of blocks... and into tubes or other blocks',
+    info_extra = 'Pushes items out of containers.',
     tiles = {
         { name = 'filter_side.png^[transformFX', animation = animation_def },
         { name = 'filter_side.png^[transformFX', animation = animation_def },
@@ -117,7 +117,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
         local fromnode = sbz_api.get_or_load_node(frompos)
 
         if not fromnode then
-            meta:set_string('infotext', "Can't pull from that node - there is no node there?")
+            meta:set_string('infotext', "Can't pull from that node, there is no node there???")
             return 1
         end
 

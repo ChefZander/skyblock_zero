@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
     version = 40,
-    is_version_dev = false,
+    is_version_dev = true,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get 'sbz_server_mode' or 'auto'),
     deg2rad = math.pi / 180,
@@ -59,24 +59,34 @@ sbz_api.get_simple_version_string = function()
     return 'SkyBlock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
 
---vector.random_direction was added in 5.10-dev, but this is defined here for support
---code borrowed from builtin/vector.lua in 5.10-dev
-if not vector.random_direction then
-    ---@return vector
-    function vector.random_direction()
-        -- Generate a random direction of unit length, via rejection sampling
-        local x, y, z, l2
-        repeat -- expected less than two attempts on average (volume sphere vs. cube)
-            x, y, z = math.random() * 2 - 1, math.random() * 2 - 1, math.random() * 2 - 1
-            l2 = x * x + y * y + z * z
-        until l2 <= 1 and l2 >= 1e-6
-        -- normalize
-        local l = math.sqrt(l2)
-        return vector.new(x / l, y / l, z / l)
-    end
-end
+-- /community is added here, because it's what a fork is likely to change
+core.register_chatcommand('community', {
+    privs = { ['interact'] = true }, -- useful in a server i guess? if someone has had their interact taken away, they might not have the best things to add to discussions
+    func = function(name, param)
+        core.show_formspec(
+            name,
+            'sbz_base:blabla_does_not_matter_and_i_am_thankful_for_it',
+            [[
+formspec_version[8]
+size[15,5]
 
--- not the exact implementations
+container[0.2,0.2]
+hypertext[0,0;14.8,4.8;_;
+<global font=mono>
+<tag name=url color=cyan hovercolor=blue>
+If you have any bug reports or suggestions for Skyblock: Zero, or simply just want to talk about it with other people, you may reach out to these places:
+
+<b>Github</b>: <action name=gh url=https://github.com/ChefZander/skyblock_zero><url>https://github.com/ChefZander/skyblock_zero</url></action>
+<b>Discord</b>: <action name=dc url=https://discord.gg/kHPbzrfcJ4><url>https://discord.gg/kHPbzrfcJ4</url></action>
+]
+container_end[]
+        ]]
+        )
+    end,
+})
+
+-- not the exact implementations of table.foreach/i
+-- try not using them i guess, only when its really elegant and you are like proud of it
 
 ---@param key_last boolean
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -208,16 +218,21 @@ local function playRandomBGM(player)
     if player:get_meta() == nil then return end
 
     local player_name = player:get_player_name()
+    local player_meta = player:get_meta()
+
     local random_index = math.random(1, #bgm_sounds)
     local sound_name = bgm_sounds[random_index]
     local sound_length = bgm_lengths[random_index]
     if handles[player_name] then core.sound_stop(handles[player_name]) end
-    local volume = player:get_meta():get_int 'volume' / 100
-    if volume == 0 and player:get_meta():get_int 'has_set_volume' == 0 then volume = 1 end
+
+    local volume = player_meta:get_int 'bgm_volume' / 100
+    if volume == 0 and player_meta:get_int 'has_set_volume' == 0 then volume = 1 end
+
     handles[player_name] = core.sound_play(sound_name, {
         to_player = player_name,
         gain = volume,
     })
+
     core.after(
         sound_length + math.random(10, 100),
         function() -- i introduce one second of complete silence here, just because -- yeah well I introduce three hundred -- yeah well guess what its random now
@@ -239,7 +254,7 @@ core.register_chatcommand('bgm_volume', {
         local player = core.get_player_by_name(name or '')
         if not player then return end
         local meta = player:get_meta()
-        meta:set_int('volume', volume)
+        meta:set_int('bgm_volume', volume)
         meta:set_int('has_set_volume', 1)
         local handle = sbz_api.bgm_handles[player:get_player_name()]
         if handle then core.sound_fade(handle, 4, (volume / 100) + 0.001) end -- HACK: +0.001 so it doesn't delete the sound xDD
@@ -248,18 +263,13 @@ core.register_chatcommand('bgm_volume', {
 })
 
 core.register_on_joinplayer(function(player)
+    local player_name = player:get_player_name()
     -- send welcome messages
-    core.chat_send_player(player:get_player_name(), sbz_api.get_simple_version_string())
-    core.chat_send_player(
-        player:get_player_name(),
-        '‼ reminder: If you fall off, use /core to teleport back to the core.'
-    )
-    core.chat_send_player(
-        player:get_player_name(),
-        '‼ reminder: If lose your Quest Book, use /qb to get it back.'
-    )
-    --    core.chat_send_player(player:get_player_name(),
-    --        "‼ Also, you can hold right click on the core, instead of having to spam your mouse, on mobile you might need to just hold tap")
+    core.chat_send_player(player_name, sbz_api.get_simple_version_string())
+    core.chat_send_player(player_name, '‼ reminder: If you fall off, use /core to teleport back to the core.')
+    core.chat_send_player(player_name, '‼ reminder: If lose your Quest Book, use /qb to get it back.')
+    core.chat_send_player(player_name, '!! If you have any suggestions/bug reports to Skyblock Zero, see /community')
+
     -- play bgm
     playRandomBGM(player)
 
@@ -364,10 +374,12 @@ core.register_globalstep(function(_)
 end)
 
 -- inter-mod utils
+-- use sbz_api.count_nodes_within_radius this is deprecated
 function count_nodes_within_radius(pos, nodenames, radius)
     local radius_vector = vector.new(radius, radius, radius)
     return #core.find_nodes_in_area(vector.subtract(pos, radius_vector), vector.add(pos, radius_vector), nodenames)
 end
+sbz_api.count_nodes_within_radius = count_nodes_within_radius
 
 -- returns the first node pos
 function is_node_within_radius(pos, nodenames, radius)
@@ -393,8 +405,11 @@ function sbz_api.on_place_precedence(on_place)
         if under then
             local node = core.get_node(under)
             local def = core.registered_nodes[node.name]
-            if def and def.on_rightclick and
-                not (placer and placer:is_player() and placer:get_player_control().sneak) then
+            if
+                def
+                and def.on_rightclick
+                and not (placer and placer:is_player() and placer:get_player_control().sneak)
+            then
                 return def.on_rightclick(under, node, placer, itemstack, pointed_thing) or itemstack
             end
         end
@@ -429,10 +444,9 @@ end
     https://github.com/mt-mods/technic/blob/379bedc20d7ab11c758afa52d5916b23dced5354/technic/helpers.lua#L102 to line 107
 ]]
 
-local get_or_load_node_node
 function sbz_api.get_or_load_node(pos)
-    get_or_load_node_node = core.get_node_or_nil(pos)
-    if get_or_load_node_node then return get_or_load_node_node end
+    local node = core.get_node_or_nil(pos)
+    if node then return node end
     core.load_area(pos)
     return core.get_node(pos)
 end
@@ -458,6 +472,7 @@ dofile(MP .. '/recipe.lua')
 dofile(MP .. '/serialize.lua')
 dofile(MP .. '/serialize_benchmark.lua')
 dofile(MP .. '/space_movement.lua')
+dofile(MP .. '/pick_block.lua')
 
 -- yeah you actually have to do this
 -- definition copied from mtg

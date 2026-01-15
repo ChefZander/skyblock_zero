@@ -1,4 +1,15 @@
-## Release 38
+# Release 40
+- Development resumed again!
+    - We are still looking for contributors, if you enjoy SBZ and want to contribute, please do so!
+- **Fixed various bugs** - main point of the release
+- Added new background music
+- Reworked autocrafters (They now require a crafting processor, old autocrafters will remain functioning with 1 craft/s speed)
+- Made robotic arms and annihilators stackable, and removed wear from them
+- Made manual crafters slightly cheaper
+- Re-worded some quests to be more..... readable
+
+
+# Release 38
 ### The main stuff:
 - Large Liquid Storage - another multiblock, you won't guess what it does
 - Fixed meteorite attractor entities sometimes just multiplying
@@ -29,7 +40,7 @@
 - In the various lag statues, switched away from using `core.get_us_time`, and instead using `os.clock`, i don't know if this is actually better
 
 
-Release 37 - sorry for the long wait :) - the "Oh UI looks decent now... and what's that? it's not a buggy mess anymore?"
+# Release 37 - sorry for the long wait :) - the "Oh UI looks decent now... and what's that? it's not a buggy mess anymore?"
 - Fixed instatubes sometimes not working
 - Added bricks and wooden planks
 - Fixed one pixel of pebble being transparent (Yes, you weren't crazy!)
@@ -53,7 +64,7 @@ Release 37 - sorry for the long wait :) - the "Oh UI looks decent now... and wha
 - Made drawers undiggable when filled with anything
 - Changed questbooks
 
-Release 36 - "Oh no... there is stuff to fix actually, oops" Update
+# Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Fixed a bug with instatubes that made them behave really strangely, when a server restarted
 - Added the height limit for emitters back
 - Added a command that removes all pipeworks tube entities
@@ -69,7 +80,7 @@ Release 36 - "Oh no... there is stuff to fix actually, oops" Update
 - Made antimatter platforms explody
 - Fixed one way instatube textures being in the wrong direction
 
-Release 35 - "Optimization update"
+# Release 35 - "Optimization update"
 - made pipes and tubes smaller (1/4th of a node => 3/16th of a node)
 - fixed some bugs
 - made fluid pipe look better
@@ -86,7 +97,7 @@ Release 35 - "Optimization update"
 - Made copytool copy filter injector "exact match mode"
 
 
-Release 34
+# Release 34
 - Added a recipe to memory controller
 - Added an info page "Overflow Handling"
 - Added an "Items destroyed: " infotext to item voids
@@ -94,7 +105,7 @@ Release 34
 - Made burners store co2
 - Fixed rare bugs with filter injectors
 
-Release 33
+# Release 33
 - Fixed a bug where filter injectors didn't work with one way tubes
 - Added one direction tube
   - A tube that accepts items from all directions, but sends them to only one direction
@@ -141,11 +152,11 @@ Release 33
 - Fixed the default editor's disk menu  being weird sometimes
 
 
-Release 32
+# Release 32
 - Fix the bug with filter injectors crashing the game when directly outputting to accelerator tubes
 - Fix background music being at 0% volume by default
 
-Release 31
+# Release 31
 - Make the data disk description more accurate - they can only hold 20 kilobytes, not 1 megabyte
 - Re-worked how meteorite attractors/repulsors attract players when holding neutronium - You now no longer can move yourself, and experience zero gravity
   - This allows for making orbits if you are skilled
@@ -176,11 +187,11 @@ Release 31
 - Changed the behavior of filter injectors so that they don't try to push stuff out when the inventory they are trying to push stuff to is clearly full
 - Re-worked and fixed bugs with logic item transport
 
-Release 30
+# Release 30
 - Fixed crash bugs with jumpdrive and moving nodes with luacontrollers
 - Added lead shielding
 
-Release 29
+# Release 29
 - Notice: Releases may be really small like this one, or HUGE like release 28
 - Started doing changelogs again
 - Added more "info sections" to the questbook, told people that you can hold right click to the core in the questbook
@@ -195,7 +206,7 @@ Release 29
 - Fixed a bug with ladders, where they refused to go in certain directions
 - Compressed images, lossy compressed the background to 200kb
 
-Release 10
+# Release 10
 - Completely recode energy system to use "Cosmic Joules" instead of "Global Power"
 - Pipe-based energy system
 - Removed quest "Global Power"
@@ -206,7 +217,7 @@ Release 10
 - added Starlight Collectors
 - Stopped doing changelogs
 
-Release 9
+# Release 9
 - New questline "Decorator"
 - Moved "Emitter Immitators" to the Decorator questline
 - New quest: "Photon Lamps" in Decorator Questline
@@ -214,7 +225,7 @@ Release 9
 - Fixed a bug reported by @theidealist (ty)
 - Secret quests now show up in the questbook as ???
 
-Release 8
+# Release 8
 - Questbook now has questlines
 - Primitive Questbook API documentation added (see docs folder)
 - Questbook has new types of quests
@@ -222,7 +233,7 @@ Release 8
 - Added secret quest "Emptiness"
 - Improved indicators on quests
 
-Release 7
+# Release 7
 - fix the questbook reminders
 - player is now invisible, replaced by a white particle trail
 - removed players hand
@@ -232,7 +243,7 @@ Release 7
 - Add Dirt, Soil and Stone Nodes
 - Add 'Raw Emittrium' and 'Pebble' Items
 
-Release 6
+# Release 6
 - 'Emitter Immitator' now gives off twice as much light
 - Introduced the Quest Book instead of the Guide (which has been removed)
 - Ported 7 Quests over from the old quest system
@@ -241,16 +252,16 @@ Release 6
 - use /qb to get the questbook on old worlds
 - Custom hotbar textures
 
-Release 5
+# Release 5
 - Fixed an issue with infinite negative energy reported by @fgaz
 
-Release 4
+# Release 4
 - Fixed sneaking being insanely fast for no reason
 - Fixed bugs with Generator where it would give infinite energy / take infinite energy
 - Added conversion chamber craftitem
 - Added Organic Converter (not usable so far)
 
-Release 3
+# Release 3
 - Fixed power not getting removed when removing a running generator
 - Added space-like physics
 - Added a sound when placing a machine
@@ -260,7 +271,7 @@ Release 3
 - Added Simple Circuit and Retaining Circuit
 - Added Matter Plate
 
-Release 2
+# Release 2
 - Added Advanced Matter Extractor
 - Made Emitters display a message when clicked
 - Added "Advanced Extractors" Optional Quest / Achievement
@@ -268,5 +279,5 @@ Release 2
 - Added Simple Charge Generator
 - Added Emitter Immitator
 
-Release 1
+# Release 1
 - First release

@@ -1,0 +1,39 @@
+[submodule "mods/hotbar_switching"]
+	path = mods/hotbar_switching
+	url = https://github.com/TheEt1234/hotbar_switching
+[submodule "luanti_lsp_definitions"]
+	path = luanti_lsp_definitions
+	url = https://github.com/corpserot/luanti_lsp_definitions/
+[submodule "mods/unified_inventory_plus"]
+	path = mods/unified_inventory_plus
+	url = https://github.com/mt-mods/unified_inventory_plus
+[submodule "mods/libox"]
+	path = mods/libox
+	url = https://github.com/TheEt1234/libox
+[submodule "mods/fakelib"]
+	path = mods/fakelib
+	url = https://github.com/OgelGames/fakelib
+[submodule "mods/player_api"]
+	path = mods/player_api
+	url = https://github.com/minetest-game/player_api
+[submodule "mods/sethome"]
+	path = mods/sethome
+	url = https://github.com/minetest-game/sethome
+[submodule "mods/modlib"]
+	path = mods/modlib
+	url = https://github.com/appgurueu/modlib
+[submodule "mods/visible_wielditem"]
+	path = mods/visible_wielditem
+	url = https://github.com/appgurueu/visible_wielditem
+[submodule "mods/controls"]
+	path = mods/controls
+	url = https://github.com/mt-mods/controls
+[submodule "mods/minetest-fmod"]
+	path = mods/minetest-fmod
+	url = https://github.com/fluxionary/minetest-fmod
+[submodule "mods/minetest-futil"]
+	path = mods/minetest-futil
+	url = https://github.com/fluxionary/minetest-futil
+[submodule "mods/stubes"]
+	path = mods/stubes
+	url = https://github.com/TheEt1234/luanti-stubes
