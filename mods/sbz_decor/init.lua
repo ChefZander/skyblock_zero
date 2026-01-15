@@ -134,7 +134,7 @@ minetest.register_node('sbz_decor:mystery_terrarium', {
 minetest.register_craft {
     output = 'sbz_decor:mystery_terrarium',
     type = 'shapeless',
-    recipe = { 'sbz_bio:habitat_regulator', 'sbz_bio:screen_inverter_potion', 'sbz_chem:thorium_fluid_cell' },
+    recipe = { 'sbz_bio:habitat_regulator', 'sbz_bio:screen_inverter_potion', 'sbz_chem:thorium_powder' },
 }
 
 minetest.register_node(

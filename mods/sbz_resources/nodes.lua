@@ -488,7 +488,7 @@ minetest.register_abm {
 
 minetest.register_node('sbz_resources:clay', {
     description = 'Clay',
-    tiles = { 'clay.png' }, -- Needs retexture by artist
+    tiles = { 'clay.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
     sounds = sbz_api.sounds.sand(),
@@ -519,7 +519,7 @@ minetest.register_node(
 minetest.register_craft {
     type = 'cooking',
     output = 'sbz_resources:bricks',
-    recipe = 'sbz_resources:clay',
+    recipe = 'sbz_bio:dirt',
 }
 
 stairs.register 'sbz_resources:bricks'
