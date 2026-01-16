@@ -107,7 +107,6 @@ function drawers.drawer_on_dig(pos, node, player)
         if drawerType == 1 then vid = '' end
         local count = meta:get_int('count' .. vid)
         k = k + 1
-        core.debug 'AAA'
         if count > 0 then return false end
     end
 
