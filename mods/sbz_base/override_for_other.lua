@@ -6,7 +6,8 @@ end
 core.register_on_mods_loaded(function()
     for k, v in pairs(core.registered_items) do
         local overrides = {}
-        if v.type == 'node' and v._after_dig_drop ~= false then -- use _after_dig_drop in node defs, in cases like the CNC machine
+        if v.type == 'node' and v._after_dig_drop ~= false and v.groups and (v.groups.drawer or 0) == 0 then
+            -- use _after_dig_drop in node defs, in cases like the CNC machine
             local old_after_dig = v.after_dig_node or function(...) end
             overrides.after_dig_node = function(pos, oldnode, oldmetadata, digger)
                 if oldmetadata.inventory then

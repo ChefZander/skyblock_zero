@@ -56,7 +56,7 @@ For more details:
 https://creativecommons.org/publicdomain/zero/1.0/
 
 
-License of media:
+License of media: (Almost all of them have been modified in skyblock zero)
 -----------------
 Copyright (C) 2012 ultradust (https://www.freesound.org/people/ultradust/) (CC BY 3.0):
   sounds/drawers_interact.1.ogg (edited by tacotexmex)
