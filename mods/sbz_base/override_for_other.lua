@@ -10,7 +10,7 @@ core.register_on_mods_loaded(function()
             -- use _after_dig_drop in node defs, in cases like the CNC machine
             local old_after_dig = v.after_dig_node or function(...) end
             overrides.after_dig_node = function(pos, oldnode, oldmetadata, digger)
-                if oldmetadata.inventory then
+                if oldmetadata.inventory and digger then
                     -- I don't want duping with pipeworks filter injectors, so any inventory that can't be used with them probably shouldn't be dumped to the ground
                     local input_list = v.input_inv or ''
                     local output_list = v.output_inv or ''
