@@ -5,68 +5,82 @@ local POWER_GEN = 1200
 local offset = vector.new(3, 3, 3)
 
 local function try_linking(pos, meta)
-    local nodes = minetest.find_nodes_in_area(vector.subtract(pos, offset), vector.add(pos, offset),
-        { "sbz_power:reactor_core_off", "sbz_power:reactor_core_on" }, true)
+    local nodes = minetest.find_nodes_in_area(
+        vector.subtract(pos, offset),
+        vector.add(pos, offset),
+        { 'sbz_power:reactor_core_off', 'sbz_power:reactor_core_on' },
+        true
+    )
     local firstpos
-    if nodes["sbz_power:reactor_core_off"] ~= nil then
-        firstpos = nodes["sbz_power:reactor_core_off"][1]
-    elseif nodes["sbz_power:reactor_core_on"] ~= nil then
-        firstpos = nodes["sbz_power:reactor_core_on"][1]
+    if nodes['sbz_power:reactor_core_off'] ~= nil then
+        firstpos = nodes['sbz_power:reactor_core_off'][1]
+    elseif nodes['sbz_power:reactor_core_on'] ~= nil then
+        firstpos = nodes['sbz_power:reactor_core_on'][1]
     else
-        meta:set_string("infotext", "No reactor core nearby")
-        meta:set_int("linked", 0)
+        meta:set_string('infotext', 'No reactor core nearby')
+        meta:set_int('linked', 0)
         return false
     end
-    meta:set_string("linked_pos", vector.to_string(firstpos))
-    meta:set_int("linked", 1)
+    meta:set_string('linked_pos', vector.to_string(firstpos))
+    meta:set_int('linked', 1)
     return true
 end
 
-minetest.register_node("sbz_power:reactor_shell", {
-    description = "Reactor Shell",
-    info_extra = "Used for the emittrium reactor",
+minetest.register_node('sbz_power:reactor_shell', {
+    description = 'Reactor Shell',
+    info_extra = 'Used for the emittrium reactor',
     tiles = {
-        "reactor_shell.png", "blank.png^[invert:rgba^[multiply:#639bFF"
+        'reactor_shell.png',
+        'blank.png^[invert:rgba^[multiply:#639bFF',
     },
-    drawtype = "glasslike_framed",
-    paramtype = "light",
+    drawtype = 'glasslike_framed',
+    paramtype = 'light',
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
 })
 
 minetest.register_craft {
-    output = "sbz_power:reactor_shell",
+    output = 'sbz_power:reactor_shell',
     recipe = {
-        { "sbz_resources:compressed_core_dust", "sbz_resources:raw_emittrium",        "sbz_resources:compressed_core_dust" },
-        { "sbz_resources:raw_emittrium",        "sbz_resources:compressed_core_dust", "sbz_resources:raw_emittrium" },
-        { "sbz_resources:compressed_core_dust", "sbz_resources:raw_emittrium",        "sbz_resources:compressed_core_dust" },
-    }
+        {
+            'sbz_resources:compressed_core_dust',
+            'sbz_resources:raw_emittrium',
+            'sbz_resources:compressed_core_dust',
+        },
+        { 'sbz_resources:raw_emittrium', 'sbz_resources:compressed_core_dust', 'sbz_resources:raw_emittrium' },
+        {
+            'sbz_resources:compressed_core_dust',
+            'sbz_resources:raw_emittrium',
+            'sbz_resources:compressed_core_dust',
+        },
+    },
 }
 
-minetest.register_node("sbz_power:reactor_glass", {
-    description = "Reactor Glass",
-    info_extra = "Decorational, acts like a shell",
+minetest.register_node('sbz_power:reactor_glass', {
+    description = 'Reactor Glass',
+    info_extra = 'Decorational, acts like a shell',
     tiles = {
-        "reactor_shell.png", "blank.png"
+        'reactor_shell.png',
+        'blank.png',
     },
-    drawtype = "glasslike_framed",
-    paramtype = "light",
+    drawtype = 'glasslike_framed',
+    paramtype = 'light',
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
 })
 
 minetest.register_craft {
-    output = "sbz_power:reactor_glass",
+    output = 'sbz_power:reactor_glass',
     recipe = {
-        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_power:simple_charged_field" },
-        { "sbz_resources:emittrium_glass",  "sbz_power:reactor_shell",       "sbz_resources:emittrium_glass" },
-        { "sbz_power:simple_charged_field", "sbz_resources:emittrium_glass", "sbz_power:simple_charged_field" }
-    }
+        { 'sbz_power:simple_charged_field', 'sbz_resources:emittrium_glass', 'sbz_power:simple_charged_field' },
+        { 'sbz_resources:emittrium_glass', 'sbz_power:reactor_shell', 'sbz_resources:emittrium_glass' },
+        { 'sbz_power:simple_charged_field', 'sbz_resources:emittrium_glass', 'sbz_power:simple_charged_field' },
+    },
 }
 
-local reactor_shell = "blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.png"
+local reactor_shell = 'blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.png'
 
-minetest.register_node("sbz_power:reactor_item_input", {
-    description = "Reactor Emittrium Input",
-    info_extra = "ONLY ONE can be used in an emittrium reactor, supplies emittrium to the reactor core",
+minetest.register_node('sbz_power:reactor_item_input', {
+    description = 'Reactor Emittrium Input',
+    info_extra = 'ONLY ONE can be used in an emittrium reactor, supplies emittrium to the reactor core',
     groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1, explody = 1, charged = 1 },
 
     tiles = {
@@ -77,66 +91,64 @@ minetest.register_node("sbz_power:reactor_item_input", {
         reactor_shell,
 
         reactor_shell,
-        "reactor_item_input.png",
+        'reactor_item_input.png',
     },
-    paramtype2 = "4dir",
+    paramtype2 = '4dir',
     after_place_node = pipeworks.after_place,
     after_dig_node = pipeworks.after_dig,
     on_construct = function(pos)
         local inv = minetest.get_meta(pos):get_inventory()
-        inv:set_size("main", 1)
+        inv:set_size('main', 1)
     end,
     tube = {
         insert_object = function(pos, node, stack, direction, owner)
             local inv = minetest.get_meta(pos):get_inventory()
-            return inv:add_item("main", stack)
+            return inv:add_item('main', stack)
         end,
         can_insert = function(pos, node, stack, direction, owner)
-            if stack:get_name() ~= "sbz_resources:raw_emittrium" then
-                return false
-            end
+            if stack:get_name() ~= 'sbz_resources:raw_emittrium' then return false end
             local inv = minetest.get_meta(pos):get_inventory()
             local taken = stack:peek_item(1)
-            return inv:room_for_item("main", taken)
+            return inv:room_for_item('main', taken)
         end,
-        connect_sides = { left = 1, right = 1, top = 1, bottom = 1, back = 1, front = 1 }
+        connect_sides = { left = 1, right = 1, top = 1, bottom = 1, back = 1, front = 1 },
     },
 })
 
 minetest.register_craft {
-    output = "sbz_power:reactor_item_input",
+    output = 'sbz_power:reactor_item_input',
     recipe = {
-        { "pipeworks:tube_1", "sbz_resources:retaining_circuit", "sbz_power:reactor_shell" }
-    }
+        { 'pipeworks:tube_1', 'sbz_resources:retaining_circuit', 'sbz_power:reactor_shell' },
+    },
 }
 
-sbz_api.register_stateful("sbz_power:reactor_core", {
-    description = "Reactor Core",
+sbz_api.register_stateful('sbz_power:reactor_core', {
+    description = 'Reactor Core',
     info_extra = "Don't let it explode!",
     tiles = {
-        "reactor_core.png"
+        'reactor_core.png',
     },
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
     after_place_node = function(pos, placer, itemstack, pointed_thing)
-        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        minetest.get_meta(pos):set_string('owner', placer:get_player_name())
     end,
     on_turn_on = function(pos)
-        minetest.get_meta(pos):set_int("tickcount", 0)
+        minetest.get_meta(pos):set_int('tickcount', 0)
     end,
     on_turn_off = function(pos)
-        minetest.get_meta(pos):set_int("tickcount", 0)
-    end
+        minetest.get_meta(pos):set_int('tickcount', 0)
+    end,
 }, {
-    light_source = 14
+    light_source = 14,
 })
 
 minetest.register_craft {
-    output = "sbz_power:reactor_core",
+    output = 'sbz_power:reactor_core',
     recipe = {
-        { "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", },
-        { "sbz_meteorites:neutronium", "sbz_power:reactor_shell",   "sbz_meteorites:neutronium", },
-        { "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", "sbz_meteorites:neutronium", }
-    }
+        { 'sbz_power:reactor_shell', 'sbz_power:reactor_shell', 'sbz_power:reactor_shell' },
+        { 'sbz_power:reactor_shell', 'sbz_meteorites:neutronium', 'sbz_power:reactor_shell' },
+        { 'sbz_power:reactor_shell', 'sbz_power:reactor_shell', 'sbz_power:reactor_shell' },
+    },
 }
 
 local function make_infoscreen_on_formspec(meta)
@@ -144,7 +156,8 @@ local function make_infoscreen_on_formspec(meta)
         return (x / max) * 9
     end
 
-    return string.format([[
+    return string.format(
+        [[
 formspec_version[7]
 size[12,12]
 
@@ -159,28 +172,31 @@ button[0.2,10.8;5,1;turn_off;Turn off the reactor]
 button[6.8,10.8;5,1;relink;Re-Link]
 tooltip[relink;Use if 2 infoscreens are linked to the same reactor core]
 ]],
-        barchart_this_number(meta:get_int("water_level"), 100),
-        barchart_this_number(meta:get_int("emittrium_level"), 256))
+        barchart_this_number(meta:get_int 'water_level', 100),
+        barchart_this_number(meta:get_int 'emittrium_level', 256)
+    )
 end
 
 local function make_infoscreen_off_formspec(meta)
-    local err = meta:get_string("err")
-    if err ~= "" then
-        err = "label[0.2,2.5;Error: " .. err .. "]"
-    end
+    local err = meta:get_string 'err'
+    if err ~= '' then err = 'label[0.2,2.5;Error: ' .. err .. ']' end
     local size = 3
-    if err == "" then size = 2 end
-    return string.format([[
+    if err == '' then size = 2 end
+    return string.format(
+        [[
     formspec_version[7]
     size[6,%s]
     button[0,0;6,2;turn_on;Turn on the reactor]
     %s
-]], size, err)
+]],
+        size,
+        err
+    )
 end
 
-minetest.register_node("sbz_power:reactor_infoscreen", {
-    description = "Reactor Infoscreen",
-    paramtype2 = "4dir",
+minetest.register_node('sbz_power:reactor_infoscreen', {
+    description = 'Reactor Infoscreen',
+    paramtype2 = '4dir',
     tiles = {
         reactor_shell,
         reactor_shell,
@@ -189,29 +205,29 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
         reactor_shell,
 
         reactor_shell,
-        "reactor_infoscreen.png",
+        'reactor_infoscreen.png',
     },
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
     on_rightclick = function(pos)
         local meta = minetest.get_meta(pos)
-        if meta:get_int("linked") == 0 then
+        if meta:get_int 'linked' == 0 then
             if not try_linking(pos, meta) then
-                meta:set_string("formspec", "")
+                meta:set_string('formspec', '')
                 return
             end
         end
 
-        local linkedpos = vector.from_string(meta:get_string("linked_pos"))
+        local linkedpos = vector.from_string(meta:get_string 'linked_pos')
         if linkedpos == nil then
-            meta:set_int("linked", 0)
+            meta:set_int('linked', 0)
             return
         end
         local linkedname = sbz_api.get_node_force(linkedpos)
         if linkedname == nil then
             if not try_linking(pos, meta) then
-                meta:set_string("infotext", "No reactor nearby")
-                meta:set_int("linked", 0)
-                meta:set_string("formspec", "")
+                meta:set_string('infotext', 'No reactor nearby')
+                meta:set_int('linked', 0)
+                meta:set_string('formspec', '')
                 return
             end
             return
@@ -219,67 +235,67 @@ minetest.register_node("sbz_power:reactor_infoscreen", {
 
         ---@diagnostic disable-next-line: cast-local-type
         linkedname = linkedname.name
-        if linkedname ~= "sbz_power:reactor_core_on" and linkedname ~= "sbz_power:reactor_core_off" then
+        if linkedname ~= 'sbz_power:reactor_core_on' and linkedname ~= 'sbz_power:reactor_core_off' then
             if not try_linking(pos, meta) then
-                meta:set_string("infotext", "No reactor nearby")
-                meta:set_int("linked", 0)
-                meta:set_string("formspec", "")
+                meta:set_string('infotext', 'No reactor nearby')
+                meta:set_int('linked', 0)
+                meta:set_string('formspec', '')
                 return
             end
         end
 
         if not sbz_api.is_on(linkedpos) then
-            meta:set_string("infotext", "Linked but off")
-            meta:set_string("formspec", make_infoscreen_off_formspec(meta))
+            meta:set_string('infotext', 'Linked but off')
+            meta:set_string('formspec', make_infoscreen_off_formspec(meta))
         else
-            meta:set_string("infotext", "Linked")
-            meta:set_string("formspec", make_infoscreen_on_formspec(meta))
+            meta:set_string('infotext', 'Linked')
+            meta:set_string('formspec', make_infoscreen_on_formspec(meta))
         end
     end,
     on_receive_fields = function(pos, formname, fields, sender)
         local meta = minetest.get_meta(pos)
-        if meta:get_int("linked") == 0 then
-            meta:set_string("formspec", "")
+        if meta:get_int 'linked' == 0 then
+            meta:set_string('formspec', '')
             return
         end
-        local linkedpos = vector.from_string(meta:get_string("linked_pos"))
+        local linkedpos = vector.from_string(meta:get_string 'linked_pos')
         local linkedname = sbz_api.get_node_force(linkedpos).name
-        if linkedname ~= "sbz_power:reactor_core_on" and linkedname ~= "sbz_power:reactor_core_off" then
-            minetest.log("Not linked, name " .. linkedname)
-            meta:set_string("formspec", "")
+        if linkedname ~= 'sbz_power:reactor_core_on' and linkedname ~= 'sbz_power:reactor_core_off' then
+            minetest.log('Not linked, name ' .. linkedname)
+            meta:set_string('formspec', '')
             return
         end
 
         if fields.turn_on then
             sbz_api.turn_on(linkedpos)
-            meta:set_string("infotext", "Linked but off")
-            meta:set_string("formspec", make_infoscreen_on_formspec(meta))
+            meta:set_string('infotext', 'Linked but off')
+            meta:set_string('formspec', make_infoscreen_on_formspec(meta))
         elseif fields.turn_off then
-            meta:set_string("infotext", "Linked")
+            meta:set_string('infotext', 'Linked')
             sbz_api.turn_off(linkedpos)
-            meta:set_string("formspec", make_infoscreen_off_formspec(meta))
+            meta:set_string('formspec', make_infoscreen_off_formspec(meta))
         elseif fields.relink then
             try_linking(pos, meta)
-            meta:set_string("formspec", "")
-            meta:set_string("infotext", "")
+            meta:set_string('formspec', '')
+            meta:set_string('infotext', '')
         end
     end,
     on_reactor_update = function(pos)
         local meta = minetest.get_meta(pos)
-        meta:set_string("formspec", make_infoscreen_on_formspec(meta))
+        meta:set_string('formspec', make_infoscreen_on_formspec(meta))
     end,
 })
 
 minetest.register_craft {
-    output = "sbz_power:reactor_infoscreen",
+    output = 'sbz_power:reactor_infoscreen',
     recipe = {
-        { "sbz_power:reactor_glass", "sbz_power:reactor_shell", "sbz_power:connector_off" }
-    }
+        { 'sbz_power:reactor_glass', 'sbz_power:reactor_shell', 'sbz_power:connector_off' },
+    },
 }
 
-sbz_api.register_generator("sbz_power:reactor_power_port", {
-    description = "Reactor Power Port",
-    paramtype2 = "4dir",
+sbz_api.register_generator('sbz_power:reactor_power_port', {
+    description = 'Reactor Power Port',
+    paramtype2 = '4dir',
     tiles = {
         reactor_shell,
         reactor_shell,
@@ -288,14 +304,14 @@ sbz_api.register_generator("sbz_power:reactor_power_port", {
         reactor_shell,
 
         reactor_shell,
-        "reactor_powerport.png",
+        'reactor_powerport.png',
     },
     info_generated = POWER_GEN,
     groups = { matter = 1, reactor_shell = 1, pipe_connects = 1, explody = 1, charged = 1 },
-    connect_sides = { "front" },
+    connect_sides = { 'front' },
     action = function(pos, node, meta, supply, demand)
-        meta:set_string("infotext", "")
-        local reactor_pos = vector.from_string(meta:get_string("linked_coords"))
+        meta:set_string('infotext', '')
+        local reactor_pos = vector.from_string(meta:get_string 'linked_coords')
 
         if reactor_pos == nil then return 0 end
         local state = sbz_api.is_on(reactor_pos)
@@ -306,20 +322,19 @@ sbz_api.register_generator("sbz_power:reactor_power_port", {
         end
     end,
     disallow_pipeworks = true,
-
 })
 
 minetest.register_craft {
-    output = "sbz_power:reactor_power_port",
+    output = 'sbz_power:reactor_power_port',
     recipe = {
-        { "sbz_power:power_pipe", "sbz_power:reactor_shell", "sbz_power:simple_charged_field" }
-    }
+        { 'sbz_power:power_pipe', 'sbz_power:reactor_shell', 'sbz_power:simple_charged_field' },
+    },
 }
 
-minetest.register_node("sbz_power:reactor_coolant_port", {
-    description = "Reactor Coolant Port",
-    info_extra = "Provide it water",
-    paramtype2 = "4dir",
+minetest.register_node('sbz_power:reactor_coolant_port', {
+    description = 'Reactor Coolant Port',
+    info_extra = 'Provide it water',
+    paramtype2 = '4dir',
     tiles = {
         reactor_shell,
         reactor_shell,
@@ -328,36 +343,39 @@ minetest.register_node("sbz_power:reactor_coolant_port", {
         reactor_shell,
 
         reactor_shell,
-        "reactor_coolantport.png",
+        'reactor_coolantport.png',
     },
     groups = { matter = 1, reactor_shell = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, explody = 1, charged = 1 },
-    connect_sides = { "front" },
+    connect_sides = { 'front' },
     on_construct = function(pos)
-        minetest.get_meta(pos):set_string("liquid_inv", minetest.serialize({
-            max_count_in_each_stack = 100, -- 100 buckets
-            [1] = {
-                name = "sbz_resources:water_source",
-                count = 0,
-                can_change_name = false,
-            },
-        }))
+        minetest.get_meta(pos):set_string(
+            'liquid_inv',
+            minetest.serialize {
+                max_count_in_each_stack = 100, -- 100 buckets
+                [1] = {
+                    name = 'sbz_resources:water_source',
+                    count = 0,
+                    can_change_name = false,
+                },
+            }
+        )
     end,
     on_liquid_inv_update = function(pos, lqinv) end,
 })
 minetest.register_craft {
-    output = "sbz_power:reactor_coolant_port",
+    output = 'sbz_power:reactor_coolant_port',
     recipe = {
-        { "sbz_power:fluid_pipe", "sbz_power:fluid_tank", "sbz_power:reactor_shell" }
-    }
+        { 'sbz_power:fluid_pipe', 'sbz_power:fluid_tank', 'sbz_power:reactor_shell' },
+    },
 }
 
 local function explode(pos)
-    local owner = minetest.get_meta(pos):get_string("owner")
+    local owner = minetest.get_meta(pos):get_string 'owner'
     --breaking nodes
-    minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 })
+    minetest.sound_play { name = 'distant-explosion-47562', gain = 0.4 }
     sbz_api.explode(pos, 32, 1.5, false, owner)
     --particle effects
-    minetest.add_particlespawner({
+    minetest.add_particlespawner {
         time = 1,
         amount = 9000,
         pos = pos,
@@ -366,15 +384,15 @@ local function explode(pos)
         glow = 14,
         exptime = { min = 2, max = 10 },
         size = { min = 3, max = 6 },
-        texture = "reactor_explosion_particle.png",
+        texture = 'reactor_explosion_particle.png',
         attract = {
-            kind = "point",
+            kind = 'point',
             origin = pos,
-            strength = { min = -20, max = 0 }
+            strength = { min = -20, max = 0 },
         },
         acc = { x = 0, y = -3, z = 0 }, -- gravity
         collisiondetection = true,
-    })
+    }
 end
 
 sbz_api.reactor_explode = explode
@@ -383,12 +401,12 @@ local CONSUME_EMITTRIUM_EVERY_X_SEC = 30
 
 local function core_tick(pos)
     local meta = minetest.get_meta(pos)
-    local tickcount = meta:get_int("tickcount") or 0
+    local tickcount = meta:get_int 'tickcount' or 0
     if tickcount >= CONSUME_EMITTRIUM_EVERY_X_SEC then
         tickcount = 0
-        meta:set_int("tickcount", 0)
+        meta:set_int('tickcount', 0)
     else
-        meta:set_int("tickcount", tickcount + 1)
+        meta:set_int('tickcount', tickcount + 1)
     end
     local err = nil
     local nodes = {
@@ -404,7 +422,7 @@ local function core_tick(pos)
             for z = iter_start_pos.z, iter_start_pos.z + 2 do
                 local vec = vector.new(x, y, z)
                 local node = sbz_api.get_node_force(vec).name
-                if node == "sbz_power:reactor_power_port" then
+                if node == 'sbz_power:reactor_power_port' then
                     if nodes.power == nil then
                         nodes.power = vec
                     else
@@ -414,116 +432,111 @@ local function core_tick(pos)
                     --                    err = "What is a core doing in your reactor shell?"
                     ---                end
                     --- -- no i think i can leave it in, people are going to make funny designs and im all for it!
-                elseif node == "sbz_power:reactor_infoscreen" then
+                elseif node == 'sbz_power:reactor_infoscreen' then
                     if nodes.info == nil then
                         nodes.info = vec
                     else
                         err = "You can't have more than 1 infoscreen"
                     end
-                elseif node == "sbz_power:reactor_item_input" then
+                elseif node == 'sbz_power:reactor_item_input' then
                     if nodes.emittrium == nil then
                         nodes.emittrium = vec
                     else
                         err = "You can't have more than 1 Emittrium Input"
                     end
-                elseif node == "sbz_power:reactor_coolant_port" then
+                elseif node == 'sbz_power:reactor_coolant_port' then
                     if nodes.coolant == nil then
                         nodes.coolant = vec
                     else
                         err = "You can't have more than 1 coolant port"
                     end
                 end
-                nodes.n_shells = nodes.n_shells + minetest.get_item_group(node, "reactor_shell")
+                nodes.n_shells = nodes.n_shells + minetest.get_item_group(node, 'reactor_shell')
             end
         end
     end
     if nodes.n_shells ~= 27 then
-        err = "Not enough shells/glass"
+        err = 'Not enough shells/glass'
         sbz_api.turn_off(pos)
     end
 
-    if nodes.emittrium == nil then
-        err = "No emittrium input?"
-    end
-    if nodes.coolant == nil then
-        err = "No coolant input?"
-    end
-    if nodes.power == nil then
-        err = "No power input/output?"
-    end
+    if nodes.emittrium == nil then err = 'No emittrium input?' end
+    if nodes.coolant == nil then err = 'No coolant input?' end
+    if nodes.power == nil then err = 'No power input/output?' end
 
     if nodes.info == nil then
-        minetest.chat_send_player(meta:get_string("owner"),
-            "You forgot to put up an infoscreen in this reactor (or somehow it wasn't detected)")
+        minetest.chat_send_player(
+            meta:get_string 'owner',
+            "You forgot to put up an infoscreen in this reactor (or somehow it wasn't detected)"
+        )
         sbz_api.turn_off(pos)
         return
     end
     local emittrium_stack, emittriummeta
     if nodes.emittrium then
         emittriummeta = minetest.get_meta(nodes.emittrium)
-        emittrium_stack = emittriummeta:get_inventory():get_stack("main", 1)
+        emittrium_stack = emittriummeta:get_inventory():get_stack('main', 1)
 
         if tickcount == 0 then
             local newcount = emittrium_stack:get_count() - 16
             if newcount < 0 then
-                err = "Not enough emittrium"
-                meta:set_int("tickcount", CONSUME_EMITTRIUM_EVERY_X_SEC) -- resets
+                err = 'Not enough emittrium'
+                meta:set_int('tickcount', CONSUME_EMITTRIUM_EVERY_X_SEC) -- resets
             else
                 emittrium_stack:set_count(emittrium_stack:get_count() - 16)
-                emittriummeta:get_inventory():set_stack("main", 1, emittrium_stack)
+                emittriummeta:get_inventory():set_stack('main', 1, emittrium_stack)
             end
         end
     end
     local infometa = minetest.get_meta(nodes.info)
-    infometa:set_string("err", err or "")
+    infometa:set_string('err', err or '')
 
     if not err then
         local powermeta = minetest.get_meta(nodes.power)
-        powermeta:set_string("linked_coords", vector.to_string(pos))
+        powermeta:set_string('linked_coords', vector.to_string(pos))
         local water = nodes.coolant
         local watermeta = minetest.get_meta(water)
-        local waterinv = minetest.deserialize(watermeta:get_string("liquid_inv"))
+        local waterinv = minetest.deserialize(watermeta:get_string 'liquid_inv')
         if waterinv[1].count == 0 then
             sbz_api.turn_off(pos)
             return
         end
 
         waterinv[1].count = math.max(waterinv[1].count - 1, 0)
-        watermeta:set_string("liquid_inv", minetest.serialize(waterinv))
+        watermeta:set_string('liquid_inv', minetest.serialize(waterinv))
 
-        infometa:set_int("water_level", waterinv[1].count)
-        infometa:set_int("emittrium_level", emittrium_stack:get_count())
-        minetest.registered_nodes["sbz_power:reactor_infoscreen"].on_reactor_update(nodes.info)
-        unlock_achievement(meta:get_string("owner"), "Building the emittrium reactor and turning it on")
+        infometa:set_int('water_level', waterinv[1].count)
+        infometa:set_int('emittrium_level', emittrium_stack:get_count())
+        minetest.registered_nodes['sbz_power:reactor_infoscreen'].on_reactor_update(nodes.info)
+        unlock_achievement(meta:get_string 'owner', 'Building the emittrium reactor and turning it on')
     else
         sbz_api.turn_off(pos)
     end
 end
 
-minetest.register_abm({
-    nodenames = { "sbz_power:reactor_core_on" },
+minetest.register_abm {
+    nodenames = { 'sbz_power:reactor_core_on' },
     action = core_tick,
     interval = 1,
     chance = 1,
-})
-
+}
 
 mesecon.register_on_mvps_move(function(moved_nodes)
     for i = 1, #moved_nodes do
         local moved_node = moved_nodes[i]
-        if moved_node.node.name == "sbz_power:reactor_power_port" then
+        if moved_node.node.name == 'sbz_power:reactor_power_port' then
             local meta = minetest.get_meta(moved_node.pos)
-            local linked_coords = vector.from_string(meta:get_string("linked_coords"))
+            local linked_coords = vector.from_string(meta:get_string 'linked_coords')
             if linked_coords then
                 linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
-                meta:set_string("linked_coords", vector.to_string(linked_coords))
+                meta:set_string('linked_coords', vector.to_string(linked_coords))
             end
-        elseif moved_node.node.name == "sbz_power:reactor_infoscreen" then
+        elseif moved_node.node.name == 'sbz_power:reactor_infoscreen' then
             local meta = minetest.get_meta(moved_node.pos)
-            local linked_coords = vector.from_string(meta:get_string("linked_pos"))
+            local linked_coords = vector.from_string(meta:get_string 'linked_pos')
             if linked_coords then
                 linked_coords = (linked_coords - vector.copy(moved_node.oldpos)) + vector.copy(moved_node.pos)
-                meta:set_string("linked_pos", vector.to_string(linked_coords))
+                meta:set_string('linked_pos', vector.to_string(linked_coords))
             end
         end
     end
