@@ -6,7 +6,8 @@
 - Reworked autocrafters (They now require a crafting processor, old autocrafters will remain functioning with 1 craft/s speed)
 - Made robotic arms and annihilators stackable, and removed wear from them
 - Made manual crafters slightly cheaper
-- Re-worded some quests to be more..... readable
+- Re-worded some quests to be more readable
+- Made emitter reactor core cost less
 
 
 # Release 38

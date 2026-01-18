@@ -107,7 +107,7 @@ function drawers.drawer_on_dig(pos, node, player)
         if drawerType == 1 then vid = '' end
         local count = meta:get_int('count' .. vid)
         k = k + 1
-        if count > 0 then return end
+        if count > 0 then return false end
     end
 
     -- drop all drawer upgrades
@@ -240,6 +240,7 @@ function drawers.register_drawer(name, def)
     def.light_source = 10
     def.groups = def.groups or {}
     def.is_ground_content = false
+    def = unifieddyes.def(def, false)
 
     -- events
     def.on_construct = drawers.drawer_on_construct
@@ -271,7 +272,7 @@ function drawers.register_drawer(name, def)
         def.after_dig_node = pipeworks.after_dig
 
         def.tube.return_input_invref = function(pos, node, dir, owner)
-            local inv = core.get_meta(pos):get_inventory() -- fakelib.create_inventory() -- fakelib is WEEIRD
+            local inv = core.get_meta(pos):get_inventory() -- fakelib.create_inventory() -- fakelib is weird so i wont use it here
             local vis = drawers.drawer_visuals[core.hash_node_position(pos)]
             if not vis then return false end
             for i = 1, 4 do
@@ -317,7 +318,6 @@ function drawers.register_drawer(name, def)
             drawers.spawn_visuals(to_pos)
         end)
     end
-    def = unifieddyes.def(def, false)
     if drawers.enable_1x1 then
         -- normal drawer 1x1 = 1
         local def1 = table.copy(def)
