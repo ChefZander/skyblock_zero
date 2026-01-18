@@ -26,11 +26,10 @@ Some commands useful for survival:
 - `/toggle_areas_hud` - Toggles the areas hud, useful if you don't want to always see it.  
 - `/bgm_volume` \<percentage\> - sets the background music's volume  
 
-**Hotbar switching**  
-You can switch your hotbar row to another one by pressing `sneak` + `aux1` (usually `e`) + `left mouse button`, to cycle your hotbar in the opposite direction use `sneak` + `aux1` + `right mouse button`.
+**Hotbar switching** You can switch your hotbar row to another one by pressing `sneak` + `aux1` (usually `e`) + `left mouse button`, to cycle your hotbar in the opposite direction use `sneak` + `aux1` + `right mouse button`.
 
 **Recomended for small screens**  
-in theme settings, you can disable "Force mono font", this will make the font less good but it will make it smaller.  
+In theme settings, you can disable "Force mono font", this will make the font less good but it will make it smaller.  
 
 **Player settings**
 In your inventory, you can see a settings icon at the bottom. Clicking that takes you to player settings.
@@ -121,7 +120,7 @@ Requires: A bigger platform, Antimatter
 
 Emitters are these blue nodes scattered around the core, be careful not to confuse them with the very similar looking skybox.  
 You will need an annihilator to extract resources from them, they will behave exactly the same as a core, but they will sometimes give you emittrium.  
-TIP: You can craft **matter platforms** to have a cheaper way of bridging out.  
+TIP: You can craft **Matter Platforms** to have a cheaper way of bridging out.  
 
 ### Meta
 
@@ -159,11 +158,11 @@ Requires: A bigger platform
 ### Text
 
 The Switching Station is an important node, because it is the heart of any Power Grid.  
-You **need** to have **one** switching station per power grid.  
-Every machine needs to be connected to a switching station.  
-The Switching Station also displays statistics about the Power Grid when hovered over in-world. When a machine says "no network found", it's not connected to the switching station and won't do anything.
+You **need** to have **one** Switching Station per power grid.  
+Every machine needs to be connected to a Switching Station.  
+The Switching Station also displays statistics about the Power Grid when hovered over in-world. When a machine says "no network found", it's not connected to the Switching Station and won't do anything.
 
-When you right-click a switching station, you will see a summary of all the machines connected.
+When you right-click a Switching Station, you will see a summary of all the machines connected.
 
 ### Meta
 
@@ -173,7 +172,7 @@ Requires: Matter Plates
 
 ### Text
 
-Unlike most power systems, in Skyblock Zero's power system, almost all machines conducts power to other machines, so machines act like cables here.  
+Unlike most power systems, in Skyblock Zero's power system, almost all machines conduct power to other machines, so machines act like cables here.  
 Cables are useful when you have 2 far apart factories that you want to connect, or for aesthetics, or for organization.  
 The power unit is Cosmic Joules, and is abbreviated to Cj in most interfaces.  
 
@@ -185,7 +184,7 @@ Requires: Switching Station
 
 ### Text
 
-Finally! Automation! Let's get on that, shall we? You will need a **simple matter extractor** and some **power** for that.
+Finally! Automation! Let's get on that, shall we? You will need a **Simple Matter Extractor** and some **power** for that.
 TIP: Some early game machines without power emit red particles.
 
 ### Meta
@@ -241,9 +240,9 @@ Requires: Circuitry
 
 ### Text
 
-Right now, you're probably using simple charged fields to generate your power, but since they decay, they don't last forever, which is not convenient.  
+Right now, you're probably using Simple Charged Fields to generate your power, but since they decay, they don't last forever, which is not convenient.  
   
-To solve that, you can use a simple charge generator. It consumes **charged particles** as fuel over time, and provides you with more power than simple charged fields do. You can use **core dust** to fuel it as well.
+To solve that, you can use a Simple Charge Generator. It consumes **charged particles** as fuel over time, and provides you with more power than Simple Charged Fields do. You can use **core dust** to fuel it as well.
 
 It generates `36 Cj` with charged particles, `30 Cj` with core dust.
 
@@ -259,7 +258,7 @@ Retaining Circuits are a type of Circuit often used in nodes which store items, 
   
 Unlike Simple Circuits, this will only craft one Retaining Circuit.
 
-TIP: With retaining circuits, you can craft **storinators** to permanently store items outside of your inventory. (They are documented in the storage questline)
+TIP: With retaining circuits, you can craft **Storinators** to permanently store items outside of your inventory. (They are documented in the storage questline)
 
 ### Meta
 
@@ -304,7 +303,7 @@ If you want to actually automate (you know, the fun part), see the pipeworks que
 You can also filter reachable quests (Quests that you can see the descriptions of, but haven't completed yet) by typing "reachable" into the questbook search bar
 
 Tip: When setting a goal, explore other quests to see if that goal could be done faster by using the tools from those quests. 
-Example: Getting the very advanced battery would be greately helped by the pipeworks questline.
+Example: Getting the Very Advanced Battery would be greatly helped by the pipeworks questline.
 
 ### Meta
 

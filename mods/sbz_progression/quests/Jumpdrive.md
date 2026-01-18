@@ -54,7 +54,7 @@ Requires: Jumpdrive Backbone, Warp Device, Very Advanced Batteries
 
 ### Text
 
-Soo i imagine you'd like to travel huge distances with the jumpdrive, well.... this will allow you to do that  
+So, I imagine you'd like to travel huge distances with the jumpdrive, well.... this will allow you to do that  
   
 Simply place one down in your target destination. Now you can teleport near it with the jumpdrive.  
 
@@ -66,7 +66,7 @@ Requires: The Jumpdrive (engine)
 
 ### Text
 
-So... i imagine you want to move multiple jumpdrives at once... well you are lucky, this is the node for you!  
+So... I imagine you want to move multiple jumpdrives at once... well you are lucky, this is the node for you!  
 Connect up all the jumpdrives with jumpdrive backbones, connect that to the fleet controller, and now you can use it!  
   
 Warning: Make sure to ALWAYS press "show" before jump... you don't want one of your jumpdrives to be in the wrong place...  
