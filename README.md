@@ -32,9 +32,8 @@ Art by StumpyStrust, CC0, https://opengameart.org/content/space-skyboxes-0
 #### SFX
 
 - hard_drive_shut_down_01.wav by Noisehag -- https://freesound.org/s/110552/ -- License: Creative Commons 0
-- block_annihilated.ogg, drill_dig.ogg: "[SFX Hit] deep kick boom" by waveplaySFX -- https://freesound.org/s/231349/ -- License: Attribution 4.0 
+- block_annihilated.ogg: "[SFX Hit] deep kick boom" by waveplaySFX -- https://freesound.org/s/231349/ -- License: Attribution 4.0 
   - pop fix for block_annihilated.ogg by AbbyRead (derivative rights released; refer to above license to credit the original creator if used)
-  - heavily edited for drill_dig.ogg by TheEt1234: all rights reserved derivative work (default state of it, as license was unspecified at the time)
 - 5.wav by steveygos93 -- https://freesound.org/s/103585/ -- License: Attribution 3.0
 - Step 4.wav by carrigsound -- https://freesound.org/s/32641/ -- License: Creative Commons 0
 - bd.wav by altemark -- https://freesound.org/s/35913/ -- License: Attribution 4.0
