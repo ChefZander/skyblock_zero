@@ -14,7 +14,7 @@ CODE (modified in skyblock zero):
 * (c) flux LGPL v3
 * inspired by code (c) AiTechEye LGPL-2.1, though it's been rewritten from the ground up twice now...
 
-TEXTURES (All of these have been modified by TheEt1234 for SBZ, same license):
+TEXTURES (All of these have been modified by TheEt1234 for SBZ):
 * smartshop_border.png (c) celeron55 CC BY-SA 3.0
 * smartshop_face.png (c) celeron55 CC BY-SA 3.0
 
