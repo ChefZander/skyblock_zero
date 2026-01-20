@@ -1,6 +1,9 @@
 smartshop redo mod for minetest.
 Has been modified in skyblock zero.
 
+Notice: Modified by TheEt1234 at 20-01-2026
+
+
 based on the original smartshop mod by AiTechEye
 * https://forum.minetest.net/viewtopic.php?f=11&t=14304
 * https://github.com/AiTechEye/smartshop
@@ -11,7 +14,7 @@ CODE (modified in skyblock zero):
 * (c) flux LGPL v3
 * inspired by code (c) AiTechEye LGPL-2.1, though it's been rewritten from the ground up twice now...
 
-TEXTURES (KEEP IN MIND: all of theese have been modified in skyblock zero):
+TEXTURES (All of these have been modified by TheEt1234 for SBZ, same license):
 * smartshop_border.png (c) celeron55 CC BY-SA 3.0
 * smartshop_face.png (c) celeron55 CC BY-SA 3.0
 

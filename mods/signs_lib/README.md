@@ -1,6 +1,8 @@
 # signs_lib
 (modified)
 
+Notice: Modified by TheEt1234 at 20-01-2026
+
 This is kaeza's and my signs library mod, originally forked from PilzAdam's version and rewritten mostly by kaeza to include a number of new features, then rewritten again a couple more times (finding its way into my  [street_signs](https://forum.minetest.net/viewtopic.php?t=20866) mod for a while, where it developed nicely 🙂).
 
 The purpose of PilzAdam's original mod was to just provide a no-frills way make default signs show their text, via an entity placed right in front.  It was hacky, but it worked!
