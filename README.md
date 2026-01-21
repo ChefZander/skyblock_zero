@@ -8,7 +8,7 @@ There is an in-game Quest Book to get you started. Have fun!<br>
 I have included a CHANGELOG.md with the download for those interested.
 
 ## Licenses
-Code: Zander and contributors GPL-3.0<br>
+Code: Zander and contributors GPL-3.0-only<br>
 Textures: Zander and contributors CC BY-SA 4.0<br>
 See LICENSE.txt (for code) and LICENSE-TEXTURES.txt for more information.<br>
 
@@ -55,7 +55,7 @@ For users on ContentDB: The download of this package includes this information w
 | Mod name                   | Source                                                                   | Code License | Modified | Notes |
 |----------------------------|--------------------------------------------------------------------------|--------------|----------|-------|
 | travelnet                  | https://github.com/mt-mods/travelnet                                     | GPLv3-*? | yes |
-| unifieddyes                | https://github.com/mt-mods/unifieddyes                                   | GPLv2-*likely "-or-later" | yes |
+| unifieddyes                | https://github.com/mt-mods/unifieddyes                                   | GPLv2-or-later | yes |
 | player_monoids             | https://github.com/minetest-mods/player_monoids                          | Apache-2.0 | yes |
 | replacer                   | https://github.com/SwissalpS/replacer                                    | LGPLv3-*? | yes |
 | sbz_pipeworks (pipeworks)  | https://github.com/mt-mods/pipeworks                                     | LGPLv3-*? | yes |
@@ -94,7 +94,6 @@ For users on ContentDB: The download of this package includes this information w
 - if you find any error/dead link in this information, make an issue or a pull request correcting it
 - some of the information was gotten from `README` files of projects, not the `LICENSE` files
 - `*?` - For FSF licenses, i didn't/couldn't find out if it's -only or -or-later, assume `-only`
-- `*likely <x>` - For FSF licenses, two different sources are contradictory on licensing, example: contentDB page says "GPL-2.0-only" but the README says "License: GPLv2 or later", it is assumed that the README/LICENSE files in the project are the real source over contentDB
 - this list is sorted by: 
     - the "permissiveness" of a license (so GNU licenses go above MIT for example)
     - if the work is modified, it goes above all else
