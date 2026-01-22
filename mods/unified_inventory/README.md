@@ -11,7 +11,7 @@ Copyright (C) 2012-2014 Maciej Kasatkin (RealBadAngel)
 
 Copyright (C) 2012-? Various minetest-mods contributors
 
-Copyright (C) 2023-2026 Skyblock Zero contributors
+Copyright (C) 2026 TheEt1234 (Skyblock Zero Contributor) 
 
 
 ## Code
