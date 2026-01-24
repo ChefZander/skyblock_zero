@@ -1,6 +1,8 @@
-Minetest Game mod: stairs (heavily modified)
+Minetest Game mod: stairs (heavily modified for Skyblock: Zero)
 =========================
 See license.txt for license information.
+
+Notice: Modified by TheEt1234 in 20-01-2026
 
 Authors of source code
 ----------------------
@@ -11,17 +13,4 @@ Various Minetest developers and contributors (LGPLv2.1+)
 Authors of media (textures)
 ---------------------------
 
-Textures
---------
-Copyright (c) 2018 Shara RedCat (CC BY-SA 3.0):
-  Derived from a texture by PilzAdam (CC BY-SA 3.0):
-    stairs_obsidian_glass_outer_stairside.png
-    stairs_obsidian_glass_stairside.png
-
-Copyright (c) 2018 TumeniNodes (CC BY-SA 3.0):
-  Derived from a texture by celeron55 (CC BY-SA 3.0) and
-      converted to bright white by Krock (CC BY-SA 3.0):
-    stairs_glass_stairside.png
-    stairs_glass_split.png
-  Derived from a texture by PilzAdam (CC BY-SA 3.0):
-    stairs_obsidian_glass_split.png
+There is no media, it gets made automatically now

@@ -1,5 +1,8 @@
 # hbSprint
-(modified in sbz)
+
+Notice: Modified by TheEt1234 at 20-01-2026
+
+
 ## Description
 A flexible sprint mod supporting stamina, hunger and coexistance with other physics altering mods.
 

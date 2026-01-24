@@ -1,7 +1,11 @@
 Replacement tool for creative building (Mod for Minetest)
 =========================================================
+
+Notice: Modified by TheEt1234 at 20-01-2026
+
 # Modified in skyblock zero
 original source: https://github.com/SwissalpS/replacer
+
 
 This tool is helpful for creative purposes (e.g. build a wall and "paint" windows into it).
 It replaces nodes with a previously selected other type of node (i.e. places said windows

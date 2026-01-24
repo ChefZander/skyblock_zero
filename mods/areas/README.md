@@ -1,6 +1,8 @@
 Areas mod for Minetest (modified)
 ======================
 
+Notice: Modified by TheEt1234 at 20-01-2026
+
 Dependencies
 ------------
 

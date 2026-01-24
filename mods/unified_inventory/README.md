@@ -1,42 +1,17 @@
 # Unified Inventory
-### This is a modified version of the unified inventory mod!
+### This is a modified version of the unified inventory mod for skyblock zero!
 
-[![](https://github.com/minetest-mods/unified_inventory/workflows/Check%20&%20Release/badge.svg)](https://github.com/minetest-mods/unified_inventory/actions)
-
-![Screenshot](screenshot.png)
+NOTICE: This mod has been modified by TheEt1234 at 20-01-2026
 
 Unified Inventory replaces the default survival and creative inventory.
-
-
-## Features
-
- * Node, item and tool browser
- * Crafting guide
-    * Can copy the recipe to the crafting grid
-    * Recipe search function by ingredients
- * Up to four bags with up to 24 slots each
- * Home function to teleport
- * Trash slot and refill slot for creative
- * Waypoints to keep track of important locations
- * Lite mode: reduces the item browser width
-    * `minetest.conf` setting `unified_inventory_lite = true`
- * Mod API for modders: see [mod_api.txt](doc/mod_api.txt)
- * Setting-determinated features: see [settingtypes.txt](settingtypes.txt)
-
-
-## Requirements
-
- * Minetest 5.4.0+
- * Mod `default` for category filters (contained in Minetest Game)
- * Mod `farming` for craftable bags (contained in Minetest Game)
- * For waypoint migration: `datastorage`
-
 
 # Licenses
 
 Copyright (C) 2012-2014 Maciej Kasatkin (RealBadAngel)
 
 Copyright (C) 2012-? Various minetest-mods contributors
+
+Copyright (C) 2026 TheEt1234 (Skyblock Zero Contributor) 
 
 
 ## Code
@@ -75,8 +50,7 @@ From http://www.clker.com (Public Domain, CC-BY-4.0):
 From https://www.svgrepo.com (CC-BY)
   * [`ui_teleport.png`](https://www.svgrepo.com/svg/321565/teleport)
 
-Everaldo Coelho (YellowIcon) (LGPL v2.1+):
-
+Everaldo Coelho (YellowIcon) (LGPL v2.1+): 
   * [`ui_craftguide_icon.png` / `ui_craft_icon.png`](http://commons.wikimedia.org/wiki/File:Advancedsettings.png)
 
 Gregory H. Revera: (CC-BY-SA 3.0)
@@ -107,6 +81,18 @@ RealBadAngel: (CC-BY-4.0)
 
   * Everything else.
 
+**Modified by TheEt1234 in Skyblock Zero (Licenses are the same)**:
+- ui_craft_icon.png
+- ui_craftguide_icon.png
+- ui_dir_icon.png
+- ui_double_icon.png
+- ui_reset_icon.png
+- ui_search_icon.png
+- ui_skip_icon.png
+- ui_trash_icon.png
+
+**Introduced by TheEt1234 in Skyblock Zero** (CC0):
+- ui_theme.png
 
 ## Sounds
 

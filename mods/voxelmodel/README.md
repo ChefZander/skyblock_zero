@@ -3,6 +3,8 @@ Template to Easily Make Fancy Voxelized Models
 [voxelmodel]
 -------------------------------------------------------------------------------------------------------------
 
+Notice: Modified by TheEt1234 at 20-01-2026
+
 This is not the original mod, it has been modified, see [the original](https://github.com/Noodlemire/voxelmodel/tree/master)
 
 -------------------------------------------------------------------------------------------------------------
