@@ -113,6 +113,7 @@ local achievement_table = {
     ['sbz_decor:mystery_terrarium'] = 'Mystery Terrarium',
     ['sbz_decor:large_server_rack'] = 'Large Server Rack',
     ['unifieddyes:colorium_ground_line'] = 'Ground Line',
+    ['unifieddyes:power_ground_line'] = 'Power Ground Line',
     ['unifieddyes:antiblock'] = "Antiblocks",
     ['sbz_resources:jetpack'] = 'Jetpack',
     ['sbz_resources:drill'] = 'Electric Drill',
