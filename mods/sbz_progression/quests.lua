@@ -67,6 +67,9 @@ sbz_api.register_quest({
     .. "- JustAPotota\n"
     .. "- Kycilak\n"
     .. "- cx384\n"
+    .. "- AbbyRead\n"
+    .. "- jack-obrien\n"
+    .. "- Aredron\n"
     .. "\n"
 
     .. "Translators\n"
