@@ -54,7 +54,7 @@ Requires: Antimatter, Introduction
 ### Text
 
 Do you want shapes that aren't blocks, like stairs or slabs?  
-Oh do i have the machine for you!  
+Oh do I have the machine for you!  
   
 With a CNC machine you can make all sorts of stairs and slabs....  
 Craft one, put in the block of your choosing*, and boom!  
@@ -157,7 +157,7 @@ Requires: Antimatter
 ### Text
 
 Do you want to light up an area, cheaply? Powered lamps are the way to do it, if you find something cheaper its a bug.  
-Or do you want to light up a huge area, the Super powered lamp is for you, it fills up a 13x13x13 cube with invisible lights for somewhat low power consumption!
+Or do you want to light up a huge area, the Super Powered Lamp is for you, it fills up a 13x13x13 cube with invisible lights for somewhat low power consumption!
 
 ### Meta
 

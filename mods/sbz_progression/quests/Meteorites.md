@@ -8,9 +8,9 @@
 
 By this point you've probably been here for at least an hour. You've almost certainly noticed the funny meteorites that whiz past your core occasionally.  
 These are actually a source of metal as well. If you can stop them, which is really hard when you don't know where they're going. But with the alloys you've got, you can craft a **Meteorite Radar**, which shows you their trajectory and makes them much easier to catch.  
-When there is no meteorite nearby, it will do nothing. It'll probably still take a few tries though. When meteorites explode, they will turn into neutronium and some meteoric matter, all meteoric matter decays after a hour. Neutronium or strange matter do not decay.
+When there is no meteorite nearby, it will do nothing. It'll probably still take a few tries though. When meteorites explode, they will turn into neutronium and some meteoric matter, all meteoric matter decays after a hour. Neutronium and Strange Matter do not decay.
 
-TIP: The meteorite radar consumes **40 Cj** when a meteorite is nearby, but it will consume only **10 Cj** if it can't detect a meteorite. Be sure to have a battery when using it.
+TIP: The Meteorite Radar consumes **40 Cj** when a meteorite is nearby, but it will consume only **10 Cj** if it can't detect a meteorite. Be sure to have a battery when using it.
 
 ### Meta
 
@@ -49,7 +49,7 @@ Antineutronium can be crafted into a Gravitational Repulsor, which repulses mete
 
 To complete this quest, make a Gravitational Repulsor.
   
-TIP: Build a shield out of compressed core dust to protect against antimatter meteorites.
+TIP: Build a shield out of compressed core dust to protect against Antimatter meteorites.
 
 ### Meta
 
@@ -60,9 +60,9 @@ Requires: Meteorites
 ### Text
 
 Makes... meteorites... (no way), also it needs some space on top of it.  
-But it cannot make strange matter meteorites.  
+But it cannot make Strange Matter meteorites.  
   
-Tip: By far, the fastest meteorite to mass produce is the emitter meteorite.  
+Tip: By far, the fastest meteorite to mass produce is the Emitter meteorite.  
 Tip: Meteorites don't really explode in protected areas, you'll have to lure it into an open or unprotected area.  
 
 ### Meta
@@ -73,12 +73,12 @@ Requires: Autocrafters, Neutronium
 
 ### Text
 
-Strange matter can spread to both matter and antimatter.
+Strange Matter can spread to both matter and antimatter.
   
-Strange matter won't spread to "charged" nodes or machines, or protected areas.  
+Strange Matter won't spread to "charged" nodes or machines, or protected areas.  
 So it's best to protect your area, even if you are in singleplayer, to defend against strange matter.  
   
-Strange matter meteorites spawn if you are 100 nodes away from the core.  
+Strange Matter meteorites spawn if you are 100 nodes away from the core.
 
 ### Meta
 
@@ -88,7 +88,7 @@ Requires: Neutronium
 
 ### Text
 
-Restores what was destroyed by strange blobs.  
+Restores what was destroyed by Strange Blobs.
 
 ### Meta
 
