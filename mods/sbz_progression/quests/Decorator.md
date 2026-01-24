@@ -217,6 +217,16 @@ A line on the ground. Not fully 2D. Can be colored.
 
 Requires: Colorium Trees
 
+## Power Ground Line
+
+### Text
+
+Line on the ground, just like Ground Line. Animated, conducts power like a cable.
+
+### Meta
+
+Requires: Colorium Trees, Power Cables
+
 ## Antiblocks
 
 ### Text
