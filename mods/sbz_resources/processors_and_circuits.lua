@@ -162,8 +162,8 @@ DESIGN:
 ]]
 sbz_api.crafting_processor_stats = {
     ['sbz_resources:simple_crafting_processor'] = { crafts = 1, power = 5 },
-    ['sbz_resources:quick_crafting_processor'] = { crafts = 8, power = 20 },
-    ['sbz_resources:fast_crafting_processor'] = { crafts = 32, power = 140 },
+    ['sbz_resources:fast_crafting_processor'] = { crafts = 8, power = 20 },
+    ['sbz_resources:very_fast_crafting_processor'] = { crafts = 32, power = 140 },
 
     ['sbz_resources:needlessly_expensive_crafting_processor'] = { crafts = 128, power = 640 },
     ['sbz_resources:omega_quantum_black_hole_whatever_crafting_processor'] = { crafts = 100000, power = 800 },
