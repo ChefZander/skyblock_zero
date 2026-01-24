@@ -52,6 +52,45 @@ minetest.register_node("unifieddyes:colorium_ground_line", unifieddyes.def {
     },
 })
 
+
+minetest.register_node("unifieddyes:power_ground_line", unifieddyes.def {
+    description = "Power Ground Line",
+    tiles = {
+        {
+            name = "power_ground_line.png",
+            animation = {
+                type = "vertical_frames",
+                aspect_w = 16,
+                aspect_h = 16,
+                length = 2.0,
+            },
+        },
+    },
+    drawtype = "nodebox",
+    paramtype = "light",
+    sunlight_propagates = true,
+    light_source = 14,
+    info_extra = "Conducts power.",
+    groups = { matter = 1, antimatter = 1, charged = 1, pipe_conducts = 1},
+    connects_to = { "unifieddyes:colorium_ground_line", "unifieddyes:power_ground_line", "group:pipe_connects" },
+    connect_sides = {"front", "left", "back", "right"},
+    node_box = {
+        type = "connected",
+        fixed = { -full_m_width, -full, -full_m_width, full_m_width, full_m_height, full_m_width },
+        connect_top = { -full_m_width, -full, -full_m_width, full_m_width, full, full_m_width },
+        connect_front = { -full_m_width, -full, -full, full_m_width, full_m_height, full_m_width },
+        connect_back = { -full_m_width, -full, -full_m_width, full_m_width, full_m_height, full },
+        connect_left = { -full, -full, -full_m_width, full_m_width, full_m_height, full_m_width },
+        connect_right = { -full_m_width, -full, -full_m_width, full, full_m_height, full_m_width },
+    },
+})
+core.register_craft {
+    output = "unifieddyes:power_ground_line",
+    recipe = {
+        { "unifieddyes:colorium_ground_line", "sbz_power:power_pipe" }
+    }
+}
+
 core.register_node("unifieddyes:antiblock", unifieddyes.def {
     description = "Antiblock",
     tiles = {
