@@ -8,6 +8,7 @@
 - Made manual crafters slightly cheaper
 - Re-worded some quests to be more readable
 - Made emitter reactor core cost less
+- Documented instatube performance, make sure to check the questbook page.
 
 
 # Release 38
