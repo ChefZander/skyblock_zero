@@ -195,19 +195,19 @@ Requires: Node Breakers, Neutronium
 
 ### Text
 
-Instatubes are tubes that are instant. They are generally less laggy than their regular pipeworks tube counterparts.  
+Instatubes are tubes that are instant. They are generally less laggy than their regular pipeworks tube counterparts WHEN USED CORRECTLY. They can be a lot more laggy if you use them incorrectly.  
   
-Instatubes work a bit differently than regular tubes.  
+Instatubes work differently than regular tubes.  
 They internally create a list of all the receivers, then sort the receivers based on priority. The receivers with the highest priority will be given the items first. If they are full, it will move on to the receiver with lower priority.  
-This is different from regular pipeworks tubes—in a way that's hard to explain—so a visual example is best:  
+This is different from regular pipeworks tubes, in a way that's hard to explain, so a visual example is best:  
 \<img name=questbook_image_instatubes_vs_pipeworks_tubes.png\>  
 Suppose that the green storinators have a priority of 99 (they don't, but it will make explaining this easier). That is higher than regular pipeworks tubes but lower than regular storinators.  
 In that case, with default pipeworks tubes, items will flow first to the green Storinator, then once it's full, they will flow to the regular Storinator.  
-Instatubes work a bit differently: they will choose the Storinator with the highest priority first, then the lowest. So items would flow first into the regular Storinator, and once that's full, they will flow to the green Storinator.  
+Instatubes work differently: they will choose the Storinator with the highest priority first, then the lowest. So items would flow first into the regular Storinator, and once that's full, they will flow to the green Storinator.  
   
 Overflow handling: simply put an item void connected to the instatubes (you might need to connect it to a few low-priority tubes if you use those anywhere, as it has a priority of only one, and you can go below that).  
   
-Now, some things are just impossible with the basic instatube, so there are more types of instatubes :D. This will cover them.
+Now, some things are just impossible with the basic instatube, so there are more types of instatubes :D. This will cover all them.
   
 \<big\>Priority Instatubes\</big\>  
 (Low priority instatubes, high priority instatubes)  
@@ -229,7 +229,32 @@ Similar to the item sorter, but it only governs what can pass through that tube.
   
 \<big\>One-Way Instatubes\</big\>  
 Instatubes that only allow items to flow in one direction, useful when having multiple filter injectors.
-  
+
+\<bigger\>Performance\</bigger\>
+With big speed comes big responsiblity.
+
+The lag from instatubes may show up in your switching station as lag from the thing that is inserting to them. (For example Automatic Filter-Injectors or punchers). The lag from pipeworks tubes does not show up in there.
+
+1st tip: Don't make all of your base a single large instatube network. (unless you know what you are doing, and know the flaws of instatubes)  
+2nd tip: Don't transport MANY small item stacks in a large instatube network, <b>have one or the other</b>. Always prefer larger item stacks. (Instead of sending 100 matter blobs in seperate stacks to a large network, just send one stack of matter blobs)
+3rd tip: Only debug performance when it matters. (for example: you notice unusually high lag from filter injectors, or from your 500 puncher setup)
+
+Practical example: Say you want to wire up 50 punchers to your base for processing, how should you go about doing this?  
+Well, you will be transporting 50 item stacks per second, depending on the network size, that is a lot!
+
+What you SHOULDN'T do:
+(In these images, storinators may be in any place, and they don't have to be storinators, they can be machines or even other punchers, they just have to be connected to the punchers in some way, and the punchers can be anything that produces large amounts of very tiny item stacks)
+\<img name=questbook_image_instatube_performance_wrong.png width=400\>  
+In this image, for each item the punchers send out, it needs to iterate over everything in the network (so storinators, punchers) to find something that isn't full, this isn't ideal for performance if you are getting 100 item stacks per second.
+
+What you SHOULD do instead:
+\<img name=questbook_image_instatube_performance_correct.png width=400\>  
+(Don't forget to actually power those filter injectors)
+
+In this case, the many little item stacks that get sent to that storinator, or if that storinator got filled, to the item void.
+So in the worst case, an item only needs to iterate through 2 things (the collection storinator and the item void) to determine where to go.
+There aren't as many item stacks that get sent to the larger network, because those item stacks will contain more items. (Instead of sending 200 "sbz_resources:matter_dust 1", it will just send 1 "sbz_resources:matter_dust 200" if that makes sense, and that's faster)
+The high priority instatube here is redundant but useful if you aren't working with punchers.
   
 **To complete this quest, craft an instatube.**  
 
