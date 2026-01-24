@@ -2,7 +2,6 @@
 
 local notify = core.chat_send_player
 
--- configure_craft -> configure_craft_output
 local function validate_craft(pos)
     local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
@@ -16,7 +15,6 @@ local function validate_craft(pos)
     inv:set_stack('configure_craft_output', 1, out.item)
 end
 
--- configure_craft_output -> configure_craft
 local function configure_from_craft_output(pos, user)
     local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
@@ -41,6 +39,8 @@ local function configure_from_craft_output(pos, user)
     end
 
     inv:set_list('configure_craft', table.copy(chosen_recipe.items))
+    inv:set_stack('configure_craft_output', 1, chosen_recipe.output) -- If there is something that gets you 2 circuits for example, this would make the crafter work
+
     -- notify(
     --     user:get_player_name(),
     --     'Successfully set recipe. Warning: Recipes that replace items in the crafting ui will simply waste that item instead. Use regular autocrafters for that.'
