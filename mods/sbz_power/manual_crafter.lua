@@ -113,16 +113,8 @@ local function craft(user, meta)
     local items_crafted = can_craft * craft_result:get_count() -- the amount of items that gets crafted
     can_craft = math.floor(math.min(max_space, items_crafted) / craft_result:get_count())
 
-    -- okay.. so we just craft
-    for name, amount in pairs(required_items) do
-        local j = amount * can_craft
-        for i = 1, j do
-            user_inv:remove_item('main', name)
-        end
-    end
-
     if can_craft > 0 then
-        --- Prepare for crafting
+        -- remove items
         for name, amount in pairs(required_items) do
             local remove_amount = tonumber(amount * can_craft)
             local max_stack = ItemStack(name):get_stack_max()
