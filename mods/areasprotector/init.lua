@@ -392,7 +392,7 @@ minetest.register_node("areasprotector:display_node_large", {
 	tiles = { "areasprotector_display.png" },
 	walkable = false,
 	drawtype = "nodebox",
-	use_texture_alpha = true,
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 		fixed = make_display_nodebox(radius_large, height_large)
@@ -410,7 +410,7 @@ minetest.register_node("areasprotector:display_node_small", {
 	tiles = { "areasprotector_display.png" },
 	walkable = false,
 	drawtype = "nodebox",
-	use_texture_alpha = true,
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 		fixed = make_display_nodebox(radius_small, height_small)
