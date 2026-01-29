@@ -116,3 +116,5 @@ Mods that would be good to submodule with git history in the future (as they may
 - Switch away from, or heavily modify signs_lib, without being backwards incompatible with signs from previous versions of sbz
     - Things like rendering text without it being on a sign is impossible i think? which is horrible
 - Rely more on stubes than pipeworks
+- better tree code
+- better planets
