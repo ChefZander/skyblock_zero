@@ -26,7 +26,7 @@ logic.register_upgrade = function(name, def)
 end
 
 logic.register_upgrade("sbz_logic:linking_upgrade", {
-    info_extra = { "Upgrades linking radius by 8, you can have 3 of theese", "Also it is needed for *any* sort of communication, or getting information about the world." },
+    info_extra = { "Upgrades linking radius by 8, you can have 3 of these", "Also it is needed for *any* sort of communication, or getting information about the world." },
     stack_max = 1,
     same_upgrade_max = 3,
     description = "Linking Upgrade",

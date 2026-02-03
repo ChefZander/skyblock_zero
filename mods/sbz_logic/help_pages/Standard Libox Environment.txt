@@ -80,7 +80,7 @@ std. = standard/unchanged from what non-sandboxed lua has
 <mono>get_position_from_hash</mono> - std.*
 
 
-*All of theese functions will fail if you give them gigantic string inputs
+*All of these functions will fail if you give them gigantic string inputs
 
 <big>Pattern library</big> (<mono>pat.*</mono>)
 Pure lua implementation of functions <mono>find, match, gmatch</mono>, they support patterns

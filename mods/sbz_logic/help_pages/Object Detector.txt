@@ -53,6 +53,6 @@ wield_index = v:get_wield_index(), -- can be used for fun stuff like controls in
 wielded_item = settings.inventories and v:get_wielded_item(),
 </mono>
 
-(All of theese are in a table)
+(All of these are in a table)
 
 Good luck!
