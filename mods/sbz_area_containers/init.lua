@@ -16,45 +16,52 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]
 
-local mapgen_limit = assert(tonumber(core.settings:get 'mapgen_limit') - 200) -- -200 because its LYING, the number is a LIE, that is NOT the MAPGEN LIMIT, that number IS A FAKE (the mapgen limit is actually a tiny bit smaller)
-local sbz_safetynet = -20000 -- i think this can fit enough areas
+--- === CONFIGURATION === ---
+
+local mapgen_limit = assert(tonumber(core.settings:get 'mapgen_limit') - 200) -- mapgen_limit is not entirely accurate
+local rooms_y_level = -20000
 
 local room_size = vector.new(16, 16, 16)
-local room_exit_pos = vector.new(2, 2, 0) -- relative to 0,0,0 of the room position, if that makes sense
+local room_exit_pos = vector.new(2, 2, 0)
 local room_spawn_pos = vector.new(2, 1, 1)
-
+local save_interval = 100 -- in seconds
 local max_areas_per_player = 100
 
 --- for some reason vector.divide is not this?
-local function divide_vector(v1, v2)
-    v1 = vector.copy(v1)
-    v1.x = v1.x / v2.x
-    v1.y = v1.y / v2.y
-    v1.z = v1.z / v2.z
-    return v1
-end
-local function multiply_vector(v1, v2)
-    v1 = vector.copy(v1)
-    v1.x = v1.x * v2.x
-    v1.y = v1.y * v2.y
-    v1.z = v1.z * v2.z
-    return v1
+local divide_vector, multiply_vector
+do
+    -- in a do-block so it's easier to view
+    function divide_vector(v1, v2)
+        v1 = vector.copy(v1)
+        v1.x = v1.x / v2.x
+        v1.y = v1.y / v2.y
+        v1.z = v1.z / v2.z
+        return v1
+    end
+    function multiply_vector(v1, v2)
+        v1 = vector.copy(v1)
+        v1.x = v1.x * v2.x
+        v1.y = v1.y * v2.y
+        v1.z = v1.z * v2.z
+        return v1
+    end
 end
 
--- Area reserved for the rooms
+-- Area in the world reserved for rooms
 local room_world_area = {
     min = vector.new(-mapgen_limit, -mapgen_limit, -mapgen_limit),
-    max = vector.new(mapgen_limit, sbz_safetynet, mapgen_limit),
+    max = vector.new(mapgen_limit, rooms_y_level, mapgen_limit),
 }
 room_world_area.min = multiply_vector(vector.floor(divide_vector(room_world_area.min, room_size)), room_size)
 room_world_area.max = multiply_vector(vector.floor(divide_vector(room_world_area.max, room_size)), room_size)
 
--- To save and load:
+-- === SAVING/LOADING === ---
+
 local room_areastore = AreaStore()
 local player_container_ids = {}
 local room_container_links = {}
 
--- saving may be unreliable and is relying on experimental luanti stuff (areastore:to_file), have backups!
+-- WARN: saving of areas may be unreliable and is relying on experimental luanti stuff (areastore:to_file), have backups!
 
 local WP = core.get_worldpath()
 local save_path = WP .. '/sbz_area_containers_'
@@ -81,10 +88,20 @@ local function load()
         end
     end)
 end
-
 load()
 
 core.register_on_shutdown(save)
+
+local time = 0
+core.register_globalstep(function(dtime)
+    time = time + dtime
+    if time > save_interval then
+        save()
+        time = 0
+    end
+end)
+
+--- === THE ACTUAL IMPLEMENTATION === ---
 
 ---@diagnostic disable-next-line: lowercase-global
 sbz_area_containers = {}
@@ -184,6 +201,8 @@ function sbz_area_containers.teleport_to_room(player, id)
     player:set_pos(vector.add(room_min_pos, relative_spawn_pos))
 end
 
+--- === NODES === ---
+
 core.register_node(
     'sbz_area_containers:wall',
     unifieddyes.def {
@@ -192,7 +211,9 @@ core.register_node(
         paramtype2 = 'color',
         light_source = 8,
         groups = { not_in_creative_inventory = 1 },
-        tiles = { 'room_container_wall.png' },
+        tiles = {
+            'room_container_wall.png',
+        },
     }
 )
 core.register_node(
