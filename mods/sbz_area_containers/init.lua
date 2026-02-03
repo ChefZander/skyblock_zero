@@ -1,10 +1,27 @@
-local MP = core.get_modpath 'sbz_area_containers'
+--[[
+    sbz_area_containers - Implements "area containers" for Skyblock: Zero
+    Copyright (C) 2026 frogTheSecond
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+]]
+
 local mapgen_limit = assert(tonumber(core.settings:get 'mapgen_limit') - 200) -- -200 because its LYING, the number is a LIE, that is NOT the MAPGEN LIMIT, that number IS A FAKE (the mapgen limit is actually a tiny bit smaller)
-local sbz_safetynet = -20000 -- lower just to be sure
+local sbz_safetynet = -20000 -- i think this can fit enough areas
 
 local room_size = vector.new(16, 16, 16)
-local room_exit_pos = vector.new(2, 3, 0) -- relative to 0,0,0 of the room position, if that makes sense
-local room_spawn_pos = vector.new(2, 3, 1) -- if it can't spawn it will just try randomly
+local room_exit_pos = vector.new(2, 2, 0) -- relative to 0,0,0 of the room position, if that makes sense
+local room_spawn_pos = vector.new(2, 1, 1)
 
 local max_areas_per_player = 100
 
@@ -32,20 +49,52 @@ local room_world_area = {
 room_world_area.min = multiply_vector(vector.floor(divide_vector(room_world_area.min, room_size)), room_size)
 room_world_area.max = multiply_vector(vector.floor(divide_vector(room_world_area.max, room_size)), room_size)
 
--- TODO: save/load
-local areas = AreaStore() -- not to be confused with the famous areas mod xD
+-- To save and load:
+local room_areastore = AreaStore()
 local player_container_ids = {}
 local room_container_links = {}
 
+-- saving may be unreliable and is relying on experimental luanti stuff (areastore:to_file), have backups!
+
+local WP = core.get_worldpath()
+local save_path = WP .. '/sbz_area_containers_'
+
+local function save()
+    room_areastore:to_file(save_path .. 'areastore') -- i am not using core.serialize on areastore:to_string because that will uhh, that may 2x the file size probably and take too long
+    local data = { player_container_ids = player_container_ids, room_container_links = room_container_links }
+    local serialized = core.serialize(data)
+    if not core.safe_file_write(save_path .. 'data', serialized) then
+        core.log('error', 'Failed to save sbz_area_containers rooms!')
+    end
+end
+
+local function load()
+    pcall(function() -- pcall because if it loads for the first time it will fail, and that's expected
+        room_areastore:from_file(save_path .. 'areastore')
+        local data_file = assert(io.open(save_path .. 'data'))
+        local data = core.deserialize(data_file:read '*a')
+        data_file:close()
+
+        if data then
+            player_container_ids = data.player_container_ids
+            room_container_links = data.room_container_links
+        end
+    end)
+end
+
+load()
+
+core.register_on_shutdown(save)
+
 ---@diagnostic disable-next-line: lowercase-global
 sbz_area_containers = {}
-sbz_area_containers.areas = areas
+sbz_area_containers.areasstore = room_areastore
 sbz_area_containers.player_container_ids = player_container_ids
 
 local old_activate_safetynet = sbz_api.activate_safetynet
 function sbz_api.activate_safetynet(player_name, pos)
     if old_activate_safetynet(player_name, pos) == false then return false end
-    local rooms = areas:get_areas_for_pos(pos, false, false)
+    local rooms = room_areastore:get_areas_for_pos(pos, false, false)
     if next(rooms) then return false end
     return true
 end
@@ -62,7 +111,7 @@ local function get_new_room_pos()
             room_size
         )
         ---@diagnostic disable-next-line: param-type-mismatch
-        if not (next(areas:get_areas_for_pos(pos, false, false)) or core.is_protected(pos, '')) then break end
+        if not (next(room_areastore:get_areas_for_pos(pos, false, false)) or core.is_protected(pos, '')) then break end
     end
     if not pos then return false end
     return pos
@@ -95,7 +144,7 @@ function sbz_area_containers.new_room(player_name)
     local pos = get_new_room_pos()
     if not pos then return false end
     local maxpos = vector.subtract(vector.add(pos, room_size), 1)
-    local id = areas:insert_area(pos, maxpos, player_name)
+    local id = room_areastore:insert_area(pos, maxpos, '')
     player_container_ids[player_name] = container_ids
     container_ids[#container_ids + 1] = id
 
@@ -115,7 +164,7 @@ function sbz_area_containers.new_room(player_name)
 end
 
 function sbz_area_containers.teleport_to_room(player, id)
-    local room = areas:get_area(id, true, false)
+    local room = room_areastore:get_area(id, true, false)
     if not room then return end
 
     local relative_spawn_pos, i, success = room_spawn_pos, 0, false
@@ -156,13 +205,13 @@ core.register_node(
         groups = { not_in_creative_inventory = 1 },
 
         on_rightclick = function(pos, _, clicker)
-            local ids = areas:get_areas_for_pos(pos, true, false)
+            local ids = room_areastore:get_areas_for_pos(pos, true, false)
             if not next(ids) then return end
             local id = next(ids) -- if there are multiple ids the code has a problem, i won't concern myself with such things hovewer
 
             local pos = core.get_position_from_hash(room_container_links[id])
             if not pos then return end
-            clicker:set_pos(vector.add(pos, vector.new(0, 2, 0)))
+            clicker:set_pos(vector.add(pos, vector.new(0, 1, 0)))
         end,
     }
 )
