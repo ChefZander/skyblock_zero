@@ -469,8 +469,6 @@ dofile(MP .. '/toggle_areas_hud.lua')
 dofile(MP .. '/cache.lua')
 dofile(MP .. '/color.lua')
 dofile(MP .. '/recipe.lua')
-dofile(MP .. '/serialize.lua')
-dofile(MP .. '/serialize_benchmark.lua')
 dofile(MP .. '/space_movement.lua')
 dofile(MP .. '/pick_block.lua')
 

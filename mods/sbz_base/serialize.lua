@@ -1,4 +1,4 @@
-assert(bit, "No bit library found? Update your luanti version or use luaJIT.") -- great
+assert(bit, 'No bit library found? Update your luanti version or use luaJIT.')
 
 --[[
     The goal of this file is to have faster serialization of some specific types
@@ -10,12 +10,6 @@ assert(bit, "No bit library found? Update your luanti version or use luaJIT.") -
     - Procrastinate here
     - I would definitely involve ffi in this if i could xD, be glad ffi is off limits xD
     - i feel like i'm one step closer to re-making something found commonly in modlib
-
-    TODO:
-        - serialize liquid inv here, and serialize/deserialize it F A S T e r than luanti can
-
-    -- OK, EDIT: DO NOT USE WITH NODE METAS BECAUSE THEY IGNORE \1 CAUSING ALL KINDS OF BAD CRAP
-    -- THIS FILE IS USELESS then thank you luanti
 ]]
 
 sbz_api.serialize = {}
@@ -40,9 +34,18 @@ function sbz_api.serialize.vec3_array_32bit(vec_arr)
 
         rope = rope + 1
         out[rope] = char(
-            band(rshift(x, 24), 0xFF), band(rshift(x, 16), 0xFF), band(rshift(x, 8), 0xFF), band(x, 0xFF),
-            band(rshift(y, 24), 0xFF), band(rshift(y, 16), 0xFF), band(rshift(y, 8), 0xFF), band(y, 0xFF),
-            band(rshift(z, 24), 0xFF), band(rshift(z, 16), 0xFF), band(rshift(z, 8), 0xFF), band(z, 0xFF)
+            band(rshift(x, 24), 0xFF),
+            band(rshift(x, 16), 0xFF),
+            band(rshift(x, 8), 0xFF),
+            band(x, 0xFF),
+            band(rshift(y, 24), 0xFF),
+            band(rshift(y, 16), 0xFF),
+            band(rshift(y, 8), 0xFF),
+            band(y, 0xFF),
+            band(rshift(z, 24), 0xFF),
+            band(rshift(z, 16), 0xFF),
+            band(rshift(z, 8), 0xFF),
+            band(z, 0xFF)
         )
     end
     return concat(out)
@@ -62,7 +65,7 @@ function sbz_api.deserialize.vec3_array_32bit(str)
         out[rope] = {
             x = lshift(xc1, 24) + lshift(xc2, 16) + lshift(xc3, 8) + xc4,
             y = lshift(yc1, 24) + lshift(yc2, 16) + lshift(yc3, 8) + yc4,
-            z = lshift(zc1, 24) + lshift(zc2, 16) + lshift(zc3, 8) + zc4
+            z = lshift(zc1, 24) + lshift(zc2, 16) + lshift(zc3, 8) + zc4,
         }
     end
     return out
@@ -71,14 +74,23 @@ end
 function sbz_api.serialize.vec3_32bit(vec)
     local x, y, z = vec.x, vec.y, vec.z
     return char(
-        band(rshift(x, 24), 0xFF), band(rshift(x, 16), 0xFF), band(rshift(x, 8), 0xFF), band(x, 0xFF),
-        band(rshift(y, 24), 0xFF), band(rshift(y, 16), 0xFF), band(rshift(y, 8), 0xFF), band(y, 0xFF),
-        band(rshift(z, 24), 0xFF), band(rshift(z, 16), 0xFF), band(rshift(z, 8), 0xFF), band(z, 0xFF)
+        band(rshift(x, 24), 0xFF),
+        band(rshift(x, 16), 0xFF),
+        band(rshift(x, 8), 0xFF),
+        band(x, 0xFF),
+        band(rshift(y, 24), 0xFF),
+        band(rshift(y, 16), 0xFF),
+        band(rshift(y, 8), 0xFF),
+        band(y, 0xFF),
+        band(rshift(z, 24), 0xFF),
+        band(rshift(z, 16), 0xFF),
+        band(rshift(z, 8), 0xFF),
+        band(z, 0xFF)
     )
 end
 
 function sbz_api.deserialize.vec3_32bit(str)
-    assert(#str == 12, "Corrupted data!")
+    assert(#str == 12, 'Corrupted data!')
     local xc1, xc2, xc3, xc4, yc1, yc2, yc3, yc4, zc1, zc2, zc3, zc4 = byte(str, 1, 12)
     return {
         x = lshift(xc1, 24) + lshift(xc2, 16) + lshift(xc3, 8) + xc4,
@@ -99,7 +111,11 @@ end
 ---@param int integer
 ---@return boolean
 function sbz_api.deserialize.bool(int)
-    if int == 1 then return true else return false end
+    if int == 1 then
+        return true
+    else
+        return false
+    end
 end
 
 --[[
@@ -121,10 +137,10 @@ function sbz_api.serialize.links(links)
     local x, y, z
     for name, vec_arr in pairs(links) do
         rope = rope + 1
-        assert(#name <= 255, "sbz_api.serialize.links: Name too large!")
+        assert(#name <= 255, 'sbz_api.serialize.links: Name too large!')
         out[rope] = char(#name)
         rope = rope + 1
-        assert(#vec_arr <= 255, "sbz_api.serialize.links: Vector array too large!")
+        assert(#vec_arr <= 255, 'sbz_api.serialize.links: Vector array too large!')
         out[rope] = char(#vec_arr)
         rope = rope + 1
         out[rope] = name
@@ -136,9 +152,18 @@ function sbz_api.serialize.links(links)
 
             rope = rope + 1
             out[rope] = char(
-                band(rshift(x, 24), 0xFF), band(rshift(x, 16), 0xFF), band(rshift(x, 8), 0xFF), band(x, 0xFF),
-                band(rshift(y, 24), 0xFF), band(rshift(y, 16), 0xFF), band(rshift(y, 8), 0xFF), band(y, 0xFF),
-                band(rshift(z, 24), 0xFF), band(rshift(z, 16), 0xFF), band(rshift(z, 8), 0xFF), band(z, 0xFF)
+                band(rshift(x, 24), 0xFF),
+                band(rshift(x, 16), 0xFF),
+                band(rshift(x, 8), 0xFF),
+                band(x, 0xFF),
+                band(rshift(y, 24), 0xFF),
+                band(rshift(y, 16), 0xFF),
+                band(rshift(y, 8), 0xFF),
+                band(y, 0xFF),
+                band(rshift(z, 24), 0xFF),
+                band(rshift(z, 16), 0xFF),
+                band(rshift(z, 8), 0xFF),
+                band(z, 0xFF)
             )
         end
     end
@@ -164,13 +189,13 @@ function sbz_api.deserialize.links(serialized)
 
         rope = 0
         for j = 1, num_of_vectors do
-            xc1, xc2, xc3, xc4, yc1, yc2, yc3, yc4, zc1, zc2, zc3, zc4 = byte(serialized, i + ((j - 1) * 12),
-                i + (j * 12) - 1)
+            xc1, xc2, xc3, xc4, yc1, yc2, yc3, yc4, zc1, zc2, zc3, zc4 =
+                byte(serialized, i + ((j - 1) * 12), i + (j * 12) - 1)
             rope = rope + 1
             vec_arr[rope] = {
                 x = lshift(xc1, 24) + lshift(xc2, 16) + lshift(xc3, 8) + xc4,
                 y = lshift(yc1, 24) + lshift(yc2, 16) + lshift(yc3, 8) + yc4,
-                z = lshift(zc1, 24) + lshift(zc2, 16) + lshift(zc3, 8) + zc4
+                z = lshift(zc1, 24) + lshift(zc2, 16) + lshift(zc3, 8) + zc4,
             }
         end
         i = i + (num_of_vectors * 12)
