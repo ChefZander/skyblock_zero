@@ -390,6 +390,7 @@ end
 function is_air(pos)
     local node = core.get_node(pos).name
     local reg = core.registered_nodes[node]
+    if not reg then return false end
     return reg.air or reg.air_equivalent or node == 'air'
 end
 
