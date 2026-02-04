@@ -212,7 +212,7 @@ core.register_node(
         light_source = 8,
         groups = { not_in_creative_inventory = 1 },
         tiles = {
-            'room_container_wall.png',
+            { name = 'room_container_wall.png', align_style = 'world', scale = 16 },
         },
     }
 )
