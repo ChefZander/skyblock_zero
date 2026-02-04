@@ -125,8 +125,8 @@ minetest.register_tool('sbz_resources:drill', {
     groups = { core_drop_multi = 4, disable_repair = 1, power_tool = 1 },
     tool_capabilities = tool_caps,
     after_use = function(stack, user, node, digparams)
-        stack:add_wear_by_uses(drill_max_wear + digparams.wear)
-        if stack:get_wear() >= 65535 then stack:get_meta():set_tool_capabilities {} end
+        stack:add_wear_by_uses(math.max(65534, drill_max_wear + digparams.wear))
+        if stack:get_wear() >= 65534 then stack:get_meta():set_tool_capabilities {} end
         return stack
     end,
     on_place = sbz_api.on_place_recharge(
