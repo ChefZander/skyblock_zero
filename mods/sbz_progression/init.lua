@@ -250,6 +250,7 @@ local achievement_on_dig_table = {
     ['sbz_bio:cleargrass_4'] = 'Cleargrass',
     ['sbz_bio:razorgrass_4'] = 'Razorgrass',
     ['sbz_bio:shockshroom_4'] = 'Shockshrooms',
+    ['sbz_area_containers:room_container'] = 'Room Containers',
 }
 
 minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)

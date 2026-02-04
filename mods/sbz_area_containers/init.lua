@@ -269,3 +269,12 @@ core.register_node('sbz_area_containers:room_container', {
         end
     end,
 })
+
+core.register_craft {
+    output = 'sbz_area_containers:room_container',
+    recipe = {
+        { 'sbz_resources:black_sand', 'sbz_bio:warpshroom', 'sbz_resources:black_sand' },
+        { 'sbz_bio:warpshroom', 'sbz_chem:silver_ingot', 'sbz_bio:warpshroom' },
+        { 'sbz_resources:black_sand', 'sbz_bio:warpshroom', 'sbz_resources:black_sand' },
+    },
+}

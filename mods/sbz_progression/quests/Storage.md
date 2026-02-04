@@ -89,3 +89,21 @@ For taking out items, you can use a Luacontroller, sending an itemstack (a strin
 ### Meta
 
 Requires: Drawers
+
+## Room Containers
+### Text
+
+Do you want to just put things in a room? This node was made for that.
+
+Room containers contain 16x16x16 rooms (if you count the walls) that is inside one mapblock. A player can only have 100 rooms at most.
+
+If you break a room container, don't worry, the next room container you place will point to that same room.
+
+Warning: To save the positions of rooms, room containers use an experimental luanti function (that has been experimental and mostly unchanged since 2016), this might not be that big of a concern but <b>you shouldn't put your entire storage system in a room container</b> because of that. It is unclear how reliable the saving/loading of room containers is.
+Server owners should ideally have backups.
+
+
+
+### Meta
+
+Requires: Warpshrooms
