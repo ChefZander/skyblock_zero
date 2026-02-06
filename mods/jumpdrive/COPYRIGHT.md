@@ -31,15 +31,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ## Images and Textures
 
-`textures/jumpdrive.png` copyright (C) 2024 TheEt1234. CC BY-SA 4.0. Replaces the original mod asset.
+`textures/jumpdrive.png`
+- Original mod asset. copyright (C) 2022 Jeremy#2233 / Purple#2916. CC BY-SA 4.0. <https://github.com/mt-mods/jumpdrive/blob/6ee1d09c6b70ec0c34915eb67846f037f6da9e28/textures/jumpdrive.png>
+- Derivative asset for Skyblock: Zero. Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
 
-`textures/jumpdrive_backbone.png` copyright (C) 2024 TheEt1234. CC BY-SA 4.0. Replaces the original mod asset.
+`textures/jumpdrive_backbone.png`
+- Original mod asset. copyright (C) 2022 Jeremy#2233 / Purple#2916. CC BY-SA 4.0. <https://github.com/mt-mods/jumpdrive/blob/6ee1d09c6b70ec0c34915eb67846f037f6da9e28/textures/jumpdrive_backbone.png>
+- Derivative asset for Skyblock: Zero. Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
 
-`textures/jumpdrive_fleet_controller.png` copyright (C) 2024 TheEt1234. CC BY-SA 4.0. Replaces the original mod asset.
+`textures/jumpdrive_fleet_controller.png`
+- Original mod asset. copyright (C) 2022 Jeremy#2233 / Purple#2916. CC BY-SA 4.0. <https://github.com/mt-mods/jumpdrive/blob/6ee1d09c6b70ec0c34915eb67846f037f6da9e28/textures/jumpdrive_fleet_controller.png>
+- Derivative asset for Skyblock: Zero. Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
 
-`textures/jumpdrive_station.png` copyright (C) 2024 TheEt1234. CC BY-SA 4.0. Replaces the original mod asset.
+`textures/jumpdrive_station.png` Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
 
-`textures/jumpdrive_warpdevice.png` copyright (C) 2024 TheEt1234. CC BY-SA 4.0. Replaces the original mod asset.
+`textures/jumpdrive_warpdevice.png`
+- Original mod asset. copyright (C) 2022 Jeremy#2233 / Purple#2916. CC BY-SA 4.0. <https://github.com/mt-mods/jumpdrive/blob/6ee1d09c6b70ec0c34915eb67846f037f6da9e28/textures/jumpdrive_warpdevice.png>
+- Derivative asset for Skyblock: Zero. Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
 
 `textures/spark.png` copyright (C) 2018 Thomas Rudin. CC BY-SA 4.0. <https://github.com/mt-mods/jumpdrive/blob/6ee1d09c6b70ec0c34915eb67846f037f6da9e28/textures/spark.png>
 

@@ -158,7 +158,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 `textures/pebble_enhancer_top_on.png` Copyright (C) 2025 TheEt1234. CC BY-SA 4.0.
 
-`textures/phlogiston.png` Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
+`textures/phlogiston.png` Copyright (C) 2024 theidealist. CC BY-SA 4.0.
 
 `textures/phlogiston_blob.png` Copyright (C) 2025 TheEt1234. CC BY-SA 4.0.
 
