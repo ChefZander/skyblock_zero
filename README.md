@@ -90,16 +90,16 @@ The following licenses are used within this work.
   1. Modified work is prioritized.
   2. More restrictive source code licenses are prioritized.
 
-Candidates to convert into submodules instead of maintaining forks with small modifications:
-- travelnet: potentially
-- player_monoids: likely
-- replacer: likely
-- signs_lib: potentially replaced
-- smartshop: potentially
-- hbsprint: potentially
-- voxelmodel: i only care about the voxelmodel.obj, and the texture files for fun luacontroller activities (so that they dont have to be imported as png base64)
-- screwdriver: it was only a texture/recipe change, so potentially
-- vizlib: yes (theres just one trivial change)
+Mods likely to be converted to submodules:
+- travelnet
+- player_monoids
+- replacer
+- signs_lib
+- smartshop
+- hbsprint
+- voxelmodel
+- screwdriver
+- vizlib
 
 ## Contributing
 When contributing, ensure copyright information is added in your contribution and to comply with the licenses of other people's work if used. If unsure, you may ask for help :)
