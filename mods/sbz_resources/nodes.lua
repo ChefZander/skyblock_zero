@@ -88,6 +88,13 @@ core.register_craft {
         { 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust' },
     },
 }
+minetest.register_craft {
+    type = 'shapeless',
+    output = 'sbz_resources:antimatter_dust 9',
+    recipe = {
+        'sbz_resources:antimatter_blob',
+    },
+}
 
 minetest.register_craft {
     type = 'shapeless',
@@ -554,14 +561,18 @@ core.register_node('sbz_resources:white_sand', {
     light_source = 3,
 })
 
---- hack: im putting it at the bottom cuz unified inventory suckss, and makes it so that the last registered craft shows up first
---- and this will NEVER get fixed because there are way too many hacks like that
---- who thought of that?
 minetest.register_craft {
     output = 'sbz_resources:matter_blob',
     recipe = {
         { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
         { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
         { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
+    },
+}
+minetest.register_craft {
+    type = 'shapeless',
+    output = 'sbz_resources:matter_dust 9',
+    recipe = {
+        'sbz_resources:matter_blob',
     },
 }
