@@ -1,4 +1,10 @@
-Minetest Game mod: creative (HEAVILY MODIFIED)
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 95991f8dc4c97d3cc7945269bf2d5640c7fe6bc8 from upstream: <https://github.com/luanti-org/minetest_game/tree/master/mods/creative>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+Minetest Game mod: creative
 ===========================
 See license.txt for license information.
 

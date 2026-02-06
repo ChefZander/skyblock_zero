@@ -1,4 +1,20 @@
-Modified in skyblock zero
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 638768f198718e156f6427bc3d79e4b90112b211 from upstream: <https://github.com/S-S-X/metatool>. Removed/Replaced a lot of things from the original mod.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+--------------------------------------------------------------------------------
+
+![luacheck](https://github.com/S-S-X/metatool/workflows/luacheck/badge.svg)
+![mineunit](https://github.com/S-S-X/metatool/workflows/mineunit/badge.svg)
+
+![](https://byob.yarr.is/S-S-X/metatool/metatool-coverage)
+![](https://byob.yarr.is/S-S-X/metatool/sharetool-coverage)
+![](https://byob.yarr.is/S-S-X/metatool/containertool-coverage)
+![](https://byob.yarr.is/S-S-X/metatool/tubetool-coverage)
+
+[![ContentDB](https://content.minetest.net/packages/-SX-/metatool/shields/downloads/)](https://content.minetest.net/packages/-SX-/metatool/)
 
 ## What metatool? And why?
 
@@ -25,6 +41,7 @@ For more complete and tool specific documentation go see README.md files in subd
 * Tubetool [tubetool/README.md](tubetool/README.md)
 * Sharetool [sharetool/README.md](sharetool/README.md)
 * Magic pen [magic_pen/README.md](magic_pen/README.md)
+* Containertool [containertool/README.md](containertool/README.md)
 
 ## How to add supported nodes for tools
 

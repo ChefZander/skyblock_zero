@@ -5,9 +5,15 @@ Unified Dyes
 This mod provides an extension to the Minetest dye system
 
 ==============================================================================
+This file is part of unifieddyes mod.
 
-Copyright (C) 2012-2013, Vanessa Dannenberg
-Email: vanessa.e.dannenberg@gmail.com
+Original mod.
+Copyright (C) 2012-2025 Original unifieddyes Mod Contributors
+
+Modifications for Skyblock: Zero.
+Copyright (C) 2024-2025 Skyblock: Zero unifieddyes Mod Contributors
+
+Please see COPYRIGHT.md for names of authors and contributors.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,8 +26,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+with this program; if not, see <https://www.gnu.org/licenses/>.
 
 ==============================================================================
 

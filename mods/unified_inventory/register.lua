@@ -1,3 +1,28 @@
+--[=[
+This file is part of unified_inventory mod.
+
+Original mod.
+Copyright (C) 2012-2024 Original unified_inventory Mod Contributors
+
+Modifications for Skyblock: Zero.
+Copyright (C) 2024-2026 Skyblock: Zero unified_inventory Mod Contributors
+
+Please see COPYRIGHT.md for names of authors and contributors.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this program.  If not, see <https://www.gnu.org/licenses/>.
+]=]
+
 local S = minetest.get_translator 'unified_inventory'
 local NS = function(s)
     return s

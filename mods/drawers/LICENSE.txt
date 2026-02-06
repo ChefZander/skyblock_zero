@@ -1,3 +1,11 @@
+Skyblock: Zero Forked Mod
+============================
+
+See COPYRIGHT.md for up-to-date copyright information.
+Contents below is preserved from the original mod.
+
+--------------------------------------------------------------------------------
+
 Minetest Mod Storage Drawers
 ============================
 
@@ -62,5 +70,56 @@ Copyright (C) 2012 ultradust (https://www.freesound.org/people/ultradust/) (CC B
   sounds/drawers_interact.1.ogg (edited by tacotexmex)
   sounds/drawers_interact.2.ogg (edited by tacotexmex)
 
-Copyright (C) 2026 TheEt1234 (MIT):
-  textures/*
+Copyright (C) 2014 Justin Aquadro (MIT):
+  textures/drawers_acacia_wood_mcl_front_1.png
+  textures/drawers_acacia_wood_mcl_front_2.png
+  textures/drawers_acacia_wood_mcl_front_4.png
+  textures/drawers_acacia_wood_mcl.png
+  textures/drawers_aspen_wood_front_1.png
+  textures/drawers_aspen_wood_front_2.png
+  textures/drawers_aspen_wood_front_4.png
+  textures/drawers_aspen_wood.png
+  textures/drawers_birch_wood_front_1.png
+  textures/drawers_birch_wood_front_2.png
+  textures/drawers_birch_wood_front_4.png
+  textures/drawers_birch_wood.png
+  textures/drawers_controller_front.png
+  textures/drawers_controller_side.png
+  textures/drawers_controller_top.png
+  textures/drawers_dark_oak_wood_front_1.png
+  textures/drawers_dark_oak_wood_front_2.png
+  textures/drawers_dark_oak_wood_front_4.png
+  textures/drawers_dark_oak_wood.png
+  textures/drawers_junglewood_mcl_front_1.png
+  textures/drawers_junglewood_mcl_front_2.png
+  textures/drawers_junglewood_mcl_front_4.png
+  textures/drawers_junglewood_mcl.png
+  textures/drawers_oak_wood_front_1.png
+  textures/drawers_oak_wood_front_2.png
+  textures/drawers_oak_wood_front_4.png
+  textures/drawers_oak_wood.png
+  textures/drawers_pine_wood_front_1.png
+  textures/drawers_pine_wood_front_2.png
+  textures/drawers_pine_wood_front_4.png
+  textures/drawers_pine_wood.png
+  textures/drawers_spruce_wood_front_1.png
+  textures/drawers_spruce_wood_front_2.png
+  textures/drawers_spruce_wood_front_4.png
+  textures/drawers_spruce_wood.png
+  textures/drawers_trim.png
+  textures/drawers_upgrade_diamond.png
+  textures/drawers_upgrade_emerald.png
+  textures/drawers_upgrade_gold.png
+  textures/drawers_upgrade_iron.png
+  textures/drawers_upgrade_mithril.png (colors adapted by Linus Jahn <lnj@kaidan.im>, 2020)
+  textures/drawers_upgrade_obsidian.png
+  textures/drawers_upgrade_steel.png
+  textures/drawers_upgrade_slot_bg.png (extracted from gui/drawers_1.png by LNJ <git@lnj.li>)
+  textures/drawers_upgrade_template.png
+  textures/drawers_wood_front_1.png
+  textures/drawers_wood_front_2.png
+  textures/drawers_wood_front_4.png
+  textures/drawers_wood.png
+
+Everything not listed in here:
+Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im> (MIT)

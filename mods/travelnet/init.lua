@@ -1,21 +1,27 @@
---[[
-	Teleporter networks that allow players to choose a destination out of a list
-	Copyright (C) 2013 Sokomine
+--[=[
+This file is part of travelnet mod.
 
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+Original mod.
+Copyright (C) 2013-2024 Original travelnet Mod Contributors
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+Modifications for Skyblock: Zero.
+Copyright (C) 2025 Skyblock: Zero travelnet Mod Contributors
 
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Please see COPYRIGHT.md for names of authors and contributors.
 
---]]
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+--]=]
 
 -- Required to save the travelnet data properly in all cases
 if not minetest.safe_file_write then

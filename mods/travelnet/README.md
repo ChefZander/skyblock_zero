@@ -1,10 +1,10 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 8aa7126fe2bf2ee7d0d0655545b05def487e227a from upstream: <https://github.com/mt-mods/travelnet>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # Travelnet
-NOTICE!  
-This is a modified version of the travelnet mod from mt-mods, see https://github.com/mt-mods/travelnet for the original repository!  
-
-NOTICE!
-This work has been modified by TheEt1234, at 20-01-2026
-
 
 
 [![luacheck](https://github.com/mt-mods/travelnet/workflows/luacheck/badge.svg)](https://github.com/mt-mods/travelnet/actions?query=workflow%3Aluacheck)
@@ -53,7 +53,7 @@ See [settingtypes.txt](https://github.com/mt-mods/travelnet/blob/master/settingt
 The mod was written by me, Sokomine, and includes small contributions from other contributors.
 License: GPLv3 (see [`LICENSE`](https://github.com/mt-mods/travelnet/blob/master/LICENSE) for more information)
 
-The models and textures as found in the textures/ and models/ folders where created by VanessaE (some of them modified by TheEt1234 for skyblock: zero)
+The models and textures as found in the textures/ and models/ folders where created by VanessaE
 and are provided under the [CC0](https://creativecommons.org/publicdomain/zero/1.0/) license.
 
 Exceptions:

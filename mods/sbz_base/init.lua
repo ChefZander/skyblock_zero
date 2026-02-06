@@ -45,7 +45,7 @@ Server Optimizations: %s
 ]]):format('\x1b', sbz_api.version, sbz_api.is_version_dev and 'true' or 'false', sbz_api.server_optimizations, '\x1b'))
 
 sbz_api.get_version_string = function()
-    local gamename = 'SkyBlock: Zero '
+    local gamename = 'Skyblock: Zero '
     local version_string = 'Release ' .. sbz_api.version
     if sbz_api.is_version_dev then version_string = version_string .. '-dev' end
 
@@ -56,7 +56,7 @@ sbz_api.get_version_string = function()
 end
 
 sbz_api.get_simple_version_string = function()
-    return 'SkyBlock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
+    return 'Skyblock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
 
 -- /community is added here, because it's what a fork is likely to change

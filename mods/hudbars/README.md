@@ -1,3 +1,9 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit bd191abfcd38ffd7ad575620d9fd1c6bf1f2f7cf from upstream: <https://codeberg.org/Wuzzy/minetest_hudbars>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # HUD Bars
 
 ## Description

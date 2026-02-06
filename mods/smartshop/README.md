@@ -1,8 +1,10 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit a3ae95b531bb90620cac1a05b4bf114bbae6e159 from upstream: <https://github.com/fluxionary/luanti-smartshop>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 smartshop redo mod for minetest.
-Has been modified in skyblock zero.
-
-Notice: Modified by TheEt1234 at 20-01-2026
-
 
 based on the original smartshop mod by AiTechEye
 * https://forum.minetest.net/viewtopic.php?f=11&t=14304
@@ -10,11 +12,11 @@ based on the original smartshop mod by AiTechEye
 
 # LICENSE
 
-CODE (modified in skyblock zero):
+CODE:
 * (c) flux LGPL v3
 * inspired by code (c) AiTechEye LGPL-2.1, though it's been rewritten from the ground up twice now...
 
-TEXTURES (All of these have been modified by TheEt1234 for SBZ):
+TEXTURES:
 * smartshop_border.png (c) celeron55 CC BY-SA 3.0
 * smartshop_face.png (c) celeron55 CC BY-SA 3.0
 

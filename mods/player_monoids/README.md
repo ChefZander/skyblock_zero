@@ -1,5 +1,10 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 8d6f1ade93fa269219f0446f7de8ac884728508b from upstream: <https://github.com/minetest-mods/player_monoids>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # Player Monoids
-# Modified in skyblock zero, added some monoids
 
 This is a small library for managing global player state, so that changes made
 from different mods do not result in unexpected behavior. The README gives an

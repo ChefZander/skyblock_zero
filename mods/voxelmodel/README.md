@@ -1,13 +1,14 @@
+# Skyblock: Zero Forked Mod
+
+No longer synchronized with commit eb25ae4c761b59c866237e346a6ace85a5832b95 from upstream: <https://github.com/Noodlemire/voxelmodel>. Removed/Replaced a lot of things from the original mod.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 -------------------------------------------------------------------------------------------------------------
 Template to Easily Make Fancy Voxelized Models
 [voxelmodel]
 -------------------------------------------------------------------------------------------------------------
 
-Notice: Modified by TheEt1234 at 20-01-2026
-
-This is not the original mod, it has been modified, see [the original](https://github.com/Noodlemire/voxelmodel/tree/master)
-
--------------------------------------------------------------------------------------------------------------
 About
 -------------------------------------------------------------------------------------------------------------
 This mod provides voxelmodel.obj, a model designed to be shaped by changing its texture, in order to easily create fancy voxelized models.

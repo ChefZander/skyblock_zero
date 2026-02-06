@@ -1,7 +1,11 @@
-Areas mod for Minetest (modified)
-======================
+# Skyblock: Zero Forked Mod
 
-Notice: Modified by TheEt1234 at 20-01-2026
+Currently synchronized with commit 9a5cdb282251ad18ead934d0cb12a7293a379384 from upstream: <https://github.com/minetest-mods/areas/>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+Areas mod for Minetest
+======================
 
 Dependencies
 ------------

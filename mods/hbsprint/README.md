@@ -1,7 +1,10 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 92a1e0cddb0f4f3278e629402cbfc0efe6bceecf from upstream: <https://github.com/minetest-mods/hbsprint>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # hbSprint
-
-Notice: Modified by TheEt1234 at 20-01-2026
-
 
 ## Description
 A flexible sprint mod supporting stamina, hunger and coexistance with other physics altering mods.
