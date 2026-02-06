@@ -162,11 +162,11 @@ DESIGN:
 ]]
 sbz_api.crafting_processor_stats = {
     ['sbz_resources:simple_crafting_processor'] = { crafts = 1, power = 5 },
-    ['sbz_resources:quick_crafting_processor'] = { crafts = 8, power = 20 },
-    ['sbz_resources:fast_crafting_processor'] = { crafts = 32, power = 140 },
+    ['sbz_resources:fast_crafting_processor'] = { crafts = 8, power = 20 },
+    ['sbz_resources:very_fast_crafting_processor'] = { crafts = 32, power = 140 },
 
-    ['sbz_resources:needlessly_expensive_crafting_processor'] = { crafts = 128, power = 640 },
-    ['sbz_resources:omega_quantum_black_hole_whatever_crafting_processor'] = { crafts = 100000, power = 800 },
+    ['sbz_resources:quantum_crafting_processor'] = { crafts = 128, power = 640 },
+    ['sbz_resources:creative_crafting_processor'] = { crafts = 100000, power = 00 },
 }
 
 core.register_craftitem('sbz_resources:simple_crafting_processor', {
@@ -203,9 +203,10 @@ minetest.register_craft {
 core.register_alias('sbz_resources:quick_crafting_processor', 'sbz_resources:fast_crafting_processor')
 
 core.register_craftitem('sbz_resources:very_fast_crafting_processor', {
-    description = 'Very Fast Crafting Processor\nCrafts 32 items per second for 140 power.',
+    description = 'Very Fast Crafting Processor',
     inventory_image = 'accelerated_silicon_crafting_processor.png',
     stack_max = 1,
+    info_extra = "Crafts 32 items per second for 140 power."
 })
 
 minetest.register_craft {
@@ -217,16 +218,16 @@ minetest.register_craft {
     },
 }
 
-core.register_craftitem('sbz_resources:needlessly_expensive_crafting_processor', {
-    description = 'Needlessly Expensive Crafting Processor',
-    inventory_image = 'needlessly_expensive_crafting_processor.png',
+core.register_craftitem('sbz_resources:quantum_crafting_processor', {
+    description = 'Quantum Crafting Processor',
+    inventory_image = 'quantum_crafting_processor.png',
     stack_max = 1,
-    info_extra = "Crafts 128 items/s and uses 640Cj. You shouldn't need this, this item was made as a joke.",
+    info_extra = "Crafts 128 items/s and uses 640Cj.",
 })
 
 minetest.register_craft {
     type = 'shaped',
-    output = 'sbz_resources:needlessly_expensive_crafting_processor',
+    output = 'sbz_resources:quantum_crafting_processor',
     recipe = {
         { 'sbz_resources:very_fast_crafting_processor', 'drawers:warpshroom_upgrade', 'sbz_resources:very_fast_crafting_processor' },
         { 'sbz_bio:giant_colorium_sapling', 'sbz_chem:thorium_crystal', 'sbz_bio:giant_colorium_sapling' },
@@ -234,21 +235,12 @@ minetest.register_craft {
     },
 }
 
-core.register_craftitem('sbz_resources:omega_quantum_black_hole_whatever_crafting_processor', {
-    description = 'Omega Quantum Black Hole Whatever Crafting Processor',
-    inventory_image = 'omega_quantum_black_hole_whatever_crafting_processor.png',
-    info_extra = 'Crafts 100000 items/s, consumes 800Cj.\nThe magic of non-commercial volunteer-run free (as in freedom) games is that you can put in whatever you want.\nThis item is a joke. You should not try to get it.',
+core.register_craftitem('sbz_resources:creative_crafting_processor', {
+    description = 'Creative Crafting Processor',
+    inventory_image = 'creative_crafting_processor.png',
+    info_extra = 'Crafts 100000 items/s, consumes no power.\n',
     stack_max = 1,
 })
-
-minetest.register_craft {
-    output = 'sbz_resources:omega_quantum_black_hole_whatever_crafting_processor',
-    recipe = {
-        { 'sbz_resources:needlessly_expensive_crafting_processor', 'sbz_resources:needlessly_expensive_crafting_processor', 'sbz_resources:needlessly_expensive_crafting_processor', },
-        { 'sbz_resources:needlessly_expensive_crafting_processor', 'sbz_resources:needlessly_expensive_crafting_processor', 'sbz_resources:needlessly_expensive_crafting_processor', },
-        { 'sbz_resources:needlessly_expensive_crafting_processor', 'sbz_resources:needlessly_expensive_crafting_processor', 'sbz_resources:needlessly_expensive_crafting_processor', },
-    },
-}
 -- stylua: ignore end
 
 -- deprecated stuff

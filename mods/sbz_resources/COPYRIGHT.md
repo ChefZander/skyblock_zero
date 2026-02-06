@@ -256,7 +256,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 `sounds/antistep.ogg` by ChefZander. CC0. Derivative of "Step 4.wav" by carrigsound. CC0. <https://freesound.org/s/32641/>.
 
-`sounds/block_annihilated.ogg` Copyright (C) 2024 ChefZander. CC BY 4.0. Derivative of "[SFX Hit] deep kick boom" Copyright (C) 2014 waveplaySFX. CC BY 4.0. <https://freesound.org/s/231349/>.
+`sounds/block_annihilated.ogg`
+- "[SFX Hit] deep kick boom" Copyright (C) 2014 waveplaySFX. CC BY 4.0. <https://freesound.org/s/231349/>.
+- Derivative asset for Skyblock: Zero.
+  - Copyright (C) 2024 ChefZander. CC BY 4.0.
+  - Copyright (C) 2026 AbbyRead. CC BY 4.0.
 
 `sounds/charged_field_shutdown.ogg` is "hard_drive_shut_down_01.wav" by Noisehag. CC0. <https://freesound.org/s/110552/>.
 
@@ -264,7 +268,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 `sounds/default_dig_matter.ogg` is "Step 4.wav" by carrigsound. CC0. <https://freesound.org/s/32641/>.
 
-`sounds/drill_dig.ogg` Copyright (C) 2024 TheEt1234. CC BY 4.0. Derivative of "[SFX Hit] deep kick boom" Copyright (C) 2014 waveplaySFX. CC BY 4.0. <https://freesound.org/s/231349/>.
+`sounds/drill_dig.ogg`
+- "[SFX Hit] deep kick boom" Copyright (C) 2014 waveplaySFX. CC BY 4.0. <https://freesound.org/s/231349/>.
+- Derivative asset for Skyblock: Zero.
+  - Copyright (C) 2024 TheEt1234. CC BY 4.0.
+  - Copyright (C) 2026 AbbyRead. CC BY 4.0.
 
 `sounds/firework_explode.ogg` is "Firework single shot 2" Copyright (C) 2022 MilanKovanda. CC BY 4.0. <https://freesound.org/s/624414/>.
 

@@ -45,9 +45,9 @@ Requires: Obtain Emittrium
 
 ### Text
 
-Starlight Catchers are similar starlight collectors but more compact, generating 1Cj/s.  
+Starlight Catchers are similar starlight collectors but more compact, generating 1 Cj/s.  
 But unlike starlight collectors, they need **Photon-Energy converters**, to convert their energy into usable power.  
-They won't do anything if you connect them directly to a switching station, as they provide power though the photon-energy converter.  
+They won't do anything if you connect them directly to a Switching Station, as they provide power though the photon-energy converter.  
 
 ### Meta
 
@@ -80,7 +80,7 @@ Requires: Emittrium Circuits
 ### Text
 
 If you want to turn machines on and off, you can use Connectors. They join two networks together, and you can click on them to turn them on and off.  
-IMPORTANT: Make sure that only one of the two or more joined networks has a switching station, or they will blow up until reaching one.
+IMPORTANT: Make sure that only one of the two or more joined networks has a Switching Station, or they will blow up until reaching one.
 
 ### Meta
 
@@ -90,7 +90,7 @@ Requires: Emittrium Circuits, Reinforced Matter
 
 ### Text
 
-The Angel's Wing can make you fly. Right-Click to use, it has 100 uses. To craft, surround a Emittrium Circuit with Stone. This recipe is temporary.
+The Angel's Wing can make you fly. Right-Click to use, it has 100 uses. To craft, surround an Emittrium Circuit with Stone. This recipe is temporary.
 
 ### Meta
 

@@ -73,7 +73,7 @@ Requires: Crusher, Simple Alloy Furnace
 Have you ever wanted to turn your metals into blocks? Now you can!  
 Craft this wonderful compressor, insert 9 powder, or 9 ingots, and watch as it makes blocks out of them.  
 
-Blocks made from metals cannot be dug with matter annihilators, you must use the robotic arm or the drill instead.  
+Blocks made from metals cannot be dug with Matter Annihilators, you must use the robotic arm or the drill instead.  
 ### Meta
 
 Requires: Crusher, Simple Alloy Furnace 
@@ -123,7 +123,7 @@ Requires: Crystal Grower
 
 ### Text
 
-Have you wished to fly? Do i have the tool for you...  
+Have you wished to fly? Do I have the tool for you...  
   
 The controls:  
   
@@ -220,12 +220,10 @@ Requires:
 
 ### Text
 
-The blast furnace is a multiblock that allows you to smelt or alloy things very fast.  
+The Blast Furnace is a multiblock that allows you to smelt or alloy things very fast.  
 It also introduces a special mode that lets you alloy 3 items (required for some recipes), and when using the item input, it won't clog like the alloy furnace.  
   
-**Please keep in mind, before making it, have some good ore automation, or you will find crafting it really not fun.**  
-  
-To get started, craft the blast furnace controller.  
+**Please keep in mind, before making it, have some good ore automation, or you will find crafting it really not fun.** To get started, craft the blast furnace controller.  
 Click/tap on the "Show Build Plan" button to see what nodes the furnace will occupy. The furnace will always face one way relative to the controller.  
 Then, choose the amount of heater rows you want. Each heater smelts as fast as a regular furnace, and it will speed up "blast recipes" (recipes that require the blast furnace).  
 Then build it :D.  
@@ -440,7 +438,6 @@ It might behave weirdly with super powered lamps, be aware of that.
 ### Meta
 
 Requires: Phlogiston Fuser
-
 <!-- ## Clay
 
 ### Text
