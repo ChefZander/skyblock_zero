@@ -99,8 +99,13 @@ Room containers contain 16x16x16 rooms (if you count the walls) that is inside o
 
 If you break a room container, don't worry, the next room container you place will point to that same room.
 
+Room containers can also accept power and teleport it to a room.
+
 Warning: To save the positions of rooms, room containers use an experimental luanti function (that has been experimental and mostly unchanged since 2016), this might not be that big of a concern but <b>you shouldn't put your entire storage system in a room container</b> because of that. It is unclear how reliable the saving/loading of room containers is.
 Server owners should ideally have backups.
+
+Warning: The power input functionality may not work correctly on servers (by default), or on Skyblock Zero configurations that have the "sbz_switching_station_unload" setting active, it may be unusable, sorry.
+
 
 
 

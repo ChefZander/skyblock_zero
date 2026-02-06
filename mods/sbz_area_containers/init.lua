@@ -16,13 +16,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+-- This entire mod is contained within a single file, with sections being seperated by comments
+
+---======================----
 --- === CONFIGURATION === ---
+---======================----
 
 local mapgen_limit = assert(tonumber(core.settings:get 'mapgen_limit') - 200) -- mapgen_limit is not entirely accurate
 local rooms_y_level = -20000
 
 local room_size = vector.new(16, 16, 16)
 local room_exit_pos = vector.new(2, 2, 0)
+local room_power_input_pos = vector.new(room_size.x - 3, 2, 0)
 local room_spawn_pos = vector.new(2, 1, 1)
 local save_interval = 100 -- in seconds
 local max_areas_per_player = 100
@@ -55,7 +60,9 @@ local room_world_area = {
 room_world_area.min = multiply_vector(vector.floor(divide_vector(room_world_area.min, room_size)), room_size)
 room_world_area.max = multiply_vector(vector.floor(divide_vector(room_world_area.max, room_size)), room_size)
 
+---======================----
 -- === SAVING/LOADING === ---
+---======================----
 
 local room_areastore = AreaStore()
 local player_container_ids = {}
@@ -101,7 +108,9 @@ core.register_globalstep(function(dtime)
     end
 end)
 
+----=================================----
 --- === THE ACTUAL IMPLEMENTATION === ---
+----=================================----
 
 ---@diagnostic disable-next-line: lowercase-global
 sbz_area_containers = {}
@@ -176,6 +185,7 @@ function sbz_area_containers.new_room(player_name)
         end
     end
     core.set_node(vector.add(pos, room_exit_pos), { name = 'sbz_area_containers:room_exit' })
+    core.set_node(vector.add(pos, room_power_input_pos), { name = 'sbz_area_containers:power_input' })
 
     return id
 end
@@ -201,7 +211,9 @@ function sbz_area_containers.teleport_to_room(player, id)
     player:set_pos(vector.add(room_min_pos, relative_spawn_pos))
 end
 
+----=============----
 --- === NODES === ---
+----=============----
 
 core.register_node(
     'sbz_area_containers:wall',
@@ -237,12 +249,36 @@ core.register_node(
     }
 )
 
+core.register_node(
+    'sbz_area_containers:power_input',
+    unifieddyes.def {
+        paramtype2 = 'color',
+        paramtype = 'light',
+        light_source = 14,
+        diggable = false,
+        groups = { pipe_connects = 1, pipe_conducts = 1, sbz_power_teleporter = 1 },
+        tiles = { 'room_container_power_io.png' },
+
+        _sbz_power_teleport = function(pos)
+            local ids = room_areastore:get_areas_for_pos(pos, true, false)
+            if not next(ids) then return end
+            local id, room = next(ids)
+
+            -- code inspired by sbz connectors
+            -- the sbz power system is totally fine and normal
+
+            return vector.add(room.min, room_power_input_pos)
+        end,
+    }
+)
+
 core.register_node('sbz_area_containers:room_container', {
     description = 'Room Container',
     tiles = { 'room_container.png' },
     paramtype = 'light',
     light_source = 14,
-    groups = { matter = 1 },
+    groups = { matter = 1, pipe_connects = 1, pipe_conducts = 1, sbz_power_teleporter = 1 },
+    connects_to = { 'sbz_power:power_pipe', 'group:sbz_machine' },
     after_place_node = function(pos, placer)
         local meta = core.get_meta(pos)
         local id = sbz_area_containers.new_room(placer:get_player_name())
@@ -267,6 +303,15 @@ core.register_node('sbz_area_containers:room_container', {
                 break
             end
         end
+    end,
+
+    _sbz_power_teleport = function(pos)
+        local meta = core.get_meta(pos)
+        if meta:get_int 'linked' ~= 1 then return end
+        local id = meta:get_int 'id'
+        local room = room_areastore:get_area(id, true, false)
+        if not room then return end
+        return vector.add(room.min, room_power_input_pos)
     end,
 })
 
