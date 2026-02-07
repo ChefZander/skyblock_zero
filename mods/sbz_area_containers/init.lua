@@ -256,7 +256,7 @@ core.register_node(
         paramtype = 'light',
         light_source = 14,
         diggable = false,
-        groups = { pipe_connects = 1, pipe_conducts = 1, sbz_power_teleporter = 1 },
+        groups = { pipe_connects = 1, pipe_conducts = 1, sbz_power_teleporter = 1, not_in_creative_inventory = 1 },
         tiles = { 'room_container_power_io.png' },
 
         _sbz_power_teleport = function(pos)
