@@ -138,12 +138,12 @@ minetest.register_craft {
     },
 }
 
-core.register_craft{
-    type ="shapeless"
-    output = "sbz_resources:charged_particle 9",
+core.register_craft {
+    type = 'shapeless',
+    output = 'sbz_resources:charged_particle 9',
     recipe = {
-        "sbz_power:simple_charged_field"
-    }
+        'sbz_power:simple_charged_field',
+    },
 }
 
 if not sbz_api.server_optimizations then
