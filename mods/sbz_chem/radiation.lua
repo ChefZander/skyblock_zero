@@ -243,31 +243,42 @@ core.register_node('sbz_chem:radon', {
     floodable = true,
 })
 
--- 20% chance of going away each move if not surrounded by radioactivity
-core.register_abm({
-    label = 'Radon gas move',
-    nodenames = { 'sbz_chem:radon' },
-    neighbors = { 'air', 'group:airlike' },
-    interval = 1,
-    chance = 1,
-    action = function(spos, node)
-        local should_go_away_with_chance = true
-        local air_nodes = sbz_api.filter_node_neighbors(spos, 1, function(pos)
-            local nn = core.get_node(pos).name
-            if core.get_item_group(nn, 'radioactive') > 0 or core.get_item_group(nn, 'weak_radioactive') > 0 then
-                should_go_away_with_chance = false
-            end
-            if core.get_item_group(nn, 'airlike') == 1 or nn == 'air' then return pos end
-        end, false)
-        local num_airnodes = #air_nodes
-        if num_airnodes == 0 then return false end
-        local swap_pos = air_nodes[math.random(1, num_airnodes)]
-        if (not should_go_away_with_chance) or (math.random() <= 0.20) then -- 20%
-            core.swap_node(swap_pos, node)
+do
+    local should_go_away_with_chance = true -- optimize, sorry that its weird in a do-block like this
+    local function radon_move_filter(pos)
+        local nn = core.get_node(pos).name
+        if core.get_item_group(nn, 'radioactive') > 0 or core.get_item_group(nn, 'weak_radioactive') > 0 then
+            should_go_away_with_chance = false
         end
-        core.remove_node(spos)
-    end,
-})
+        if core.get_item_group(nn, 'airlike') == 1 or nn == 'air' then return pos end
+    end
+
+    -- 20% chance of going away each move if not surrounded by radioactivity
+    core.register_abm({
+        label = 'Radon gas move',
+        nodenames = { 'sbz_chem:radon' },
+        neighbors = { 'air', 'group:airlike' },
+        interval = 1,
+        chance = 1,
+        action = function(spos, node)
+            should_go_away_with_chance = true
+            local air_nodes = sbz_api.filter_node_neighbors(spos, 1, radon_move_filter, false)
+            local num_airnodes = #air_nodes
+            if num_airnodes == 0 then return end
+            local swap_pos = air_nodes[math.random(1, num_airnodes)]
+            if (not should_go_away_with_chance) or (math.random() <= 0.20) then -- 20%
+                core.swap_node(swap_pos, node)
+            end
+            core.remove_node(spos)
+        end,
+    })
+end
+
+local radon_spawn_filter = function(pos)
+    local nn = core.get_node(pos).name
+    if core.get_item_group(nn, 'airlike') == 1 or nn == 'air' then return { pos = pos, type = 'air' } end
+    if nn == 'sbz_resources:water_source' then return { pos = pos, type = 'water' } end
+end
 
 core.register_abm({
     label = 'Radon gas/water spawn (by group:radioactive)',
@@ -288,11 +299,8 @@ core.register_abm({
         end
         if num_radon == 0 then return end
 
-        local target_nodes = sbz_api.filter_node_neighbors(spos, 1 + math.floor(radioactive_group / 10), function(pos)
-            local nn = core.get_node(pos).name
-            if core.get_item_group(nn, 'airlike') == 1 or nn == 'air' then return { pos = pos, type = 'air' } end
-            if nn == 'sbz_resources:water_source' then return { pos = pos, type = 'water' } end
-        end, false)
+        local target_nodes =
+            sbz_api.filter_node_neighbors(spos, 1 + math.floor(radioactive_group / 10), radon_spawn_filter, false)
         if #target_nodes == 0 then return end
         for i = 1, num_radon do
             local data = target_nodes[math.random(1, #target_nodes)]
