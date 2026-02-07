@@ -323,3 +323,7 @@ core.register_craft {
         { 'sbz_resources:black_sand', 'sbz_bio:warpshroom', 'sbz_resources:black_sand' },
     },
 }
+
+mesecon.register_mvps_stopper('sbz_area_containers:wall')
+mesecon.register_mvps_stopper('sbz_area_containers:power_input')
+mesecon.register_mvps_stopper('sbz_area_containers:room_exit')

@@ -14,7 +14,6 @@ local function spawn_meteorite(pos)
                     and core.get_node(pos).name == 'air'
                     and pos.y > y_min
                 then
-                    core.debug('TOTALLY HIT THAT OFC')
                     success = true
                     break
                 end
