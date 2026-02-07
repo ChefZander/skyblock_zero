@@ -101,6 +101,8 @@ If you break a room container, don't worry, the next room container you place wi
 
 Room containers can also accept power and teleport it to a room.
 
+Right-click a room to teleport to it, and right-click the room exit (a special block inside the wall) to exit the room.
+
 Warning: To save the positions of rooms, room containers use an experimental luanti function (that has been experimental and mostly unchanged since 2016), this might not be that big of a concern but <b>you shouldn't put your entire storage system in a room container</b> because of that. It is unclear how reliable the saving/loading of room containers is.
 Server owners should ideally have backups.
 

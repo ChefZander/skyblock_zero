@@ -569,10 +569,10 @@ minetest.register_craft {
         { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
     },
 }
-minetest.register_craft {
-    type = 'shapeless',
+sbz_api.recipe.register_craft {
     output = 'sbz_resources:matter_dust 9',
-    recipe = {
+    type = 'crushing',
+    items = {
         'sbz_resources:matter_blob',
     },
 }
