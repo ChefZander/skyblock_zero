@@ -1,7 +1,8 @@
+local index_adjustment = 1
+
 minetest.register_craftitem('sbz_resources:matter_annihilator', {
     description = 'Matter Annihilator',
     inventory_image = 'matter_annihilator.png',
-    local index_adjustment = 1,
                 
     groups = { core_drop_multi = 1 },
     tool_capabilities = {
