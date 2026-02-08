@@ -281,7 +281,7 @@ Requires: A bigger platform
 
 ### Text
 
-Just regular old boring stone, nothing really to add here. Like, it's literally just stone. You know, the kind that would make even a rock collector yawn and say, "I've seen gravel with more personality". It sits around all day, doing nothing—no metamorphosis, no glittering crystals—just living its best sedentary life.  
+Just regular old boring stone, nothing really to add here. Like, it's literally just stone. You know, the kind that would make even a rock collector yawn and say, "I've seen gravel with more personality". It sits around all day, doing nothing. No metamorphosis, no glittering crystals, just living its best sedentary life.  
   
 That said, it's made using 9 pebbles.
 

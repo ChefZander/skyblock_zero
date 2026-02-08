@@ -10,10 +10,15 @@ local function make_formspec(meta)
 
     local src = inv:get_stack('src', 1)
 
-    inv:set_stack('choices', 1, src:get_name() .. '_slab ' .. math.min(src:get_count() * 2, src:get_stack_max()))
-    inv:set_stack('choices', 2, src:get_name() .. '_stair ' .. math.min(src:get_count(), src:get_stack_max()))
-    inv:set_stack('choices', 3, src:get_name() .. '_stair_inner ' .. math.min(src:get_count(), src:get_stack_max()))
-    inv:set_stack('choices', 4, src:get_name() .. '_stair_outer ' .. math.min(src:get_count(), src:get_stack_max()))
+    if ItemStack(src:get_name() .. '_slab'):is_known() then
+        inv:set_stack('choices', 1, src:get_name() .. '_slab ' .. math.min(src:get_count() * 2, src:get_stack_max()))
+        inv:set_stack('choices', 2, src:get_name() .. '_stair ' .. math.min(src:get_count(), src:get_stack_max()))
+        inv:set_stack('choices', 3, src:get_name() .. '_stair_inner ' .. math.min(src:get_count(), src:get_stack_max()))
+        inv:set_stack('choices', 4, src:get_name() .. '_stair_outer ' .. math.min(src:get_count(), src:get_stack_max()))
+    else
+        inv:set_list('choices', {})
+        inv:set_size('choices', 4)
+    end
 
     meta:set_string(
         'formspec',
@@ -75,6 +80,7 @@ minetest.register_node(
                 srcstack:set_count(srcstack:get_count() - sub)
                 inv:set_stack('src', 1, srcstack)
             end
+            if stack:is_known() == false then return 0 end
             return stack:get_count()
         end,
         tube = {

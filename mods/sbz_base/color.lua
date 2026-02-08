@@ -1,62 +1,84 @@
 -- a color util
+-- Hopefully you won't be using this anywhere where performance matters (i think outright not using tables is the best here)
+-- i mean converting a large amount of colors sounds silly anyway
 
 local color = {}
 sbz_api.color = color
 
+---@class sbz.rgb # Unperformant
+---@field r integer # 0-255
+---@field g integer # 0-255
+---@field b integer # 0-255
 
--- rgb2hsl and hsl2rgb and rotate_hue have been AI generated
--- and modified
--- cuz there is no way i'm figuring that out on my own
+---@class sbz.hsl # Unperformant
+---@field h number # 0-360
+---@field s number # 0-1
+---@field l number # 0-1
 
+-- math from wikipedia, thanks wikipedia
+-- i love wikipedia
+
+---@param rgb sbz.rgb
+---@return sbz.hsl hsl
 function color.rgb2hsl(rgb)
-    local r, g, b = rgb.r, rgb.g, rgb.b
-    r, g, b = r / 255, g / 255, b / 255
-    local max, min = math.max(r, g, b), math.min(r, g, b)
-    local l = (max + min) / 2
-    local h, s = 0, 0
+    local r, g, b = rgb.r / 255, rgb.g / 255, rgb.b / 255
+    local V = math.max(r, g, b)
+    local Xmin = math.min(r, g, b)
 
-    if max ~= min then
-        local d = max - min
-        s = (l > 0.5) and (d / (2 - max - min)) or (d / (max + min))
+    local C = V - Xmin
+    local L = V - (C / 2)
 
-        if max == r then
-            h = (g - b) / d + (g < b and 6 or 0)
-        elseif max == g then
-            h = (b - r) / d + 2
-        else
-            h = (r - g) / d + 4
-        end
-        h = h * 60
+    local H
+    if C == 0 then
+        H = 0
+    elseif V == r then
+        H = 60 * (((g - b) / C) % 6)
+    elseif V == g then
+        H = 60 * (((b - r) / C) + 2)
+    elseif V == b then
+        H = 60 * (((r - g) / C) + 4)
     end
-    return { h = h, s = s, l = l }
+
+    local S = 0
+    if L ~= 0 and L ~= 1 then S = (V - L) / math.min(L, 1 - L) end
+
+    return { h = H, s = S, l = L }
 end
 
+local abs = math.abs
+
+---@param hsl sbz.hsl
+---@return sbz.rgb rgb
 function color.hsl2rgb(hsl)
     local h, s, l = hsl.h, hsl.s, hsl.l
-    local function hue_to_rgb(p, q, t)
-        if t < 0 then t = t + 1 end
-        if t > 1 then t = t - 1 end
-        if t < 1 / 6 then return p + (q - p) * 6 * t end
-        if t < 1 / 2 then return q end
-        if t < 2 / 3 then return p + (q - p) * (2 / 3 - t) * 6 end
-        return p
+    local C = (1 - abs(2 * l - 1)) * s
+    local hp = h / 60
+    local X = C * (1 - abs((hp % 2) - 1))
+
+    local r1, g1, b1
+    if hp >= 0 and hp < 1 then
+        r1, g1, b1 = C, X, 0
+    elseif hp >= 1 and hp < 2 then
+        r1, g1, b1 = X, C, 0
+    elseif hp >= 2 and hp < 3 then
+        r1, g1, b1 = 0, C, X
+    elseif hp >= 3 and hp < 4 then
+        r1, g1, b1 = 0, X, C
+    elseif hp >= 4 and hp < 5 then
+        r1, g1, b1 = X, 0, C
+    elseif hp >= 5 and hp < 6 then
+        r1, g1, b1 = C, 0, X
     end
 
-    local q = l < 0.5 and (l * (1 + s)) or (l + s - l * s)
-    local p = 2 * l - q
-
-    local r = hue_to_rgb(p, q, h / 360 + 1 / 3)
-    local g = hue_to_rgb(p, q, h / 360)
-    local b = hue_to_rgb(p, q, h / 360 - 1 / 3)
-
-    return { r = math.floor(r * 255), g = math.floor(g * 255), b = math.floor(b * 255) }
+    local m = l - (C / 2)
+    local r, g, b = r1 + m, g1 + m, b1 + m
+    return { r = math.round(r * 255), g = math.round(g * 255), b = math.round(b * 255) }
 end
 
 function color.rotate_hue(rgb, angle)
-    local a = rgb.a
     local hsl = color.rgb2hsl(rgb)
-    hsl.h = (hsl.h + angle) % 360
+    hsl.h = angle
     local result = color.hsl2rgb(hsl)
-    result.a = a -- keep rgba if there was
+    result.a = rgb.a
     return result
 end

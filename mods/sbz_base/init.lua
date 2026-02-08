@@ -390,6 +390,7 @@ end
 function is_air(pos)
     local node = core.get_node(pos).name
     local reg = core.registered_nodes[node]
+    if not reg then return false end
     return reg.air or reg.air_equivalent or node == 'air'
 end
 
@@ -469,8 +470,6 @@ dofile(MP .. '/toggle_areas_hud.lua')
 dofile(MP .. '/cache.lua')
 dofile(MP .. '/color.lua')
 dofile(MP .. '/recipe.lua')
-dofile(MP .. '/serialize.lua')
-dofile(MP .. '/serialize_benchmark.lua')
 dofile(MP .. '/space_movement.lua')
 dofile(MP .. '/pick_block.lua')
 
@@ -503,17 +502,20 @@ dofile(MP .. '/sound_api.lua')
 
 sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, break_after_one_result)
     local returning = {}
+    local pos = vector.new()
     for x = -radius, radius do
         for y = -radius, radius do
             for z = -radius, radius do
                 if not (x == 0 and y == 0 and z == 0) then
-                    local pos = vector.add(start_pos, vector.new(x, y, z))
+                    pos.x = start_pos.x + x
+                    pos.y = start_pos.y + y
+                    pos.z = start_pos.z + z
                     local filter_results = { filtering_function(pos) }
 
                     if #filter_results == 1 then
-                        returning[#returning + 1] = filter_results[1]
+                        returning[#returning + 1] = table.copy(filter_results[1])
                     elseif #filter_results ~= 0 then
-                        returning[#returning + 1] = filter_results
+                        returning[#returning + 1] = table.copy(filter_results)
                     end
                     if break_after_one_result and #filter_results > 0 then return returning end
                 end

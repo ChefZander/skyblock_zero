@@ -508,6 +508,13 @@ minetest.register_node('pipeworks:autocrafter', {
             if not reserved_slot then return stack:get_count() end
             local stackname = stack:get_name()
             if stackname ~= reserved_slot[index] then return 0 end
+        elseif listname == 'processor' then
+            local stack = inv:get_stack('processor', 1)
+            if stack:get_count() == 0 then
+                return 1
+            else
+                return 0
+            end
         end
         return stack:get_count()
     end,

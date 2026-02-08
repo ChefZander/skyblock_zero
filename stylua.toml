@@ -3,8 +3,8 @@ column_width = 120
 line_endings = "Unix"
 indent_type = "Spaces"
 indent_width = 4
-call_parentheses = "None"
+call_parentheses = "Input"
 collapse_simple_statement = "ConditionalOnly"
 space_after_function_names = "Never"
-quote_style = "AutoPreferSingle" # How ironic
+quote_style = "AutoPreferSingle"
 

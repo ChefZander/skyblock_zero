@@ -68,32 +68,24 @@ local cache_radiation_resistance = {}
 
 local function node_radiation_resistance(node_name)
     local resistance = cache_radiation_resistance[node_name]
-    if resistance then
-        return resistance
-    end
+    if resistance then return resistance end
     local def = minetest.registered_nodes[node_name]
     if not def then
         cache_radiation_resistance[node_name] = 0
         return 0
     end
-    resistance = def.radiation_resistance or
-        rad_resistance_node[node_name]
-    if resistance == nil and def.groups ~= nil then
-        resistance = def.groups.radiation_resistance
-    end
+    resistance = def.radiation_resistance or rad_resistance_node[node_name]
+    if resistance == nil and def.groups ~= nil then resistance = def.groups.radiation_resistance end
     if not resistance then
         resistance = 0
         for g, v in pairs(def.groups) do
-            if v > 0 and rad_resistance_group[g] then
-                resistance = resistance + rad_resistance_group[g]
-            end
+            if v > 0 and rad_resistance_group[g] then resistance = resistance + rad_resistance_group[g] end
         end
     end
     resistance = math.sqrt(resistance)
     cache_radiation_resistance[node_name] = resistance
     return resistance
 end
-
 
 --[[
 Radioactive nodes cause damage to nearby players.  The damage
@@ -147,9 +139,7 @@ local function apply_fractional_damage(o, dmg)
     local dmg_int = math.floor(dmg)
     -- The closer you are to getting one more damage point,
     -- the more likely it will be added.
-    if math.random() < dmg - dmg_int then
-        dmg_int = dmg_int + 1
-    end
+    if math.random() < dmg - dmg_int then dmg_int = dmg_int + 1 end
     if dmg_int > 0 then
         local new_hp = math.max(o:get_hp() - dmg_int, 0)
         o:set_hp(new_hp)
@@ -168,8 +158,7 @@ local function calculate_base_damage(node_pos, object_pos, strength)
         shielding = shielding + node_radiation_resistance(shield_name) * 0.025
     end
 
-    local dmg = (strength * strength) /
-        (math.max(0.75, dist * dist) * math.exp(shielding))
+    local dmg = (strength * strength) / (math.max(0.75, dist * dist) * math.exp(shielding))
 
     if dmg < rad_dmg_cutoff then return end
     return dmg
@@ -177,22 +166,14 @@ end
 
 local function calculate_damage_multiplier(object)
     local ag = object.get_armor_groups and object:get_armor_groups()
-    if not ag then
-        return 0
-    end
-    if ag.immortal then
-        return 0
-    end
-    if ag.light then
-        return 0.01 * ag.light
-    end
+    if not ag then return 0 end
+    if ag.immortal then return 0 end
+    if ag.light then return 0.01 * ag.light end
     return 0
 end
 
 local function calculate_object_center(object)
-    if object:is_player() then
-        return { x = 0, y = abdomen_offset, z = 0 }
-    end
+    if object:is_player() then return { x = 0, y = abdomen_offset, z = 0 } end
     return { x = 0, y = 0, z = 0 }
 end
 
@@ -201,63 +182,58 @@ local function dmg_object(pos, object, strength)
     local mul
     -- we need to check may the object be damaged even if armor is disabled
     mul = calculate_damage_multiplier(object)
-    if mul == 0 then
-        return
-    end
+    if mul == 0 then return end
 
     local dmg = calculate_base_damage(pos, obj_pos, strength)
-    if not dmg then
-        return
-    end
+    if not dmg then return end
     dmg = dmg * mul
     apply_fractional_damage(object, dmg)
 end
 
 local rad_dmg_mult_sqrt = math.sqrt(1 / rad_dmg_cutoff)
 local function dmg_abm(pos, node)
-    local strength =
-        minetest.get_item_group(node.name, "radioactive") +
-        (minetest.get_item_group(node.name, "weak_radioactive") / 100)
+    local strength = minetest.get_item_group(node.name, 'radioactive')
+        + (minetest.get_item_group(node.name, 'weak_radioactive') / 100)
     local max_dist = math.min(strength * rad_dmg_mult_sqrt, 10)
-    for _, o in pairs(minetest.get_objects_inside_radius(pos,
-        max_dist + abdomen_offset)) do
-        if (o:is_player()) and o:get_hp() > 0 then
-            dmg_object(pos, o, strength)
-        end
+    for _, o in pairs(minetest.get_objects_inside_radius(pos, max_dist + abdomen_offset)) do
+        if (o:is_player()) and o:get_hp() > 0 then dmg_object(pos, o, strength) end
     end
 end
 
-if minetest.settings:get_bool("enable_damage") then
+if minetest.settings:get_bool('enable_damage') then
     minetest.register_abm({
-        label = "Radiation damage",
-        nodenames = { "group:radioactive" },
+        label = 'Radiation damage',
+        nodenames = { 'group:radioactive' },
         interval = 1,
         chance = 1,
         action = dmg_abm,
     })
     minetest.register_abm({
-        label = "Radiation damage (Weak, mostly radon)",
-        nodenames = { "group:weak_radioactive" },
+        label = 'Radiation damage (Weak, mostly radon)',
+        nodenames = { 'group:weak_radioactive' },
         interval = 1,
         chance = 3,
         action = dmg_abm,
     })
 end
 
-
 -- RADON!!!
-core.register_node("sbz_chem:radon", {
-    description = "radon",
-    drawtype = "glasslike",
-    paramtype = "light",
-    drop = "",
-    tiles = { "radon.png" },
+core.register_node('sbz_chem:radon', {
+    description = 'radon',
+    drawtype = 'glasslike',
+    paramtype = 'light',
+    drop = '',
+    tiles = { 'radon.png' },
     light_source = 10,
-    use_texture_alpha = "blend",
+    use_texture_alpha = 'blend',
     diggable = false,
-    groups = { not_in_creative_inventory = 1, habitat_conducts = 1, explody = 10000, --[[weak_radioactive = 50,--]] }, -- not radioactive so that maybe its more performant?
+    groups = {
+        not_in_creative_inventory = 1,
+        habitat_conducts = 1,
+        explody = 10000, --[[weak_radioactive = 50,--]]
+    }, -- not radioactive so that maybe its more performant?
     sunlight_propagates = true,
-    post_effect_color = "#6abe3032",
+    post_effect_color = '#6abe3032',
     walkable = false,
     buildable_to = true,
     pointable = false,
@@ -267,41 +243,50 @@ core.register_node("sbz_chem:radon", {
     floodable = true,
 })
 
--- 20% chance of going away each move if not surrounded by radioactivity
-core.register_abm({
-    label = "Radon gas move",
-    nodenames = { "sbz_chem:radon" },
-    neighbors = { "air", "group:airlike" },
-    interval = 1,
-    chance = 1,
-    action = function(spos, node)
-        local should_go_away_with_chance = true
-        local air_nodes = sbz_api.filter_node_neighbors(spos, 1, function(pos)
-            local nn = core.get_node(pos).name
-            if core.get_item_group(nn, "radioactive") > 0 or core.get_item_group(nn, "weak_radioactive") > 0 then
-                should_go_away_with_chance = false
-            end
-            if core.get_item_group(nn, "airlike") == 1 or nn == "air" then
-                return pos
-            end
-        end, false)
-        local num_airnodes = #air_nodes
-        if num_airnodes == 0 then return false end
-        local swap_pos = air_nodes[math.random(1, num_airnodes)]
-        if (not should_go_away_with_chance) or (math.random() <= 0.20) then -- 20%
-            core.swap_node(swap_pos, node)
+do
+    local should_go_away_with_chance = true -- optimize, sorry that its weird in a do-block like this
+    local function radon_move_filter(pos)
+        local nn = core.get_node(pos).name
+        if core.get_item_group(nn, 'radioactive') > 0 or core.get_item_group(nn, 'weak_radioactive') > 0 then
+            should_go_away_with_chance = false
         end
-        core.remove_node(spos)
+        if core.get_item_group(nn, 'airlike') == 1 or nn == 'air' then return pos end
     end
-})
+
+    -- 20% chance of going away each move if not surrounded by radioactivity
+    core.register_abm({
+        label = 'Radon gas move',
+        nodenames = { 'sbz_chem:radon' },
+        neighbors = { 'air', 'group:airlike' },
+        interval = 1,
+        chance = 1,
+        action = function(spos, node)
+            should_go_away_with_chance = true
+            local air_nodes = sbz_api.filter_node_neighbors(spos, 1, radon_move_filter, false)
+            local num_airnodes = #air_nodes
+            if num_airnodes == 0 then return end
+            local swap_pos = air_nodes[math.random(1, num_airnodes)]
+            if (not should_go_away_with_chance) or (math.random() <= 0.20) then -- 20%
+                core.swap_node(swap_pos, node)
+            end
+            core.remove_node(spos)
+        end,
+    })
+end
+
+local radon_spawn_filter = function(pos)
+    local nn = core.get_node(pos).name
+    if core.get_item_group(nn, 'airlike') == 1 or nn == 'air' then return { pos = pos, type = 'air' } end
+    if nn == 'sbz_resources:water_source' then return { pos = pos, type = 'water' } end
+end
 
 core.register_abm({
-    label = "Radon gas/water spawn (by group:radioactive)",
-    nodenames = { "group:radioactive" },
+    label = 'Radon gas/water spawn (by group:radioactive)',
+    nodenames = { 'group:radioactive' },
     interval = 1,
     chance = 1,
     action = function(spos, node)
-        local radioactive_group = core.get_item_group(node.name, "radioactive")
+        local radioactive_group = core.get_item_group(node.name, 'radioactive')
         local num_radon = 0
         if radioactive_group >= 5 then
             num_radon = math.floor(radioactive_group / 5)
@@ -314,93 +299,88 @@ core.register_abm({
         end
         if num_radon == 0 then return end
 
-        local target_nodes = sbz_api.filter_node_neighbors(spos, 1 + math.floor(radioactive_group / 10), function(pos)
-            local nn = core.get_node(pos).name
-            if core.get_item_group(nn, "airlike") == 1 or nn == "air" then
-                return { pos = pos, type = "air" }
-            end
-            if nn == "sbz_resources:water_source" then
-                return { pos = pos, type = "water" }
-            end
-        end, false)
+        local target_nodes =
+            sbz_api.filter_node_neighbors(spos, 1 + math.floor(radioactive_group / 10), radon_spawn_filter, false)
         if #target_nodes == 0 then return end
         for i = 1, num_radon do
             local data = target_nodes[math.random(1, #target_nodes)]
             local node_to_place
-            if data.type == "air" then
-                node_to_place = "sbz_chem:radon"
-            elseif data.type == "water" then
-                node_to_place = "sbz_chem:radioactive_water"
+            if data.type == 'air' then
+                node_to_place = 'sbz_chem:radon'
+            elseif data.type == 'water' then
+                node_to_place = 'sbz_chem:radioactive_water'
             end
             core.set_node(data.pos, { name = node_to_place })
         end
-    end
+    end,
 })
 
-local water_color = "#6abe3032"
+local water_color = '#6abe3032'
 
-core.register_node("sbz_chem:radioactive_water", {
-    description = "bad water, unhealthy even",
-    drawtype = "liquid",
+core.register_node('sbz_chem:radioactive_water', {
+    description = 'bad water, unhealthy even',
+    drawtype = 'liquid',
     tiles = {
-        { name = "water.png^[multiply:" .. water_color .. "^[opacity:200", backface_culling = false },
-        { name = "water.png^[multiply:" .. water_color .. "^[opacity:200", backface_culling = true },
+        { name = 'water.png^[multiply:' .. water_color .. '^[opacity:200', backface_culling = false },
+        { name = 'water.png^[multiply:' .. water_color .. '^[opacity:200', backface_culling = true },
     },
-    use_texture_alpha = "blend",
+    use_texture_alpha = 'blend',
     groups = { liquid = 3, habitat_conducts = 1, not_in_creative_inventory = 1, weak_radioactive = 80 },
     light_source = 14,
     post_effect_color = water_color,
-    paramtype = "light",
+    paramtype = 'light',
     walkable = false,
     pointable = false,
     buildable_to = true,
-    drop = "",
+    drop = '',
     liquid_viscosity = 1,
     drowning = 6,
 })
 
+local positions = {
+    { -1, 1, -1 },
+    { 0, 1, -1 },
+    { -1, 1, 0 },
+
+    { 1, 1, 1 },
+    { 0, 1, 1 },
+    { 1, 1, 0 },
+}
+
 core.register_abm({
-    label = "Radioactive water move",
-    nodenames = { "sbz_chem:radioactive_water" },
-    neighbors = { "air", "sbz_resources:water_source", "sbz_chem:radioactive_water" },
+    label = 'Radioactive water move',
+    nodenames = { 'sbz_chem:radioactive_water' },
+    neighbors = { 'air', 'sbz_resources:water_source', 'sbz_chem:radioactive_water' },
     interval = 2,
     chance = 1,
     action = function(spos, node)
         local uppos = vector.new(spos.x, spos.y + 1, spos.z)
         local upnode = core.get_node(uppos)
-        if upnode.name == "air" or core.get_item_group(upnode.name, "airlike") > 0 or upnode.name == "sbz_bio:algae" then
-            core.set_node(spos, { name = "sbz_resources:water_source" })
-            core.set_node(uppos, { name = "sbz_chem:radon" })
+        if
+            upnode.name == 'air'
+            or core.get_item_group(upnode.name, 'airlike') > 0
+            or upnode.name == 'sbz_bio:algae'
+        then
+            core.set_node(spos, { name = 'sbz_resources:water_source' })
+            core.set_node(uppos, { name = 'sbz_chem:radon' })
             return
         end
-
-        local positions = {
-            { -1, 1, -1 },
-            { 0,  1, -1 },
-            { -1, 1, 0 },
-
-            { 1,  1, 1 },
-            { 0,  1, 1 },
-            { 1,  1, 0 },
-        }
 
         for i = 1, 8 do
             local vec
             if i ~= 1 then
-                vec = vector.add(vector.copy(spos), vector.new(unpack(
-                    positions[math.random(1, #positions)]
-                )))
+                vec = vector.add(vector.copy(spos), vector.new(unpack(positions[math.random(1, #positions)])))
             else
                 vec = vector.add(vector.copy(spos), vector.new(0, 1, 0))
             end
 
-            if core.get_node(vec).name == "sbz_resources:water_source" then
-                core.set_node(spos, { name = "sbz_resources:water_source" })
+            if core.get_node(vec).name == 'sbz_resources:water_source' then
+                core.set_node(spos, { name = 'sbz_resources:water_source' })
                 core.after(0, function()
                     core.set_node(vec, node)
                 end)
                 return
             end
         end
-    end
+    end,
 })
