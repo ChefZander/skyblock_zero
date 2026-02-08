@@ -376,7 +376,7 @@ core.register_node("sbz_multiblocks:blast_furnace_casing", ud {
         matter = 1,
         wallsharing = 1,
     },
-    info_extra = "Nobody says that you can't use theese as decoration...",
+    info_extra = "Nobody says that you can't use these as decoration...",
     drawtype = "glasslike_framed",
     paramtype = "light",
     paramtype2 = "color",

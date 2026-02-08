@@ -27,7 +27,7 @@ minetest.register_craft {
     recipe = { 'sbz_resources:strange_blob' },
 }
 
--- its been a while since i got to use theese
+-- its been a while since i got to use these
 -- - frog
 minetest.register_abm {
     label = 'Strange blob infecting',

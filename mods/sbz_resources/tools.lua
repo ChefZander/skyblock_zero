@@ -1,14 +1,24 @@
+local index_adjustment = 1
+
 minetest.register_craftitem('sbz_resources:matter_annihilator', {
     description = 'Matter Annihilator',
     inventory_image = 'matter_annihilator.png',
-
+                
     groups = { core_drop_multi = 1 },
     tool_capabilities = {
         full_punch_interval = 2.5,
         damage_groups = { matter = 2 },
         max_drop_level = 1,
         groupcaps = {
-            matter = { times = { [1] = 3.00, [2] = 1.60, [3] = 0.90 }, uses = 10, maxlevel = 1 },
+            matter = (function()
+                local fastest_time = 1
+                local slowest_time = 3
+                local times = {}
+                for block_type = 1, 3 do
+                    times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+                end
+                return { times = times, uses = 10, maxlevel = 1 }
+            end)(),
         },
     },
 
@@ -19,14 +29,21 @@ minetest.register_craftitem('sbz_resources:matter_annihilator', {
         },
     },
 })
-minetest.register_craft {
-    output = 'sbz_resources:matter_annihilator',
-    recipe = {
-        { '', 'sbz_resources:antimatter_dust', '' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:charged_particle', 'sbz_resources:matter_blob' },
-        { '', 'sbz_resources:matter_blob', '' },
-    },
-}
+
+do -- Matter Annihilator Recipe
+    local AD = 'sbz_resources:antimatter_dust'
+    local MB = 'sbz_resources:matter_blob'
+    local CP = 'sbz_resources:charged_particle'
+    
+    minetest.register_craft {
+        output = 'sbz_resources:matter_annihilator',
+        recipe = {
+            { '', AD, '' },
+            { MB, CP, MB },
+            { '', MB, '' },
+        },
+    }
+end
 
 minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
     description = 'Antimatter Annihilator',
@@ -38,7 +55,15 @@ minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
         damage_groups = { antimatter = 2 },
         max_drop_level = 1,
         groupcaps = {
-            antimatter = { times = { [1] = 3.00, [2] = 1.60, [3] = 0.90 }, uses = 10, maxlevel = 1 },
+            antimatter = (function()
+                local fastest_time = 1
+                local slowest_time = 3
+                local times = {}
+                for block_type = 1, 3 do
+                    times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+                end
+                return { times = times, uses = 10, maxlevel = 1 }
+            end)(),
         },
     },
 
@@ -49,14 +74,21 @@ minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
         },
     },
 })
-minetest.register_craft {
-    output = 'sbz_resources:antimatter_annihilator',
-    recipe = {
-        { '', 'sbz_resources:matter_dust', '' },
-        { 'sbz_resources:antimatter_blob', 'sbz_resources:charged_particle', 'sbz_resources:antimatter_blob' },
-        { '', 'sbz_resources:antimatter_blob', '' },
-    },
-}
+
+do -- Antimatter Annihilator Recipe
+    local MD = 'sbz_resources:matter_dust'
+    local AB = 'sbz_resources:antimatter_blob'
+    local CP = 'sbz_resources:charged_particle'
+    
+    minetest.register_craft {
+        output = 'sbz_resources:antimatter_annihilator',
+        recipe = {
+            { '', MD, '' },
+            { AB, CP, AB },
+            { '', AB, '' },
+        },
+    }
+end
 
 minetest.register_craftitem('sbz_resources:robotic_arm', {
     description = 'Robotic Arm',
@@ -67,7 +99,15 @@ minetest.register_craftitem('sbz_resources:robotic_arm', {
         damage_groups = { matter = 1, antimatter = 1 },
         max_drop_level = 1,
         groupcaps = {
-            matter = { times = { [1] = 1.50, [2] = 0.30, [3] = 0.10 }, uses = 60, leveldiff = 2, maxlevel = 2 },
+            matter = (function()
+                local fastest_time = 0.5
+                local slowest_time = 1.5
+                local times = {}
+                for block_type = 1, 3 do
+                    times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+                end
+                return { times = times, uses = 60, leveldiff = 2, maxlevel = 2 }
+            end)(),
         },
     },
 
@@ -79,21 +119,35 @@ minetest.register_craftitem('sbz_resources:robotic_arm', {
     },
 })
 
-minetest.register_craft {
-    output = 'sbz_resources:robotic_arm',
-    recipe = {
-        { 'sbz_resources:matter_annihilator', 'sbz_chem:iron_ingot', 'sbz_resources:matter_annihilator' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:emittrium_circuit', 'sbz_resources:reinforced_matter' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:emittrium_circuit', 'sbz_resources:reinforced_matter' },
-    },
-}
+do -- Robotic Arm Recipe
+    local MA = 'sbz_resources:matter_annihilator'
+    local II = 'sbz_chem:iron_ingot'
+    local RM = 'sbz_resources:reinforced_matter'
+    local EC = 'sbz_resources:emittrium_circuit'
+    
+    minetest.register_craft {
+        output = 'sbz_resources:robotic_arm',
+        recipe = {
+            { MA, II, MA },
+            { RM, EC, RM },
+            { RM, EC, RM },
+        },
+    }
+end
 
-local drill_times = { [1] = 1.50 / 2, [2] = 0.30 / 2, [3] = 0.10 / 2 }
 local drill_max_wear = 500
 local drill_power_per_1_use = 10
 
+local fastest_time = 0.25
+local slowest_time = 0.75
+
+local drill_times = {}
+for block_type = 1, 3 do
+    drill_times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+end
+
 local tool_caps = {
-    full_punch_interval = 0.1,
+    full_punch_interval = 0.25,
     damage_groups = {
         matter = 3,
         antimatter = 3,
@@ -147,11 +201,19 @@ minetest.register_tool('sbz_resources:drill', {
     sound = { punch_use = { name = 'drill_dig' } },
 })
 
-minetest.register_craft {
-    recipe = {
-        { 'sbz_chem:titanium_ingot', 'sbz_resources:robotic_arm', 'sbz_chem:titanium_ingot' },
-        { 'sbz_chem:titanium_ingot', 'sbz_power:battery', 'sbz_chem:titanium_ingot' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:emittrium_circuit', 'sbz_resources:reinforced_matter' },
-    },
-    output = 'sbz_resources:drill',
-}
+do -- Drill Recipe
+    local TI = 'sbz_chem:titanium_ingot'
+    local RA = 'sbz_resources:robotic_arm'
+    local Ba = 'sbz_power:battery'
+    local RM = 'sbz_resources:reinforced_matter'
+    local EC = 'sbz_resources:emittrium_circuit'
+    
+    minetest.register_craft {
+        recipe = {
+            { TI, RA, TI },
+            { TI, Ba, TI },
+            { RM, EC, RM },
+        },
+        output = 'sbz_resources:drill',
+    }
+end

@@ -69,7 +69,7 @@ local function register_automatic_categorization()
 			then
 				unified_inventory.add_category_item('organics', name)
 			end
-			if def.type == 'tool' then
+			if def.type == 'tool' or def.tool_capabilities then
 				unified_inventory.add_category_item('tools', name)
 			end
 			if string.sub(name, 1, #"sbz_decor") == "sbz_decor" or def.mod_origin == "sbz_decor" then
