@@ -1,7 +1,10 @@
-# signs_lib
-(modified)
+# Skyblock: Zero Forked Mod
 
-Notice: Modified by TheEt1234 at 20-01-2026
+Currently synchronized with commit 4309b3575ad806adac434819876c172583b3da04 from upstream: <https://github.com/mt-mods/signs_lib>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+# signs_lib
 
 This is kaeza's and my signs library mod, originally forked from PilzAdam's version and rewritten mostly by kaeza to include a number of new features, then rewritten again a couple more times (finding its way into my  [street_signs](https://forum.minetest.net/viewtopic.php?t=20866) mod for a while, where it developed nicely 🙂).
 

@@ -1,6 +1,12 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit b92bf0a3e6c6bf1f69d2ead0bbc2a1560e846752 from upstream: <https://github.com/minetest-mods/drawers>. Removed/Replaced a lot of things from the original mod.
+
+`/drawers_fix` command taken from <https://github.com/pandorabox-io/pandorabox_custom/blob/master/chat/drawers_fix.lua> currently synchronized with commit 60651aa4867a66be4c1a5f0346e6099a7bb54489.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # Minetest Mod Storage Drawers
-## Modified in skyblock zero, original source taken from https://github.com/minetest-mods/drawers
-## The /drawers_fix was from pandorabox_mods, see bottom of init.lua
 
 [![ContentDB](https://content.minetest.net/packages/LNJ/drawers/shields/downloads/)](https://content.minetest.net/packages/LNJ/drawers/)
 ![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)

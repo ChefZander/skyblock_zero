@@ -1,9 +1,5 @@
-# Wrench [sbz_wrench]
-# FROM - https://github.com/mt-mods/wrench
-# MODIFIED IN SKYBLOCK ZERO
+# Skyblock: Zero Forked Mod
 
-Notice: modified by TheEt1234 at 20-01-2026
+No longer synchronized with commit aa07ccce9ea47904954b696346c4afff8e8c6149 from upstream: <https://github.com/mt-mods/wrench>. Removed/Replaced a lot of things from the original mod.
 
-Media license: 
-* wrench_tool.png by frogTheSecond - CC0 1.0 - Not based on the original wrench mod's wrench image
-
+See `COPYRIGHT.md` for up-to-date copyright information.

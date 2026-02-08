@@ -1,3 +1,11 @@
+Skyblock: Zero Forked Mod
+============================
+
+See COPYRIGHT.md for up-to-date copyright information.
+Contents below is preserved from the original mod.
+
+--------------------------------------------------------------------------------
+
 this license is for the code.
 any non-code media included in this repository is covered by the contents of MEDIA_LICENSE.txt.
 

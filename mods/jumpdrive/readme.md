@@ -1,4 +1,12 @@
-Minetest jumpdrive (modified in sbz)
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit d7702577845899dd5abde00d72763cb65cf963f8 from upstream: <https://github.com/mt-mods/jumpdrive>. Removed/Replaced a lot of things from the original mod.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+The energy requirements formula was changed to: **radius^2 x distance**.
+
+Minetest jumpdrive
 ======
 
 ![](https://github.com/mt-mods/jumpdrive/workflows/luacheck/badge.svg)
@@ -53,12 +61,12 @@ Power items are one of the following
 
 # Energy requirements
 
-The energy requirements formula looks like this: **radius^2 x distance**
+The energy requirements formula looks like this: **10 x radius x distance**
 
 For example:
 * Distance: 100 blocks
 * Radius: 5 blocks
-* Required energy: 5^2 x 100 = 2500
+* Required energy: 10 x 5 x 100 = 5000
 
 # Upgrades
 
@@ -187,4 +195,3 @@ end)
 # Attributions
 * `textures/jumpdrive.png`/`textures/jumpdrive_backbone.png`/`textures/jumpdrive_fleet_controller.png`/`textures/jumpdrive_warpdevice.png`
  * Jeremy#2233 / Purple#2916
- * Modified by frogTheSecond

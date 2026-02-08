@@ -1,7 +1,10 @@
-# Unified Inventory
-### This is a modified version of the unified inventory mod for skyblock zero!
+# Skyblock: Zero Forked Mod
 
-NOTICE: This mod has been modified by TheEt1234 at 20-01-2026
+Currently synchronized with commit e071a01372fe9151160af17d7f33c3277e119b5c from upstream: <https://github.com/minetest-mods/unified_inventory>. Removed/Replaced a lot of things from the original mod.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+# Unified Inventory
 
 Unified Inventory replaces the default survival and creative inventory.
 
@@ -10,8 +13,6 @@ Unified Inventory replaces the default survival and creative inventory.
 Copyright (C) 2012-2014 Maciej Kasatkin (RealBadAngel)
 
 Copyright (C) 2012-? Various minetest-mods contributors
-
-Copyright (C) 2026 TheEt1234 (Skyblock Zero Contributor) 
 
 
 ## Code
@@ -50,7 +51,7 @@ From http://www.clker.com (Public Domain, CC-BY-4.0):
 From https://www.svgrepo.com (CC-BY)
   * [`ui_teleport.png`](https://www.svgrepo.com/svg/321565/teleport)
 
-Everaldo Coelho (YellowIcon) (LGPL v2.1+): 
+Everaldo Coelho (YellowIcon) (LGPL v2.1+):
   * [`ui_craftguide_icon.png` / `ui_craft_icon.png`](http://commons.wikimedia.org/wiki/File:Advancedsettings.png)
 
 Gregory H. Revera: (CC-BY-SA 3.0)
@@ -80,19 +81,6 @@ Other files from Wikimedia Commons:
 RealBadAngel: (CC-BY-4.0)
 
   * Everything else.
-
-**Modified by TheEt1234 in Skyblock Zero (Licenses are the same)**:
-- ui_craft_icon.png
-- ui_craftguide_icon.png
-- ui_dir_icon.png
-- ui_double_icon.png
-- ui_reset_icon.png
-- ui_search_icon.png
-- ui_skip_icon.png
-- ui_trash_icon.png
-
-**Introduced by TheEt1234 in Skyblock Zero** (CC0):
-- ui_theme.png
 
 ## Sounds
 

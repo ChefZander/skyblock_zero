@@ -1,15 +1,42 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 5d5dfc0f2127bb8d257bd4e518acc2aeafba26df from upstream: <https://github.com/SwissalpS/replacer>. Removed/Replaced a lot of things from the original mod.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 Replacement tool for creative building (Mod for Minetest)
 =========================================================
-
-Notice: Modified by TheEt1234 at 20-01-2026
-
-# Modified in skyblock zero
-original source: https://github.com/SwissalpS/replacer
-
 
 This tool is helpful for creative purposes (e.g. build a wall and "paint" windows into it).
 It replaces nodes with a previously selected other type of node (i.e. places said windows
 into a brick wall).
+
+# Crafting
+
+Availability of recipes can be configured with server settings.
+Basic replacer:
+```
+      | chest       |               | gold ingot |
+      |             | mese fragment |            |
+      | steel ingot |               | chest      |
+```
+Or `/giveme replacer:replacer`
+
+Technic replacer as upgrade to basic tool:
+```
+      | replacer:replacer | green energy crystal |        |
+      |                   |                      |        |
+      |                   |                      |        |
+```
+Or `/giveme replacer:replacer_technic`
+
+Technic replacer directly crafted:
+```
+      | chest       | green energy crystal | gold ingot |
+      |             | mese fragment        |            |
+      | steel ingot |                      | chest      |
+```
+Or `/giveme replacer:replacer_technic`
 
 # Usage
 

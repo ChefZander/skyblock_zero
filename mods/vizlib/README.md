@@ -1,17 +1,23 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 690402e1f54cd7e4262e16dc64a47770f15bed25 from upstream: <https://github.com/OgelGames/vizlib/>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # Minetest Visulization Library [vizlib]
 
 [![luacheck](https://github.com/OgelGames/vizlib/workflows/luacheck/badge.svg)](https://github.com/OgelGames/vizlib/actions)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 [![Minetest](https://img.shields.io/badge/Minetest-5.0+-blue.svg)](https://www.minetest.net)
 [![ContentDB](https://content.minetest.net/packages/OgelGames/vizlib/shields/downloads/)](https://content.minetest.net/packages/OgelGames/vizlib/)
- 
+
 ## Overview
 
 This mod is a code library for visualizing basic shapes in-game. You can draw lines, circles, cubes, spheres and more.
 
 It's ideal for showing the working area or range of functional nodes, and a better alternative to using entities.
 
-![Overview](overview.gif?raw=true "Overview") 
+![Overview](overview.gif?raw=true "Overview")
 
 ## Usage
 

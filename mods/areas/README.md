@@ -1,13 +1,16 @@
-Areas mod for Minetest (modified)
-======================
+# Skyblock: Zero Forked Mod
 
-Notice: Modified by TheEt1234 at 20-01-2026
+Currently synchronized with commit c6975782152dc1aa50e7d68fb0291a6a373e3206 from upstream: <https://github.com/minetest-mods/areas/>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+Areas mod
+=========
 
 Dependencies
 ------------
 
-Minetest 5.0.0+ is recommended, but 0.4.16+ should work as well.
-Minetest 5.0.0+
+Luant/Minetest >= 5.0.0
 
 Optional support for following mods:
 
@@ -17,7 +20,7 @@ Optional support for following mods:
 Configuration
 -------------
 
-Open the tab `Settings -> All Settings -> Mods -> areas` to get a list of all
+Open the `Settings` in the main menu. `Content: Mods -> areas` to get a list of all
 possible settings.
 
 For server owners: Check `settingtypes.txt` and modify your `minetest.conf`
@@ -103,10 +106,10 @@ Commands
   * `/area_pos {set,set1,set2,get}` -- Sets the area positions by punching
 	nodes or shows the current area positions.
 
-  * `/area_pos1 [X,Y,Z|X Y Z]` -- Sets area position one to your position or
+  * `/area_pos1 [X,Y,Z|X Y Z|X, Y, Z]` -- Sets area position one to your position or
 	the one supplied.
 
-  * `/area_pos2 [X,Y,Z|X Y Z]` -- Sets area position two to your position or
+  * `/area_pos2 [X,Y,Z|X Y Z|X, Y, Z]` -- Sets area position two to your position or
 	the one supplied.
 
   * `/areas_cleanup` -- Removes all ownerless areas.

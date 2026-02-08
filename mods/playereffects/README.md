@@ -1,5 +1,10 @@
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit fdf33f05cca086de8808514480db5f25a196fd98 from upstream: <https://codeberg.org/Wuzzy/minetest_playereffects>.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
 # Player Effects
-MODIFIED IN SKYBLOCK ZERO TO MAKE IT LOOK BETTER and also to make the hud update more often
 ## Summary
 This is an framework for assigning temporary status effects to players. This mod is aimed to modders and maybe interested people.
 

@@ -1,4 +1,10 @@
-(A modified version of) VanessaE's Unified Dyes
+# Skyblock: Zero Forked Mod
+
+Currently synchronized with commit 82f026fc7e7c77149803eb2bfb0a7297070f7865 from upstream: <https://github.com/mt-mods/unifieddyes>. Removed/Replaced a lot of things from the original mod.
+
+See `COPYRIGHT.md` for up-to-date copyright information. README contents below is preserved from the original mod.
+
+VanessaE's Unified Dyes
 =======================
 
 The purpose of this mod originally was to supply a complete set of colors for Minetest mod authors to use for colorized nodes, or to reference in recipes. Since the advent of the default dyes mod in minetest_game, this mod has become more of an extension of the default mod.  Since the advent of param2 colorization, it has also become a library for general color handling.

@@ -1,3 +1,28 @@
+--[=[
+This file is part of areas mod.
+
+pvp.lua Addition for BlockySurvival.
+Copyright (C) 2021 BlockySurvival areas Mod Contributors
+
+Modifications for Skyblock: Zero.
+Copyright (C) 2024-2025 Skyblock: Zero areas Mod Contributors
+
+Please see COPYRIGHT.md for names of authors and contributors.
+
+This is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This software is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this software; if not, see <https://www.gnu.org/licenses/>.
+]=]
+
 --[[
 Hello, this was copied from https://github.com/BlockySurvival/areas/commit/085d10041da9e81d4c3fe309ccf7cdb05fa2b1f3
 also https://github.com/BlockySurvival/areas/commit/dacfe5fbad7ae3d2f32a897fde8e4107326c9f5c too
