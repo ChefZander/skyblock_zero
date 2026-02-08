@@ -387,7 +387,7 @@ do
     local R = 'sbz_resources:robotic_arm'
     local S = 'sbz_resources:simple_circuit'
     local T = 'pipeworks:tube_1'
-    local F = 'pipeworks:automatic_filter_injector'
+    local A = 'pipeworks:automatic_filter_injector'
     local I = 'sbz_chem:aluminum_ingot'
     minetest.register_craft({
         output = 'pipeworks:deployer',
