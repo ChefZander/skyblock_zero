@@ -128,15 +128,26 @@ function pipeworks.register_wielder(def)
             end
             set_wielder_formspec(def, meta)
         end,
-        after_place_node = function(pos, placer)
+        on_place = function(itemstack, placer, pointed_thing)
+            -- Use default placement
+            return minetest.item_place(itemstack, placer, pointed_thing)
+        end,
+
+        after_place_node = function(pos, placer, itemstack, pointed_thing)
+            -- Update the pipe network connections
             pipeworks.scan_for_tube_objects(pos)
-            if not placer then
-                return
-            end
-            local node = minetest.get_node(pos)
-            node.param2 = minetest.dir_to_facedir(placer:get_look_dir(), true)
-            minetest.swap_node(pos, node)
+            
+            if not placer or not pointed_thing or pointed_thing.type ~= "node" then return end
+
             minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+            
+            -- Rotate to face the clicked block
+            local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
+            local param2 = minetest.dir_to_facedir(dir, true)
+            
+            local node = minetest.get_node(pos)
+            node.param2 = param2
+            minetest.set_node(pos, node)
         end,
         after_dig_node = function(pos, oldnode, oldmetadata, digger)
             for _, stack in ipairs(oldmetadata.inventory[def.wield_inv.name] or {}) do
@@ -339,29 +350,51 @@ pipeworks.register_wielder({
     cost = 40
 })
 
-minetest.register_craft({
-    output = "pipeworks:puncher",
-    recipe = {
-        { "sbz_resources:robotic_arm", "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm" },
-        { "pipeworks:tube_1",          "sbz_resources:emittrium_circuit", "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_ingot",   "sbz_chem:aluminum_ingot",         "sbz_chem:aluminum_ingot" }
-    }
-})
+do
+    local R = 'sbz_resources:robotic_arm'
+    local E = 'sbz_resources:emittrium_circuit'
+    local T = 'pipeworks:tube_1'
+    local A = 'pipeworks:automatic_filter_injector'
+    local I = 'sbz_chem:aluminum_ingot'
+    minetest.register_craft({
+        output = 'pipeworks:puncher',
+        recipe = {
+            { R, R, R },
+            { T, E, A },
+            { I, I, I }
+        }
+    })
+end
 
-minetest.register_craft({
-    output = "pipeworks:nodebreaker",
-    recipe = {
-        { "sbz_resources:matter_annihilator", "sbz_resources:matter_annihilator", "sbz_resources:matter_annihilator" },
-        { "pipeworks:tube_1",                 "sbz_resources:simple_circuit",     "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_ingot",          "sbz_chem:aluminum_ingot",          "sbz_chem:aluminum_ingot" }
-    }
-})
+do
+    local M = 'sbz_resources:matter_annihilator'
+    local S = 'sbz_resources:simple_circuit'
+    local T = 'pipeworks:tube_1'
+    local A = 'pipeworks:automatic_filter_injector'
+    local I = 'sbz_chem:aluminum_ingot'
+    minetest.register_craft({
+        output = 'pipeworks:nodebreaker',
+        recipe = {
+            { M, M, M },
+            { T, S, A },
+            { I, I, I }
+        }
+    })
+end
 
-minetest.register_craft({
-    output = "pipeworks:deployer",
-    recipe = {
-        { "",                        "sbz_resources:robotic_arm",    "" },
-        { "pipeworks:tube_1",        "sbz_resources:simple_circuit", "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_ingot", "sbz_chem:aluminum_ingot",      "sbz_chem:aluminum_ingot" }
-    }
-})
+do
+    local _ = ''
+    local R = 'sbz_resources:robotic_arm'
+    local S = 'sbz_resources:simple_circuit'
+    local T = 'pipeworks:tube_1'
+    local A = 'pipeworks:automatic_filter_injector'
+    local I = 'sbz_chem:aluminum_ingot'
+    minetest.register_craft({
+        output = 'pipeworks:deployer',
+        recipe = {
+            { _, R, _ },
+            { T, S, A },
+            { I, I, I }
+        }
+    })
+end
