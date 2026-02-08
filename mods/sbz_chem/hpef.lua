@@ -1,4 +1,4 @@
--- theese allow_metadata_* functions were taken from the mtg furnace
+-- these allow_metadata_* functions were taken from the mtg furnace
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
     if listname == 'dst' then return 0 end
     return stack:get_count()
