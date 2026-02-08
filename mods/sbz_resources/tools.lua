@@ -1,14 +1,23 @@
 minetest.register_craftitem('sbz_resources:matter_annihilator', {
     description = 'Matter Annihilator',
     inventory_image = 'matter_annihilator.png',
-
+    local index_adjustment = 1,
+                
     groups = { core_drop_multi = 1 },
     tool_capabilities = {
         full_punch_interval = 2.5,
         damage_groups = { matter = 2 },
         max_drop_level = 1,
         groupcaps = {
-            matter = { times = { [1] = 3.00, [2] = 1.60, [3] = 0.90 }, uses = 10, maxlevel = 1 },
+            matter = (function()
+                local fastest_time = 1
+                local slowest_time = 3
+                local times = {}
+                for block_type = 1, 3 do
+                    times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+                end
+                return { times = times, uses = 10, maxlevel = 1 }
+            end)(),
         },
     },
 
@@ -46,7 +55,15 @@ minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
         damage_groups = { antimatter = 2 },
         max_drop_level = 1,
         groupcaps = {
-            antimatter = { times = { [1] = 3.00, [2] = 1.60, [3] = 0.90 }, uses = 10, maxlevel = 1 },
+            antimatter = (function()
+                local fastest_time = 1
+                local slowest_time = 3
+                local times = {}
+                for block_type = 1, 3 do
+                    times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+                end
+                return { times = times, uses = 10, maxlevel = 1 }
+            end)(),
         },
     },
 
@@ -83,7 +100,15 @@ minetest.register_craftitem('sbz_resources:robotic_arm', {
         damage_groups = { matter = 1, antimatter = 1 },
         max_drop_level = 1,
         groupcaps = {
-            matter = { times = { [1] = 1.50, [2] = 0.30, [3] = 0.10 }, uses = 60, leveldiff = 2, maxlevel = 2 },
+            matter = (function()
+                local fastest_time = 0.5
+                local slowest_time = 1.5
+                local times = {}
+                for block_type = 1, 3 do
+                    times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+                end
+                return { times = times, uses = 60, leveldiff = 2, maxlevel = 2 }
+            end)(),
         },
     },
 
@@ -111,12 +136,19 @@ do -- Robotic Arm Recipe
     }
 end
 
-local drill_times = { [1] = 1.50 / 2, [2] = 0.30 / 2, [3] = 0.10 / 2 }
 local drill_max_wear = 500
 local drill_power_per_1_use = 10
 
+local fastest_time = 0.25
+local slowest_time = 0.75
+
+local drill_times = {}
+for block_type = 1, 3 do
+    drill_times[block_type] = fastest_time * -(block_type - index_adjustment) + slowest_time
+end
+
 local tool_caps = {
-    full_punch_interval = 0.1,
+    full_punch_interval = 0.25,
     damage_groups = {
         matter = 3,
         antimatter = 3,
