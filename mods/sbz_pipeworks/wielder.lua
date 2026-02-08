@@ -350,29 +350,51 @@ pipeworks.register_wielder({
     cost = 40
 })
 
-minetest.register_craft({
-    output = "pipeworks:puncher",
-    recipe = {
-        { "sbz_resources:robotic_arm", "sbz_resources:robotic_arm",       "sbz_resources:robotic_arm" },
-        { "pipeworks:tube_1",          "sbz_resources:emittrium_circuit", "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_ingot",   "sbz_chem:aluminum_ingot",         "sbz_chem:aluminum_ingot" }
-    }
-})
+do
+    local R = 'sbz_resources:robotic_arm'
+    local E = 'sbz_resources:emittrium_circuit'
+    local T = 'pipeworks:tube_1'
+    local A = 'pipeworks:automatic_filter_injector'
+    local I = 'sbz_chem:aluminum_ingot'
+    minetest.register_craft({
+        output = 'pipeworks:puncher',
+        recipe = {
+            { R, R, R },
+            { T, E, A },
+            { I, I, I }
+        }
+    })
+end
 
-minetest.register_craft({
-    output = "pipeworks:nodebreaker",
-    recipe = {
-        { "sbz_resources:matter_annihilator", "sbz_resources:matter_annihilator", "sbz_resources:matter_annihilator" },
-        { "pipeworks:tube_1",                 "sbz_resources:simple_circuit",     "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_ingot",          "sbz_chem:aluminum_ingot",          "sbz_chem:aluminum_ingot" }
-    }
-})
+do
+    local M = 'sbz_resources:matter_annihilator'
+    local S = 'sbz_resources:simple_circuit'
+    local T = 'pipeworks:tube_1'
+    local A = 'pipeworks:automatic_filter_injector'
+    local I = 'sbz_chem:aluminum_ingot'
+    minetest.register_craft({
+        output = 'pipeworks:nodebreaker',
+        recipe = {
+            { M, M, M },
+            { T, S, A },
+            { I, I, I }
+        }
+    })
+end
 
-minetest.register_craft({
-    output = "pipeworks:deployer",
-    recipe = {
-        { "",                        "sbz_resources:robotic_arm",    "" },
-        { "pipeworks:tube_1",        "sbz_resources:simple_circuit", "pipeworks:automatic_filter_injector" },
-        { "sbz_chem:aluminum_ingot", "sbz_chem:aluminum_ingot",      "sbz_chem:aluminum_ingot" }
-    }
-})
+do
+    local _ = ''
+    local R = 'sbz_resources:robotic_arm'
+    local S = 'sbz_resources:simple_circuit'
+    local T = 'pipeworks:tube_1'
+    local F = 'pipeworks:automatic_filter_injector'
+    local I = 'sbz_chem:aluminum_ingot'
+    minetest.register_craft({
+        output = 'pipeworks:deployer',
+        recipe = {
+            { _, R, _ },
+            { T, S, A },
+            { I, I, I }
+        }
+    })
+end

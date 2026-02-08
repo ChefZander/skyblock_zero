@@ -390,11 +390,17 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
     end,
 })
 
+do
+    local MB = "sbz_resources:matter_blob"
+    local RA = "sbz_resources:robotic_arm"
+    local RC = "sbz_resources:retaining_circuit"
+    local T1 = "pipeworks:tube_1"
 minetest.register_craft {
     output = 'pipeworks:automatic_filter_injector 4',
     recipe = {
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:robotic_arm', 'sbz_resources:retaining_circuit', 'pipeworks:tube_1' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
+            { MB, MB, MB },
+            { RA, RC, T1 },
+            { MB, MB, MB },
     },
 }
+end
