@@ -184,3 +184,5 @@ If you're adding an asset that is a derivative/remix of another person's work, y
 - Switch away from, or heavily modify signs_lib, without being backwards incompatible with signs from previous versions of sbz
     - Things like rendering text without it being on a sign is impossible i think? which is horrible
 - Rely more on stubes than pipeworks
+- better tree code
+- better planets

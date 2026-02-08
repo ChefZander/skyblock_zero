@@ -1,6 +1,6 @@
 local matter_items = {}
 for _ = 1, 8 do
-    matter_items[#matter_items + 1] = { rarity = 2, items = { 'sbz_resources:matter_blob 8' } }
+    matter_items[#matter_items + 1] = { rarity = 2, items = { 'sbz_resources:matter_dust 8' } }
 end
 minetest.register_node('sbz_meteorites:meteoric_matter', {
     description = 'Meteoric Matter',
@@ -17,7 +17,7 @@ minetest.register_node('sbz_meteorites:meteoric_matter', {
 
 local antimatter_items = { max_items = 6 }
 for _ = 1, 8 do
-    antimatter_items[#antimatter_items + 1] = { rarity = 2, items = { 'sbz_resources:antimatter_blob 8' } }
+    antimatter_items[#antimatter_items + 1] = { rarity = 2, items = { 'sbz_resources:antimatter_dust 8' } }
 end
 
 minetest.register_node('sbz_meteorites:meteoric_antimatter', {

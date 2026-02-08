@@ -7,5 +7,10 @@ sbz_server_mode (Server Optimizations) enum auto auto,on,off
 sbz_pipe_backface_culling (Tube backface culling) bool true
 
 # Enables Debug logging
-# Adds more logging basically
 sbz_debug (Debug Logging) bool false
+
+# Unloads switching stations that are away from players.
+# Automatically enabled in multiplayer if "default" is chosen.
+# If enabled, it may cause some features behave in an unexpected way.
+# If not neabled, this may cause performance issues on large worlds or on servers.
+sbz_switching_station_unload (Automatically unload switching stations) enum default default,always,never

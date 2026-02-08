@@ -72,7 +72,7 @@ local achievement_table = {
     ['pipeworks:deployer'] = 'Deployers',
     ['pipeworks:puncher'] = 'Punchers',
     ['pipeworks:autocrafter'] = 'Autocrafters',
-    ['sbz_resources:simple_crafting_processor'] = "Simple Crafting Processors",
+    ['sbz_resources:simple_crafting_processor'] = 'Simple Crafting Processors',
     ['pipeworks:item_void'] = 'Item Voids',
     ['sbz_power:item_vacuum'] = 'Item Vacuums',
     ['screwdriver:screwdriver'] = 'Screwdriver',
@@ -114,7 +114,7 @@ local achievement_table = {
     ['sbz_decor:large_server_rack'] = 'Large Server Rack',
     ['unifieddyes:colorium_ground_line'] = 'Ground Line',
     ['unifieddyes:power_ground_line'] = 'Power Ground Line',
-    ['unifieddyes:antiblock'] = "Antiblocks",
+    ['unifieddyes:antiblock'] = 'Antiblocks',
     ['sbz_resources:jetpack'] = 'Jetpack',
     ['sbz_resources:drill'] = 'Electric Drill',
     ['sbz_meteorites:meteorite_maker_off'] = 'Meteorite Maker',
@@ -171,6 +171,7 @@ local achievement_table = {
 
     ['sbz_power:manual_crafter'] = 'Manual Crafters',
     ['sbz_resources:nuclear_crafting_processor'] = 'Craftageddon',
+    ['sbz_area_containers:room_container'] = 'Room Containers',
 }
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -179,16 +180,20 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
     end
 end)
 
+-- overriden by sbz later
+function sbz_api.activate_safetynet(player_name, pos)
+    return true
+end
 minetest.register_globalstep(function(dtime)
     for _, player in ipairs(minetest.get_connected_players()) do
-        -- pos stuff
         local pos = player:get_pos()
-        -- local safetynet_low = (player:get_meta():get_int("dynamic_safetynet") == 1) and sbz_progression.lowest_node or 0
         local safetynet_low = 0
         if pos.y < safetynet_low - 100 then unlock_achievement(player:get_player_name(), 'Emptiness') end
         if pos.y < safetynet_low - 300 then
-            sbz_api.displayDialogLine(player:get_player_name(), 'You fell off the platform.')
-            player:set_pos { x = 0, y = 1, z = 0 }
+            if sbz_api.activate_safetynet(player:get_player_name(), pos) then
+                sbz_api.displayDialogLine(player:get_player_name(), 'You fell off the platform.')
+                player:set_pos { x = 0, y = 1, z = 0 }
+            end
         end
     end
 end)

@@ -4,7 +4,7 @@
 - registers a... machine
 - you can choose if it conducts power by setting the pipe_conducts group to 0
 - `def.disallow_pipeworks` - so if you dont want itemtransport (DONT DO THIS INTENTIONALLY to make your machine more "balanced", PLEASE) you just set this to true, also this automatically happens when you dont have a output_inv
-- `def.input_inv` `def.output_inv` - theese are the input/output inventory lists, `def.input_inv` is optional for pipeworks
+- `def.input_inv` `def.output_inv` - these are the input/output inventory lists, `def.input_inv` is optional for pipeworks
 - `def.action(pos, node, meta, supply, demand) = power consumed`
  - node: its the node name... not really useful
  - supply: the... supply... of the network
@@ -22,7 +22,7 @@
 - `def.action_interval` - blabla you know
 
 ### STATEFUL MACHINES
-ok so there are theese 2 functions (very very similar) - `sbz_api.register_stateful_machine` and `sbz_api.register_stateful_generator`
+ok so there are these 2 functions (very very similar) - `sbz_api.register_stateful_machine` and `sbz_api.register_stateful_generator`
 
 they register 2 machines, one with an _off and one with an _on
 
@@ -54,7 +54,7 @@ and `sbz_api.register_stateful_generator` is literally the same thing but for ge
 
 `sbz_api.is_on(pos)` - tells you if its on or not, works only for stateful nodes
 
-all of theese work only on stateful nodes actually
+all of these work only on stateful nodes actually
 
 
 # oh yeah how could i forget

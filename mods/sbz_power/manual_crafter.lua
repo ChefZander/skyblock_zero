@@ -2,7 +2,6 @@
 
 local notify = core.chat_send_player
 
--- configure_craft -> configure_craft_output
 local function validate_craft(pos)
     local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
@@ -16,7 +15,6 @@ local function validate_craft(pos)
     inv:set_stack('configure_craft_output', 1, out.item)
 end
 
--- configure_craft_output -> configure_craft
 local function configure_from_craft_output(pos, user)
     local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
@@ -41,6 +39,8 @@ local function configure_from_craft_output(pos, user)
     end
 
     inv:set_list('configure_craft', table.copy(chosen_recipe.items))
+    inv:set_stack('configure_craft_output', 1, chosen_recipe.output) -- If there is something that gets you 2 circuits for example, this would make the crafter work
+
     -- notify(
     --     user:get_player_name(),
     --     'Successfully set recipe. Warning: Recipes that replace items in the crafting ui will simply waste that item instead. Use regular autocrafters for that.'
@@ -113,16 +113,8 @@ local function craft(user, meta)
     local items_crafted = can_craft * craft_result:get_count() -- the amount of items that gets crafted
     can_craft = math.floor(math.min(max_space, items_crafted) / craft_result:get_count())
 
-    -- okay.. so we just craft
-    for name, amount in pairs(required_items) do
-        local j = amount * can_craft
-        for i = 1, j do
-            user_inv:remove_item('main', name)
-        end
-    end
-
     if can_craft > 0 then
-        --- Prepare for crafting
+        -- remove items
         for name, amount in pairs(required_items) do
             local remove_amount = tonumber(amount * can_craft)
             local max_stack = ItemStack(name):get_stack_max()
