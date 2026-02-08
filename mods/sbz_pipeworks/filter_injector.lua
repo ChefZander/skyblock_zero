@@ -59,11 +59,30 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
         inv:set_size('main', 8 * 2)
         set_filter_formspec(meta)
     end,
-    after_place_node = function(pos, placer)
+    after_place_node = function(pos, placer, itemstack, pointed_thing)
         minetest.get_meta(pos):set_string('owner', placer:get_player_name())
-        local node = minetest.get_node(pos)
-        node.param2 = node.param2 + 1
-        minetest.swap_node(pos, node)
+        
+        if placer and pointed_thing and pointed_thing.type == "node" then
+            -- Face away from the clicked block
+            local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
+            dir = vector.multiply(dir, -1)
+            
+            -- Get base param2 from direction
+            local param2 = minetest.dir_to_facedir(dir, true)
+            
+            -- Manual correction offset for facing direction
+            local CORRECTION_OFFSET = 1
+            param2 = (param2 + CORRECTION_OFFSET) % 24
+            
+            local node = minetest.get_node(pos)
+            node.param2 = param2
+            minetest.swap_node(pos, node)
+        else
+            local node = minetest.get_node(pos)
+            node.param2 = node.param2 + 1
+            minetest.swap_node(pos, node)
+        end
+        
         pipeworks.after_place(pos)
     end,
     after_dig_node = pipeworks.after_dig,
@@ -395,12 +414,12 @@ do
     local RA = "sbz_resources:robotic_arm"
     local RC = "sbz_resources:retaining_circuit"
     local T1 = "pipeworks:tube_1"
-minetest.register_craft {
-    output = 'pipeworks:automatic_filter_injector 4',
-    recipe = {
+    minetest.register_craft {
+        output = 'pipeworks:automatic_filter_injector 4',
+        recipe = {
             { MB, MB, MB },
             { RA, RC, T1 },
             { MB, MB, MB },
-    },
-}
+        },
+    }
 end
