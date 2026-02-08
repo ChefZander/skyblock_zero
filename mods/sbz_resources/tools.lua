@@ -19,14 +19,22 @@ minetest.register_craftitem('sbz_resources:matter_annihilator', {
         },
     },
 })
-minetest.register_craft {
-    output = 'sbz_resources:matter_annihilator',
-    recipe = {
-        { '', 'sbz_resources:antimatter_dust', '' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:charged_particle', 'sbz_resources:matter_blob' },
-        { '', 'sbz_resources:matter_blob', '' },
-    },
-}
+
+do -- Matter Annihilator Recipe
+    local _ = ''
+    local a = 'sbz_resources:antimatter_dust'
+    local M = 'sbz_resources:matter_blob'
+    local c = 'sbz_resources:charged_particle'
+    
+    minetest.register_craft {
+        output = 'sbz_resources:matter_annihilator',
+        recipe = {
+            { _, a, _ },
+            { M, c, M },
+            { _, M, _ },
+        },
+    }
+end
 
 minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
     description = 'Antimatter Annihilator',
@@ -49,14 +57,22 @@ minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
         },
     },
 })
-minetest.register_craft {
-    output = 'sbz_resources:antimatter_annihilator',
-    recipe = {
-        { '', 'sbz_resources:matter_dust', '' },
-        { 'sbz_resources:antimatter_blob', 'sbz_resources:charged_particle', 'sbz_resources:antimatter_blob' },
-        { '', 'sbz_resources:antimatter_blob', '' },
-    },
-}
+
+do -- Antimatter Annihilator Recipe
+    local _ = ''
+    local m = 'sbz_resources:matter_dust'
+    local A = 'sbz_resources:antimatter_blob'
+    local c = 'sbz_resources:charged_particle'
+    
+    minetest.register_craft {
+        output = 'sbz_resources:antimatter_annihilator',
+        recipe = {
+            { _, m, _ },
+            { A, c, A },
+            { _, A, _ },
+        },
+    }
+end
 
 minetest.register_craftitem('sbz_resources:robotic_arm', {
     description = 'Robotic Arm',
@@ -79,14 +95,21 @@ minetest.register_craftitem('sbz_resources:robotic_arm', {
     },
 })
 
-minetest.register_craft {
-    output = 'sbz_resources:robotic_arm',
-    recipe = {
-        { 'sbz_resources:matter_annihilator', 'sbz_chem:iron_ingot', 'sbz_resources:matter_annihilator' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:emittrium_circuit', 'sbz_resources:reinforced_matter' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:emittrium_circuit', 'sbz_resources:reinforced_matter' },
-    },
-}
+do -- Robotic Arm Recipe
+    local M = 'sbz_resources:matter_annihilator'
+    local I = 'sbz_chem:iron_ingot'
+    local R = 'sbz_resources:reinforced_matter'
+    local E = 'sbz_resources:emittrium_circuit'
+    
+    minetest.register_craft {
+        output = 'sbz_resources:robotic_arm',
+        recipe = {
+            { M, I, M },
+            { R, E, R },
+            { R, E, R },
+        },
+    }
+end
 
 local drill_times = { [1] = 1.50 / 2, [2] = 0.30 / 2, [3] = 0.10 / 2 }
 local drill_max_wear = 500
@@ -143,11 +166,19 @@ minetest.register_tool('sbz_resources:drill', {
     sound = { punch_use = { name = 'drill_dig' } },
 })
 
-minetest.register_craft {
-    recipe = {
-        { 'sbz_chem:titanium_ingot', 'sbz_resources:robotic_arm', 'sbz_chem:titanium_ingot' },
-        { 'sbz_chem:titanium_ingot', 'sbz_power:battery', 'sbz_chem:titanium_ingot' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:emittrium_circuit', 'sbz_resources:reinforced_matter' },
-    },
-    output = 'sbz_resources:drill',
-}
+do -- Drill Recipe
+    local T = 'sbz_chem:titanium_ingot'
+    local A = 'sbz_resources:robotic_arm'
+    local B = 'sbz_power:battery'
+    local R = 'sbz_resources:reinforced_matter'
+    local E = 'sbz_resources:emittrium_circuit'
+    
+    minetest.register_craft {
+        recipe = {
+            { T, A, T },
+            { T, B, T },
+            { R, E, R },
+        },
+        output = 'sbz_resources:drill',
+    }
+end
