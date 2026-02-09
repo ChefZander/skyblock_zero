@@ -83,17 +83,23 @@ local function save()
 end
 
 local function load()
-    pcall(function() -- pcall because if it loads for the first time it will fail, and that's expected
-        room_areastore:from_file(save_path .. 'areastore')
-        local data_file = assert(io.open(save_path .. 'data'))
-        local data = core.deserialize(data_file:read '*a')
-        data_file:close()
+    local room_areastore_path = save_path .. 'areastore'
+    if not core.path_exists(room_areastore_path) then return end
+    room_areastore:from_file(room_areastore_path)
+    local data_file_path = save_path .. 'data'
+    local data_file, errmsg = io.open(data_file_path)
+    if not data_file then
+        -- both should be available, not one or the other.
+        core.log('error', 'Failed to open '..data_file_path..': '..errmsg)
+        return
+    end
+    local data = core.deserialize(data_file:read '*a')
+    data_file:close()
 
-        if data then
-            player_container_ids = data.player_container_ids
-            room_container_links = data.room_container_links
-        end
-    end)
+    if data then
+        player_container_ids = data.player_container_ids
+        room_container_links = data.room_container_links
+    end
 end
 load()
 
