@@ -43,6 +43,9 @@ local can_turn_into = {
 
 local special_cases = { ['sbz_bio:fiberweed'] = true }
 
+sbz_api.bio_can_turn_into = can_turn_into -- modding support :)
+sbz_api.bio_special_cases = special_cases
+
 -- i actually forgot what this is for
 -- i assume it's for checking if the stuff above is good
 core.after(0, function()
@@ -162,7 +165,7 @@ function sbz_api.plant_plant(plant, nodes)
     end)
 end
 
-function sbz_api.register_plant(name, defs)
+function sbz_api.register_plant(name, defs, modname)
     defs.description = defs.description or ''
     defs.drop = defs.drop
     defs.growth_rate = defs.growth_rate or 1
@@ -172,13 +175,19 @@ function sbz_api.register_plant(name, defs)
     defs.height_max = defs.height_max or 0.5
     defs.stages = defs.stages or 4
 
+    if modname then
+        modname = modname .. ':'
+    else
+        modname = 'sbz_bio:'
+    end
+
     local growth_boost_base = (defs.growth_boost or 0) / defs.stages
     local power_per_co2_base = (defs.power_per_co2 or 0) / defs.stages
 
     for i = 1, defs.stages - 1 do
         local interpolant = (i - 1) / (defs.stages - 1)
         local height = defs.height_min * (1 - interpolant) + defs.height_max * interpolant
-        minetest.register_node('sbz_bio:' .. name .. '_' .. i, {
+        minetest.register_node(modname .. name .. '_' .. i, {
             description = defs.description,
             drawtype = 'plantlike',
             tiles = { name .. '_' .. i .. '.png' },
@@ -207,13 +216,13 @@ function sbz_api.register_plant(name, defs)
             },
             drop = {},
             growth_tick = sbz_api.plant_growth_tick(defs.growth_rate, defs.mutation_chance or 10),
-            grow = sbz_api.plant_grow('sbz_bio:' .. name .. '_' .. (i + 1)),
+            grow = sbz_api.plant_grow(modname .. name .. '_' .. (i + 1)),
             wilt = sbz_api.plant_wilt(2),
             sbz_player_inside = defs.sbz_player_inside,
             power_per_co2 = power_per_co2_base * i,
         })
     end
-    minetest.register_node('sbz_bio:' .. name .. '_' .. defs.stages, {
+    minetest.register_node(modname .. name .. '_' .. defs.stages, {
         description = defs.description,
         drawtype = 'plantlike',
         tiles = { name .. '_' .. defs.stages .. '.png' },
