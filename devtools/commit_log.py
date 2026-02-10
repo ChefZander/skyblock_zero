@@ -243,9 +243,9 @@ def main():
         help='Output only unique authors instead of full commit history'
     )
     parser.add_argument(
-        'git_args',
-        nargs='*',
-        help='Additional arguments to pass to git log (after --)'
+        '-g', '--git_args',
+        nargs='+',
+        help='Additional arguments to pass to git log'
     )
 
     args = parser.parse_args()
