@@ -103,7 +103,7 @@ Mods likely to be converted to git submodules:
 
 ## Contributing
 
-Please refer to `CONTRIBUTING.md`. If unsure, you can always ask for help either in Github or in Discord :)
+Please refer to [`CONTRIBUTING.md`](CONTRIBUTING.md). If unsure, you can always ask for help either in Github or in Discord :)
 
 
 ## Direction

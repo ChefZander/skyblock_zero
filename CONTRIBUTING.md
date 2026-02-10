@@ -5,7 +5,7 @@ First and foremost, I suggest you at the very least educate yourself a bit on co
 - [US Copyright Office's article on copyright](https://www.copyright.gov/what-is-copyright/) which of course is US-specific.
 - [Github's quick guide to open source software licensing](https://github.com/readme/guides/open-source-licensing). Broadly covers licenses common within open source (that includes Luanti!).
 
-Next, please read the *[Copyright and Licensing](#copyright-and-licensing)* section above for context.
+Next, please read the *[Copyright and Licensing](README.md#copyright-and-licensing)* section from the `README.md` for context.
 
 In each non-'git submodule' mod there is a file named `COPYRIGHT.md` containing copyright information. It's important that you ensure copyright information about you and your contribution is correct. Subsections below will help guide you for each type of work.
 
