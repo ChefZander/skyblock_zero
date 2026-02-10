@@ -1,7 +1,7 @@
 # Source Code
 
 Original Skyblock: Zero Mod. <https://github.com/ChefZander/skyblock_zero/tree/master/mods/sbz_planets>
-- Copyright (C) 2024-2025 TheEt1234. GPL-3.0-only.
+- Copyright (C) 2024-2026 TheEt1234. GPL-3.0-only.
 - Copyright (C) 2025 ChefZander. GPL-3.0-only.
 
 This program is free software: you can redistribute it and/or modify
