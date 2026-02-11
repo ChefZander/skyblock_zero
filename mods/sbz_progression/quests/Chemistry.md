@@ -447,3 +447,42 @@ Clay is a precursor. It has no particular use.
 ### Meta
 
 Requires: Crusher, Liquid Water -->
+## Firmament
+
+### Text
+
+Firmament is a very rare drop from centrifuging dust.
+
+### Meta
+
+Requires: Centrifuge, Dust
+
+## Gravitational Lens
+
+### Text
+
+Gain insight into matter by gravitational lensing.
+
+### Meta
+
+Requires: Neutronium
+
+## Refined Firmament
+
+### Text
+
+You can refine Unrefined Firmament by looking at it through a Gravitational Lens.
+
+### Meta
+
+Requires: Firmament, Blast Furnace
+
+## Wormhole
+
+### Text
+
+Open far-away inventories by linking them to the Wormhole.
+
+### Meta
+
+Requires: Refined Firmament, Blast Furnace, Phlogiston Fuser

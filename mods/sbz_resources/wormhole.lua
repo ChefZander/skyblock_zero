@@ -19,7 +19,7 @@ core.register_tool("sbz_resources:wormhole", {
         return itemstack
     end,
 
-    on_secondary_use = function(itemstack, user, pointed_thing)
+    on_secondary_use = function(itemstack, user, pointed_thing) -- this is a bit broken, formspecs themselves work, but the inventory slots do not!
         local pos_str = itemstack:get_meta():get_string("target_pos")
         if pos_str == "" then
             minetest.chat_send_player(user:get_player_name(), "Not linked!")
@@ -54,3 +54,59 @@ core.register_tool("sbz_resources:wormhole", {
         return minetest.registered_tools["sbz_resources:wormhole"].on_secondary_use(itemstack, user, pointed_thing)
     end,
 })
+
+-- onto the recipe
+minetest.register_craftitem("sbz_resources:unrefined_firmament", {
+    description = "Unrefined Firmament",
+    inventory_image = "unrefined_firmament.png",
+    stack_max = 256,
+})
+
+sbz_api.recipe.register_craft {
+    output = 'sbz_resources:unrefined_firmament',
+    type = 'centrifugeing',
+    chance = 1,
+    items = {
+        'sbz_resources:dust',
+    },
+}
+
+minetest.register_craftitem("sbz_resources:gravitational_lens", {
+    description = "Gravitational Lens",
+    inventory_image = "gravitational_lens.png",
+    stack_max = 1,
+})
+
+minetest.register_craft({
+    output = "sbz_resources:gravitational_lens",
+    recipe = {
+        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass",       "sbz_resources:emittrium_glass" },
+        { "sbz_meteorites:gravitational_attractor",      "sbz_resources:emittrium_glass", "sbz_meteorites:gravitational_repulsor" },
+        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass",       "sbz_resources:emittrium_glass" }
+    }
+})
+
+minetest.register_craftitem("sbz_resources:refined_firmament", {
+    description = "Refined Firmament",
+    inventory_image = "refined_firmament.png",
+    stack_max = 256,
+})
+
+sbz_api.recipe.register_craft {
+    output = "sbz_resources:refined_firmament",
+    type = "blast_furnace",
+    items = {
+        "sbz_resources:unrefined_firmament",
+        "sbz_resources:gravitational_lens",
+    },
+}
+
+sbz_api.recipe.register_craft {
+    output = "sbz_resources:wormhole",
+    type = "blast_furnace",
+    items = {
+        "sbz_resources:refined_firmament 24",
+        "sbz_instatube:instantinium 24",
+        "sbz_resources:phlogiston_blob 24",
+    },
+}
