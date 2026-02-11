@@ -1,5 +1,0 @@
-Areas have been slightly modified
-as of this writing, core.is_protected is 10x faster than in vanilla areas, see https://github.com/minetest-mods/areas/issues/86, so don't be afraid to use it
-Also i've added the PvP controlling system from blocky survival, see pvp.lua.
-And regular players cannot make areas without the areasprotector to help them.
-Besides that, that should be it...

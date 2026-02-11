@@ -1,9 +1,0 @@
-Disable it.
-
-
-No seriously, it partially breaks jetpacks and fully breaks player attraction.
-
-EDIT: After a major incident
-
-Don't disable it all
-Disable only the movement anticheat
