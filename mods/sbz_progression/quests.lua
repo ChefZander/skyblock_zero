@@ -69,6 +69,11 @@ sbz_api.register_quest({
     .. "- cx384\n"
     .. "- AbbyRead\n"
     .. "- jack-obrien\n"
+    .. "- gamefreq0\n"
+    .. "- SmallJoker\n"
+    .. "- SwissalpS\n"
+    .. "- lumberjackgames\n"
+    .. "- Emojigit\n"
     .. "\n"
 
     .. "Translators\n"
