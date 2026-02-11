@@ -101,7 +101,7 @@ local function load()
         room_container_links = data.room_container_links
     end
 end
-load()
+--load()
 
 core.register_on_shutdown(save)
 
