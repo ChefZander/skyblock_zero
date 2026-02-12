@@ -53,7 +53,7 @@ sbz_api.register_quest({
     -- Note to developers: Feel free to add yourself to the list if you're new, along with a quote. 
     -- If you're already on the list, feel free to edit your quote as well. (But not other people's)
 
-    .. "Developers & Contributors (Github)\n"
+    .. "Developers & Contributors\n"
     .. "- Zander \"Removing Global Power is the worst thing to have happened to Skyblock: Zero\"\n"
     .. "- frogTheSecond\n"
     .. "- theidealist\n"
@@ -69,6 +69,14 @@ sbz_api.register_quest({
     .. "- cx384\n"
     .. "- AbbyRead\n"
     .. "- jack-obrien\n"
+    .. "- gamefreq0\n"
+    .. "\n"
+
+    .. "Submodule Contributors\n"
+    .. "- SmallJoker\n"
+    .. "- SwissalpS\n"
+    .. "- lumberjackgames\n"
+    .. "- Emojigit\n"
     .. "\n"
 
     .. "Translators\n"

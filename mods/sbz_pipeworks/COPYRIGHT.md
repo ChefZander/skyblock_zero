@@ -7,6 +7,7 @@ Skyblock: Zero Mod. <https://github.com/ChefZander/skyblock_zero/tree/master/mod
 - Copyright (C) 2024-2026 TheEt1234. LGPL-3.0-only.
 - Copyright (C) 2025 birdlover32767. LGPL-3.0-only.
 - Copyright (C) 2025 lnee94. LGPL-3.0-only.
+- Copyright (C) 2026 Abigail Read. LGPL-3.0-only.
 
 This program is free software: you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public

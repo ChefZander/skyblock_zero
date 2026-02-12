@@ -161,6 +161,8 @@ local achievement_table = {
     ['pipeworks:pattern_storinator'] = 'Pattern Storinator',
     ['sbz_power:starlight_catcher'] = 'Starlight Catchers',
 
+    ['sbz_resources:gravitational_lens'] = "Gravitational Lens",
+
     ['sbz_power:sensor_linker'] = 'Sensor Linker',
     ['sbz_power:lgate_buffer_off'] = 'Logic Gates',
     ['sbz_power:delayer_off'] = 'Delayer',
@@ -238,8 +240,12 @@ local achievement_in_inventory_table = {
     ['sbz_bio:shockshroom'] = 'Shockshrooms',
 
     ['sbz_resources:dust'] = 'Dust',
-    ['sbz_resources:clay'] = 'Clay',
+    -- ['sbz_resources:clay'] = 'Clay', This was removed from the QB
     ['sbz_resources:bricks'] = 'Bricks',
+
+    ['sbz_resources:unrefined_firmament'] = "Firmament",
+    ['sbz_resources:refined_firmament'] = "Refined Firmament",
+    ['sbz_resources:wormhole'] = "Wormhole",
 }
 local achievement_on_dig_table = {
     ['sbz_meteorites:antineutronium'] = 'Antineutronium',

@@ -1,7 +1,7 @@
 # Source Code
 
 Original Skyblock: Zero Mod. <https://github.com/ChefZander/skyblock_zero/tree/master/mods/sbz_progression>
-- Copyright (C) 2024-2025 ChefZander. GPL-3.0-only.
+- Copyright (C) 2024-2026 ChefZander. GPL-3.0-only.
 - Copyright (C) 2024-2026 TheEt1234. GPL-3.0-only.
 - Copyright (C) 2024 theidealist. GPL-3.0-only.
 - Copyright (C) 2024 birdlover32767. GPL-3.0-only.

@@ -5,7 +5,8 @@ Original mod. <https://github.com/mt-mods/unifieddyes>
 - Copyright (C) 2012-2025 various contributors. See respective project's git history for information about authors and contributors. GPL-2.0-or-later.
 
 Modifications for Skyblock: Zero. <https://github.com/ChefZander/skyblock_zero/tree/master/mods/unifieddyes>
-- Copyright (C) 2024-2025 TheEt1234. GPL-2.0-or-later.
+- Copyright (C) 2024-2026 TheEt1234. GPL-2.0-or-later.
+- Copyright (C) 2026 ChefZander. GPL-2.0-or-later.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,6 +36,8 @@ with this program; if not, see <https://www.gnu.org/licenses/>.
 `textures/colorium_ground_line_junction.png` Copyright (C) 2025 TheEt1234. CC BY-SA 4.0.
 
 `textures/colorium_ground_line_straight.png` Copyright (C) 2025 TheEt1234. CC BY-SA 4.0.
+
+`textures/power_ground_line.png` Copyright (C) 2026 ChefZander. CC BY-SA 4.0.
 
 `textures/unifieddyes_palette_colorfacedir.png` Copyright (C) 2024 TheEt1234. CC BY-SA 4.0.
 
