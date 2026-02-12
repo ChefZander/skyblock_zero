@@ -507,7 +507,7 @@ minetest.register_node(
     unifieddyes.def {
         description = 'Bricks',
         tiles = { 'bricks.png' },
-        drawtype = 'color',
+        paramtype2 = 'color',
         groups = {
             matter = 1,
             charged = 1,
