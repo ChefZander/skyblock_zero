@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Optimizes PNGs involved between commits."""
+"""Optimizes PNGs involved between commits using optipng."""
 
 # Copyright (C) 2026 corpserot. MIT license.
 #
@@ -29,28 +29,30 @@ from pathlib import Path
 def get_images_paths(commit_range: str):
     """Get list of PNG files changed in the given commit range or single commit"""
     try:
+        image_paths = set[Path]()
         if '..' in commit_range:
             result = subprocess.run(
-                ['git', 'rev-list', '--reverse', commit_range],
+                ['git', 'diff', '--name-only', '--diff-filter=d', commit_range, '--', '*.png'],
                 capture_output=True,
                 text=True,
                 check=True
             )
-            commits = result.stdout.strip().split('\n')
-        else:
-            commits = [commit_range]
-
-        image_paths = set[Path]()
-        for commit in commits:
-            # Get files changed in each commit
+            image_paths.update([Path(p) for p in result.stdout.strip().split('\n')])
             result = subprocess.run(
-                ['git', 'show', '--name-only', '--pretty=format:', commit, '--', '*.png'],
+                ['git', 'show', '--name-only', '--format=', commit_range[:commit_range.find('..')], '--', '*.png'],
                 capture_output=True,
                 text=True,
                 check=True
             )
-            image_paths.update([Path(p) for p in result.stdout.strip().split('\n') if p.endswith('.png')])
-
+            image_paths.update([Path(p) for p in result.stdout.strip().split('\n')])
+        else:
+            result = subprocess.run(
+                ['git', 'show', '--name-only', '--format=', commit_range, '--', '*.png'],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            image_paths.update([Path(p) for p in result.stdout.strip().split('\n')])
         return list(image_paths)
     except subprocess.CalledProcessError as e:
         print(f"Error getting PNG files: {e}")
@@ -69,15 +71,14 @@ def optimize_png(file_path):
 
 def main():
     parser = argparse.ArgumentParser(description='Optimize PNG files between git commit ranges')
-    parser.add_argument('commit_ranges', nargs='+', help='Git commit ranges or single commits (e.g., aaaaaaaa~1..bbbbbbbb or cccccccc)')
+    parser.add_argument('commit_ranges', nargs='+', help='Git commit ranges or single commits (e.g., HEAD~1..HEAD or HEAD)')
     args = parser.parse_args()
 
-    commit_ranges = args.commit_ranges
-
     image_paths = set[Path]()
-    for commit_range in commit_ranges:
+    for commit_range in args.commit_ranges:
         image_paths.update(get_images_paths(commit_range))
     image_paths = list(image_paths)
+
     if not image_paths:
         print("No PNG files found in the specified commit range.")
         return
