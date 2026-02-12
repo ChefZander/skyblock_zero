@@ -36,7 +36,7 @@
 	url = https://github.com/fluxionary/minetest-futil
 [submodule "mods/stubes"]
 	path = mods/stubes
-	url = https://github.com/TheEt1234/luanti-stubes
+	url = https://codeberg.org/skyblock_zero/stubes
 [submodule "mods/extended_placement"]
 	path = mods/extended_placement
 	url = https://github.com/gamefreq0/extended_placement
