@@ -1,3 +1,13 @@
+# Release 42
+- Added a setting that toggles the welcome message
+- Seperated submodule contributions from sbz contributions in credits, so that people that have nothing to do with sbz don't get confused
+- Added wormholes
+- Fix crash with questbooks in node breakers
+- Stubes (still hidden):
+  - Moved to codeberg
+  - Added the ability to put items and take away items by a player
+  - (Hopefully) fixed a crash
+
 # Release 40
 - Development resumed again!
     - We are still looking for contributors, if you enjoy SBZ and want to contribute, please do so!

@@ -87,8 +87,8 @@ end
 -- Function to create the formspec
 local function get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
     local player_ref = core.get_player_by_name(player_name)
-    sbz_api.ui.set_player(player_ref)
     if not player_ref then return '' end
+    sbz_api.ui.set_player(player_ref)
 
     local selected_quest = quests_to_show[selected_quest_index]
     local quest_count = #quests -- we subtract uncompletable quests from this later, like infotexts
@@ -143,9 +143,9 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins(pal.bright_purple)
 
             -- just for the credits quest
-            if (quest.istoplevel) then 
+            if quest.istoplevel then
                 ins '0'
-            else 
+            else
                 ins(default_indent)
             end
 
@@ -156,9 +156,9 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins(pal.bright_purple)
 
             -- just for the credits quest
-            if (quest.istoplevel) then 
+            if quest.istoplevel then
                 ins '0'
-            else 
+            else
                 ins(default_indent)
             end
 
@@ -192,7 +192,20 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 		tooltip[font_add;Makes font larger]
 		tooltip[font_sub;Makes font smaller]
 ]]):format(
-        sbz_api.ui.hypertext(0.3, 0.25, 5.6, 0.5, '', "Quest List (✓ " .. completed_count .. " / ► " ..available_count.." / ✕ " .. (quest_count - completed_count) .. ")"),
+        sbz_api.ui.hypertext(
+            0.3,
+            0.25,
+            5.6,
+            0.5,
+            '',
+            'Quest List (✓ '
+                .. completed_count
+                .. ' / ► '
+                .. available_count
+                .. ' / ✕ '
+                .. (quest_count - completed_count)
+                .. ')'
+        ),
         sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
         table_style,
         quest_list,
@@ -271,7 +284,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     end
 
     if available_count == 1 and (quest_count - completed_count) == 1 then
-        unlock_achievement(player_name, "Credits")
+        unlock_achievement(player_name, 'Credits')
 
         -- okay let me explain
         -- this will be called only once
