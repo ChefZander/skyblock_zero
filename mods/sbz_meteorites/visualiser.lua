@@ -33,8 +33,8 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
                     if obj:is_player() then table.insert(players, obj:get_player_name()) end
                 elseif entity.name == 'sbz_meteorites:meteorite' then
                     table.insert(meteorites, obj)
-		elseif entity.typename == "meteorite" then
-		    table.insert(meteorites, obj)
+                elseif entity.typename == "meteorite" then
+                    table.insert(meteorites, obj)
                 elseif entity.name == 'sbz_meteorites:gravitational_attractor_entity' then
                     table.insert(entity.type < 0 and repulsors or attractors, vector.round(obj:get_pos()))
                 end
