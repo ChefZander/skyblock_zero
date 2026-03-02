@@ -663,14 +663,21 @@ minetest.register_node('pipeworks:autocrafter', {
     end,
 })
 
-minetest.register_craft {
-    output = 'pipeworks:autocrafter',
-    recipe = {
-        { 'sbz_resources:robotic_arm', 'sbz_resources:robotic_arm', 'sbz_resources:robotic_arm' },
-        { 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit' },
-        { 'sbz_chem:titanium_alloy_ingot', 'sbz_meteorites:neutronium', 'sbz_chem:titanium_alloy_ingot' },
-    },
-}
+do -- Autocrafter recipe scope
+    local Autocrafter = 'pipeworks:autocrafter'
+    local RA = 'sbz_resources:robotic_arm'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local TA = 'sbz_chem:titanium_alloy_ingot'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Autocrafter,
+        recipe = {
+            { RA, RA, RA },
+            { EC, EC, EC },
+            { TA, Ne, TA },
+        },
+    })
+end
 
 -- legacy compatibility
 core.register_lbm {

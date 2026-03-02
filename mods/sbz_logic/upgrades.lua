@@ -10,15 +10,20 @@ minetest.register_craftitem("sbz_logic:upgrade_template", {
     inventory_image = "upgrade_template.png",
     groups = { ui_logic = 1 }
 })
-minetest.register_craft {
-    output = "sbz_logic:upgrade_template",
-    recipe = {
-        { "",                      "sbz_chem:nickel_ingot",           "" },
-        { "sbz_chem:nickel_ingot", "sbz_resources:emittrium_circuit", "sbz_chem:nickel_ingot" },
-        { "",                      "sbz_chem:nickel_ingot",           "" }
-    }
-}
 
+do -- Upgrade Template recipe scope
+    local Upgrade_Template = 'sbz_logic:upgrade_template'
+    local NI = 'sbz_chem:nickel_ingot'
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        output = Upgrade_Template,
+        recipe = {
+            { '', NI, '' },
+            { NI, EC, NI },
+            { '', NI, '' },
+        }
+    })
+end
 
 logic.register_upgrade = function(name, def)
     def.groups = { sbz_logic_upgrade = 1, ui_logic = 1 }
@@ -39,9 +44,14 @@ logic.register_upgrade("sbz_logic:linking_upgrade", {
     inventory_image = "luacontroller_linking_upgrade.png"
 })
 
-minetest.register_craft {
-    output = "sbz_logic:linking_upgrade",
-    recipe = {
-        { "sbz_logic:luacontroller_linker", "sbz_logic:upgrade_template" }
-    }
-}
+do -- Linking Upgrade recipe scope
+    local Linking_Upgrade = 'sbz_logic:linking_upgrade'
+    local LL = 'sbz_logic:luacontroller_linker'
+    local UT = 'sbz_logic:upgrade_template'
+    core.register_craft({
+        output = Linking_Upgrade,
+        recipe = {
+            { LL, UT }
+        }
+    })
+end

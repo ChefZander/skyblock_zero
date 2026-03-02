@@ -100,11 +100,19 @@ listring[context;dst]
 })
 
 
-minetest.register_craft({
-    output = "sbz_chem:engraver",
-    recipe = {
-        { "sbz_resources:reinforced_matter", "sbz_resources:laser_weapon", "sbz_resources:reinforced_matter" },
-        { "sbz_resources:emittrium_circuit", "sbz_resources:storinator",   "sbz_resources:emittrium_circuit" },
-        { "sbz_meteorites:neutronium",       "sbz_meteorites:neutronium",  "sbz_meteorites:neutronium" },
-    }
-})
+do -- Engraver recipe scope
+    local Engraver = 'sbz_chem:engraver'
+    local RM = 'sbz_resources:reinforced_matter'
+    local LW = 'sbz_resources:laser_weapon'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local St = 'sbz_resources:storinator'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Engraver,
+        recipe = {
+            { RM, LW, RM },
+            { EC, St, EC },
+            { Ne, Ne, Ne },
+        }
+    })
+end

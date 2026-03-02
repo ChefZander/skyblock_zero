@@ -145,14 +145,20 @@ sbz_api.register_stateful_machine("sbz_power:light_sensor", unifieddyes.def {
     }
 })
 
-core.register_craft {
-    output = "sbz_power:light_sensor_off",
-    recipe = {
-        { "sbz_power:sensor_casing_plate", "sbz_resources:shock_crystal",        "sbz_power:sensor_casing_plate", },
-        { "sbz_power:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_power:sensor_casing_plate", },
-        { "sbz_power:sensor_casing_plate", "sbz_power:sensor_casing_plate",      "sbz_power:sensor_casing_plate", },
-    }
-}
+do -- Light Sensor recipe scope
+    local Light_Sensor = 'sbz_power:light_sensor_off'
+    local SC = 'sbz_resources:sensor_casing_plate'
+    local SR = 'sbz_resources:shock_crystal'
+    local SL = 'sbz_resources:simple_logic_circuit'
+    core.register_craft({
+        output = Light_Sensor,
+        recipe = {
+            { SC, SR, SC },
+            { SC, SL, SC },
+            { SC, SC, SC },
+        }
+    })
+end
 
 local function get_node_sensor_formspec(pos, meta)
     return ([[
@@ -236,11 +242,17 @@ sbz_api.register_stateful_machine("sbz_power:node_sensor", unifieddyes.def {
     }
 })
 
-core.register_craft {
-    output = "sbz_power:node_sensor_off",
-    recipe = {
-        { "sbz_power:sensor_casing_plate", "sbz_resources:warp_crystal",         "sbz_power:sensor_casing_plate", },
-        { "sbz_power:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_power:sensor_casing_plate", },
-        { "sbz_power:sensor_casing_plate", "sbz_power:sensor_casing_plate",      "sbz_power:sensor_casing_plate", },
-    }
-}
+do -- Node Sensor recipe scope
+    local Node_Sensor = 'sbz_power:node_sensor_off'
+    local SC = 'sbz_resources:sensor_casing_plate'
+    local WC = 'sbz_resources:warp_crystal'
+    local SL = 'sbz_resources:simple_logic_circuit'
+    core.register_craft({
+        output = Node_Sensor,
+        recipe = {
+            { SC, WC, SC },
+            { SC, SL, SC },
+            { SC, SC, SC },
+        }
+    })
+end

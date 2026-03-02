@@ -73,11 +73,17 @@ minetest.register_tool("sbz_resources:laser_weapon", {
     wear_color = { color_stops = { [0] = "lime" } },
 })
 
-minetest.register_craft {
-    output = "sbz_resources:laser_weapon",
-    recipe = {
-        { "sbz_resources:emittrium_circuit" },
-        { "sbz_power:advanced_battery" },
-        { "sbz_resources:reinforced_matter" }
-    }
-}
+do -- Laser recipe scope
+    local Laser = 'sbz_resources:laser_weapon'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local AB = 'sbz_power:advanced_battery'
+    local RM = 'sbz_resources:reinforced_matter'
+    core.register_craft({
+        output = Laser,
+        recipe = {
+            { EC },
+            { AB },
+            { RM },
+        }
+    })
+end

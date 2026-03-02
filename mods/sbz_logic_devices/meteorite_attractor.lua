@@ -43,11 +43,18 @@ sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
     action = function() return 0 end,
 })
 
-minetest.register_craft {
-    output = "sbz_logic_devices:luanium_attractor",
-    recipe = {
-        { "sbz_resources:luanium", "sbz_meteorites:gravitational_attractor", "sbz_resources:luanium" },
-        { "sbz_resources:luanium", "sbz_resources:lua_chip",                 "sbz_resources:luanium" },
-        { "sbz_resources:luanium", "sbz_meteorites:gravitational_repulsor",  "sbz_resources:luanium" }
-    },
-}
+do -- Luanium Attractor recipe scope
+    local Luanium_Attractor = 'sbz_logic_devices:luanium_attractor'
+    local Lu = 'sbz_resources:luanium'
+    local GA = 'sbz_meteorites:gravitational_attractor'
+    local LC = 'sbz_resources:lua_chip'
+    local GR = 'sbz_meteorites:gravitational_repulsor'
+    core.register_craft({
+        output = Luanium_Attractor,
+        recipe = {
+            { Lu, GA, Lu },
+            { Lu, LC, Lu },
+            { Lu, GR, Lu },
+        }
+    })
+end

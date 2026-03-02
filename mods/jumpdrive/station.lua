@@ -6,11 +6,18 @@ core.register_node("jumpdrive:station", {
     groups = { matter = 1 },
 })
 
-core.register_craft {
-    output = "jumpdrive:station 2",
-    recipe = {
-        { "jumpdrive:backbone",      "sbz_chem:aluminum_block", "jumpdrive:backbone" },
-        { "sbz_chem:aluminum_block", "jumpdrive:engine",        "sbz_chem:aluminum_block" },
-        { "jumpdrive:backbone",      "sbz_chem:aluminum_block", "jumpdrive:backbone" },
-    }
-}
+do -- Station recipe scope
+    local Jumpdrive_Station = 'jumpdrive:station'
+    local amount = 2
+    local JB = 'jumpdrive:backbone'
+    local AB = 'sbz_chem:aluminum_block'
+    local JE = 'jumpdrive:engine'
+    core.register_craft({
+        output = Jumpdrive_Station .. ' ' .. tostring(amount),
+        recipe = {
+            { JB, AB, JB },
+            { AB, JE, AB },
+            { JB, AB, JB },
+        }
+    })
+end

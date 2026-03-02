@@ -55,13 +55,18 @@ listring[current_player;main]listring[context;input]listring[current_player;main
     light_source = 14,
 })
 
-
-
-minetest.register_craft({
-    output = "sbz_chem:pebble_enhancer",
-    recipe = {
-        { "sbz_chem:uranium_crystal",  "sbz_chem:uranium_crystal",         "sbz_chem:uranium_crystal", },
-        { "sbz_resources:matter_blob", "sbz_resources:phlogiston_circuit", "sbz_resources:matter_blob" },
-        { "sbz_chem:thorium_crystal",  "sbz_chem:thorium_crystal",         "sbz_chem:thorium_crystal", }
-    }
-})
+do -- Pebble Enhancer recipe scope
+    local Pebble_Enhancer = 'sbz_chem:pebble_enhancer'
+    local UC = 'sbz_chem:uranium_crystal'
+    local MB = 'sbz_resources:matter_blob'
+    local PC = 'sbz_resources:phlogiston_circuit'
+    local TC = 'sbz_chem:thorium_crystal'
+    core.register_craft({
+        output = Pebble_Enhancer,
+        recipe = {
+            { UC, UC, UC },
+            { MB, PC, MB },
+            { TC, TC, TC },
+        }
+    })
+end

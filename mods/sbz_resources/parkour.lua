@@ -45,12 +45,16 @@ core.register_node(
     }
 )
 
-core.register_craft {
-    type = 'shaped',
-    output = 'sbz_resources:emittrium_block',
-    recipe = {
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium' },
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium' },
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium' },
-    },
-}
+do -- Emittrium Block recipe scope
+    local Emittrium_Block = 'sbz_resources:emittrium_block'
+    local RE = 'sbz_resources:raw_emittrium'
+    core.register_craft({
+        type = 'shaped',
+        output = Emittrium_Block,
+        recipe = {
+            { RE, RE, RE },
+            { RE, RE, RE },
+            { RE, RE, RE },
+        },
+    })
+end

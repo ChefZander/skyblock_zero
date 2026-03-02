@@ -236,11 +236,17 @@ listring[]
     }
 )
 
-core.register_craft {
-    output = 'pipeworks:pattern_storinator',
-    recipe = {
-        { 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit' },
-        { 'sbz_resources:storinator', 'sbz_resources:storinator', 'pipeworks:automatic_filter_injector' },
-        { 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit', 'sbz_resources:emittrium_circuit' },
-    },
-}
+do -- Pattern Storinator recipe scope
+    local Pattern_Storinator = 'pipeworks:pattern_storinator'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local St = 'sbz_resources:storinator'
+    local AF = 'pipeworks:automatic_filter_injector'
+    core.register_craft({
+        output = Pattern_Storinator,
+        recipe = {
+            { EC, EC, EC },
+            { St, St, AF },
+            { EC, EC, EC },
+        }
+    })
+end

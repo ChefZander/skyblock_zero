@@ -100,14 +100,21 @@ sbz_api.register_stateful_generator('sbz_power:simple_charge_generator', {
     tiles = { 'simple_charge_generator.png' },
 })
 
-minetest.register_craft {
-    output = 'sbz_power:simple_charge_generator',
-    recipe = {
-        { 'sbz_power:simple_charged_field', 'sbz_resources:antimatter_dust', 'sbz_power:simple_charged_field' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_annihilator', 'sbz_resources:matter_blob' },
-        { 'sbz_power:simple_charged_field', 'sbz_resources:matter_blob', 'sbz_power:simple_charged_field' },
-    },
-}
+do -- Simple Charge Generator recipe scope
+    local Simple_Charge_Generator = 'sbz_power:simple_charge_generator'
+    local CF = 'sbz_power:simple_charged_field'
+    local AD = 'sbz_resources:antimatter_dust'
+    local MB = 'sbz_resources:matter_blob'
+    local MA = 'sbz_resources:matter_annihilator'
+    core.register_craft({
+        output = Simple_Charge_Generator,
+        recipe = {
+            { CF, AD, CF },
+            { MB, MA, MB },
+            { CF, MB, CF },
+        },
+    })
+end
 
 sbz_api.register_generator('sbz_power:simple_charged_field', {
     description = 'Simple Charged Field',
@@ -129,22 +136,29 @@ sbz_api.register_generator('sbz_power:simple_charged_field', {
     info_extra = 'Decays after some time',
 })
 
-minetest.register_craft {
-    output = 'sbz_power:simple_charged_field',
-    recipe = {
-        { 'sbz_resources:charged_particle', 'sbz_resources:charged_particle', 'sbz_resources:charged_particle' },
-        { 'sbz_resources:charged_particle', 'sbz_resources:charged_particle', 'sbz_resources:charged_particle' },
-        { 'sbz_resources:charged_particle', 'sbz_resources:charged_particle', 'sbz_resources:charged_particle' },
-    },
-}
+do -- Simple Charged Field recipe scope
+    local Simple_Charged_Field = 'sbz_power:simple_charged_field'
+    local CP = 'sbz_resources:charged_particle'
+    core.register_craft({
+        output = Simple_Charged_Field,
+        recipe = {
+            { CP, CP, CP },
+            { CP, CP, CP },
+            { CP, CP, CP },
+        },
+    })
+end
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_resources:charged_particle 9',
-    recipe = {
-        'sbz_power:simple_charged_field',
-    },
-}
+do -- Charged Particle recipe scope
+    local Charged_Particle = 'sbz_resources:charged_particle'
+    local amount = 9
+    local CF = 'sbz_power:simple_charged_field'
+    core.register_craft({
+        type = 'shapeless',
+        output = Charged_Particle .. ' ' .. tostring(amount),
+        recipe = { CF },
+    })
+end
 
 if not sbz_api.server_optimizations then
     minetest.register_abm {
@@ -293,14 +307,21 @@ sbz_api.register_generator('sbz_power:starlight_collector', {
     info_extra = 'Has a 1/3 Chance/Second to produce 1 power.',
 })
 
-minetest.register_craft {
-    output = 'sbz_power:starlight_collector',
-    recipe = {
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium', 'sbz_resources:raw_emittrium' },
-        { 'sbz_power:power_pipe', 'sbz_power:power_pipe', 'sbz_power:power_pipe' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
-    },
-}
+do -- Starlight Collector recipe scope
+    local Starlight_Collector = 'sbz_power:starlight_collector'
+    local RE = 'sbz_resources:raw_emittrium'
+    local PC = 'sbz_power:power_pipe' -- ("Emittrium Power Cable" in-game)
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft({
+        output = Starlight_Collector,
+        recipe = {
+            { RE, RE, RE },
+            { PC, PC, PC },
+            { MB, MB, MB },
+        },
+    })
+end
+
 if not sbz_api.server_optimizations then
     minetest.register_abm {
         label = 'Starlight Collector Particles',
@@ -508,14 +529,21 @@ list[current_player;main;0.2,5;8,4;]
     end,
 }
 
-minetest.register_craft {
-    output = 'sbz_power:antimatter_generator',
-    recipe = {
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter' },
-        { 'sbz_resources:matter_dust', 'sbz_meteorites:neutronium', 'sbz_resources:antimatter_dust' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter' },
-    },
-}
+do -- Antimatter Generator recipe scope
+    local Antimatter_Generator = 'sbz_power:antimatter_generator'
+    local RM = 'sbz_resources:reinforced_matter'
+    local MD = 'sbz_resources:matter_dust'
+    local Ne = 'sbz_meteorites:neutronium'
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft({
+        output = Antimatter_Generator,
+        recipe = {
+            { RM, RM, RM },
+            { MD, Ne, AD },
+            { RM, RM, RM },
+        },
+    })
+end
 
 sbz_api.register_generator('sbz_power:creative_generator', {
     description = 'Creative Generator',

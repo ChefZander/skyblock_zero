@@ -100,12 +100,19 @@ listring[context;dst]
     light_source = 10,
 })
 
-
-minetest.register_craft({
-    output = "sbz_chem:compressor",
-    recipe = {
-        { "sbz_power:simple_charged_field", "sbz_chem:bronze_ingot",           "sbz_power:simple_charged_field" },
-        { "sbz_resources:matter_blob",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
-        { "sbz_power:simple_charged_field", "sbz_chem:invar_ingot",            "sbz_power:simple_charged_field" }
-    }
-})
+do -- Compressor recipe scope
+    local Compressor = 'sbz_chem:compressor'
+    local SC = 'sbz_power:simple_charged_field'
+    local BI = 'sbz_chem:bronze_ingot'
+    local MB = 'sbz_resources:matter_blob'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local II = 'sbz_chem:invar_ingot'
+    core.register_craft({
+        output = Compressor,
+        recipe = {
+            { SC, BI, SC },
+            { MB, EC, MB },
+            { SC, II, SC }
+        }
+    })
+end

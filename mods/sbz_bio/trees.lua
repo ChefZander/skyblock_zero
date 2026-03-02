@@ -290,14 +290,19 @@ sbz_api.register_leaves(
     }
 )
 
-minetest.register_craft {
-    output = 'sbz_bio:colorium_sapling',
-    recipe = {
-        { 'sbz_meteorites:neutronium' },
-        { 'sbz_resources:core_dust' },
-        { 'sbz_resources:core_dust' },
-    },
-}
+do -- Colorium Sapling recipe scope
+    local Colorium_Sapling = 'sbz_bio:colorium_sapling'
+    local Ne = 'sbz_meteorites:neutronium'
+    local CD = 'sbz_resources:core_dust'
+    core.register_craft({
+        output = Colorium_Sapling,
+        recipe = {
+            { Ne },
+            { CD },
+            { CD },
+        }
+    })
+end
 
 sbz_api.register_tree('sbz_bio:colorium_sapling', {
     description = 'Colorium Sapling',
@@ -365,14 +370,19 @@ sbz_api.register_tree('sbz_bio:giant_colorium_sapling', {
     },
 })
 
-core.register_craft {
-    output = 'sbz_bio:giant_colorium_sapling',
-    recipe = {
-        { 'sbz_resources:phlogiston_blob', 'sbz_resources:phlogiston_blob', 'sbz_resources:phlogiston_blob' },
-        { 'sbz_resources:phlogiston_blob', 'sbz_bio:colorium_sapling', 'sbz_resources:phlogiston_blob' },
-        { 'sbz_resources:phlogiston_blob', 'sbz_resources:phlogiston_blob', 'sbz_resources:phlogiston_blob' },
-    },
-}
+do -- Giant Colorium Sapling recipe scope
+    local Giant_Colorium_Sapling = 'sbz_bio:giant_colorium_sapling'
+    local PB = 'sbz_resources:phlogiston_blob'
+    local CS = 'sbz_bio:colorium_sapling'
+    core.register_craft({
+        output = Giant_Colorium_Sapling,
+        recipe = {
+            { PB, PB, PB },
+            { PB, CS, PB },
+            { PB, PB, PB },
+        }
+    })
+end
 
 -- purely decor
 minetest.register_node(
@@ -386,11 +396,16 @@ minetest.register_node(
     }
 )
 
-core.register_craft {
-    type = 'shapeless',
-    recipe = { 'sbz_bio:colorium_tree' },
-    output = 'sbz_bio:colorium_planks 4',
-}
+do -- Colorium Planks recipe scope
+    local Colorium_Planks = 'sbz_bio:colorium_planks'
+    local amount = 4
+    local CT = 'sbz_bio:colorium_tree'
+    core.register_craft({
+        type = 'shapeless',
+        output = Colorium_Planks .. ' ' .. tostring(amount),
+        recipe = { CT },
+    })
+end
 
 stairs.register 'sbz_bio:colorium_planks'
 
@@ -588,15 +603,18 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         { name = 'dna_extractor_on.png', animation = { type = 'vertical_frames', length = 1 } },
     },
 })
-core.register_craft {
-    output = 'sbz_bio:dna_extractor',
-    recipe = {
-        { 'sbz_bio:colorium_tree', 'sbz_bio:colorium_tree', 'sbz_bio:colorium_tree' },
-        {
-            'sbz_resources:storinator_stemfruit',
-            'sbz_resources:emittrium_circuit',
-            'sbz_resources:storinator_stemfruit',
+
+do -- DNA Extractor recipe scope
+    local DNA_Extractor = 'sbz_bio:dna_extractor'
+    local CT = 'sbz_bio:colorium_tree'
+    local SS = 'sbz_resources:storinator_stemfruit'
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        output = DNA_Extractor,
+        recipe = {
+            { CT, CT, CT },
+            { SS, EC, SS },
+            { CT, CT, CT },
         },
-        { 'sbz_bio:colorium_tree', 'sbz_bio:colorium_tree', 'sbz_bio:colorium_tree' },
-    },
-}
+    })
+end

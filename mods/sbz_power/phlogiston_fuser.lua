@@ -86,20 +86,32 @@ listring[]
     light_source = 14,
 })
 
-minetest.register_craft({
-    output = "sbz_power:phlogiston_fuser",
-    recipe = {
-        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "sbz_chem:crystal_grower",  "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" },
-    }
-})
+do -- Phlogiston Fuser primary recipe scope
+    local Phlogiston_Fuser = 'sbz_power:phlogiston_fuser'
+    local VA = 'sbz_power:very_advanced_battery'
+    local Ne = 'sbz_meteorites:neutronium'
+    local CG = 'sbz_chem:crystal_grower'
+    local An = 'sbz_meteorites:antineutronium'
+    core.register_craft({
+        output = Phlogiston_Fuser,
+        recipe = {
+            { VA, VA, VA },
+            { Ne, CG, An },
+            { VA, VA, VA },
+        }
+    })
+end
 
-minetest.register_craft({
-    output = "sbz_power:phlogiston_fuser",
-    recipe = {
-        { "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery" },
-        { "sbz_meteorites:neutronium",       "sbz_chem:crystal_grower",         "sbz_meteorites:antineutronium" },
-        { "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery", "sbz_power:very_advanced_battery" },
-    }
-})
+do -- Phlogiston Fuser secondary recipe scope
+    local Phlogiston_Fuser = 'sbz_power:phlogiston_fuser'
+    local Ph = 'sbz_resources:phlogiston'
+    local CG = 'sbz_chem:crystal_grower'
+    core.register_craft({
+        output = Phlogiston_Fuser,
+        recipe = {
+            { Ph, Ph, Ph },
+            { Ph, CG, Ph },
+            { Ph, Ph, Ph },
+        }
+    })
+end

@@ -14,14 +14,19 @@ minetest.register_node("sbz_bio:dirt", unifieddyes.def {
     paramtype = "light", -- if you leave this out, fertilizer wont work
     sounds = sbz_api.sounds.dirt(),
 })
-minetest.register_craft({
-    output = "sbz_bio:dirt",
-    recipe = {
-        { "sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss" },
-        { "sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss" },
-        { "sbz_bio:moss", "sbz_bio:moss", "sbz_bio:moss" }
-    }
-})
+
+do -- Dirt recipe scope
+    local Dirt = 'sbz_bio:dirt'
+    local Mo = 'sbz_bio:moss'
+    core.register_craft({
+        output = Dirt,
+        recipe = {
+            { Mo, Mo, Mo },
+            { Mo, Mo, Mo },
+            { Mo, Mo, Mo }
+        }
+    })
+end
 
 sbz_api.recipe.register_craft {
     type = "centrifugeing",
@@ -60,15 +65,20 @@ minetest.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
         "Fertilizer can't sprout plants on this soil."
     }
 })
-minetest.register_craft {
-    output = "sbz_bio:fertilized_dirt",
-    recipe = {
-        { "",                   "sbz_bio:fertilizer", "" },
-        { "sbz_bio:fertilizer", "sbz_bio:dirt",       "sbz_bio:fertilizer" },
-        { "",                   "sbz_bio:fertilizer", "" },
-    }
-}
 
+do -- Fertilized Dirt recipe scope
+    local Fertilized_Dirt = 'sbz_bio:fertilized_dirt'
+    local Fe = 'sbz_bio:fertilizer'
+    local Di = 'sbz_bio:dirt'
+    core.register_craft({
+        output = Fertilized_Dirt,
+        recipe = {
+            { '', Fe, '' },
+            { Fe, Di, Fe },
+            { '', Fe, '' },
+        }
+    })
+end
 
 minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
     paramtype2 = "color",
@@ -130,15 +140,21 @@ sbz_api.register_stateful_machine("sbz_bio:electric_soil", unifieddyes.def {
         pipe_connects = 1
     }
 })
-core.register_craft {
-    output = "sbz_bio:electric_soil_off",
-    recipe = {
-        { "sbz_bio:fertilized_dirt", "sbz_bio:fertilized_dirt", "sbz_bio:fertilized_dirt", },
-        { "sbz_chem:silver_ingot",   "sbz_chem:silver_ingot",   "sbz_chem:silver_ingot", },
-        { "sbz_bio:shockshroom",     "sbz_bio:shockshroom",     "sbz_bio:shockshroom" }
-    }
-}
 
+do -- Electric Soil recipe scope
+    local Electric_Soil = 'sbz_bio:electric_soil_off'
+    local FD = 'sbz_bio:fertilized_dirt'
+    local SI = 'sbz_chem:silver_ingot'
+    local Sh = 'sbz_bio:shockshroom'
+    core.register_craft({
+        output = Electric_Soil,
+        recipe = {
+            { FD, FD, FD },
+            { SI, SI, SI },
+            { Sh, Sh, Sh },
+        }
+    })
+end
 
 -- yes i get it, boo, happens outside of the habitat regulator, oh well, i actually like abms
 local get_grass_spread_action = function(require_water)
@@ -184,11 +200,16 @@ core.register_abm({
     action = get_grass_spread_action(false)
 })
 
-minetest.register_craft {
-    output = "sbz_bio:dirt_with_grass",
-    recipe = {
-        { "",                  "sbz_bio:pyrograss", "" },
-        { "sbz_bio:pyrograss", "sbz_bio:dirt",      "sbz_bio:pyrograss" },
-        { "",                  "sbz_bio:pyrograss", "" },
-    }
-}
+do -- Dirt with Grass recipe scope
+    local Dirt_with_Grass = 'sbz_bio:dirt_with_grass'
+    local Py = 'sbz_bio:pyrograss'
+    local Di = 'sbz_bio:dirt'
+    core.register_craft({
+        output = Dirt_with_Grass,
+        recipe = {
+            { '', Py, '' },
+            { Py, Di, Py },
+            { '', Py, '' },
+        }
+    })
+end

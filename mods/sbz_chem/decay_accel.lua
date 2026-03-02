@@ -72,12 +72,20 @@ listring[current_player;main]listring[context;input]listring[current_player;main
     light_source = 14,
 })
 
-
-minetest.register_craft({
-    output = "sbz_chem:decay_accel_off",
-    recipe = {
-        { "sbz_chem:uranium_crystal",         "sbz_resources:matter_blob", "sbz_chem:thorium_crystal" },
-        { "sbz_resources:reinforced_matter",  "",                          "sbz_resources:reinforced_matter" },
-        { "sbz_resources:phlogiston_circuit", "sbz_meteorites:neutronium", "sbz_resources:phlogiston_circuit" }
-    }
-})
+do -- Decay Accel Off recipe scope
+    local Decay_Accel = 'sbz_chem:decay_accel_off'
+    local UC = 'sbz_chem:uranium_crystal'
+    local MB = 'sbz_resources:matter_blob'
+    local TC = 'sbz_chem:thorium_crystal'
+    local RM = 'sbz_resources:reinforced_matter'
+    local PC = 'sbz_resources:phlogiston_circuit'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Decay_Accel,
+        recipe = {
+            { UC, MB, TC },
+            { RM, '', RM },
+            { PC, Ne, PC }
+        }
+    })
+end

@@ -235,11 +235,17 @@ minetest.register_craftitem('sbz_power:sensor_linker', {
     stack_max = 1,
 })
 
-minetest.register_craft {
-    output = 'sbz_power:sensor_linker',
-    recipe = {
-        { 'sbz_resources:warp_crystal', 'sbz_resources:stone', 'sbz_resources:shock_crystal' },
-        { '', 'sbz_resources:stone', '' },
-        { '', 'sbz_resources:stone', '' },
-    },
-}
+do -- Sensor Linker recipe scope
+    local Sensor_Linker = 'sbz_power:sensor_linker'
+    local WC = 'sbz_resources:warp_crystal'
+    local St = 'sbz_resources:stone'
+    local SC = 'sbz_resources:shock_crystal'
+    core.register_craft({
+        output = Sensor_Linker,
+        recipe = {
+            { WC, St, SC },
+            { '', St, '' },
+            { '', St, '' },
+        }
+    })
+end

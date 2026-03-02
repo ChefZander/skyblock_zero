@@ -35,14 +35,20 @@ sbz_power.register_battery("sbz_power:battery", {
     battery_max = 5000,
 })
 
-minetest.register_craft({
-    output = "sbz_power:battery",
-    recipe = {
-        { "sbz_resources:matter_blob", "sbz_resources:matter_blob",       "sbz_resources:matter_blob" },
-        { "sbz_power:power_pipe",      "sbz_resources:emittrium_circuit", "sbz_resources:matter_blob" },
-        { "sbz_resources:matter_blob", "sbz_resources:matter_blob",       "sbz_resources:matter_blob" }
-    }
-})
+do -- Battery recipe scope
+    local Battery = 'sbz_power:battery'
+    local MB = 'sbz_resources:matter_blob'
+    local PC = 'sbz_power:power_pipe' -- ("Emittrium Power Cable" in-game)
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        output = Battery,
+        recipe = {
+            { MB, MB, MB },
+            { PC, EC, MB },
+            { MB, MB, MB }
+        }
+    })
+end
 
 sbz_power.register_battery("sbz_power:advanced_battery", {
     description = "Advanced Battery",
@@ -50,14 +56,20 @@ sbz_power.register_battery("sbz_power:advanced_battery", {
     groups = { matter = 1 },
     battery_max = 20000,
 })
-minetest.register_craft({
-    output = "sbz_power:advanced_battery",
-    recipe = {
-        { "sbz_chem:cobalt_ingot",  "sbz_chem:lithium_ingot", "sbz_chem:cobalt_ingot" },
-        { "sbz_chem:lithium_ingot", "sbz_chem:lithium_ingot", "sbz_chem:lithium_ingot" },
-        { "sbz_chem:cobalt_ingot",  "sbz_chem:lithium_ingot", "sbz_chem:cobalt_ingot" }
-    }
-})
+
+do -- Advanced Battery recipe scope
+    local Advanced_Battery = 'sbz_power:advanced_battery'
+    local CI = 'sbz_chem:cobalt_ingot'
+    local LI = 'sbz_chem:lithium_ingot'
+    core.register_craft({
+        output = Advanced_Battery,
+        recipe = {
+            { CI, LI, CI },
+            { LI, LI, LI },
+            { CI, LI, CI }
+        }
+    })
+end
 
 sbz_power.register_battery("sbz_power:very_advanced_battery", {
     description = "Very Advanced Battery",
@@ -66,14 +78,19 @@ sbz_power.register_battery("sbz_power:very_advanced_battery", {
     battery_max = 200000,
 })
 
-minetest.register_craft({
-    output = "sbz_power:very_advanced_battery",
-    recipe = {
-        { "sbz_chem:cobalt_block",  "sbz_chem:lithium_block", "sbz_chem:cobalt_block" },
-        { "sbz_chem:lithium_block", "sbz_chem:lithium_block", "sbz_chem:lithium_block" },
-        { "sbz_chem:cobalt_block",  "sbz_chem:lithium_block", "sbz_chem:cobalt_block" }
-    }
-})
+do -- Very Advanced Battery recipe scope
+    local Very_Advanced_Battery = 'sbz_power:very_advanced_battery'
+    local CB = 'sbz_chem:cobalt_block'
+    local LB = 'sbz_chem:lithium_block'
+    core.register_craft({
+        output = Very_Advanced_Battery,
+        recipe = {
+            { CB, LB, CB },
+            { LB, LB, LB },
+            { CB, LB, CB }
+        }
+    })
+end
 
 local function set_tp_battery_formspec(pos)
     local meta = core.get_meta(pos)
@@ -209,14 +226,19 @@ sbz_power.register_battery("sbz_power:teleport_battery", {
     end
 })
 
-minetest.register_craft({
-    output = "sbz_power:teleport_battery",
-    recipe = {
-        { "sbz_resources:warp_crystal", "sbz_resources:warp_crystal",      "sbz_resources:warp_crystal" },
-        { "sbz_resources:warp_crystal", "sbz_power:very_advanced_battery", "sbz_resources:warp_crystal" },
-        { "sbz_resources:warp_crystal", "sbz_resources:warp_crystal",      "sbz_resources:warp_crystal" }
-    }
-})
+do -- Teleport Battery recipe scope
+    local Teleport_Battery = 'sbz_power:teleport_battery'
+    local WC = 'sbz_resources:warp_crystal'
+    local VA = 'sbz_power:very_advanced_battery'
+    core.register_craft({
+        output = Teleport_Battery,
+        recipe = {
+            { WC, WC, WC },
+            { WC, VA, WC },
+            { WC, WC, WC }
+        }
+    })
+end
 
 core.register_node("sbz_power:creative_battery", {
     description = "Creative Power Generating Battery",

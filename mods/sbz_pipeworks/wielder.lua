@@ -343,59 +343,53 @@ pipeworks.register_wielder {
     cost = 40,
 }
 
-minetest.register_craft {
-    output = 'pipeworks:puncher',
-    recipe = {
-        { 'sbz_resources:robotic_arm', 'sbz_resources:robotic_arm', 'sbz_resources:robotic_arm' },
-        { 'pipeworks:tube_1', 'sbz_resources:emittrium_circuit', 'pipeworks:automatic_filter_injector' },
-        { 'sbz_chem:aluminum_ingot', 'sbz_chem:aluminum_ingot', 'sbz_chem:aluminum_ingot' },
-    },
-}
-do
-    local R = 'sbz_resources:robotic_arm'
-    local E = 'sbz_resources:emittrium_circuit'
-    local T = 'pipeworks:tube_1'
-    local A = 'pipeworks:automatic_filter_injector'
-    local I = 'sbz_chem:aluminum_ingot'
-    minetest.register_craft({
-        output = 'pipeworks:puncher',
+do -- Puncher recipe scope
+    local Puncher = 'pipeworks:puncher'
+    local RA = 'sbz_resources:robotic_arm'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local EC = 'sbz_resources:emittrium_circuit'
+    local AF = 'pipeworks:automatic_filter_injector'
+    local AI = 'sbz_chem:aluminum_ingot'
+    core.register_craft({
+        output = Puncher,
         recipe = {
-            { R, R, R },
-            { T, E, A },
-            { I, I, I },
-        },
+            { RA, RA, RA },
+            { BT, EC, AF },
+            { AI, AI, AI }
+        }
     })
 end
 
-do
-    local M = 'sbz_resources:matter_annihilator'
-    local S = 'sbz_resources:simple_circuit'
-    local T = 'pipeworks:tube_1'
-    local A = 'pipeworks:automatic_filter_injector'
-    local I = 'sbz_chem:aluminum_ingot'
-    minetest.register_craft({
-        output = 'pipeworks:nodebreaker',
+do -- Nodebreaker recipe scope
+    local Nodebreaker = 'pipeworks:nodebreaker'
+    local MA = 'sbz_resources:matter_annihilator'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local SC = 'sbz_resources:simple_circuit'
+    local AF = 'pipeworks:automatic_filter_injector'
+    local AI = 'sbz_chem:aluminum_ingot'
+    core.register_craft({
+        output = Nodebreaker,
         recipe = {
-            { M, M, M },
-            { T, S, A },
-            { I, I, I },
-        },
+            { MA, MA, MA },
+            { BT, SC, AF },
+            { AI, AI, AI }
+        }
     })
 end
 
-do
-    local _ = ''
-    local R = 'sbz_resources:robotic_arm'
-    local S = 'sbz_resources:simple_circuit'
-    local T = 'pipeworks:tube_1'
-    local A = 'pipeworks:automatic_filter_injector'
-    local I = 'sbz_chem:aluminum_ingot'
-    minetest.register_craft({
-        output = 'pipeworks:deployer',
+do -- Deployer recipe scope
+    local Deployer = 'pipeworks:deployer'
+    local RA = 'sbz_resources:robotic_arm'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local SC = 'sbz_resources:simple_circuit'
+    local AF = 'pipeworks:automatic_filter_injector'
+    local AI = 'sbz_chem:aluminum_ingot'
+    core.register_craft({
+        output = Deployer,
         recipe = {
-            { _, R, _ },
-            { T, S, A },
-            { I, I, I },
-        },
+            { '', RA, '' },
+            { BT, SC, AF },
+            { AI, AI, AI }
+        }
     })
 end

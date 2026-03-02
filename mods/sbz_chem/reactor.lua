@@ -267,20 +267,31 @@ sbz_api.register_stateful_machine("sbz_chem:xray", {
     light_source = 14,
 })
 
-core.register_craft {
-    output = "sbz_chem:xray_off",
-    recipe = {
-        { "sbz_chem:plutonium_block", "sbz_chem:plutonium_block",         "sbz_chem:plutonium_block", },
-        { "sbz_chem:plutonium_block", "sbz_resources:phlogiston_circuit", "sbz_chem:plutonium_block", },
-        { "sbz_chem:plutonium_block", "sbz_chem:plutonium_block",         "sbz_chem:plutonium_block", },
-    }
-}
+do -- X-ray Emitter recipe scope
+    local Xray_Emitter = 'sbz_chem:xray_off'
+    local PB = 'sbz_chem:plutonium_block'
+    local PC = 'sbz_resources:phlogiston_circuit'
+    core.register_craft({
+        output = Xray_Emitter,
+        recipe = {
+            { PB, PB, PB },
+            { PB, PC, PB },
+            { PB, PB, PB },
+        }
+    })
+end
 
-core.register_craft {
-    output = "sbz_chem:nuclear_reactor_off",
-    recipe = {
-        { "sbz_power:solid_charged_field",    "sbz_resources:phlogiston_circuit",    "sbz_power:solid_charged_field" },
-        { "sbz_resources:phlogiston_circuit", "sbz_resources:storinator_neutronium", "sbz_resources:phlogiston_circuit" },
-        { "sbz_power:solid_charged_field",    "sbz_resources:phlogiston_circuit",    "sbz_power:solid_charged_field" }
-    }
-}
+do -- Nuclear Reactor recipe scope
+    local Nuclear_Reactor = 'sbz_chem:nuclear_reactor_off'
+    local SC = 'sbz_power:solid_charged_field'
+    local PC = 'sbz_resources:phlogiston_circuit'
+    local SN = 'sbz_resources:storinator_neutronium'
+    core.register_craft({
+        output = Nuclear_Reactor,
+        recipe = {
+            { SC, PC, SC },
+            { PC, SN, PC },
+            { SC, PC, SC },
+        }
+    })
+end

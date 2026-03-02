@@ -113,11 +113,18 @@ core.register_node("sbz_logic_devices:node_db", {
     end
 })
 
-core.register_craft {
-    output = "sbz_logic_devices:node_db",
-    recipe = {
-        { "sbz_resources:stone", "sbz_resources:lua_chip",      "sbz_resources:stone" },
-        { "sbz_chem:gold_ingot", "sbz_logic:knowledge_station", "sbz_chem:gold_ingot" },
-        { "sbz_resources:stone", "sbz_resources:lua_chip",      "sbz_resources:stone" }
-    }
-}
+do -- Node DB recipe scope
+    local Node_DB = 'sbz_logic_devices:node_db'
+    local St = 'sbz_resources:stone'
+    local LC = 'sbz_resources:lua_chip'
+    local GI = 'sbz_chem:gold_ingot'
+    local KS = 'sbz_logic:knowledge_station'
+    core.register_craft({
+        output = Node_DB,
+        recipe = {
+            { St, LC, St },
+            { GI, KS, GI },
+            { St, LC, St },
+        }
+    })
+end

@@ -577,57 +577,92 @@ wrench.blacklist_item("sbz_multiblocks:blast_furnace_heater")
 wrench.blacklist_item("sbz_multiblocks:blast_furnace_item_output")
 wrench.blacklist_item("sbz_multiblocks:blast_furnace_item_input")
 
--- yey... 566 lines of codes in...
-core.register_craft {
-    output = "sbz_multiblocks:blast_furnace_casing 9",
-    recipe = {
-        { "sbz_chem:invar_block", "sbz_chem:invar_block",  "sbz_chem:invar_block", },
-        { "sbz_chem:invar_block", "sbz_chem:silver_block", "sbz_chem:invar_block", },
-        { "sbz_chem:invar_block", "sbz_chem:invar_block",  "sbz_chem:invar_block", },
-    }
-}
+do -- Blast Furnace Casing recipe scope
+    local Blast_Furnace_Casing = 'sbz_multiblocks:blast_furnace_casing'
+    local amount = 9
+    local IB = 'sbz_chem:invar_block'
+    local SB = 'sbz_chem:silver_block'
+    core.register_craft({
+        output = Blast_Furnace_Casing .. ' ' .. tostring(amount),
+        recipe = {
+            { IB, IB, IB },
+            { IB, SB, IB },
+            { IB, IB, IB },
+        }
+    })
+end
 
-core.register_craft {
-    output = "sbz_multiblocks:blast_furnace_controller",
-    recipe = {
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block", },
-        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:simple_processor",       "sbz_multiblocks:blast_furnace_casing", },
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block", },
-    }
-}
+do -- Blast Furnace Controller recipe scope
+    local Blast_Furnace_Controller = 'sbz_multiblocks:blast_furnace_controller'
+    local SB = 'sbz_chem:silver_block'
+    local BF = 'sbz_multiblocks:blast_furnace_casing'
+    local SP = 'sbz_resources:simple_processor'
+    core.register_craft({
+        output = Blast_Furnace_Controller,
+        recipe = {
+            { SB, BF, SB },
+            { BF, SP, BF },
+            { SB, BF, SB },
+        }
+    })
+end
 
-core.register_craft {
-    output = "sbz_multiblocks:blast_furnace_heater 2",
-    recipe = {
-        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:heating_element", "sbz_multiblocks:blast_furnace_casing", },
-        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:heating_element", "sbz_multiblocks:blast_furnace_casing", },
-        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:heating_element", "sbz_multiblocks:blast_furnace_casing", }
-    }
-}
+do -- Blast Furnace Heater recipe scope
+    local Blast_Furnace_Heater = 'sbz_multiblocks:blast_furnace_heater'
+    local amount = 2
+    local BF = 'sbz_multiblocks:blast_furnace_casing'
+    local HE = 'sbz_resources:heating_element'
+    core.register_craft({
+        output = Blast_Furnace_Heater .. ' ' .. tostring(amount),
+        recipe = {
+            { BF, HE, BF },
+            { BF, HE, BF },
+            { BF, HE, BF },
+        }
+    })
+end
 
-core.register_craft {
-    output = "sbz_multiblocks:blast_furnace_item_input",
-    recipe = {
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
-        { "sbz_multiblocks:blast_furnace_casing", "sbz_resources:storinator_bronze",      "sbz_multiblocks:blast_furnace_casing" },
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
-    }
-}
+do -- Blast Furnace Item Input recipe scope
+    local Blast_Furnace_Item_Input = 'sbz_multiblocks:blast_furnace_item_input'
+    local SB = 'sbz_chem:silver_block'
+    local BF = 'sbz_multiblocks:blast_furnace_casing'
+    local SR = 'sbz_resources:storinator_bronze'
+    core.register_craft({
+        output = Blast_Furnace_Item_Input,
+        recipe = {
+            { SB, BF, SB },
+            { BF, SR, BF },
+            { SB, BF, SB },
+        }
+    })
+end
 
-core.register_craft {
-    output = "sbz_multiblocks:blast_furnace_item_output",
-    recipe = {
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
-        { "sbz_multiblocks:blast_furnace_casing", "pipeworks:automatic_filter_injector",  "sbz_multiblocks:blast_furnace_casing" },
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
-    }
-}
+do -- Blast Furnace Item Output recipe scope
+    local Blast_Furnace_Item_Output = 'sbz_multiblocks:blast_furnace_item_output'
+    local SB = 'sbz_chem:silver_block'
+    local BF = 'sbz_multiblocks:blast_furnace_casing'
+    local AF = 'pipeworks:automatic_filter_injector'
+    core.register_craft({
+        output = Blast_Furnace_Item_Output,
+        recipe = {
+            { SB, BF, SB },
+            { BF, AF, BF },
+            { SB, BF, SB },
+        }
+    })
+end
 
-core.register_craft {
-    output = "sbz_multiblocks:blast_furnace_power_port",
-    recipe = {
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
-        { "sbz_multiblocks:blast_furnace_casing", "sbz_power:power_pipe",                 "sbz_multiblocks:blast_furnace_casing" },
-        { "sbz_chem:silver_block",                "sbz_multiblocks:blast_furnace_casing", "sbz_chem:silver_block" },
-    }
-}
+do -- Blast Furnace Power Port recipe scope
+    local Blast_Furnace_Power_Port = 'sbz_multiblocks:blast_furnace_power_port'
+    local SB = 'sbz_chem:silver_block'
+    local BF = 'sbz_multiblocks:blast_furnace_casing'
+    local PP = 'sbz_power:power_pipe'
+    core.register_craft({
+        output = Blast_Furnace_Power_Port,
+        recipe = {
+            { SB, BF, SB },
+            { BF, PP, BF },
+            { SB, BF, SB },
+        }
+    })
+end

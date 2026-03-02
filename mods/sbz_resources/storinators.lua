@@ -295,12 +295,18 @@ register_storinator("neutronium", {
     material = "sbz_meteorites:neutronium",
 })
 
-
-minetest.register_craft({
-    output = "sbz_resources:storinator",
-    recipe = {
-        { "sbz_power:simple_charged_field",  "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" },
-        { "sbz_resources:matter_plate",      "sbz_resources:simple_circuit", "sbz_resources:matter_plate" },
-        { "sbz_resources:retaining_circuit", "sbz_resources:matter_plate",   "sbz_resources:retaining_circuit" }
-    }
-})
+do -- Storinator recipe scope
+    local Storinator = 'sbz_resources:storinator'
+    local CF = 'sbz_power:simple_charged_field'
+    local MP = 'sbz_resources:matter_plate'
+    local RC = 'sbz_resources:retaining_circuit'
+    local SC = 'sbz_resources:simple_circuit'
+    core.register_craft({
+        output = Storinator,
+        recipe = {
+            { CF, MP, RC },
+            { MP, SC, MP },
+            { RC, MP, RC }
+        }
+    })
+end

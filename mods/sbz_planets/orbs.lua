@@ -4,20 +4,24 @@
     Dwarf orb: used to make the planet finder
 ]]
 
-
-
 core.register_craftitem("sbz_planets:dwarf_orb", {
     description = "Dwarf Orb",
     inventory_image = "dwarf_orb.png",
     info_extra = "Used as a crafing replacement for matter annihilators, found naturally in dwarf planets",
 })
-core.register_craft {
-    type = "shapeless",
-    output = "sbz_planets:dwarf_orb 16",
-    recipe = {
-        "sbz_meteorites:neutronium", "sbz_resources:pebble", "sbz_planets:dwarf_orb",
-    }
-}
+
+do -- Dwarf Orb multiply recipe scope
+    local Dwarf_Orb = 'sbz_planets:dwarf_orb'
+    local amount = 16
+    local Ne = 'sbz_meteorites:neutronium'
+    local Pe = 'sbz_resources:pebble'
+    local Dw = Dwarf_Orb
+    core.register_craft({
+        type = 'shapeless',
+        output = Dwarf_Orb .. ' ' .. tostring(amount),
+        recipe = { Ne, Pe, Dw }
+    })
+end
 
 core.register_node("sbz_planets:dwarf_orb_ore", {
     description = "Dwarf Orb Ore",

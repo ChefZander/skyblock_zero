@@ -46,11 +46,17 @@ minetest.register_node("sbz_bio:rope", {
     end
 })
 
-minetest.register_craft({
-    output = "sbz_bio:rope 2",
-    recipe = {
-        { "sbz_bio:fiberweed" },
-        { "sbz_resources:matter_dust" },
-        { "sbz_bio:fiberweed" }
-    }
-})
+do -- Rope recipe scope
+    local Rope = 'sbz_bio:rope'
+    local amount = 2
+    local Fi = 'sbz_bio:fiberweed'
+    local MD = 'sbz_resources:matter_dust'
+    core.register_craft({
+        output = Rope .. ' ' .. tostring(amount),
+        recipe = {
+            { Fi },
+            { MD },
+            { Fi }
+        }
+    })
+end

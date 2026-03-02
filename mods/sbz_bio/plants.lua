@@ -322,16 +322,18 @@ sbz_api.register_plant('razorgrass', {
     end,
 })
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_bio:fertilizer 20',
-    recipe = {
-        'sbz_bio:razorgrass',
-        'sbz_bio:razorgrass',
-        'sbz_bio:razorgrass',
-    },
-}
-core.register_craftitem('sbz_bio:razorgrass', {
+do -- Fertilizer bulk recipe scope
+    local Fertilizer = 'sbz_bio:fertilizer'
+    local amount = 20
+    local Ra = 'sbz_bio:razorgrass'
+    core.register_craft({
+        type = 'shapeless',
+        output = Fertilizer .. ' ' .. tostring(amount),
+        recipe = { Ra, Ra, Ra },
+    })
+end
+
+minetest.register_craftitem('sbz_bio:razorgrass', {
     description = 'Razorgrass',
     inventory_image = 'razorgrass_4.png',
     groups = { burn = 2, eat = -8 },

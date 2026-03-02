@@ -83,14 +83,20 @@ minetest.register_node("sbz_resources:movable_emitter", {
     on_punch = action,
     on_rightclick = action
 })
-core.register_craft {
-    output = "sbz_resources:movable_emitter 2",
-    recipe = {
-        { "sbz_resources:phlogiston", "sbz_resources:phlogiston",      "sbz_resources:phlogiston", },
-        { "sbz_resources:phlogiston", "sbz_resources:movable_emitter", "sbz_resources:phlogiston", },
-        { "sbz_resources:phlogiston", "sbz_resources:phlogiston",      "sbz_resources:phlogiston", },
-    }
-}
+
+do -- Movable Emitter duplication recipe scope
+    local ME = 'sbz_resources:movable_emitter'
+    local amount = 2
+    local Ph = 'sbz_resources:phlogiston'
+    core.register_craft({
+        output = ME .. ' ' .. tostring(amount),
+        recipe = {
+            { Ph, Ph, Ph },
+            { Ph, ME, Ph },
+            { Ph, Ph, Ph },
+        }
+    })
+end
 
 minetest.register_abm({
     label = "Emitter Particles",

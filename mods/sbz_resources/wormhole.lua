@@ -6,7 +6,7 @@ core.register_tool("sbz_resources:wormhole", {
 
     on_use = function(itemstack, user, pointed_thing)
         if pointed_thing.type ~= "node" then return end
-        
+
         local pos = pointed_thing.under
         local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
@@ -14,7 +14,7 @@ core.register_tool("sbz_resources:wormhole", {
         local item_meta = itemstack:get_meta()
         item_meta:set_string("target_pos", core.serialize(pos))
         item_meta:set_string("description", "Wormhole (Linked to " .. core.pos_to_string(pos) .. ")")
-        
+
         core.chat_send_player(user:get_player_name(), "Wormhole linked to " .. core.pos_to_string(pos))
         return itemstack
     end,
@@ -28,7 +28,7 @@ core.register_tool("sbz_resources:wormhole", {
 
         local target_pos = minetest.deserialize(pos_str)
         local node = minetest.get_node_or_nil(target_pos)
-        
+
         if not node or node.name == "ignore" then
             minetest.chat_send_player(user:get_player_name(), "Target area is not loaded!")
             return itemstack
@@ -46,7 +46,7 @@ core.register_tool("sbz_resources:wormhole", {
         local formspec = meta:get_string("formspec")
 
         minetest.show_formspec(player_name, "remote_linker:remote", formspec)
-        
+
         return itemstack
     end,
 
@@ -77,14 +77,20 @@ minetest.register_craftitem("sbz_resources:gravitational_lens", {
     stack_max = 1,
 })
 
-minetest.register_craft({
-    output = "sbz_resources:gravitational_lens",
-    recipe = {
-        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass",       "sbz_resources:emittrium_glass" },
-        { "sbz_meteorites:gravitational_attractor",      "sbz_resources:emittrium_glass", "sbz_meteorites:gravitational_repulsor" },
-        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass",       "sbz_resources:emittrium_glass" }
-    }
-})
+do -- Gravitational Lens recipe scope
+    local Gravitational_Lens = 'sbz_resources:gravitational_lens'
+    local EG = 'sbz_resources:emittrium_glass'
+    local GA = 'sbz_meteorites:gravitational_attractor'
+    local GR = 'sbz_meteorites:gravitational_repulsor'
+    core.register_craft({
+        output = Gravitational_Lens,
+        recipe = {
+            { EG, EG, EG },
+            { GA, EG, GR },
+            { EG, EG, EG }
+        }
+    })
+end
 
 minetest.register_craftitem("sbz_resources:refined_firmament", {
     description = "Refined Firmament",

@@ -217,11 +217,19 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
     light_source = 14,
 })
 
-core.register_craft {
-    output = 'sbz_chem:centrifuge_off',
-    recipe = {
-        { 'sbz_chem:iron_ingot', 'sbz_chem:iron_ingot', 'sbz_chem:iron_ingot' },
-        { 'sbz_power:simple_charged_field', 'sbz_resources:emittrium_circuit', 'sbz_power:simple_charged_field' },
-        { 'sbz_chem:copper_ingot', 'sbz_chem:bronze_ingot', 'sbz_chem:copper_ingot' },
-    },
-}
+do -- Centrifuge recipe scope
+    local Centrifuge = 'sbz_chem:centrifuge_off'
+    local II = 'sbz_chem:iron_ingot'
+    local Ch = 'sbz_power:simple_charged_field'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local CI = 'sbz_chem:copper_ingot'
+    local BI = 'sbz_chem:bronze_ingot'
+    core.register_craft({
+        output = Centrifuge,
+        recipe = {
+            { II, II, II },
+            { Ch, EC, Ch },
+            { CI, BI, CI },
+        },
+    })
+end

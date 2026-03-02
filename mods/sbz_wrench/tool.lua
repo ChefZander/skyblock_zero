@@ -25,10 +25,15 @@ minetest.register_tool("sbz_wrench:wrench", {
 	end,
 })
 
-core.register_craft({
-	output = "sbz_wrench:wrench",
-	recipe = {
-		{ "sbz_resources:phlogiston" },
-		{ "sbz_resources:robotic_arm" },
-	}
-})
+do -- Node Preserver recipe scope
+	local Node_Preserver = 'sbz_wrench:wrench'
+	local Ph = 'sbz_resources:phlogiston'
+	local RA = 'sbz_resources:robotic_arm'
+	core.register_craft({
+		output = Node_Preserver,
+		recipe = {
+			{ Ph },
+			{ RA },
+		}
+	})
+end

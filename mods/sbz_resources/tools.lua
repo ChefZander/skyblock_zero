@@ -30,19 +30,19 @@ minetest.register_craftitem('sbz_resources:matter_annihilator', {
     },
 })
 
-do -- Matter Annihilator Recipe
+do -- Matter Annihilator recipe scope
+    local Matter_Annihilator = 'sbz_resources:matter_annihilator'
     local AD = 'sbz_resources:antimatter_dust'
     local MB = 'sbz_resources:matter_blob'
     local CP = 'sbz_resources:charged_particle'
-    
-    minetest.register_craft {
-        output = 'sbz_resources:matter_annihilator',
+    core.register_craft({
+        output = Matter_Annihilator,
         recipe = {
             { '', AD, '' },
             { MB, CP, MB },
             { '', MB, '' },
         },
-    }
+    })
 end
 
 minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
@@ -75,19 +75,19 @@ minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
     },
 })
 
-do -- Antimatter Annihilator Recipe
+do -- Antimatter Annihilator recipe scope
+    local Antimatter_Annihilator = 'sbz_resources:antimatter_annihilator'
     local MD = 'sbz_resources:matter_dust'
     local AB = 'sbz_resources:antimatter_blob'
     local CP = 'sbz_resources:charged_particle'
-    
-    minetest.register_craft {
-        output = 'sbz_resources:antimatter_annihilator',
+    core.register_craft({
+        output = Antimatter_Annihilator,
         recipe = {
             { '', MD, '' },
             { AB, CP, AB },
             { '', AB, '' },
         },
-    }
+    })
 end
 
 minetest.register_craftitem('sbz_resources:robotic_arm', {
@@ -119,20 +119,20 @@ minetest.register_craftitem('sbz_resources:robotic_arm', {
     },
 })
 
-do -- Robotic Arm Recipe
+do -- Robotic Arm recipe scope
+    local Robotic_Arm = 'sbz_resources:robotic_arm'
     local MA = 'sbz_resources:matter_annihilator'
     local II = 'sbz_chem:iron_ingot'
     local RM = 'sbz_resources:reinforced_matter'
     local EC = 'sbz_resources:emittrium_circuit'
-    
-    minetest.register_craft {
-        output = 'sbz_resources:robotic_arm',
+    core.register_craft({
+        output = Robotic_Arm,
         recipe = {
             { MA, II, MA },
             { RM, EC, RM },
             { RM, EC, RM },
         },
-    }
+    })
 end
 
 local drill_max_wear = 500
@@ -201,19 +201,19 @@ minetest.register_tool('sbz_resources:drill', {
     sound = { punch_use = { name = 'drill_dig' } },
 })
 
-do -- Drill Recipe
+do -- Drill recipe scope
+    local Drill = 'sbz_resources:drill'
     local TI = 'sbz_chem:titanium_ingot'
     local RA = 'sbz_resources:robotic_arm'
     local Ba = 'sbz_power:battery'
     local RM = 'sbz_resources:reinforced_matter'
     local EC = 'sbz_resources:emittrium_circuit'
-    
-    minetest.register_craft {
+    core.register_craft({
+        output = Drill,
         recipe = {
             { TI, RA, TI },
             { TI, Ba, TI },
             { RM, EC, RM },
-        },
-        output = 'sbz_resources:drill',
-    }
+        }
+    })
 end

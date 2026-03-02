@@ -41,23 +41,30 @@ signs_lib.register_sign("sbz_decor:matter_sign", {
     use_texture_alpha = "clip",
 })
 
-local A = "sbz_resources:antimatter_dust"
-local M = "sbz_resources:matter_dust"
+do -- Matter Sign recipe scope
+    local Matter_Sign = 'sbz_decor:matter_sign'
+    local AD = "sbz_resources:antimatter_dust"
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft({
+        output = Matter_Sign,
+        recipe = {
+            { AD, AD, AD },
+            { AD, MB, AD },
+            { AD, AD, AD },
+        }
+    })
+end
 
-minetest.register_craft {
-    output = "sbz_decor:matter_sign",
-    recipe = {
-        { A, A,                           A },
-        { A, "sbz_resources:matter_blob", A },
-        { A, A,                           A },
-    }
-}
-
-minetest.register_craft {
-    output = "sbz_decor:antimatter_sign",
-    recipe = {
-        { M, M,                               M },
-        { M, "sbz_resources:antimatter_blob", M },
-        { M, M,                               M },
-    }
-}
+do -- Antimatter Sign recipe scope
+    local Antimatter_Sign = 'sbz_decor:antimatter_sign'
+    local MD = "sbz_resources:matter_dust"
+    local AB = 'sbz_resources:antimatter_blob'
+    core.register_craft({
+        output = Antimatter_Sign,
+        recipe = {
+            { MD, MD, MD },
+            { MD, AB, MD },
+            { MD, MD, MD },
+        }
+    })
+end

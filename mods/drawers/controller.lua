@@ -443,11 +443,16 @@ register_controller()
 
 -- Because the rest of the drawers mod doesn't have a hard depend on
 -- default, I changed the recipe to have an alternative
-core.register_craft({
-	output = 'drawers:controller',
-	recipe = {
-		{ 'sbz_resources:luanium', 'sbz_resources:luanium', 'sbz_resources:luanium' },
-		{ 'sbz_resources:luanium', 'group:drawer',          'sbz_resources:luanium' },
-		{ 'sbz_resources:luanium', 'sbz_resources:luanium', 'sbz_resources:luanium' },
-	}
-})
+do -- Controller recipe scope
+	local Controller = 'drawers:controller'
+	local Lu = 'sbz_resources:luanium'
+	local Dr = 'group:drawer'
+	core.register_craft({
+		output = Controller,
+		recipe = {
+			{ Lu, Lu, Lu },
+			{ Lu, Dr, Lu },
+			{ Lu, Lu, Lu },
+		}
+	})
+end

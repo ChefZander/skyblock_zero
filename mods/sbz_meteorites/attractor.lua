@@ -122,14 +122,19 @@ minetest.register_node('sbz_meteorites:gravitational_attractor', {
     sounds = sbz_api.sounds.machine(),
 })
 
-minetest.register_craft {
-    output = 'sbz_meteorites:gravitational_attractor',
-    recipe = {
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-        { '', 'sbz_meteorites:neutronium', '' },
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-    },
-}
+do -- Gravitational Attractor recipe scope
+    local Gravitational_Attractor = 'sbz_meteorites:gravitational_attractor'
+    local MB = 'sbz_resources:matter_blob'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Gravitational_Attractor,
+        recipe = {
+            { MB, '', MB },
+            { '', Ne, '' },
+            { MB, '', MB },
+        },
+    })
+end
 
 minetest.register_node('sbz_meteorites:gravitational_repulsor', {
     description = 'Gravitational Repulsor',

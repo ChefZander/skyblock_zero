@@ -228,14 +228,18 @@ core.register_node('sbz_power:manual_crafter', {
     end,
 })
 
-local blob = 'sbz_resources:matter_blob'
-local emit = 'sbz_resources:raw_emittrium'
-core.register_craft {
-    type = 'shaped',
-    output = 'sbz_power:manual_crafter',
-    recipe = {
-        { emit, blob, emit },
-        { blob, 'sbz_resources:simple_circuit', blob },
-        { emit, blob, emit },
-    },
-}
+do -- Manual Crafter recipe scope
+    local Manual_Crafter = 'sbz_power:manual_crafter'
+    local RE = 'sbz_resources:raw_emittrium'
+    local MB = 'sbz_resources:matter_blob'
+    local SC = 'sbz_resources:simple_circuit'
+    core.register_craft({
+        type = 'shaped',
+        output = Manual_Crafter,
+        recipe = {
+            { RE, MB, RE },
+            { MB, SC, MB },
+            { RE, MB, RE },
+        },
+    })
+end

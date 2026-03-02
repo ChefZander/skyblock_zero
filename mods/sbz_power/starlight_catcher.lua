@@ -119,18 +119,27 @@ sbz_api.register_generator("sbz_power:photon_energy_converter", {
     on_destruct = remove_nets,
 })
 
-core.register_craft {
-    type = "shapeless",
-    output = "sbz_power:photon_energy_converter",
-    recipe = {
-        "sbz_power:starlight_catcher", "sbz_power:switching_station", "sbz_resources:emittrium_circuit"
-    },
-}
+do -- Photon Energy Converter recipe scope
+    local Photon_Energy_Converter = 'sbz_power:photon_energy_converter'
+    local SC = 'sbz_power:starlight_catcher'
+    local SS = 'sbz_power:switching_station'
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        type = 'shapeless',
+        output = Photon_Energy_Converter,
+        recipe = { SC, SS, EC },
+    })
+end
 
-core.register_craft {
-    output = "sbz_power:starlight_catcher",
-    recipe = {
-        { "sbz_power:starlight_collector", "sbz_power:starlight_collector", "sbz_power:starlight_collector", },
-        { "sbz_power:power_pipe",          "sbz_power:power_pipe",          "sbz_power:power_pipe", }
-    }
-}
+do -- Starlight Catcher recipe scope
+    local Starlight_Catcher = 'sbz_power:starlight_catcher'
+    local SC = 'sbz_power:starlight_collector'
+    local PC = 'sbz_power:power_pipe' -- ("Emittrium Power Cable" in-game)
+    core.register_craft({
+        output = Starlight_Catcher,
+        recipe = {
+            { SC, SC, SC },
+            { PC, PC, PC },
+        }
+    })
+end

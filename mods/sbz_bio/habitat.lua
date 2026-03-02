@@ -194,7 +194,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
             '\nHabitat size: ',
             habitat.size,
             habitat.power_generated > 0 and ('\nPower Generated: ' .. sbz_api.format_power(habitat.power_generated))
-                or '',
+            or '',
             '\nHabitat lag: ' .. math.floor((sbz_api.clock_ms() - lag_timer)) .. 'ms',
         })
     )
@@ -237,20 +237,32 @@ core.register_node('sbz_bio:co2_compactor', {
     paramtype = 'light',
 })
 
-core.register_craft {
-    output = 'sbz_bio:co2_compactor',
-    recipe = {
-        { 'sbz_bio:cleargrass', 'sbz_resources:matter_blob', 'sbz_bio:razorgrass' },
-        { 'sbz_resources:matter_blob', 'sbz_bio:airlock', 'sbz_resources:matter_blob' },
-        { 'sbz_bio:cleargrass', 'sbz_resources:matter_blob', 'sbz_bio:razorgrass' },
-    },
-}
+do -- CO2 Compactor recipe scope
+    local CO2_Compactor = 'sbz_bio:co2_compactor'
+    local Cl = 'sbz_bio:cleargrass'
+    local MB = 'sbz_resources:matter_blob'
+    local Ra = 'sbz_bio:razorgrass'
+    local Ai = 'sbz_bio:airlock'
+    core.register_craft({
+        output = CO2_Compactor,
+        recipe = {
+            { Cl, MB, Ra },
+            { MB, Ai, MB },
+            { Cl, MB, Ra },
+        },
+    })
+end
 
-core.register_craft({
-    type = 'shapeless',
-    output = 'sbz_bio:habitat_regulator',
-    recipe = { 'sbz_power:switching_station', 'sbz_bio:moss' },
-})
+do -- Habitat Regulator recipe scope
+    local Habitat_Regulator = 'sbz_bio:habitat_regulator'
+    local SS = 'sbz_power:switching_station'
+    local Mo = 'sbz_bio:moss'
+    core.register_craft({
+        type = 'shapeless',
+        output = Habitat_Regulator,
+        recipe = { SS, Mo }
+    })
+end
 
 core.register_abm({
     interval = 10,
