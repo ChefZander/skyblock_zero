@@ -20,6 +20,7 @@ local function attract_meteorites(pos, dtime, t)
             not (
                 (obj:is_player() and obj:get_wielded_item())
                 or (obj:get_luaentity() and obj:get_luaentity().name == 'sbz_meteorites:meteorite')
+                or (obj:get_luaentity() and obj:get_luaentity().typename == "meteorite")
             )
         then
             return
