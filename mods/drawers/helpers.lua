@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 -- GUI
 function drawers.get_upgrade_slots_bg(x, y)

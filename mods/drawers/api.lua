@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local S = minetest.get_translator 'drawers'
+local S = core.get_translator 'drawers'
 
 drawers.node_box_simple = {
     { -0.5, -0.5, -0.4375, 0.5, 0.5, 0.5 },
@@ -251,9 +251,9 @@ function drawers.register_drawer(name, def)
     def.on_metadata_inventory_put = drawers.add_drawer_upgrade
     def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
-    if minetest.get_modpath 'screwdriver' and screwdriver then def.on_rotate = def.on_rotate or screwdriver.disallow end
+    if core.get_modpath 'screwdriver' and screwdriver then def.on_rotate = def.on_rotate or screwdriver.disallow end
 
-    if minetest.get_modpath 'pipeworks' and pipeworks then
+    if core.get_modpath 'pipeworks' and pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
         def.groups.tubedevice_use_item_entities = 1
@@ -314,7 +314,7 @@ function drawers.register_drawer(name, def)
         }
     end
     def.on_movenode = function(_, to_pos)
-        minetest.after(0.1, function()
+        core.after(0.1, function()
             drawers.spawn_visuals(to_pos)
         end)
     end

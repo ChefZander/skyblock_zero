@@ -28,7 +28,7 @@ SOFTWARE.
 
 local MP = core.get_modpath(core.get_current_modname())
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
@@ -162,10 +162,10 @@ core.register_craft({
 
 --Section below modified as of 2021 by Pandorabox
 
-minetest.register_chatcommand("drawers_fix", {
+core.register_chatcommand("drawers_fix", {
 	description = "recreates the drawer-visuals in your area",
 	func = function(name)
-		local player = minetest.get_player_by_name(name)
+		local player = core.get_player_by_name(name)
 		if not player then
 			return
 		end
@@ -175,7 +175,7 @@ minetest.register_chatcommand("drawers_fix", {
 		local pos1 = vector.subtract(ppos, 10)
 		local pos2 = vector.add(ppos, 10)
 
-		local poslist = minetest.find_nodes_in_area(pos1, pos2, { "group:drawer" })
+		local poslist = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
 
 		for _, pos in ipairs(poslist) do
 			drawers.remove_visuals(pos)
