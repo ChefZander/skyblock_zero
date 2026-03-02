@@ -31,13 +31,27 @@ SOFTWARE.
 
 local S = core.get_translator 'drawers'
 
-drawers.node_box_simple = {
-    { -0.5, -0.5, -0.4375, 0.5, 0.5, 0.5 },
-    { -0.5, -0.5, -0.5, -0.4375, 0.5, -0.4375 },
-    { 0.4375, -0.5, -0.5, 0.5, 0.5, -0.4375 },
-    { -0.4375, 0.4375, -0.5, 0.4375, 0.5, -0.4375 },
-    { -0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375 },
-}
+do -- Drawer node box scope
+
+    -- Full node = 1.0, center = (0,0,0), edges = ±0.5
+    -- Coordinates specified as {x1, y1, z1, x2, y2, z2}
+    -- A cuboid is created from the diagonal corners you specified with each x,y,z set.
+    -- x: -left +right    y: -down +up    z: -front +back
+
+    local trim_thickness = 1 / 16 -- trim thickness
+    local H = 0.5                 -- center to edge is half (8/16)
+    local T = H - trim_thickness  -- center to trim is 7/16
+
+    drawers.node_box_simple = {
+    --  { x1, y1, z1, x2, y2, z2 }
+    --  --------------------------
+        { -H, -H, -T,  H,  H,  H }, -- main block, slightly inset block
+        { -H, -H, -H, -T,  H, -T }, -- left-side   16th-of-node sized bar
+        {  T, -H, -H,  H,  H, -T }, -- right-side  16th-of-node sized bar
+        { -T,  T, -H,  T,  H, -T }, -- top-side    16th-of-node sized bar
+        { -T, -H, -H,  T, -T, -T }, -- bottom-side 16th-of-node sized bar
+    }
+end
 
 drawers.drawer_formspec = 'size[9,6.7]'
     .. 'list[context;upgrades;2,0.5;5,1;]'
