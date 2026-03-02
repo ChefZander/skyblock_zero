@@ -251,7 +251,21 @@ function drawers.register_drawer(name, def)
     def.on_metadata_inventory_put = drawers.add_drawer_upgrade
     def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
-    if core.get_modpath 'screwdriver' and screwdriver then def.on_rotate = def.on_rotate or screwdriver.disallow end
+    if core.get_modpath("screwdriver") and screwdriver then
+        def.on_rotate = function(pos, node, user, mode, new_param2)
+            if mode ~= screwdriver.ROTATE_FACE then
+                return false
+            end
+
+            node.param2 = new_param2
+            core.swap_node(pos, node)
+
+            drawers.remove_visuals(pos)
+            drawers.spawn_visuals(pos)
+
+            return true
+        end
+    end
 
     if core.get_modpath 'pipeworks' and pipeworks then
         def.groups.tubedevice = 1
