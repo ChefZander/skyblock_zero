@@ -1,8 +1,12 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
+Original Mod:
 Copyright (C) 2017-2019 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
+
+Modifications for Skyblock: Zero:
+Copyright (C) 2026 Skyblock: Zero Contributors
 
 MIT License
 
