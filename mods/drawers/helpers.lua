@@ -32,6 +32,14 @@ SOFTWARE.
 local S = core.get_translator('drawers')
 
 -- GUI
+
+function drawers.inventory_list(posy)
+	local hotbar_row_posy = posy + 1.25
+	local inventory_list = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..
+		"list[current_player;main;0.5," .. hotbar_row_posy .. ";8,3;8]"
+	return inventory_list
+end
+
 function drawers.get_upgrade_slots_bg(x, y)
 	local out = ""
 	for i = 0, 4, 1 do
@@ -141,3 +149,33 @@ end
 function drawers.node_tiles_front_other(front, other)
 	return { other, other, other, other, other, front }
 end
+
+--Section below modified as of 2021 by Pandorabox
+
+core.register_chatcommand("drawers_fix", {
+	description = "recreates the drawer-visuals in your area",
+	func = function(name)
+		local player = core.get_player_by_name(name)
+		if not player then
+			return
+		end
+		local t1 = sbz_api.clock_ms()
+
+		local ppos = player:get_pos()
+		local pos1 = vector.subtract(ppos, 10)
+		local pos2 = vector.add(ppos, 10)
+
+		local poslist = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
+
+		for _, pos in ipairs(poslist) do
+			drawers.remove_visuals(pos)
+			drawers.spawn_visuals(pos)
+		end
+
+		local t2 = sbz_api.clock_ms()
+		local diff = t2 - t1
+		local millis = diff
+
+		return true, "Restored " .. #poslist .. " drawers in " .. millis .. " ms"
+	end
+})
