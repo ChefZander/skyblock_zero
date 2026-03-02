@@ -59,19 +59,18 @@ function drawers.drawer_on_construct(pos)
     -- meta
     local meta = core.get_meta(pos)
 
-    local i = 1
-    while i <= drawerType do
-        local vid = tostring(i)
+    for i = 1, drawerType do
         -- 1x1 drawers don't have numbers in the meta fields
-        if drawerType == 1 then vid = '' end
-        meta:set_string('name' .. vid, '')
-        meta:set_int('count' .. vid, 0)
-        meta:set_int('max_count' .. vid, base_stack_max * stack_max_factor)
-        meta:set_int('base_stack_max' .. vid, base_stack_max)
-        meta:set_string('entity_infotext' .. vid, drawers.gen_info_text(S 'Empty', 0, stack_max_factor, base_stack_max))
-        meta:set_int('stack_max_factor' .. vid, stack_max_factor)
+        local slot_suffix = (drawerType == 1) and '' or tostring(i)
 
-        i = i + 1
+        meta:set_string(           'name' .. slot_suffix, '')
+        meta:set_string('entity_infotext' .. slot_suffix,
+                drawers.gen_info_text(S 'Empty', 0, stack_max_factor, base_stack_max))
+
+        meta:set_int(           'count' .. slot_suffix, 0)
+        meta:set_int(       'max_count' .. slot_suffix, base_stack_max * stack_max_factor)
+        meta:set_int(  'base_stack_max' .. slot_suffix, base_stack_max)
+        meta:set_int('stack_max_factor' .. slot_suffix, stack_max_factor)
     end
 
     -- spawn all visuals
@@ -107,9 +106,9 @@ function drawers.drawer_on_dig(pos, node, player)
     local k = 1
     while k <= drawerType do
         -- don't add a number in meta fields for 1x1 drawers
-        local vid = tostring(k)
-        if drawerType == 1 then vid = '' end
-        local count = meta:get_int('count' .. vid)
+        local slot_suffix = tostring(k)
+        if drawerType == 1 then slot_suffix = '' end
+        local count = meta:get_int('count' .. slot_suffix)
         k = k + 1
         if count > 0 then return false end
     end
