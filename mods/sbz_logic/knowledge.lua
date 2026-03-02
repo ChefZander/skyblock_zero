@@ -113,11 +113,17 @@ minetest.register_node("sbz_logic:knowledge_station", {
     end
 })
 
-minetest.register_craft {
-    output = "sbz_logic:knowledge_station",
-    recipe = {
-        { "sbz_resources:stone", "sbz_resources:luanium",          "sbz_resources:stone" },
-        { "sbz_resources:stone", "sbz_power:simple_charged_field", "sbz_resources:stone" },
-        { "sbz_resources:stone", "sbz_resources:stone",            "sbz_resources:stone" },
-    }
-}
+do -- Knowledge Station recipe scope
+    local Knowledge_Station = 'sbz_logic:knowledge_station'
+    local St = 'sbz_resources:stone'
+    local Lu = 'sbz_resources:luanium'
+    local CF = 'sbz_power:simple_charged_field'
+    core.register_craft({
+        output = Knowledge_Station,
+        recipe = {
+            { St, Lu, St },
+            { St, CF, St },
+            { St, St, St },
+        }
+    })
+end

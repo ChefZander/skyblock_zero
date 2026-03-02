@@ -14,3 +14,5 @@ sbz_debug (Debug Logging) bool false
 # If enabled, it may cause some features behave in an unexpected way.
 # If not neabled, this may cause performance issues on large worlds or on servers.
 sbz_switching_station_unload (Automatically unload switching stations) enum default default,always,never
+
+sbz_welcome_message (Enable the welcome message) bool true

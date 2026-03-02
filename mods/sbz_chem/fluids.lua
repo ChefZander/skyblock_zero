@@ -57,14 +57,18 @@ minetest.register_craftitem(empty_cell, {
     end
 })
 
-minetest.register_craft({
-    output = empty_cell,
-    recipe = {
-        { "",                     "sbz_resources:pebble", "" },
-        { "sbz_resources:pebble", "",                     "sbz_resources:pebble" },
-        { "",                     "sbz_resources:pebble", "" }
-    }
-})
+do -- Empty Fluid Cell recipe scope
+    local Empty_Fluid_Cell = 'sbz_chem:empty_fluid_cell'
+    local Pe = 'sbz_resources:pebble'
+    core.register_craft({
+        output = Empty_Fluid_Cell,
+        recipe = {
+            { '', Pe, '' },
+            { Pe, '', Pe },
+            { '', Pe, '' }
+        }
+    })
+end
 
 sbz_api.register_fluid_cell("sbz_chem:water_fluid_cell", {
     description = "Water Fluid Cell (H₂O)",

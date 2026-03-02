@@ -111,10 +111,16 @@ minetest.register_node("sbz_power:connector_on", {
 
 })
 
-minetest.register_craft({
-    output = "sbz_power:connector_off",
-    recipe = {
-        { "",                     "sbz_resources:emittrium_circuit", "" },
-        { "sbz_power:power_pipe", "sbz_resources:reinforced_matter", "sbz_power:power_pipe" }
-    }
-})
+do -- Connector recipe scope
+    local Connector = 'sbz_power:connector_off'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local PC = 'sbz_power:power_pipe' -- ("Emittrium Power Cable" in-game)
+    local RM = 'sbz_resources:reinforced_matter'
+    core.register_craft({
+        output = Connector,
+        recipe = {
+            { '', EC, '' },
+            { PC, RM, PC }
+        }
+    })
+end

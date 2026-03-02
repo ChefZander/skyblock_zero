@@ -234,6 +234,7 @@ core.register_node('sbz_chem:radon', {
     }, -- not radioactive so that maybe its more performant?
     sunlight_propagates = true,
     post_effect_color = '#6abe3032',
+    post_effect_color_shaded = true,
     walkable = false,
     buildable_to = true,
     pointable = false,
@@ -328,6 +329,7 @@ core.register_node('sbz_chem:radioactive_water', {
     groups = { liquid = 3, habitat_conducts = 1, not_in_creative_inventory = 1, weak_radioactive = 80 },
     light_source = 14,
     post_effect_color = water_color,
+    post_effect_color_shaded = true,
     paramtype = 'light',
     walkable = false,
     pointable = false,

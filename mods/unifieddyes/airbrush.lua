@@ -171,11 +171,17 @@ minetest.register_tool("unifieddyes:coloring_tool", {
 	on_use = color_block,
 	stack_max = 1
 })
-minetest.register_craft {
-	output = "unifieddyes:coloring_tool",
-	recipe = {
-		{ "unifieddyes:colorium" },
-		{ "sbz_resources:matter_dust" },
-		{ "sbz_resources:matter_dust" }
-	}
-}
+
+do -- Coloring Tool recipe scope
+	local Coloring_Tool = 'unifieddyes:coloring_tool'
+	local Co = 'unifieddyes:colorium'
+	local MD = 'sbz_resources:matter_dust'
+	core.register_craft({
+		output = Coloring_Tool,
+		recipe = {
+			{ Co },
+			{ MD },
+			{ MD },
+		}
+	})
+end

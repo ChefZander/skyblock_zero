@@ -227,11 +227,18 @@ sbz_api.shoot_turret = function(pos, dir, owner)
     end
 end
 
-core.register_craft {
-    output = "sbz_power:turret",
-    recipe = {
-        { "pipeworks:nodebreaker",     "pipeworks:nodebreaker",            "pipeworks:nodebreaker" },
-        { "sbz_resources:matter_blob", "sbz_resources:prediction_circuit", "sbz_resources:matter_blob" },
-        { "sbz_resources:matter_blob", "sbz_meteorites:antineutronium",    "sbz_resources:matter_blob" }
-    }
-}
+do -- Turret recipe scope
+    local Turret = 'sbz_power:turret'
+    local No = 'pipeworks:nodebreaker'
+    local MB = 'sbz_resources:matter_blob'
+    local PC = 'sbz_resources:prediction_circuit'
+    local An = 'sbz_meteorites:antineutronium'
+    core.register_craft({
+        output = Turret,
+        recipe = {
+            { No, No, No },
+            { MB, PC, MB },
+            { MB, An, MB },
+        }
+    })
+end

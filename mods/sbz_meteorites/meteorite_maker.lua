@@ -404,11 +404,19 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
 mesecon.register_mvps_stopper("sbz_meteorites:meteorite_maker_off")
 mesecon.register_mvps_stopper("sbz_meteorites:meteorite_maker_on")
 
-core.register_craft {
-    output = "sbz_meteorites:meteorite_maker",
-    recipe = {
-        { "sbz_resources:robotic_arm", "sbz_resources:emittrium_circuit", "sbz_resources:robotic_arm" },
-        { "sbz_meteorites:neutronium", "sbz_meteorites:neutronium",       "sbz_meteorites:neutronium" },
-        { "pipeworks:autocrafter",     "sbz_resources:storinator",        "pipeworks:autocrafter" }
-    }
-}
+do -- Meteorite Maker recipe scope
+    local Meteorite_Maker = 'sbz_meteorites:meteorite_maker'
+    local RA = 'sbz_resources:robotic_arm'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local Ne = 'sbz_meteorites:neutronium'
+    local Au = 'pipeworks:autocrafter'
+    local St = 'sbz_resources:storinator'
+    core.register_craft({
+        output = Meteorite_Maker,
+        recipe = {
+            { RA, EC, RA },
+            { Ne, Ne, Ne },
+            { Au, St, Au },
+        }
+    })
+end

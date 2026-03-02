@@ -103,11 +103,19 @@ listring[context;dst]
     light_source = 10,
 })
 
-minetest.register_craft {
-    output = 'sbz_chem:high_power_electric_furnace',
-    recipe = {
-        { 'sbz_power:simple_charged_field', 'sbz_resources:matter_dust', 'sbz_power:simple_charged_field' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:emittrium_circuit', 'sbz_resources:matter_blob' },
-        { 'sbz_power:simple_charged_field', 'sbz_chem:tin_powder', 'sbz_power:simple_charged_field' },
-    },
-}
+do -- High Power Electric Furnace recipe scope
+    local High_Power_Electric_Furnace = 'sbz_chem:high_power_electric_furnace'
+    local CF = 'sbz_power:simple_charged_field'
+    local MD = 'sbz_resources:matter_dust'
+    local MB = 'sbz_resources:matter_blob'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local TP = 'sbz_chem:tin_powder'
+    core.register_craft({
+        output = High_Power_Electric_Furnace,
+        recipe = {
+            { CF, MD, CF },
+            { MB, EC, MB },
+            { CF, TP, CF },
+        },
+    })
+end

@@ -47,11 +47,16 @@ minetest.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
     on_rightclick = action
 })
 
-core.register_craft {
-    output = "sbz_bio:colorium_emitter 2",
-    recipe = {
-        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "sbz_bio:colorium_emitter", "sbz_resources:phlogiston" },
-        { "sbz_resources:phlogiston", "sbz_resources:phlogiston", "sbz_resources:phlogiston" }
-    }
-}
+do -- Colorium Emitter recipe scope
+    local CE = 'sbz_bio:colorium_emitter'
+    local amount = 2
+    local Ph = 'sbz_resources:phlogiston'
+    core.register_craft({
+        output = CE .. ' ' .. tostring(amount),
+        recipe = {
+            { Ph, Ph, Ph },
+            { Ph, CE, Ph },
+            { Ph, Ph, Ph },
+        }
+    })
+end

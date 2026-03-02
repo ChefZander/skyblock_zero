@@ -88,11 +88,17 @@ minetest.register_node("sbz_logic_devices:object_detector", {
         minetest.get_meta(pos):set_string("infotext", "Object Detector")
     end,
 })
-minetest.register_craft {
-    output = "sbz_logic_devices:object_detector",
-    recipe = {
-        { "sbz_resources:luanium", "sbz_resources:luanium",          "sbz_resources:luanium", },
-        { "sbz_resources:luanium", "sbz_meteorites:meteorite_radar", "sbz_resources:luanium" },
-        { "sbz_resources:luanium", "sbz_resources:luanium",          "sbz_resources:luanium", }
-    }
-}
+
+do -- Object Detector recipe scope
+    local Object_Detector = 'sbz_logic_devices:object_detector'
+    local Lu = 'sbz_resources:luanium'
+    local MR = 'sbz_meteorites:meteorite_radar'
+    core.register_craft({
+        output = Object_Detector,
+        recipe = {
+            { Lu, Lu, Lu },
+            { Lu, MR, Lu },
+            { Lu, Lu, Lu },
+        }
+    })
+end

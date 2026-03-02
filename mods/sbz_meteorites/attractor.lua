@@ -20,6 +20,7 @@ local function attract_meteorites(pos, dtime, t)
             not (
                 (obj:is_player() and obj:get_wielded_item())
                 or (obj:get_luaentity() and obj:get_luaentity().name == 'sbz_meteorites:meteorite')
+                or (obj:get_luaentity() and obj:get_luaentity().typename == "meteorite")
             )
         then
             return
@@ -121,14 +122,19 @@ minetest.register_node('sbz_meteorites:gravitational_attractor', {
     sounds = sbz_api.sounds.machine(),
 })
 
-minetest.register_craft {
-    output = 'sbz_meteorites:gravitational_attractor',
-    recipe = {
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-        { '', 'sbz_meteorites:neutronium', '' },
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-    },
-}
+do -- Gravitational Attractor recipe scope
+    local Gravitational_Attractor = 'sbz_meteorites:gravitational_attractor'
+    local MB = 'sbz_resources:matter_blob'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Gravitational_Attractor,
+        recipe = {
+            { MB, '', MB },
+            { '', Ne, '' },
+            { MB, '', MB },
+        },
+    })
+end
 
 minetest.register_node('sbz_meteorites:gravitational_repulsor', {
     description = 'Gravitational Repulsor',

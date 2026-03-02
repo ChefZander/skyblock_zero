@@ -99,12 +99,19 @@ listring[context;dst]
     light_source = 14,
 })
 
-
-minetest.register_craft({
-    output = "sbz_chem:crystal_grower",
-    recipe = {
-        { "sbz_resources:stone",             "sbz_meteorites:antineutronium", "sbz_resources:stone" },
-        { "sbz_resources:reinforced_matter", "sbz_meteorites:neutronium",     "sbz_resources:reinforced_matter" },
-        { "sbz_resources:stone",             "sbz_chem:titanium_block",       "sbz_resources:stone" },
-    }
-})
+do -- Crystal Grower recipe scope
+    local Crystal_Grower = 'sbz_chem:crystal_grower'
+    local St = 'sbz_resources:stone'
+    local An = 'sbz_meteorites:antineutronium'
+    local RM = 'sbz_resources:reinforced_matter'
+    local Ne = 'sbz_meteorites:neutronium'
+    local TB = 'sbz_chem:titanium_block'
+    core.register_craft({
+        output = Crystal_Grower,
+        recipe = {
+            { St, An, St },
+            { RM, Ne, RM },
+            { St, TB, St },
+        }
+    })
+end

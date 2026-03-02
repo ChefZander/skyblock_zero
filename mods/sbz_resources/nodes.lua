@@ -88,10 +88,11 @@ core.register_craft {
         { 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust' },
     },
 }
-minetest.register_craft {
-    type = 'shapeless',
+
+sbz_api.recipe.register_craft {
+    type = 'crushing',
     output = 'sbz_resources:antimatter_dust 9',
-    recipe = {
+    items = {
         'sbz_resources:antimatter_blob',
     },
 }
@@ -507,7 +508,7 @@ minetest.register_node(
     unifieddyes.def {
         description = 'Bricks',
         tiles = { 'bricks.png' },
-        drawtype = 'color',
+        paramtype2 = 'color',
         groups = {
             matter = 1,
             charged = 1,

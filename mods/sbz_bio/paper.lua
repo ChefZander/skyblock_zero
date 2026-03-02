@@ -67,18 +67,27 @@ core.register_craftitem("sbz_bio:book", {
     end
 })
 
+do -- Paper recipe scope
+    local Paper = 'sbz_bio:paper'
+    local amount = 12
+    local Fi = 'sbz_bio:fiberweed'
+    local Cl = 'sbz_bio:cleargrass'
+    core.register_craft({
+        output = Paper .. ' ' .. tostring(amount),
+        recipe = { { Fi, Cl, Fi } }
+    })
+end
 
-core.register_craft {
-    output = "sbz_bio:paper 12",
-    recipe = {
-        { "sbz_bio:fiberweed", "sbz_bio:cleargrass", "sbz_bio:fiberweed", }
-    }
-}
-core.register_craft {
-    output = "sbz_bio:book",
-    recipe = {
-        { "sbz_resources:matter_plate", "sbz_resources:matter_plate", "sbz_resources:matter_plate", },
-        { "sbz_bio:paper",              "sbz_bio:paper",              "sbz_bio:paper", },
-        { "sbz_resources:matter_plate", "sbz_resources:matter_plate", "sbz_resources:matter_plate", }
-    }
-}
+do -- Book recipe scope
+    local Book = 'sbz_bio:book'
+    local MP = 'sbz_resources:matter_plate'
+    local Pa = 'sbz_bio:paper'
+    core.register_craft({
+        output = Book,
+        recipe = {
+            { MP, MP, MP },
+            { Pa, Pa, Pa },
+            { MP, MP, MP },
+        }
+    })
+end

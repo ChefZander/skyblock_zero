@@ -126,15 +126,19 @@ core.register_tool("sbz_bio:igniter", {
     end
 })
 
-minetest.register_craft({
-    output = "sbz_bio:igniter",
-    recipe = {
-        { "sbz_bio:pyrograss" },
-        { "sbz_resources:matter_dust" },
-        { "sbz_resources:matter_dust" }
-    }
-})
-
+do -- Igniter recipe scope
+    local Igniter = 'sbz_bio:igniter'
+    local Py = 'sbz_bio:pyrograss'
+    local MD = 'sbz_resources:matter_dust'
+    core.register_craft({
+        output = Igniter,
+        recipe = {
+            { Py },
+            { MD },
+            { MD },
+        }
+    })
+end
 
 minetest.register_abm({
     label = "Remove fire",

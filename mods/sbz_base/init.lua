@@ -19,6 +19,7 @@ sbz_api = {
     accelerated_habitats = false,
     debug = core.settings:get_bool('sbz_debug', false),
     logic_gate_linking_range = 15,
+    welcome_messages = core.settings:get_bool('sbz_welcome_message', true),
 }
 
 if sbz_api.server_optimizations == 'auto' then
@@ -265,10 +266,16 @@ core.register_chatcommand('bgm_volume', {
 core.register_on_joinplayer(function(player)
     local player_name = player:get_player_name()
     -- send welcome messages
-    core.chat_send_player(player_name, sbz_api.get_simple_version_string())
-    core.chat_send_player(player_name, '‼ reminder: If you fall off, use /core to teleport back to the core.')
-    core.chat_send_player(player_name, '‼ reminder: If lose your Quest Book, use /qb to get it back.')
-    core.chat_send_player(player_name, '!! If you have any suggestions/bug reports to Skyblock Zero, see /community')
+
+    if sbz_api.welcome_messages then
+        core.chat_send_player(player_name, sbz_api.get_simple_version_string())
+        core.chat_send_player(player_name, '‼ reminder: If you fall off, use /core to teleport back to the core.')
+        core.chat_send_player(player_name, '‼ reminder: If lose your Quest Book, use /qb to get it back.')
+        core.chat_send_player(
+            player_name,
+            '!! If you have any suggestions/bug reports to Skyblock Zero, see /community'
+        )
+    end
 
     -- play bgm
     playRandomBGM(player)

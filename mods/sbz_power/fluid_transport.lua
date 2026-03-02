@@ -77,15 +77,20 @@ core.register_node("sbz_power:fluid_pipe", {
     use_texture_alpha = "clip",
 })
 
-core.register_craft({
-    output = "sbz_power:fluid_pipe 8",
-    recipe = {
-        { "pipeworks:tube_1", "pipeworks:tube_1",                   "pipeworks:tube_1" },
-        { "pipeworks:tube_1", "sbz_resources:compressed_core_dust", "pipeworks:tube_1" },
-        { "pipeworks:tube_1", "pipeworks:tube_1",                   "pipeworks:tube_1" },
-    }
-})
-
+do -- Fluid Pipe recipe scope
+    local Fluid_Pipe = 'sbz_power:fluid_pipe'
+    local amount = 8
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local CC = 'sbz_resources:compressed_core_dust'
+    core.register_craft({
+        output = Fluid_Pipe .. ' ' .. tostring(amount),
+        recipe = {
+            { BT, BT, BT },
+            { BT, CC, BT },
+            { BT, BT, BT },
+        }
+    })
+end
 
 local animation_def = {
     type = "vertical_frames",
@@ -294,12 +299,15 @@ sbz_api.register_stateful_machine("sbz_power:pump", {
     }
 })
 
-core.register_craft({
-    output = "sbz_power:pump_off",
-    recipe = {
-        { "sbz_power:fluid_pipe", "pipeworks:automatic_filter_injector", "sbz_power:fluid_pipe" }
-    }
-})
+do -- Pump recipe scope
+    local Pump = 'sbz_power:pump_off'
+    local FP = 'sbz_power:fluid_pipe'
+    local AF = 'pipeworks:automatic_filter_injector'
+    core.register_craft({
+        output = Pump,
+        recipe = { { FP, AF, FP } }
+    })
+end
 
 -- returns a lazily populated list of all capturable liquids
 local get_liquid_list
@@ -496,14 +504,21 @@ core.register_node("sbz_power:fluid_tank", {
     end
 })
 
-core.register_craft({
-    output = "sbz_power:fluid_tank",
-    recipe = {
-        { "sbz_power:fluid_pipe", "sbz_resources:storinator",           "sbz_power:fluid_pipe" },
-        { "sbz_power:fluid_pipe", "sbz_resources:retaining_circuit",    "sbz_power:fluid_pipe" },
-        { "sbz_power:fluid_pipe", "sbz_resources:compressed_core_dust", "sbz_power:fluid_pipe" }
-    }
-})
+do -- Fluid Tank recipe scope
+    local Fluid_Tank = 'sbz_power:fluid_tank'
+    local FP = 'sbz_power:fluid_pipe'
+    local St = 'sbz_resources:storinator'
+    local RC = 'sbz_resources:retaining_circuit'
+    local CC = 'sbz_resources:compressed_core_dust'
+    core.register_craft({
+        output = Fluid_Tank,
+        recipe = {
+            { FP, St, FP },
+            { FP, RC, FP },
+            { FP, CC, FP }
+        }
+    })
+end
 
 sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
     description = "Fluid Capturer",
@@ -569,15 +584,20 @@ sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
     light_source = 3,
 })
 
-core.register_craft({
-    output = "sbz_power:fluid_capturer_off",
-    recipe = {
-        { "sbz_chem:empty_fluid_cell" },
-        { "sbz_power:fluid_pipe" },
-        { "sbz_power:fluid_tank" }
-    }
-})
-
+do -- Fluid Capturer recipe scope
+    local Fluid_Capturer = 'sbz_power:fluid_capturer_off'
+    local EF = 'sbz_chem:empty_fluid_cell'
+    local FP = 'sbz_power:fluid_pipe'
+    local FT = 'sbz_power:fluid_tank'
+    core.register_craft({
+        output = Fluid_Capturer,
+        recipe = {
+            { EF },
+            { FP },
+            { FT }
+        }
+    })
+end
 
 sbz_api.register_machine("sbz_power:fluid_cell_filler", {
     description = "Fluid Cell Filler",
@@ -690,12 +710,16 @@ listring[context;input]listring[]
     on_liquid_inv_update = function() end,
 })
 
-core.register_craft({
-    output = "sbz_power:fluid_cell_filler",
-    recipe = {
-        { "sbz_chem:empty_fluid_cell", "sbz_resources:robotic_arm", "sbz_power:fluid_tank" }
-    }
-})
+do -- Fluid Cell Filler recipe scope
+    local Fluid_Cell_Filler = 'sbz_power:fluid_cell_filler'
+    local EF = 'sbz_chem:empty_fluid_cell'
+    local RA = 'sbz_resources:robotic_arm'
+    local FT = 'sbz_power:fluid_tank'
+    core.register_craft({
+        output = Fluid_Cell_Filler,
+        recipe = { { EF, RA, FT } }
+    })
+end
 
 local function remove_all_nets_around(pos)
     iterate_around_pos(pos, function(ipos)

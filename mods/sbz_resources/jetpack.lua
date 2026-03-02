@@ -126,11 +126,18 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
-minetest.register_craft {
-    output = 'sbz_resources:jetpack',
-    recipe = {
-        { 'sbz_resources:emittrium_circuit', 'sbz_power:battery', 'sbz_resources:emittrium_circuit' },
-        { 'sbz_resources:angels_wing', 'sbz_meteorites:neutronium', 'sbz_resources:angels_wing' },
-        { 'sbz_resources:emittrium_circuit', '', 'sbz_resources:emittrium_circuit' },
-    },
-}
+do -- Jetpack recipe scope
+    local Jetpack = 'sbz_resources:jetpack'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local Ba = 'sbz_power:battery'
+    local AW = 'sbz_resources:angels_wing'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Jetpack,
+        recipe = {
+            { EC, Ba, EC },
+            { AW, Ne, AW },
+            { EC, '', EC },
+        },
+    })
+end

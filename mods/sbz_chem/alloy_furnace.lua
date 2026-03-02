@@ -99,11 +99,18 @@ listring[current_player;main]
     light_source = 3,
 })
 
-minetest.register_craft {
-    output = 'sbz_chem:simple_alloy_furnace',
-    recipe = {
-        { 'sbz_chem:nickel_ingot', 'sbz_resources:antimatter_dust', 'sbz_chem:nickel_ingot' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:emittrium_circuit', 'sbz_resources:matter_blob' },
-        { 'sbz_chem:nickel_ingot', 'sbz_resources:matter_blob', 'sbz_chem:nickel_ingot' },
-    },
-}
+do -- Simple Alloy Furnace recipe scope
+    local Simple_Alloy_Furnace = 'sbz_chem:simple_alloy_furnace'
+    local NI = 'sbz_chem:nickel_ingot'
+    local AD = 'sbz_resources:antimatter_dust'
+    local MB = 'sbz_resources:matter_blob'
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        output = Simple_Alloy_Furnace,
+        recipe = {
+            { NI, AD, NI },
+            { MB, EC, MB },
+            { NI, MB, NI },
+        },
+    })
+end

@@ -165,11 +165,18 @@ listring[current_player;main]listring[context;input]listring[current_player;main
     light_source = 3,
 })
 
-minetest.register_craft {
-    output = 'sbz_chem:crusher',
-    recipe = {
-        { 'sbz_power:simple_charged_field', 'sbz_resources:antimatter_dust', 'sbz_power:simple_charged_field' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:stone', 'sbz_resources:matter_blob' },
-        { 'sbz_power:simple_charged_field', 'sbz_resources:matter_blob', 'sbz_power:simple_charged_field' },
-    },
-}
+do -- Crusher recipe scope
+    local Crusher = 'sbz_chem:crusher'
+    local Ch = 'sbz_power:simple_charged_field'
+    local AD = 'sbz_resources:antimatter_dust'
+    local MB = 'sbz_resources:matter_blob'
+    local St = 'sbz_resources:stone'
+    core.register_craft({
+        output = Crusher,
+        recipe = {
+            { Ch, AD, Ch },
+            { MB, St, MB },
+            { Ch, MB, Ch },
+        },
+    })
+end

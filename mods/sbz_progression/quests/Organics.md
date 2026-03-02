@@ -69,7 +69,7 @@ Requires: Switching Station, Emittrium Glass, Dirt, Sprouting Plants
 
 I'm guessing you want to grow plants faster now, don't worry, this is one of the solutions!  
   
-The growth of plants above it will be 2x faster, but so will the CO2 consumbtion, and you can't fertilize the dirt, you will have to manually place your plant.  
+The growth of plants above it will be 2x faster, but so will the CO₂ consumbtion, and you can't fertilize the dirt, you will have to manually place your plant.  
 
 ### Meta
 
@@ -81,11 +81,11 @@ Requires: Growing Plants
 
 So now that you have a habitat, all you've got to do is use some Fertilizer on some dirt inside it. Keep trying until you get a sort of purple grass - this is Pyrograss, a hardy yet very flammable monocotyledon. Wait for it to grow to full height and then harvest it.  
   
-There is one more thing which almost all plants except Pyrograss need: CO2, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO2 into the habitat's atmosphere - no power necessary.  
+There is one more thing which almost all plants except Pyrograss need: CO₂, which they use to photosynthesize. To produce some, simply craft a Burner from Pyrograss and some other stuff. If placed in a habitat this will burn organic items placed inside it to release CO₂ into the habitat's atmosphere - no power necessary.  
   
 Some items are better than others, try out a few and see what works best!  
-Keep in mind, the excess CO2 produced by the burner will stay in the habitat, so this means you can have a burner running, and it would build up CO2 in the habitat. If the burner generates more CO2 than the habitat can store, it can store a bit of CO2 on its own, but it will stop burning when it is storing CO2.  
-The size of the habitat determines how much CO2 it can hold.
+Keep in mind, the excess CO₂ produced by the burner will stay in the habitat, so this means you can have a burner running, and it would build up CO₂ in the habitat. If the burner generates more CO₂ than the habitat can store, it can store a bit of CO₂ on its own, but it will stop burning when it is storing CO₂.  
+The size of the habitat determines how much CO₂ it can hold.
 
 ### Meta
 
@@ -143,7 +143,7 @@ Requires: Stemfruit, Basic Neutron Emitter
 ### Text
 
 Shockshrooms are very energetic shrooms, so energetic that they will inflict the "shocked" effect when you step on them, and will generate a small amount of power. (better soil makes it generate more)  
-Unlike other plants, they will continue consuming CO2 even after they have completely grown, and will keep generating power.  
+Unlike other plants, they will continue consuming CO₂ even after they have completely grown, and will keep generating power.  
 
 ### Meta
 
@@ -155,7 +155,7 @@ Requires: Stemfruit, Basic Neutron Emitter
 
 When stepping on cleargrass, you get rid of almost all effects.  
 The cleargrass will boost plant growth by 25% when fully grown.  
-Unlike other plants, they will continue consuming CO2 even after they have completely grown, and will keep boosting plant growth.  
+Unlike other plants, they will continue consuming CO₂ even after they have completely grown, and will keep boosting plant growth.  
 
 ### Meta
 
@@ -177,7 +177,7 @@ Requires: Stemfruit, Basic Neutron Emitter
 ### Text
 
 Was fertilized dirt too slow? Electric soil should be a good upgrade... or bad... Depending on what you need.  
-Electric soil will make plants grow a LOT faster, and consume a LOT more CO2, and the electric soil itself needs 40 Cj every second to run.
+Electric soil will make plants grow a LOT faster, and consume a LOT more CO₂, and the electric soil itself needs 40 Cj every second to run.
 
 ### Meta
 
@@ -197,7 +197,7 @@ Requires: Growing Plants, Emittrium Glass
 
 ### Text
 
-I'll assume you want to store a little more carbon dioxide in your habitat, if so CO2 compactors are excellent for that, they store 30 carbon dioxide in one node, so would be equivilent to 30 empty air nodes.
+I'll assume you want to store a little more carbon dioxide in your habitat, if so CO₂ compactors are excellent for that, they store 30 carbon dioxide in one node, so would be equivalent to 30 empty air nodes.
 
 ### Meta
 

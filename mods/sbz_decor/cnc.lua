@@ -104,11 +104,18 @@ minetest.register_node(
         },
     }
 )
-minetest.register_craft {
-    output = 'sbz_decor:cnc',
-    recipe = {
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter' },
-        { 'sbz_resources:matter_annihilator', 'sbz_resources:emittrium_circuit', 'sbz_resources:matter_annihilator' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter', 'sbz_resources:reinforced_matter' },
-    },
-}
+
+do -- CNC Machine recipe scope
+    local CNC = 'sbz_decor:cnc'
+    local RM = 'sbz_resources:reinforced_matter'
+    local MA = 'sbz_resources:matter_annihilator'
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        output = CNC,
+        recipe = {
+            { RM, RM, RM },
+            { MA, EC, MA },
+            { RM, RM, RM },
+        },
+    })
+end

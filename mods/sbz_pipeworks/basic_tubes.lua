@@ -4,14 +4,19 @@ pipeworks.register_tube('pipeworks:tube', {
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling } },
 })
 
-minetest.register_craft {
-    output = 'pipeworks:tube_1 8',
-    recipe = {
-        { 'sbz_chem:aluminum_ingot', '', 'sbz_chem:aluminum_ingot' },
-        { '', '', '' },
-        { 'sbz_chem:aluminum_ingot', '', 'sbz_chem:aluminum_ingot' },
-    },
-}
+do -- Basic Tube recipe scope
+    local Basic_Tube = 'pipeworks:tube_1'
+    local amount = 8
+    local AI = 'sbz_chem:aluminum_ingot'
+    core.register_craft({
+        output = Basic_Tube .. ' ' .. tostring(amount),
+        recipe = {
+            { AI, '', AI },
+            { '', '', '' },
+            { AI, '', AI },
+        },
+    })
+end
 
 pipeworks.register_tube('pipeworks:accelerator_tube', {
     description = 'Accelerating Tube',
@@ -32,15 +37,20 @@ pipeworks.register_tube('pipeworks:accelerator_tube', {
     },
 })
 
-local ch_pa = 'sbz_resources:charged_particle'
-minetest.register_craft {
-    output = 'pipeworks:accelerator_tube_1 1',
-    recipe = {
-        { ch_pa, ch_pa, ch_pa },
-        { ch_pa, 'pipeworks:tube_1', ch_pa },
-        { ch_pa, ch_pa, ch_pa },
-    },
-}
+do -- Accelerator Tube recipe scope
+    local Accelerator_Tube = 'pipeworks:accelerator_tube_1'
+    local amount = 1
+    local CP = 'sbz_resources:charged_particle'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    core.register_craft({
+        output = Accelerator_Tube .. ' ' .. tostring(amount),
+        recipe = {
+            { CP, CP, CP },
+            { CP, BT, CP },
+            { CP, CP, CP },
+        },
+    })
+end
 
 pipeworks.register_tube('pipeworks:one_direction_tube', {
     description = 'One Direction Tube',
@@ -107,11 +117,16 @@ pipeworks.register_tube('pipeworks:one_direction_tube', {
     },
 })
 
-minetest.register_craft {
-    output = 'pipeworks:one_direction_tube_1',
-    type = 'shapeless',
-    recipe = { 'pipeworks:one_way_tube', 'pipeworks:tube_1' },
-}
+do -- One Direction Tube recipe scope
+    local One_Direction_Tube = 'pipeworks:one_direction_tube_1'
+    local OW = 'pipeworks:one_way_tube'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    core.register_craft({
+        output = One_Direction_Tube,
+        type = 'shapeless',
+        recipe = { OW, BT },
+    })
+end
 
 pipeworks.register_tube('pipeworks:high_priority_tube', {
     description = 'High Priority Tube',
@@ -124,11 +139,17 @@ pipeworks.register_tube('pipeworks:high_priority_tube', {
     },
 })
 
-minetest.register_craft {
-    output = 'pipeworks:high_priority_tube_1 1',
-    type = 'shapeless',
-    recipe = { 'pipeworks:tube_1', 'sbz_resources:matter_dust' },
-}
+do -- High Priority Tube recipe scope
+    local High_Priority_Tube = 'pipeworks:high_priority_tube_1'
+    local amount = 1
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local MD = 'sbz_resources:matter_dust'
+    core.register_craft({
+        output = High_Priority_Tube .. ' ' .. tostring(amount),
+        type = 'shapeless',
+        recipe = { BT, MD },
+    })
+end
 
 pipeworks.register_tube('pipeworks:low_priority_tube', {
     description = 'Low Priority Tube',
@@ -145,11 +166,17 @@ pipeworks.register_tube('pipeworks:low_priority_tube', {
     },
 })
 
-minetest.register_craft {
-    output = 'pipeworks:low_priority_tube_1 1',
-    type = 'shapeless',
-    recipe = { 'pipeworks:tube_1', 'sbz_resources:antimatter_dust' },
-}
+do -- Low Priority Tube recipe scope
+    local Low_Priority_Tube = 'pipeworks:low_priority_tube_1'
+    local amount = 1
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft({
+        output = Low_Priority_Tube .. ' ' .. tostring(amount),
+        type = 'shapeless',
+        recipe = { BT, AD },
+    })
+end
 
 minetest.register_node('pipeworks:one_way_tube', {
     description = 'One-Way Tube',
@@ -197,17 +224,22 @@ minetest.register_node('pipeworks:one_way_tube', {
     on_rotate = pipeworks.on_rotate,
 })
 
-minetest.register_craft {
-    output = 'pipeworks:one_way_tube',
-    recipe = {
-        { '', 'sbz_resources:matter_dust', '' },
-        { '', 'pipeworks:tube_1', '' },
-        { '', 'sbz_resources:matter_dust', '' },
-    },
-}
+do -- One Way Tube recipe scope
+    local One_Way_Tube = 'pipeworks:one_way_tube'
+    local MD = 'sbz_resources:matter_dust'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    core.register_craft({
+        output = One_Way_Tube,
+        recipe = {
+            { '', MD, '' },
+            { '', BT, '' },
+            { '', MD, '' },
+        },
+    })
+end
 
 pipeworks.register_tube('pipeworks:crossing_tube', {
-    description = 'Crossing tube',
+    description = 'Crossing Tube',
     plain = { 'crossing_tube_plain.png' },
     noctr = { 'crossing_tube_noctr.png' },
     node_def = {
@@ -219,14 +251,19 @@ pipeworks.register_tube('pipeworks:crossing_tube', {
     },
 })
 
-minetest.register_craft {
-    output = 'pipeworks:crossing_tube_1 5',
-    recipe = {
-        { '', 'pipeworks:tube_1', '' },
-        { 'pipeworks:tube_1', 'pipeworks:tube_1', 'pipeworks:tube_1' },
-        { '', 'pipeworks:tube_1', '' },
-    },
-}
+do -- Crossing Tube recipe scope
+    local Crossing_Tube = 'pipeworks:crossing_tube_1'
+    local amount = 5
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    core.register_craft({
+        output = Crossing_Tube .. ' ' .. tostring(amount),
+        recipe = {
+            { '', BT, '' },
+            { BT, BT, BT },
+            { '', BT, '' },
+        },
+    })
+end
 
 pipeworks.register_tube('pipeworks:broken_tube', {
     description = 'Broken Tube',

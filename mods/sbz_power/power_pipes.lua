@@ -52,11 +52,16 @@ minetest.register_node(
 
 minetest.register_alias('sbz_power:power_cable', 'sbz_power:power_pipe') -- old!
 
-minetest.register_craft {
-    type = 'shapeless',
-    output = 'sbz_power:power_pipe',
-    recipe = { 'sbz_resources:raw_emittrium', 'sbz_resources:matter_plate' },
-}
+do                                                                       -- Emittrium Power Cable recipe scope
+    local Power_Cable = 'sbz_power:power_pipe'
+    local RE = 'sbz_resources:raw_emittrium'
+    local MP = 'sbz_resources:matter_plate'
+    core.register_craft({
+        type = 'shapeless',
+        output = Power_Cable,
+        recipe = { RE, MP },
+    })
+end
 
 minetest.register_node('sbz_power:airtight_power_cable', {
     description = 'Airtight Emittrium Power Cable',
@@ -77,11 +82,13 @@ minetest.register_node('sbz_power:airtight_power_cable', {
     use_texture_alpha = 'clip',
 })
 
-minetest.register_craft {
-    output = 'sbz_power:airtight_power_cable',
-    type = 'shapeless',
-    recipe = {
-        'sbz_power:power_pipe',
-        'sbz_resources:emittrium_glass',
-    },
-}
+do -- Airtight Power Cable recipe scope
+    local Airtight_Power_Cable = 'sbz_power:airtight_power_cable'
+    local PC = 'sbz_power:power_pipe' -- ("Emittrium Power Cable" in-game)
+    local EG = 'sbz_resources:emittrium_glass'
+    core.register_craft({
+        output = Airtight_Power_Cable,
+        type = 'shapeless',
+        recipe = { PC, EG },
+    })
+end

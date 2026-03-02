@@ -90,7 +90,7 @@ local function load()
     local data_file, errmsg = io.open(data_file_path)
     if not data_file then
         -- both should be available, not one or the other.
-        core.log('error', 'Failed to open '..data_file_path..': '..errmsg)
+        core.log('error', 'Failed to open ' .. data_file_path .. ': ' .. errmsg)
         return
     end
     local data = core.deserialize(data_file:read '*a')
@@ -200,6 +200,20 @@ function sbz_area_containers.teleport_to_room(player, id)
     local room = room_areastore:get_area(id, true, false)
     if not room then return end
 
+    local entrypoints_in_room = core.find_nodes_in_area(room.min, room.max, 'sbz_area_containers:entry_point')
+    if #entrypoints_in_room > 0 then
+        for _, pos in pairs(entrypoints_in_room) do
+            if
+                sbz_api.is_air(vector.add(pos, vector.new(0, 1, 0)))
+                and sbz_api.is_air(vector.add(pos, vector.new(0, 2, 0)))
+                and sbz_api.is_air(vector.add(pos, vector.new(0, 3, 0)))
+            then
+                player:set_pos(vector.add(pos, vector.new(0, 1, 0)))
+                return
+            end
+        end
+    end
+
     local relative_spawn_pos, i, success = room_spawn_pos, 0, false
     local room_min_pos = room.min
 
@@ -215,6 +229,16 @@ function sbz_area_containers.teleport_to_room(player, id)
     if not success then relative_spawn_pos = room_min_pos end -- well we tried
 
     player:set_pos(vector.add(room_min_pos, relative_spawn_pos))
+end
+
+function sbz_area_containers.exit_room(pos, player)
+    local ids = room_areastore:get_areas_for_pos(pos, true, false)
+    if not next(ids) then return end
+    local id = next(ids) -- if there are multiple ids the code has a problem, i won't concern myself with such things hovewer
+
+    local pos = core.get_position_from_hash(room_container_links[id])
+    if not pos then return end
+    player:set_pos(vector.add(pos, vector.new(0, 1, 0)))
 end
 
 ----=============----
@@ -244,13 +268,7 @@ core.register_node(
         groups = { not_in_creative_inventory = 1 },
 
         on_rightclick = function(pos, _, clicker)
-            local ids = room_areastore:get_areas_for_pos(pos, true, false)
-            if not next(ids) then return end
-            local id = next(ids) -- if there are multiple ids the code has a problem, i won't concern myself with such things hovewer
-
-            local pos = core.get_position_from_hash(room_container_links[id])
-            if not pos then return end
-            clicker:set_pos(vector.add(pos, vector.new(0, 1, 0)))
+            sbz_area_containers.exit_room(pos, clicker)
         end,
     }
 )
@@ -274,6 +292,22 @@ core.register_node(
             -- the sbz power system is totally fine and normal
 
             return vector.add(room.min, room_power_input_pos)
+        end,
+    }
+)
+
+core.register_node(
+    'sbz_area_containers:entry_point',
+    unifieddyes.def {
+        description = 'Room Container Entry Point',
+        info_extra = 'This block decides where you spawn in a room.\nRight-click to exit a room.\nIf you have multiple of these in a room, one of them will be chosen.', -- block not node hehe, im a little rebel :3
+        paramtype = 'light',
+        light_source = 14,
+        groups = { matter = 1 },
+        paramtype2 = 'color',
+        tiles = { 'room_container_entry_point.png' },
+        on_rightclick = function(pos, _, clicker)
+            sbz_area_containers.exit_room(pos, clicker)
         end,
     }
 )
@@ -330,6 +364,16 @@ core.register_craft {
     },
 }
 
+core.register_craft {
+    output = 'sbz_area_containers:entry_point',
+    recipe = {
+        { 'sbz_resources:black_sand', 'sbz_resources:matter_blob', 'sbz_resources:black_sand' },
+        { 'sbz_resources:matter_blob', 'sbz_bio:warpshroom', 'sbz_resources:matter_blob' },
+        { 'sbz_resources:black_sand', 'sbz_resources:matter_blob', 'sbz_resources:black_sand' },
+    },
+}
+
 mesecon.register_mvps_stopper('sbz_area_containers:wall')
 mesecon.register_mvps_stopper('sbz_area_containers:power_input')
 mesecon.register_mvps_stopper('sbz_area_containers:room_exit')
+-- entry point does not need to be a stopper

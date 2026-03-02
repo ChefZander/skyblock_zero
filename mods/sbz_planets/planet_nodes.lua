@@ -170,6 +170,7 @@ core.register_node('sbz_planets:snow', {
     climbable = true,
     move_resistance = 1,
     post_effect_color = '#ffffff9f',
+    post_effect_color_shaded = true,
     sunlight_propagates = true,
     drowning = 0.5,
     liquid_alternative_flowing = 'sbz_planets:snow_layer',
@@ -213,6 +214,7 @@ core.register_node('sbz_planets:snow_layer', {
     walkable = false,
     climbable = false,
     post_effect_color = '#ffffff9f',
+    post_effect_color_shaded = true,
     sunlight_propagates = true,
     drop = 'sbz_planets:snowball',
 })
@@ -244,6 +246,7 @@ core.register_node('sbz_planets:water_source_nofall', {
     use_texture_alpha = 'blend',
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 0, water = 1 },
     post_effect_color = water_color,
+    post_effect_color_shaded = true,
     paramtype = 'light',
     walkable = false,
     pointable = false,
@@ -268,52 +271,76 @@ core.register_node('sbz_planets:colorium_mapgen_sapling', {
 
 --- ===== crafting recipes ===== ----
 
-local pebble = 'sbz_resources:pebble'
+do -- Blue Stone recipe scope
+    local Blue_Stone = 'sbz_planets:blue_stone'
+    local Pe = 'sbz_resources:pebble'
+    local RE = 'sbz_resources:raw_emittrium'
+    core.register_craft({
+        output = Blue_Stone,
+        recipe = {
+            { Pe, Pe, Pe },
+            { Pe, RE, Pe },
+            { Pe, Pe, Pe },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:blue_stone',
-    recipe = {
-        { pebble, pebble, pebble },
-        { pebble, 'sbz_resources:raw_emittrium', pebble },
-        { pebble, pebble, pebble },
-    },
-}
+do -- Red Stone recipe scope
+    local Red_Stone = 'sbz_planets:red_stone'
+    local Pe = 'sbz_resources:pebble'
+    local CD = 'sbz_resources:core_dust'
+    core.register_craft({
+        output = Red_Stone,
+        recipe = {
+            { Pe, Pe, Pe },
+            { Pe, CD, Pe },
+            { Pe, Pe, Pe },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:red_stone',
-    recipe = {
-        { pebble, pebble, pebble },
-        { pebble, 'sbz_resources:core_dust', pebble },
-        { pebble, pebble, pebble },
-    },
-}
+do -- Basalt recipe scope
+    local Basalt = 'sbz_planets:basalt'
+    local Pe = 'sbz_resources:pebble'
+    local CP = 'sbz_resources:charged_particle'
+    core.register_craft({
+        output = Basalt,
+        recipe = {
+            { Pe, Pe, Pe },
+            { Pe, CP, Pe },
+            { Pe, Pe, Pe },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:basalt',
-    recipe = {
-        { pebble, pebble, pebble },
-        { pebble, 'sbz_resources:charged_particle', pebble },
-        { pebble, pebble, pebble },
-    },
-}
+do -- Marble recipe scope
+    local Marble = 'sbz_planets:marble'
+    local Pe = 'sbz_resources:pebble'
+    local WS = 'sbz_resources:white_sand'
+    core.register_craft({
+        output = Marble,
+        recipe = {
+            { Pe, Pe, Pe },
+            { Pe, WS, Pe },
+            { Pe, Pe, Pe },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:marble',
-    recipe = {
-        { pebble, pebble, pebble },
-        { pebble, 'sbz_resources:white_sand', pebble },
-        { pebble, pebble, pebble },
-    },
-}
+do -- Granite recipe scope
+    local Granite = 'sbz_planets:granite'
+    local Pe = 'sbz_resources:pebble'
+    local Sa = 'sbz_resources:sand'
+    core.register_craft({
+        output = Granite,
+        recipe = {
+            { Pe, Pe, Pe },
+            { Pe, Sa, Pe },
+            { Pe, Pe, Pe },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:granite',
-    recipe = {
-        { pebble, pebble, pebble },
-        { pebble, 'sbz_resources:sand', pebble },
-        { pebble, pebble, pebble },
-    },
-}
 sbz_api.recipe.register_craft {
     type = 'crushing',
     items = { 'sbz_planets:ice' },
@@ -326,52 +353,74 @@ sbz_api.recipe.register_craft {
     output = 'sbz_planets:ice',
 }
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_planets:snowball 9',
-    recipe = {
-        'sbz_planets:snow',
-    },
-}
+do -- Snowball recipe scope
+    local Snowball = 'sbz_planets:snowball'
+    local amount = 9
+    local Sn = 'sbz_planets:snow' -- (a full snow cube node)
+    core.register_craft({
+        type = 'shapeless',
+        output = Snowball .. ' ' .. tostring(amount),
+        recipe = { Sn }
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:snow',
-    recipe = {
-        { 'sbz_planets:snowball', 'sbz_planets:snowball', 'sbz_planets:snowball' },
-        { 'sbz_planets:snowball', 'sbz_planets:snowball', 'sbz_planets:snowball' },
-        { 'sbz_planets:snowball', 'sbz_planets:snowball', 'sbz_planets:snowball' },
-    },
-}
+do -- Snow recipe scope
+    local Snow = 'sbz_planets:snow'
+    local Sn = 'sbz_planets:snowball'
+    core.register_craft({
+        output = Snow,
+        recipe = {
+            { Sn, Sn, Sn },
+            { Sn, Sn, Sn },
+            { Sn, Sn, Sn },
+        },
+    })
+end
 
 -- now at last, the ores
 -- intentionally not worth it to craft
 
-core.register_craft {
-    output = 'sbz_planets:thorium_ore',
-    recipe = {
-        { 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder' },
-        { 'sbz_chem:thorium_powder', 'sbz_planets:red_stone', 'sbz_chem:thorium_powder' },
-        { 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder', 'sbz_chem:thorium_powder' },
-    },
-}
+do -- Thorium Ore recipe scope
+    local Thorium_Ore = 'sbz_planets:thorium_ore'
+    local TP = 'sbz_chem:thorium_powder'
+    local RS = 'sbz_planets:red_stone'
+    core.register_craft({
+        output = Thorium_Ore,
+        recipe = {
+            { TP, TP, TP },
+            { TP, RS, TP },
+            { TP, TP, TP },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:uranium_ore',
-    recipe = {
-        { 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder' },
-        { 'sbz_chem:uranium_powder', 'sbz_planets:blue_stone', 'sbz_chem:uranium_powder' },
-        { 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder', 'sbz_chem:uranium_powder' },
-    },
-}
+do -- Uranium Ore recipe scope
+    local Uranium_Ore = 'sbz_planets:uranium_ore'
+    local UP = 'sbz_chem:uranium_powder'
+    local BS = 'sbz_planets:blue_stone'
+    core.register_craft({
+        output = Uranium_Ore,
+        recipe = {
+            { UP, UP, UP },
+            { UP, BS, UP },
+            { UP, UP, UP },
+        },
+    })
+end
 
-core.register_craft {
-    output = 'sbz_planets:dwarf_orb_ore',
-    recipe = {
-        { 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb' },
-        { 'sbz_planets:dwarf_orb', 'sbz_resources:stone', 'sbz_planets:dwarf_orb' },
-        { 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb', 'sbz_planets:dwarf_orb' },
-    },
-}
+do -- Dwarf Orb Ore recipe scope
+    local Dwarf_Orb_Ore = 'sbz_planets:dwarf_orb_ore'
+    local Dw = 'sbz_planets:dwarf_orb'
+    local St = 'sbz_resources:stone'
+    core.register_craft({
+        output = Dwarf_Orb_Ore,
+        recipe = {
+            { Dw, Dw, Dw },
+            { Dw, St, Dw },
+            { Dw, Dw, Dw },
+        },
+    })
+end
 
 --[[
     THE FOLLOWING 2 FUNCTIONS and the moves string ARE FROM STELLUA - though heavily modified

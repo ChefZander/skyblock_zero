@@ -12,20 +12,29 @@ minetest.register_node('sbz_resources:strange_blob', {
     light_source = 14,
 })
 
-minetest.register_craft {
-    output = 'sbz_resources:strange_blob',
-    recipe = {
-        { 'sbz_resources:strange_dust', 'sbz_resources:strange_dust', 'sbz_resources:strange_dust' },
-        { 'sbz_resources:strange_dust', 'sbz_resources:strange_dust', 'sbz_resources:strange_dust' },
-        { 'sbz_resources:strange_dust', 'sbz_resources:strange_dust', 'sbz_resources:strange_dust' },
-    },
-}
+do -- Strange Blob recipe scope
+    local Strange_Blob = 'sbz_resources:strange_blob'
+    local SD = 'sbz_resources:strange_dust'
+    core.register_craft({
+        output = Strange_Blob,
+        recipe = {
+            { SD, SD, SD },
+            { SD, SD, SD },
+            { SD, SD, SD },
+        },
+    })
+end
 
-minetest.register_craft {
-    output = 'sbz_resources:strange_dust 9',
-    type = 'shapeless',
-    recipe = { 'sbz_resources:strange_blob' },
-}
+do -- Strange Dust recipe scope
+    local Strange_Dust = 'sbz_resources:strange_dust'
+    local amount = 9
+    local SB = 'sbz_resources:strange_blob'
+    core.register_craft({
+        output = Strange_Dust .. ' ' .. tostring(amount),
+        type = 'shapeless',
+        recipe = { SB },
+    })
+end
 
 -- its been a while since i got to use these
 -- - frog
@@ -130,14 +139,20 @@ minetest.register_tool('sbz_resources:strange_cleaner', {
     end,
 })
 
-minetest.register_craft {
-    output = 'sbz_resources:strange_cleaner',
-    recipe = {
-        { 'sbz_power:simple_charged_field', 'sbz_power:simple_charged_field', 'sbz_power:simple_charged_field' },
-        { '', 'sbz_resources:emittrium_circuit', '' },
-        { '', 'sbz_resources:matter_blob', '' },
-    },
-}
+do -- Strange Cleaner recipe scope
+    local Strange_Cleaner = 'sbz_resources:strange_cleaner'
+    local CF = 'sbz_power:simple_charged_field'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft({
+        output = Strange_Cleaner,
+        recipe = {
+            { CF, CF, CF },
+            { '', EC, '' },
+            { '', MB, '' },
+        },
+    })
+end
 
 minetest.register_node(
     'sbz_resources:stable_strange_blob',
@@ -152,11 +167,13 @@ minetest.register_node(
     }
 )
 
-minetest.register_craft {
-    output = 'sbz_resources:stable_strange_blob',
-    type = 'shapeless',
-    recipe = {
-        'sbz_resources:charged_particle',
-        'sbz_resources:strange_blob',
-    },
-}
+do -- Stable Strange Blob recipe scope
+    local Stable_Strange_Blob = 'sbz_resources:stable_strange_blob'
+    local CP = 'sbz_resources:charged_particle'
+    local SB = 'sbz_resources:strange_blob'
+    core.register_craft({
+        output = Stable_Strange_Blob,
+        type = 'shapeless',
+        recipe = { CP, SB },
+    })
+end

@@ -2,11 +2,16 @@ minetest.register_craftitem('unifieddyes:colorium', {
     description = 'Colorium',
     inventory_image = 'colorium.png',
 })
-minetest.register_craft {
-    type = 'cooking',
-    output = 'unifieddyes:colorium',
-    recipe = 'unifieddyes:colorium_powder',
-}
+
+do -- Colorium recipe scope
+    local Colorium = 'unifieddyes:colorium'
+    local colorium_powder = 'unifieddyes:colorium_powder'
+    core.register_craft({
+        type = 'cooking',
+        output = Colorium,
+        recipe = colorium_powder,
+    })
+end
 
 minetest.register_craftitem('unifieddyes:colorium_powder', {
     description = 'Colorium Powder',
@@ -92,12 +97,16 @@ minetest.register_node(
         },
     }
 )
-core.register_craft {
-    output = 'unifieddyes:power_ground_line',
-    recipe = {
-        { 'unifieddyes:colorium_ground_line', 'sbz_power:power_pipe' },
-    },
-}
+
+do -- Power Ground Line recipe scope
+    local Power_Ground_Line = 'unifieddyes:power_ground_line'
+    local CG = 'unifieddyes:colorium_ground_line'
+    local PP = 'sbz_power:power_pipe'
+    core.register_craft({
+        output = Power_Ground_Line,
+        recipe = { { CG, PP } }
+    })
+end
 
 core.register_node(
     'unifieddyes:antiblock',
@@ -138,39 +147,61 @@ core.register_node(
     }
 )
 
-minetest.register_craft {
-    output = 'unifieddyes:colorium_blob',
-    recipe = {
-        { 'unifieddyes:colorium', 'unifieddyes:colorium', 'unifieddyes:colorium' },
-        { 'unifieddyes:colorium', 'unifieddyes:colorium', 'unifieddyes:colorium' },
-        { 'unifieddyes:colorium', 'unifieddyes:colorium', 'unifieddyes:colorium' },
-    },
-}
+do -- Colorium Blob recipe scope
+    local Colorium_Blob = 'unifieddyes:colorium_blob'
+    local Co = 'unifieddyes:colorium'
+    core.register_craft({
+        output = Colorium_Blob,
+        recipe = {
+            { Co, Co, Co },
+            { Co, Co, Co },
+            { Co, Co, Co },
+        },
+    })
+end
 
-minetest.register_craft {
-    type = 'shapeless',
-    output = 'unifieddyes:colorium 9',
-    recipe = {
-        'unifieddyes:colorium_blob',
-    },
-}
-core.register_craft {
-    type = 'shapeless',
-    output = 'unifieddyes:antiblock',
-    recipe = { 'unifieddyes:colorium_blob', 'sbz_resources:antimatter_dust' },
-}
+do -- Colorium recipe scope
+    local Colorium = 'unifieddyes:colorium'
+    local amount = 9
+    local CB = 'unifieddyes:colorium_blob'
+    core.register_craft({
+        type = 'shapeless',
+        output = Colorium .. ' ' .. tostring(amount),
+        recipe = { CB },
+    })
+end
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'unifieddyes:airlike_antiblock',
-    recipe = { 'unifieddyes:antiblock' },
-}
+do -- Antiblock recipe scope
+    local Antiblock = 'unifieddyes:antiblock'
+    local CB = 'unifieddyes:colorium_blob'
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft({
+        type = 'shapeless',
+        output = Antiblock,
+        recipe = { CB, AD },
+    })
+end
 
-core.register_craft {
-    output = 'unifieddyes:colorium_ground_line 48',
-    recipe = {
-        { 'unifieddyes:colorium_blob', 'unifieddyes:colorium_blob', 'unifieddyes:colorium_blob' },
-    },
-}
+do -- Airlike Antiblock recipe scope
+    local Airlike_Antiblock = 'unifieddyes:airlike_antiblock'
+    local An = 'unifieddyes:antiblock'
+    core.register_craft({
+        type = 'shapeless',
+        output = Airlike_Antiblock,
+        recipe = { An },
+    })
+end
+
+do -- Colorium Ground Line recipe scope
+    local Colorium_Ground_Line = 'unifieddyes:colorium_ground_line'
+    local amount = 48
+    local CB = 'unifieddyes:colorium_blob'
+    core.register_craft({
+        output = Colorium_Ground_Line .. ' ' .. tostring(amount),
+        recipe = {
+            { CB, CB, CB },
+        },
+    })
+end
 
 stairs.register('unifieddyes:colorium_blob')

@@ -437,10 +437,10 @@ local function profiler_formspec(pos, username)
     core.chat_send_player(username, '[Switching Station] Network ID: ' .. dump(sbz_api.pos2network[h(pos)])) -- use: detect if the network has changed
     local fs = [[
 formspec_version[7]
-size[10,11]
+size[12,11]
 tablecolumns[text,align=left,width=12;text,align=center,padding=4;text,align=center;text,align=center]
-table[0,0;10,10;machines;Type,Amount,Lag,Power,%s;1]
-button_exit[0,10;10,1;exit;Exit]
+table[0,0;12,10;machines;Type,Amount,Lag,Power,%s;1]
+button_exit[0,10;12,1;exit;Exit]
 ]]
     local table_text = {}
 
@@ -469,14 +469,18 @@ minetest.register_node('sbz_power:switching_station', {
     end,
 })
 
-minetest.register_craft {
-    output = 'sbz_power:switching_station',
-    recipe = {
-        { '', 'sbz_resources:matter_plate', '' },
-        { 'sbz_resources:matter_plate', 'sbz_resources:matter_plate', 'sbz_resources:matter_plate' },
-        { '', 'sbz_resources:matter_plate', '' },
-    },
-}
+do -- Switching Station recipe scope
+    local Switching_Station = 'sbz_power:switching_station'
+    local MP = 'sbz_resources:matter_plate'
+    core.register_craft({
+        output = Switching_Station,
+        recipe = {
+            { '', MP, '' },
+            { MP, MP, MP },
+            { '', MP, '' },
+        },
+    })
+end
 
 minetest.register_abm {
     label = 'Machine activation - switching stations',

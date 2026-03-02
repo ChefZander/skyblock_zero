@@ -69,12 +69,17 @@ sbz_api.register_stateful("sbz_power:delayer", unifieddyes.def {
 
 })
 
-core.register_craft {
-    type = "shapeless",
-    output = "sbz_power:delayer 9",
-    recipe = {
-        "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off",
-        "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off",
-        "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off", "sbz_power:lgate_buffer_off",
-    }
-}
+do -- Delayer recipe scope
+    local Delayer = 'sbz_power:delayer'
+    local amount = 9
+    local LB = 'sbz_power:lgate_buffer_off'
+    core.register_craft({
+        type = 'shapeless',
+        output = Delayer .. ' ' .. tostring(amount),
+        recipe = {
+            LB, LB, LB,
+            LB, LB, LB,
+            LB, LB, LB,
+        }
+    })
+end

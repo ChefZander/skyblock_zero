@@ -275,14 +275,20 @@ sbz_api.register_stateful_machine("sbz_power:machine_controller", unifieddyes.de
 })
 
 -- ==RECIPES==
-core.register_craft {
-    output = "sbz_power:lgate_buffer_off",
-    recipe = {
-        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
-        { "sbz_resources:sensor_casing_plate", "sbz_resources:simple_logic_circuit", "sbz_resources:sensor_casing_plate", },
-        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate",  "sbz_resources:sensor_casing_plate", },
-    },
-}
+
+do -- Lgate Buffer recipe scope
+    local Lgate_Buffer = 'sbz_power:lgate_buffer_off'
+    local SC = 'sbz_resources:sensor_casing_plate'
+    local SL = 'sbz_resources:simple_logic_circuit'
+    core.register_craft({
+        output = Lgate_Buffer,
+        recipe = {
+            { SC, SC, SC },
+            { SC, SL, SC },
+            { SC, SC, SC },
+        },
+    })
+end
 
 local function register_inverted_craft(name1, name2)
     core.register_craft {
@@ -332,11 +338,16 @@ core.register_craft {
     }
 }
 
-core.register_craft {
-    output = "sbz_power:machine_controller",
-    recipe = {
-        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", },
-        { "sbz_resources:sensor_casing_plate", "sbz_power:connector_off",           "sbz_resources:sensor_casing_plate", },
-        { "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", "sbz_resources:sensor_casing_plate", },
-    }
-}
+do -- Machine Controller recipe scope
+    local Machine_Controller = 'sbz_power:machine_controller'
+    local SC = 'sbz_resources:sensor_casing_plate'
+    local CO = 'sbz_power:connector_off'
+    core.register_craft({
+        output = Machine_Controller,
+        recipe = {
+            { SC, SC, SC },
+            { SC, CO, SC },
+            { SC, SC, SC },
+        }
+    })
+end

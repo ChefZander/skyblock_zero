@@ -19,10 +19,15 @@ minetest.register_craftitem('sbz_bio:screen_inverter_potion', {
     inventory_image = 'screen_inverter_potion.png',
 })
 
-minetest.register_craft {
-    output = 'sbz_bio:screen_inverter_potion',
-    recipe = {
-        { 'unifieddyes:colorium_powder' },
-        { 'sbz_resources:emittrium_glass' },
-    },
-}
+do -- Screen Inverter Potion recipe scope
+    local Screen_Inverter_Potion = 'sbz_bio:screen_inverter_potion'
+    local CP = 'unifieddyes:colorium_powder'
+    local EG = 'sbz_resources:emittrium_glass'
+    core.register_craft({
+        output = Screen_Inverter_Potion,
+        recipe = {
+            { CP },
+            { EG },
+        },
+    })
+end

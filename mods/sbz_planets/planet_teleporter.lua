@@ -33,11 +33,17 @@ core.register_node("sbz_planets:planet_teleporter", {
     end
 })
 
-core.register_craft {
-    output = "sbz_planets:planet_teleporter",
-    recipe = {
-        { "sbz_resources:matter_blob",        "sbz_resources:prediction_circuit", "sbz_resources:matter_blob" },
-        { "sbz_resources:prediction_circuit", "sbz_resources:phlogiston_circuit", "sbz_resources:prediction_circuit" },
-        { "sbz_resources:matter_blob",        "sbz_resources:prediction_circuit", "sbz_resources:matter_blob" },
-    }
-}
+do -- Planet Teleporter recipe scope
+    local Planet_Teleporter = 'sbz_planets:planet_teleporter'
+    local MB = 'sbz_resources:matter_blob'
+    local PC = 'sbz_resources:prediction_circuit'
+    local Ph = 'sbz_resources:phlogiston_circuit'
+    core.register_craft({
+        output = Planet_Teleporter,
+        recipe = {
+            { MB, PC, MB },
+            { PC, Ph, PC },
+            { MB, PC, MB },
+        }
+    })
+end

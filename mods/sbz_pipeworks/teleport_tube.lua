@@ -291,15 +291,20 @@ pipeworks.register_tube("pipeworks:teleport_tube", {
     node_def = def,
 })
 
-minetest.register_craft({
-    output = "pipeworks:teleport_tube_1 8",
-    recipe = {
-        { "pipeworks:tube_1", "pipeworks:tube_1",           "pipeworks:tube_1" },
-        { "pipeworks:tube_1", "sbz_resources:warp_crystal", "pipeworks:tube_1" },
-        { "pipeworks:tube_1", "pipeworks:tube_1",           "pipeworks:tube_1" },
-    }
-})
-
+do -- Teleport Tube recipe scope
+    local Teleport_Tube = 'pipeworks:teleport_tube_1'
+    local amount = 8
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube")
+    local WC = 'sbz_resources:warp_crystal'
+    core.register_craft({
+        output = Teleport_Tube .. ' ' .. tostring(amount),
+        recipe = {
+            { BT, BT, BT },
+            { BT, WC, BT },
+            { BT, BT, BT },
+        }
+    })
+end
 
 mesecon.register_on_mvps_move(function(moved_nodes)
     for _, n in ipairs(moved_nodes) do

@@ -240,11 +240,16 @@ minetest.register_craftitem("sbz_logic:luacontroller_linker", {
     stack_max = 1,
 })
 
-minetest.register_craft {
-    output = "sbz_logic:luacontroller_linker",
-    recipe = {
-        { "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", },
-        { "sbz_resources:compressed_core_dust", "sbz_resources:warp_crystal",         "sbz_resources:compressed_core_dust", },
-        { "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", "sbz_resources:compressed_core_dust", },
-    }
-}
+do -- Luacontroller Linker recipe scope
+    local Luacontroller_Linker = 'sbz_logic:luacontroller_linker'
+    local CC = 'sbz_resources:compressed_core_dust'
+    local WC = 'sbz_resources:warp_crystal'
+    core.register_craft({
+        output = Luacontroller_Linker,
+        recipe = {
+            { CC, CC, CC },
+            { CC, WC, CC },
+            { CC, CC, CC },
+        }
+    })
+end

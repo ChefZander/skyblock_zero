@@ -184,10 +184,15 @@ core.register_craftitem("sbz_resources:firework", {
     end
 })
 
-core.register_craft {
-    output = "sbz_resources:firework 8",
-    type = "shapeless",
-    recipe = {
-        "sbz_resources:matter_blob", "sbz_resources:simple_circuit", "sbz_bio:pyrograss"
-    }
-}
+do -- Firework recipe scope
+    local Firework = 'sbz_resources:firework'
+    local amount = 8
+    local MB = 'sbz_resources:matter_blob'
+    local SC = 'sbz_resources:simple_circuit'
+    local Py = 'sbz_bio:pyrograss'
+    core.register_craft({
+        output = Firework .. ' ' .. tostring(amount),
+        type = 'shapeless',
+        recipe = { MB, SC, Py }
+    })
+end

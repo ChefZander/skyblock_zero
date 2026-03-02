@@ -80,8 +80,9 @@ The following licenses are used within this work.
 | fakelib                    | <https://github.com/OgelGames/fakelib>                                          | MIT | N/A | ❌ |
 | modlib                     | <https://github.com/appgurueu/modlib>                                           | MIT | N/A | ❌ |
 | sethome                    | <https://github.com/minetest-game/sethome/>                                     | MIT | N/A | ❌ |
-| stubes                     | <https://github.com/TheEt1234/luanti-stubes/>                                   | MIT | Unspecified/Same as Code License | ❌ |
+| stubes                     | <https://codeberg.org/Skyblock_zero/stubes>                                     | MIT | Unspecified/Same as Code License | ❌ |
 | visible_wielditem          | <https://github.com/appgurueu/visible_wielditem/>                               | MIT | N/A | ❌ |
+| extended_placement         | <https://github.com/gamefreq0/extended_placement/>                              | MIT | CC BY-SA 3.0 | ❌|
 | hotbar_switching           | <https://github.com/TheEt1234/hotbar_switching/>                                | 0BSD | N/A | ❌ |
 
 - 🔴 means the mod features risky/improper licensing of a category of work. e.g. images licensed as GPL-3.0 make little sense is generally risky to use.

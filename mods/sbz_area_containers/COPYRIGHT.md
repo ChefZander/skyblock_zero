@@ -22,10 +22,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 `textures/room_container.png` Copyright (C) 2026 The4spaceconstants. CC-BY 4.0.
 
+`textures/room_container_wall_small.png` Copyright (C) 2026 The4spaceconstants. CC-BY 4.0.
+
 `textures/room_container_exit.png` Copyright (C) 2026 TheEt1234. CC-BY 4.0. Derivative of `textures/room_container_wall_small.png`.
 
 `textures/room_container_power_io.png` Copyright (C) 2026 TheEt1234. CC-BY 4.0. Derivative of `textures/room_container_wall_small.png`.
 
-`textures/room_container_wall_small.png` Copyright (C) 2026 The4spaceconstants. CC-BY 4.0.
-
 `textures/room_container_wall.png` Copyright (C) 2026 TheEt1234. CC-BY 4.0. Derivative of `textures/room_container_wall_small.png`
+
+`textures/room_container_entry_point.png` Copyright (C) 2026 TheEt1234. CC-BY 4.0. Derivative of `textures/room_container_wall_small.png`

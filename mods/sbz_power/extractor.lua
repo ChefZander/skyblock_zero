@@ -58,14 +58,21 @@ sbz_api.register_machine('sbz_power:simple_matter_extractor', {
     output_inv = 'main',
 })
 
-minetest.register_craft {
-    output = 'sbz_power:simple_matter_extractor',
-    recipe = {
-        { 'sbz_resources:core_dust', 'sbz_resources:matter_blob', 'sbz_resources:core_dust' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_annihilator', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:core_dust', 'sbz_resources:matter_blob', 'sbz_resources:core_dust' },
-    },
-}
+do -- Simple Matter Extractor recipe scope
+    local Simple_Matter_Extractor = 'sbz_power:simple_matter_extractor'
+    local CD = 'sbz_resources:core_dust'
+    local MB = 'sbz_resources:matter_blob'
+    local MA = 'sbz_resources:matter_annihilator'
+    core.register_craft({
+        output = Simple_Matter_Extractor,
+        recipe = {
+            { CD, MB, CD },
+            { MB, MA, MB },
+            { CD, MB, CD },
+        },
+    })
+end
+
 local advanced_formspec = [[
         formspec_version[7]
         size[8.2,9]
@@ -132,11 +139,17 @@ sbz_api.register_machine('sbz_power:advanced_matter_extractor', {
     output_inv = 'main',
 })
 
-minetest.register_craft {
-    output = 'sbz_power:advanced_matter_extractor',
-    recipe = {
-        { 'sbz_resources:matter_annihilator', 'sbz_resources:matter_blob', 'sbz_resources:matter_annihilator' },
-        { 'sbz_resources:matter_blob', 'sbz_power:simple_matter_extractor', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:matter_annihilator', 'sbz_resources:matter_blob', 'sbz_resources:matter_annihilator' },
-    },
-}
+do -- Advanced Matter Extractor recipe scope
+    local Advanced_Matter_Extractor = 'sbz_power:advanced_matter_extractor'
+    local MA = 'sbz_resources:matter_annihilator'
+    local MB = 'sbz_resources:matter_blob'
+    local SM = 'sbz_power:simple_matter_extractor'
+    core.register_craft({
+        output = Advanced_Matter_Extractor,
+        recipe = {
+            { MA, MB, MA },
+            { MB, SM, MB },
+            { MA, MB, MA },
+        },
+    })
+end

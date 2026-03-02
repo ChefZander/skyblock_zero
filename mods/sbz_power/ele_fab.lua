@@ -161,11 +161,18 @@ listring[current_player;main]listring[context;input]listring[current_player;main
     }
 })
 
-minetest.register_craft {
-    output = "sbz_power:ele_fab",
-    recipe = {
-        { "sbz_power:simple_charged_field",  "sbz_resources:antimatter_plate", "sbz_power:simple_charged_field" },
-        { "sbz_resources:emittrium_circuit", "sbz_resources:emittrium_glass",  "sbz_resources:emittrium_circuit" },
-        { "sbz_power:simple_charged_field",  "sbz_resources:antimatter_plate", "sbz_power:simple_charged_field" }
-    }
-}
+do -- Ele Fab recipe scope
+    local Ele_Fab = 'sbz_power:ele_fab'
+    local Ch = 'sbz_power:simple_charged_field'
+    local AP = 'sbz_resources:antimatter_plate'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local EG = 'sbz_resources:emittrium_glass'
+    core.register_craft({
+        output = Ele_Fab,
+        recipe = {
+            { Ch, AP, Ch },
+            { EC, EG, EC },
+            { Ch, AP, Ch },
+        }
+    })
+end

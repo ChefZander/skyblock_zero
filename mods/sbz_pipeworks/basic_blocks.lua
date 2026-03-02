@@ -172,14 +172,21 @@ minetest.register_node("pipeworks:item_sorter", {
 
 })
 
-minetest.register_craft({
-    output = "pipeworks:item_sorter",
-    recipe = {
-        { "sbz_chem:invar_ingot", "pipeworks:tube_1",             "sbz_chem:invar_ingot" },
-        { "pipeworks:tube_1",     "sbz_resources:simple_circuit", "pipeworks:tube_1" },
-        { "sbz_chem:invar_ingot", "pipeworks:tube_1",             "sbz_chem:invar_ingot" }
-    },
-})
+do -- Item Sorter recipe scope
+    local Item_Sorter = 'pipeworks:item_sorter'
+    local II = 'sbz_chem:invar_ingot'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local SC = 'sbz_resources:simple_circuit'
+    core.register_craft({
+        output = Item_Sorter,
+        recipe = {
+            { II, BT, II },
+            { BT, SC, BT },
+            { II, BT, II }
+
+        }
+    })
+end
 
 minetest.register_node("pipeworks:item_void", {
     description = "Item Void",
@@ -202,11 +209,19 @@ minetest.register_node("pipeworks:item_void", {
     after_dig_node = pipeworks.after_dig,
 })
 
-minetest.register_craft({
-    output = "pipeworks:item_void 1",
-    recipe = {
-        { "sbz_resources:matter_blob", "pipeworks:tube_1",                 "sbz_resources:matter_blob" },
-        { "pipeworks:tube_1",          "sbz_resources:matter_annihilator", "pipeworks:tube_1" },
-        { "sbz_resources:matter_blob", "pipeworks:tube_1",                 "sbz_resources:matter_blob" }
-    },
-})
+do -- Item Void recipe scope
+    local Item_Void = 'pipeworks:item_void'
+    local amount = 1
+    local MB = 'sbz_resources:matter_blob'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local MA = 'sbz_resources:matter_annihilator'
+    core.register_craft({
+        output = Item_Void .. ' ' .. tostring(amount),
+        recipe = {
+            { MB, BT, MB },
+            { BT, MA, BT },
+            { MB, BT, MB }
+
+        }
+    })
+end

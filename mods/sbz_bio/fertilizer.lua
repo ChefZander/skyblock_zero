@@ -41,8 +41,12 @@ minetest.register_craftitem("sbz_bio:fertilizer", {
     groups = { ui_bio = 1 },
 })
 
-minetest.register_craft({
-    type = "shapeless",
-    output = "sbz_bio:fertilizer",
-    recipe = { "sbz_bio:algae", "sbz_bio:algae", "sbz_bio:algae" }
-})
+do -- Fertilizer recipe scope
+    local Fertilizer = 'sbz_bio:fertilizer'
+    local Al = 'sbz_bio:algae'
+    core.register_craft({
+        type = 'shapeless',
+        output = Fertilizer,
+        recipe = { Al, Al, Al }
+    })
+end

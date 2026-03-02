@@ -1,3 +1,13 @@
+# Release 42
+- Added a setting that toggles the welcome message
+- Seperated submodule contributions from sbz contributions in credits, so that people that have nothing to do with sbz don't get confused
+- Added wormholes
+- Fix crash with questbooks in node breakers
+- Stubes (still hidden):
+  - Moved to codeberg
+  - Added the ability to put items and take away items by a player
+  - (Hopefully) fixed a crash
+
 # Release 40
 - Development resumed again!
     - We are still looking for contributors, if you enjoy SBZ and want to contribute, please do so!
@@ -107,7 +117,7 @@
 - Added an info page "Overflow Handling"
 - Added an "Items destroyed: " infotext to item voids
 - Improved some quests by adding images
-- Made burners store co2
+- Made burners store CO₂
 - Fixed rare bugs with filter injectors
 
 # Release 33
@@ -147,7 +157,7 @@
 - **Re-worked organics a bit**
 - Added /playtime and /afk
 - Added colorium glass
-- Nerfed how much co2 colorium tree trunks and colorium tree leaves make when burning
+- Nerfed how much CO₂ colorium tree trunks and colorium tree leaves make when burning
 - Made node breakers, deployers, punchers, turrets give power to items that require it
 - Fixed pat.* library
 - Fixed bug with meteorite sounds being able to be heard by anyone
@@ -181,7 +191,7 @@
   - Added a setting to toggle tube backface culling
 - Storinators can now be colored with the coloring tool
 - Neutronium storinators can now sort by name (if they are placed after the update, existing neutronium storinators will not have this capability)
-- Added co2 compactor (stores co2 like a "co2 battery" would)
+- Added CO₂ compactor (stores CO₂ like a "CO₂ battery" would)
 - Fixed autocrafter behavior with pipeworks (now overflow handling with item voids is made easy)
 - Made item sorter and item void textures better
 - Added "Organics Automation" page to questbook

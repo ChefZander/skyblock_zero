@@ -114,18 +114,29 @@ sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
     light_source = 14,
 })
 
-minetest.register_craft {
-    output = "sbz_power:powered_lamp_off",
-    recipe = {
-        { "sbz_resources:emittrium_glass", "sbz_resources:simple_circuit", "sbz_resources:antimatter_dust" }
-    }
-}
+do -- Powered Lamp recipe scope
+    local Powered_Lamp = 'sbz_power:powered_lamp_off'
+    local EG = 'sbz_resources:emittrium_glass'
+    local SC = 'sbz_resources:simple_circuit'
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft({
+        output = Powered_Lamp,
+        recipe = { { EG, SC, AD },
+        }
+    })
+end
 
-minetest.register_craft {
-    output = "sbz_power:super_powered_lamp_off",
-    recipe = {
-        { "sbz_chem:silicon_ingot",        "sbz_chem:silicon_ingot",          "sbz_chem:silicon_ingot" },
-        { "sbz_resources:antimatter_blob", "sbz_resources:emittrium_circuit", "sbz_resources:antimatter_blob" },
-        { "sbz_chem:silicon_ingot",        "sbz_chem:silicon_ingot",          "sbz_chem:silicon_ingot" }
-    }
-}
+do -- Super Powered Lamp recipe scope
+    local Super_Powered_Lamp = 'sbz_power:super_powered_lamp_off'
+    local SI = 'sbz_chem:silicon_ingot'
+    local AB = 'sbz_resources:antimatter_blob'
+    local EC = 'sbz_resources:emittrium_circuit'
+    core.register_craft({
+        output = Super_Powered_Lamp,
+        recipe = {
+            { SI, SI, SI },
+            { AB, EC, AB },
+            { SI, SI, SI },
+        }
+    })
+end

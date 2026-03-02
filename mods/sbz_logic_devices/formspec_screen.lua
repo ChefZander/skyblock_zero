@@ -48,11 +48,17 @@ minetest.register_node("sbz_logic_devices:formspec_screen", {
     end
 })
 
-minetest.register_craft {
-    output = "sbz_logic_devices:formspec_screen",
-    recipe = {
-        { "",                      "sbz_resources:luanium",     "", },
-        { "sbz_resources:luanium", "sbz_resources:matter_blob", "sbz_resources:luanium" },
-        { "",                      "sbz_logic:data_disk",       "", }
-    }
-}
+do -- Formspec Screen recipe scope
+    local Formspec_Screen = 'sbz_logic_devices:formspec_screen'
+    local Lu = 'sbz_resources:luanium'
+    local MB = 'sbz_resources:matter_blob'
+    local DD = 'sbz_logic:data_disk'
+    core.register_craft({
+        output = Formspec_Screen,
+        recipe = {
+            { '', Lu, '' },
+            { Lu, MB, Lu },
+            { '', DD, '' },
+        }
+    })
+end

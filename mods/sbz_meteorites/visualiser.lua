@@ -33,6 +33,8 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
                     if obj:is_player() then table.insert(players, obj:get_player_name()) end
                 elseif entity.name == 'sbz_meteorites:meteorite' then
                     table.insert(meteorites, obj)
+                elseif entity.typename == "meteorite" then
+                    table.insert(meteorites, obj)
                 elseif entity.name == 'sbz_meteorites:gravitational_attractor_entity' then
                     table.insert(entity.type < 0 and repulsors or attractors, vector.round(obj:get_pos()))
                 end
@@ -85,11 +87,17 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
     end,
 })
 
-core.register_craft {
-    output = 'sbz_meteorites:meteorite_radar',
-    recipe = {
-        { '', 'sbz_chem:titanium_alloy_ingot', '' },
-        { '', 'sbz_chem:titanium_alloy_ingot', '' },
-        { 'sbz_resources:reinforced_matter', 'sbz_resources:prediction_circuit', 'sbz_resources:reinforced_matter' },
-    },
-}
+do -- Meteorite Radar recipe scope
+    local Meteorite_Radar = 'sbz_meteorites:meteorite_radar'
+    local TA = 'sbz_chem:titanium_alloy_ingot'
+    local RM = 'sbz_resources:reinforced_matter'
+    local PC = 'sbz_resources:prediction_circuit'
+    core.register_craft({
+        output = Meteorite_Radar,
+        recipe = {
+            { '', TA, '' },
+            { '', TA, '' },
+            { RM, PC, RM },
+        },
+    })
+end

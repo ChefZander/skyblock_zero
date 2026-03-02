@@ -6,7 +6,7 @@ function sbz_api.plant_grow(next_stage)
         else
             node.name = next_stage
         end
-        minetest.swap_node(pos, node)
+        core.swap_node(pos, node)
     end
 end
 
@@ -104,7 +104,7 @@ function sbz_api.plant_growth_tick(num_ticks, mutation_chance)
             return true -- false =>  too much and it will wilt?
         end
         if sbz_api.get_node_heat(pos) > 7 and sbz_api.is_hydrated(pos) then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local count = meta:get_int 'count' + 1
 
             local under = vector.copy(pos)
@@ -125,7 +125,7 @@ function sbz_api.plant_growth_tick(num_ticks, mutation_chance)
             meta:set_float('growth_multiplier', growth_multiplier)
             if count >= (num_ticks / growth_multiplier) then
                 count = 0
-                minetest.registered_nodes[node.name].grow(pos, node)
+                core.registered_nodes[node.name].grow(pos, node)
             end
 
             meta:set_int('count', count)
@@ -138,7 +138,7 @@ function sbz_api.plant_wilt(stages)
     return function(pos, node)
         if core.get_item_group(node.name, 'no_wilt') == 0 then
             node.param2 = node.param2 + 1
-            minetest.swap_node(pos, node.param2 >= stages and { name = 'air' } or node)
+            core.swap_node(pos, node.param2 >= stages and { name = 'air' } or node)
         end
     end
 end
@@ -151,10 +151,10 @@ function sbz_api.plant_plant(plant, nodes)
             local soil_node = core.get_node(pointed[use_pointed] - up)
             if
                 string.sub(node, 1, 6) == 'group:'
-                    and minetest.get_item_group(soil_node.name, string.sub(node, 7)) > 0
+                    and core.get_item_group(soil_node.name, string.sub(node, 7)) > 0
                 or soil_node.name == node
             then
-                local _, pos = minetest.item_place_node(ItemStack(plant), user, pointed)
+                local _, pos = core.item_place_node(ItemStack(plant), user, pointed)
                 if pos then
                     itemstack:take_item()
                     return itemstack
@@ -187,7 +187,7 @@ function sbz_api.register_plant(name, defs, modname)
     for i = 1, defs.stages - 1 do
         local interpolant = (i - 1) / (defs.stages - 1)
         local height = defs.height_min * (1 - interpolant) + defs.height_max * interpolant
-        minetest.register_node(modname .. name .. '_' .. i, {
+        core.register_node(modname .. name .. '_' .. i, {
             description = defs.description,
             drawtype = 'plantlike',
             tiles = { name .. '_' .. i .. '.png' },
@@ -222,7 +222,7 @@ function sbz_api.register_plant(name, defs, modname)
             power_per_co2 = power_per_co2_base * i,
         })
     end
-    minetest.register_node(modname .. name .. '_' .. defs.stages, {
+    core.register_node(modname .. name .. '_' .. defs.stages, {
         description = defs.description,
         drawtype = 'plantlike',
         tiles = { name .. '_' .. defs.stages .. '.png' },
@@ -274,7 +274,7 @@ sbz_api.register_plant('pyrograss', {
     height_max = 0,
     no_wilt = true,
 })
-minetest.register_craftitem('sbz_bio:pyrograss', {
+core.register_craftitem('sbz_bio:pyrograss', {
     description = 'Pyrograss',
     inventory_image = 'pyrograss_4.png',
     groups = { burn = 30, eat = 1 },
@@ -287,7 +287,7 @@ minetest.register_craftitem('sbz_bio:pyrograss', {
 -- poison bullets for later
 -- compressed razorgrass could maybe look nice
 -- grows slightly slower than pyro
--- no co2 demand
+-- no CO₂ demand
 
 playereffects.register_effect_type(
     'poison',
@@ -322,15 +322,17 @@ sbz_api.register_plant('razorgrass', {
     end,
 })
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_bio:fertilizer 20',
-    recipe = {
-        'sbz_bio:razorgrass',
-        'sbz_bio:razorgrass',
-        'sbz_bio:razorgrass',
-    },
-}
+do -- Fertilizer bulk recipe scope
+    local Fertilizer = 'sbz_bio:fertilizer'
+    local amount = 20
+    local Ra = 'sbz_bio:razorgrass'
+    core.register_craft({
+        type = 'shapeless',
+        output = Fertilizer .. ' ' .. tostring(amount),
+        recipe = { Ra, Ra, Ra },
+    })
+end
+
 minetest.register_craftitem('sbz_bio:razorgrass', {
     description = 'Razorgrass',
     inventory_image = 'razorgrass_4.png',
@@ -348,7 +350,7 @@ minetest.register_craftitem('sbz_bio:razorgrass', {
 -- clearing effect
 -- blinding bullets for later
 -- could be used to "polish" decoblocks
--- boosts plants near it by 15% when in full growth stage, consumes co2, makes plants consume more co2
+-- boosts plants near it by 15% when in full growth stage, consumes CO₂, makes plants consume more CO₂
 -- grows slowly
 
 playereffects.register_effect_type('immune', 'Immune', 'fx_immunity.png', { 'immunity' }, function(player)
@@ -372,7 +374,7 @@ sbz_api.register_plant('cleargrass', {
     growth_boost = 25,
 })
 
-minetest.register_craftitem('sbz_bio:cleargrass', {
+core.register_craftitem('sbz_bio:cleargrass', {
     description = 'Cleargrass',
     inventory_image = 'cleargrass_4.png',
     groups = { burn = 0, eat = 0 },
@@ -399,7 +401,7 @@ sbz_api.register_plant('stemfruit_plant', {
     mutation_chance = 80,
 })
 
-minetest.register_craftitem('sbz_bio:stemfruit', {
+core.register_craftitem('sbz_bio:stemfruit', {
     description = 'Stemfruit',
     inventory_image = 'stemfruit.png',
     groups = { burn = 12, eat = 5 },
@@ -408,11 +410,11 @@ minetest.register_craftitem('sbz_bio:stemfruit', {
         if pointed.switched then use_pointed = 'under' end
         local soil_node = core.get_node(pointed[use_pointed] - up)
         local water_node = core.get_node(pointed[use_pointed] + up)
-        if minetest.get_item_group(soil_node.name, 'soil') > 0 then
+        if core.get_item_group(soil_node.name, 'soil') > 0 then
             if core.get_item_group(water_node.name, 'water') > 0 then
                 return core.registered_items['sbz_bio:fiberweed'].on_place(itemstack, user, pointed)
             end
-            local _, pos = minetest.item_place_node(ItemStack 'sbz_bio:stemfruit_plant_1', user, pointed)
+            local _, pos = core.item_place_node(ItemStack 'sbz_bio:stemfruit_plant_1', user, pointed)
             if pos then
                 itemstack:take_item()
                 return itemstack
@@ -448,9 +450,9 @@ local function teleport_randomly(user)
                 math.random(-warpshroom_teleport_radius, warpshroom_teleport_radius)
             )
         if
-            not minetest.registered_nodes[minetest.get_node(pos).name].walkable
-            and not minetest.registered_nodes[minetest.get_node(pos + up).name].walkable
-            and minetest.registered_nodes[minetest.get_node(pos - up).name].walkable
+            not core.registered_nodes[core.get_node(pos).name].walkable
+            and not core.registered_nodes[core.get_node(pos + up).name].walkable
+            and core.registered_nodes[core.get_node(pos - up).name].walkable
         then
             return user:set_pos(pos - up * 0.5) -- this was missing a "return"... yeah... bad bad
         end
@@ -459,7 +461,7 @@ end
 
 local eat = core.item_eat(6)
 
-minetest.register_craftitem('sbz_bio:warpshroom', {
+core.register_craftitem('sbz_bio:warpshroom', {
     description = 'Warpshroom',
     inventory_image = 'warpshroom_4.png',
     on_place = sbz_api.plant_plant('sbz_bio:warpshroom_1', { 'group:matter' }),
@@ -471,13 +473,13 @@ minetest.register_craftitem('sbz_bio:warpshroom', {
     groups = { ui_bio = 1, eat = 6 },
 })
 --[[
-minetest.register_craft({
+core.register_craft({
     type = "shapeless",
     output = "sbz_bio:warpshroom",
     recipe = { "sbz_bio:stemfruit", "sbz_meteorites:neutronium" }
 })
 ]]
--- Shockshroom, +40 power, needs 2 co2
+-- Shockshroom, +40 power, needs 2 CO₂
 -- ingredient in powered dirt
 playereffects.register_effect_type('shocked', 'Shocked', 'fx_shocked.png', { 'clearable', 'speed' }, function(player)
     ---modifies the vector, returns it
@@ -493,7 +495,7 @@ playereffects.register_effect_type('shocked', 'Shocked', 'fx_shocked.png', { 'cl
     if playereffects.has_effect_type(player:get_player_name(), 'wet') then
         player:set_hp(math.max(0, player:get_hp() - 8))
         local pos = player:get_pos()
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 50,
             time = 0.1,
             radius = { min = 0.1, max = 0.5 },
@@ -529,7 +531,7 @@ sbz_api.register_plant('shockshroom', {
     use_co2_in_final_stage = true,
 })
 
-minetest.register_craftitem('sbz_bio:shockshroom', {
+core.register_craftitem('sbz_bio:shockshroom', {
     description = 'Shockshroom',
     inventory_image = 'shockshroom_4.png',
     on_place = sbz_api.plant_plant('sbz_bio:shockshroom_1', { 'group:soil' }),
@@ -548,13 +550,13 @@ minetest.register_craftitem('sbz_bio:shockshroom', {
 --To be used in making string and fabric for various uses
 local function is_all_water(pos, leveled)
     for i = 1, math.ceil(leveled / 16) do
-        local nodename = minetest.get_node(pos + up * i).name
+        local nodename = core.get_node(pos + up * i).name
         if nodename ~= 'sbz_resources:water_source' and nodename ~= 'sbz_resources:water_flowing' then return false end
     end
     return true
 end
 
-minetest.register_node('sbz_bio:fiberweed', {
+core.register_node('sbz_bio:fiberweed', {
     description = 'Fiberweed',
     drawtype = 'plantlike_rooted',
     tiles = { 'dirt.png^fiberweed_overlay.png', 'dirt.png' },
@@ -571,25 +573,25 @@ minetest.register_node('sbz_bio:fiberweed', {
     node_dig_prediction = 'sbz_bio:dirt',
     node_placement_prediction = '',
     on_place = function(itemstack, user, pointed)
-        if pointed.type ~= 'node' or minetest.get_node(pointed.under).name ~= 'sbz_bio:dirt' then return end
-        minetest.set_node(pointed.under, { name = 'sbz_bio:fiberweed', param2 = 8 })
+        if pointed.type ~= 'node' or core.get_node(pointed.under).name ~= 'sbz_bio:dirt' then return end
+        core.set_node(pointed.under, { name = 'sbz_bio:fiberweed', param2 = 8 })
         itemstack:take_item()
         return itemstack
     end,
     after_dig_node = function(pos, node, meta, user)
-        minetest.set_node(pos, { name = 'sbz_bio:dirt' })
+        core.set_node(pos, { name = 'sbz_bio:dirt' })
         unlock_achievement(user:get_player_name(), 'Fiberweed')
         local inv = user:get_inventory()
         local drop = inv:add_item('main', 'sbz_bio:fiberweed ' .. math.floor(node.param2 / 8))
-        if drop then minetest.add_item(pos + up, drop) end
+        if drop then core.add_item(pos + up, drop) end
     end,
     growth_tick = function(pos, node)
         if sbz_api.get_node_heat(pos + up) > 7 and is_all_water(pos, node.param2) then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local count = meta:get_int 'count' + 1
             if count >= 4 then
                 count = 0
-                minetest.registered_nodes[node.name].grow(pos, node)
+                core.registered_nodes[node.name].grow(pos, node)
             end
             meta:set_int('count', count)
             return true
@@ -598,16 +600,16 @@ minetest.register_node('sbz_bio:fiberweed', {
     grow = function(pos, node)
         if is_all_water(pos, node.param2 + 8) then
             node.param2 = node.param2 + 8
-            minetest.swap_node(pos, node)
+            core.swap_node(pos, node)
         end
     end,
     wilt = function(pos, node)
         node.param2 = node.param2 - 8
-        minetest.swap_node(pos, node.param2 <= 0 and { name = 'sbz_bio:dirt' } or node)
+        core.swap_node(pos, node.param2 <= 0 and { name = 'sbz_bio:dirt' } or node)
     end,
 })
 --[[
-minetest.register_craft({
+core.register_craft({
     output = "sbz_bio:fiberweed",
     recipe = {
         { "sbz_bio:algae", "sbz_bio:algae",     "sbz_bio:algae" },

@@ -6,8 +6,8 @@ local palettes = {
     ["unifieddyes_palette_colorwallmounted.png"] = true
 }
 
-minetest.register_on_mods_loaded(function()
-    for k, v in pairs(minetest.registered_items) do
+core.register_on_mods_loaded(function()
+    for k, v in pairs(core.registered_items) do
         local og_desc = v.description
         local new_desc = { og_desc }
 
@@ -42,7 +42,7 @@ minetest.register_on_mods_loaded(function()
                 "This chemical is disabled.\nThis means that you won't be able to obtain it anymore, but it may receive a use in the future."
             end
             if v.groups.burn ~= nil then
-                new_desc[#new_desc + 1] = "Burn power: " .. v.groups.burn .. " co2"
+                new_desc[#new_desc + 1] = "Burn power: " .. v.groups.burn .. " CO₂"
             end
             if v.groups.eat then
                 local sign = "+"
@@ -87,9 +87,9 @@ minetest.register_on_mods_loaded(function()
 
         if #new_desc > 1 then
             for i = 2, #new_desc do
-                new_desc[i] = minetest.colorize("#777", new_desc[i])
+                new_desc[i] = core.colorize("#777", new_desc[i])
             end
-            minetest.override_item(k, {
+            core.override_item(k, {
                 description = table.concat(new_desc, "\n"),
                 short_description = og_desc,
             })

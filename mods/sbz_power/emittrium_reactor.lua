@@ -38,22 +38,19 @@ minetest.register_node('sbz_power:reactor_shell', {
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
 })
 
-minetest.register_craft {
-    output = 'sbz_power:reactor_shell',
-    recipe = {
-        {
-            'sbz_resources:compressed_core_dust',
-            'sbz_resources:raw_emittrium',
-            'sbz_resources:compressed_core_dust',
+do -- Reactor Shell recipe scope
+    local Reactor_Shell = 'sbz_power:reactor_shell'
+    local CC = 'sbz_resources:compressed_core_dust'
+    local RE = 'sbz_resources:raw_emittrium'
+    core.register_craft({
+        output = Reactor_Shell,
+        recipe = {
+            { CC, RE, CC },
+            { RE, CC, RE },
+            { CC, RE, CC },
         },
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:compressed_core_dust', 'sbz_resources:raw_emittrium' },
-        {
-            'sbz_resources:compressed_core_dust',
-            'sbz_resources:raw_emittrium',
-            'sbz_resources:compressed_core_dust',
-        },
-    },
-}
+    })
+end
 
 minetest.register_node('sbz_power:reactor_glass', {
     description = 'Reactor Glass',
@@ -67,14 +64,20 @@ minetest.register_node('sbz_power:reactor_glass', {
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
 })
 
-minetest.register_craft {
-    output = 'sbz_power:reactor_glass',
-    recipe = {
-        { 'sbz_power:simple_charged_field', 'sbz_resources:emittrium_glass', 'sbz_power:simple_charged_field' },
-        { 'sbz_resources:emittrium_glass', 'sbz_power:reactor_shell', 'sbz_resources:emittrium_glass' },
-        { 'sbz_power:simple_charged_field', 'sbz_resources:emittrium_glass', 'sbz_power:simple_charged_field' },
-    },
-}
+do -- Reactor Glass recipe scope
+    local Reactor_Glass = 'sbz_power:reactor_glass'
+    local Ch = 'sbz_power:simple_charged_field'
+    local EG = 'sbz_resources:emittrium_glass'
+    local RS = 'sbz_power:reactor_shell'
+    core.register_craft({
+        output = Reactor_Glass,
+        recipe = {
+            { Ch, EG, Ch },
+            { EG, RS, EG },
+            { Ch, EG, Ch },
+        },
+    })
+end
 
 local reactor_shell = 'blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.png'
 
@@ -115,12 +118,18 @@ minetest.register_node('sbz_power:reactor_item_input', {
     },
 })
 
-minetest.register_craft {
-    output = 'sbz_power:reactor_item_input',
-    recipe = {
-        { 'pipeworks:tube_1', 'sbz_resources:retaining_circuit', 'sbz_power:reactor_shell' },
-    },
-}
+do -- Reactor Emittrium Input recipe scope
+    local Reactor_Emittrium_Input = 'sbz_power:reactor_item_input' -- Only takes emittrium
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local RC = 'sbz_resources:retaining_circuit'
+    local RS = 'sbz_power:reactor_shell'
+    core.register_craft({
+        output = Reactor_Emittrium_Input,
+        recipe = {
+            { BT, RC, RS },
+        },
+    })
+end
 
 sbz_api.register_stateful('sbz_power:reactor_core', {
     description = 'Reactor Core',
@@ -142,14 +151,19 @@ sbz_api.register_stateful('sbz_power:reactor_core', {
     light_source = 14,
 })
 
-minetest.register_craft {
-    output = 'sbz_power:reactor_core',
-    recipe = {
-        { 'sbz_power:reactor_shell', 'sbz_power:reactor_shell', 'sbz_power:reactor_shell' },
-        { 'sbz_power:reactor_shell', 'sbz_meteorites:neutronium', 'sbz_power:reactor_shell' },
-        { 'sbz_power:reactor_shell', 'sbz_power:reactor_shell', 'sbz_power:reactor_shell' },
-    },
-}
+do -- Reactor Core recipe scope
+    local Reactor_Core = 'sbz_power:reactor_core'
+    local RS = 'sbz_power:reactor_shell'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft({
+        output = Reactor_Core,
+        recipe = {
+            { RS, RS, RS },
+            { RS, Ne, RS },
+            { RS, RS, RS },
+        },
+    })
+end
 
 local function make_infoscreen_on_formspec(meta)
     local function barchart_this_number(x, max)
@@ -286,12 +300,18 @@ minetest.register_node('sbz_power:reactor_infoscreen', {
     end,
 })
 
-minetest.register_craft {
-    output = 'sbz_power:reactor_infoscreen',
-    recipe = {
-        { 'sbz_power:reactor_glass', 'sbz_power:reactor_shell', 'sbz_power:connector_off' },
-    },
-}
+do -- Reactor Infoscreen recipe scope
+    local Reactor_Infoscreen = 'sbz_power:reactor_infoscreen'
+    local RG = 'sbz_power:reactor_glass'
+    local RS = 'sbz_power:reactor_shell'
+    local CO = 'sbz_power:connector_off'
+    core.register_craft({
+        output = Reactor_Infoscreen,
+        recipe = {
+            { RG, RS, CO },
+        },
+    })
+end
 
 sbz_api.register_generator('sbz_power:reactor_power_port', {
     description = 'Reactor Power Port',
@@ -324,12 +344,18 @@ sbz_api.register_generator('sbz_power:reactor_power_port', {
     disallow_pipeworks = true,
 })
 
-minetest.register_craft {
-    output = 'sbz_power:reactor_power_port',
-    recipe = {
-        { 'sbz_power:power_pipe', 'sbz_power:reactor_shell', 'sbz_power:simple_charged_field' },
-    },
-}
+do -- Reactor Power Port recipe scope
+    local Reactor_Power_Port = 'sbz_power:reactor_power_port'
+    local PP = 'sbz_power:power_pipe'
+    local RS = 'sbz_power:reactor_shell'
+    local Ch = 'sbz_power:simple_charged_field'
+    core.register_craft({
+        output = Reactor_Power_Port,
+        recipe = {
+            { PP, RS, Ch },
+        },
+    })
+end
 
 minetest.register_node('sbz_power:reactor_coolant_port', {
     description = 'Reactor Coolant Port',
@@ -362,12 +388,19 @@ minetest.register_node('sbz_power:reactor_coolant_port', {
     end,
     on_liquid_inv_update = function(pos, lqinv) end,
 })
-minetest.register_craft {
-    output = 'sbz_power:reactor_coolant_port',
-    recipe = {
-        { 'sbz_power:fluid_pipe', 'sbz_power:fluid_tank', 'sbz_power:reactor_shell' },
-    },
-}
+
+do -- Reactor Coolant Port recipe scope
+    local Reactor_Coolant_Port = 'sbz_power:reactor_coolant_port'
+    local FP = 'sbz_power:fluid_pipe'
+    local FT = 'sbz_power:fluid_tank'
+    local RS = 'sbz_power:reactor_shell'
+    core.register_craft({
+        output = Reactor_Coolant_Port,
+        recipe = {
+            { FP, FT, RS },
+        },
+    })
+end
 
 local function explode(pos)
     local owner = minetest.get_meta(pos):get_string 'owner'

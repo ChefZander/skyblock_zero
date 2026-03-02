@@ -4,6 +4,13 @@ local function get_nearby_player(pos)
     end
 end
 
+sbz_api.meteorite_node_types = {
+        matter_blob = { 'sbz_meteorites:meteoric_matter', 'sbz_meteorites:meteoric_metal' },
+        emitter = { 'sbz_meteorites:meteoric_emittrium', 'sbz_meteorites:meteoric_metal' },
+        antimatter_blob = { 'sbz_meteorites:meteoric_antimatter', 'sbz_meteorites:meteoric_antimatter' },
+        strange_blob = { 'sbz_resources:strange_blob', 'sbz_resources:strange_blob' },
+}
+
 local function meteorite_explode(pos, type)
     --breaking nodes
     sbz_api.explode(pos, 8, 0.9, false, '.meteorite')
@@ -16,12 +23,7 @@ local function meteorite_explode(pos, type)
         )
     end
 
-    local node_types = {
-        matter_blob = { 'sbz_meteorites:meteoric_matter', 'sbz_meteorites:meteoric_metal' },
-        emitter = { 'sbz_meteorites:meteoric_emittrium', 'sbz_meteorites:meteoric_metal' },
-        antimatter_blob = { 'sbz_meteorites:meteoric_antimatter', 'sbz_meteorites:meteoric_antimatter' },
-        strange_blob = { 'sbz_resources:strange_blob', 'sbz_resources:strange_blob' },
-    }
+    local nodetype = sbz_api.meteorite_node_types
     if not protected then
         for _ = 1, 16 do
             local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))

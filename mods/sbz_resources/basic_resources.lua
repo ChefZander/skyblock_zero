@@ -80,13 +80,25 @@ minetest.register_craftitem("sbz_resources:antimatter_dust", {
     inventory_image = "antimatter_dust.png",
     stack_max = 256,
 })
-minetest.register_craft({
-    type = "shapeless",
-    output = "sbz_resources:antimatter_dust",
-    recipe = { "sbz_resources:core_dust", "sbz_resources:matter_dust" }
-})
-minetest.register_craft({
-    type = "shapeless",
-    output = "sbz_resources:matter_dust",
-    recipe = { "sbz_resources:core_dust", "sbz_resources:antimatter_dust" }
-})
+
+do -- Antimatter Dust recipe scope
+    local Antimatter_Dust = 'sbz_resources:antimatter_dust'
+    local CD = 'sbz_resources:core_dust'
+    local MD = 'sbz_resources:matter_dust'
+    core.register_craft({
+        type = 'shapeless',
+        output = Antimatter_Dust,
+        recipe = { CD, MD }
+    })
+end
+
+do -- Matter Dust recipe scope
+    local Matter_Dust = 'sbz_resources:matter_dust'
+    local CD = 'sbz_resources:core_dust'
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft({
+        type = 'shapeless',
+        output = Matter_Dust,
+        recipe = { CD, AD }
+    })
+end
