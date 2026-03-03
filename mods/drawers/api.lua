@@ -51,6 +51,12 @@ do -- Drawer node box scope
         { -T,  T, -H,  T,  H, -T }, -- top-side    16th-of-node sized bar
         { -T, -H, -H,  T, -T, -T }, -- bottom-side 16th-of-node sized bar
     }
+
+        drawers.node_box_drawer_connector = {
+    --  { x1, y1, z1, x2, y2, z2 }
+    --  --------------------------
+        { -H, -H, -H,  H,  H,  H }, -- main block, slightly inset block
+    }
 end
 
 drawers.drawer_formspec = 'size[9,6.7]'
@@ -419,12 +425,17 @@ function drawers.register_drawer(name, def)
 end
 
 function drawers.register_connector(name, def)
-    def.drawtype = 'normal'
+    def.description = def.description
+    def.drawtype = 'nodebox'
+    def.node_box = { type = 'fixed', fixed = drawers.node_box_drawer_connector }
+    def.collision_box = { type = 'regular' }
+    def.selection_box = { type = 'fixed', fixed = drawers.node_box_drawer_connector }
     def.paramtype = 'light'
-    -- no paramtype2 needed
+    def.paramtype2 = 'colorfacedir'
+    def.light_source = 10
     def.groups = def.groups or {}
-    def.groups.drawer_connector = 1
     def.is_ground_content = false
+    def = unifieddyes.def(def, false)
 
 --[[ 
     -- Pipeworks integration (Connectors should be tube-compatible)
