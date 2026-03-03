@@ -42,7 +42,8 @@ drawers.CHEST_ITEMSTRING = "sbz_resources:storinator"
 
 -- 2. Load Components in Dependency Order
 dofile(MP .. "/helpers.lua")    -- Basic utilities
-dofile(MP .. "/visuals.lua")    -- Visual Entity & spawning logic
+dofile(MP .. "/formspecs.lua")  -- We still using these?
+dofile(MP .. "/visuals.lua")    -- Item/Node contents indicator visuals
 dofile(MP .. "/api.lua")        -- Registration templates (register_drawer)
 dofile(MP .. "/controller.lua") -- The Controller node logic
 dofile(MP .. "/nodes.lua")      -- The actual items (Matter Drawer, Upgrades)

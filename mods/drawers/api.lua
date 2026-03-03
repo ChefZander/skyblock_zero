@@ -56,10 +56,9 @@ end
 
 drawers.drawer_formspec = 'size[9,6.7]'
     .. 'list[context;upgrades;2,0.5;5,1;]'
-    .. drawers.inventory_list(2.5)
     .. 'listring[context;upgrades]'
     .. 'listring[current_player;main]'
-    .. drawers.get_upgrade_slots_bg(2, 0.5)
+    .. drawers.upgrades_gui_pane()
 
 -- construct drawer
 function drawers.drawer_on_construct(pos)

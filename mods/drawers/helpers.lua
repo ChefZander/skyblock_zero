@@ -31,21 +31,12 @@ SOFTWARE.
 
 local S = core.get_translator('drawers')
 
--- GUI
-
+-- Used for Drawer Controller's GUI
 function drawers.inventory_list(posy)
 	local hotbar_row_posy = posy + 1.25
 	local inventory_list = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..
 		"list[current_player;main;0.5," .. hotbar_row_posy .. ";8,3;8]"
 	return inventory_list
-end
-
-function drawers.get_upgrade_slots_bg(x, y)
-	local out = ""
-	for i = 0, 4, 1 do
-		out = out .. "image[" .. x + i .. "," .. y .. ";1,1;drawers_upgrade_slot_bg.png]"
-	end
-	return out
 end
 
 function drawers.gen_info_text(basename, count, factor, stack_max)
