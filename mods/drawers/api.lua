@@ -385,14 +385,18 @@ function drawers.register_drawer(name, def)
         def4.groups.drawer = 4
         core.register_node(name .. '4', def4)
     end
+
+    -- Drawer recipes scope
     if (not def.no_craft) and def.material then
+        local Ch = drawers.CHEST_ITEMSTRING
+        local Ma = def.material
         if drawers.enable_1x1 then
             core.register_craft {
                 output = name .. '1',
                 recipe = {
-                    { def.material, def.material, def.material },
-                    { '', drawers.CHEST_ITEMSTRING, '' },
-                    { def.material, def.material, def.material },
+                    { Ma, Ma, Ma },
+                    { '', Ch, '' },
+                    { Ma, Ma, Ma },
                 },
             }
         end
@@ -400,9 +404,9 @@ function drawers.register_drawer(name, def)
             core.register_craft {
                 output = name .. '2 2',
                 recipe = {
-                    { def.material, drawers.CHEST_ITEMSTRING, def.material },
-                    { def.material, def.material, def.material },
-                    { def.material, drawers.CHEST_ITEMSTRING, def.material },
+                    { Ma, Ch, Ma },
+                    { Ma, Ma, Ma },
+                    { Ma, Ch, Ma },
                 },
             }
         end
@@ -410,9 +414,9 @@ function drawers.register_drawer(name, def)
             core.register_craft {
                 output = name .. '4 4',
                 recipe = {
-                    { drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING },
-                    { def.material, def.material, def.material },
-                    { drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING },
+                    { Ch, Ma, Ch },
+                    { Ma, Ma, Ma },
+                    { Ch, Ma, Ch },
                 },
             }
         end
