@@ -110,15 +110,23 @@ drawers.register_drawer_upgrade("drawers:infinite_upgrade", {
 
 -- Register drawer upgrade template
 
-core.register_craftitem("drawers:upgrade_template", {
-    description = S("Drawer Upgrade Template"),
-    inventory_image = "drawers_upgrade_template.png"
+core.register_craftitem('drawers:upgrade_template', {
+    description = S('Drawer Upgrade Template'),
+    inventory_image = 'drawers_upgrade_template.png'
 })
-core.register_craft({
-    output = "drawers:upgrade_template 4",
-    recipe = {
-        { "sbz_chem:gold_ingot",   "sbz_chem:nickel_ingot",    "sbz_chem:gold_ingot" },
-        { "sbz_chem:nickel_ingot", "sbz_resources:storinator", "sbz_chem:nickel_ingot" },
-        { "sbz_chem:gold_ingot",   "sbz_chem:nickel_ingot",    "sbz_chem:gold_ingot" }
-    }
-})
+
+do -- Drawer Upgrade Template recipe scope
+    local Drawer_Upgrade_Template = 'drawers:upgrade_template'
+    local amount = 4
+    local GI = 'sbz_chem:gold_ingot'
+    local NI = 'sbz_chem:nickel_ingot'
+    local St = 'sbz_resources:storinator'
+    core.register_craft({
+        output = Drawer_Upgrade_Template .. ' ' .. tostring(amount),
+        recipe = {
+            { GI, NI, GI },
+            { NI, St, NI },
+            { GI, NI, GI },
+        }
+    })
+end
