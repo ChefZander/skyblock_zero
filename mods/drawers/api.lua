@@ -52,11 +52,6 @@ do -- Drawer node box scope
         { -T, -H, -H,  T, -T, -T }, -- bottom-side 16th-of-node sized bar
     }
 
-        drawers.node_box_drawer_connector = {
-    --  { x1, y1, z1, x2, y2, z2 }
-    --  --------------------------
-        { -H, -H, -H,  H,  H,  H }, -- main block, slightly inset block
-    }
 end
 
 drawers.drawer_formspec = 'size[9,6.7]'
@@ -426,10 +421,7 @@ end
 
 function drawers.register_connector(name, def)
     def.description = def.description
-    def.drawtype = 'nodebox'
-    def.node_box = { type = 'fixed', fixed = drawers.node_box_drawer_connector }
-    def.collision_box = { type = 'regular' }
-    def.selection_box = { type = 'fixed', fixed = drawers.node_box_drawer_connector }
+    def.drawtype = 'normal'
     def.paramtype = 'light'
     def.paramtype2 = 'colorfacedir'
     def.light_source = 10
@@ -437,7 +429,6 @@ function drawers.register_connector(name, def)
     def.is_ground_content = false
     def = unifieddyes.def(def, false)
 
---[[ 
     -- Pipeworks integration (Connectors should be tube-compatible)
     if core.get_modpath('pipeworks') and pipeworks then
         def.groups.tubedevice = 1
@@ -449,7 +440,7 @@ function drawers.register_connector(name, def)
         def.after_place_node = pipeworks.after_place
         def.after_dig_node = pipeworks.after_dig
     end
- ]]
+
     core.register_node(name, def)
 
     -- Material-based crafting

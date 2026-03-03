@@ -47,6 +47,16 @@ drawers.register_drawer("drawers:drawer", {
     info_extra = S("If you aren't seeing drawer visuals, try using /drawers_fix")
 })
 
+-- Register Drawer Connector ("Drawer Trim" from the original drawers mod)
+-- Drawer Controllers can transfer through these blocks.
+drawers.register_connector("drawers:drawer_connector", {
+    description = S("Drawer Connector"),
+    tiles = { "drawers_matter_connector.png" },
+    groups = { matter = 1, oddly_breakable_by_hand = 2 },
+    material = "sbz_resources:reinforced_matter",
+    info_extra = S("For use with the Drawer Controller; transfers items through it to adjacent drawers.")
+})
+
 -- Register drawer upgrades
 
 drawers.register_drawer_upgrade("drawers:bronze_upgrade", {
@@ -92,14 +102,6 @@ drawers.register_drawer_upgrade("drawers:infinite_upgrade", {
     inventory_image = "drawers_upgrade_infinite.png",
     groups = { drawer_upgrade = 1000100, creative = 1 },
     no_craft = true,
-})
-
--- Register Drawer Connector ("Drawer Trim" from the original drawers mod)
--- Drawer Controllers can transfer through these blocks.
-drawers.register_connector("drawers:drawer_connector", {
-    description = S("Drawer Connector"),
-    tiles = { "drawers_matter.png" },
-    material = "sbz_resources:reinforced_matter",
 })
 
 -- Register drawer upgrade template
