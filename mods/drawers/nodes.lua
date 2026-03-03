@@ -56,7 +56,11 @@ drawers.register_drawer("drawers:drawer", {
 drawers.register_connector("drawers:drawer_connector", {
     description = S("Drawer Connector"),
     tiles = { "drawers_matter_connector.png" },
-    groups = { matter = 1, oddly_breakable_by_hand = 2 },
+    groups = {
+        matter = 1,
+        oddly_breakable_by_hand = 2,
+        drawer_connector = 1 -- Add this line
+    },
     material = "sbz_resources:reinforced_matter",
     info_extra = S("For use with the Drawer Controller; transfers items through it to adjacent drawers.")
 })
