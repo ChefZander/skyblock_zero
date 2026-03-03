@@ -29,12 +29,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+local S = core.get_translator('drawers')
+
 --
 -- Register drawers
 --
 
 drawers.register_drawer("drawers:drawer", {
-    description = "Matter Drawer",
+    description = S("Matter Drawer"),
     tiles1 = drawers.node_tiles_front_other("drawers_matter_front_1.png", "drawers_matter.png"),
     tiles2 = drawers.node_tiles_front_other("drawers_matter_front_2.png", "drawers_matter.png"),
     tiles4 = drawers.node_tiles_front_other("drawers_matter_front_4.png", "drawers_matter.png"),
@@ -42,13 +44,13 @@ drawers.register_drawer("drawers:drawer", {
     sounds = sbz_api.sounds.tree(),
     drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
     material = "sbz_resources:reinforced_matter",
-    info_extra = "If you aren't seeing drawer visuals, try using /drawers_fix"
+    info_extra = S("If you aren't seeing drawer visuals, try using /drawers_fix")
 })
 
 -- Register drawer upgrades
 
 drawers.register_drawer_upgrade("drawers:bronze_upgrade", {
-    description = "Bronze Drawer Upgrade (2x)",
+    description = S("Bronze Drawer Upgrade (2x)"),
     inventory_image = "drawers_upgrade_bronze.png",
     groups = { drawer_upgrade = 100 },
     recipe_item = "sbz_chem:bronze_ingot"
@@ -66,7 +68,7 @@ drawers.register_drawer_upgrade("drawers:upgrade_colorium", {
     inventory_image = "drawers_upgrade_colorium.png",
     groups = { drawer_upgrade = 300 },
     recipe_item = "unifieddyes:colorium_blob",
-    info_extra = "Sorry, but it doesn't actually make the drawer color-able...",
+    info_extra = S("Sorry, but it doesn't actually make the drawer color-able..."),
 })
 
 drawers.register_drawer_upgrade("drawers:warpshroom_upgrade", {
@@ -76,7 +78,7 @@ drawers.register_drawer_upgrade("drawers:warpshroom_upgrade", {
     recipe_item = "sbz_bio:warpshroom"
 })
 
--- TODO: DIAMOND UPGRADE inbetween as 16x
+-- TODO: DIAMOND UPGRADE in-between as 16x
 
 drawers.register_drawer_upgrade("drawers:neutronium_upgrade", { -- neutronium is super expensive so yea
     description = S("Neutronium Drawer Upgrade (32x)"),
@@ -92,34 +94,20 @@ drawers.register_drawer_upgrade("drawers:infinite_upgrade", {
     no_craft = true,
 })
 
--- Register drawer trim
--- or maybe don't...
-
---[[
-core.register_node("drawers:drawer_connector", {
-	description = "Drawer connector",
-	tiles = { "drawers_trim.png" },
-	groups = { drawer_connector = 1, matter = 2, oddly_breakable_by_hand = 2 },
-	is_ground_content = false,
+-- Register Drawer Connector ("Drawer Trim" from the original drawers mod)
+-- Drawer Controllers can transfer through these blocks.
+drawers.register_connector("drawers:drawer_connector", {
+    description = S("Drawer Connector"),
+    tiles = { "drawers_matter.png" },
+    material = "sbz_resources:reinforced_matter",
 })
-
-core.register_craft({
-	output = "drawers:trim 6",
-	recipe = {
-		{ "group:stick", "group:wood", "group:stick" },
-		{ "group:wood",  "group:wood", "group:wood" },
-		{ "group:stick", "group:wood", "group:stick" }
-	}
-})
-]]
 
 -- Register drawer upgrade template
 
 core.register_craftitem("drawers:upgrade_template", {
-    description = "Drawer Upgrade Template",
+    description = S("Drawer Upgrade Template"),
     inventory_image = "drawers_upgrade_template.png"
 })
-
 core.register_craft({
     output = "drawers:upgrade_template 4",
     recipe = {
