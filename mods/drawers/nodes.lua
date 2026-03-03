@@ -31,6 +31,10 @@ SOFTWARE.
 
 local S = core.get_translator('drawers')
 
+local function upgrade_desc(material, multiplier)
+    return S("@1 Drawer Upgrade (@2x)", material, tostring(multiplier))
+end
+
 --
 -- Register drawers
 --
@@ -60,21 +64,21 @@ drawers.register_connector("drawers:drawer_connector", {
 -- Register drawer upgrades
 
 drawers.register_drawer_upgrade("drawers:bronze_upgrade", {
-    description = S("Bronze Drawer Upgrade (2x)"),
+    description = upgrade_desc(S("Bronze"), 2),
     inventory_image = "drawers_upgrade_bronze.png",
     groups = { drawer_upgrade = 100 },
     recipe_item = "sbz_chem:bronze_ingot"
 })
 
 drawers.register_drawer_upgrade("drawers:stemfruit_upgrade", {
-    description = S("Stemfruit Drawer Upgrade (3x)"),
+    description = upgrade_desc(S("Stemfruit"), 3),
     inventory_image = "drawers_upgrade_stemfruit.png",
     groups = { drawer_upgrade = 200 },
     recipe_item = "sbz_bio:stemfruit"
 })
 
 drawers.register_drawer_upgrade("drawers:upgrade_colorium", {
-    description = S("Colorium Drawer Upgrade (4x)"),
+    description = upgrade_desc(S("Colorium"), 4),
     inventory_image = "drawers_upgrade_colorium.png",
     groups = { drawer_upgrade = 300 },
     recipe_item = "unifieddyes:colorium_blob",
@@ -82,7 +86,7 @@ drawers.register_drawer_upgrade("drawers:upgrade_colorium", {
 })
 
 drawers.register_drawer_upgrade("drawers:warpshroom_upgrade", {
-    description = S("Warpshroom Drawer Upgrade (8x)"),
+    description = upgrade_desc(S("Warpshroom"), 8),
     inventory_image = "drawers_upgrade_warpshroom.png",
     groups = { drawer_upgrade = 700 },
     recipe_item = "sbz_bio:warpshroom"
@@ -91,14 +95,14 @@ drawers.register_drawer_upgrade("drawers:warpshroom_upgrade", {
 -- TODO: DIAMOND UPGRADE in-between as 16x
 
 drawers.register_drawer_upgrade("drawers:neutronium_upgrade", { -- neutronium is super expensive so yea
-    description = S("Neutronium Drawer Upgrade (32x)"),
+    description = upgrade_desc(S("Neutronium"), 32),
     inventory_image = "drawers_upgrade_neutronium.png",
     groups = { drawer_upgrade = 3100 },
     recipe_item = "sbz_meteorites:neutronium"
 })
 
 drawers.register_drawer_upgrade("drawers:infinite_upgrade", {
-    description = S("Creative Drawer Upgrade (1000000x)"),
+    description = upgrade_desc(S("Creative"), 1000000),
     inventory_image = "drawers_upgrade_infinite.png",
     groups = { drawer_upgrade = 1000100, creative = 1 },
     no_craft = true,
