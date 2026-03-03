@@ -351,7 +351,7 @@ function drawers.register_drawer(name, def)
     end
     if drawers.enable_1x1 then
         -- normal drawer 1x1 = 1
-        local def1 = core.table_copy(def)
+        local def1 = table.copy(def)
         def1.tiles = def.tiles or def.tiles1
         def1.tiles1 = nil
         def1.tiles2 = nil
@@ -363,7 +363,7 @@ function drawers.register_drawer(name, def)
 
     if drawers.enable_1x2 then
         -- 1x2 = 2
-        local def2 = core.table_copy(def)
+        local def2 = table.copy(def)
         def2.description = def.description .. ' (1x2)'
         def2.tiles = def.tiles2
         def2.tiles1 = nil
@@ -375,7 +375,7 @@ function drawers.register_drawer(name, def)
 
     if drawers.enable_2x2 then
         -- 2x2 = 4
-        local def4 = core.table_copy(def)
+        local def4 = table.copy(def)
         def4.description = def.description .. ' (2x2)'
         def4.tiles = def.tiles4
         def4.tiles1 = nil
