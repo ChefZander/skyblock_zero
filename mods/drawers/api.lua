@@ -418,6 +418,42 @@ function drawers.register_drawer(name, def)
     end
 end
 
+function drawers.register_connector(name, def)
+    def.drawtype = 'normal'
+    def.paramtype = 'light'
+    -- no paramtype2 needed
+    def.groups = def.groups or {}
+    def.groups.drawer_connector = 1
+    def.is_ground_content = false
+
+--[[ 
+    -- Pipeworks integration (Connectors should be tube-compatible)
+    if core.get_modpath('pipeworks') and pipeworks then
+        def.groups.tubedevice = 1
+        def.groups.tubedevice_receiver = 1
+        def.tube = def.tube or {}
+        def.tube.connect_sides = {
+            left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1,
+        }
+        def.after_place_node = pipeworks.after_place
+        def.after_dig_node = pipeworks.after_dig
+    end
+ ]]
+    core.register_node(name, def)
+
+    -- Material-based crafting
+    if (not def.no_craft) and def.material then
+        core.register_craft {
+            output = name .. ' 6',
+            recipe = {
+                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
+                { def.material,            "",           def.material },
+                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
+            },
+        }
+    end
+end
+
 local template = 'drawers:upgrade_template'
 
 function drawers.register_drawer_upgrade(name, def)
