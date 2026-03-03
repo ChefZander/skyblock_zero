@@ -473,13 +473,16 @@ function drawers.register_drawer_upgrade(name, def)
 
     core.register_craftitem(name, def)
 
+    -- Drawer Upgrade recipes scope
     if not def.no_craft then
+        local RI = recipe_item
+        local Te = template
         core.register_craft {
             output = name,
             recipe = {
-                { recipe_item, recipe_item, recipe_item },
-                { recipe_item, template, recipe_item },
-                { recipe_item, recipe_item, recipe_item },
+                { RI, RI, RI },
+                { RI, Te, RI },
+                { RI, RI, RI },
             },
         }
         template = name
