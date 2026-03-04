@@ -1,4 +1,4 @@
-minetest.register_craftitem("sbz_resources:matter_plate", {
+core.register_craftitem("sbz_resources:matter_plate", {
     description = "Matter Plate",
     inventory_image = "matter_plate.png",
     stack_max = 256,
@@ -15,7 +15,7 @@ do -- Matter Plate recipe scope
     })
 end
 
-minetest.register_craftitem("sbz_resources:antimatter_plate", {
+core.register_craftitem("sbz_resources:antimatter_plate", {
     description = "Antimatter Plate",
     inventory_image = "antimatter_plate.png",
     stack_max = 256,
@@ -32,14 +32,14 @@ do -- Antimatter Plate recipe scope
     })
 end
 
-minetest.register_craftitem("sbz_resources:conversion_chamber", {
+core.register_craftitem("sbz_resources:conversion_chamber", {
     description = "Conversion chamber (!! DEPRECATED !! Throw it away!)",
     inventory_image = "conversion_chamber.png",
     stack_max = 1,
     groups = { not_in_creative_inventory = 1, }
 })
 
-minetest.register_craftitem("sbz_resources:pebble", {
+core.register_craftitem("sbz_resources:pebble", {
     description = "Pebble",
     inventory_image = "pebble.png",
     stack_max = 128,
@@ -56,7 +56,7 @@ do -- Pebble recipe scope
 end
 
 -- Angel's Wing
-minetest.register_tool("sbz_resources:angels_wing", {
+core.register_tool("sbz_resources:angels_wing", {
     description = "Angel's Wing",
     inventory_image = "angels_wing.png",
     stack_max = 1,
@@ -105,10 +105,17 @@ do -- Angels Wing recipe scope
     })
 end
 
-core.register_craftitem("sbz_resources:phlogiston", {
-    description = "Phlogiston",
-    inventory_image = "phlogiston.png"
-})
+sbz_api.recipe.register_craft_type {
+    type = 'phlogiston_fusing',
+    description = 'Phlogiston Fusing',
+    icon = 'phlogiston_fuser_off.png',
+}
+
+sbz_api.recipe.register_craft {
+    output = 'sbz_resources:phlogiston',
+    type = 'phlogiston_fusing',
+    items = {},
+}
 
 core.register_node("sbz_resources:phlogiston_blob", {
     description = "Phlogiston Blob",

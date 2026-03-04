@@ -30,8 +30,7 @@ sbz_api.register_stateful_machine("sbz_power:phosphor", unifieddyes.def {
         end
     end,
 })
-
-minetest.register_craft({
+core.register_craft({
     type = "shapeless",
     output = "sbz_power:phosphor_off",
     recipe = { "sbz_resources:emitter_imitator", "sbz_resources:emittrium_circuit" }
@@ -42,7 +41,7 @@ local function vacuum(pos, radius, inv)
     radius = radius + 0.5
     local min_pos = vector.subtract(pos, radius)
     local max_pos = vector.add(pos, radius)
-    for _, obj in pairs(minetest.get_objects_in_area(min_pos, max_pos)) do
+    for _, obj in pairs(core.get_objects_in_area(min_pos, max_pos)) do
         local entity = obj:get_luaentity()
         if entity and entity.name == "__builtin:item" then
             if entity.itemstring ~= "" then
@@ -50,7 +49,7 @@ local function vacuum(pos, radius, inv)
                 entity.itemstring = ""
 
                 if leftover then
-                    minetest.item_drop(leftover, fakelib.create_player(), obj:get_pos())
+                    core.item_drop(leftover, fakelib.create_player(), obj:get_pos())
                 end
             end
             obj:remove()
@@ -91,7 +90,7 @@ sbz_api.register_machine("sbz_power:item_vacuum", {
         cracky = 3,
     },
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 8 * 2)
         meta:set_string("formspec", [[
@@ -113,9 +112,16 @@ listring[]"
     input_inv = "main",
 })
 
-minetest.register_craft({
-    output = "sbz_power:item_vacuum",
-    recipe = {
-        { "pipeworks:tube_1", "sbz_meteorites:neutronium", "sbz_resources:retaining_circuit" },
-    }
-})
+do -- Item Vacuum recipe scope
+    local Item_Vacuum = 'sbz_power:item_vacuum'
+    local BT = 'pipeworks:tube_1' -- ("Basic Tube" in-game)
+    local Ne = 'sbz_meteorites:neutronium'
+    local RC = 'sbz_resources:retaining_circuit'
+    core.register_craft({
+        output = Item_Vacuum,
+        recipe = {
+            { BT, Ne, RC },
+        }
+    })
+end
+

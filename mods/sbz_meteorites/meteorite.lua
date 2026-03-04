@@ -1,5 +1,5 @@
 local function get_nearby_player(pos)
-    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
+    for _, obj in ipairs(core.get_objects_inside_radius(pos, 200)) do
         if obj:is_player() then return obj end
     end
 end
@@ -15,34 +15,34 @@ local function meteorite_explode(pos, type)
     --breaking nodes
     sbz_api.explode(pos, 8, 0.9, false, '.meteorite')
     --placing nodes
-    local protected = minetest.is_protected(pos, '.meteorite')
+    local protected = core.is_protected(pos, '.meteorite')
     if not protected and is_air(pos) then
-        minetest.set_node(
+        core.set_node(
             pos,
             { name = type == 'antimatter_blob' and 'sbz_meteorites:antineutronium' or 'sbz_meteorites:neutronium' }
         )
     end
 
-    local nodetype = sbz_api.meteorite_node_types
+    local node_types = sbz_api.meteorite_node_types
     if not protected then
         for _ = 1, 16 do
             local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
             if is_air(new_pos) then
-                minetest.set_node(new_pos, {
+                core.set_node(new_pos, {
                     name = math.random() < 0.2 and node_types[type][2] or node_types[type][1],
                 })
             end
         end
     end
     --knockback
-    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 16)) do
+    for _, obj in ipairs(core.get_objects_inside_radius(pos, 16)) do
         if obj:is_player() then
             local dir = obj:get_pos() - pos
             obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 0.5 * (16 - vector.length(dir)))
         end
     end
     --particle effects
-    minetest.add_particlespawner {
+    core.add_particlespawner {
         time = 0.1,
         amount = 2000 / (protected and 5 or 1),
         pos = pos,
@@ -65,7 +65,7 @@ local function meteorite_explode(pos, type)
     for _ = 1, 500 / (protected and 5 or 1) do
         local dir = vector.rotate_around_axis(forward, up, math.random() * 2 * math.pi)
         local expiry = math.random() * 3 + 2
-        minetest.add_particle {
+        core.add_particle {
             pos = pos + dir,
             velocity = dir * (5 + math.random()),
             drag = vector.new(0.2, 0.2, 0.2),
@@ -80,7 +80,7 @@ end
 
 sbz_api.meteorite_explode = meteorite_explode
 
-minetest.register_entity('sbz_meteorites:meteorite', {
+core.register_entity('sbz_meteorites:meteorite', {
     initial_properties = {
         visual = 'cube',
         visual_size = { x = 2, y = 2 },
@@ -124,7 +124,7 @@ minetest.register_entity('sbz_meteorites:meteorite', {
 
         self.object:set_properties { textures = { texture, texture, texture, texture, texture, texture } }
         self.object:set_armor_groups { immortal = 1 }
-        self.sound = minetest.sound_play(
+        self.sound = core.sound_play(
             { name = 'rocket-loop-99748', gain = 0.15, fade = 0.1 },
             { object = self.object, max_hear_distance = 100, loop = true }
         )
@@ -133,7 +133,7 @@ minetest.register_entity('sbz_meteorites:meteorite', {
     end,
     on_deactivate = function(self)
         if not self.type then return end
-        if self.sound then minetest.sound_fade(self.sound, 0.1, 0) end
+        if self.sound then core.sound_fade(self.sound, 0.1, 0) end
         if self.waypoint then sbz_api.remove_waypoint(self.waypoint) end
     end,
     get_staticdata = function(self)
@@ -146,10 +146,10 @@ minetest.register_entity('sbz_meteorites:meteorite', {
         for x = -1, 1 do
             for y = -1, 1 do
                 for z = -1, 1 do
-                    local node = minetest.get_node(pos + vector.new(x, y, z)).name
+                    local node = core.get_node(pos + vector.new(x, y, z)).name
                     if node ~= 'ignore' and node ~= 'air' and node ~= 'sbz_power:funny_air' then --colliding with something, should explode
                         meteorite_explode(pos, self.type)
-                        minetest.sound_play(
+                        core.sound_play(
                             { name = 'distant-explosion-47562', gain = 0.4 },
                             { pos = self.object:get_pos(), max_hear_distance = 300 }
                         )
@@ -161,7 +161,7 @@ minetest.register_entity('sbz_meteorites:meteorite', {
         end
 
         --the stopping moving bug seems to be it hitting unloaded chunks
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             time = dtime,
             amount = 1,
             pos = { min = pos - diag, max = pos + diag },
@@ -199,7 +199,7 @@ local function meteorite_player_collision(dtime)
             local lt = obj:get_luaentity()
             if lt and lt.name == 'sbz_meteorites:meteorite' then
                 meteorite_explode(obj:get_pos(), lt.type)
-                minetest.sound_play(
+                core.sound_play(
                     { name = 'distant-explosion-47562', gain = 0.4 },
                     { pos = obj:get_pos(), max_hear_distance = 300 }
                 )

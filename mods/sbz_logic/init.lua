@@ -8,7 +8,7 @@ sbz_api.logic = {
 
 sbz_logic = sbz_api.logic
 
-local MP = minetest.get_modpath("sbz_logic")
+local MP = core.get_modpath("sbz_logic")
 
 local logic = sbz_api.logic
 dofile(MP .. "/utils.lua")
@@ -33,25 +33,25 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     disallow_pipeworks = true,
     autostate = false,
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("disks", 8)
         inv:set_size("upgrades", 8)
     end,
     after_place_node = function(pos, placer, stack, pointed)
-        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        core.get_meta(pos):set_string("owner", placer:get_player_name())
         pipeworks.after_place(pos)
     end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-        if listname == "disks" and minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then
+        if listname == "disks" and core.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then
             return 0
         elseif listname == "upgrades" then
-            if minetest.get_item_group(stack:get_name(), "sbz_logic_upgrade") ~= 1 then
+            if core.get_item_group(stack:get_name(), "sbz_logic_upgrade") ~= 1 then
                 return 0
             else
                 local stackname = stack:get_name()
-                local def = minetest.registered_craftitems[stackname]
-                local meta = minetest.get_meta(pos)
+                local def = core.registered_craftitems[stackname]
+                local meta = core.get_meta(pos)
 
                 local same_upgrade_count = 0
                 local inv = meta:get_inventory()
@@ -72,7 +72,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     end,
     on_metadata_inventory_put = function(pos, listname, index, stack, player)
         if listname == "upgrades" then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             local def = stack:get_definition()
             def.action_reset(stack, pos, meta)
@@ -85,7 +85,7 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     end,
     on_metadata_inventory_take = function(pos, listname, index, stack, player)
         if listname == "upgrades" then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             local def = stack:get_definition()
             def.action_reset(stack, pos, meta)
@@ -142,16 +142,16 @@ sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     tube = {
         input_inventory = "disks",
         insert_object = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
-            if minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return stack end
+            if core.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return stack end
             return inv:add_item("disks", stack)
         end,
         can_insert = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             stack = stack:peek_item(1)
-            if minetest.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return false end
+            if core.get_item_group(stack:get_name(), "sbz_disk") ~= 1 then return false end
             return inv:room_for_item("disks", stack)
         end,
         connect_sides = { left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1 },
@@ -164,11 +164,11 @@ mesecon.register_on_mvps_move(function(moved)
     for i = 1, #moved do
         local moved_node = moved[i]
         if moved_node.node.name == "sbz_logic:lua_controller_on" or moved_node.node.name == "sbz_logic:lua_controller_off" then
-            minetest.after(0, function()
+            core.after(0, function()
                 local mnode = core.get_node(moved_node.pos).name
                 if mnode == "sbz_logic:lua_controller_on" or mnode == "sbz_logic:lua_controller_off" then
                     local linked_meta = core.get_meta(moved_node.pos)
-                    local links = minetest.deserialize(linked_meta:get_string("links")) or {}
+                    local links = core.deserialize(linked_meta:get_string("links")) or {}
 
                     for k, more_links in pairs(links) do
                         for kk, link in pairs(more_links) do
@@ -177,7 +177,7 @@ mesecon.register_on_mvps_move(function(moved)
                         end
                     end
 
-                    linked_meta:set_string("links", minetest.serialize(links))
+                    linked_meta:set_string("links", core.serialize(links))
                     logic.id2pos[linked_meta:get_string("ID")] = { pos = moved_node.pos, meta = linked_meta }
                 end
             end)
@@ -185,13 +185,21 @@ mesecon.register_on_mvps_move(function(moved)
     end
 end)
 
-minetest.register_craft {
-    output = "sbz_logic:lua_controller",
-    recipe = {
-        { "sbz_resources:lua_chip", "sbz_logic:data_disk",         "sbz_resources:lua_chip" },
-        { "sbz_resources:lua_chip", "sbz_resources:ram_stick_1mb", "sbz_resources:lua_chip" },
-        { "sbz_resources:lua_chip", "sbz_resources:warp_crystal",  "sbz_resources:lua_chip" },
+do -- Lua Controller recipe scope
+    local Lua_Controller = 'sbz_logic:lua_controller'
+    local LC = 'sbz_resources:lua_chip'
+    local DD = 'sbz_logic:data_disk'
+    local RS = 'sbz_resources:ram_stick_1mb'
+    local WC = 'sbz_resources:warp_crystal'
+    core.register_craft {
+        output = Lua_Controller,
+        recipe = {
+            { LC, DD, LC },
+            { LC, RS, LC },
+            { LC, WC, LC },
+        }
     }
-}
+end
+
 
 dofile(MP .. "/knowledge.lua")

@@ -29,19 +29,19 @@ do -- Dirt recipe scope
 end
 
 sbz_api.recipe.register_craft {
-    type = "centrifugeing",
+    type = "centrifuging",
     output = "sbz_resources:sand",
     items = { "sbz_bio:dirt" }
 }
 
 sbz_api.recipe.register_craft {
-    type = "centrifugeing",
+    type = "centrifuging",
     output = "sbz_bio:moss 3",
     items = { "sbz_bio:dirt" }
 }
 
 sbz_api.recipe.register_craft {
-    type = "centrifugeing",
+    type = "centrifuging",
     output = "sbz_resources:pebble 4",
     items = { "sbz_bio:dirt" }
 }
