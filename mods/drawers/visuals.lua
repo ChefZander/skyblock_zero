@@ -30,6 +30,10 @@ SOFTWARE.
 
 local S = core.get_translator('drawers')
 
+-- Finicky drawer visual rendering (vs for "visual size")
+local small_vs = 0.25
+local large_vs = 0.5
+
 -- To address part 5 of Issue #259:
 -- Compute yaw from facedir direction so all four orientations are correct.
 -- bdir is the vector the drawer face points toward (from core.facedir_to_dir).
@@ -337,8 +341,8 @@ core.register_entity("drawers:visual", {
 		local item_def = core.registered_items[self.itemName]
 		if use_node_visual(item_def) then
 			local _visual_size = (self.drawerType >= 2)
-				and { x = 0.22, y = 0.22, z = 0.0 }
-				or { x = 0.44, y = 0.44, z = 0.0 }
+				and { x = small_vs, y = small_vs, z = 0.0 }
+				or { x = large_vs, y = large_vs, z = 0.0 }
 			self.object:set_properties({
 				collisionbox = colbox,
 				infotext = infotext,
@@ -573,8 +577,8 @@ core.register_entity("drawers:visual", {
 		local item_def = core.registered_items[self.itemName]
 		if use_node_visual(item_def) then
 			local _visual_size = (self.drawerType >= 2)
-				and { x = 0.22, y = 0.22, z = 0.0 }
-				or { x = 0.44, y = 0.44, z = 0.0 }
+				and { x = small_vs, y = small_vs, z = 0.0 }
+				or { x = large_vs, y = large_vs, z = 0.0 }
 			self.texture = self.itemName
 			self.object:set_properties({
 				visual = "node",
