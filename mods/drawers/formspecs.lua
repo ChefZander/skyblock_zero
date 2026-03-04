@@ -24,6 +24,9 @@
 └─────────────────────────────────────────────────────┘
 ]]
 function drawers.upgrades_gui_pane()
+    -- Formspec version for this scope
+    local fs_version = 'formspec_version[7]'
+
     -- Engine hard-coded formspec units
     local inv_slot_w = 1.0
     local inv_slot_h = 1.0
@@ -86,5 +89,5 @@ function drawers.upgrades_gui_pane()
         string.format('list[%s;%s;%.2f,%.2f;%d,%d;%d]',
             inventory_location, list_name, x, y, w, h, i)
 
-    return fs_upgrade_arrows .. fs_hotbar .. fs_remaining
+    return fs_version .. fs_upgrade_arrows .. fs_hotbar .. fs_remaining
 end

@@ -30,13 +30,14 @@ SOFTWARE.
 ]]
 
 local S = core.get_translator('drawers')
+local fs_version = 'formspec_version[7]'
 
 -- Used for Drawer Controller's GUI
 function drawers.inventory_list(posy)
 	local hotbar_row_posy = posy + 1.25
 	local list_fs = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..
 		"list[current_player;main;0.5," .. hotbar_row_posy .. ";8,3;8]"
-	return list_fs
+	return fs_version .. list_fs
 end
 
 function drawers.gen_info_text(basename, count, factor, stack_max)
