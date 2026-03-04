@@ -23,7 +23,7 @@ local function meteorite_explode(pos, type)
         )
     end
 
-    local nodetype = sbz_api.meteorite_node_types
+    local node_types = sbz_api.meteorite_node_types
     if not protected then
         for _ = 1, 16 do
             local new_pos = pos + vector.new(math.random(-1, 1), math.random(-1, 1), math.random(-1, 1))
