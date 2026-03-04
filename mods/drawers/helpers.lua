@@ -39,10 +39,6 @@ function drawers.inventory_list(posy)
 	return list_fs
 end
 
-local function facedir(param2)
-	return param2 % 32 -- ignore color bits
-end
-
 function drawers.gen_info_text(basename, count, factor, stack_max)
 	local maxCount = stack_max * factor
 	local percent = count / maxCount * 100
@@ -78,7 +74,6 @@ local function tile_to_image(tile, fallback_image)
 	return image
 end
 
-
 -- Drawtypes where even inventorycube() is meaningless — use a single flat tile.
 local flat_sprite_drawtypes = {
 	torchlike        = true,
@@ -89,17 +84,11 @@ local flat_sprite_drawtypes = {
 	raillike         = true,
 }
 
--- Drawtypes that are vaguely cubic but use the same texture on all faces.
--- mesh, fencelike, and connected are intentionally excluded: they aren't
--- truly cubic, and a same-face inventorycube would be more misleading than
--- helpful. Those fall through to the standard top/left/right path, which is
--- no worse, and visual.lua's use_wielditem_visual handles mesh properly.
+-- Drawtypes that are cubic but use the same texture on all faces
 local all_same_face_drawtypes = {
 	allfaces                  = true,
 	allfaces_optional         = true,
 	glasslike                 = true,
-	glasslike_framed          = true,
-	glasslike_framed_optional = true,
 	liquid                    = true,
 	flowingliquid             = true,
 }
@@ -132,11 +121,29 @@ function drawers.get_inv_image(name)
 		return core.inventorycube(face, face, face)
 	end
 
+	-- Connected texture nodes: composite the overlay (tiles[2]) over the base
+	-- (tiles[1]) so the full appearance is shown, not just the bare base texture.
+	if def.drawtype == "connected" then
+		local base    = tile_to_image(def.tiles[1], texture)
+		local overlay = def.tiles[2] and tile_to_image(def.tiles[2]) or nil
+		local face    = overlay and (base .. "^" .. overlay) or base
+		return core.inventorycube(face, face, face)
+	end
+
+	-- glasslike_framed: tiles[2] is the inner fill, tiles[1] is the frame overlay.
+	-- Composite fill first, then frame on top.
+	if def.drawtype == "glasslike_framed" or def.drawtype == "glasslike_framed_optional" then
+		local fill  = def.tiles[2] and tile_to_image(def.tiles[2]) or nil
+		local frame = tile_to_image(def.tiles[1], texture)
+		local face  = fill and (fill .. "^" .. frame) or frame
+		return core.inventorycube(face, face, face)
+	end
+
 	-- Full cubes and nodeboxes: isometric cube preview from top/left/right tiles
 	local tiles = table.copy(def.tiles)
 	local top   = tile_to_image(tiles[1])
-	local left  = tile_to_image(tiles[3], top)
-	local right = tile_to_image(tiles[5], left)
+	local right = tile_to_image(tiles[3], top)   -- fallback: top
+	local left  = tile_to_image(tiles[6], right) -- fallback: right
 	return core.inventorycube(top, left, right)
 end
 
@@ -161,7 +168,7 @@ function drawers.update_drawer_upgrades(pos)
 		storagePercent = storagePercent + addPercent
 	end
 
-	--						i.e.: 150% / 100 => 1.50
+	-- i.e.: 150% / 100 => 1.50
 	stackMaxFactor = math.floor(stackMaxFactor * (storagePercent / 100))
 	-- calculate stack_max factor for a single drawer
 	stackMaxFactor = stackMaxFactor / drawerType
