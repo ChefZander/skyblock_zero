@@ -34,9 +34,13 @@ local S = core.get_translator('drawers')
 -- Used for Drawer Controller's GUI
 function drawers.inventory_list(posy)
 	local hotbar_row_posy = posy + 1.25
-	local inventory_list = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..
+	local list_fs = "list[current_player;main;0.5," .. posy .. ";8,1;]" ..
 		"list[current_player;main;0.5," .. hotbar_row_posy .. ";8,3;8]"
-	return inventory_list
+	return list_fs
+end
+
+local function facedir(param2)
+	return param2 % 32 -- ignore color bits
 end
 
 function drawers.gen_info_text(basename, count, factor, stack_max)
@@ -64,6 +68,19 @@ local function tile_to_image(tile, fallback_image)
 	assert(tile_type == "table", "Tile definition is not a string or table")
 	local image = tile.name or tile.image
 	assert(image, "Tile definition has no image file specified")
+
+	-- Issue 1: animated tiles store all frames in one tall spritesheet.
+	-- Append a texture modifier to crop to frame 0 for a static preview.
+	local anim = tile.animation
+	if anim then
+		if anim.type == "vertical_frames" then
+			local frames = math.max(1, math.floor((anim.aspect_h or 16) / (anim.aspect_w or 16)))
+			image = image .. "^[verticalframe:" .. frames .. ":0"
+		elseif anim.type == "sheet_2d" then
+			image = image .. "^[sheet:" .. (anim.frames_w or 1) .. "x" .. (anim.frames_h or 1) .. ":0,0"
+		end
+	end
+
 	if tile.color then
 		local colorstr = core.colorspec_to_colorstring(tile.color)
 		if colorstr then
@@ -73,23 +90,66 @@ local function tile_to_image(tile, fallback_image)
 	return image
 end
 
+
+-- Drawtypes where even inventorycube() is meaningless — use a single flat tile.
+local flat_sprite_drawtypes = {
+	torchlike        = true,
+	signlike         = true,
+	plantlike        = true,
+	plantlike_rooted = true,
+	firelike         = true,
+	raillike         = true,
+}
+
+-- Drawtypes that are vaguely cubic but use the same texture on all faces.
+-- mesh, fencelike, and connected are intentionally excluded: they aren't
+-- truly cubic, and a same-face inventorycube would be more misleading than
+-- helpful. Those fall through to the standard top/left/right path, which is
+-- no worse, and visual.lua's use_wielditem_visual handles mesh properly.
+local all_same_face_drawtypes = {
+	allfaces                  = true,
+	allfaces_optional         = true,
+	glasslike                 = true,
+	glasslike_framed          = true,
+	glasslike_framed_optional = true,
+	liquid                    = true,
+	flowingliquid             = true,
+}
+
 function drawers.get_inv_image(name)
 	local texture = "blank.png"
 	local def = core.registered_items[name]
-	if not def then return end
+	if not def then return texture end
 
+	-- Best case: an explicit 2D inventory image is defined
 	if def.inventory_image and #def.inventory_image > 0 then
-		texture = def.inventory_image
-	else
-		if not def.tiles then return texture end
-		local tiles = table.copy(def.tiles)
-		local top = tile_to_image(tiles[1])
-		local left = tile_to_image(tiles[3], top)
-		local right = tile_to_image(tiles[5], left)
-		texture = core.inventorycube(top, left, right)
+		return def.inventory_image
 	end
 
-	return texture
+	-- Second best: an explicit 2D wield image
+	if def.wield_image and #def.wield_image > 0 then
+		return def.wield_image
+	end
+
+	if not def.tiles then return texture end
+
+	-- Drawtypes with no meaningful cube faces: single flat tile
+	if def.drawtype and flat_sprite_drawtypes[def.drawtype] then
+		return tile_to_image(def.tiles[1]) or texture
+	end
+
+	-- Drawtypes that are cubic but use the same texture on all faces
+	if def.drawtype and all_same_face_drawtypes[def.drawtype] then
+		local face = tile_to_image(def.tiles[1]) or texture
+		return core.inventorycube(face, face, face)
+	end
+
+	-- Full cubes and nodeboxes: isometric cube preview from top/left/right tiles
+	local tiles = table.copy(def.tiles)
+	local top   = tile_to_image(tiles[1])
+	local left  = tile_to_image(tiles[3], top)
+	local right = tile_to_image(tiles[5], left)
+	return core.inventorycube(top, left, right)
 end
 
 function drawers.update_drawer_upgrades(pos)
@@ -140,33 +200,3 @@ end
 function drawers.node_tiles_front_other(front, other)
 	return { other, other, other, other, other, front }
 end
-
---Section below modified as of 2021 by Pandorabox
-
-core.register_chatcommand("drawers_fix", {
-	description = "recreates the drawer-visuals in your area",
-	func = function(name)
-		local player = core.get_player_by_name(name)
-		if not player then
-			return
-		end
-		local t1 = sbz_api.clock_ms()
-
-		local ppos = player:get_pos()
-		local pos1 = vector.subtract(ppos, 10)
-		local pos2 = vector.add(ppos, 10)
-
-		local poslist = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
-
-		for _, pos in ipairs(poslist) do
-			drawers.remove_visuals(pos)
-			drawers.spawn_visuals(pos)
-		end
-
-		local t2 = sbz_api.clock_ms()
-		local diff = t2 - t1
-		local millis = diff
-
-		return true, "Restored " .. #poslist .. " drawers in " .. millis .. " ms"
-	end
-})
