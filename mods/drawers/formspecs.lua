@@ -11,7 +11,6 @@
 │   ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐   │
 │   │   │ │   │ │   │ │   │ │   │ │   │ │   │ │   │   │
 │   └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘   │
-│                                                     │
 │   ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐   │
 │   │   │ │   │ │   │ │   │ │   │ │   │ │   │ │   │   │
 │   └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘   │
@@ -31,7 +30,7 @@ function drawers.upgrades_gui_pane()
 
     -- Space between components
     local separation_spacing = 0.5
-    local relational_spacing = 0.25
+    local relational_spacing = 0.25 -- was used to separate hotbar visually
 
     -- Upgrade arrow image overlays
     local upgrades = 5
@@ -59,7 +58,7 @@ function drawers.upgrades_gui_pane()
     local inv_remaining_rows = math.ceil(remaining_slots / slots_per_row)
 
     -- Derived Values
-    local inv_remaining_y = hotbar_y + hotbar_rows + relational_spacing
+    local inv_remaining_y = hotbar_y + hotbar_rows -- + relational_spacing
     local inv_remaining_i = hotbar_slots
 
     -- API, regarding Formspec's `list` element:
