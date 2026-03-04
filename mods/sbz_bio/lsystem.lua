@@ -36,7 +36,9 @@ local function lsystem(start_pos, dna, owner, starting_angle)
         local node_at_pos = sbz_api.vm_get_node(pos)
         if node_at_pos then
             if
-                (minetest.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode)
+                (core.registered_nodes[node_at_pos.name].buildable_to or node_at_pos.name == leafnode)
+                -- Disallow leaves replacing water source blocks when growing a tree
+                and node_at_pos.name ~= "sbz_resources:water_source"
                 and (not core.is_protected(pos, owner or ''))
             then
                 sbz_api.vm_swap_node(pos, node.name, true)
