@@ -31,7 +31,6 @@ SOFTWARE.
 
 local MP = core.get_modpath(core.get_current_modname())
 
--- 1. Setup Namespace & Settings
 drawers = {}
 drawers.drawer_visuals = {}
 drawers.enable_1x1 = true
@@ -40,9 +39,8 @@ drawers.enable_2x2 = true
 drawers.CONTROLLER_RANGE = 40
 drawers.CHEST_ITEMSTRING = "sbz_resources:storinator"
 
--- 2. Load Components in Dependency Order
 dofile(MP .. "/helpers.lua")    -- Basic utilities
-dofile(MP .. "/formspecs.lua")  -- We still using these?
+dofile(MP .. "/formspecs.lua")  -- Modular, complex formspec panes
 dofile(MP .. "/visuals.lua")    -- Item/Node contents indicator visuals
 dofile(MP .. "/api.lua")        -- Registration templates (register_drawer)
 dofile(MP .. "/controller.lua") -- The Controller node logic
