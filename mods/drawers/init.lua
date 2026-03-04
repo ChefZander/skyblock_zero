@@ -1,7 +1,12 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
+Original Mod:
+Copyright (C) 2021 by Pandorabox
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
+
+Modifications for Skyblock: Zero:
+Copyright (C) 2026 Skyblock: Zero Contributors
 
 MIT License
 
@@ -30,11 +35,9 @@ local S = core.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
-
 drawers.enable_1x1 = true
 drawers.enable_1x2 = true
 drawers.enable_2x2 = true
-
 drawers.CONTROLLER_RANGE = 40
 drawers.CHEST_ITEMSTRING = "sbz_resources:storinator"
 

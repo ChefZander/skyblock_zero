@@ -21,6 +21,8 @@ Modifications for Skyblock: Zero. <https://github.com/ChefZander/skyblock_zero/t
 
 `textures/drawers_controller_top.png` Copyright (C) 2024 TheEt1234. CC BY-SA 4.0. Replaces the original mod asset.
 
+`textures/drawers_matter_connector.png` Copyright (C) 2024-2026 TheEt1234, AbbyRead. CC BY-SA 4.0.  A modification of drawers_matter.png to differentiate it from drawer sides.
+
 `textures/drawers_matter.png` dark blue square frame with blue filling by TheEt1234.
 
 `textures/drawers_matter_front_1.png` dark blue square frame with blue filling by TheEt1234.

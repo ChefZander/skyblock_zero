@@ -1,8 +1,12 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
+Original Mod:
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
+
+Modifications for Skyblock: Zero:
+Copyright (C) 2026 Skyblock: Zero Contributors
 
 MIT License
 
@@ -25,22 +29,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local S = minetest.get_translator 'drawers'
+local S = core.get_translator 'drawers'
 
-drawers.node_box_simple = {
-    { -0.5, -0.5, -0.4375, 0.5, 0.5, 0.5 },
-    { -0.5, -0.5, -0.5, -0.4375, 0.5, -0.4375 },
-    { 0.4375, -0.5, -0.5, 0.5, 0.5, -0.4375 },
-    { -0.4375, 0.4375, -0.5, 0.4375, 0.5, -0.4375 },
-    { -0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375 },
-}
+do -- Drawer node box scope
+
+    -- Full node = 1.0, center = (0,0,0), edges = ±0.5
+    -- Coordinates specified as {x1, y1, z1, x2, y2, z2}
+    -- A cuboid is created from the diagonal corners you specified with each x,y,z set.
+    -- x: -left +right    y: -down +up    z: -front +back
+
+    local trim_thickness = 1 / 16 -- trim thickness
+    local H = 0.5                 -- center to edge is half (8/16)
+    local T = H - trim_thickness  -- center to trim is 7/16
+
+    drawers.node_box_simple = {
+    --  { x1, y1, z1, x2, y2, z2 }
+    --  --------------------------
+        { -H, -H, -T,  H,  H,  H }, -- main block, slightly inset block
+        { -H, -H, -H, -T,  H, -T }, -- left-side   16th-of-node sized bar
+        {  T, -H, -H,  H,  H, -T }, -- right-side  16th-of-node sized bar
+        { -T,  T, -H,  T,  H, -T }, -- top-side    16th-of-node sized bar
+        { -T, -H, -H,  T, -T, -T }, -- bottom-side 16th-of-node sized bar
+    }
+
+end
 
 drawers.drawer_formspec = 'size[9,6.7]'
     .. 'list[context;upgrades;2,0.5;5,1;]'
-    .. drawers.inventory_list(2.5)
     .. 'listring[context;upgrades]'
     .. 'listring[current_player;main]'
-    .. drawers.get_upgrade_slots_bg(2, 0.5)
+    .. drawers.upgrades_gui_pane()
 
 -- construct drawer
 function drawers.drawer_on_construct(pos)
@@ -55,19 +73,18 @@ function drawers.drawer_on_construct(pos)
     -- meta
     local meta = core.get_meta(pos)
 
-    local i = 1
-    while i <= drawerType do
-        local vid = i
+    for i = 1, drawerType do
         -- 1x1 drawers don't have numbers in the meta fields
-        if drawerType == 1 then vid = '' end
-        meta:set_string('name' .. vid, '')
-        meta:set_int('count' .. vid, 0)
-        meta:set_int('max_count' .. vid, base_stack_max * stack_max_factor)
-        meta:set_int('base_stack_max' .. vid, base_stack_max)
-        meta:set_string('entity_infotext' .. vid, drawers.gen_info_text(S 'Empty', 0, stack_max_factor, base_stack_max))
-        meta:set_int('stack_max_factor' .. vid, stack_max_factor)
+        local slot_suffix = (drawerType == 1) and '' or tostring(i)
 
-        i = i + 1
+        meta:set_string(           'name' .. slot_suffix, '')
+        meta:set_string('entity_infotext' .. slot_suffix,
+                drawers.gen_info_text(S 'Empty', 0, stack_max_factor, base_stack_max))
+
+        meta:set_int(           'count' .. slot_suffix, 0)
+        meta:set_int(       'max_count' .. slot_suffix, base_stack_max * stack_max_factor)
+        meta:set_int(  'base_stack_max' .. slot_suffix, base_stack_max)
+        meta:set_int('stack_max_factor' .. slot_suffix, stack_max_factor)
     end
 
     -- spawn all visuals
@@ -90,7 +107,6 @@ function drawers.drawer_on_destruct(pos)
     end
 end
 
--- don't drop all items
 function drawers.drawer_on_dig(pos, node, player)
     local drawerType = 1
     if core.registered_nodes[node.name] then drawerType = core.registered_nodes[node.name].groups.drawer end
@@ -100,21 +116,41 @@ function drawers.drawer_on_dig(pos, node, player)
     end
 
     local meta = core.get_meta(pos)
-    local k = 1
-    while k <= drawerType do
-        -- don't add a number in meta fields for 1x1 drawers
-        local vid = tostring(k)
-        if drawerType == 1 then vid = '' end
-        local count = meta:get_int('count' .. vid)
-        k = k + 1
-        if count > 0 then return false end
+    local inv = player:get_inventory()
+
+    local function give_or_drop(stack)
+        if stack:is_empty() then return end
+        local leftover = inv:add_item('main', stack)
+        if not leftover:is_empty() then
+            core.item_drop(leftover, player, drawers.randomize_pos(pos))
+        end
     end
 
-    -- drop all drawer upgrades
-    local upgrades = meta:get_inventory():get_list 'upgrades'
+    -- transfer upgrades to player first
+    local upgrades = meta:get_inventory():get_list('upgrades')
     if upgrades then
-        for _, itemStack in pairs(upgrades) do
-            if itemStack:get_count() > 0 then return false end
+        for _, stack in pairs(upgrades) do
+            give_or_drop(stack)
+        end
+    end
+
+    -- transfer drawer contents to player
+    local k = 1
+    while k <= drawerType do
+        local slot_suffix = tostring(k)
+        if drawerType == 1 then slot_suffix = '' end
+        local item_name = meta:get_string('name' .. slot_suffix)
+        local count = meta:get_int('count' .. slot_suffix)
+        k = k + 1
+        if item_name and item_name ~= '' and count > 0 then
+            local stack_max = ItemStack(item_name):get_stack_max()
+            while count > 0 do
+                local batch = math.min(count, stack_max)
+                local stack = ItemStack(item_name)
+                stack:set_count(batch)
+                give_or_drop(stack)
+                count = count - batch
+            end
         end
     end
     -- remove node
@@ -146,9 +182,7 @@ function drawers.remove_drawer_upgrade(pos, listname, index, stack, player)
     drawers.update_drawer_upgrades(pos)
 end
 
---[[
-	Inserts an incoming stack into a specific slot of a drawer.
-]]
+-- Insert an incoming stack into a specific slot of a drawer
 function drawers.drawer_insert_object(pos, stack, visualid)
     local visual = drawers.get_visual(pos, visualid)
     if not visual then return stack end
@@ -156,9 +190,7 @@ function drawers.drawer_insert_object(pos, stack, visualid)
     return visual:try_insert_stack(stack, true)
 end
 
---[[
-	Inserts an incoming stack into a drawer and uses all slots.
-]]
+-- Insert an incoming stack into a drawer and uses all slots
 function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
     local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
     if not drawer_visuals then return stack end
@@ -178,9 +210,7 @@ function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
     return leftover
 end
 
---[[
-	Returns how much (count) of a stack can be inserted to a drawer slot.
-]]
+-- Return how much (count) of a stack can be inserted to a drawer slot
 function drawers.drawer_can_insert_stack(pos, stack, visualid)
     local visual = drawers.get_visual(pos, visualid)
     if not visual then return 0 end
@@ -188,9 +218,7 @@ function drawers.drawer_can_insert_stack(pos, stack, visualid)
     return visual:can_insert_stack(stack)
 end
 
---[[
-	Returns whether a stack can be (partially) inserted to any slot of a drawer.
-]]
+-- Return whether a stack can be (partially) inserted to any slot of a drawer
 function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
     local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
     if not drawer_visuals then return false end
@@ -216,9 +244,7 @@ function drawers.drawer_take_item(pos, itemstack)
     return ItemStack()
 end
 
---[[
-	Returns the content of a drawer slot.
-]]
+-- Return the content of a drawer slot
 function drawers.drawer_get_content(pos, visualid)
     local drawer_meta = core.get_meta(pos)
 
@@ -251,9 +277,23 @@ function drawers.register_drawer(name, def)
     def.on_metadata_inventory_put = drawers.add_drawer_upgrade
     def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
-    if minetest.get_modpath 'screwdriver' and screwdriver then def.on_rotate = def.on_rotate or screwdriver.disallow end
+    if core.get_modpath("screwdriver") and screwdriver then
+        def.on_rotate = function(pos, node, user, mode, new_param2)
+            if mode ~= screwdriver.ROTATE_FACE then
+                return false
+            end
 
-    if minetest.get_modpath 'pipeworks' and pipeworks then
+            node.param2 = new_param2
+            core.swap_node(pos, node)
+
+            drawers.remove_visuals(pos)
+            drawers.spawn_visuals(pos)
+
+            return true
+        end
+    end
+
+    if core.get_modpath 'pipeworks' and pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
         def.groups.tubedevice_use_item_entities = 1
@@ -314,7 +354,7 @@ function drawers.register_drawer(name, def)
         }
     end
     def.on_movenode = function(_, to_pos)
-        minetest.after(0.1, function()
+        core.after(0.1, function()
             drawers.spawn_visuals(to_pos)
         end)
     end
@@ -353,14 +393,18 @@ function drawers.register_drawer(name, def)
         def4.groups.drawer = 4
         core.register_node(name .. '4', def4)
     end
+
+    -- Drawer recipes scope
     if (not def.no_craft) and def.material then
+        local Ch = drawers.CHEST_ITEMSTRING
+        local Ma = def.material
         if drawers.enable_1x1 then
             core.register_craft {
                 output = name .. '1',
                 recipe = {
-                    { def.material, def.material, def.material },
-                    { '', drawers.CHEST_ITEMSTRING, '' },
-                    { def.material, def.material, def.material },
+                    { Ma, Ma, Ma },
+                    { '', Ch, '' },
+                    { Ma, Ma, Ma },
                 },
             }
         end
@@ -368,9 +412,9 @@ function drawers.register_drawer(name, def)
             core.register_craft {
                 output = name .. '2 2',
                 recipe = {
-                    { def.material, drawers.CHEST_ITEMSTRING, def.material },
-                    { def.material, def.material, def.material },
-                    { def.material, drawers.CHEST_ITEMSTRING, def.material },
+                    { Ma, Ch, Ma },
+                    { Ma, Ma, Ma },
+                    { Ma, Ch, Ma },
                 },
             }
         end
@@ -378,12 +422,49 @@ function drawers.register_drawer(name, def)
             core.register_craft {
                 output = name .. '4 4',
                 recipe = {
-                    { drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING },
-                    { def.material, def.material, def.material },
-                    { drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING },
+                    { Ch, Ma, Ch },
+                    { Ma, Ma, Ma },
+                    { Ch, Ma, Ch },
                 },
             }
         end
+    end
+end
+
+function drawers.register_connector(name, def)
+    def.description = def.description
+    def.drawtype = 'normal'
+    def.paramtype = 'light'
+    def.paramtype2 = 'colorfacedir'
+    def.light_source = 10
+    def.groups = def.groups or {}
+    def.is_ground_content = false
+    def = unifieddyes.def(def, false)
+
+    -- Pipeworks integration (Connectors should be tube-compatible)
+    if core.get_modpath('pipeworks') and pipeworks then
+        def.groups.tubedevice = 1
+        def.groups.tubedevice_receiver = 1
+        def.tube = def.tube or {}
+        def.tube.connect_sides = {
+            left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1,
+        }
+        def.after_place_node = pipeworks.after_place
+        def.after_dig_node = pipeworks.after_dig
+    end
+
+    core.register_node(name, def)
+
+    -- Material-based crafting
+    if (not def.no_craft) and def.material then
+        core.register_craft {
+            output = name .. ' 6',
+            recipe = {
+                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
+                { def.material,            "",           def.material },
+                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
+            },
+        }
     end
 end
 
@@ -400,13 +481,16 @@ function drawers.register_drawer_upgrade(name, def)
 
     core.register_craftitem(name, def)
 
+    -- Drawer Upgrade recipes scope
     if not def.no_craft then
+        local RI = recipe_item
+        local Te = template
         core.register_craft {
             output = name,
             recipe = {
-                { recipe_item, recipe_item, recipe_item },
-                { recipe_item, template, recipe_item },
-                { recipe_item, recipe_item, recipe_item },
+                { RI, RI, RI },
+                { RI, Te, RI },
+                { RI, RI, RI },
             },
         }
         template = name
