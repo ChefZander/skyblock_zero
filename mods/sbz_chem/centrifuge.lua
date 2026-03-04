@@ -1,5 +1,5 @@
 sbz_api.recipe.register_craft_type {
-    type = 'centrifugeing',
+    type = 'centrifuging',
     description = 'Seperating',
     icon = 'centrifuge.png^[verticalframe:12:1',
     single = true,
@@ -19,7 +19,7 @@ end
 -- sand => 50% Silicon 2, 10% Gold, 100% white sand
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:silicon_powder 2',
-    type = 'centrifugeing',
+    type = 'centrifuging',
     chance = 50, -- 50%
     items = {
         'sbz_resources:sand',
@@ -27,7 +27,7 @@ sbz_api.recipe.register_craft {
 }
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:gold_powder',
-    type = 'centrifugeing',
+    type = 'centrifuging',
     chance = 10, -- 10%
     items = {
         'sbz_resources:sand',
@@ -35,7 +35,7 @@ sbz_api.recipe.register_craft {
 }
 sbz_api.recipe.register_craft {
     output = 'sbz_resources:white_sand',
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:sand',
     },
@@ -45,7 +45,7 @@ sbz_api.recipe.register_craft {
 
 sbz_api.recipe.register_craft {
     output = 'sbz_resources:dark_sand',
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:white_sand',
     },
@@ -54,7 +54,7 @@ sbz_api.recipe.register_craft {
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:silver_powder',
     chance = 5,
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:white_sand',
     },
@@ -64,7 +64,7 @@ sbz_api.recipe.register_craft {
 
 sbz_api.recipe.register_craft {
     output = 'sbz_resources:black_sand',
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:dark_sand',
     },
@@ -73,7 +73,7 @@ sbz_api.recipe.register_craft {
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:silver_powder',
     chance = 1,
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:dark_sand',
     },
@@ -83,7 +83,7 @@ sbz_api.recipe.register_craft {
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:cobalt_powder',
     chance = 10,
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:gravel',
     },
@@ -91,7 +91,7 @@ sbz_api.recipe.register_craft {
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:lithium_powder',
     chance = 10,
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:gravel',
     },
@@ -99,7 +99,7 @@ sbz_api.recipe.register_craft {
 sbz_api.recipe.register_craft {
     output = 'sbz_chem:titanium_powder',
     chance = 10,
-    type = 'centrifugeing',
+    type = 'centrifuging',
     items = {
         'sbz_resources:gravel',
     },
@@ -115,7 +115,7 @@ for k, v in ipairs {
     sbz_api.recipe.register_craft {
         output = 'sbz_resources:pebble',
         chance = v,
-        type = 'centrifugeing',
+        type = 'centrifuging',
         items = {
             'sbz_resources:gravel',
         },
@@ -172,7 +172,7 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
             meta:set_string('infotext', 'Working...')
 
             local src = inv:get_list 'src'
-            local crafts, success, slot = sbz_api.recipe.resolve_craft_raw_single(src, 'centrifugeing', true)
+            local crafts, success, slot = sbz_api.recipe.resolve_craft_raw_single(src, 'centrifuging', true)
             if not success then
                 meta:set_string('infotext', 'Invalid/no recipe')
                 return 0

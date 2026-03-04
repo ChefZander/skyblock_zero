@@ -50,14 +50,21 @@ core.register_node("sbz_bio:burner", sbz_api.add_tube_support({
 })
 )
 
-core.register_craft({
-    output = "sbz_bio:burner",
-    recipe = {
-        { "sbz_bio:pyrograss",         "sbz_resources:matter_blob",        "sbz_bio:pyrograss" },
-        { "sbz_resources:matter_blob", "sbz_resources:matter_annihilator", "sbz_resources:matter_blob" },
-        { "sbz_bio:pyrograss",         "sbz_resources:matter_blob",        "sbz_bio:pyrograss" }
-    }
-})
+do -- Burner recipe scope
+    local Burner = 'sbz_bio:burner'
+    local Py = 'sbz_bio:pyrograss'
+    local MB = 'sbz_resources:matter_blob'
+    local MA = 'sbz_resources:matter_annihilator'
+    core.register_craft({
+        output = Burner,
+        recipe = {
+            { Py, MB, Py },
+            { MB, MA, MB },
+            { Py, MB, Py },
+        }
+    })
+end
+
 
 core.register_node("sbz_bio:airlock", {
     description = "Airlock",
@@ -72,14 +79,20 @@ core.register_node("sbz_bio:airlock", {
     groups = { matter = 1, transparent = 1 }
 })
 
-core.register_craft({
-    output = "sbz_bio:airlock",
-    recipe = {
-        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass" },
-        { "sbz_chem:titanium_ingot",       "sbz_chem:titanium_ingot",       "sbz_chem:titanium_ingot" },
-        { "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass", "sbz_resources:emittrium_glass" }
-    }
-})
+do -- Airlock recipe scope
+    local Airlock = 'sbz_bio:airlock'
+    local EG = 'sbz_resources:emittrium_glass'
+    local TI = 'sbz_chem:titanium_ingot'
+    core.register_craft({
+        output = Airlock,
+        recipe = {
+            { EG, EG, EG },
+            { TI, TI, TI },
+            { EG, EG, EG },
+        }
+    })
+end
+
 
 sbz_api.register_stateful_machine("sbz_bio:neutron_emitter", {
     description = "Basic Neutron Emitter",
@@ -105,11 +118,18 @@ sbz_api.register_stateful_machine("sbz_bio:neutron_emitter", {
     groups = { matter = 1, radioactive = 3 }
 })
 
-core.register_craft {
-    output = "sbz_bio:neutron_emitter_off",
-    recipe = {
-        { "sbz_resources:emittrium_circuit", "sbz_bio:pyrograss",         "sbz_resources:emittrium_circuit" },
-        { "sbz_bio:pyrograss",               "sbz_meteorites:neutronium", "sbz_bio:pyrograss" },
-        { "sbz_resources:emittrium_circuit", "sbz_bio:pyrograss",         "sbz_resources:emittrium_circuit" },
+do -- Neutron Emitter Off recipe scope
+    local Neutron_Emitter_Off = 'sbz_bio:neutron_emitter_off'
+    local EC = 'sbz_resources:emittrium_circuit'
+    local Py = 'sbz_bio:pyrograss'
+    local Ne = 'sbz_meteorites:neutronium'
+    core.register_craft {
+        output = Neutron_Emitter_Off,
+        recipe = {
+            { EC, Py, EC },
+            { Py, Ne, Py },
+            { EC, Py, EC },
+        }
     }
-}
+end
+

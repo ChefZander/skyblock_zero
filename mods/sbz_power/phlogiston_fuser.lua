@@ -30,7 +30,7 @@ sbz_api.register_stateful_machine("sbz_power:phlogiston_fuser", {
     --input_inv = "src",
     output_inv = "dst",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("dst", 1)
         meta:set_int("fusion", 0)
@@ -87,7 +87,7 @@ listring[]
 })
 
 do -- Phlogiston Fuser primary recipe scope
-    local Phlogiston_Fuser = 'sbz_power:phlogiston_fuser'
+    local Phlogiston_Fuser = 'sbz_power:phlogiston_fuser_off'
     local VA = 'sbz_power:very_advanced_battery'
     local Ne = 'sbz_meteorites:neutronium'
     local CG = 'sbz_chem:crystal_grower'
@@ -103,7 +103,7 @@ do -- Phlogiston Fuser primary recipe scope
 end
 
 do -- Phlogiston Fuser secondary recipe scope
-    local Phlogiston_Fuser = 'sbz_power:phlogiston_fuser'
+    local Phlogiston_Fuser = 'sbz_power:phlogiston_fuser_off'
     local Ph = 'sbz_resources:phlogiston'
     local CG = 'sbz_chem:crystal_grower'
     core.register_craft({

@@ -64,7 +64,7 @@ minetest.register_craftitem("sbz_resources:unrefined_firmament", {
 
 sbz_api.recipe.register_craft {
     output = 'sbz_resources:unrefined_firmament',
-    type = 'centrifugeing',
+    type = 'centrifuging',
     chance = 1,
     items = {
         'sbz_resources:dust',
