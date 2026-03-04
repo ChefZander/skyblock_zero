@@ -107,7 +107,6 @@ function drawers.drawer_on_destruct(pos)
     end
 end
 
--- don't drop all items
 function drawers.drawer_on_dig(pos, node, player)
     local drawerType = 1
     if core.registered_nodes[node.name] then drawerType = core.registered_nodes[node.name].groups.drawer end
@@ -117,21 +116,41 @@ function drawers.drawer_on_dig(pos, node, player)
     end
 
     local meta = core.get_meta(pos)
-    local k = 1
-    while k <= drawerType do
-        -- don't add a number in meta fields for 1x1 drawers
-        local slot_suffix = tostring(k)
-        if drawerType == 1 then slot_suffix = '' end
-        local count = meta:get_int('count' .. slot_suffix)
-        k = k + 1
-        if count > 0 then return false end
+    local inv = player:get_inventory()
+
+    local function give_or_drop(stack)
+        if stack:is_empty() then return end
+        local leftover = inv:add_item('main', stack)
+        if not leftover:is_empty() then
+            core.item_drop(leftover, player, drawers.randomize_pos(pos))
+        end
     end
 
-    -- drop all drawer upgrades
-    local upgrades = meta:get_inventory():get_list 'upgrades'
+    -- transfer upgrades to player first
+    local upgrades = meta:get_inventory():get_list('upgrades')
     if upgrades then
-        for _, itemStack in pairs(upgrades) do
-            if itemStack:get_count() > 0 then return false end
+        for _, stack in pairs(upgrades) do
+            give_or_drop(stack)
+        end
+    end
+
+    -- transfer drawer contents to player
+    local k = 1
+    while k <= drawerType do
+        local slot_suffix = tostring(k)
+        if drawerType == 1 then slot_suffix = '' end
+        local item_name = meta:get_string('name' .. slot_suffix)
+        local count = meta:get_int('count' .. slot_suffix)
+        k = k + 1
+        if item_name and item_name ~= '' and count > 0 then
+            local stack_max = ItemStack(item_name):get_stack_max()
+            while count > 0 do
+                local batch = math.min(count, stack_max)
+                local stack = ItemStack(item_name)
+                stack:set_count(batch)
+                give_or_drop(stack)
+                count = count - batch
+            end
         end
     end
     -- remove node
@@ -163,9 +182,7 @@ function drawers.remove_drawer_upgrade(pos, listname, index, stack, player)
     drawers.update_drawer_upgrades(pos)
 end
 
---[[
-	Inserts an incoming stack into a specific slot of a drawer.
-]]
+-- Insert an incoming stack into a specific slot of a drawer
 function drawers.drawer_insert_object(pos, stack, visualid)
     local visual = drawers.get_visual(pos, visualid)
     if not visual then return stack end
@@ -173,9 +190,7 @@ function drawers.drawer_insert_object(pos, stack, visualid)
     return visual:try_insert_stack(stack, true)
 end
 
---[[
-	Inserts an incoming stack into a drawer and uses all slots.
-]]
+-- Insert an incoming stack into a drawer and uses all slots
 function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
     local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
     if not drawer_visuals then return stack end
@@ -195,9 +210,7 @@ function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
     return leftover
 end
 
---[[
-	Returns how much (count) of a stack can be inserted to a drawer slot.
-]]
+-- Return how much (count) of a stack can be inserted to a drawer slot
 function drawers.drawer_can_insert_stack(pos, stack, visualid)
     local visual = drawers.get_visual(pos, visualid)
     if not visual then return 0 end
@@ -205,9 +218,7 @@ function drawers.drawer_can_insert_stack(pos, stack, visualid)
     return visual:can_insert_stack(stack)
 end
 
---[[
-	Returns whether a stack can be (partially) inserted to any slot of a drawer.
-]]
+-- Return whether a stack can be (partially) inserted to any slot of a drawer
 function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
     local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
     if not drawer_visuals then return false end
@@ -233,9 +244,7 @@ function drawers.drawer_take_item(pos, itemstack)
     return ItemStack()
 end
 
---[[
-	Returns the content of a drawer slot.
-]]
+-- Return the content of a drawer slot
 function drawers.drawer_get_content(pos, visualid)
     local drawer_meta = core.get_meta(pos)
 
