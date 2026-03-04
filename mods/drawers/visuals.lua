@@ -30,6 +30,15 @@ SOFTWARE.
 
 local S = core.get_translator('drawers')
 
+-- To address part 5 of Issue #259:
+-- Compute yaw from facedir direction so all four orientations are correct.
+-- bdir is the vector the drawer face points toward (from core.facedir_to_dir).
+-- The entity must face *toward the viewer*, i.e. opposite to bdir.
+
+local function facedir_yaw(bdir)
+	return math.atan2(-bdir.x, -bdir.z)
+end
+
 function drawers.spawn_visuals(pos)
 	local node = core.get_node(pos)
 	local ndef = core.registered_nodes[node.name]
@@ -50,9 +59,7 @@ function drawers.spawn_visuals(pos)
 		local obj = core.add_entity(pos2, "drawers:visual")
 		if not obj then return end
 
-		if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
-		if bdir.z < 0 then obj:set_yaw(math.pi) end
-		if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
+		obj:set_yaw(facedir_yaw(bdir))
 
 		drawers.last_texture = nil
 	elseif drawerType == 2 then
@@ -80,10 +87,9 @@ function drawers.spawn_visuals(pos)
 		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
 		objs[2] = core.add_entity(pos2, "drawers:visual")
 
+		local yaw = facedir_yaw(bdir)
 		for i, obj in pairs(objs) do
-			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
-			if bdir.z < 0 then obj:set_yaw(math.pi) end
-			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
+			obj:set_yaw(yaw)
 		end
 	else -- 2x2 drawer
 		local bdir = core.facedir_to_dir(node.param2)
@@ -137,10 +143,9 @@ function drawers.spawn_visuals(pos)
 		objs[4] = core.add_entity(pos4, "drawers:visual")
 
 
+		local yaw = facedir_yaw(bdir)
 		for i, obj in pairs(objs) do
-			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
-			if bdir.z < 0 then obj:set_yaw(math.pi) end
-			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
+			obj:set_yaw(yaw)
 		end
 	end
 end
@@ -198,7 +203,8 @@ core.register_entity("drawers:visual", {
 			drawer_posz = self.drawer_pos.z,
 			texture = self.texture,
 			drawerType = self.drawerType,
-			visualId = self.visualId
+			visualId = self.visualId,
+			yaw = self.object:get_yaw(), -- Persist yaw across chunk reloads
 		})
 	end,
 
@@ -214,6 +220,11 @@ core.register_entity("drawers:visual", {
 			self.texture = data.texture
 			self.drawerType = data.drawerType or 1
 			self.visualId = data.visualId or ""
+
+			-- Restore yaw saved at serialize time
+			if data.yaw then
+				self.object:set_yaw(data.yaw)
+			end
 
 			-- backwards compatibility
 			if self.texture == "drawers_empty.png" then
