@@ -48,12 +48,27 @@ end
 local COMPLEX_DRAWTYPES = {
 	nodebox = true,
 	mesh    = true,
+	-- also a check below for animated blocks to render the same way
 }
 local function use_node_visual(item_def)
-	if not (item_def and COMPLEX_DRAWTYPES[item_def.drawtype]) then return false end
-	local has_2d = (item_def.inventory_image and #item_def.inventory_image > 0)
-		or (item_def.wield_image and #item_def.wield_image > 0)
-	return not has_2d
+	if not item_def then return false end
+	if COMPLEX_DRAWTYPES[item_def.drawtype] then
+		local has_2d = (item_def.inventory_image and #item_def.inventory_image > 0)
+			or (item_def.wield_image and #item_def.wield_image > 0)
+		return not has_2d
+	end
+	-- Animated tiles with no explicit 2D image: render as node so the
+	-- engine handles the animation rather than us mangling the spritesheet.
+	if item_def.tiles then
+		for _, tile in ipairs(item_def.tiles) do
+			if type(tile) == "table" and tile.animation then
+				local has_2d = (item_def.inventory_image and #item_def.inventory_image > 0)
+					or (item_def.wield_image and #item_def.wield_image > 0)
+				return not has_2d
+			end
+		end
+	end
+	return false
 end
 
 function drawers.spawn_visuals(pos)

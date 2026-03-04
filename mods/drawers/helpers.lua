@@ -69,18 +69,6 @@ local function tile_to_image(tile, fallback_image)
 	local image = tile.name or tile.image
 	assert(image, "Tile definition has no image file specified")
 
-	-- Issue 1: animated tiles store all frames in one tall spritesheet.
-	-- Append a texture modifier to crop to frame 0 for a static preview.
-	local anim = tile.animation
-	if anim then
-		if anim.type == "vertical_frames" then
-			local frames = math.max(1, math.floor((anim.aspect_h or 16) / (anim.aspect_w or 16)))
-			image = image .. "^[verticalframe:" .. frames .. ":0"
-		elseif anim.type == "sheet_2d" then
-			image = image .. "^[sheet:" .. (anim.frames_w or 1) .. "x" .. (anim.frames_h or 1) .. ":0,0"
-		end
-	end
-
 	if tile.color then
 		local colorstr = core.colorspec_to_colorstring(tile.color)
 		if colorstr then
