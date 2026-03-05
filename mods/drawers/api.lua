@@ -445,10 +445,47 @@ function drawers.register_connector(name, def)
     if core.get_modpath('pipeworks') and pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
+        def.groups.tubedevice_use_item_entities = 1 -- prevent insert_object branch
         def.tube = def.tube or {}
         def.tube.connect_sides = {
             left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1,
         }
+
+        def.tube.insert_object = function(pos, node, stack, vel, owner)
+            -- Walk all 6 neighbors looking for connected drawers
+            local leftover = stack
+            for _, dir in ipairs({
+                vector.new(1, 0, 0), vector.new(-1, 0, 0),
+                vector.new(0, 1, 0), vector.new(0, -1, 0),
+                vector.new(0, 0, 1), vector.new(0, 0, -1),
+            }) do
+                local neighbor_pos = vector.add(pos, dir)
+                local neighbor_node = core.get_node(neighbor_pos)
+                if core.get_item_group(neighbor_node.name, 'drawer') > 0 then
+                    leftover = drawers.drawer_insert_object_from_tube(neighbor_pos, neighbor_node, leftover, vel)
+                    if leftover:get_count() == 0 then break end
+                end
+            end
+            return leftover
+        end
+
+        def.tube.can_insert = function(pos, node, stack, direction)
+            for _, dir in ipairs({
+                vector.new(1, 0, 0), vector.new(-1, 0, 0),
+                vector.new(0, 1, 0), vector.new(0, -1, 0),
+                vector.new(0, 0, 1), vector.new(0, 0, -1),
+            }) do
+                local neighbor_pos = vector.add(pos, dir)
+                local neighbor_node = core.get_node(neighbor_pos)
+                if core.get_item_group(neighbor_node.name, 'drawer') > 0 then
+                    if drawers.drawer_can_insert_stack_from_tube(neighbor_pos, neighbor_node, stack, direction) then
+                        return true
+                    end
+                end
+            end
+            return false
+        end
+
         def.after_place_node = pipeworks.after_place
         def.after_dig_node = pipeworks.after_dig
     end
