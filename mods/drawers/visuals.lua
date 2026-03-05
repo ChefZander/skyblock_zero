@@ -341,8 +341,8 @@ core.register_entity("drawers:visual", {
 		local item_def = core.registered_items[self.itemName]
 		if use_node_visual(item_def) then
 			local _visual_size = (self.drawerType >= 2)
-				and { x = small_vs, y = small_vs, z = 0.0 }
-				or { x = large_vs, y = large_vs, z = 0.0 }
+				and { x = small_vs, y = small_vs, z = 0.0001 }
+				or { x = large_vs, y = large_vs, z = 0.0001 }
 			self.object:set_properties({
 				collisionbox = colbox,
 				infotext = infotext,
@@ -577,8 +577,8 @@ core.register_entity("drawers:visual", {
 		local item_def = core.registered_items[self.itemName]
 		if use_node_visual(item_def) then
 			local _visual_size = (self.drawerType >= 2)
-				and { x = small_vs, y = small_vs, z = 0.0 }
-				or { x = large_vs, y = large_vs, z = 0.0 }
+				and { x = small_vs, y = small_vs, z = 0.0001 }
+				or { x = large_vs, y = large_vs, z = 0.0001 }
 			self.texture = self.itemName
 			self.object:set_properties({
 				visual = "node",
