@@ -55,10 +55,10 @@ do -- Drawer node box scope
 end
 
 drawers.drawer_formspec = 'size[9,6.7]'
+    .. drawers.upgrades_gui_pane()
     .. 'list[context;upgrades;2,0.5;5,1;]'
     .. 'listring[context;upgrades]'
     .. 'listring[current_player;main]'
-    .. drawers.upgrades_gui_pane()
 
 -- construct drawer
 function drawers.drawer_on_construct(pos)
