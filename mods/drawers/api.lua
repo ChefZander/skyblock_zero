@@ -534,3 +534,34 @@ function drawers.register_drawer_upgrade(name, def)
         template = name
     end
 end
+
+core.register_chatcommand("drawers_fix", {
+    description = "Refreshes nearby drawer contents' visual indicators.\n" ..
+        "Should not be necessary except to update in bulk on an old save.\n" ..
+        "Issues: github.com/ChefZander/skyblock_zero/issues\n" ..
+        "Discussion: discord.gg/kHPbzrfcJ4",
+    func = function(name)
+        local player = core.get_player_by_name(name)
+        if not player then
+            return
+        end
+        local t1 = sbz_api.clock_ms()
+
+        local player_pos = player:get_pos()
+        local pos1 = vector.subtract(player_pos, 10)
+        local pos2 = vector.add(player_pos, 10)
+
+        local pos_list = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
+
+        for _, pos in ipairs(pos_list) do
+            drawers.remove_visuals(pos)
+            drawers.spawn_visuals(pos)
+        end
+
+        local t2 = sbz_api.clock_ms()
+        local diff = t2 - t1
+        local milliseconds = diff
+
+        return true, "Restored " .. #pos_list .. " drawers in " .. milliseconds .. " ms"
+    end
+})
