@@ -60,6 +60,15 @@ drawers.drawer_formspec = 'size[9,6.7]'
     .. 'listring[context;upgrades]'
     .. 'listring[current_player;main]'
 
+local neighbor_node_offsets = {
+    { name = "east",  x =  1, y =  0, z =  0 },
+    { name = "west",  x = -1, y =  0, z =  0 },
+    { name = "up",    x =  0, y =  1, z =  0 },
+    { name = "down",  x =  0, y = -1, z =  0 },
+    { name = "north", x =  0, y =  0, z =  1 },
+    { name = "south", x =  0, y =  0, z = -1 },
+}
+
 -- construct drawer
 function drawers.drawer_on_construct(pos)
     local node = core.get_node(pos)
@@ -454,12 +463,8 @@ function drawers.register_connector(name, def)
         def.tube.insert_object = function(pos, node, stack, vel, owner)
             -- Walk all 6 neighbors looking for connected drawers
             local leftover = stack
-            for _, dir in ipairs({
-                vector.new(1, 0, 0), vector.new(-1, 0, 0),
-                vector.new(0, 1, 0), vector.new(0, -1, 0),
-                vector.new(0, 0, 1), vector.new(0, 0, -1),
-            }) do
-                local neighbor_pos = vector.add(pos, dir)
+            for _, ofs in ipairs(neighbor_node_offsets) do
+                local neighbor_pos = vector.add(pos, ofs)
                 local neighbor_node = core.get_node(neighbor_pos)
                 if core.get_item_group(neighbor_node.name, 'drawer') > 0 then
                     leftover = drawers.drawer_insert_object_from_tube(neighbor_pos, neighbor_node, leftover, vel)
@@ -470,12 +475,8 @@ function drawers.register_connector(name, def)
         end
 
         def.tube.can_insert = function(pos, node, stack, direction)
-            for _, dir in ipairs({
-                vector.new(1, 0, 0), vector.new(-1, 0, 0),
-                vector.new(0, 1, 0), vector.new(0, -1, 0),
-                vector.new(0, 0, 1), vector.new(0, 0, -1),
-            }) do
-                local neighbor_pos = vector.add(pos, dir)
+            for _, ofs in ipairs(neighbor_node_offsets) do
+                local neighbor_pos = vector.add(pos, ofs)
                 local neighbor_node = core.get_node(neighbor_pos)
                 if core.get_item_group(neighbor_node.name, 'drawer') > 0 then
                     if drawers.drawer_can_insert_stack_from_tube(neighbor_pos, neighbor_node, stack, direction) then
