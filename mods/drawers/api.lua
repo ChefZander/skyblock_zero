@@ -61,12 +61,12 @@ drawers.drawer_formspec = 'size[9,6.7]'
     .. 'listring[current_player;main]'
 
 local neighbor_node_offsets = {
-    { name = "east",  x =  1, y =  0, z =  0 },
-    { name = "west",  x = -1, y =  0, z =  0 },
-    { name = "up",    x =  0, y =  1, z =  0 },
-    { name = "down",  x =  0, y = -1, z =  0 },
-    { name = "north", x =  0, y =  0, z =  1 },
-    { name = "south", x =  0, y =  0, z = -1 },
+    { name = "east",  x =  1,  y =  0,  z =  0 },
+    { name = "west",  x = -1,  y =  0,  z =  0 },
+    { name = "up",    x =  0,  y =  1,  z =  0 },
+    { name = "down",  x =  0,  y = -1,  z =  0 },
+    { name = "north", x =  0,  y =  0,  z =  1 },
+    { name = "south", x =  0,  y =  0,  z = -1 },
 }
 
 -- construct drawer
