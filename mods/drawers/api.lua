@@ -60,6 +60,15 @@ drawers.drawer_formspec = 'size[9,6.7]'
     .. 'listring[context;upgrades]'
     .. 'listring[current_player;main]'
 
+local neighbor_node_offsets = {
+    { x =  1,  y =  0,  z =  0 }, -- East
+    { x = -1,  y =  0,  z =  0 }, -- West
+    { x =  0,  y =  1,  z =  0 }, -- Up
+    { x =  0,  y = -1,  z =  0 }, -- Down
+    { x =  0,  y =  0,  z =  1 }, -- North
+    { x =  0,  y =  0,  z = -1 }, -- South
+}
+
 -- construct drawer
 function drawers.drawer_on_construct(pos)
     local node = core.get_node(pos)
@@ -445,10 +454,39 @@ function drawers.register_connector(name, def)
     if core.get_modpath('pipeworks') and pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
+        def.groups.tubedevice_use_item_entities = 1 -- prevent insert_object branch
         def.tube = def.tube or {}
         def.tube.connect_sides = {
             left = 1, right = 1, back = 1, front = 1, top = 1, bottom = 1,
         }
+
+        def.tube.insert_object = function(pos, node, stack, vel, owner)
+            -- Walk all 6 neighbors looking for connected drawers
+            local leftover = stack
+            for _, ofs in ipairs(neighbor_node_offsets) do
+                local neighbor_pos = vector.add(pos, ofs)
+                local neighbor_node = core.get_node(neighbor_pos)
+                if core.get_item_group(neighbor_node.name, 'drawer') > 0 then
+                    leftover = drawers.drawer_insert_object_from_tube(neighbor_pos, neighbor_node, leftover, vel)
+                    if leftover:get_count() == 0 then break end
+                end
+            end
+            return leftover
+        end
+
+        def.tube.can_insert = function(pos, node, stack, direction)
+            for _, ofs in ipairs(neighbor_node_offsets) do
+                local neighbor_pos = vector.add(pos, ofs)
+                local neighbor_node = core.get_node(neighbor_pos)
+                if core.get_item_group(neighbor_node.name, 'drawer') > 0 then
+                    if drawers.drawer_can_insert_stack_from_tube(neighbor_pos, neighbor_node, stack, direction) then
+                        return true
+                    end
+                end
+            end
+            return false
+        end
+
         def.after_place_node = pipeworks.after_place
         def.after_dig_node = pipeworks.after_dig
     end
@@ -496,3 +534,34 @@ function drawers.register_drawer_upgrade(name, def)
         template = name
     end
 end
+
+core.register_chatcommand("drawers_fix", {
+    description = "Refreshes nearby drawer contents' visual indicators.\n" ..
+        "Should not be necessary except to update in bulk on an old save.\n" ..
+        "Issues: github.com/ChefZander/skyblock_zero/issues\n" ..
+        "Discussion: discord.gg/kHPbzrfcJ4",
+    func = function(name)
+        local player = core.get_player_by_name(name)
+        if not player then
+            return
+        end
+        local t1 = sbz_api.clock_ms()
+
+        local player_pos = player:get_pos()
+        local pos1 = vector.subtract(player_pos, 10)
+        local pos2 = vector.add(player_pos, 10)
+
+        local pos_list = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
+
+        for _, pos in ipairs(pos_list) do
+            drawers.remove_visuals(pos)
+            drawers.spawn_visuals(pos)
+        end
+
+        local t2 = sbz_api.clock_ms()
+        local diff = t2 - t1
+        local milliseconds = diff
+
+        return true, "Restored " .. #pos_list .. " drawers in " .. milliseconds .. " ms"
+    end
+})
