@@ -1,4 +1,4 @@
-local modpath = minetest.get_modpath 'sbz_power'
+local modpath = core.get_modpath 'sbz_power'
 
 sbz_power = {} -- todo: migrate the codebase over to sbz_power.*
 
@@ -18,12 +18,12 @@ function sbz_api.add_tube_support(def)
             def.tube = def.tube
                 or {
                     insert_object = function(pos, node, stack, direction)
-                        local meta = minetest.get_meta(pos)
+                        local meta = core.get_meta(pos)
                         local inv = meta:get_inventory()
                         return inv:add_item(def.input_inv, stack)
                     end,
                     can_insert = function(pos, node, stack, direction)
-                        local meta = minetest.get_meta(pos)
+                        local meta = core.get_meta(pos)
                         local inv = meta:get_inventory()
                         stack = stack:peek_item(1)
                         return inv:room_for_item(def.input_inv, stack)
@@ -131,7 +131,7 @@ function sbz_api.register_machine(name, def)
             end
         end
     end
-    minetest.register_node(name, def)
+    core.register_node(name, def)
 end
 
 function sbz_api.register_generator(name, def)
@@ -170,7 +170,7 @@ function sbz_api.register_generator(name, def)
     end
     sbz_api.add_tube_support(def)
 
-    minetest.register_node(name, def)
+    core.register_node(name, def)
 end
 
 local function register_stateful_internal(name, def, on_def, off_def, func)
@@ -185,7 +185,7 @@ local function register_stateful_internal(name, def, on_def, off_def, func)
     func(name_on, overwrite(table.copy(def), on_def))
     func(name_off, overwrite(table.copy(def), off_def or {}))
 
-    minetest.register_alias(name, name_off)
+    core.register_alias(name, name_off)
 end
 
 function sbz_api.register_stateful_machine(name, def, on_def, off_def)
@@ -197,10 +197,10 @@ function sbz_api.register_stateful_generator(name, def, on_def, off_def)
 end
 
 function sbz_api.register_stateful(name, def, on_def, off_def)
-    register_stateful_internal(name, def, on_def, off_def, minetest.register_node)
+    register_stateful_internal(name, def, on_def, off_def, core.register_node)
 end
 
-local ndef = minetest.registered_nodes
+local ndef = core.registered_nodes
 -- easier manipulating of stateful machines
 
 local function is_stateful(nodename)
@@ -208,24 +208,24 @@ local function is_stateful(nodename)
 end
 
 function sbz_api.turn_off(pos)
-    local node = minetest.get_node(pos)
+    local node = core.get_node(pos)
     local nodename = node.name
     if not is_stateful(nodename) then return end
     if string.sub(nodename, -3) == '_on' and core.get_item_group(nodename, 'state_change_no_swap') ~= 1 then
         node.name = string.sub(nodename, 1, -4) .. '_off'
-        minetest.swap_node(pos, node)
+        core.swap_node(pos, node)
     end
     local ndef_nodename = ndef[nodename]
     if ndef_nodename and ndef_nodename.on_turn_off then ndef_nodename.on_turn_off(pos) end
 end
 
 function sbz_api.turn_on(pos)
-    local node = minetest.get_node(pos)
+    local node = core.get_node(pos)
     local nodename = node.name
     if not is_stateful(nodename) then return end
     if string.sub(nodename, -4) == '_off' and core.get_item_group(nodename, 'state_change_no_swap') ~= 1 then
         node.name = string.sub(nodename, 1, -5) .. '_on'
-        minetest.swap_node(pos, node)
+        core.swap_node(pos, node)
     end
     local ndef_nodename = ndef[nodename]
     if ndef_nodename and ndef_nodename.on_turn_on then ndef_nodename.on_turn_on(pos) end
@@ -244,7 +244,7 @@ function sbz_api.force_turn_on(pos, meta)
 end
 
 function sbz_api.is_machine(pos)
-    return minetest.get_item_group(minetest.get_node(pos).name, 'sbz_machine') == 1
+    return core.get_item_group(core.get_node(pos).name, 'sbz_machine') == 1
 end
 
 function sbz_api.is_on(pos)

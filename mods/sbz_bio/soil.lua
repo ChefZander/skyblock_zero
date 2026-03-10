@@ -1,4 +1,4 @@
-minetest.register_node("sbz_bio:dirt", unifieddyes.def {
+core.register_node("sbz_bio:dirt", unifieddyes.def {
     description = "Dirt",
     tiles = { "dirt.png" },
     paramtype2 = "color",
@@ -46,7 +46,7 @@ sbz_api.recipe.register_craft {
     items = { "sbz_bio:dirt" }
 }
 
-minetest.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
+core.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
     paramtype2 = "color",
     description = "Fertilized Dirt",
     tiles = { "fertilized_dirt.png" },
@@ -80,7 +80,7 @@ do -- Fertilized Dirt recipe scope
     })
 end
 
-minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
+core.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
     paramtype2 = "color",
     description = "Dirt With Pyrograss",
     tiles = {
@@ -105,7 +105,7 @@ minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
             core.set_node(pos, { name = "sbz_bio:dirt" })
             core.set_node(vector.add(pos, vector.new(0, 1, 0)), { name = "sbz_bio:fire" })
             core.get_meta(vector.add(pos, vector.new(0, 1, 0))):set_int("co2", 5) -- burn=5
-            minetest.get_node_timer(vector.add(pos, vector.new(0, 1, 0))):start(math.random(30, 60))
+            core.get_node_timer(vector.add(pos, vector.new(0, 1, 0))):start(math.random(30, 60))
         end
     end,
 })

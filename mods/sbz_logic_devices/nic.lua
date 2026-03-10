@@ -2,16 +2,16 @@ local http = ...
 -- License: LGPLv3 or later
 -- from: https://github.com/mt-mods/digistuff/blob/master/nic.lua
 
-local settings = minetest.settings
+local settings = core.settings
 local is_priv_locked = settings:get_bool("sbz_nic_priv_locked", true)
 
-minetest.register_privilege("nic_user", {
+core.register_privilege("nic_user", {
     description = "If the server has priv locked the NIC, this priv makes you able to place the thing.",
     give_to_admin = true,
     give_to_singleplayer = true,
 })
 
-minetest.register_node("sbz_logic_devices:nic", {
+core.register_node("sbz_logic_devices:nic", {
     description = "Logic NIC",
     info_extra = "<Server setting> Priv Locked: " .. (is_priv_locked and "yes" or "no"),
 
@@ -46,9 +46,9 @@ minetest.register_node("sbz_logic_devices:nic", {
 
     after_place_node = function(pos, placer, stack, pointed)
         if is_priv_locked then -- not perfect priv locking but whatever
-            if minetest.check_player_privs(placer, "nic_user") == false then
-                minetest.remove_node(pos)
-                minetest.chat_send_player(placer:get_player_name(), "You don't have the nic_user priv!")
+            if core.check_player_privs(placer, "nic_user") == false then
+                core.remove_node(pos)
+                core.chat_send_player(placer:get_player_name(), "You don't have the nic_user priv!")
             end
         end
     end,
@@ -78,7 +78,7 @@ minetest.register_node("sbz_logic_devices:nic", {
             function(res)
                 if type(res.data) == "string" and parse_json then
                     -- parse json data and replace payload
-                    res.data = minetest.parse_json(res.data)
+                    res.data = core.parse_json(res.data)
                 end
                 sbz_logic.send(from_pos, res, pos)
             end)

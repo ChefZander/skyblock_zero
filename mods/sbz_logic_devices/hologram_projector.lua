@@ -6,7 +6,7 @@ local function transform_texture_name(tex, is_incomplete)
         addon = "x.png" -- dummy
     end
     if type(tex) == "string" then
-        local texmod = pcall(modlib.minetest.texmod.read_string, addon .. tex, true) -- literally the only reason i went out of my way to use modlib lol, this hopefully SHOULDNT crash clients (should throw an error)
+        local texmod = pcall(modlib.core.texmod.read_string, addon .. tex, true) -- literally the only reason i went out of my way to use modlib lol, this hopefully SHOULDNT crash clients (should throw an error)
         if texmod == false then
             return ""
         else
@@ -35,7 +35,7 @@ end
 local function all_in_range(t, min, max)
     for k, v in pairs(t) do
         if type(v) == "number" then
-            if math.abs(v) < min or math.abs(v) > max and not minetest.is_nan(v) then
+            if math.abs(v) < min or math.abs(v) > max and not core.is_nan(v) then
                 return false
             end
         end
@@ -199,10 +199,10 @@ local function validate_object_properties(props, not_strict)
     return ok, errmsg
 end
 
-minetest.register_entity("sbz_logic_devices:hologram", {
+core.register_entity("sbz_logic_devices:hologram", {
     initial_properties = { static_save = false },
     on_activate = function(self, staticdata, dtime_s)
-        staticdata = minetest.deserialize(staticdata)
+        staticdata = core.deserialize(staticdata)
         if staticdata == nil then return self.object:remove() end
         staticdata.properties.static_save = false
         self.parent = staticdata.parent
@@ -212,7 +212,7 @@ minetest.register_entity("sbz_logic_devices:hologram", {
     end,
     on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
         local parent = self.parent
-        local meta = minetest.get_meta(parent)
+        local meta = core.get_meta(parent)
         local subscribed = vector.from_string(meta:get_string("subscribed"))
         if subscribed then
             sbz_logic.send(subscribed, {
@@ -228,7 +228,7 @@ minetest.register_entity("sbz_logic_devices:hologram", {
     end,
     on_rightclick = function(self, clicker)
         local parent = self.parent
-        local meta = minetest.get_meta(parent)
+        local meta = core.get_meta(parent)
         local subscribed = vector.from_string(meta:get_string("subscribed"))
         if subscribed then
             sbz_logic.send(subscribed, {
@@ -251,7 +251,7 @@ minetest.register_entity("sbz_logic_devices:hologram", {
             or math.abs(diff.y) > range_max
             or math.abs(diff.z) > range_max
         then
-            local meta = minetest.get_meta(parent)
+            local meta = core.get_meta(parent)
             local subscribed = vector.from_string(meta:get_string("subscribed"))
             sbz_logic.send(subscribed, {
                 type = "walked_off",
@@ -261,7 +261,7 @@ minetest.register_entity("sbz_logic_devices:hologram", {
             return self.object:remove()
         end
         if self.get_collision_info then
-            local meta = minetest.get_meta(parent)
+            local meta = core.get_meta(parent)
             local subscribed = vector.from_string(meta:get_string("subscribed"))
             if subscribed then
                 sbz_logic.send(subscribed, {
@@ -276,7 +276,7 @@ minetest.register_entity("sbz_logic_devices:hologram", {
 })
 
 local function exec_command(pos, cmd, from_pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     if cmd == "subscribe" or cmd == "unsubscribe" then
         if cmd == "subscribe" then
             meta:set_string("subscribed", vector.to_string(from_pos))
@@ -338,7 +338,7 @@ local function exec_command(pos, cmd, from_pos)
         -- alright, now the fun stuff
 
 
-        local obj = minetest.add_entity(cmd.pos, "sbz_logic_devices:hologram", minetest.serialize({
+        local obj = core.add_entity(cmd.pos, "sbz_logic_devices:hologram", core.serialize({
             parent = pos,
             properties = cmd,
         }))
@@ -525,7 +525,7 @@ local function exec_command(pos, cmd, from_pos)
         end
         cmd.pos = vector.add(cmd.pos, pos)
         cmd.texture = transform_texture_name(cmd.texture)
-        minetest.add_particle(cmd) -- yeah thats literally it
+        core.add_particle(cmd) -- yeah thats literally it
     end
 end
 
@@ -549,7 +549,7 @@ core.register_node("sbz_logic_devices:hologram_projector", {
     on_punch = function(pos, _, player)
         vizlib.draw_cube(pos, range + 0.5, { player = player })
         vizlib.draw_cube(pos, range_max + 0.5, { player = player, color = "orange" })
-        minetest.get_meta(pos):set_string("infotext", "Object Detector")
+        core.get_meta(pos):set_string("infotext", "Object Detector")
     end,
 })
 

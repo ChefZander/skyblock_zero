@@ -1,11 +1,11 @@
-local S = minetest.get_translator 'pipeworks'
+local S = core.get_translator 'pipeworks'
 
 local function set_wielder_formspec(def, meta)
     local width, height = def.wield_inv.width, def.wield_inv.height
     local offset = 5.22 - width * 0.625
     local size = '10.2,' .. (6.5 + height * 1.25)
     local list_bg = ''
-    if minetest.get_modpath 'i3' or minetest.get_modpath 'mcl_formspec' then
+    if core.get_modpath 'i3' or core.get_modpath 'mcl_formspec' then
         list_bg = 'style_type[box;colors=#666]'
         for i = 0, height - 1 do
             for j = 0, width - 1 do
@@ -23,7 +23,7 @@ local function set_wielder_formspec(def, meta)
         .. def.name
         .. ']'
         .. 'label[1.75,0.8;'
-        .. minetest.formspec_escape(def.description)
+        .. core.formspec_escape(def.description)
         .. ']'
         .. 'list[context;'
         .. def.wield_inv.name
@@ -41,7 +41,7 @@ local function set_wielder_formspec(def, meta)
 end
 
 local function wielder_action(def, pos, node, index)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     local list = inv:get_list(def.wield_inv.name)
     if list == nil then return end
@@ -57,7 +57,7 @@ local function wielder_action(def, pos, node, index)
         end
     end
     if not wield_index and not def.wield_hand then return end
-    local dir = minetest.facedir_to_dir(node.param2)
+    local dir = core.facedir_to_dir(node.param2)
     local fakeplayer = fakelib.create_player {
         name = meta:get_string 'owner',
         direction = vector.multiply(dir, -1),
@@ -102,7 +102,7 @@ function pipeworks.register_wielder(def)
         handy = 1,
         pickaxey = 1,
     }
-    minetest.register_node(def.name, {
+    core.register_node(def.name, {
         description = def.description,
         tiles = def.tiles,
         paramtype2 = 'facedir',
@@ -112,14 +112,14 @@ function pipeworks.register_wielder(def)
             can_insert = function(pos, node, stack, direction)
                 if def.eject_drops then
                     -- Prevent ejected items from being inserted
-                    local dir = vector.multiply(minetest.facedir_to_dir(node.param2), -1)
+                    local dir = vector.multiply(core.facedir_to_dir(node.param2), -1)
                     if vector.equals(direction, dir) then return false end
                 end
-                local inv = minetest.get_meta(pos):get_inventory()
+                local inv = core.get_meta(pos):get_inventory()
                 return inv:room_for_item(def.wield_inv.name, stack)
             end,
             insert_object = function(pos, node, stack)
-                local inv = minetest.get_meta(pos):get_inventory()
+                local inv = core.get_meta(pos):get_inventory()
                 return inv:add_item(def.wield_inv.name, stack)
             end,
             input_inventory = def.wield_inv.name,
@@ -130,7 +130,7 @@ function pipeworks.register_wielder(def)
             priority = 50,
         },
         on_construct = function(pos)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             inv:set_size(def.wield_inv.name, def.wield_inv.width * def.wield_inv.height)
             if def.eject_drops then inv:set_size('main', 32) end
@@ -176,14 +176,14 @@ function pipeworks.register_wielder(def)
         end,
         on_receive_fields = function(pos, _, fields, sender)
             if not fields.channel or not pipeworks.may_configure(pos, sender) then return end
-            minetest.get_meta(pos):set_string('channel', fields.channel)
+            core.get_meta(pos):set_string('channel', fields.channel)
         end,
         action = function(pos, node, meta, supply, demand)
             if supply < demand + def.cost then
                 meta:set_string('infotext', 'Not enough power')
                 return def.cost
             end
-            if wielder_action(def, pos, minetest.get_node(pos)) == false then
+            if wielder_action(def, pos, core.get_node(pos)) == false then
                 meta:set_string('infotext', 'Idle')
                 return 0
             end
@@ -242,29 +242,29 @@ pipeworks.register_wielder {
     action = function(fakeplayer, pointed)
         local stack = fakeplayer:get_wielded_item()
         local old_stack = ItemStack(stack)
-        local item_def = minetest.registered_items[stack:get_name()]
+        local item_def = core.registered_items[stack:get_name()]
         if item_def.on_use then
             stack = item_def.on_use(stack, fakeplayer, pointed) or stack
             fakeplayer:set_wielded_item(stack)
         else
-            local node = minetest.get_node(pointed.under)
-            local node_def = minetest.registered_nodes[node.name]
+            local node = core.get_node(pointed.under)
+            local node_def = core.registered_nodes[node.name]
             if not node_def or not node_def.on_dig then return false end
 
-            if minetest.get_item_group(node.name, 'nb_nodig') > 0 then -- DO NOT USE THIS TO LIMIT WHAT CAVEMAN AUTOMATION CAN DO, ONLY USE IT TO STRENGHTEN IT (like making growing plants not breakable)
+            if core.get_item_group(node.name, 'nb_nodig') > 0 then -- DO NOT USE THIS TO LIMIT WHAT CAVEMAN AUTOMATION CAN DO, ONLY USE IT TO STRENGHTEN IT (like making growing plants not breakable)
                 return false
             end
             -- Check if the tool can dig the node
             local tool = stack:get_tool_capabilities()
-            if not minetest.get_dig_params(node_def.groups, tool).diggable then
+            if not core.get_dig_params(node_def.groups, tool).diggable then
                 -- Try using hand if tool can't dig the node
                 local hand = ItemStack():get_tool_capabilities()
-                if not minetest.get_dig_params(node_def.groups, hand).diggable then return false end
+                if not core.get_dig_params(node_def.groups, hand).diggable then return false end
             end
             -- This must only check for false, because `on_dig` returning nil is the same as returning true.
             if node_def.on_dig(pointed.under, node, fakeplayer) == false then return false end
             local sound = node_def.sounds and node_def.sounds.dug
-            if sound then minetest.sound_play(sound, { pos = pointed.under }, true) end
+            if sound then core.sound_play(sound, { pos = pointed.under }, true) end
             stack = fakeplayer:get_wielded_item()
         end
         if stack:get_name() == old_stack:get_name() then
@@ -301,14 +301,14 @@ pipeworks.register_wielder {
     connect_sides = { back = 1 },
     action = function(fakeplayer, pointed)
         local stack = fakeplayer:get_wielded_item()
-        local def = minetest.registered_items[stack:get_name()]
+        local def = core.registered_items[stack:get_name()]
         if def and def.on_place then
             local new_stack, placed_pos = def.on_place(stack, fakeplayer, pointed)
             fakeplayer:set_wielded_item(new_stack or stack)
-            -- minetest.item_place_node doesn't play sound to the placer
+            -- core.item_place_node doesn't play sound to the placer
             local sound = placed_pos and def.sounds and def.sounds.place
             local name = fakeplayer:get_player_name()
-            if sound and name ~= '' then minetest.sound_play(sound, { pos = placed_pos, to_player = name }, true) end
+            if sound and name ~= '' then core.sound_play(sound, { pos = placed_pos, to_player = name }, true) end
         else
             return false
         end
@@ -332,8 +332,8 @@ pipeworks.register_wielder {
     wield_hand = true,
     eject_drops = true,
     action = function(fakeplayer, pointed)
-        local node = minetest.get_node(pointed.under)
-        local node_def = minetest.registered_nodes[node.name]
+        local node = core.get_node(pointed.under)
+        local node_def = core.registered_nodes[node.name]
 
         if not node_def then return false end
 

@@ -1,6 +1,6 @@
-local modpath = minetest.get_modpath 'sbz_decor'
+local modpath = core.get_modpath 'sbz_decor'
 
-minetest.register_node('sbz_decor:photonlamp', {
+core.register_node('sbz_decor:photonlamp', {
     description = 'Photon Lamp',
     drawtype = 'mesh',
     mesh = 'photonlamp.obj',
@@ -20,7 +20,7 @@ minetest.register_node('sbz_decor:photonlamp', {
     },
     use_texture_alpha = 'clip',
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:photonlamp',
     recipe = {
         { 'sbz_resources:matter_plate', 'sbz_resources:emitter_imitator', 'sbz_resources:matter_plate' },
@@ -29,7 +29,7 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:factory_floor',
     unifieddyes.def {
         description = 'Factory Floor',
@@ -40,7 +40,7 @@ minetest.register_node(
         -- sounds = sbz_api.sounds.matter(),
     }
 )
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_floor 2',
     type = 'shapeless',
     recipe = {
@@ -57,7 +57,7 @@ stairs.register('sbz_decor:factory_floor', {
     stair_cross = 'factory_floor_sc.png',
 })
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:factory_floor_tiling',
     unifieddyes.def {
         description = 'Factory Floor (Tiled)',
@@ -71,7 +71,7 @@ minetest.register_node(
 
 stairs.register 'sbz_decor:factory_floor_tiling'
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_floor_tiling 4',
     type = 'shapeless',
     recipe = {
@@ -82,7 +82,7 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node('sbz_decor:factory_ventilator', {
+core.register_node('sbz_decor:factory_ventilator', {
     description = 'Factory Ventilator',
     tiles = {
         { name = 'factory_ventilator.png', animation = { type = 'vertical_frames', length = 1 } },
@@ -92,7 +92,7 @@ minetest.register_node('sbz_decor:factory_ventilator', {
     walkable = true,
     -- sounds = sbz_api.sounds.matter(),
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_ventilator',
     type = 'shapeless',
     recipe = {
@@ -103,7 +103,7 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:factory_warning',
     unifieddyes.def {
         description = 'Factory Warning',
@@ -115,13 +115,13 @@ minetest.register_node(
     }
 )
 stairs.register 'sbz_decor:factory_warning'
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_warning 4',
     type = 'shapeless',
     recipe = { 'sbz_decor:factory_floor', 'sbz_decor:factory_floor', 'sbz_chem:gold_powder', 'sbz_chem:gold_powder' },
 }
 
-minetest.register_node('sbz_decor:mystery_terrarium', {
+core.register_node('sbz_decor:mystery_terrarium', {
     description = 'Mystery Terrarium',
     tiles = {
         { name = 'mystery_terrarium.png', animation = { type = 'vertical_frames', length = 1 } },
@@ -131,13 +131,13 @@ minetest.register_node('sbz_decor:mystery_terrarium', {
     walkable = true,
     -- sounds = sbz_api.sounds.matter(),
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:mystery_terrarium',
     type = 'shapeless',
     recipe = { 'sbz_bio:habitat_regulator', 'sbz_bio:screen_inverter_potion', 'sbz_chem:thorium_powder' },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:large_server_rack',
     unifieddyes.def {
         description = 'Large Server Rack',
@@ -158,13 +158,13 @@ minetest.register_node(
     }
 )
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:large_server_rack',
     type = 'shapeless',
     recipe = { 'sbz_resources:matter_blob', 'sbz_resources:luanium' },
 }
 
-local MP = minetest.get_modpath 'sbz_decor'
+local MP = core.get_modpath 'sbz_decor'
 dofile(MP .. '/signs.lua')
 dofile(MP .. '/cnc.lua')
 
@@ -179,13 +179,13 @@ local get_ladder_on_place = function(ladder_name)
             local target = pointed.under
             local node = core.get_node(target)
             if node.name == ladder_name then
-                local dir = minetest.facedir_to_dir(node.param2)
+                local dir = core.facedir_to_dir(node.param2)
                 local up = vector.new(0, 1, 0)
                 pointed.under = vector.add(pointed.under, up)
                 pointed.above = vector.add(pointed.above, up)
                 if core.get_node(pointed.under).name == ladder_name then
                     local result =
-                        minetest.registered_nodes[ladder_name].on_place(stack, placer, pointed, (recursed or 0) + 1)
+                        core.registered_nodes[ladder_name].on_place(stack, placer, pointed, (recursed or 0) + 1)
                     return result
                 end
                 return core.item_place_node(stack, placer, pointed, node.param2)

@@ -2,7 +2,7 @@ local matter_items = {}
 for _ = 1, 8 do
     matter_items[#matter_items + 1] = { rarity = 2, items = { 'sbz_resources:matter_dust 8' } }
 end
-minetest.register_node('sbz_meteorites:meteoric_matter', {
+core.register_node('sbz_meteorites:meteoric_matter', {
     description = 'Meteoric Matter',
     tiles = { 'matter_blob.png^meteoric_overlay.png' },
     paramtype = 'light',
@@ -20,7 +20,7 @@ for _ = 1, 8 do
     antimatter_items[#antimatter_items + 1] = { rarity = 2, items = { 'sbz_resources:antimatter_dust 8' } }
 end
 
-minetest.register_node('sbz_meteorites:meteoric_antimatter', {
+core.register_node('sbz_meteorites:meteoric_antimatter', {
     description = 'Meteoric Antimatter',
     tiles = { 'antimatter_blob.png^(meteoric_overlay.png^[invert:rgb)' },
     paramtype = 'light',
@@ -38,7 +38,7 @@ for _ = 1, 8 do
     emittrium_items[#emittrium_items + 1] = { rarity = 2, items = { 'sbz_resources:raw_emittrium 8' } }
 end
 
-minetest.register_node('sbz_meteorites:meteoric_emittrium', {
+core.register_node('sbz_meteorites:meteoric_emittrium', {
     description = 'Meteoric Emittrium',
     tiles = { 'emitter.png^meteoric_overlay.png' },
     paramtype = 'light',
@@ -63,7 +63,7 @@ for k, v in ipairs(drops) do
     }
 end
 
-minetest.register_node('sbz_meteorites:meteoric_metal', {
+core.register_node('sbz_meteorites:meteoric_metal', {
     description = 'Meteoric Metal',
     tiles = { 'metal.png^meteoric_overlay.png' },
     paramtype = 'light',
@@ -76,7 +76,7 @@ minetest.register_node('sbz_meteorites:meteoric_metal', {
     -- sounds = sbz_api.sounds.matter(),
 })
 
-minetest.register_node('sbz_meteorites:neutronium', {
+core.register_node('sbz_meteorites:neutronium', {
     description = 'Neutronium',
     tiles = { 'neutronium.png' },
     paramtype = 'light',
@@ -84,7 +84,7 @@ minetest.register_node('sbz_meteorites:neutronium', {
     groups = { gravity = 300, matter = 1, charged = 1, attraction = 256 },
     -- sounds = sbz_api.sounds.matter(),
 })
-minetest.register_node('sbz_meteorites:antineutronium', {
+core.register_node('sbz_meteorites:antineutronium', {
     description = 'Antineutronium',
     tiles = { 'neutronium.png^[invert:rgb' },
     paramtype = 'light',
@@ -94,7 +94,7 @@ minetest.register_node('sbz_meteorites:antineutronium', {
 })
 
 local core_blob = 'sbz_resources:compressed_core_dust'
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_meteorites:neutronium',
     recipe = {
         { core_blob, core_blob, core_blob },
@@ -103,7 +103,7 @@ minetest.register_craft {
     },
 }
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_meteorites:antineutronium',
     recipe = {
         { core_blob, core_blob, core_blob },
@@ -122,17 +122,17 @@ local meteorite_nodes = {
 
 local time = 3600 * 3
 
-minetest.register_abm {
+core.register_abm {
     nodenames = meteorite_nodes,
     interval = 60,
     chance = 6,
     action = function(pos, node)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local placed_at = meta:get_int 'placed_at'
         if placed_at == 0 then
             meta:set_int('placed_at', os.time())
         elseif os.time() - placed_at >= time then
-            minetest.remove_node(pos)
+            core.remove_node(pos)
         end
     end,
 }

@@ -1,4 +1,4 @@
-minetest.register_entity("sbz_power:turret_entity", {
+core.register_entity("sbz_power:turret_entity", {
     initial_properties = {
         visual = "mesh",
         mesh = "turret.gltf",
@@ -64,7 +64,7 @@ local function get_turret_entity(pos)
         turret:remove() -- remove excess turrets
     end
 
-    return minetest.add_entity(pos, "sbz_power:turret_entity")
+    return core.add_entity(pos, "sbz_power:turret_entity")
 end
 
 local range = 120

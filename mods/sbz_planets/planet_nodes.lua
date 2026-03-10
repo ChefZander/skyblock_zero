@@ -31,7 +31,7 @@ local function make_nofall(name)
     def.groups.falling_node = 0
     def.groups.not_in_creative_inventory = 1
     def.drop = name
-    def.on_dig = minetest.on_dig
+    def.on_dig = core.on_dig
     core.register_node(new_name, def)
 end
 
@@ -242,7 +242,7 @@ core.register_node('sbz_planets:water_source_nofall', {
         { name = 'water.png', backface_culling = false },
         { name = 'water.png', backface_culling = true },
     },
-    inventory_image = (minetest.inventorycube 'water.png') .. '^[colorize:blue:50',
+    inventory_image = (core.inventorycube 'water.png') .. '^[colorize:blue:50',
     use_texture_alpha = 'blend',
     groups = { liquid = 3, habitat_conducts = 1, transparent = 1, liquid_capturable = 0, water = 1 },
     post_effect_color = water_color,

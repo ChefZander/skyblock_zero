@@ -1,6 +1,6 @@
 local storinator_upgrades = {}
 local function update_node_texture(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     local count = 0
 
@@ -31,13 +31,13 @@ local function update_node_texture(pos)
         new_texture = new_texture .. "_" .. storinator_upgrades[node.name]
     end
 
-    if minetest.get_item_group(node.name, "public") > 0 then
+    if core.get_item_group(node.name, "public") > 0 then
         new_texture = new_texture .. "_public"
     end
     local old_nodename = node.name
     node.name = "sbz_resources:" .. new_texture
     if old_nodename ~= node.name then
-        minetest.swap_node(pos, node)
+        core.swap_node(pos, node)
     end
 end
 
@@ -125,13 +125,13 @@ local function register_storinator(added_name, def)
             def_copy.tube = {
                 input_inventory = "main",
                 insert_object = function(pos, node, stack, direction)
-                    local meta = minetest.get_meta(pos)
+                    local meta = core.get_meta(pos)
                     local inv = meta:get_inventory()
                     --                    update_node_texture(pos)
                     return inv:add_item("main", stack)
                 end,
                 can_insert = function(pos, node, stack, direction)
-                    local meta = minetest.get_meta(pos)
+                    local meta = core.get_meta(pos)
                     local inv = meta:get_inventory()
                     stack = stack:peek_item(1)
                     return inv:room_for_item("main", stack)
@@ -195,7 +195,7 @@ listring[]
     end
     dropname = dropname
 
-    minetest.register_craft {
+    core.register_craft {
         output = dropname .. "_public",
         type = "shapeless",
         recipe = {
@@ -203,7 +203,7 @@ listring[]
         }
     }
 
-    minetest.register_craft {
+    core.register_craft {
         output = dropname,
         type = "shapeless",
         recipe = {
@@ -212,7 +212,7 @@ listring[]
     }
 
     if not def.base then
-        minetest.register_craft {
+        core.register_craft {
             output = dropname,
             recipe = {
                 { "",           def.material, "" },

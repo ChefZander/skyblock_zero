@@ -3,7 +3,7 @@
 -- https://github.com/mt-mods/digistuff/blob/reworkGPU/gpu.lua
 -- License: LGPLv3 or later
 
-local MP = minetest.get_modpath("sbz_logic_devices")
+local MP = core.get_modpath("sbz_logic_devices")
 
 ---@type function
 local blend = loadfile(MP .. "/gpu_utils.lua")()
@@ -28,11 +28,11 @@ local pos_buffers = setmetatable({}, {
         return rawget(t, k)
     end
 })
-local h = minetest.hash_node_position
+local h = core.hash_node_position
 
 
 local a = 30
-minetest.register_privilege("place_gpus_unlimited", {
+core.register_privilege("place_gpus_unlimited", {
     description = string.format("Place gpus closer than %s blocks from one another", a),
     give_to_admin = false,
     give_to_singleplayer = false,
@@ -42,9 +42,9 @@ local area_vec = vector.new(a, a, a)
 
 local function after_place_node(pos, placer)
     if not placer then return end
-    if minetest.check_player_privs(placer, "place_gpus_unlimited") then return end
+    if core.check_player_privs(placer, "place_gpus_unlimited") then return end
 
-    local nodes = minetest.find_nodes_in_area(vector.subtract(pos, area_vec), vector.add(pos, area_vec),
+    local nodes = core.find_nodes_in_area(vector.subtract(pos, area_vec), vector.add(pos, area_vec),
         "sbz_logic_devices:gpu")
 
     if #(nodes) > 1 then
@@ -498,7 +498,7 @@ local commands = {
             end
             local result = table.concat(packed_data)
             if command.base64 then
-                result = minetest.encode_base64(result)
+                result = core.encode_base64(result)
             end
             sbz_logic.send_l(command.to_pos, result, from_pos) -- send as if logic sent it
         end
@@ -521,7 +521,7 @@ local commands = {
                 end
 
                 local png = core.encode_png(b.xsize, b.ysize, table.concat(data), 1)
-                sbz_logic.send_l(command.to_pos, minetest.encode_base64(png), from_pos) -- send as if logic sent it
+                sbz_logic.send_l(command.to_pos, core.encode_base64(png), from_pos) -- send as if logic sent it
             end
         end
     },
@@ -544,7 +544,7 @@ local commands = {
 
             local data = command.data
             if command.base64 then
-                data = minetest.decode_base64(command.data)
+                data = core.decode_base64(command.data)
             end
             if data == nil then return end -- can happen with base64
 
@@ -796,7 +796,7 @@ core.register_node("sbz_logic_devices:gpu", {
         if type(msg) ~= "table" then return end
         if type(msg[1]) ~= "table" then msg = { msg } end
 
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local lag = meta:get_int("lag") or 0
 
         local last_measured = meta:get_int("last_measured")

@@ -1,4 +1,4 @@
-minetest.register_node("jumpdrive:fleet_controller", {
+core.register_node("jumpdrive:fleet_controller", {
 	description = "Jumpdrive Fleet Controller",
 
 	tiles = { "jumpdrive_fleet_controller.png" },
@@ -10,14 +10,14 @@ minetest.register_node("jumpdrive:fleet_controller", {
 	on_logic_send = jumpdrive.fleet.logic_effector,
 
 	after_place_node = function(pos, placer)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		-- owner of fleet_controller
 		meta:set_string("owner", placer:get_player_name() or "")
 		jumpdrive.fleet.update_formspec(meta, pos)
 	end,
 
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		meta:set_int("x", pos.x)
 		meta:set_int("y", pos.y)
 		meta:set_int("z", pos.z)
@@ -36,21 +36,21 @@ minetest.register_node("jumpdrive:fleet_controller", {
 	end,
 
 	can_dig = function(pos, player)
-		local meta = minetest.get_meta(pos);
+		local meta = core.get_meta(pos);
 		local inv = meta:get_inventory()
 		local name = player:get_player_name()
 
-		return inv:is_empty("main") and not minetest.is_protected(pos, name)
+		return inv:is_empty("main") and not core.is_protected(pos, name)
 	end,
 
 	on_receive_fields = function(pos, _, fields, sender)
-		local meta = minetest.get_meta(pos);
+		local meta = core.get_meta(pos);
 
 		if not sender then
 			return
 		end
 
-		if minetest.is_protected(pos, sender:get_player_name()) then
+		if core.is_protected(pos, sender:get_player_name()) then
 			-- not allowed
 			return
 		end
@@ -86,11 +86,11 @@ minetest.register_node("jumpdrive:fleet_controller", {
 		meta:set_int("z", jumpdrive.sanitize_coord(z))
 		jumpdrive.fleet.update_formspec(meta, pos)
 
-		local t0 = minetest.get_us_time()
+		local t0 = core.get_us_time()
 		local engines_pos_list = jumpdrive.fleet.find_engines(pos)
-		local t1 = minetest.get_us_time()
-		minetest.log("action", "[jumpdrive-fleet] backbone traversing took " ..
-			(t1 - t0) .. " us @ " .. minetest.pos_to_string(pos))
+		local t1 = core.get_us_time()
+		core.log("action", "[jumpdrive-fleet] backbone traversing took " ..
+			(t1 - t0) .. " us @ " .. core.pos_to_string(pos))
 
 		local targetPos = { x = meta:get_int("x"), y = meta:get_int("y"), z = meta:get_int("z") }
 
@@ -104,23 +104,23 @@ minetest.register_node("jumpdrive:fleet_controller", {
 			--TODO check overlapping engines/radius
 			meta:set_int("active", 1)
 			meta:set_int("jump_index", 1)
-			meta:set_string("jump_list", minetest.serialize(engines_pos_list))
+			meta:set_string("jump_list", core.serialize(engines_pos_list))
 			jumpdrive.fleet.update_formspec(meta, pos)
 
-			local timer = minetest.get_node_timer(pos)
+			local timer = core.get_node_timer(pos)
 			timer:start(2.0)
 		end
 
 		if fields.stop then
 			meta:set_int("active", 0)
-			local timer = minetest.get_node_timer(pos)
+			local timer = core.get_node_timer(pos)
 			timer:stop()
 			jumpdrive.fleet.update_formspec(meta, pos)
 		end
 
 		if fields.show then
 			local playername = sender:get_player_name()
-			minetest.chat_send_player(playername, "Found " .. #engines_pos_list .. " jumpdrives")
+			core.chat_send_player(playername, "Found " .. #engines_pos_list .. " jumpdrives")
 
 			if #engines_pos_list == 0 then
 				return
@@ -132,31 +132,31 @@ minetest.register_node("jumpdrive:fleet_controller", {
 				local engine_pos = engines_pos_list[index]
 				local success, msg = jumpdrive.simulate_jump(engine_pos, sender, true)
 				if not success then
-					minetest.chat_send_player(playername, msg .. " @ " .. minetest.pos_to_string(engine_pos))
+					core.chat_send_player(playername, msg .. " @ " .. core.pos_to_string(engine_pos))
 					return
 				end
 
-				minetest.chat_send_player(sender:get_player_name(),
+				core.chat_send_player(sender:get_player_name(),
 					"Check passed for engine " .. index .. "/" .. #engines_pos_list)
 
 				if index < #engines_pos_list then
 					-- more drives to check
 					index = index + 1
-					minetest.after(1, async_check)
+					core.after(1, async_check)
 				elseif index >= #engines_pos_list then
 					-- done
-					minetest.chat_send_player(sender:get_player_name(), "Simulation successful")
+					core.chat_send_player(sender:get_player_name(), "Simulation successful")
 				end
 			end
 
-			minetest.after(1, async_check)
+			core.after(1, async_check)
 		end
 	end,
 
 	on_timer = function(pos)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		local jump_index = meta:get_int("jump_index")
-		local jump_list = minetest.deserialize(meta:get_string("jump_list"))
+		local jump_list = core.deserialize(meta:get_string("jump_list"))
 
 		if jump_list and jump_index and #jump_list >= jump_index then
 			local is_last = #jump_list == jump_index
@@ -165,7 +165,7 @@ minetest.register_node("jumpdrive:fleet_controller", {
 
 			local playername = meta:get_string("owner")
 			if not playername then
-				local node_meta = minetest.get_meta(node_pos)
+				local node_meta = core.get_meta(node_pos)
 				playername = node_meta:get_string("owner")
 			end
 
@@ -177,19 +177,19 @@ minetest.register_node("jumpdrive:fleet_controller", {
 					jumpdrive.fleet.update_formspec(meta, pos)
 
 					-- re-schedule
-					local timer = minetest.get_node_timer(pos)
+					local timer = core.get_node_timer(pos)
 					timer:start(2.0)
 				end
 				if playername then
 					local time_millis = math.floor(msg / 1000)
-					minetest.chat_send_player(playername, "Jump executed in " .. time_millis .. " ms")
+					core.chat_send_player(playername, "Jump executed in " .. time_millis .. " ms")
 				end
 			else
 				meta:set_int("active", 0)
 				jumpdrive.fleet.update_formspec(meta, pos)
-				meta:set_string("infotext", "Engine " .. minetest.pos_to_string(node_pos) .. " failed with: " .. msg)
+				meta:set_string("infotext", "Engine " .. core.pos_to_string(node_pos) .. " failed with: " .. msg)
 				if playername then
-					minetest.chat_send_player(playername, msg)
+					core.chat_send_player(playername, msg)
 				end
 			end
 		else

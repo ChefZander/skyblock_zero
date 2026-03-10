@@ -1,4 +1,4 @@
-minetest.register_node("jumpdrive:warp_device", {
+core.register_node("jumpdrive:warp_device", {
 	description = "Warp Device",
 
 	tiles = { "jumpdrive_warpdevice.png" },
