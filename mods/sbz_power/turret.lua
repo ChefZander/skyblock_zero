@@ -92,7 +92,7 @@ sbz_api.register_machine("sbz_power:turret", {
         meta:get_inventory():set_size("main", 1)
         set_turret_formspec(meta)
     end,
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     action = function(pos, node, meta, supply, demand)
         if supply < demand + power_use then
             meta:set_string("infotext", "Not enough power")

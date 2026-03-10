@@ -3,7 +3,7 @@ minetest.register_node("jumpdrive:fleet_controller", {
 
 	tiles = { "jumpdrive_fleet_controller.png" },
 	groups = { oddly_breakable_by_hand = 3, matter = 1 },
-	sounds = sbz_api.sounds.glass(),
+	-- sounds = sbz_api.sounds.glass(),
 
 	is_ground_content = false,
 	light_source = 14,

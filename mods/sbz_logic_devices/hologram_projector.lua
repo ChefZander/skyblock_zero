@@ -543,7 +543,7 @@ core.register_node("sbz_logic_devices:hologram_projector", {
     description = "Hologram Projector",
     info_extra = "Inspired by the holoemitter mod.",
     groups = { ui_logic = 1, matter = 1 },
-    sonuds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
     on_logic_send = exec_command,
     tiles = { "hologram_projector.png" },
     on_punch = function(pos, _, player)

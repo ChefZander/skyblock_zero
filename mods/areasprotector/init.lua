@@ -403,7 +403,7 @@ core.register_node("areasprotector:display_node_large", {
 	paramtype = "light",
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 	drop = "",
-	sounds = sbz_api.sounds.machine(),
+	-- sounds = sbz_api.sounds.machine(),
 })
 
 core.register_node("areasprotector:display_node_small", {
@@ -421,7 +421,7 @@ core.register_node("areasprotector:display_node_small", {
 	paramtype = "light",
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 	drop = "",
-	sounds = sbz_api.sounds.machine(),
+	-- sounds = sbz_api.sounds.machine(),
 })
 
 do -- Protector Small recipe scope

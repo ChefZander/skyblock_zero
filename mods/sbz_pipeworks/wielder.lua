@@ -220,7 +220,7 @@ function pipeworks.register_wielder(def)
             end
             return def.cost
         end,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     })
 end
 

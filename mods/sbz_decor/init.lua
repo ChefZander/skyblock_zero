@@ -37,7 +37,7 @@ minetest.register_node(
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 minetest.register_craft {
@@ -65,7 +65,7 @@ minetest.register_node(
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 
@@ -90,7 +90,7 @@ minetest.register_node('sbz_decor:factory_ventilator', {
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft {
     output = 'sbz_decor:factory_ventilator',
@@ -111,7 +111,7 @@ minetest.register_node(
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 stairs.register 'sbz_decor:factory_warning'
@@ -129,7 +129,7 @@ minetest.register_node('sbz_decor:mystery_terrarium', {
     groups = { matter = 1, cracky = 3, explody = 3 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
 })
 minetest.register_craft {
     output = 'sbz_decor:mystery_terrarium',
@@ -154,7 +154,7 @@ minetest.register_node(
         groups = { matter = 1, cracky = 3, explody = 3 },
         light_source = 10,
         sunlight_propagates = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 

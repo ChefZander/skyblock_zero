@@ -8,7 +8,7 @@ minetest.register_node('sbz_resources:strange_blob', {
     info_extra = 'It sure is strange looking',
     tiles = { 'strange_blob.png' },
     groups = { matter = 1, antimatter = 1, strange = 1, explody = 100 },
-    sounds = sbz_api.sounds.strange(),
+    -- sounds = sbz_api.sounds.strange(),
     light_source = 14,
 })
 

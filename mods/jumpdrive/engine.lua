@@ -23,7 +23,7 @@ core.register_node("jumpdrive:engine", {
 	action = function(_, _, meta)
 		jumpdrive.update_infotext(meta)
 	end,
-	sounds = sbz_api.sounds.glass(),
+	-- sounds = sbz_api.sounds.glass(),
 	on_logic_send = jumpdrive.logic_effector,
 
 	after_place_node = function(pos, placer)

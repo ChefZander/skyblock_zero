@@ -51,7 +51,7 @@ sbz_api.register_element = function(name, color, description, def, mod)
             description = string.format(description, 'Block'),
             drawtype = 'glasslike_framed',
             tiles = { 'block_frame.png^[colorize:' .. color .. ':200', 'block_inner.png^[colorize:' .. color .. ':200' },
-            sounds = sbz_api.sounds.metal(),
+            -- sounds = sbz_api.sounds.metal(),
         }
     )
 

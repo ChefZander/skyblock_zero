@@ -12,7 +12,7 @@ minetest.register_node("sbz_bio:dirt", unifieddyes.def {
         charged = 1,
     },
     paramtype = "light", -- if you leave this out, fertilizer wont work
-    sounds = sbz_api.sounds.dirt(),
+    -- sounds = sbz_api.sounds.dirt(),
 })
 
 do -- Dirt recipe scope
@@ -59,7 +59,7 @@ minetest.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
         fertilizer_no_sprout = 1,
     },
     paramtype = "light",
-    sounds = sbz_api.sounds.dirt(),
+    -- sounds = sbz_api.sounds.dirt(),
     info_extra = {
         "Plants grow 2x faster than on dirt, on this soil.",
         "Fertilizer can't sprout plants on this soil."
@@ -98,7 +98,7 @@ minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
         charged = 1
     },
     paramtype = "light",
-    sounds = sbz_api.sounds.dirt(),
+    -- sounds = sbz_api.sounds.dirt(),
     info_extra = "Spreads, same growth speed as dirt.",
     on_burn = function(pos)
         if is_air(vector.add(pos, vector.new(0, 1, 0))) then
