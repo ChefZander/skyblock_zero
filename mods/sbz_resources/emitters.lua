@@ -35,8 +35,8 @@ local action = function(pos, _, puncher)
             end
         else
             if not puncher.is_fake_player then
-                sbz_api.play_sfx("punch_core", {
-                    gain = 1,
+                sbz_api.play_sfx("foley_rubber_thunk", {
+                    gain = 0.4,
                     max_hear_distance = 6,
                     pos = pos
                 })
@@ -146,7 +146,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         pointed_thing = itemstack
         itemstack = nil
     end
-    sbz_api.play_sfx("punch_core", {
+    sbz_api.play_sfx("foley_rubber_thunk", {
         gain = 1,
         max_hear_distance = 6,
         pos = pos

@@ -3,8 +3,8 @@ local action = function(pos, _, puncher)
     local tool_name = itemstack:get_name()
     local can_extract_from_emitter = minetest.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
-        minetest.sound_play("punch_core", {
-            gain = 1,
+        minetest.sound_play("foley_rubber_thunk", {
+            gain = 0.2,
             max_hear_distance = 6,
             pos = pos
         })
@@ -13,8 +13,8 @@ local action = function(pos, _, puncher)
             "Colorium Emitters can only be mined using tools or machines.")
     end
     for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
-        minetest.sound_play("punch_core", {
-            gain = 1,
+        minetest.sound_play("foley_rubber_thunk", {
+            gain = 0.2,
             max_hear_distance = 6,
             pos = pos
         })
