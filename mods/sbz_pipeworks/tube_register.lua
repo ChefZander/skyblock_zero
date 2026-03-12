@@ -2,7 +2,7 @@
 local tubenodes = {}
 pipeworks.tubenodes = tubenodes
 
-minetest.register_alias("pipeworks:tube", "pipeworks:tube_000000")
+core.register_alias("pipeworks:tube", "pipeworks:tube_000000")
 
 -- now, a function to define the tubes
 
@@ -101,30 +101,30 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, s
         },
         on_punch = function(pos, node, player, pointed)
             local playername = player:get_player_name()
-            if minetest.is_protected(pos, playername) and not minetest.check_player_privs(playername, { protection_bypass = true }) then
-                return minetest.node_punch(pos, node, player, pointed)
+            if core.is_protected(pos, playername) and not core.check_player_privs(playername, { protection_bypass = true }) then
+                return core.node_punch(pos, node, player, pointed)
             end
             if pipeworks.check_and_wear_hammer(player) then
                 local wieldname = player:get_wielded_item():get_name()
                 pipeworks.logger(string.format("%s struck a tube at %s with %s to break it.", playername,
-                    minetest.pos_to_string(pos), wieldname))
+                    core.pos_to_string(pos), wieldname))
                 pipeworks.break_tube(pos)
             end
-            return minetest.node_punch(pos, node, player, pointed)
+            return core.node_punch(pos, node, player, pointed)
         end,
         after_place_node = pipeworks.after_place,
         after_dig_node = pipeworks.after_dig,
         on_rotate = false,
         on_blast = function(pos, intensity)
             if not intensity or intensity > 1 + 3 ^ 0.5 then
-                minetest.remove_node(pos)
+                core.remove_node(pos)
                 return { string.format("%s_%s", name, dropname) }
             end
-            minetest.swap_node(pos, { name = "pipeworks:broken_tube_1" })
+            core.swap_node(pos, { name = "pipeworks:broken_tube_1" })
             pipeworks.scan_for_tube_objects(pos)
         end,
         tubenumber = tonumber(tname),
-        sounds = sbz_api.sounds.matter()
+        -- sounds = sbz_api.sounds.matter()
     }
 
     if special == nil then special = {} end
@@ -145,7 +145,7 @@ local register_one_tube = function(name, tname, dropname, desc, plain, noctrs, s
         end
     end
 
-    minetest.register_node(rname, nodedef)
+    core.register_node(rname, nodedef)
 end
 
 local register_all_tubes = function(name, desc, plain, noctrs, special)
