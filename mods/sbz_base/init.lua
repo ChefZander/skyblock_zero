@@ -640,7 +640,7 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
         end
     end
     if sound then
-        core.sound_play('tnt_explode', {
+        core.sound_play('gen_explosion_with_reverb', {
             gain = 2.5,
             max_hear_distance = 128,
             pos = pos,

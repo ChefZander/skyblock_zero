@@ -14,9 +14,9 @@ of the above.
 
 **sounds/foley** — Sounds recorded using a microphone and foley techniques, edited and released as CC0 1.0 (Public Domain).
 
-**sounds/tts** — Text-to-speech placeholder audio generated using formant synthesis (not voice samples) via espeak-ng. No voice samples, no copyright concerns. CC0 1.0 (Public Domain).
+**sounds/tts** — Text-to-speech placeholder audio generated using formant synthesis (not voice samples) via eSpeak-NG. No voice samples, no copyright concerns. CC0 1.0 (Public Domain).
 
-**sounds/sfxr** — Procedurally generated waveforms produced using sfxr. CC0 1.0 (Public Domain).
+**sounds/gen** — Procedurally generated waveforms, made using tools such as sfxr and wafxr. CC0 1.0 (Public Domain).
 
 **sounds/mix** — Composite sound effects assembled by layering and mixing sources from the other folders (foley, sfxr, etc.). All source material is CC0, and so are the results. CC0 1.0 (Public Domain).
 
