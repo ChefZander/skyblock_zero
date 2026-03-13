@@ -76,7 +76,7 @@ listring[current_player;main]
         else
             if inv:room_for_item('output', out) then
                 meta:set_string('infotext', 'Alloying')
-                sbz_api.play_sfx('simple_alloy_furnace_running.ogg', { pos = pos })
+                sbz_api.play_sfx('mix_alloy_furnace_soft', { pos = pos, max_hear_distance = 6.0 })
 
                 inv:add_item('output', out)
                 for _, item in pairs(decremented) do
