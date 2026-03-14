@@ -33,3 +33,20 @@ function sbz_api.play_sfx(spec, params, pitch_randomness)
     params.pitch = params.pitch or pitch
     core.sound_play(spec, params, true)
 end
+
+core.register_on_mods_loaded(function()
+    local fallback_place_failed = { name = 'gen_error_fart', gain = 0.7, pitch = 1.0, fade = 0.0 }
+    local fallback_fall         = { name = 'gen_pew_slow_fall', gain = 0.3, pitch = 1.1, fade = 0.0 }
+
+    for name, def in pairs(core.registered_nodes) do
+        local s = def.sounds or {}
+        if not s.place_failed or not s.fall then
+            core.override_item(name, {
+                sounds = table.override(table.copy(s), {
+                    place_failed = s.place_failed or fallback_place_failed,
+                    fall         = s.fall or fallback_fall,
+                }),
+            })
+        end
+    end
+end)
