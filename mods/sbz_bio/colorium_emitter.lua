@@ -1,9 +1,9 @@
 local action = function(pos, _, puncher)
     local itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
-    local can_extract_from_emitter = minetest.get_item_group(tool_name, "core_drop_multi") > 0
+    local can_extract_from_emitter = core.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
-        minetest.sound_play("foley_rubber_thunk", {
+        core.sound_play("foley_rubber_thunk", {
             gain = 0.2,
             max_hear_distance = 6,
             pos = pos
@@ -12,8 +12,8 @@ local action = function(pos, _, puncher)
         sbz_api.displayDialogLine(puncher:get_player_name(),
             "Colorium Emitters can only be mined using tools or machines.")
     end
-    for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
-        minetest.sound_play("foley_rubber_thunk", {
+    for _ = 1, core.get_item_group(tool_name, "core_drop_multi") do
+        core.sound_play("foley_rubber_thunk", {
             gain = 0.2,
             max_hear_distance = 6,
             pos = pos
@@ -26,7 +26,7 @@ local action = function(pos, _, puncher)
             if inv then
                 local leftover = inv:add_item("main", item)
                 if not leftover:is_empty() then
-                    minetest.add_item(pos, leftover)
+                    core.add_item(pos, leftover)
                 end
             end
 
@@ -35,7 +35,7 @@ local action = function(pos, _, puncher)
     end
 end
 
-minetest.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
+core.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
     description = "Colorium Emitter",
     tiles = { "colorium_emitter.png" },
     groups = { unbreakable = 1, transparent = 1, matter = 1, level = 2 },
