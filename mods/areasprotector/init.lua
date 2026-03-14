@@ -8,11 +8,11 @@ local function red(str)
 	return core.colorize("#FF5555", str)
 end
 
-local radius_large = 25
-local height_large = 25
+local horizontal_reach_large = 25
+local vertical_reach_large = 25
 
-local radius_small = 8
-local height_small = 8
+local horizontal_reach_small = 8
+local vertical_reach_small = 8
 
 local max_protectors = 1000
 
@@ -64,7 +64,7 @@ checkbox[0.2,14;open;Open;%s]
 	return table.concat(fs)
 end
 
-local function on_receive_fields(pos, formname, fields, sender, radius, height)
+local function on_receive_fields(pos, formname, fields, sender, horizontal_reach, vertical_reach)
 	local meta = core.get_meta(pos)
 
 	local owner_name = meta:get_string("owner")
@@ -102,8 +102,8 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 	owners = new_owners
 	if fields.add_more_owners_button then
 		local name = fields.add_more_owners
-		local pos1 = vector.add(pos, vector.new(radius, height, radius))
-		local pos2 = vector.add(pos, vector.new(-radius, -height, -radius))
+		local pos1 = vector.add(pos, vector.new( horizontal_reach,  vertical_reach,  horizontal_reach))
+		local pos2 = vector.add(pos, vector.new(-horizontal_reach, -vertical_reach, -horizontal_reach))
 		local perm, err = areas:canPlayerAddArea(pos1, pos2, owner_name)
 		if not perm then
 			core.chat_send_player(owner_name, red("You are not allowed to protect that area: ") .. err)
@@ -153,13 +153,13 @@ local function on_receive_fields(pos, formname, fields, sender, radius, height)
 	meta:set_string("formspec", get_formspec(owners, meta:get_string("is_open")))
 end
 
-local function on_place(itemstack, player, pointed, radius, height, sizeword)
+local function on_place(itemstack, player, pointed, horizontal_reach, vertical_reach, sizeword)
 	local pos = pointed.above
 	if not sbz_api.is_air(pos) then
 		return itemstack
 	end
-	local pos1 = vector.add(pos, vector.new(radius, height, radius))
-	local pos2 = vector.add(pos, vector.new(-radius, -height, -radius))
+	local pos1 = vector.add(pos, vector.new( horizontal_reach,  vertical_reach,  horizontal_reach))
+	local pos2 = vector.add(pos, vector.new(-horizontal_reach, -vertical_reach, -horizontal_reach))
 
 	local name = player:get_player_name()
 	local perm, err = areas:canPlayerAddArea(pos1, pos2, name)
@@ -175,7 +175,7 @@ local function on_place(itemstack, player, pointed, radius, height, sizeword)
 			red("Another protector block is too close: ") ..
 			"another protector block was found at " ..
 			cyan(core.pos_to_string(conflicts[1])) ..
-			", and this size of protector block cannot be placed within " .. cyan(tostring(radius) .. "m") ..
+			", and this size of protector block cannot be placed within " .. cyan(tostring(horizontal_reach) .. "m") ..
 			" of others.")
 		return itemstack
 	end
@@ -237,14 +237,14 @@ end
 
 local function on_punch(pos, node, puncher, sizeword)
 	local objs = core.get_objects_inside_radius(pos, .5) -- a radius of .5 since the entity serialization seems to be not that precise
-	local removed = false
+	local display_active = true
 	for _, o in pairs(objs) do
 		if (not o:is_player()) and o:get_luaentity().name == "areasprotector:display_" .. sizeword then
 			o:remove()
-			removed = true
+			display_active = false
 		end
 	end
-	if not removed then -- nothing was removed: there wasn't the entity
+	if display_active then
 		core.add_entity(pos, "areasprotector:display_" .. sizeword)
 		core.sound_play({ name = 'dialogue', gain = 1.0 })
 		core.after(15, remove_display, pos)
@@ -260,36 +260,39 @@ local function on_step(self, dtime, sizeword)
 	end
 end
 
-local function make_display_nodebox(radius, height)
-	local nb_radius = radius + 0.55
-	local nb_height = height + 0.55
-	local t = {
-		-- sides
-		{ -nb_radius, -nb_height, -nb_radius, -nb_radius, nb_height,  nb_radius },
-		{ -nb_radius, -nb_height, nb_radius,  nb_radius,  nb_height,  nb_radius },
-		{ nb_radius,  -nb_height, -nb_radius, nb_radius,  nb_height,  nb_radius },
-		{ -nb_radius, -nb_height, -nb_radius, nb_radius,  nb_height,  -nb_radius },
-		-- top
-		{ -nb_radius, nb_height,  -nb_radius, nb_radius,  nb_height,  nb_radius },
-		-- bottom
-		{ -nb_radius, -nb_height, -nb_radius, nb_radius,  -nb_height, nb_radius },
-		-- middle (surround protector)
-		{ -.55,       -.55,       -.55,       .55,        .55,        .55 },
+local function make_display_nodebox(horizontal_reach, vertical_reach)
+	-- Extend the protected area boundary slightly outward so the wireframe
+	-- sits just outside the protected volume rather than flush with it.
+	local HR = horizontal_reach + 0.55
+	local VR = vertical_reach + 0.55
+
+	-- Nodebox components are specified as { x1, y1, z1, x2, y2, z2 }.
+	-- The four vertical slabs form the sides of the bounding box,
+	-- the two flat slabs cap it at top and bottom, and the small cube
+	-- surrounds the protector node itself at the origin.
+	return {
+		{ -HR,  -VR,  -HR,  -HR,   VR,   HR }, -- west
+		{ -HR,  -VR,   HR,   HR,   VR,   HR }, -- north
+		{  HR,  -VR,  -HR,   HR,   VR,   HR }, -- east
+		{ -HR,  -VR,  -HR,   HR,   VR,  -HR }, -- south
+		{ -HR,   VR,  -HR,   HR,   VR,   HR }, -- top
+		{ -HR,  -VR,  -HR,   HR,  -VR,   HR }, -- bottom
+		-- center cube surrounding the protector node itself
+		{ -0.55, -0.55, -0.55, 0.55, 0.55, 0.55 },
 	}
-	return t
 end
 
 local area_protector_sounds = {
-		footstep = { name = 'gen_metallic_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
-		dig      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 1.0, fade = 0.0 },
-		dug      = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
-		place    = { name = 'mix_hollow_metal_clunk', gain = 1.0, pitch = 1.0, fade = 0.0 },
-	}
+	footstep = { name = 'gen_metallic_hit',            gain = 1.0, pitch = 1.0, fade = 0.0 },
+	dig      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 1.0, fade = 0.0 },
+	dug      = { name = 'mix_metal_cabinet_hit',       gain = 1.0, pitch = 1.0, fade = 0.0 },
+	place    = { name = 'mix_hollow_metal_clunk',      gain = 1.0, pitch = 1.0, fade = 0.0 },
+}
 
 core.register_node("areasprotector:protector_large", {
 	description = "Large Protector Block",
 	on_receive_fields = function(pos, formname, fields, sender)
-		return on_receive_fields(pos, formname, fields, sender, radius_large, height_large)
+		return on_receive_fields(pos, formname, fields, sender, horizontal_reach_large, vertical_reach_large)
 	end,
 	groups = { cracky = 1, matter = 1, protector = 1, no_spread = 1 },
 	tiles = {
@@ -300,7 +303,7 @@ core.register_node("areasprotector:protector_large", {
 	sounds = area_protector_sounds,
 	paramtype = "light",
 	on_place = function(itemstack, player, pointed_thing)
-		return on_place(itemstack, player, pointed_thing, radius_large, height_large, "large")
+		return on_place(itemstack, player, pointed_thing, horizontal_reach_large, vertical_reach_large, "large")
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		after_dig(pos, oldnode, oldmetadata, digger, "large")
@@ -314,7 +317,7 @@ core.register_node("areasprotector:protector_large", {
 core.register_node("areasprotector:protector_small", {
 	description = "Small Protector Block",
 	on_receive_fields = function(pos, formname, fields, sender)
-		return on_receive_fields(pos, formname, fields, sender, radius_small, height_small)
+		return on_receive_fields(pos, formname, fields, sender, horizontal_reach_small, vertical_reach_small)
 	end,
 	groups = { cracky = 1, matter = 1, protector = 1, no_spread = 1 },
 	tiles = {
@@ -325,7 +328,7 @@ core.register_node("areasprotector:protector_small", {
 	sounds = area_protector_sounds,
 	paramtype = "light",
 	on_place = function(itemstack, player, pointed_thing)
-		return on_place(itemstack, player, pointed_thing, radius_small, height_small, "small")
+		return on_place(itemstack, player, pointed_thing, horizontal_reach_small, vertical_reach_small, "small")
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		after_dig(pos, oldnode, oldmetadata, digger, "small")
@@ -368,16 +371,15 @@ end)
 
 -- entities code below (and above) mostly copied-pasted from Zeg9's protector mod
 
--- wielditem seems to be scaled to 1.5 times original node size
-local vsize = { x = 1.0 / 1.5, y = 1.0 / 1.5 }
-local ecbox = { 0, 0, 0, 0, 0, 0 }
+local undone_wielditem_resize = { x = 1.0 / 1.5, y = 1.0 / 1.5 }
+local empty_collision_box = { 0, 0, 0, 0, 0, 0 }
 
 core.register_entity("areasprotector:display_large", {
 	initial_properties = {
 		physical = false,
-		collisionbox = ecbox,
+		collisionbox = empty_collision_box,
 		visual = "wielditem",
-		visual_size = vsize,
+		visual_size = undone_wielditem_resize,
 		textures = { "areasprotector:display_node_large" },
 		backface_culling = false,
 	},
@@ -389,9 +391,9 @@ core.register_entity("areasprotector:display_large", {
 core.register_entity("areasprotector:display_small", {
 	initial_properties = {
 		physical = false,
-		collisionbox = ecbox,
+		collisionbox = empty_collision_box,
 		visual = "wielditem",
-		visual_size = vsize,
+		visual_size = undone_wielditem_resize,
 		textures = { "areasprotector:display_node_small" },
 		backface_culling = false,
 	},
@@ -407,7 +409,7 @@ core.register_node("areasprotector:display_node_large", {
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
-		fixed = make_display_nodebox(radius_large, height_large)
+		fixed = make_display_nodebox(horizontal_reach_large, vertical_reach_large)
 	},
 	selection_box = {
 		type = "regular",
@@ -415,7 +417,6 @@ core.register_node("areasprotector:display_node_large", {
 	paramtype = "light",
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 	drop = "",
-	-- sounds = sbz_api.sounds.machine(),
 })
 
 core.register_node("areasprotector:display_node_small", {
@@ -425,7 +426,7 @@ core.register_node("areasprotector:display_node_small", {
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
-		fixed = make_display_nodebox(radius_small, height_small)
+		fixed = make_display_nodebox(horizontal_reach_small, vertical_reach_small)
 	},
 	selection_box = {
 		type = "regular",
@@ -433,40 +434,37 @@ core.register_node("areasprotector:display_node_small", {
 	paramtype = "light",
 	groups = { dig_immediate = 3, not_in_creative_inventory = 1 },
 	drop = "",
-	-- sounds = sbz_api.sounds.machine(),
 })
 
-do -- Protector Small recipe scope
-    local Protector_Small = 'areasprotector:protector_small'
-    local amount = 2
-    local St = 'sbz_resources:stone'
-    local RM = 'sbz_resources:reinforced_matter'
-    local CI = 'sbz_chem:cobalt_ingot'
-    core.register_craft({
-        output = Protector_Small .. ' ' .. tostring(amount),
-        recipe = {
-            { St, RM, St },
-            { RM, CI, RM },
-            { St, RM, St },
-        }
-    })
+do -- Small Area Protector recipe scope
+	local Small_Area_Protector = 'areasprotector:protector_small'
+	local amount = 2
+	local St = 'sbz_resources:stone'
+	local RM = 'sbz_resources:reinforced_matter'
+	local CI = 'sbz_chem:cobalt_ingot'
+	core.register_craft({
+		output = Small_Area_Protector .. ' ' .. tostring(amount),
+		recipe = {
+			{ St, RM, St },
+			{ RM, CI, RM },
+			{ St, RM, St },
+		}
+	})
 end
 
-core.register_craft({
-	output = "areasprotector:protector_large",
-	type = "shapeless",
-	recipe = {
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small",
-		"areasprotector:protector_small"
-	}
-})
+do -- Large Area Protector recipe scope
+	local Large_Area_Protector = 'areasprotector:protector_large'
+	local PS = 'areasprotector:protector_small'
+	core.register_craft({
+		output = Large_Area_Protector,
+		type = "shapeless",
+		recipe = {
+			PS, PS, PS,
+			PS, PS, PS,
+			PS, PS, PS,
+		}
+	})
+end
 
-core.register_alias("areasprotector:protector", "areasprotector:protector_large")
+core.register_alias("areasprotector:protector",    "areasprotector:protector_large")
 core.register_alias("areasprotector:display_node", "areasprotector:display_node_large")
