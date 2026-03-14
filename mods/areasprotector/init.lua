@@ -77,16 +77,16 @@ local function on_receive_fields(pos, formname, fields, sender, horizontal_reach
 	local owners_area_id = core.deserialize(meta:get_string("owners_area_id")) or {}
 
 
-	local remove_theese = {}
+	local remove_these = {}
 
 	for k, _ in pairs(fields) do
 		if string.sub(k, - #"_x") == "_x" then
-			remove_theese[string.sub(k, 1, - #"_x" - 1)] = true
+			remove_these[string.sub(k, 1, - #"_x" - 1)] = true
 		end
 	end
 
 	for k, v in ipairs(owners) do
-		if remove_theese[v] then
+		if remove_these[v] then
 			if areas.areas[owners_area_id[owners[k]]] then
 				areas:remove(owners_area_id[owners[k]])
 				areas:save()
