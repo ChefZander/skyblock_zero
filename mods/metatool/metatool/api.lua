@@ -52,6 +52,7 @@ local function register_metatool_item(itemname, definition)
 
 	craft_count = craft_count > stack_max and stack_max or craft_count
 
+	-- Only for the copy tool so far?
 	core.register_craftitem(itemname, {
 		description = description,
 		inventory_image = texture,
@@ -60,6 +61,11 @@ local function register_metatool_item(itemname, definition)
 		wield_image = definition.wield_image or texture,
 		wield_scale = definition.wield_scale or { x = 0.8, y = 1, z = 0.8 },
 		liquids_pointable = definition.liquids_pointable,
+		sound = {
+			breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
+			punch_use     = { name = 'gen_simple_tap', gain = 0.5, pitch = 1.0, fade = 0.0 },
+			punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.7, fade = 0.0 },
+		},
 		on_use = function(...)
 			return metatool:on_use(definition.itemname, unpack({...}))
 		end,
