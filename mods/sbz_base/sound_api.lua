@@ -50,3 +50,15 @@ core.register_on_mods_loaded(function()
         end
     end
 end)
+
+core.register_on_chat_message(
+    function(name, message)
+        if message:find("[!]+") then
+            sbz_api.play_sfx("gen_chat_exclamation", { to_player = name })
+        elseif message:find("[?]+") then
+            sbz_api.play_sfx("gen_chat_question", { to_player = name })
+        else
+            sbz_api.play_sfx("gen_chat_generic", { to_player = name })
+        end
+    end
+)

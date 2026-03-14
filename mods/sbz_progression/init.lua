@@ -14,11 +14,13 @@ dofile(modpath .. '/annoy.lua')
 -- sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
 
 function sbz_api.displayDialogLine(player_name, text)
-    minetest.chat_send_player(player_name, '⌠ ' .. text .. ' ⌡')
-    minetest.sound_play('dialouge', {
+    core.chat_send_player(player_name, '⌠ ' .. text .. ' ⌡')
+--[[ -- Different sound effects are going to be used from a callback in sound_api.lua
+    core.sound_play('dialogue', {
         to_player = player_name,
         gain = 1,
     })
+ ]]
 end
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
