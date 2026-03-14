@@ -23,6 +23,7 @@ local function remove_display(pos)
 	for _, o in pairs(objs) do
 		o:remove()
 	end
+	core.sound_play({ name = 'dialogue', gain = 0.8, pitch = 0.5 })
 end
 
 areas:registerProtectionCondition(function(pos1, pos2, name)
@@ -245,7 +246,10 @@ local function on_punch(pos, node, puncher, sizeword)
 	end
 	if not removed then -- nothing was removed: there wasn't the entity
 		core.add_entity(pos, "areasprotector:display_" .. sizeword)
+		core.sound_play({ name = 'dialogue', gain = 1.0 })
 		core.after(15, remove_display, pos)
+	else
+		core.sound_play({ name = 'dialogue', gain = 0.8, pitch = 0.5 })
 	end
 end
 
