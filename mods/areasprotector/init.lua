@@ -237,20 +237,17 @@ end
 
 local function on_punch(pos, node, puncher, sizeword)
 	local objs = core.get_objects_inside_radius(pos, .5) -- a radius of .5 since the entity serialization seems to be not that precise
-	local display_active = true
 	for _, o in pairs(objs) do
+		-- If area display entity is active: toggle display off
 		if (not o:is_player()) and o:get_luaentity().name == "areasprotector:display_" .. sizeword then
 			o:remove()
-			display_active = false
+			core.sound_play({ name = 'dialogue', gain = 0.3, pitch = 0.5 })
+			return
 		end
 	end
-	if display_active then
-		core.add_entity(pos, "areasprotector:display_" .. sizeword)
-		core.sound_play({ name = 'dialogue', gain = 1.0 })
-		core.after(15, remove_display, pos)
-	else
-		core.sound_play({ name = 'dialogue', gain = 0.8, pitch = 0.5 })
-	end
+	-- Toggle display on
+	core.add_entity(pos, "areasprotector:display_" .. sizeword)
+	core.sound_play({ name = 'dialogue', gain = 0.5 })
 end
 
 local function on_step(self, dtime, sizeword)
