@@ -4,6 +4,12 @@ core.register_node("jumpdrive:station", {
         "jumpdrive_station.png",
     },
     groups = { matter = 1 },
+    sounds = {
+        footstep = { name = 'gen_muffled_boop_hit', gain = 0.3, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'gen_simple_tap_low', gain = 0.7, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_explode_puffy_metallic', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'gen_metallic_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
 })
 
 do -- Station recipe scope
