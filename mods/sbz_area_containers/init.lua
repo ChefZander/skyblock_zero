@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]]
 
--- This entire mod is contained within a single file, with sections being seperated by comments
+-- This entire mod is contained within a single file, with sections being separated by comments
 
 ---======================----
 --- === CONFIGURATION === ---
@@ -355,23 +355,35 @@ core.register_node('sbz_area_containers:room_container', {
     end,
 })
 
-core.register_craft {
-    output = 'sbz_area_containers:room_container',
-    recipe = {
-        { 'sbz_resources:black_sand', 'sbz_bio:warpshroom', 'sbz_resources:black_sand' },
-        { 'sbz_bio:warpshroom', 'sbz_chem:silver_ingot', 'sbz_bio:warpshroom' },
-        { 'sbz_resources:black_sand', 'sbz_bio:warpshroom', 'sbz_resources:black_sand' },
-    },
-}
+do -- Area Container Room Container recipe scope
+    local Room_Container = 'sbz_area_containers:room_container'
+    local BS = 'sbz_resources:black_sand'
+    local WS = 'sbz_bio:warpshroom'
+    local SI = 'sbz_chem:silver_ingot'
+    core.register_craft {
+        output = Room_Container,
+        recipe = {
+            { BS, WS, BS },
+            { WS, SI, WS },
+            { BS, WS, BS },
+        },
+    }
+end
 
-core.register_craft {
-    output = 'sbz_area_containers:entry_point',
-    recipe = {
-        { 'sbz_resources:black_sand', 'sbz_resources:matter_blob', 'sbz_resources:black_sand' },
-        { 'sbz_resources:matter_blob', 'sbz_bio:warpshroom', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:black_sand', 'sbz_resources:matter_blob', 'sbz_resources:black_sand' },
-    },
-}
+do -- Area Container Entry Point recipe scope
+    local Entry_Point = 'sbz_area_containers:entry_point'
+    local BS = 'sbz_resources:black_sand'
+    local MB = 'sbz_resources:matter_blob'
+    local WS = 'sbz_bio:warpshroom'
+    core.register_craft {
+        output = Entry_Point,
+        recipe = {
+            { BS, MB, BS },
+            { MB, WS, MB },
+            { BS, MB, BS },
+        },
+    }
+end
 
 mesecon.register_mvps_stopper('sbz_area_containers:wall')
 mesecon.register_mvps_stopper('sbz_area_containers:power_input')
