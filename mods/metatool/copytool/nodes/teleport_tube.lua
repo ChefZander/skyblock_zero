@@ -23,13 +23,13 @@ metatool.form.register_form('copytool:teleport_tube_list', {
 			local dist = math.floor(tube.distance or -1)
 			list = list .. ",1" ..
 				"," .. (dist < 0 and "???" or dist) .. "m" .. (i == 1 and " (targeted)" or "") ..
-				"," .. minetest.formspec_escape(metatool.util.pos_to_string(tube.pos)) ..
+				"," .. core.formspec_escape(metatool.util.pos_to_string(tube.pos)) ..
 				"," .. (tube.can_receive and "yes" or "no")
 		end
 		local form = metatool.form.Form({ width = 12, height = 10 })
 		form:raw("label[0.1,0.5;" ..
 			"Found " .. #data.tubes .. " teleport tubes, channel: " ..
-			minetest.formspec_escape(data.channel) .. "]" ..
+			core.formspec_escape(data.channel) .. "]" ..
 			"button_exit[0,9;6,1;wp;Waypoint]" ..
 			"button_exit[6,9;6,1;exit;Exit]" ..
 			"tablecolumns[indent;text,width=15;text,width=15;text,align=center]" ..
@@ -38,7 +38,7 @@ metatool.form.register_form('copytool:teleport_tube_list', {
 	end,
 	on_receive = function(player, fields, data)
 		local name = player:get_player_name()
-		local evt = minetest.explode_table_event(fields.items)
+		local evt = core.explode_table_event(fields.items)
 		if tp_tube_form_index[name] and (evt.type == "DCL" or (fields.wp and fields.quit)) then
 			local tube = data.tubes[tp_tube_form_index[name]]
 			if tube and tube.pos and data.channel then
@@ -49,9 +49,9 @@ metatool.form.register_form('copytool:teleport_tube_list', {
 					number = 0xE0B020,
 					world_pos = tube.pos
 				})
-				minetest.after(60, function() if player then player:hud_remove(id) end end)
+				core.after(60, function() if player then player:hud_remove(id) end end)
 			else
-				minetest.chat_send_player(player:get_player_name(), 'Invalid tube entry in database')
+				core.chat_send_player(player:get_player_name(), 'Invalid tube entry in database')
 			end
 		elseif evt.type == "CHG" or evt.type == "DCL" then
 			tp_tube_form_index[name] = evt.row > 1 and evt.row - 1 or nil
@@ -68,10 +68,10 @@ local definition = {
 
 function definition:before_info(pos, player)
 	-- No actual protection checks because this only operates on stored data
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local channel = meta:get_string("channel")
 	if not ns.allow_teleport_tube_info(player, channel) then
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			('You are not allowed to list locations on channel %s.'):format(channel)
 		)
@@ -82,10 +82,10 @@ end
 
 function definition:info(node, pos, player)
 	if not ns.pipeworks_tptube_api_check(player) then return end
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local channel = meta:get("channel")
 	if not channel then
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			'Invalid channel, impossible to list connected tubes.'
 		)
@@ -96,7 +96,7 @@ function definition:info(node, pos, player)
 end
 
 function definition:copy(node, pos, player)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	-- get and store channel and receive setting
 	local channel = meta:get_string("channel")
@@ -125,7 +125,7 @@ function definition:paste(node, pos, player, data)
 		if owner ~= name and mode == ";" then
 			receive = 0
 			if type(player) == "userdata" then
-				minetest.chat_send_player(name, "Receive was disabled because you're not owner of private receiver.")
+				core.chat_send_player(name, "Receive was disabled because you're not owner of private receiver.")
 			end
 		end
 	end
@@ -133,7 +133,7 @@ function definition:paste(node, pos, player, data)
 	if type(pipeworks.tptube) == "table" and type(pipeworks.tptube.update_tube) == "function" then
 		-- using pipeworks api, update_tube will also check permissions
 		pipeworks.tptube.update_tube(pos, data.channel, receive, name)
-		pipeworks.tptube.update_meta(minetest.get_meta(pos))
+		pipeworks.tptube.update_meta(core.get_meta(pos))
 	else
 		-- through formspec handler, no api available
 		local fields = {
@@ -142,7 +142,7 @@ function definition:paste(node, pos, player, data)
 			channel = data.channel,
 			["cr" .. receive] = receive,
 		}
-		local nodedef = minetest.registered_nodes[node.name]
+		local nodedef = core.registered_nodes[node.name]
 		nodedef.on_receive_fields(pos, "", fields, player)
 	end
 end

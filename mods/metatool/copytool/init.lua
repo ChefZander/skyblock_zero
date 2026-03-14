@@ -2,7 +2,7 @@
 -- tubetool:wand is in game tool that allows cloning pipeworks node data
 --
 
-local modpath = minetest.get_modpath('copytool')
+local modpath = core.get_modpath('copytool')
 
 local recipe = {
 	{ "pipeworks:tube_1" },
@@ -32,7 +32,7 @@ end
 tool:ns({
 	pipeworks_tptube_api_check = function(player)
 		if not pipeworks or not pipeworks.tptube or not pipeworks.tptube.get_db then
-			minetest.chat_send_player(
+			core.chat_send_player(
 				player:get_player_name(),
 				'Installed pipeworks version does not have required tptube.get_db function.'
 			)
@@ -45,7 +45,7 @@ tool:ns({
 		local tubes = {}
 		for hash, data in pairs(db) do
 			if data.channel == channel then
-				local tube_pos = minetest.get_position_from_hash(hash)
+				local tube_pos = core.get_position_from_hash(hash)
 				table.insert(tubes, {
 					pos = tube_pos,
 					distance = vector.distance(pos, tube_pos),

@@ -12,7 +12,7 @@ local definition = {
 }
 
 function definition:copy(node, pos, player)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	-- get and store inventories data
@@ -44,7 +44,7 @@ function definition:copy(node, pos, player)
 end
 
 function definition:paste(node, pos, player, data)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	-- restore inventories data
@@ -57,7 +57,7 @@ function definition:paste(node, pos, player, data)
 	meta:set_int("exmatch_mode", data.exmatch_mode)
 
 	-- update injector formspec
-	local nodedef = minetest.registered_nodes[node.name]
+	local nodedef = core.registered_nodes[node.name]
 	nodedef.on_receive_fields(pos, "", {}, player)
 end
 

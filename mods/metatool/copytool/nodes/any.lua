@@ -28,7 +28,7 @@ function definition:info(node, pos, player, itemstack)
 
 	local channel = tooldata.data.channel
 	if not channel or channel == "" then
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			'Invalid channel, impossible to list connected tubes.'
 		)
@@ -37,7 +37,7 @@ function definition:info(node, pos, player, itemstack)
 
 	-- Done here instead of before_info as it uses tool data instead of target data to deny or allow usage.
 	if not ns.allow_teleport_tube_info(player, channel) then
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			('You are not allowed to list locations on stored channel %s.'):format(channel)
 		)

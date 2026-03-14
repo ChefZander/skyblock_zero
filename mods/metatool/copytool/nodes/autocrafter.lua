@@ -8,7 +8,7 @@ local definition = {
 }
 
 function definition:copy(node, pos, player)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	-- get and store recipe inventory data
@@ -29,7 +29,7 @@ function definition:copy(node, pos, player)
 end
 
 function definition:paste(node, pos, player, data)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	-- restore recipe data, trigger_stack is used to trigger autocrafter internal recipe cleanup
@@ -48,7 +48,7 @@ function definition:paste(node, pos, player, data)
 	meta:set_string("reserved_slots", data.reserved_slots)
 	meta:set_int("maxpow", data.maxpow)
 	-- on/off goes backwards and tells current state that will be toggled: on to turn off, off to turn on
-	local nodedef = minetest.registered_nodes[node.name]
+	local nodedef = core.registered_nodes[node.name]
 	if trigger_stack then
 		nodedef.allow_metadata_inventory_put(pos, "recipe", trigger_index, trigger_stack, player)
 	else
