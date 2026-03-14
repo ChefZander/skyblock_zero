@@ -511,14 +511,17 @@ function drawers.register_connector(name, def)
 
     core.register_node(name, def)
 
-    -- Material-based crafting
+    -- Material-based crafting...
+    -- in case the defined material is something other than reinforced matter later?
     if (not def.no_craft) and def.material then
+        local NI = 'sbz_chem:nickel_ingot'
+        local DM = def.material
         core.register_craft {
-            output = name .. ' 6',
+            output = name .. ' 6', -- 6 Drawer Connectors
             recipe = {
-                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
-                { def.material,            "",           def.material },
-                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
+                { NI, DM, NI },
+                { DM, '', DM },
+                { NI, DM, NI },
             },
         }
     end
