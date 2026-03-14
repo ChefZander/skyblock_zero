@@ -501,6 +501,14 @@ function drawers.register_connector(name, def)
         def.after_dig_node = pipeworks.after_dig
     end
 
+    -- same as drawers for now
+    def.sounds = {
+        footstep = { name = 'gen_wump_wood', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        dig      = { name = 'gen_simple_tap_low', gain = 0.6, pitch = 0.8, fade = 0.0 },
+        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'foley_rubber_thunk', gain = 0.5, pitch = 1.0, fade = 0.0 }
+    }
+
     core.register_node(name, def)
 
     -- Material-based crafting

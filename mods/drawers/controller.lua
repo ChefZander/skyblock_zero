@@ -435,15 +435,21 @@ local function register_controller()
 	def.after_place_node = pipeworks.after_place
 	def.after_dig_node = pipeworks.after_dig
 
-
 	def.on_logic_send = controller_on_logic_receive
+
+	-- same as drawers for now
+	def.sounds = {
+        footstep = { name = 'gen_wump_wood',          gain = 0.5, pitch = 0.8, fade = 0.0 },
+        dig      = { name = 'gen_simple_tap_low',     gain = 0.6, pitch = 0.8, fade = 0.0 },
+        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'foley_rubber_thunk',     gain = 0.5, pitch = 1.0, fade = 0.0 }
+    }
 
 	core.register_node("drawers:controller", def)
 end
 
 -- register drawer controller
 register_controller()
-
 
 -- Because the rest of the drawers mod doesn't have a hard depend on
 -- default, I changed the recipe to have an alternative
