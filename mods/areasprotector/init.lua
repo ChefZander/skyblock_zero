@@ -279,6 +279,12 @@ local function make_display_nodebox(radius, height)
 	return t
 end
 
+local area_protector_sounds = {
+		footstep = { name = 'gen_metallic_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+		dig      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 1.0, fade = 0.0 },
+		dug      = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+		place    = { name = 'mix_hollow_metal_clunk', gain = 1.0, pitch = 1.0, fade = 0.0 },
+	}
 
 core.register_node("areasprotector:protector_large", {
 	description = "Large Protector Block",
@@ -291,6 +297,7 @@ core.register_node("areasprotector:protector_large", {
 		"areasprotector_big.png",
 		"areasprotector_big_side.png"
 	},
+	sounds = area_protector_sounds,
 	paramtype = "light",
 	on_place = function(itemstack, player, pointed_thing)
 		return on_place(itemstack, player, pointed_thing, radius_large, height_large, "large")
@@ -315,6 +322,7 @@ core.register_node("areasprotector:protector_small", {
 		"areasprotector_small.png",
 		"areasprotector_small_side.png"
 	},
+	sounds = area_protector_sounds,
 	paramtype = "light",
 	on_place = function(itemstack, player, pointed_thing)
 		return on_place(itemstack, player, pointed_thing, radius_small, height_small, "small")
