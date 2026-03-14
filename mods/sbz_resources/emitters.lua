@@ -146,11 +146,6 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         pointed_thing = itemstack
         itemstack = nil
     end
-    sbz_api.play_sfx("foley_rubber_thunk", {
-        gain = 1,
-        max_hear_distance = 6,
-        pos = pos
-    })
 
     itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
