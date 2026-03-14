@@ -3,21 +3,11 @@ local action = function(pos, _, puncher)
     local tool_name = itemstack:get_name()
     local can_extract_from_emitter = core.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
-        core.sound_play("foley_rubber_thunk", {
-            gain = 0.2,
-            max_hear_distance = 6,
-            pos = pos
-        })
         if puncher.is_fake_player then return end
         sbz_api.displayDialogLine(puncher:get_player_name(),
             "Colorium Emitters can only be mined using tools or machines.")
     end
     for _ = 1, core.get_item_group(tool_name, "core_drop_multi") do
-        core.sound_play("foley_rubber_thunk", {
-            gain = 0.2,
-            max_hear_distance = 6,
-            pos = pos
-        })
         local items = { "sbz_bio:colorium_sapling", "sbz_bio:colorium_tree", "sbz_bio:colorium_leaves" }
         local item = items[math.random(#items)]
 
@@ -39,6 +29,12 @@ core.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
     description = "Colorium Emitter",
     tiles = { "colorium_emitter.png" },
     groups = { unbreakable = 1, transparent = 1, matter = 1, level = 2 },
+    sounds = {
+        footstep = { name = 'mix_choppy_rubber_step', gain = 0.5, pitch = 1.0, fade = 0.0 },
+        dig      = { name = 'mix_choppy_rubber_hit', gain = 1.0, pitch = 0.5, fade = 0.0 },
+        dug      = { name = 'mix_noise_thunk', gain = 1.0, pitch = 0.5, fade = 0.0 },
+        place    = { name = 'mix_choppy_rubber_place', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     sunlight_propagates = true,
     paramtype = "light",
     light_source = 14,
