@@ -256,6 +256,12 @@ core.register_node(
         tiles = {
             { name = 'room_container_wall.png', align_style = 'world', scale = 16 },
         },
+        sounds = {
+            footstep = { name = 'gen_doot_small', gain = 0.1, pitch = 0.2, fade = 0.0 },
+            dig      = { name = 'gen_doh_wew', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            dug      = { name = 'gen_bong', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            place    = { name = 'gen_boop', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        },
     }
 )
 core.register_node(
@@ -266,7 +272,12 @@ core.register_node(
         light_source = 14,
         diggable = false,
         groups = { not_in_creative_inventory = 1 },
-
+        sounds = {
+            footstep = { name = 'gen_doot_small', gain = 0.1, pitch = 0.2, fade = 0.0 },
+            dig      = { name = 'gen_doh_wew', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            dug      = { name = 'gen_bong', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            place    = { name = 'gen_boop', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        },
         on_rightclick = function(pos, _, clicker)
             sbz_area_containers.exit_room(pos, clicker)
         end,
@@ -282,7 +293,12 @@ core.register_node(
         diggable = false,
         groups = { pipe_connects = 1, pipe_conducts = 1, sbz_power_teleporter = 1, not_in_creative_inventory = 1 },
         tiles = { 'room_container_power_io.png' },
-
+        sounds = {
+            footstep = { name = 'gen_doot_small', gain = 0.1, pitch = 0.2, fade = 0.0 },
+            dig      = { name = 'gen_doh_wew', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            dug      = { name = 'gen_bong', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            place    = { name = 'gen_boop', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        },
         _sbz_power_teleport = function(pos)
             local ids = room_areastore:get_areas_for_pos(pos, true, false)
             if not next(ids) then return end
@@ -306,6 +322,12 @@ core.register_node(
         groups = { matter = 1 },
         paramtype2 = 'color',
         tiles = { 'room_container_entry_point.png' },
+        sounds = {
+            footstep = { name = 'gen_doot_small', gain = 0.1, pitch = 0.2, fade = 0.0 },
+            dig      = { name = 'gen_muffled_boop_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            dug      = { name = 'mix_crunch_zap_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+            place    = { name = 'gen_boop', gain = 0.5, pitch = 0.5, fade = 0.0 },
+        },
         on_rightclick = function(pos, _, clicker)
             sbz_area_containers.exit_room(pos, clicker)
         end,
@@ -318,6 +340,12 @@ core.register_node('sbz_area_containers:room_container', {
     paramtype = 'light',
     light_source = 14,
     groups = { matter = 1, pipe_connects = 1, pipe_conducts = 1, sbz_power_teleporter = 1 },
+    sounds = {
+        footstep = { name = 'gen_doot_small', gain = 0.1, pitch = 0.2, fade = 0.0 },
+        dig      = { name = 'gen_muffled_boop_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_crunch_zap_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'gen_boop', gain = 0.5, pitch = 0.5, fade = 0.0 },
+    },
     connects_to = { 'sbz_power:power_pipe', 'group:sbz_machine' },
     after_place_node = function(pos, placer)
         local meta = core.get_meta(pos)
