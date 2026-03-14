@@ -26,7 +26,7 @@ core.register_craftitem('sbz_resources:matter_annihilator', {
         -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         punch_use     = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'mix_short_fwip', gain = 0.1, pitch = 1.5, fade = 0.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 1.5, fade = 0.0 },
     },
 })
 
@@ -71,7 +71,7 @@ core.register_craftitem('sbz_resources:antimatter_annihilator', {
         -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         punch_use     = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'mix_short_fwip', gain = 0.1, pitch = 0.7, fade = 0.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.7, fade = 0.0 },
     },
 })
 
@@ -115,7 +115,7 @@ core.register_craftitem('sbz_resources:robotic_arm', {
         -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         punch_use     = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'mix_short_fwip', gain = 0.1, pitch = 0.8, fade = 0.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.8, fade = 0.0 },
     },
 })
 
@@ -203,7 +203,7 @@ core.register_tool('sbz_resources:drill', {
         -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         punch_use     = { name = 'foley_drill_bang_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'foley_drill_motor_burp', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use_air = { name = 'foley_drill_motor_burp', gain = 0.8, pitch = 1.0, fade = 0.0 },
     },
 })
 
