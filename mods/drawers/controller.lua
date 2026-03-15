@@ -442,7 +442,7 @@ local function register_controller()
         footstep = { name = 'gen_wump_wood',          gain = 0.5, pitch = 0.8, fade = 0.0 },
         dig      = { name = 'gen_simple_tap_low',     gain = 0.6, pitch = 0.8, fade = 0.0 },
         dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        place    = { name = 'foley_rubber_thunk',     gain = 0.5, pitch = 1.0, fade = 0.0 }
+        place    = { name = 'mix_wood_step_thunk',     gain = 0.5, pitch = 1.0, fade = 0.0 }
     }
 
 	core.register_node("drawers:controller", def)
