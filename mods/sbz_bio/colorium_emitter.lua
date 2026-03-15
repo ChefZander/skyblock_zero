@@ -3,6 +3,7 @@ local action = function(pos, _, puncher)
     local tool_name = itemstack:get_name()
     local can_extract_from_emitter = core.get_item_group(tool_name, "core_drop_multi") > 0
     if not can_extract_from_emitter then
+        core.sound_play({ name = 'gen_colorium_emitter_denied' }, { pos = pos })
         if puncher.is_fake_player then return end
         sbz_api.displayDialogLine(puncher:get_player_name(),
             "Colorium Emitters can only be mined using tools or machines.")
