@@ -121,6 +121,12 @@ sbz_api.register_generator('sbz_power:simple_charged_field', {
     drawtype = 'glasslike',
     tiles = { 'simple_charged_field.png' },
     groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1, charged_field = 1 },
+    sounds = {
+        footstep = { name = 'gen_zap_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dig      = { name = 'gen_simple_charged_field_placement_zap', gain = 0.3, pitch = 0.2, fade = 0.0 },
+        dug      = { name = 'gen_simple_charged_field_dug', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'gen_simple_charged_field_placement_zap', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     sunlight_propagates = true,
     paramtype = 'light',
     walkable = false,
