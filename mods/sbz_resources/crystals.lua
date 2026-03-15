@@ -45,7 +45,10 @@ core.register_entity("sbz_resources:warp_crystal_entity", {
                     end
                 end
                 player:set_pos(self.object:get_pos())
-
+                core.sound_play("gen_teleport_warp_woosh", {
+                    pos = self.object:get_pos(),
+                    max_hear_distance = 32,
+                })
                 self.object:remove()
             end
         end
@@ -60,10 +63,15 @@ core.register_craftitem("sbz_resources:warp_crystal", {
         local look_dir = placer:get_look_dir()
         local name = placer:get_player_name()
         if placer.is_fake_player then name = "" end
-        core.add_entity(
+        local entity_obj = core.add_entity(
             vector.add(sbz_api.get_pos_with_eye_height(placer), vector.multiply(look_dir, 0.1)),
             "sbz_resources:warp_crystal_entity",
             core.serialize { owner = name, direction = look_dir, vel = placer:get_velocity() })
+        core.sound_play("gen_laser_pew", {
+            object = entity_obj,
+            pitch = 0.5,
+            gain = 0.5,
+        })
         stack:set_count(stack:get_count() - 1)
         return stack
     end

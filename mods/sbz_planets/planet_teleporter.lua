@@ -12,6 +12,7 @@ core.register_node("sbz_planets:planet_teleporter", {
             core.chat_send_player(clicker_name, "You must be holding a warp crystal for this to work.")
             return stack
         end
+        core.sound_play({ name = 'gen_teleport_warp_woosh' }, { pos = clicker.pos })
         local id = math.random(0, sbz_api.planets.num_planets)
         local content = sbz_api.planets.area:get_area(id, true, true)
         local data = core.deserialize(content.data)
