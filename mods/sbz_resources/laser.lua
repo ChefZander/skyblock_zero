@@ -18,6 +18,9 @@ core.register_tool("sbz_resources:laser_weapon", {
             local endpos = vector.add(eyepos, vector.multiply(lookdir, laser_range))
             local ray = core.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
 
+            core.sound_play({ name = 'gen_laser_pew' }, { pos = eyepos })
+            core.sound_play({ name = 'gen_laser_pew' }, { pos = endpos })
+
             repeat
                 local pointed = ray:next()
                 if pointed and pointed.type == "object" then
@@ -60,7 +63,7 @@ core.register_tool("sbz_resources:laser_weapon", {
                 glow    = 14,
             }
         end
-
+        core.sound_play({ name = 'foley_dud_click' }, { pos = player.pos })
 
         return stack
     end,
