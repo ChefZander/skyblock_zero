@@ -21,6 +21,12 @@ sbz_api.register_stateful_machine("sbz_chem:pebble_enhancer", {
         "pebble_enhancer_side.png"
     },
     groups = { matter = 1, weak_radioactive = 80 },
+    sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
 
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
@@ -84,6 +90,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         decremented_input:take_item(1)
         inv:set_stack('input', 1, decremented_input)
         meta:set_string("infotext", "Enhancing...")
+        core.sound_play( { name = 'gen_strong_cycling_hum', gain = 0.8 }, { pos = pos, gain = 0.5, max_hear_distance = 6 })
         return power_needed
     end,
     input_inv = "input",
