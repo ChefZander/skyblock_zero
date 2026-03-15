@@ -32,7 +32,7 @@ core.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
     sounds = {
         footstep = { name = 'mix_choppy_rubber_step', gain = 0.5, pitch = 1.0, fade = 0.0 },
         dig      = { name = 'mix_choppy_rubber_hit', gain = 1.0, pitch = 0.5, fade = 0.0 },
-        dug      = { name = 'mix_noise_thunk', gain = 1.0, pitch = 0.5, fade = 0.0 },
+        dug      = { name = 'mix_rubber_noise_hit_short', gain = 1.0, pitch = 0.8, fade = 0.0 },
         place    = { name = 'mix_choppy_rubber_place', gain = 1.0, pitch = 1.0, fade = 0.0 },
     },
     sunlight_propagates = true,
