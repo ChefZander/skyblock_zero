@@ -3,7 +3,7 @@ local laser_range = 300
 local max_wear = 50
 local power_per_1_use = 50
 
-minetest.register_tool("sbz_resources:laser_weapon", {
+core.register_tool("sbz_resources:laser_weapon", {
     description = "Laser",
     info_extra = "Do you want to get all the meteorites you see, without bridging to them? This is the perfect weapon",
     inventory_image = "laser_pointer.png",
@@ -16,7 +16,7 @@ minetest.register_tool("sbz_resources:laser_weapon", {
             local eyepos = sbz_api.get_pos_with_eye_height(player)
             local lookdir = player:get_look_dir()
             local endpos = vector.add(eyepos, vector.multiply(lookdir, laser_range))
-            local ray = minetest.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
+            local ray = core.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
 
             repeat
                 local pointed = ray:next()
@@ -24,14 +24,14 @@ minetest.register_tool("sbz_resources:laser_weapon", {
                     local ref = pointed.ref
                     local luaentity = ref:get_luaentity()
                     if luaentity and luaentity.name == "sbz_meteorites:meteorite" then
-                        minetest.after(0.1, function()
+                        core.after(0.1, function()
                             if ref and ref:is_valid() then
                                 sbz_api.meteorite_explode(ref:get_pos(), luaentity.type)
                             end
                         end)
                     end
                     if ref:is_player() then
-                        minetest.after(0.1, function()
+                        core.after(0.1, function()
                             if ref and ref:is_player() and player and player:is_player() then
                                 local damage = 3
                                 sbz_api.punch(ref, player, 200, {
