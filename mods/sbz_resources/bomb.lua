@@ -72,7 +72,7 @@ sbz_api.recipe.register_craft {
 
 local time = 3
 -- now... the radius.... since its crafted from 9 bomb sticks
--- the radius works to be around 8.32, dont trust me with math but ill go with r=9
+-- the radius works to be around 8.32, don't trust me with math but ill go with r=9
 local function bomb_detonate(obj, owner)
     sbz_api.explode(obj:get_pos(), 9, 0.9, true, owner or "", 2.5, nil, true)
     obj:remove()
@@ -107,7 +107,7 @@ core.register_entity("sbz_resources:bomb_entity", {
         self.time = self.time - dtime
         self.object:set_acceleration(vector.new(0, -sbz_api.gravity, 0))
         if moveresult.touching_ground or moveresult.standing_on_object then
-            -- TODO: maybe make sliperry nodes do less friction?
+            -- TODO: maybe make slippery nodes do less friction?
             self.object:set_velocity(self.object:get_velocity() * friction)
         end
         if self.time <= 0 then
@@ -124,6 +124,12 @@ core.register_node("sbz_resources:bomb", {
         "bomb.png"
     },
     groups = { matter = 1, explody = 10 },
+    sounds = {
+        footstep = { name = 'gen_full_container_thunk', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'gen_pew_waveform', gain = 0.2, pitch = 0.1, fade = 5.0 },
+        dug      = { name = 'gen_pew_flange', gain = 1.0, pitch = 1.0, fade = 10.0 },
+        place    = { name = 'gen_full_container_thunk', gain = 0.7, pitch = 1.0, fade = 0.0 },
+    },
     on_rightclick = function(pos, node, player)
         if core.is_protected(pos, player:get_player_name()) then
             return core.record_protection_violation(pos, player:get_player_name())
@@ -131,10 +137,12 @@ core.register_node("sbz_resources:bomb", {
 
         core.remove_node(pos)
         core.add_entity(pos, "sbz_resources:bomb_entity", player:get_player_name())
-        core.sound_play("tnt_ignite", {
+        core.sound_play("gen_noise_fuse", {
             pos = pos,
-            gain = 2.5,
-        }, true)
+            gain = 1.0,
+            fade = 8.0,
+            pitch = 1.5,
+        })
     end,
     on_blast = function(pos, power, original_pos, owner, r)
         if core.is_protected(pos, owner) then
