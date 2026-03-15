@@ -25,7 +25,7 @@ core.register_craftitem('sbz_resources:matter_annihilator', {
     sound = {
         breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.0, fade = 0.0 },
         punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 1.5, fade = 0.0 },
     },
 })
@@ -70,7 +70,7 @@ core.register_craftitem('sbz_resources:antimatter_annihilator', {
     sound = {
         breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.0, fade = 0.0 },
         punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.7, fade = 0.0 },
     },
 })
@@ -114,7 +114,7 @@ core.register_craftitem('sbz_resources:robotic_arm', {
     sound = {
         -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.2, fade = 0.0 },
         punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.8, fade = 0.0 },
     },
 })
