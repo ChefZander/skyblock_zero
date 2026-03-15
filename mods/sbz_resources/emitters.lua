@@ -4,8 +4,10 @@ local action = function(pos, _, puncher)
     local itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
     local can_extract_from_emitter = core.get_item_group(tool_name, "core_drop_multi") > 0
-    if not can_extract_from_emitter then
-        core.sound_play({ name = 'gen_emittrium_emitter_denied' }, { pos = pos })
+    if can_extract_from_emitter then
+        core.sound_play({ name = 'mix_rubber_hit_noisy_gassy' }, { pos = pos })
+    else
+        core.sound_play({ name = 'foley_annoying_honk', gain = 0.8, pitch = 0.9 }, { pos = pos })
         if puncher.is_fake_player then return end
         sbz_api.displayDialogLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
@@ -35,13 +37,6 @@ local action = function(pos, _, puncher)
                 unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
             end
         else
-            if not puncher.is_fake_player then
-                sbz_api.play_sfx("foley_rubber_thunk", {
-                    gain = 0.4,
-                    max_hear_distance = 6,
-                    pos = pos
-                })
-            end
             local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
             local item = items[math.random(#items)]
 
@@ -63,6 +58,12 @@ core.register_node("sbz_resources:emitter", {
     description = "Emitter",
     tiles = { "emitter.png" },
     groups = { gravity = 25, unbreakable = 1, transparent = 1, not_in_creative_inventory = 1 },
+    sounds = {
+        footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",
@@ -77,6 +78,12 @@ core.register_node("sbz_resources:movable_emitter", {
     description = "Movable Emitter",
     tiles = { "movable_emitter.png" },
     groups = { transparent = 1, matter = 1, level = 2 },
+    sounds = {
+        footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     sunlight_propagates = true,
     paramtype = "light",
     light_source = 14,
