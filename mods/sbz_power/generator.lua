@@ -369,6 +369,12 @@ sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
         'antimatter_gen_top.png',
         'antimatter_gen_side.png',
     },
+    sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     input_inv = 'input',
     output_inv = 'input',
     on_construct = function(pos)
@@ -418,6 +424,9 @@ list[current_player;main;0.2,5;8,4;]
                 vel = { min = -vector.new(5, 5, 5), max = vector.new(5, 5, 5) },
                 exptime = 3,
             }
+
+            core.sound_play({ name = 'mix_obnoxious_generator_on', pitch = 0.9 }, { pos = pos, max_hear_distance = 16 })
+
             def.texture = 'antimatter_dust.png'
             core.add_particlespawner(def)
 
