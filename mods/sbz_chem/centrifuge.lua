@@ -133,6 +133,12 @@ sbz_api.register_stateful_machine('sbz_chem:centrifuge', {
         'centrifuge_side.png',
     },
     groups = { matter = 1 },
+    sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     paramtype2 = 'facedir',
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -201,7 +207,10 @@ listring[current_player;main]listring[context;src]listring[current_player;main]l
 
             decremented_input:take_item(1)
             inv:set_stack('src', 1, decremented_input)
-            sbz_api.play_sfx({ name = 'simple_alloy_furnace_running', gain = 0.6 }, { pos = pos })
+            core.sound_play({ name = 'mix_machine_spin_muffled', gain = 0.8 }, {
+                pos = pos,
+                max_hear_distance = 6.0,
+            })
             return power_needed
         end
     end,
