@@ -1,3 +1,51 @@
+-- Proper handling needed for actual looping of a 2-second audio clip
+local decay_sounds = {}
+local function pos_hash(pos)
+    return core.hash_node_position(pos)
+end
+
+local function start_decay_sound(pos)
+    local key = pos_hash(pos)
+
+    -- If already playing
+    if decay_sounds[key] then
+        return
+    end
+
+    local handle = core.sound_play(
+        { name = "mix_decay_crackle_loop", pitch = 1.0 },
+        {
+            pos = pos,
+            gain = 0.0, -- start silent to allow fade-in
+            max_hear_distance = 8,
+            loop = true,
+        }
+    )
+
+    if handle then
+        decay_sounds[key] = handle
+        core.sound_fade(handle, 0.5, 0.8)
+    end
+end
+
+local function stop_decay_sound(pos)
+    local key = pos_hash(pos)
+    local handle = decay_sounds[key]
+
+    if not handle then
+        return
+    end
+
+    core.sound_fade(handle, -1.2, 0)
+
+    -- Stop sound after fade finishes
+    core.after(1.0, function()
+        core.sound_stop(handle)
+    end)
+
+    decay_sounds[key] = nil
+end
+
 sbz_api.register_stateful_machine("sbz_chem:decay_accel", {
     description = "Decay Accelerator",
     tiles = {
@@ -13,11 +61,11 @@ sbz_api.register_stateful_machine("sbz_chem:decay_accel", {
         footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
         dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
         dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
-        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'foley_heavy_metal_ting', gain = 1.0, pitch = 0.8, fade = 0.0 },
     },
     info_extra = "It doesn't just accelerate decay, it may throw in some neutrons.",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("input", 1)
         inv:set_size("output", 16)
@@ -43,18 +91,18 @@ listring[current_player;main]listring[context;input]listring[current_player;main
 
         if out == nil then
             meta:set_string("infotext", "Inactive")
+            stop_decay_sound(pos)
             return 0
         end
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")
+            stop_decay_sound(pos)
             return power_needed, false
         end
 
         meta:set_string("infotext", "Active")
-
-        -- Weak placeholder based on pebble enhancer active sound
-        core.sound_play({ name = 'gen_strong_cycling_hum', gain = 0.3, pitch = 2.0 }, { pos = pos, gain = 0.5, max_hear_distance = 6 })
+        start_decay_sound(pos)
 
         if inv:room_for_item("output", out) then
             local input = inv:get_stack("input", 1)
@@ -64,8 +112,12 @@ listring[current_player;main]listring[context;input]listring[current_player;main
             return power_needed
         else
             meta:set_string("infotext", "Output inventory full")
+            stop_decay_sound(pos)
             return 0
         end
+    end,
+    on_destruct = function(pos)
+        stop_decay_sound(pos)
     end,
     input_inv = "input",
     output_inv = "output",
