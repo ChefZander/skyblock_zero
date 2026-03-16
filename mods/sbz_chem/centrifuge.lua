@@ -1,6 +1,6 @@
 sbz_api.recipe.register_craft_type {
     type = 'centrifuging',
-    description = 'Seperating',
+    description = 'Separating',
     icon = 'centrifuge.png^[verticalframe:12:1',
     single = true,
 }
