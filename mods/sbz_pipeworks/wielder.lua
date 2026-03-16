@@ -220,7 +220,12 @@ function pipeworks.register_wielder(def)
             end
             return def.cost
         end,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = {
+            footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.5, pitch = 0.3, fade = 0.0 },
+            dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+            dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+            place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        },
     })
 end
 
