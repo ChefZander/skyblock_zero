@@ -51,7 +51,12 @@ sbz_api.register_element = function(name, color, description, def, mod)
             description = string.format(description, 'Block'),
             drawtype = 'glasslike_framed',
             tiles = { 'block_frame.png^[colorize:' .. color .. ':200', 'block_inner.png^[colorize:' .. color .. ':200' },
-            -- sounds = sbz_api.sounds.metal(),
+            sounds = {
+                footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.5, pitch = 0.5, fade = 0.0 },
+                dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.8, fade = 0.0 },
+                dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.8, fade = 0.0 },
+                place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 1.0, fade = 0.0 },
+            },
         }
     )
 
