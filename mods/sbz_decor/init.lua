@@ -20,14 +20,20 @@ core.register_node('sbz_decor:photonlamp', {
     },
     use_texture_alpha = 'clip',
 })
-core.register_craft {
-    output = 'sbz_decor:photonlamp',
-    recipe = {
-        { 'sbz_resources:matter_plate', 'sbz_resources:emitter_imitator', 'sbz_resources:matter_plate' },
-        { 'sbz_resources:emitter_imitator', 'sbz_resources:matter_blob', 'sbz_resources:emitter_imitator' },
-        { 'sbz_resources:matter_plate', 'sbz_resources:emitter_imitator', 'sbz_resources:matter_plate' },
-    },
-}
+do -- Photon Lamp recipe scope
+    local Photon_Lamp = 'sbz_decor:photonlamp'
+    local MP = 'sbz_resources:matter_plate'
+    local EI = 'sbz_resources:emitter_imitator'
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft {
+        output = Photon_Lamp,
+        recipe = {
+            { MP, EI, MP },
+            { EI, MB, EI },
+            { MP, EI, MP },
+        }
+    }
+end
 
 core.register_node(
     'sbz_decor:factory_floor',
@@ -321,20 +327,30 @@ core.register_node(
 
 core.register_alias_force('sbz_decor:anitmatter_ladder', 'sbz_decor:antimatter_ladder')
 
-core.register_craft {
-    output = 'sbz_decor:antimatter_ladder 12',
-    recipe = {
-        { 'sbz_resources:antimatter_blob', '', 'sbz_resources:antimatter_blob' },
-        { 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_blob' },
-        { 'sbz_resources:antimatter_blob', '', 'sbz_resources:antimatter_blob' },
-    },
-}
+do -- Antimatter Ladder recipe scope
+    local Antimatter_Ladder = 'sbz_decor:antimatter_ladder'
+    local amount = 12
+    local AB = 'sbz_resources:antimatter_blob'
+    core.register_craft {
+        output = Antimatter_Ladder .. ' ' .. tostring(amount),
+        recipe = {
+            { AB, '', AB },
+            { AB, AB, AB },
+            { AB, '', AB },
+        }
+    }
+end
 
-core.register_craft {
-    output = 'sbz_decor:ladder 12',
-    recipe = {
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-    },
-}
+do -- Ladder recipe scope
+    local Ladder = 'sbz_decor:ladder'
+    local amount = 12
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft {
+        output = Ladder .. ' ' .. tostring(amount),
+        recipe = {
+            { MB, '', MB },
+            { MB, MB, MB },
+            { MB, '', MB },
+        }
+    }
+end
