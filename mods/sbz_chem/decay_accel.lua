@@ -9,6 +9,12 @@ sbz_api.register_stateful_machine("sbz_chem:decay_accel", {
         "decay_accel_front.png",
     },
     groups = { matter = 1 },
+    sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     info_extra = "It doesn't just accelerate decay, it may throw in some neutrons.",
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
@@ -46,6 +52,9 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         end
 
         meta:set_string("infotext", "Active")
+
+        -- Weak placeholder based on pebble enhancer active sound
+        core.sound_play({ name = 'gen_strong_cycling_hum', gain = 0.3, pitch = 2.0 }, { pos = pos, gain = 0.5, max_hear_distance = 6 })
 
         if inv:room_for_item("output", out) then
             local input = inv:get_stack("input", 1)
