@@ -35,9 +35,14 @@ core.register_node(
         description = 'Factory Floor',
         tiles = { 'factory_floor.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+        sounds = {
+            footstep = { name = 'mix_factory_metal_hit', gain = 0.2, pitch = 1.0, fade = 0.0 },
+            dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+            dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+            place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        },
         sunlight_propagates = true,
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
     }
 )
 core.register_craft {
@@ -63,9 +68,14 @@ core.register_node(
         description = 'Factory Floor (Tiled)',
         tiles = { 'factory_floor_tiling.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
+        sounds = {
+            footstep = { name = 'mix_factory_metal_hit', gain = 0.2, pitch = 1.0, fade = 0.0 },
+            dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+            dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+            place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        },
         sunlight_propagates = true,
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
     }
 )
 
@@ -88,9 +98,36 @@ core.register_node('sbz_decor:factory_ventilator', {
         { name = 'factory_ventilator.png', animation = { type = 'vertical_frames', length = 1 } },
     },
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+    sounds = {
+        footstep = { name = 'mix_factory_metal_hit', gain = 0.2, pitch = 1.0, fade = 0.0 },
+        dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+        dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+        place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+    },
+    on_construct = function(pos)
+        local meta = core.get_meta(pos)
+
+        local handle = core.sound_play({ name = "foley_bathroom_fan_loop", fade = 0.5 }, {
+            pos = pos,
+            gain = 0.2,
+            pitch = 0.8,
+            max_hear_distance = 16,
+            loop = true
+        })
+
+        meta:set_int("factory_fan_handle", handle)
+    end,
+    on_destruct = function(pos)
+        local meta = core.get_meta(pos)
+        local handle = meta:get_int("factory_fan_handle")
+
+        if handle then
+            core.sound_stop(handle)
+        end
+    end,
+
     sunlight_propagates = true,
     walkable = true,
-    -- sounds = sbz_api.sounds.matter(),
 })
 core.register_craft {
     output = 'sbz_decor:factory_ventilator',
