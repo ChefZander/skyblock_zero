@@ -169,16 +169,16 @@ local function calculate_consumption(inv_index, consumption_with_groups)
         local take
         for itemname, count in pairs(inv_index) do
             if count > 0 then
-                -- groupname is the string as defined by recipe.
+                -- group_name is the string as defined by recipe.
                 --  e.g. group:dye,color_blue
                 -- groups holds the group names split into a list
                 --  ready to be passed to core.get_item_group()
-                for groupname, groups in pairs(grouped_ingredients) do
-                    if consumption_with_groups[groupname] > 0 and ingredient_groups_match_item(groups, itemname) then
-                        take = math.min(count, consumption_with_groups[groupname])
-                        consumption_with_groups[groupname] = consumption_with_groups[groupname] - take
+                for group_name, groups in pairs(grouped_ingredients) do
+                    if consumption_with_groups[group_name] > 0 and ingredient_groups_match_item(groups, itemname) then
+                        take = math.min(count, consumption_with_groups[group_name])
+                        consumption_with_groups[group_name] = consumption_with_groups[group_name] - take
 
-                        assert(consumption_with_groups[groupname] >= 0)
+                        assert(consumption_with_groups[group_name] >= 0)
                         consumption[itemname] = (consumption[itemname] or 0) + take
 
                         inv_index[itemname] = inv_index[itemname] - take
@@ -405,8 +405,8 @@ core.register_node('pipeworks:autocrafter', {
         insert_object = function(pos, node, stack, direction)
             local slots = get_reserved_slots_or_reserve_them(pos)
             if slots == nil then return stack end
-            local stackname = stack:get_name()
-            if not slots[stackname] then return stack end
+            local stack_name = stack:get_name()
+            if not slots[stack_name] then return stack end
 
             local inv = inv_cache.data[h(pos)]
             if not inv then
@@ -414,35 +414,35 @@ core.register_node('pipeworks:autocrafter', {
                 inv = inv_cache.data[h(pos)]
             end
 
-            local srclist = list_cache.data[h(pos)]
-            if not srclist then
+            local src_list = list_cache.data[h(pos)]
+            if not src_list then
                 list_cache.data[h(pos)] = inv:get_list 'src'
-                srclist = list_cache.data[h(pos)]
+                src_list = list_cache.data[h(pos)]
             end
 
             local stack_max = stack:get_stack_max()
 
             local that_stack, leftover, new_count
             for i = 1, 9 do
-                if slots[i] == stackname then
-                    that_stack = srclist[i]
+                if slots[i] == stack_name then
+                    that_stack = src_list[i]
                     new_count = that_stack:get_count() + stack:get_count()
-                    if that_stack:get_name() == '' then that_stack:set_name(stackname) end
+                    if that_stack:get_name() == '' then that_stack:set_name(stack_name) end
                     -- BUGFIX #167
                     -- that_stack will still be empty if it's a tool for some reason?
-                    -- weeird
-                    if that_stack:get_name() == stackname or that_stack:get_name() == '' then
+                    -- weird
+                    if that_stack:get_name() == stack_name or that_stack:get_name() == '' then
                         leftover = math.max(0, new_count - stack_max)
                         that_stack:set_count(new_count - leftover)
-                        that_stack:set_name(stackname)
-                        srclist[i] = that_stack
+                        that_stack:set_name(stack_name)
+                        src_list[i] = that_stack
                         stack:set_count(leftover)
-                        stack:set_name(stackname)
+                        stack:set_name(stack_name)
                         if leftover == 0 then break end
                     end
                 end
             end
-            inv:set_list('src', srclist)
+            inv:set_list('src', src_list)
             return stack
         end,
         can_insert = function(pos, node, stack, direction)
@@ -516,8 +516,8 @@ core.register_node('pipeworks:autocrafter', {
             local meta = core.get_meta(pos)
             local reserved_slot = get_reserved_slots_or_reserve_them(pos)
             if not reserved_slot then return stack:get_count() end
-            local stackname = stack:get_name()
-            if stackname ~= reserved_slot[index] then return 0 end
+            local stack_name = stack:get_name()
+            if stack_name ~= reserved_slot[index] then return 0 end
         elseif listname == 'processor' then
             local stack = inv:get_stack('processor', 1)
             if stack:get_count() == 0 then
@@ -580,8 +580,8 @@ core.register_node('pipeworks:autocrafter', {
             local meta = core.get_meta(pos)
             local reserved_slot = get_reserved_slots_or_reserve_them(pos)
             if not reserved_slot then return stack:get_count() end
-            local stackname = stack:get_name()
-            if stackname ~= reserved_slot[to_index] then return 0 end
+            local stack_name = stack:get_name()
+            if stack_name ~= reserved_slot[to_index] then return 0 end
         end
         return count
     end,
