@@ -50,7 +50,7 @@ local abs = math.abs
 ---@param hsl sbz.hsl
 ---@return sbz.rgb rgb
 function color.hsl2rgb(hsl)
-    local h, s, l = hsl.h, hsl.s, hsl.l
+    local h, s, l = hsl.h % 360, hsl.s, hsl.l
     local C = (1 - abs(2 * l - 1)) * s
     local hp = h / 60
     local X = C * (1 - abs((hp % 2) - 1))
