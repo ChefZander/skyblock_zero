@@ -278,6 +278,11 @@ core.register_craftitem('sbz_bio:pyrograss', {
     description = 'Pyrograss',
     inventory_image = 'pyrograss_4.png',
     groups = { burn = 30, eat = 1 },
+    sound = {
+        eat = {
+            name = 'foley_crackle_chomp_simple', gain = 1, pitch = 1.0
+        }
+    },
     on_place = sbz_api.plant_plant('sbz_bio:pyrograss_1', { 'group:soil' }),
 })
 
@@ -333,10 +338,15 @@ do -- Fertilizer bulk recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_bio:razorgrass', {
+core.register_craftitem('sbz_bio:razorgrass', {
     description = 'Razorgrass',
     inventory_image = 'razorgrass_4.png',
     groups = { burn = 2, eat = -8 },
+    sound = {
+        eat = {
+            name = 'foley_crackle_chomp_thin', gain = 1, pitch = 1.0
+        }
+    },
     eat_fx = { 'Poisoned', 'Slowed' },
     on_place = sbz_api.plant_plant('sbz_bio:razorgrass_1', { 'group:soil' }),
     on_use = function(stack, user, pointed)
@@ -378,6 +388,11 @@ core.register_craftitem('sbz_bio:cleargrass', {
     description = 'Cleargrass',
     inventory_image = 'cleargrass_4.png',
     groups = { burn = 0, eat = 0 },
+    sound = {
+        eat = {
+            name = 'foley_crackle_chomp_smooth', gain = 1, pitch = 1.0
+        }
+    },
     eat_fx = { 'Cleared' },
     on_place = sbz_api.plant_plant('sbz_bio:cleargrass_1', { 'group:soil' }),
     on_use = function(stack, user, pointed)
