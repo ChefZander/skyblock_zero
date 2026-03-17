@@ -1,6 +1,6 @@
-local S = minetest.get_translator 'pipeworks'
+local S = core.get_translator 'pipeworks'
 -- cache some recipe data to avoid calling the slow function
--- minetest.get_craft_result() every second
+-- core.get_craft_result() every second
 local autocrafterCache = {}
 
 local next = next
@@ -19,7 +19,7 @@ end
 
 local function get_item_info(stack)
     local name = stack:get_name()
-    local def = minetest.registered_items[name]
+    local def = core.registered_items[name]
     local description = def and def.description or S 'Unknown item'
     return description, name
 end
@@ -27,7 +27,7 @@ end
 -- Get best matching recipe for what user has put in crafting grid.
 -- This function does not consider crafting method (mix vs craft)
 local function get_matching_craft(output_name, example_recipe)
-    local recipes = minetest.get_all_craft_recipes(output_name)
+    local recipes = core.get_all_craft_recipes(output_name)
     if not recipes then return example_recipe end
 
     if 1 == #recipes then return recipes[1].items end
@@ -44,7 +44,7 @@ local function get_matching_craft(output_name, example_recipe)
             elseif recipe_item_name:sub(1, 6) == 'group:' then
                 group = recipe_item_name:sub(7)
                 for example_item_name, _ in pairs(index_example) do
-                    if minetest.get_item_group(example_item_name, group) ~= 0 then
+                    if core.get_item_group(example_item_name, group) ~= 0 then
                         score = score + 1
                         break
                     end
@@ -61,12 +61,12 @@ local function get_matching_craft(output_name, example_recipe)
 end
 
 local function get_craft(pos, inventory, hash)
-    local hash = hash or minetest.hash_node_position(pos)
+    local hash = hash or core.hash_node_position(pos)
     local craft = autocrafterCache[hash]
     if craft then return craft end
 
     local example_recipe = inventory:get_list 'recipe'
-    local output, decremented_input = minetest.get_craft_result {
+    local output, decremented_input = core.get_craft_result {
         method = 'normal',
         width = 3,
         items = example_recipe,
@@ -159,7 +159,7 @@ local function calculate_consumption(inv_index, consumption_with_groups)
         local found = 0
         local count_ingredient_groups = #ingredient_groups
         for i = 1, count_ingredient_groups do
-            if minetest.get_item_group(name, ingredient_groups[i]) ~= 0 then found = found + 1 end
+            if core.get_item_group(name, ingredient_groups[i]) ~= 0 then found = found + 1 end
         end
         return found == count_ingredient_groups
     end
@@ -245,7 +245,7 @@ local function autocraft(inventory, craft)
     for i = 1, 9 do
         leftover = inventory:add_item('dst', craft.decremented_input[i])
         if leftover and not leftover:is_empty() then
-            minetest.log('warning', "[pipeworks] autocrafter didn't " .. 'calculate output space correctly.')
+            core.log('warning', "[pipeworks] autocrafter didn't " .. 'calculate output space correctly.')
         end
     end
     return true
@@ -255,7 +255,7 @@ end
 -- is started only from start_autocrafter(pos) after sanity checks and
 -- recipe is cached
 local function run_autocrafter(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inventory = meta:get_inventory()
     local craft = get_craft(pos, inventory)
     local output_item = craft.output.item
@@ -276,8 +276,8 @@ end
 -- note, that this function assumes already being updated to virtual items
 -- and doesn't handle recipes with stacksizes > 1
 local function after_recipe_change(pos, inventory)
-    local hash = minetest.hash_node_position(pos)
-    local meta = minetest.get_meta(pos)
+    local hash = core.hash_node_position(pos)
+    local meta = core.get_meta(pos)
     autocrafterCache[hash] = nil
     -- if we emptied the grid, there's no point in keeping it running or cached
     if inventory:is_empty 'recipe' then
@@ -293,12 +293,12 @@ end
 
 -- clean out unknown items and groups, which would be handled like unknown
 -- items in the crafting grid
--- if minetest supports query by group one day, this might replace them
+-- if core supports query by group one day, this might replace them
 -- with a canonical version instead
 local function normalize(item_list)
     for i = 1, #item_list do
         local name = item_list[i]
-        if not minetest.registered_items[name] then item_list[i] = '' end
+        if not core.registered_items[name] then item_list[i] = '' end
     end
     return item_list
 end
@@ -308,7 +308,7 @@ local function on_output_change(pos, inventory, stack)
         inventory:set_list('output', {})
         inventory:set_list('recipe', {})
     else
-        local input = minetest.get_craft_recipe(stack:get_name())
+        local input = core.get_craft_recipe(stack:get_name())
         if not input.items or input.type ~= 'normal' then return end
 
         local items, width = normalize(input.items), input.width
@@ -377,7 +377,7 @@ local list_cache = sbz_api.make_cache('list_cache', 0, true)
 -- might want to introduce a register_crafting_processor function sometime
 -- WARN: sbz_api.crafting_processor_stats moved to sbz_resources/processors_and_circuits.lua and this depends on them
 
-minetest.register_node('pipeworks:autocrafter', {
+core.register_node('pipeworks:autocrafter', {
     description = S 'Autocrafter',
     drawtype = 'normal',
     tiles = { 'autocrafter.png' },
@@ -446,7 +446,7 @@ minetest.register_node('pipeworks:autocrafter', {
             return stack
         end,
         can_insert = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             local slots = get_reserved_slots_or_reserve_them(pos)
             if slots == nil then return false end
@@ -476,7 +476,7 @@ minetest.register_node('pipeworks:autocrafter', {
         ignore_allow_metadata_inventory_take = true,
     },
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('src', 9)
         inv:set_size('recipe', 3 * 3)
@@ -486,10 +486,10 @@ minetest.register_node('pipeworks:autocrafter', {
         update_meta(pos, meta)
     end,
     on_rightclick = function(pos)
-        update_meta(pos, minetest.get_meta(pos))
+        update_meta(pos, core.get_meta(pos))
     end,
     can_dig = function(pos, player)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         return (inv:is_empty 'src' and inv:is_empty 'dst' and inv:is_empty 'processor')
     end,
@@ -498,12 +498,12 @@ minetest.register_node('pipeworks:autocrafter', {
         pipeworks.scan_for_tube_objects(pos)
     end,
     on_destruct = function(pos)
-        autocrafterCache[minetest.hash_node_position(pos)] = nil
+        autocrafterCache[core.hash_node_position(pos)] = nil
     end,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         list_cache.data[h(pos)] = nil
         if not pipeworks.may_configure(pos, player) then return 0 end
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         if listname == 'recipe' then
             stack:set_count(1)
             inv:set_stack(listname, index, stack)
@@ -513,7 +513,7 @@ minetest.register_node('pipeworks:autocrafter', {
             on_output_change(pos, inv, stack)
             return 0
         elseif listname == 'src' then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local reserved_slot = get_reserved_slots_or_reserve_them(pos)
             if not reserved_slot then return stack:get_count() end
             local stackname = stack:get_name()
@@ -531,17 +531,17 @@ minetest.register_node('pipeworks:autocrafter', {
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         list_cache.data[h(pos)] = nil
         if not pipeworks.may_configure(pos, player) then
-            minetest.log(
+            core.log(
                 'action',
                 string.format(
                     '%s attempted to take from ' .. 'autocrafter at %s',
                     player:get_player_name(),
-                    minetest.pos_to_string(pos)
+                    core.pos_to_string(pos)
                 )
             )
             return 0
         end
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         if listname == 'recipe' then
             inv:set_stack(listname, index, ItemStack '')
             after_recipe_change(pos, inv)
@@ -555,7 +555,7 @@ minetest.register_node('pipeworks:autocrafter', {
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
         list_cache.data[h(pos)] = nil
         if not pipeworks.may_configure(pos, player) then return 0 end
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         local stack = inv:get_stack(from_list, from_index)
 
         if to_list == 'output' then
@@ -577,7 +577,7 @@ minetest.register_node('pipeworks:autocrafter', {
         end
 
         if to_list == 'src' then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local reserved_slot = get_reserved_slots_or_reserve_them(pos)
             if not reserved_slot then return stack:get_count() end
             local stackname = stack:get_name()
@@ -665,7 +665,7 @@ minetest.register_node('pipeworks:autocrafter', {
             end
         end
 
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_list('recipe', list)
         after_recipe_change(pos, inv)
