@@ -264,12 +264,16 @@ local function run_autocrafter(pos)
         meta:set_string('infotext', S 'unconfigured Autocrafter: unknown recipe')
         return false
     end
-    local continue = autocraft(inventory, craft)
-    if not continue then return false end
+    local success = autocraft(inventory, craft)
+    if not success then return false end
+    core.sound_play(
+        { name = 'mix_machine_action_ambiguous', gain = 1.0, pitch = 1.0, fade = 10.0 },
+        { pos = pos, max_hear_distance = 6.0 }
+    )
     return true
 end
 
--- note, that this function assumes allready being updated to virtual items
+-- note, that this function assumes already being updated to virtual items
 -- and doesn't handle recipes with stacksizes > 1
 local function after_recipe_change(pos, inventory)
     local hash = minetest.hash_node_position(pos)
@@ -389,6 +393,12 @@ minetest.register_node('pipeworks:autocrafter', {
         pipe_connects = 1,
         pipe_conducts = 1,
         sbz_machine = 1,
+    },
+    sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'foley_heavy_metal_ting', gain = 1.0, pitch = 0.8, fade = 0.0 },
     },
     is_ground_content = false,
     tube = {
