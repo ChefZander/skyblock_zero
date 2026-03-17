@@ -1,6 +1,6 @@
-local modpath = minetest.get_modpath 'sbz_decor'
+local modpath = core.get_modpath 'sbz_decor'
 
-minetest.register_node('sbz_decor:photonlamp', {
+core.register_node('sbz_decor:photonlamp', {
     description = 'Photon Lamp',
     drawtype = 'mesh',
     mesh = 'photonlamp.obj',
@@ -20,27 +20,38 @@ minetest.register_node('sbz_decor:photonlamp', {
     },
     use_texture_alpha = 'clip',
 })
-minetest.register_craft {
-    output = 'sbz_decor:photonlamp',
-    recipe = {
-        { 'sbz_resources:matter_plate', 'sbz_resources:emitter_imitator', 'sbz_resources:matter_plate' },
-        { 'sbz_resources:emitter_imitator', 'sbz_resources:matter_blob', 'sbz_resources:emitter_imitator' },
-        { 'sbz_resources:matter_plate', 'sbz_resources:emitter_imitator', 'sbz_resources:matter_plate' },
-    },
-}
+do -- Photon Lamp recipe scope
+    local Photon_Lamp = 'sbz_decor:photonlamp'
+    local MP = 'sbz_resources:matter_plate'
+    local EI = 'sbz_resources:emitter_imitator'
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft {
+        output = Photon_Lamp,
+        recipe = {
+            { MP, EI, MP },
+            { EI, MB, EI },
+            { MP, EI, MP },
+        }
+    }
+end
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:factory_floor',
     unifieddyes.def {
         description = 'Factory Floor',
         tiles = { 'factory_floor.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+        sounds = {
+            footstep = { name = 'mix_factory_metal_hit', gain = 0.2, pitch = 1.0, fade = 0.0 },
+            dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+            dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+            place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        },
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
     }
 )
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_floor 2',
     type = 'shapeless',
     recipe = {
@@ -57,21 +68,26 @@ stairs.register('sbz_decor:factory_floor', {
     stair_cross = 'factory_floor_sc.png',
 })
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:factory_floor_tiling',
     unifieddyes.def {
         description = 'Factory Floor (Tiled)',
         tiles = { 'factory_floor_tiling.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
+        sounds = {
+            footstep = { name = 'mix_factory_metal_hit', gain = 0.2, pitch = 1.0, fade = 0.0 },
+            dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+            dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+            place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        },
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
     }
 )
 
 stairs.register 'sbz_decor:factory_floor_tiling'
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_floor_tiling 4',
     type = 'shapeless',
     recipe = {
@@ -82,17 +98,44 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node('sbz_decor:factory_ventilator', {
+core.register_node('sbz_decor:factory_ventilator', {
     description = 'Factory Ventilator',
     tiles = {
         { name = 'factory_ventilator.png', animation = { type = 'vertical_frames', length = 1 } },
     },
     groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
+    sounds = {
+        footstep = { name = 'mix_factory_metal_hit', gain = 0.2, pitch = 1.0, fade = 0.0 },
+        dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.6, fade = 0.0 },
+        dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.6, fade = 0.0 },
+        place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 0.8, fade = 0.0 },
+    },
+    on_construct = function(pos)
+        local meta = core.get_meta(pos)
+
+        local handle = core.sound_play({ name = "foley_bathroom_fan_loop", fade = 0.5 }, {
+            pos = pos,
+            gain = 0.2,
+            pitch = 0.8,
+            max_hear_distance = 16,
+            loop = true
+        })
+
+        meta:set_int("factory_fan_handle", handle)
+    end,
+    on_destruct = function(pos)
+        local meta = core.get_meta(pos)
+        local handle = meta:get_int("factory_fan_handle")
+
+        if handle then
+            core.sound_stop(handle)
+        end
+    end,
+
     sunlight_propagates = true,
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_ventilator',
     type = 'shapeless',
     recipe = {
@@ -103,7 +146,7 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:factory_warning',
     unifieddyes.def {
         description = 'Factory Warning',
@@ -111,17 +154,17 @@ minetest.register_node(
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 stairs.register 'sbz_decor:factory_warning'
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:factory_warning 4',
     type = 'shapeless',
     recipe = { 'sbz_decor:factory_floor', 'sbz_decor:factory_floor', 'sbz_chem:gold_powder', 'sbz_chem:gold_powder' },
 }
 
-minetest.register_node('sbz_decor:mystery_terrarium', {
+core.register_node('sbz_decor:mystery_terrarium', {
     description = 'Mystery Terrarium',
     tiles = {
         { name = 'mystery_terrarium.png', animation = { type = 'vertical_frames', length = 1 } },
@@ -129,15 +172,15 @@ minetest.register_node('sbz_decor:mystery_terrarium', {
     groups = { matter = 1, cracky = 3, explody = 3 },
     sunlight_propagates = true,
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:mystery_terrarium',
     type = 'shapeless',
     recipe = { 'sbz_bio:habitat_regulator', 'sbz_bio:screen_inverter_potion', 'sbz_chem:thorium_powder' },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:large_server_rack',
     unifieddyes.def {
         description = 'Large Server Rack',
@@ -154,17 +197,17 @@ minetest.register_node(
         groups = { matter = 1, cracky = 3, explody = 3 },
         light_source = 10,
         sunlight_propagates = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_decor:large_server_rack',
     type = 'shapeless',
     recipe = { 'sbz_resources:matter_blob', 'sbz_resources:luanium' },
 }
 
-local MP = minetest.get_modpath 'sbz_decor'
+local MP = core.get_modpath 'sbz_decor'
 dofile(MP .. '/signs.lua')
 dofile(MP .. '/cnc.lua')
 
@@ -179,13 +222,13 @@ local get_ladder_on_place = function(ladder_name)
             local target = pointed.under
             local node = core.get_node(target)
             if node.name == ladder_name then
-                local dir = minetest.facedir_to_dir(node.param2)
+                local dir = core.facedir_to_dir(node.param2)
                 local up = vector.new(0, 1, 0)
                 pointed.under = vector.add(pointed.under, up)
                 pointed.above = vector.add(pointed.above, up)
                 if core.get_node(pointed.under).name == ladder_name then
                     local result =
-                        minetest.registered_nodes[ladder_name].on_place(stack, placer, pointed, (recursed or 0) + 1)
+                        core.registered_nodes[ladder_name].on_place(stack, placer, pointed, (recursed or 0) + 1)
                     return result
                 end
                 return core.item_place_node(stack, placer, pointed, node.param2)
@@ -284,20 +327,30 @@ core.register_node(
 
 core.register_alias_force('sbz_decor:anitmatter_ladder', 'sbz_decor:antimatter_ladder')
 
-core.register_craft {
-    output = 'sbz_decor:antimatter_ladder 12',
-    recipe = {
-        { 'sbz_resources:antimatter_blob', '', 'sbz_resources:antimatter_blob' },
-        { 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_blob' },
-        { 'sbz_resources:antimatter_blob', '', 'sbz_resources:antimatter_blob' },
-    },
-}
+do -- Antimatter Ladder recipe scope
+    local Antimatter_Ladder = 'sbz_decor:antimatter_ladder'
+    local amount = 12
+    local AB = 'sbz_resources:antimatter_blob'
+    core.register_craft {
+        output = Antimatter_Ladder .. ' ' .. tostring(amount),
+        recipe = {
+            { AB, '', AB },
+            { AB, AB, AB },
+            { AB, '', AB },
+        }
+    }
+end
 
-core.register_craft {
-    output = 'sbz_decor:ladder 12',
-    recipe = {
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
-        { 'sbz_resources:matter_blob', '', 'sbz_resources:matter_blob' },
-    },
-}
+do -- Ladder recipe scope
+    local Ladder = 'sbz_decor:ladder'
+    local amount = 12
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft {
+        output = Ladder .. ' ' .. tostring(amount),
+        recipe = {
+            { MB, '', MB },
+            { MB, MB, MB },
+            { MB, '', MB },
+        }
+    }
+end

@@ -15,9 +15,9 @@ function metatool.util.pos_to_string(pos)
 end
 
 function metatool.util.description(pos, node, meta)
-	node = node or minetest.get_node(pos)
-	meta = meta or minetest.get_meta(pos)
-	local nicename = meta:get("infotext") or minetest.registered_nodes[node.name].description or node.name
+	node = node or core.get_node(pos)
+	meta = meta or core.get_meta(pos)
+	local nicename = meta:get("infotext") or core.registered_nodes[node.name].description or node.name
 	return ("%s at %s"):format(nicename, metatool.util.pos_to_string(pos))
 end
 
@@ -42,7 +42,7 @@ function metatool.transform_tool_name(name, mtprefix)
 end
 
 function metatool.check_privs(player, privs)
-	local success,_ = minetest.check_player_privs(player, privs)
+	local success,_ = core.check_player_privs(player, privs)
 	return success
 end
 
@@ -52,10 +52,10 @@ function metatool.is_protected(pos, player, privs, no_violation_record)
 		return false
 	end
 	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
+	if core.is_protected(pos, name) then
 		if not no_violation_record then
 			-- node is protected record violation
-			minetest.record_protection_violation(pos, name)
+			core.record_protection_violation(pos, name)
 		end
 		return true
 	end
@@ -69,7 +69,7 @@ function metatool.write_data(itemstack, data, description, tool)
 	end
 	local meta = itemstack:get_meta()
 	if data.data or data.group then
-		local datastring = minetest.serialize(data)
+		local datastring = core.serialize(data)
 		local storage_size = tool and tonumber(tool.settings.storage_size)
 		if storage_size and #datastring > storage_size then
 			return S('Cannot store %d bytes, max storage for %s is %d bytes',
@@ -89,5 +89,5 @@ function metatool.read_data(itemstack)
 	end
 	local meta = itemstack:get_meta()
 	local datastring = meta:get_string('data')
-	return minetest.deserialize(datastring)
+	return core.deserialize(datastring)
 end

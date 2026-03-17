@@ -3,17 +3,20 @@
 local action = function(pos, _, puncher)
     local itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
-    local can_extract_from_emitter = minetest.get_item_group(tool_name, "core_drop_multi") > 0
-    if not can_extract_from_emitter then
+    local can_extract_from_emitter = core.get_item_group(tool_name, "core_drop_multi") > 0
+    if can_extract_from_emitter then
+        core.sound_play({ name = 'mix_rubber_hit_noisy_gassy' }, { pos = pos })
+    else
+        core.sound_play({ name = 'foley_annoying_honk', gain = 0.8, pitch = 0.9 }, { pos = pos })
         if puncher.is_fake_player then return end
         sbz_api.displayDialogLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
-    for _ = 1, minetest.get_item_group(tool_name, "core_drop_multi") do
+    for _ = 1, core.get_item_group(tool_name, "core_drop_multi") do
         if math.random(1, 10) == 1 then
             puncher:get_inventory():add_item("main", "sbz_resources:raw_emittrium")
 
             if not puncher.is_fake_player then
-                minetest.add_particlespawner({
+                core.add_particlespawner({
                     amount = 50,
                     time = 1,
                     minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -34,13 +37,6 @@ local action = function(pos, _, puncher)
                 unlock_achievement(puncher:get_player_name(), "Obtain Emittrium")
             end
         else
-            if not puncher.is_fake_player then
-                sbz_api.play_sfx("punch_core", {
-                    gain = 1,
-                    max_hear_distance = 6,
-                    pos = pos
-                })
-            end
             local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
             local item = items[math.random(#items)]
 
@@ -48,7 +44,7 @@ local action = function(pos, _, puncher)
             if inv then
                 local leftover = inv:add_item("main", item)
                 if not leftover:is_empty() then
-                    minetest.add_item(pos, leftover)
+                    core.add_item(pos, leftover)
                 end
             end
             if not puncher.is_fake_player then
@@ -58,10 +54,16 @@ local action = function(pos, _, puncher)
     end
 end
 
-minetest.register_node("sbz_resources:emitter", {
+core.register_node("sbz_resources:emitter", {
     description = "Emitter",
     tiles = { "emitter.png" },
     groups = { gravity = 25, unbreakable = 1, transparent = 1, not_in_creative_inventory = 1 },
+    sounds = {
+        footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     drop = "",
     sunlight_propagates = true,
     paramtype = "light",
@@ -72,10 +74,16 @@ minetest.register_node("sbz_resources:emitter", {
     diggable = false,
 })
 
-minetest.register_node("sbz_resources:movable_emitter", {
+core.register_node("sbz_resources:movable_emitter", {
     description = "Movable Emitter",
     tiles = { "movable_emitter.png" },
     groups = { transparent = 1, matter = 1, level = 2 },
+    sounds = {
+        footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     sunlight_propagates = true,
     paramtype = "light",
     light_source = 14,
@@ -98,13 +106,13 @@ do -- Movable Emitter duplication recipe scope
     })
 end
 
-minetest.register_abm({
+core.register_abm({
     label = "Emitter Particles",
     nodenames = { "sbz_resources:emitter" },
     interval = 1,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.add_particlespawner({
+        core.add_particlespawner({
             amount = 5,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -126,7 +134,7 @@ minetest.register_abm({
 })
 
 -- Emitter Resources
-minetest.register_craftitem("sbz_resources:raw_emittrium", {
+core.register_craftitem("sbz_resources:raw_emittrium", {
     description = "Raw Emittrium",
     inventory_image = "raw_emittrium.png",
     stack_max = 256,
@@ -140,22 +148,17 @@ unified_inventory.register_craft {
     }
 }
 
--- THE CORE!!! interraction...
+-- THE CORE!!! interaction...
 local function core_interact(pos, node, puncher, itemstack, pointed_thing)
     if not pointed_thing then --this is on_punch instead, which doesn't use itemstack
         pointed_thing = itemstack
         itemstack = nil
     end
-    sbz_api.play_sfx("punch_core", {
-        gain = 1,
-        max_hear_distance = 6,
-        pos = pos
-    })
 
     itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
 
-    local multi = minetest.get_item_group(tool_name, "core_drop_multi")
+    local multi = core.get_item_group(tool_name, "core_drop_multi")
     local n = 1
 
     if not puncher then return end
@@ -170,10 +173,10 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
         local inv = puncher:get_inventory()
 
         if inv then
-            minetest.after(0, function() -- engine bug makes things weird... if you remove this, troubles may arise
+            core.after(0, function() -- engine bug makes things weird... if you remove this, troubles may arise
                 local leftover = inv:add_item("main", item)
                 if not leftover:is_empty() then
-                    minetest.add_item(pos, leftover)
+                    core.add_item(pos, leftover)
                 end
             end)
         end
@@ -181,7 +184,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
 end
 
 -- THE CORE!!!
-minetest.register_node("sbz_resources:the_core", {
+core.register_node("sbz_resources:the_core", {
     description = "The Core",
     tiles = { "the_core.png" },
     groups = { gravity = 25, unbreakable = 1, not_in_creative_inventory = 1 },
@@ -196,13 +199,13 @@ minetest.register_node("sbz_resources:the_core", {
 })
 
 -- Core Particles
-minetest.register_abm({
+core.register_abm({
     label = "Core Particles",
     nodenames = { "sbz_resources:the_core" },
     interval = 1,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.add_particlespawner({
+        core.add_particlespawner({
             amount = 1,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },

@@ -1,4 +1,4 @@
-local has_vizlib = minetest.get_modpath("vizlib")
+local has_vizlib = core.get_modpath("vizlib")
 
 core.register_node("jumpdrive:engine", {
 	description = "Jumpdrive",
@@ -18,21 +18,28 @@ core.register_node("jumpdrive:engine", {
 		limited_battery = 1,
 	},
 
+	sounds = {
+		footstep = { name = 'gen_muffled_boop_hit', gain = 0.3, pitch = 0.5, fade = 0.0 },
+		dig      = { name = 'gen_simple_tap_low', gain = 0.7, pitch = 1.0, fade = 0.0 },
+		dug      = { name = 'mix_explode_puffy_metallic', gain = 1.0, pitch = 1.0, fade = 0.0 },
+		place    = { name = 'gen_metallic_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+	},
+	
 	battery_max = jumpdrive.config.powerstorage,
 
 	action = function(_, _, meta)
 		jumpdrive.update_infotext(meta)
 	end,
-	sounds = sbz_api.sounds.glass(),
+	-- sounds = sbz_api.sounds.glass(),
 	on_logic_send = jumpdrive.logic_effector,
 
 	after_place_node = function(pos, placer)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		meta:set_string("owner", placer:get_player_name() or "")
 	end,
 
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		meta:set_int("x", pos.x)
 		meta:set_int("y", pos.y)
 		meta:set_int("z", pos.z)
@@ -43,22 +50,22 @@ core.register_node("jumpdrive:engine", {
 	end,
 
 	can_dig = function(pos, player)
-		local meta = minetest.get_meta(pos);
+		local meta = core.get_meta(pos);
 		local inv = meta:get_inventory()
 		local name = player:get_player_name()
 
-		return inv:is_empty("main") and not minetest.is_protected(pos, name)
+		return inv:is_empty("main") and not core.is_protected(pos, name)
 	end,
 
 
 	on_receive_fields = function(pos, _, fields, sender)
-		local meta = minetest.get_meta(pos);
+		local meta = core.get_meta(pos);
 
 		if not sender then
 			return
 		end
 
-		if minetest.is_protected(pos, sender:get_player_name()) then
+		if core.is_protected(pos, sender:get_player_name()) then
 			-- not allowed
 			return
 		end
@@ -92,7 +99,7 @@ core.register_node("jumpdrive:engine", {
 		local max_radius = jumpdrive.config.max_radius
 
 		if radius > max_radius then
-			minetest.chat_send_player(sender:get_player_name(), "Invalid jump: max-radius=" .. max_radius)
+			core.chat_send_player(sender:get_player_name(), "Invalid jump: max-radius=" .. max_radius)
 			return
 		end
 
@@ -107,19 +114,19 @@ core.register_node("jumpdrive:engine", {
 			local success, msg = jumpdrive.execute_jump(pos, sender)
 			if success then
 				local time_millis = math.floor(msg / 1000)
-				minetest.chat_send_player(sender:get_player_name(), "Jump executed in " .. time_millis .. " ms")
+				core.chat_send_player(sender:get_player_name(), "Jump executed in " .. time_millis .. " ms")
 			else
-				minetest.chat_send_player(sender:get_player_name(), msg)
+				core.chat_send_player(sender:get_player_name(), msg)
 			end
 		end
 
 		if fields.show then
 			local success, msg = jumpdrive.simulate_jump(pos, sender, true)
 			if not success then
-				minetest.chat_send_player(sender:get_player_name(), msg)
+				core.chat_send_player(sender:get_player_name(), msg)
 				return
 			end
-			minetest.chat_send_player(sender:get_player_name(), "Simulation successful")
+			core.chat_send_player(sender:get_player_name(), "Simulation successful")
 		end
 	end,
 
@@ -127,7 +134,7 @@ core.register_node("jumpdrive:engine", {
 	allow_metadata_inventory_move = function(pos, _, _, _, _, count, player)
 		if (not player)
 			or (not player:is_player())
-			or minetest.is_protected(pos, player:get_player_name())
+			or core.is_protected(pos, player:get_player_name())
 		then
 			return 0
 		end
@@ -138,7 +145,7 @@ core.register_node("jumpdrive:engine", {
 	allow_metadata_inventory_take = function(pos, _, _, stack, player)
 		if (not player)
 			or (not player:is_player())
-			or minetest.is_protected(pos, player:get_player_name())
+			or core.is_protected(pos, player:get_player_name())
 		then
 			return 0
 		end
@@ -149,7 +156,7 @@ core.register_node("jumpdrive:engine", {
 	allow_metadata_inventory_put = function(pos, _, _, stack, player)
 		if (not player)
 			or (not player:is_player())
-			or minetest.is_protected(pos, player:get_player_name())
+			or core.is_protected(pos, player:get_player_name())
 		then
 			return 0
 		end
@@ -181,7 +188,7 @@ core.register_node("jumpdrive:engine", {
 			-- Only show jump area when using an empty hand
 			return
 		end
-		local radius = minetest.get_meta(pos):get_int("radius")
+		local radius = core.get_meta(pos):get_int("radius")
 		vizlib.draw_cube(pos, radius + 0.5, { color = "#00ff00", player = player })
 	end or nil,
 })

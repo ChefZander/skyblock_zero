@@ -1,4 +1,4 @@
-minetest.register_node("sbz_bio:dirt", unifieddyes.def {
+core.register_node("sbz_bio:dirt", unifieddyes.def {
     description = "Dirt",
     tiles = { "dirt.png" },
     paramtype2 = "color",
@@ -12,7 +12,7 @@ minetest.register_node("sbz_bio:dirt", unifieddyes.def {
         charged = 1,
     },
     paramtype = "light", -- if you leave this out, fertilizer wont work
-    sounds = sbz_api.sounds.dirt(),
+    -- sounds = sbz_api.sounds.dirt(),
 })
 
 do -- Dirt recipe scope
@@ -46,7 +46,7 @@ sbz_api.recipe.register_craft {
     items = { "sbz_bio:dirt" }
 }
 
-minetest.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
+core.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
     paramtype2 = "color",
     description = "Fertilized Dirt",
     tiles = { "fertilized_dirt.png" },
@@ -59,7 +59,7 @@ minetest.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
         fertilizer_no_sprout = 1,
     },
     paramtype = "light",
-    sounds = sbz_api.sounds.dirt(),
+    -- sounds = sbz_api.sounds.dirt(),
     info_extra = {
         "Plants grow 2x faster than on dirt, on this soil.",
         "Fertilizer can't sprout plants on this soil."
@@ -80,7 +80,7 @@ do -- Fertilized Dirt recipe scope
     })
 end
 
-minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
+core.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
     paramtype2 = "color",
     description = "Dirt With Pyrograss",
     tiles = {
@@ -98,14 +98,14 @@ minetest.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
         charged = 1
     },
     paramtype = "light",
-    sounds = sbz_api.sounds.dirt(),
+    -- sounds = sbz_api.sounds.dirt(),
     info_extra = "Spreads, same growth speed as dirt.",
     on_burn = function(pos)
         if is_air(vector.add(pos, vector.new(0, 1, 0))) then
             core.set_node(pos, { name = "sbz_bio:dirt" })
             core.set_node(vector.add(pos, vector.new(0, 1, 0)), { name = "sbz_bio:fire" })
             core.get_meta(vector.add(pos, vector.new(0, 1, 0))):set_int("co2", 5) -- burn=5
-            minetest.get_node_timer(vector.add(pos, vector.new(0, 1, 0))):start(math.random(30, 60))
+            core.get_node_timer(vector.add(pos, vector.new(0, 1, 0))):start(math.random(30, 60))
         end
     end,
 })

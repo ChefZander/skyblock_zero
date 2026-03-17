@@ -1,4 +1,4 @@
-minetest.register_entity("sbz_power:turret_entity", {
+core.register_entity("sbz_power:turret_entity", {
     initial_properties = {
         visual = "mesh",
         mesh = "turret.gltf",
@@ -64,7 +64,7 @@ local function get_turret_entity(pos)
         turret:remove() -- remove excess turrets
     end
 
-    return minetest.add_entity(pos, "sbz_power:turret_entity")
+    return core.add_entity(pos, "sbz_power:turret_entity")
 end
 
 local range = 120
@@ -92,7 +92,7 @@ sbz_api.register_machine("sbz_power:turret", {
         meta:get_inventory():set_size("main", 1)
         set_turret_formspec(meta)
     end,
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     action = function(pos, node, meta, supply, demand)
         if supply < demand + power_use then
             meta:set_string("infotext", "Not enough power")

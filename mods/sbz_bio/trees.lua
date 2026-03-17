@@ -1,4 +1,4 @@
--- yes some of this has been inspired by minetest_game's trees
+-- yes some of this has been inspired by core_game's trees
 
 -- https://github.com/minetest/minetest_game/blob/df8159436c65db7940077dda28f4d1ad5a9c0811/mods/default/trees.lua#L455
 --[[
@@ -19,16 +19,16 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 ]]
 
 function sbz_api.can_tree_grow(pos)
-    local node_under = minetest.get_node_or_nil { x = pos.x, y = pos.y - 1, z = pos.z }
+    local node_under = core.get_node_or_nil { x = pos.x, y = pos.y - 1, z = pos.z }
     if not node_under then return false end
-    if minetest.get_item_group(node_under.name, 'soil') == 0 then return false end
-    local light_level = minetest.get_node_light(pos)
+    if core.get_item_group(node_under.name, 'soil') == 0 then return false end
+    local light_level = core.get_node_light(pos)
     if not light_level or light_level < 8 then return false end
     return true
 end
 
 sbz_api.grow_sapling = function(pos)
-    minetest.registered_nodes[minetest.get_node(pos).name].grow(pos)
+    core.registered_nodes[core.get_node(pos).name].grow(pos)
 end
 
 -- now its normally licensed:
@@ -53,15 +53,15 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
             ui_bio = 1,
         },
         on_construct = function(pos)
-            minetest.get_node_timer(pos):start(math.random(300, 1500))
+            core.get_node_timer(pos):start(math.random(300, 1500))
         end,
         after_place_node = function(pos, placer, stack)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             meta:set_string('owner', placer:get_player_name())
             meta:set_int('immutable', stack:get_meta():get_int 'immutable')
-            local dna = minetest.deserialize(stack:get_meta():get_string 'dna')
+            local dna = core.deserialize(stack:get_meta():get_string 'dna')
                 or core.registered_items[sapling_name].dna
-            meta:set_string('dna', minetest.serialize(dna))
+            meta:set_string('dna', core.serialize(dna))
             meta:set_string('item_meta', core.serialize(stack:get_meta():to_table()))
         end,
         on_timer = sbz_api.grow_sapling,
@@ -69,24 +69,24 @@ sbz_api.register_tree = function(sapling_name, sapling_def, schem_path, size)
             if not sbz_api.can_tree_grow(pos) then
                 return true -- re-run
             else
-                local meta = minetest.get_meta(pos)
+                local meta = core.get_meta(pos)
                 local owner = meta:get_string 'owner'
                 unlock_achievement(owner, 'Colorium Trees')
-                local dna = minetest.deserialize(meta:get_string 'dna') or core.registered_items[sapling_name].dna
+                local dna = core.deserialize(meta:get_string 'dna') or core.registered_items[sapling_name].dna
                 --if not meta:get_int("immutable") == 1 then
                 sbz_api.mutate_dna(dna, nil, 10)
                 --end
-                minetest.remove_node(pos)
+                core.remove_node(pos)
                 sbz_api.spawn_tree(pos, dna, owner)
             end
         end,
         preserve_metadata = function(pos, oldnode, oldmeta, drops)
-            drops[1]:get_meta():from_table(minetest.deserialize(oldmeta.item_meta or ''))
+            drops[1]:get_meta():from_table(core.deserialize(oldmeta.item_meta or ''))
         end,
     } do
         sapling_def[k] = v
     end
-    minetest.register_node(sapling_name, sapling_def)
+    core.register_node(sapling_name, sapling_def)
 end
 
 -- leafdecay, again, for this function
@@ -106,10 +106,10 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 ]]
 local function leafdecay_after_destruct(pos, _, def)
     for _, v in
-        pairs(minetest.find_nodes_in_area(vector.subtract(pos, def.radius), vector.add(pos, def.radius), def.leaves))
+        pairs(core.find_nodes_in_area(vector.subtract(pos, def.radius), vector.add(pos, def.radius), def.leaves))
     do
-        local node = minetest.get_node(v)
-        local timer = minetest.get_node_timer(v)
+        local node = core.get_node(v)
+        local timer = core.get_node_timer(v)
         if node.param2 ~= 1 and not timer:is_started() then timer:start(math.random(10, 100)) end
     end
 end
@@ -118,9 +118,9 @@ function sbz_api.register_leaves(name, def)
     for k, v in pairs {
         after_place_node = function(pos, placer, itemstack, pointed_thing)
             if placer and placer:is_player() then
-                local node = minetest.get_node(pos)
+                local node = core.get_node(pos)
                 node.param2 = 1
-                minetest.set_node(pos, node)
+                core.set_node(pos, node)
             end
         end,
         paramtype = 'light',
@@ -131,14 +131,14 @@ function sbz_api.register_leaves(name, def)
         move_resistance = 1,
         floodable = true,
         on_timer = function(pos)
-            if minetest.find_node_near(pos, def.radius, def.tree) then return false end
+            if core.find_node_near(pos, def.radius, def.tree) then return false end
 
-            local node = minetest.get_node(pos)
+            local node = core.get_node(pos)
             local drops = def.tree_drop
             for _, item in ipairs(drops) do
                 if math.random() <= 1 / item.rarity then
                     item = item.item
-                    minetest.add_item({
+                    core.add_item({
                         x = pos.x - 0.5 + math.random(),
                         y = pos.y - 0.5 + math.random(),
                         z = pos.z - 0.5 + math.random(),
@@ -146,11 +146,11 @@ function sbz_api.register_leaves(name, def)
                 end
             end
 
-            minetest.remove_node(pos)
-            minetest.check_for_falling(pos)
+            core.remove_node(pos)
+            core.check_for_falling(pos)
 
             -- spawn a few particles for the removed node
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 12,
                 time = 0.001,
                 expirationtime = 10,
@@ -173,14 +173,14 @@ function sbz_api.register_leaves(name, def)
                         if digger and digger:is_player() then
                             local leftover = digger:get_inventory():add_item('main', item.item)
                             if leftover then
-                                minetest.add_item({
+                                core.add_item({
                                     x = pos.x - 0.5 + math.random(),
                                     y = pos.y - 0.5 + math.random(),
                                     z = pos.z - 0.5 + math.random(),
                                 }, leftover)
                             end
                         else
-                            minetest.add_item({
+                            core.add_item({
                                 x = pos.x - 0.5 + math.random(),
                                 y = pos.y - 0.5 + math.random(),
                                 z = pos.z - 0.5 + math.random(),
@@ -190,14 +190,14 @@ function sbz_api.register_leaves(name, def)
                     end
                 end
 
-                minetest.remove_node(pos)
-                minetest.check_for_falling(pos)
+                core.remove_node(pos)
+                core.check_for_falling(pos)
             end
         end,
     } do
         def[k] = v
     end
-    minetest.register_node(name, def)
+    core.register_node(name, def)
 end
 
 -- normal licensed code again
@@ -209,7 +209,7 @@ function sbz_api.register_trunk(name, def)
     } do
         def[k] = v
     end
-    minetest.register_node(name, def)
+    core.register_node(name, def)
 end
 
 sbz_api.register_trunk(
@@ -233,7 +233,7 @@ sbz_api.register_trunk(
             'colorium_tree_side.png',
         },
         leaves = 'sbz_bio:colorium_leaves',
-        sounds = sbz_api.sounds.tree(),
+        -- sounds = sbz_api.sounds.tree(),
     }
 )
 
@@ -286,7 +286,7 @@ sbz_api.register_leaves(
                 },
             },
         },
-        sounds = sbz_api.sounds.leaves(),
+        -- sounds = sbz_api.sounds.leaves(),
     }
 )
 
@@ -385,14 +385,14 @@ do -- Giant Colorium Sapling recipe scope
 end
 
 -- purely decor
-minetest.register_node(
+core.register_node(
     'sbz_bio:colorium_planks',
     unifieddyes.def {
         description = 'Colorium Planks',
         tiles = { 'colorium_planks.png' },
         paramtype2 = 'color',
         groups = { matter = 3, oddly_breakable_by_hand = 2, burn = 1, transparent = 1, explody = 10 },
-        sounds = sbz_api.sounds.tree(),
+        -- sounds = sbz_api.sounds.tree(),
     }
 )
 
@@ -453,7 +453,7 @@ core.register_node('sbz_bio:colorium_tree_core', {
         'colorium_tree_top.png',
         { name = 'colorium_tree_core_side.png', animation = { type = 'vertical_frames', length = 12 } },
     },
-    sounds = sbz_api.sounds.tree(),
+    -- sounds = sbz_api.sounds.tree(),
     drop = '',
     on_dig = function(pos, node, digger)
         local item = 'sbz_bio:colorium_tree_core'
@@ -466,22 +466,22 @@ core.register_node('sbz_bio:colorium_tree_core', {
         if digger and digger:is_player() then
             local leftover = digger:get_inventory():add_item('main', item)
             if leftover then
-                minetest.add_item({
+                core.add_item({
                     x = pos.x - 0.5 + math.random(),
                     y = pos.y - 0.5 + math.random(),
                     z = pos.z - 0.5 + math.random(),
                 }, leftover)
             end
         else
-            minetest.add_item({
+            core.add_item({
                 x = pos.x - 0.5 + math.random(),
                 y = pos.y - 0.5 + math.random(),
                 z = pos.z - 0.5 + math.random(),
             }, item)
         end
 
-        minetest.remove_node(pos)
-        minetest.check_for_falling(pos)
+        core.remove_node(pos)
+        core.check_for_falling(pos)
     end,
 })
 

@@ -33,7 +33,7 @@ For more information, please refer to <http://unlicense.org/>
 
 local DISP_MAX_RESOLUTION = 32
 local function remove_entity(pos)
-    local entitiesNearby = minetest.get_objects_inside_radius(pos, 0.5)
+    local entitiesNearby = core.get_objects_inside_radius(pos, 0.5)
     for _, i in pairs(entitiesNearby) do
         if i:get_luaentity() and i:get_luaentity().name == "sbz_logic_devices:matrix_screen_entity" then
             i:remove()
@@ -44,14 +44,14 @@ end
 local function generate_texture(pos, serdata)
     --The data *should* always be valid, but it pays to double-check anyway due to how easily this could crash if something did go wrong
     if type(serdata) ~= "string" then
-        minetest.log("error",
-            "[sbz_logic_devices] Serialized display data appears to be missing at " .. minetest.pos_to_string(pos, 0))
+        core.log("error",
+            "[sbz_logic_devices] Serialized display data appears to be missing at " .. core.pos_to_string(pos, 0))
         return
     end
-    local data = minetest.deserialize(serdata)
+    local data = core.deserialize(serdata)
     if type(data) ~= "table" then
-        minetest.log("error",
-            "[sbz_logic_devices] Failed to deserialize display data at " .. minetest.pos_to_string(pos, 0))
+        core.log("error",
+            "[sbz_logic_devices] Failed to deserialize display data at " .. core.pos_to_string(pos, 0))
         return
     end
     local bincolors = {}
@@ -62,14 +62,14 @@ local function generate_texture(pos, serdata)
         if type(data[y]) ~= "table" then data[y] = {} end
         for x = 1, size do
             bincolors[index] = data[y][x] or
-                minetest.colorspec_to_bytes("black") -- ive optimized it a lil to not be a warcrime
+                core.colorspec_to_bytes("black") -- ive optimized it a lil to not be a warcrime
             index = index + 1
         end
     end
 
     local img
     local ok, errmsg = pcall(function()
-        img = minetest.encode_png(size, size, table.concat(bincolors), 1)
+        img = core.encode_png(size, size, table.concat(bincolors), 1)
     end)
 
     if not ok then
@@ -77,15 +77,15 @@ local function generate_texture(pos, serdata)
         return
     end
 
-    return "blank.png^[invert:a^[png:" .. minetest.encode_base64(img)
+    return "blank.png^[invert:a^[png:" .. core.encode_base64(img)
 end
 
 local function update_display(pos)
     remove_entity(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local data = meta:get_string("data")
-    local entity = minetest.add_entity(pos, "sbz_logic_devices:matrix_screen_entity")
-    local fdir = minetest.fourdir_to_dir(minetest.get_node(pos).param2)
+    local entity = core.add_entity(pos, "sbz_logic_devices:matrix_screen_entity")
+    local fdir = core.fourdir_to_dir(core.get_node(pos).param2)
     local etex = "blank.png^[invert:a"
     etex = generate_texture(pos, data) or etex
     entity:set_properties({ textures = { etex } })
@@ -93,7 +93,7 @@ local function update_display(pos)
     entity:set_pos(vector.add(pos, vector.multiply(fdir, 0.39)))
 end
 
-minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
+core.register_entity("sbz_logic_devices:matrix_screen_entity", {
     initial_properties = {
         visual = "upright_sprite",
         physical = false,
@@ -107,7 +107,7 @@ minetest.register_entity("sbz_logic_devices:matrix_screen_entity", {
     end,
 })
 
-minetest.register_node("sbz_logic_devices:matrix_screen", {
+core.register_node("sbz_logic_devices:matrix_screen", {
     description = "Matrix Screen",
     info_extra = {
         "Named that because it accepts a 2D matrix.",
@@ -128,9 +128,9 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
     paramtype2 = "4dir",
     sunlight_propagates = true,
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
-        local disp = { [1] = { [1] = minetest.colorspec_to_bytes("black") } }
-        meta:set_string("data", minetest.serialize(disp))
+        local meta = core.get_meta(pos)
+        local disp = { [1] = { [1] = core.colorspec_to_bytes("black") } }
+        meta:set_string("data", core.serialize(disp))
         update_display(pos)
     end,
     on_destruct = remove_entity,
@@ -138,8 +138,8 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         if not player then return end
         if player.is_fake_player then return end
 
-        local m = minetest.get_meta(screenpos)
-        local disp = minetest.deserialize(m:get_string("data"))
+        local m = core.get_meta(screenpos)
+        local disp = core.deserialize(m:get_string("data"))
         if type(disp) ~= "table" then return end
         local size = math.min(DISP_MAX_RESOLUTION, #disp)
 
@@ -150,12 +150,12 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
         local lookdir = player:get_look_dir()
         local distance = vector.distance(eyepos, screenpos)
         local endpos = vector.add(eyepos, vector.multiply(lookdir, distance + 1))
-        local ray = minetest.raycast(eyepos, endpos, true, false)
+        local ray = core.raycast(eyepos, endpos, true, false)
         local pointed, screen, hitpos
         repeat
             pointed = ray:next()
             if pointed and pointed.type == "node" then
-                local node = minetest.get_node(pointed.under)
+                local node = core.get_node(pointed.under)
                 if node.name == "sbz_logic_devices:matrix_screen" then
                     screen = pointed.under
                     hitpos = vector.subtract(pointed.intersection_point, screen)
@@ -163,7 +163,7 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
             end
         until screen or not pointed
         if not hitpos then return end
-        local fourdir = minetest.fourdir_to_dir(minetest.get_node(screen).param2)
+        local fourdir = core.fourdir_to_dir(core.get_node(screen).param2)
         if fourdir.x > 0 then
             hitpos.x = -1 * hitpos.z
         elseif fourdir.x < 0 then
@@ -193,13 +193,13 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
     },
     on_rotate = function(pos, ...)
         local ret = screwdriver.rotate_simple(pos, ...)
-        minetest.after(0, update_display, pos)
+        core.after(0, update_display, pos)
         return ret
     end,
     groups = { matter = 3, ui_logic = 1 },
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     on_logic_send = function(pos, msg, from_pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         if msg == "subscribe" then
             meta:set_string("subscribed", vector.to_string(from_pos))
             return
@@ -220,20 +220,20 @@ minetest.register_node("sbz_logic_devices:matrix_screen", {
             if type(msg[y]) ~= "table" then msg[y] = {} end
             for x = 1, size do
                 local v = msg[y][x]
-                local bytes = minetest.colorspec_to_bytes(v)
+                local bytes = core.colorspec_to_bytes(v)
                 if bytes == nil then
-                    bytes = minetest.colorspec_to_bytes("black")
+                    bytes = core.colorspec_to_bytes("black")
                 end
                 data[y][x] = bytes
             end
         end
 
-        meta:set_string("data", minetest.serialize(data))
+        meta:set_string("data", core.serialize(data))
         update_display(pos)
     end
 })
 
-minetest.register_lbm({
+core.register_lbm({
     name = "sbz_logic_devices:matrix_screen_respawn",
     label = "Respawn matrix screen entities",
     nodenames = { "sbz_logic_devices:matrix_screen" },

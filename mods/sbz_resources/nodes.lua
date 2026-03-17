@@ -1,19 +1,19 @@
-minetest.register_node(
+core.register_node(
     'sbz_resources:matter_blob',
     unifieddyes.def {
         description = 'Matter Blob',
         tiles = { 'matter_blob.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
         on_punch = function(pos, node, puncher)
-            minetest.sound_play('step', { pos = pos, gain = 1.0 })
+            core.sound_play('step', { pos = pos, gain = 1.0 })
         end,
     }
 )
 stairs.register 'sbz_resources:matter_blob'
-minetest.register_alias('sbz_resources:matter_stair', 'sbz_resources:matter_blob_stair')
-minetest.register_alias('sbz_resources:matter_slab', 'sbz_resources:matter_blob_slab')
+core.register_alias('sbz_resources:matter_stair', 'sbz_resources:matter_blob_stair')
+core.register_alias('sbz_resources:matter_slab', 'sbz_resources:matter_blob_slab')
 
 local platform_nodebox = {
     type = 'fixed',
@@ -25,7 +25,7 @@ local platform_selbox = {
     fixed = { -0.5, 0.25, -0.5, 0.5, 0.5, 0.5 },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:matter_platform',
     unifieddyes.def {
         description = 'Matter Platform',
@@ -39,23 +39,23 @@ minetest.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
         on_punch = function(pos, node, puncher)
-            minetest.sound_play('step', { pos = pos, gain = 1.0 })
+            core.sound_play('step', { pos = pos, gain = 1.0 })
         end,
         allow_moss_growth = function(pos, node, dir)
             return dir.y > 0
         end,
     }
 )
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:matter_platform 8',
     recipe = {
         { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
     },
 }
 
-minetest.register_craft {
+core.register_craft {
     type = 'shapeless',
     output = 'sbz_resources:matter_blob',
     recipe = {
@@ -74,9 +74,9 @@ core.register_node(
         groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767 },
         walkable = true,
         light_source = 3,
-        sounds = sbz_api.sounds.antimatter(),
+        -- sounds = sbz_api.sounds.antimatter(),
         on_punch = function(pos, node, puncher)
-            minetest.sound_play('invertedstep', { pos = pos, gain = 1.0 })
+            core.sound_play('invertedstep', { pos = pos, gain = 1.0 })
         end,
     }
 )
@@ -97,7 +97,7 @@ sbz_api.recipe.register_craft {
     },
 }
 
-minetest.register_craft {
+core.register_craft {
     type = 'shapeless',
     output = 'sbz_resources:antimatter_blob',
     recipe = {
@@ -109,10 +109,10 @@ minetest.register_craft {
 }
 
 stairs.register 'sbz_resources:antimatter_blob'
-minetest.register_alias('sbz_resources:antimatter_stair', 'sbz_resources:antimatter_blob_stair')
-minetest.register_alias('sbz_resources:antimatter_slab', 'sbz_resources:antimatter_blob_slab')
+core.register_alias('sbz_resources:antimatter_stair', 'sbz_resources:antimatter_blob_stair')
+core.register_alias('sbz_resources:antimatter_slab', 'sbz_resources:antimatter_blob_slab')
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:antimatter_platform',
     unifieddyes.def {
         description = 'Antimatter Platform',
@@ -127,21 +127,21 @@ minetest.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.antimatter(),
+        -- sounds = sbz_api.sounds.antimatter(),
         on_punch = function(pos, node, puncher)
-            minetest.sound_play('invertedstep', { pos = pos, gain = 1.0 })
+            core.sound_play('invertedstep', { pos = pos, gain = 1.0 })
         end,
     }
 )
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:antimatter_platform 8',
     recipe = {
         { 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_blob' },
     },
 }
 
-minetest.register_node('sbz_resources:emitter_imitator', {
+core.register_node('sbz_resources:emitter_imitator', {
     description = 'Emitter Immitator',
     tiles = { 'emitter_imitator.png' },
     groups = { matter = 1, explody = 3 },
@@ -149,7 +149,7 @@ minetest.register_node('sbz_resources:emitter_imitator', {
     light_source = 10,
     walkable = true,
     on_punch = function(pos, node, puncher, pointed_thing)
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 50,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -169,7 +169,7 @@ minetest.register_node('sbz_resources:emitter_imitator', {
         }
     end,
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:emitter_imitator',
     recipe = {
         { '', 'sbz_resources:core_dust', '' },
@@ -178,20 +178,20 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:stone',
     unifieddyes.def {
         description = 'Stone',
         tiles = { 'stone.png' },
         groups = { matter = 1, moss_growable = 1, charged = 1 },
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        -- sounds = sbz_api.sounds.matter(),
     }
 )
 
 stairs.register 'sbz_resources:stone'
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:stone',
     recipe = {
         { 'sbz_resources:pebble', 'sbz_resources:pebble', 'sbz_resources:pebble' },
@@ -199,20 +199,20 @@ minetest.register_craft {
         { 'sbz_resources:pebble', 'sbz_resources:pebble', 'sbz_resources:pebble' },
     },
 }
-minetest.register_craft {
+core.register_craft {
     type = 'shapeless',
     output = 'sbz_resources:pebble 9',
     recipe = { 'sbz_resources:stone' },
 }
 
-minetest.register_node('sbz_resources:reinforced_matter', {
+core.register_node('sbz_resources:reinforced_matter', {
     description = 'Reinforced Matter',
     tiles = { 'reinforced_matter.png' },
     groups = { matter = 1, moss_growable = 1 },
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
 })
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:reinforced_matter',
     recipe = {
         { '', 'sbz_resources:matter_plate', '' },
@@ -221,16 +221,16 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node('sbz_resources:reinforced_antimatter', {
+core.register_node('sbz_resources:reinforced_antimatter', {
     description = 'Reinforced Antimatter',
     tiles = { 'reinforced_antimatter.png' },
     groups = { antimatter = 1 },
     light_source = 5,
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
 })
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:reinforced_antimatter',
     recipe = {
         { '', 'sbz_resources:antimatter_plate', '' },
@@ -239,14 +239,14 @@ minetest.register_craft {
     },
 }
 if false then -- annoying as hell
-    minetest.register_abm {
+    core.register_abm {
         label = 'Annihilate matter and antimatter',
         nodenames = { 'group:matter' },
         neighbors = { 'group:antimatter' },
         interval = 1,
         chance = 1,
         action = function(pos)
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 1000,
                 time = 0.2,
                 minpos = { x = pos.x - 1 / 3, y = pos.y - 1 / 3, z = pos.z - 1 / 3 },
@@ -264,28 +264,28 @@ if false then -- annoying as hell
                 texture = 'star.png',
                 glow = 10,
             }
-            minetest.remove_node(pos)
+            core.remove_node(pos)
             -- copied from sbz_meteorites
             for _ = 1, 100 do
-                local raycast = minetest.raycast(pos, pos + vector.random_direction() * 8, false)
+                local raycast = core.raycast(pos, pos + vector.random_direction() * 8, false)
                 local wear = 0
                 for pointed in raycast do
                     if pointed.type == 'node' then
-                        local nodename = minetest.get_node(pointed.under).name
+                        local nodename = core.get_node(pointed.under).name
                         wear = wear
-                            + (1 / minetest.get_item_group(nodename, 'explody'))
-                            + minetest.get_item_group(nodename, 'sbz_machine')
+                            + (1 / core.get_item_group(nodename, 'explody'))
+                            + core.get_item_group(nodename, 'sbz_machine')
                         --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
                         --although this is very random
                         if wear > 1 then break end
-                        minetest.set_node(
+                        core.set_node(
                             pointed.under,
-                            { name = minetest.registered_nodes[nodename]._exploded or 'air' }
+                            { name = core.registered_nodes[nodename]._exploded or 'air' }
                         )
                     end
                 end
             end
-            for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 8)) do
+            for _, obj in ipairs(core.get_objects_inside_radius(pos, 8)) do
                 if obj:is_player() then
                     local dir = obj:get_pos() - pos
                     obj:add_velocity((vector.normalize(dir) + vector.new(0, 0.5, 0)) * 1.5 * (8 - vector.length(dir)))
@@ -295,7 +295,7 @@ if false then -- annoying as hell
     }
 end
 
-minetest.register_node('sbz_resources:emittrium_glass', {
+core.register_node('sbz_resources:emittrium_glass', {
     description = 'Emittrium Glass',
     drawtype = 'glasslike_framed_optional',
     tiles = { 'emittrium_glass.png', 'emittrium_glass_shine.png' },
@@ -303,10 +303,10 @@ minetest.register_node('sbz_resources:emittrium_glass', {
     paramtype = 'light',
     sunlight_propagates = true,
     groups = { matter = 1, transparent = 1, explody = 100 },
-    sounds = sbz_api.sounds.glass(),
+    -- sounds = sbz_api.sounds.glass(),
 })
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:emittrium_glass 16',
     recipe = {
         { 'sbz_resources:raw_emittrium', 'sbz_resources:antimatter_dust', 'sbz_resources:raw_emittrium' },
@@ -315,7 +315,7 @@ minetest.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:colorium_glass',
     unifieddyes.def {
         description = 'Colorium Glass',
@@ -325,7 +325,7 @@ minetest.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        sounds = sbz_api.sounds.glass(),
+        -- sounds = sbz_api.sounds.glass(),
     }
 )
 
@@ -338,7 +338,7 @@ core.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:clear_colorium_glass',
     unifieddyes.def {
         description = 'Clear Colorium Glass',
@@ -348,7 +348,7 @@ minetest.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        sounds = sbz_api.sounds.glass(),
+        -- sounds = sbz_api.sounds.glass(),
         info_extra = "Recipe requires cleargrass but it returns it back once you've crafted with it.",
     }
 )
@@ -365,7 +365,7 @@ core.register_craft {
     },
 }
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:stained_colorium_glass',
     unifieddyes.def {
         description = 'Stained Colorium Glass',
@@ -377,7 +377,7 @@ minetest.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        sounds = sbz_api.sounds.glass(),
+        -- sounds = sbz_api.sounds.glass(),
         info_extra = { "Recipe requires razorgrass, but it returns it back once you've crafted with it." },
     }
 )
@@ -394,16 +394,16 @@ core.register_craft {
     },
 }
 
-minetest.register_node('sbz_resources:compressed_core_dust', {
+core.register_node('sbz_resources:compressed_core_dust', {
     description = 'Compressed Core Dust',
     tiles = {
         'compressed_core_dust.png',
     },
     groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 10, charged = 1 },
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
 })
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:compressed_core_dust',
     recipe = {
         { 'sbz_resources:core_dust', 'sbz_resources:core_dust', 'sbz_resources:core_dust' },
@@ -411,14 +411,14 @@ minetest.register_craft {
         { 'sbz_resources:core_dust', 'sbz_resources:core_dust', 'sbz_resources:core_dust' },
     },
 }
-minetest.register_craft {
+core.register_craft {
     type = 'shapeless',
     output = 'sbz_resources:core_dust 9',
     recipe = { 'sbz_resources:compressed_core_dust' },
 }
 
 -- sands
-minetest.register_node(
+core.register_node(
     'sbz_resources:sand',
     unifieddyes.def {
         description = 'Sand',
@@ -426,54 +426,54 @@ minetest.register_node(
         groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 80 },
 
         walkable = true,
-        sounds = sbz_api.sounds.sand(),
+        -- sounds = sbz_api.sounds.sand(),
         light_source = 3,
     }
 )
 
-minetest.register_node('sbz_resources:red_sand', {
+core.register_node('sbz_resources:red_sand', {
     description = 'Red Sand',
     tiles = { 'sand.png^[colorize:red:128' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
-minetest.register_node('sbz_resources:gravel', {
+core.register_node('sbz_resources:gravel', {
     description = 'Gravel',
     tiles = { 'gravel.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
-minetest.register_node('sbz_resources:dust', {
+core.register_node('sbz_resources:dust', {
     description = 'Dust',
     info_extra = 'Great for scaffolding (no seriously, you can climb it).\nIt is temporary, it will go away after some time.',
     tiles = { 'dust.png' },
     groups = { matter = 1, charged = 1, sand = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1 },
     walkable = false,
     climbable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
-minetest.register_abm {
+core.register_abm {
     label = 'Dust Decay',
     nodenames = { 'sbz_resources:dust' },
     interval = 100,
     chance = 10,
     action = function(pos, node, active_object_count, active_object_count_wider)
         -- field decayed
-        minetest.set_node(pos, { name = 'air' })
+        core.set_node(pos, { name = 'air' })
 
         -- plop
-        minetest.sound_play('decay', { pos = pos, gain = 1.0 })
+        core.sound_play('decay', { pos = pos, gain = 1.0 })
 
         -- more particles!
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 100,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -494,16 +494,16 @@ minetest.register_abm {
     end,
 }
 
-minetest.register_node('sbz_resources:clay', {
+core.register_node('sbz_resources:clay', {
     description = 'Clay',
     tiles = { 'clay.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
-minetest.register_node(
+core.register_node(
     'sbz_resources:bricks',
     unifieddyes.def {
         description = 'Bricks',
@@ -519,12 +519,12 @@ minetest.register_node(
             oddly_breakable_by_hand = 1,
         },
         walkable = true,
-        sounds = sbz_api.sounds.sand(),
+        -- sounds = sbz_api.sounds.sand(),
         light_source = 3,
     }
 )
 
-minetest.register_craft {
+core.register_craft {
     type = 'cooking',
     output = 'sbz_resources:bricks',
     recipe = 'sbz_bio:dirt',
@@ -538,7 +538,7 @@ core.register_node('sbz_resources:dark_sand', {
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
@@ -548,7 +548,7 @@ core.register_node('sbz_resources:black_sand', {
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
 
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
@@ -558,11 +558,11 @@ core.register_node('sbz_resources:white_sand', {
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    -- sounds = sbz_api.sounds.sand(),
     light_source = 3,
 })
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_resources:matter_blob',
     recipe = {
         { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },

@@ -267,8 +267,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 `sounds/decay.ogg` is "pop.ogg" by dodrio. CC0. <https://freesound.org/s/554022/>.
 
-`sounds/default_dig_matter.ogg` is "Step 4.wav" by carrigsound. CC0. <https://freesound.org/s/32641/>.
-
 `sounds/drill_dig.ogg`
 - "[SFX Hit] deep kick boom" Copyright (C) 2014 waveplaySFX. CC BY 4.0. <https://freesound.org/s/231349/>.
 - Derivative asset for Skyblock: Zero.

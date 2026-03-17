@@ -302,6 +302,13 @@ function drawers.register_drawer(name, def)
         end
     end
 
+    local drawer_sounds = {
+        footstep = { name = 'gen_wump_wood',          gain = 0.5, pitch = 0.8, fade = 0.0 },
+        dig      = { name = 'gen_simple_tap_low',     gain = 0.6, pitch = 0.8, fade = 0.0 },
+        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'foley_rubber_thunk',     gain = 0.5, pitch = 1.0, fade = 0.0 }
+    }
+
     if core.get_modpath 'pipeworks' and pipeworks then
         def.groups.tubedevice = 1
         def.groups.tubedevice_receiver = 1
@@ -375,6 +382,7 @@ function drawers.register_drawer(name, def)
         def1.tiles2 = nil
         def1.tiles4 = nil
         def1.groups.drawer = 1
+        def1.sounds = drawer_sounds
         core.register_node(name .. '1', def1)
         core.register_alias(name, name .. '1') -- 1x1 drawer is the default one
     end
@@ -388,6 +396,7 @@ function drawers.register_drawer(name, def)
         def2.tiles2 = nil
         def2.tiles4 = nil
         def2.groups.drawer = 2
+        def2.sounds = drawer_sounds
         core.register_node(name .. '2', def2)
     end
 
@@ -400,6 +409,7 @@ function drawers.register_drawer(name, def)
         def4.tiles2 = nil
         def4.tiles4 = nil
         def4.groups.drawer = 4
+        def4.sounds = drawer_sounds
         core.register_node(name .. '4', def4)
     end
 
@@ -491,16 +501,27 @@ function drawers.register_connector(name, def)
         def.after_dig_node = pipeworks.after_dig
     end
 
+    -- same as drawers for now
+    def.sounds = {
+        footstep = { name = 'gen_wump_wood', gain = 0.5, pitch = 0.8, fade = 0.0 },
+        dig      = { name = 'gen_simple_tap_low', gain = 0.6, pitch = 0.8, fade = 0.0 },
+        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'foley_rubber_thunk', gain = 0.5, pitch = 1.0, fade = 0.0 }
+    }
+
     core.register_node(name, def)
 
-    -- Material-based crafting
+    -- Material-based crafting...
+    -- in case the defined material is something other than reinforced matter later?
     if (not def.no_craft) and def.material then
+        local NI = 'sbz_chem:nickel_ingot'
+        local DM = def.material
         core.register_craft {
-            output = name .. ' 6',
+            output = name .. ' 6', -- 6 Drawer Connectors
             recipe = {
-                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
-                { def.material,            "",           def.material },
-                { "sbz_chem:nickel_ingot", def.material, "sbz_chem:nickel_ingot" },
+                { NI, DM, NI },
+                { DM, '', DM },
+                { NI, DM, NI },
             },
         }
     end

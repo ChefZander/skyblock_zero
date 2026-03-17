@@ -1,5 +1,5 @@
 logic = sbz_api.logic
-local P = minetest.get_modpath("sbz_logic") .. "/help_pages/"
+local P = core.get_modpath("sbz_logic") .. "/help_pages/"
 
 sbz_api.help_pages = {}
 sbz_api.help_pages_by_index = {
@@ -41,7 +41,7 @@ local function edit_text(t)
     t = string.gsub(t, "%$MAIN_MS_LIMIT%$", f(logic.main_limit))
     t = string.gsub(t, "%$COMBINED_MS_LIMIT%$", f(logic.combined_limit))
     t = string.gsub(t, "%$MAIN_RAM_LIMIT%$", f((logic.max_ram / 1024) * 1000)) -- *1000 added to bypass f()
-    t = string.gsub(t, "%$C1", string.char(1))                               -- needed because minetest hypertext is weird
+    t = string.gsub(t, "%$C1", string.char(1))                               -- needed because core hypertext is weird
     t = string.gsub(t, "%$AUTOHOOK_ENABLED%$", libox.has_autohook and "Enabled" or "Disabled")
     return t
 end
@@ -72,7 +72,7 @@ local function gen_page(meta)
         ]],
             table.concat(help_pages_index, ","),
             idx,
-            minetest.formspec_escape(sbz_api.help_pages[sbz_api.help_pages_by_index[idx]])
+            core.formspec_escape(sbz_api.help_pages[sbz_api.help_pages_by_index[idx]])
         )
     }
 
@@ -80,33 +80,33 @@ local function gen_page(meta)
 end
 
 local function on_receive_fields(pos, formname, fields, sender)
-    local meta = minetest.get_meta(pos)
-    local textlist = minetest.explode_textlist_event(fields.main)
+    local meta = core.get_meta(pos)
+    local textlist = core.explode_textlist_event(fields.main)
     meta:set_int("index", tonumber(textlist.index) or meta:get_int("index"))
     meta:mark_as_private("index")
     meta:set_string("formspec", gen_page(meta))
 
     local player_name = sender:get_player_name()
-    minetest.sound_play("questbook", {
+    core.sound_play("questbook", {
         to_player = sender:get_player_name(),
         gain = 1,
     })
 end
 
-minetest.register_node("sbz_logic:knowledge_station", {
+core.register_node("sbz_logic:knowledge_station", {
     description = "Knowledge Station",
     info_extra = "Explains logic.",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         meta:set_string("formspec", gen_page(meta))
     end,
     on_receive_fields = on_receive_fields,
     groups = { matter = 1, ui_logic = 1 },
     tiles = { "knowledge_station.png" },
-    sounds = sbz_api.sounds.matter(),
+    -- sounds = sbz_api.sounds.matter(),
     on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
         local player_name = clicker:get_player_name()
-        minetest.sound_play("questbook", {
+        core.sound_play("questbook", {
             to_player = player_name,
             gain = 1,
         })

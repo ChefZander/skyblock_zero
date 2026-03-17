@@ -11,7 +11,7 @@ sbz_api.register_stateful_generator('sbz_power:simple_charge_generator', {
     walkable = true,
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('main', 1)
         meta:set_string(
@@ -69,7 +69,7 @@ sbz_api.register_stateful_generator('sbz_power:simple_charge_generator', {
         stack:take_item(1)
         inv:set_stack('main', 1, stack)
 
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 25,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -121,17 +121,23 @@ sbz_api.register_generator('sbz_power:simple_charged_field', {
     drawtype = 'glasslike',
     tiles = { 'simple_charged_field.png' },
     groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1, charged_field = 1 },
+    sounds = {
+        footstep = { name = 'gen_zap_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        dig      = { name = 'gen_simple_charged_field_placement_zap', gain = 0.3, pitch = 0.2, fade = 0.0 },
+        dug      = { name = 'gen_simple_charged_field_dug', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'gen_simple_charged_field_placement_zap', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     sunlight_propagates = true,
     paramtype = 'light',
     walkable = false,
     power_generated = 3,
     on_dig = function(pos, node, digger)
-        minetest.sound_play('charged_field_shutdown', {
+        core.sound_play('charged_field_shutdown', {
             gain = 5.0,
             max_hear_distance = 32,
             pos = pos,
         })
-        minetest.node_dig(pos, node, digger)
+        core.node_dig(pos, node, digger)
     end,
     info_extra = 'Decays after some time',
 })
@@ -161,13 +167,13 @@ do -- Charged Particle recipe scope
 end
 
 if not sbz_api.server_optimizations then
-    minetest.register_abm {
+    core.register_abm {
         label = 'Simple Charged Field Particles',
         nodenames = { 'sbz_power:simple_charged_field' },
         interval = 1,
         chance = 1,
         action = function(pos, node, active_object_count, active_object_count_wider)
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 5,
                 time = 1,
                 minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -189,21 +195,21 @@ if not sbz_api.server_optimizations then
     }
 end
 
-minetest.register_abm {
+core.register_abm {
     label = 'Simple Charged Field Decay',
     nodenames = { 'sbz_power:simple_charged_field' },
     interval = 100,
     chance = 10,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        minetest.after(1, function()
+        core.after(1, function()
             -- field decayed
-            minetest.set_node(pos, { name = 'sbz_power:charged_field_residue' })
+            core.set_node(pos, { name = 'sbz_power:charged_field_residue' })
 
             -- plop
-            minetest.sound_play('decay', { pos = pos, gain = 1.0 })
+            core.sound_play('decay', { pos = pos, gain = 1.0 })
 
             -- more particles!
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 100,
                 time = 1,
                 minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -225,7 +231,7 @@ minetest.register_abm {
     end,
 }
 
-minetest.register_node('sbz_power:charged_field_residue', {
+core.register_node('sbz_power:charged_field_residue', {
     description = 'Charged Field Residue',
     drawtype = 'glasslike',
     tiles = { 'charged_field_residue.png' },
@@ -240,17 +246,17 @@ minetest.register_node('sbz_power:charged_field_residue', {
         sbz_api.displayDialogLine(puncher:get_player_name(), 'The residue is still decaying.')
     end,
 })
-minetest.register_abm {
+core.register_abm {
     label = 'Charged Field Residue Decay',
     nodenames = { 'sbz_power:charged_field_residue' },
     interval = 100,
     chance = 10,
     action = function(pos, node, active_object_count, active_object_count_wider)
         -- residue decayed
-        minetest.set_node(pos, { name = 'air' })
+        core.set_node(pos, { name = 'air' })
 
         -- plop, again
-        minetest.sound_play('decay', { pos = pos, gain = 1.0 })
+        core.sound_play('decay', { pos = pos, gain = 1.0 })
     end,
 }
 
@@ -261,12 +267,12 @@ core.register_node('sbz_power:solid_charged_field', {
     groups = { dig_immediate = 2, matter = 1, explody = 5, charged = 1, charged_field = 1 },
     sunlight_propagates = true,
     on_dig = function(pos, node, digger)
-        minetest.sound_play('charged_field_shutdown', {
+        core.sound_play('charged_field_shutdown', {
             gain = 5.0,
             max_hear_distance = 32,
             pos = pos,
         })
-        minetest.node_dig(pos, node, digger)
+        core.node_dig(pos, node, digger)
     end,
 })
 
@@ -323,13 +329,13 @@ do -- Starlight Collector recipe scope
 end
 
 if not sbz_api.server_optimizations then
-    minetest.register_abm {
+    core.register_abm {
         label = 'Starlight Collector Particles',
         nodenames = { 'sbz_power:starlight_collector' },
         interval = 1,
         chance = 0.5,
         action = function(pos, node, active_object_count, active_object_count_wider)
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 2,
                 time = 1,
                 minpos = { x = pos.x - 0.5, y = pos.y + 0.5, z = pos.z - 0.5 },
@@ -363,10 +369,16 @@ sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
         'antimatter_gen_top.png',
         'antimatter_gen_side.png',
     },
+    sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     input_inv = 'input',
     output_inv = 'input',
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
 
         inv:set_size('antimatter', 1)
@@ -412,11 +424,14 @@ list[current_player;main;0.2,5;8,4;]
                 vel = { min = -vector.new(5, 5, 5), max = vector.new(5, 5, 5) },
                 exptime = 3,
             }
+
+            core.sound_play({ name = 'mix_obnoxious_generator_on', pitch = 0.9 }, { pos = pos, max_hear_distance = 16 })
+
             def.texture = 'antimatter_dust.png'
-            minetest.add_particlespawner(def)
+            core.add_particlespawner(def)
 
             def.texture = 'matter_dust.png'
-            minetest.add_particlespawner(def)
+            core.add_particlespawner(def)
             return 600
         end
 
@@ -424,7 +439,7 @@ list[current_player;main;0.2,5;8,4;]
         return 0
     end,
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-        local stackname = (minetest.get_inventory { type = 'player', name = player:get_player_name() })
+        local stackname = (core.get_inventory { type = 'player', name = player:get_player_name() })
             :get_stack(from_list, from_index)
             :get_name()
 
@@ -463,7 +478,7 @@ list[current_player;main;0.2,5;8,4;]
     end,
     tube = {
         insert_object = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             local stackname = stack:get_name()
             if stackname == 'sbz_resources:antimatter_dust' then
@@ -474,7 +489,7 @@ list[current_player;main;0.2,5;8,4;]
             return stack
         end,
         can_insert = function(pos, node, stack, direction)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             stack = stack:peek_item(10) --if can insert 10, then yeah... because 1 results in a mess
             local stackname = stack:get_name()

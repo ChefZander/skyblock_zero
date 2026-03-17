@@ -415,7 +415,7 @@ core.register_entity("drawers:visual", {
 		end
 
 		if inventoryChanged then
-			self:play_interact_sound()
+			self:play_insert_sound()
 		end
 	end,
 
@@ -454,8 +454,8 @@ core.register_entity("drawers:visual", {
 			-- add removed stack to player's inventory
 			inv:add_item("main", stack)
 
-			-- play the interact sound
-			self:play_interact_sound()
+			-- play take sound
+			self:play_take_sound()
 		end
 	end,
 
@@ -645,8 +645,16 @@ core.register_entity("drawers:visual", {
 		self:saveMetaData()
 	end,
 
-	play_interact_sound = function(self)
-		core.sound_play("drawers_interact", {
+	play_insert_sound = function(self)
+		core.sound_play('gen_slide_brippy_in', {
+			pos = self.object:get_pos(),
+			max_hear_distance = 6,
+			gain = 2.0
+		})
+	end,
+
+	play_take_sound = function(self)
+		core.sound_play('gen_slide_brippy_out', {
 			pos = self.object:get_pos(),
 			max_hear_distance = 6,
 			gain = 2.0

@@ -46,9 +46,9 @@ local function build(pos, owner, def, param2, inv, index, dir)
     local leftover = def.on_place(stack, player, pointed_thing)
     inv:set_stack("main", index, leftover or stack)
     if param2 then -- set param2
-        local node = minetest.get_node(pos)
+        local node = core.get_node(pos)
         node.param2 = param2
-        minetest.swap_node(pos, node)
+        core.swap_node(pos, node)
     end
 end
 
@@ -96,9 +96,9 @@ local function dig(pos, owner, def_target, def_item, inv, index, node)
     local stack = player:get_wielded_item()
     local old_stack = ItemStack(stack)
     local tool = stack:get_tool_capabilities()
-    if not minetest.get_dig_params(def_target.groups, tool).diggable then
+    if not core.get_dig_params(def_target.groups, tool).diggable then
         local hand = ItemStack():get_tool_capabilities()
-        if not minetest.get_dig_params(def_target.groups, hand).diggable then return end
+        if not core.get_dig_params(def_target.groups, hand).diggable then return end
     end
     if def_target.on_dig(pos, node, player) == false then return end
 
@@ -136,7 +136,7 @@ local function see(pos, lc_from_pos, builder_from_pos)
     local node = sbz_api.get_node_force(pos)
     result.node = node
 
-    local meta = minetest.get_meta(pos):to_table()
+    local meta = core.get_meta(pos):to_table()
 
     result.fields = meta.fields
     result.inventory = sbz_logic.kill_itemstacks(meta.inventory)
@@ -161,9 +161,9 @@ sbz_api.register_machine("sbz_logic_devices:builder", {
         "lua_builder.png"
     },
     groups = { matter = 1, ui_logic = 1, sbz_machine_subticking = 1 },
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         meta:get_inventory():set_size("main", 32)
         meta:set_string("formspec", [[
 formspec_version[7]
@@ -175,7 +175,7 @@ listring[]
 ]])
     end,
     after_place_node = function(pos, placer)
-        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        core.get_meta(pos):set_string("owner", placer:get_player_name())
         pipeworks.after_place(pos)
     end,
     on_punch = function(pos, _, player)
@@ -196,8 +196,8 @@ listring[]
 
         local owner = meta:get_string("owner")
 
-        local ndef = minetest.registered_nodes
-        local idef = minetest.registered_items
+        local ndef = core.registered_nodes
+        local idef = core.registered_items
 
         local vn = vector.new
         local valid_dirs = {
@@ -237,10 +237,10 @@ listring[]
             if e.pos2 then
                 abs_pos2 = vector.add(e.pos2, pos)
                 if not sbz_api.logic.in_square_radius(pos, abs_pos2, range) then return end
-                if minetest.is_protected(abs_pos2, owner) then return end
+                if core.is_protected(abs_pos2, owner) then return end
             end
             if not sbz_api.logic.in_square_radius(pos, abs_pos, range) then return end
-            if minetest.is_protected(abs_pos, owner) then return end
+            if core.is_protected(abs_pos, owner) then return end
 
             if e.type ~= "see" and e.type ~= "move" then
                 local node_at_pos = sbz_api.get_node_force(abs_pos)

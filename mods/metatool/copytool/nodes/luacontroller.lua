@@ -9,7 +9,7 @@ local definition = {
 }
 
 function definition:copy(node, pos, player)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     -- return data required for replicating this autocrafter configuration
     return {
@@ -24,7 +24,7 @@ function definition:copy(node, pos, player)
 end
 
 function definition:paste(node, pos, player, data)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     meta:set_string("editor_code", data.editor_code)
     meta:set_string("code", data.code)

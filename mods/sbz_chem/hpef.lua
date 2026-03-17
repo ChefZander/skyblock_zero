@@ -21,6 +21,12 @@ sbz_api.register_stateful_machine('sbz_chem:high_power_electric_furnace', {
         'hpef_front_off.png',
     },
     groups = { matter = 1 },
+    sounds = {
+        footstep = { name = 'mix_machine_hit_light', gain = 0.2, pitch = 1.0, fade = 0.0 },
+        dig      = { name = 'mix_machine_hit_thump', gain = 0.8, pitch = 0.8, fade = 0.0 },
+        dug      = { name = 'mix_machine_hit_heavy', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_machine_hit_soft', gain = 0.5, pitch = 1.0, fade = 0.0 },
+    },
     paramtype2 = '4dir',
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -87,7 +93,7 @@ listring[context;dst]
 
             inv:set_stack('src', index, decremented_input.items[1])
             inv:add_item('dst', out.item)
-            sbz_api.play_sfx({ name = 'simple_alloy_furnace_running', gain = 0.6 }, { pos = pos })
+            core.sound_play({ name = 'mix_furnace_slight_crackle', gain = 0.8 }, { pos = pos })
             return power_needed
         end
     end,

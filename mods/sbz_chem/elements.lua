@@ -51,7 +51,12 @@ sbz_api.register_element = function(name, color, description, def, mod)
             description = string.format(description, 'Block'),
             drawtype = 'glasslike_framed',
             tiles = { 'block_frame.png^[colorize:' .. color .. ':200', 'block_inner.png^[colorize:' .. color .. ':200' },
-            sounds = sbz_api.sounds.metal(),
+            sounds = {
+                footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.5, pitch = 0.5, fade = 0.0 },
+                dig      = { name = 'mix_metal_hit', gain = 0.7, pitch = 0.8, fade = 0.0 },
+                dug      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 0.8, fade = 0.0 },
+                place    = { name = 'mix_metal_hit', gain = 0.5, pitch = 1.0, fade = 0.0 },
+            },
         }
     )
 
@@ -110,7 +115,7 @@ sbz_api.register_element = function(name, color, description, def, mod)
         length = 8,
     }
 
-    minetest.register_node(('%s%s_fluid_flowing'):format(mod, name), {
+    core.register_node(('%s%s_fluid_flowing'):format(mod, name), {
         description = description:format 'Fluid Flowing',
         drawtype = 'flowingliquid',
         tiles = { { name = ('flowing_chemical_source.png^[multiply:%s'):format(color) } },
@@ -192,7 +197,7 @@ sbz_api.register_element = function(name, color, description, def, mod)
                 stair_cross = 'block_stair_cross.png^[colorize:' .. color .. ':200',
             },
         })
-        minetest.register_craft {
+        core.register_craft {
             type = 'cooking',
             output = mod .. name .. '_ingot',
             recipe = mod .. name .. '_powder',
@@ -230,12 +235,12 @@ sbz_api.register_element = function(name, color, description, def, mod)
     end
 end
 
-minetest.after(0, function()
+core.after(0, function()
     for k, v in pairs(sbz_api.unused_chem) do
         local powder = v .. '_powder'
         local ingot = v .. '_ingot'
         if unified_inventory.get_recipe_list(powder) then
-            minetest.log(
+            core.log(
                 'This chemical: '
                     .. powder
                     .. " is disabled, and shouldn't have any use.. right... but it has!!! \n details: "
@@ -243,7 +248,7 @@ minetest.after(0, function()
             )
         end
         if unified_inventory.get_recipe_list(ingot) then
-            minetest.log(
+            core.log(
                 'This chemical: '
                     .. ingot
                     .. " is disabled, and shouldn't have any use.. right... but it has!!! \n details: "

@@ -1,5 +1,5 @@
 local max = 100 * 1024
-minetest.register_node("sbz_logic_devices:formspec_screen", {
+core.register_node("sbz_logic_devices:formspec_screen", {
     description = "Formspec Screen",
     info_extra = "Max formspec size: 100kb",
     tiles = {
@@ -18,7 +18,7 @@ minetest.register_node("sbz_logic_devices:formspec_screen", {
             0.5, -3 / 16, 0.5
         },
     },
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     paramtype2 = "wallmounted",
     paramtype = "light",
     light_source = 5,
@@ -31,15 +31,15 @@ minetest.register_node("sbz_logic_devices:formspec_screen", {
         if type(msg) ~= "string" then return end
         if #msg > max then return end
         if msg == "subscribe" then
-            minetest.get_meta(pos):set_string("linked", vector.to_string(from_pos))
+            core.get_meta(pos):set_string("linked", vector.to_string(from_pos))
         elseif msg == "unsubscribe" then
-            minetest.get_meta(pos):set_string("linked", "")
+            core.get_meta(pos):set_string("linked", "")
         else
-            minetest.get_meta(pos):set_string("formspec", msg)
+            core.get_meta(pos):set_string("formspec", msg)
         end
     end,
     on_receive_fields = function(pos, formname, fields, sender)
-        local send_to_pos = vector.from_string(minetest.get_meta(pos):get_string("linked") or "")
+        local send_to_pos = vector.from_string(core.get_meta(pos):get_string("linked") or "")
         if send_to_pos == nil then return end
         local result = table.copy(fields)
         result.sender = sender:get_player_name()

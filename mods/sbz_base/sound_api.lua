@@ -1,88 +1,26 @@
--- very similar to xcompat's sound api
--- sbz_api.sounds.node_sound_x_defaults(inp)
-
-local sounds = setmetatable({}, {
-    __index = function(t, k)
-        return rawget(t, k) or function(input)
-            return table.override({}, input)
-        end
-    end,
-})
----@type table<string, fun(inp:table?)>
-sbz_api.sounds = sounds
-
-local function register_sound_function(name, sounds_to_use)
-    sounds[name] = function(input)
-        return table.override(sounds_to_use, input)
-    end
-end
-
-local function g1(x)
-    return { name = x, gain = 1 }
-end
-local function csound(x, g)
-    return { name = x, gain = g }
-end
-
-register_sound_function('matter', { -- also could be node_stone_defaults
-    footstep = csound('step', 2),
-    place = csound('step', 2),
-})
-register_sound_function('metal', {
-    footstep = csound('step', 2),
-    place = csound('step', 2),
-})
-
-register_sound_function('glass', {
-    footstep = csound('step', 2),
-    place = csound('step', 2),
-})
-
-register_sound_function('dirt', {
-    footstep = csound('step', 2),
-    place = csound('step', 2),
-})
-
-register_sound_function('tree', {
-    footstep = csound('step', 2),
-    place = csound('step', 2),
-})
-
-register_sound_function('leaves', {
-    --    footstep = csound("step", 2),
-    --    place = csound("step", 2),
-})
-
-register_sound_function('antimatter', {
-    footstep = g1 'antistep',
-    place = g1 'antistep',
-})
-
-register_sound_function('strange', {
-    footstep = g1 'antistep',
-    place = g1 'antistep',
-})
-
+--[[ 
 register_sound_function('machine', {
     footstep = csound('step', 2),
     place = g1 'machine_build',
     rightclick = g1 'machine_open',
 })
-
+ ]]
 -- allow for a rightclick parameter too, so that its less annoying
-minetest.register_on_mods_loaded(function()
-    for k, v in pairs(minetest.registered_nodes) do
+core.register_on_mods_loaded(function()
+    for k, v in pairs(core.registered_nodes) do
+        -- If it has a sounds.rightclick specified...
         if v.sounds and v.sounds.rightclick then
+            -- Take what is specified and save it as old_rightclick
             local old_rightclick = v.on_rightclick or function(pos, node, clicker, itemstack, pointed_thing) end
             local function new_rightclick(pos, node, clicker, stack, pointed)
-                if minetest.get_meta(pos):get_string 'formspec' ~= '' then
-                    minetest.sound_play(v.sounds.rightclick, {
+                if core.get_meta(pos):get_string 'formspec' ~= '' then
+                    core.sound_play(v.sounds.rightclick, {
                         pos = pos,
                     })
                 end
                 return old_rightclick(pos, node, clicker, stack, pointed)
             end
-            minetest.override_item(k, {
+            core.override_item(k, {
                 on_rightclick = new_rightclick,
             })
         end
@@ -95,3 +33,34 @@ function sbz_api.play_sfx(spec, params, pitch_randomness)
     params.pitch = params.pitch or pitch
     core.sound_play(spec, params, true)
 end
+
+core.register_on_mods_loaded(function()
+    local fallback_place_failed = { name = 'gen_error_fart', gain = 0.7, pitch = 1.0, fade = 0.0 }
+    local fallback_fall         = { name = 'gen_pew_slow_fall', gain = 0.3, pitch = 1.1, fade = 0.0 }
+
+    for name, def in pairs(core.registered_nodes) do
+        local s = def.sounds or {}
+        if not s.place_failed or not s.fall then
+            core.override_item(name, {
+                sounds = table.override(table.copy(s), {
+                    place_failed = s.place_failed or fallback_place_failed,
+                    fall         = s.fall or fallback_fall,
+                }),
+            })
+        end
+    end
+end)
+
+core.register_on_chat_message(
+    function(name, message)
+        if message:find("[!]+") then
+            sbz_api.play_sfx("gen_chat_exclamation", { gain = 0.7, to_player = name })
+        elseif message:find("[?]+") then
+            sbz_api.play_sfx("gen_chat_question", { gain = 0.7, to_player = name })
+        elseif message:find("\\[PM\\]|@") then
+            sbz_api.play_sfx("gen_chat_pm_send", { gain = 0.7, to_player = name })
+        else
+            sbz_api.play_sfx("gen_chat_generic", { gain = 0.7, to_player = name })
+        end
+    end
+)

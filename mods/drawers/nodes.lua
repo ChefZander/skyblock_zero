@@ -45,7 +45,7 @@ drawers.register_drawer("drawers:drawer", {
     tiles2 = drawers.node_tiles_front_other("drawers_matter_front_2.png", "drawers_matter.png"),
     tiles4 = drawers.node_tiles_front_other("drawers_matter_front_4.png", "drawers_matter.png"),
     groups = { matter = 1, oddly_breakable_by_hand = 2 },
-    sounds = sbz_api.sounds.tree(),
+    -- sounds = sbz_api.sounds.tree(),
     drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
     material = "sbz_resources:reinforced_matter",
     info_extra = S("If you aren't seeing drawer visuals, try using /drawers_fix")

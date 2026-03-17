@@ -1,6 +1,6 @@
 -- sbz_progression = {}
 
-local modpath = minetest.get_modpath 'sbz_progression'
+local modpath = core.get_modpath 'sbz_progression'
 
 dofile(modpath .. '/quest_parser.lua')
 dofile(modpath .. '/quests.lua')
@@ -14,11 +14,13 @@ dofile(modpath .. '/annoy.lua')
 -- sbz_progression.lowest_node = mod_storage:get_int("lowest_node") or 0
 
 function sbz_api.displayDialogLine(player_name, text)
-    minetest.chat_send_player(player_name, '⌠ ' .. text .. ' ⌡')
-    minetest.sound_play('dialouge', {
+    core.chat_send_player(player_name, '⌠ ' .. text .. ' ⌡')
+--[[ -- Different sound effects are going to be used from a callback in sound_api.lua
+    core.sound_play('dialogue', {
         to_player = player_name,
         gain = 1,
     })
+ ]]
 end
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
@@ -42,7 +44,7 @@ local achievement_table = {
     ['sbz_decor:photonlamp'] = 'Photon Lamps',
     ['sbz_resources:antimatter_blob'] = 'More Antimatter',
     ['sbz_resources:antimatter_annihilator'] = 'Anti-Annihilator',
-    ['sbz_resources:emitter_imitator'] = 'Emitter Immitators',
+    ['sbz_resources:emitter_imitator'] = 'Emitter Imitators',
 
     ['sbz_decor:factory_floor'] = 'Factory Flooring',
     ['sbz_decor:factory_floor_tiling'] = 'Tiled Factory Flooring',
@@ -176,18 +178,19 @@ local achievement_table = {
     ['sbz_area_containers:room_container'] = 'Room Containers',
 }
 
-minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+core.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
     if achievement_table[itemstack:get_name()] then
         unlock_achievement(player:get_player_name(), achievement_table[itemstack:get_name()])
     end
 end)
 
--- overriden by sbz later
+-- overridden by sbz later
+---@diagnostic disable-next-line: duplicate-set-field
 function sbz_api.activate_safetynet(player_name, pos)
     return true
 end
-minetest.register_globalstep(function(dtime)
-    for _, player in ipairs(minetest.get_connected_players()) do
+core.register_globalstep(function(dtime)
+    for _, player in ipairs(core.get_connected_players()) do
         local pos = player:get_pos()
         local safetynet_low = 0
         if pos.y < safetynet_low - 100 then unlock_achievement(player:get_player_name(), 'Emptiness') end
@@ -259,7 +262,7 @@ local achievement_on_dig_table = {
     ['sbz_bio:shockshroom_4'] = 'Shockshrooms',
 }
 
-minetest.register_on_player_inventory_action(function(player, action, inv, inv_info)
+core.register_on_player_inventory_action(function(player, action, inv, inv_info)
     local itemstack
     if action == 'move' then
         itemstack = inv:get_stack(inv_info.to_list, inv_info.to_index)
@@ -273,7 +276,7 @@ minetest.register_on_player_inventory_action(function(player, action, inv, inv_i
     end
 end)
 
-minetest.register_on_dignode(function(pos, oldnode, digger)
+core.register_on_dignode(function(pos, oldnode, digger)
     if digger ~= nil and digger:is_valid() then
         local player_name = digger:get_player_name()
         local itemname = oldnode.name

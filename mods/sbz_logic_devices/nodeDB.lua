@@ -8,7 +8,7 @@ core.register_node("sbz_logic_devices:node_db", {
     description = "Node DB",
     info_extra = { "Similar to the craftDB, use it to lookup node definitions and recipes" },
     groups = { matter = 1, ui_logic = 1 },
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     tiles = {
         "gpu_bottom.png",
         "gpu_bottom.png",
@@ -60,7 +60,7 @@ core.register_node("sbz_logic_devices:node_db", {
                 for k, v in ipairs(result) do
                     local fit = true
                     for kk, vv in ipairs(msg.exclude_groups) do
-                        if minetest.get_item_group(v, type(vv) == "string" and vv or "INVALID GROUP YEA ") > 0 then
+                        if core.get_item_group(v, type(vv) == "string" and vv or "INVALID GROUP YEA ") > 0 then
                             fit = false
                         end
                     end
@@ -96,17 +96,17 @@ core.register_node("sbz_logic_devices:node_db", {
             sbz_logic.send(from_pos, result, pos)
         elseif msg.type == "get_def" then
             if type(msg.item) ~= "string" then return end
-            if not minetest.registered_items[msg.item] then return end
+            if not core.registered_items[msg.item] then return end
 
-            sbz_logic.send(from_pos, libox.digiline_sanitize(minetest.registered_items[msg.item], false), pos)
+            sbz_logic.send(from_pos, libox.digiline_sanitize(core.registered_items[msg.item], false), pos)
         elseif msg.type == "recipes" then
             if type(msg.item) ~= "string" then return end
-            if not minetest.registered_items[msg.item] then return end
+            if not core.registered_items[msg.item] then return end
 
             sbz_logic.send(from_pos, unified_inventory.get_recipe_list(msg.item), pos)
         elseif msg.type == "uses" then
             if type(msg.item) ~= "string" then return end
-            if not minetest.registered_items[msg.item] then return end
+            if not core.registered_items[msg.item] then return end
 
             sbz_logic.send(from_pos, unified_inventory.get_usage_list(msg.item), pos)
         end

@@ -1,4 +1,4 @@
-minetest.register_node("sbz_logic_devices:button", {
+core.register_node("sbz_logic_devices:button", {
     description = "Logic Button",
     tiles = {
         "button_side.png",
@@ -30,18 +30,18 @@ minetest.register_node("sbz_logic_devices:button", {
     on_logic_send = function(pos, msg, from_pos)
         if type(msg) ~= "string" then return end
         if msg == "subscribe" then
-            minetest.get_meta(pos):set_string("linked", vector.to_string(from_pos))
+            core.get_meta(pos):set_string("linked", vector.to_string(from_pos))
         elseif msg == "unsubscribe" then
-            minetest.get_meta(pos):set_string("linked", "")
+            core.get_meta(pos):set_string("linked", "")
         end
     end,
     on_rightclick = function(pos)
-        local m = minetest.get_meta(pos)
+        local m = core.get_meta(pos)
         local l = vector.from_string(m:get_string("linked"))
         if l then
             m:set_string("infotext", "Working")
             sbz_logic.send(l, true, pos)
-            minetest.add_particlespawner({
+            core.add_particlespawner({
                 amount = 10,
                 time = 0.01,
                 exptime = 1,
@@ -83,7 +83,7 @@ sbz_api.register_stateful("sbz_logic_devices:toggle", {
             { -0.375, -0.375, 0.3125, 0.375, 0.375, 0.5 }, -- NodeBox1
         }
     },
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     paramtype2 = "facedir",
     paramtype = "light",
     light_source = 10,
@@ -93,7 +93,7 @@ sbz_api.register_stateful("sbz_logic_devices:toggle", {
         attached_node = 2,
     },
     on_logic_send = function(pos, msg, from_pos)
-        sbz_logic.send(from_pos, (tobool(minetest.get_meta(pos):get_int("status"))), pos)
+        sbz_logic.send(from_pos, (tobool(core.get_meta(pos):get_int("status"))), pos)
     end,
     on_rightclick = function(pos)
         local new_state = not sbz_api.is_on(pos)
@@ -102,7 +102,7 @@ sbz_api.register_stateful("sbz_logic_devices:toggle", {
         else
             sbz_api.turn_on(pos)
         end
-        minetest.get_meta(pos):set_int("status", toint(new_state))
+        core.get_meta(pos):set_int("status", toint(new_state))
     end,
 }, {
     tiles = {

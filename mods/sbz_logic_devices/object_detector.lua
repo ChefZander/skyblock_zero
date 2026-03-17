@@ -1,6 +1,6 @@
 local R = 10
 
-minetest.register_node("sbz_logic_devices:object_detector", {
+core.register_node("sbz_logic_devices:object_detector", {
     description = "Object/Player Detector",
     info_extra = ("Has a radius of %s"):format(R),
 
@@ -11,7 +11,7 @@ minetest.register_node("sbz_logic_devices:object_detector", {
         matter = 1,
         ui_logic = 1
     },
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     on_logic_send = function(pos, msg, from_pos)
         local settings = {
             inventories = true,
@@ -27,7 +27,7 @@ minetest.register_node("sbz_logic_devices:object_detector", {
         end
 
         local result = {}
-        for k, v in ipairs(minetest.get_connected_players()) do
+        for k, v in ipairs(core.get_connected_players()) do
             local p = v:get_pos()
             if ((p.x - pos.x) ^ 2 + (p.y - pos.y) ^ 2 + (p.z - pos.z) ^ 2) <= R ^ 2 then
                 result[#result + 1] = {
@@ -59,7 +59,7 @@ minetest.register_node("sbz_logic_devices:object_detector", {
             end
         end
 
-        for obj in minetest.objects_inside_radius(pos, R) do
+        for obj in core.objects_inside_radius(pos, R) do
             if obj:is_valid() and obj:get_luaentity() then
                 result[#result + 1] = {
                     is_player = obj:is_player(),
@@ -85,7 +85,7 @@ minetest.register_node("sbz_logic_devices:object_detector", {
     end,
     on_punch = function(pos, _, player)
         vizlib.draw_cube(pos, R + 0.5, { player = player })
-        minetest.get_meta(pos):set_string("infotext", "Object Detector")
+        core.get_meta(pos):set_string("infotext", "Object Detector")
     end,
 })
 

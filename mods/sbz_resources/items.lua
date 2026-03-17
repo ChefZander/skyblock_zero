@@ -62,6 +62,12 @@ core.register_tool("sbz_resources:angels_wing", {
     stack_max = 1,
     tool_capabilities = {}, -- No specific tool capabilities, as it's not meant for digging
 
+    sound = {
+        breaks        = { name = 'mix_sad_crackly_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'gen_sine_wing_flap', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use_air = { name = 'gen_sine_wing_flap', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
+
     on_use = function(itemstack, user, pointed_thing)
         -- Check if user is valid
         if not user then
@@ -81,6 +87,7 @@ core.register_tool("sbz_resources:angels_wing", {
             (65535 / 100) -- 65535 is the max wear value in Minetest. 100 uses means wear increases by 655.35 per use.
 
         if wear >= 65535 then
+            core.sound_play({ name = 'mix_sad_crackly_poof' }, { pos = user.pos })
             itemstack:clear() -- Remove the item if it's worn out
             unlock_achievement(user:get_player_name(), "Fragile")
         else

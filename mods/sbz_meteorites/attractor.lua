@@ -42,7 +42,7 @@ local function attract_meteorites(pos, dtime, t)
         end
         obj:add_velocity(t * dtime * sbz_api.get_attraction(obj:get_pos(), pos) * magnitude)
         if elapsed > 1 then
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 time = 1,
                 amount = math.floor(vector.distance(pos, obj:get_pos()) / 2),
                 exptime = 2,
@@ -64,7 +64,7 @@ local function attract_meteorites(pos, dtime, t)
             }
         end
     end
-    for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 200)) do
+    for _, obj in ipairs(core.get_objects_inside_radius(pos, 200)) do
         inner_loop(obj)
     end
     if elapsed > 1 then elapsed = 0 end
@@ -72,7 +72,7 @@ end
 
 sbz_api.attract_meteorites = attract_meteorites
 
-minetest.register_entity('sbz_meteorites:gravitational_attractor_entity', {
+core.register_entity('sbz_meteorites:gravitational_attractor_entity', {
     initial_properties = {
         visual = 'cube',
         visual_size = { x = 0.5, y = 0.5 },
@@ -82,7 +82,7 @@ minetest.register_entity('sbz_meteorites:gravitational_attractor_entity', {
         pointable = false,
     },
     on_activate = function(self)
-        local node = minetest.get_node(vector.round(self.object:get_pos())).name
+        local node = core.get_node(vector.round(self.object:get_pos())).name
         self.object:set_armor_groups { no_move = 1 } -- meteorite explosions => gets knocked back and dies
         if node == 'sbz_meteorites:gravitational_attractor' then
             self.type = 1
@@ -98,7 +98,7 @@ minetest.register_entity('sbz_meteorites:gravitational_attractor_entity', {
     end,
     on_step = function(self, dtime)
         local pos = self.object:get_pos()
-        local node = minetest.get_node(vector.round(pos)).name
+        local node = core.get_node(vector.round(pos)).name
         if node ~= 'sbz_meteorites:gravitational_attractor' and node ~= 'sbz_meteorites:gravitational_repulsor' then
             self.object:remove()
         end
@@ -106,7 +106,7 @@ minetest.register_entity('sbz_meteorites:gravitational_attractor_entity', {
     end,
 })
 
-minetest.register_node('sbz_meteorites:gravitational_attractor', {
+core.register_node('sbz_meteorites:gravitational_attractor', {
     description = 'Gravitational Attractor',
     drawtype = 'glasslike',
     tiles = { 'gravitational_attractor.png' },
@@ -117,9 +117,9 @@ minetest.register_node('sbz_meteorites:gravitational_attractor', {
     light_source = 7,
     groups = { gravity = 100, matter = 1, cracky = 3, charged = 1, attraction = 512 },
     on_construct = function(pos)
-        minetest.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
+        core.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
     end,
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
 })
 
 do -- Gravitational Attractor recipe scope
@@ -136,7 +136,7 @@ do -- Gravitational Attractor recipe scope
     })
 end
 
-minetest.register_node('sbz_meteorites:gravitational_repulsor', {
+core.register_node('sbz_meteorites:gravitational_repulsor', {
     description = 'Gravitational Repulsor',
     drawtype = 'glasslike',
     tiles = { 'gravitational_repulsor.png' },
@@ -147,9 +147,9 @@ minetest.register_node('sbz_meteorites:gravitational_repulsor', {
     light_source = 7,
     groups = { antigravity = 1, antimatter = 1, cracky = 3, charged = 1, attraction = -512 },
     on_construct = function(pos)
-        minetest.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
+        core.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
     end,
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
 })
 
 mesecon.register_on_mvps_move(function(moved)
@@ -159,12 +159,12 @@ mesecon.register_on_mvps_move(function(moved)
             moved_node.name == 'sbz_meteorites:gravitational_repulsor'
             or moved_node.name == 'sbz_meteorites:gravitational_attractor'
         then
-            minetest.registered_nodes[moved_node.name].on_construct(moved_node.pos)
+            core.registered_nodes[moved_node.name].on_construct(moved_node.pos)
         end
     end
 end)
 
-minetest.register_craft {
+core.register_craft {
     output = 'sbz_meteorites:gravitational_repulsor',
     recipe = {
         { 'sbz_resources:antimatter_blob', '', 'sbz_resources:antimatter_blob' },
@@ -189,13 +189,13 @@ core.register_lbm {
         local _ = sbz_api.get_or_load_node(pos)
         local ents = core.get_objects_inside_radius(pos, 0.5)
         if #ents == 0 then
-            minetest.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
+            core.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
         elseif #ents > 1 then
             for _, v in ipairs(ents) do
                 local luaent = v:get_luaentity()
                 if luaent and luaent.name == 'sbz_meteorites:gravitational_attractor_entity' then v:remove() end
             end
-            minetest.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
+            core.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
         end
     end,
 }

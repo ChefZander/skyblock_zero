@@ -3,7 +3,7 @@ core.register_node("sbz_bio:burner", sbz_api.add_tube_support({
     tiles = { "burner.png" },
     groups = { matter = 1, co2_source = 1 },
     paramtype = "light",
-    sounds = sbz_api.sounds.machine(),
+    -- sounds = sbz_api.sounds.machine(),
     light_source = 5,
     on_construct = function(pos)
         local meta = core.get_meta(pos)

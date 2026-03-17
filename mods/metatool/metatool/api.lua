@@ -29,7 +29,7 @@ local function remove_uncraftable_tool(player, tooldef)
 				inv:remove_item(list, rm)
 			end
 		end
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			S('Privileged tools removed from inventory: %s', tooldef.itemname)
 		)
@@ -52,7 +52,8 @@ local function register_metatool_item(itemname, definition)
 
 	craft_count = craft_count > stack_max and stack_max or craft_count
 
-	minetest.register_craftitem(itemname, {
+	-- Only for the copy tool so far?
+	core.register_craftitem(itemname, {
 		description = description,
 		inventory_image = texture,
 		groups = groups,
@@ -60,6 +61,11 @@ local function register_metatool_item(itemname, definition)
 		wield_image = definition.wield_image or texture,
 		wield_scale = definition.wield_scale or { x = 0.8, y = 1, z = 0.8 },
 		liquids_pointable = definition.liquids_pointable,
+		sound = {
+			breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
+			punch_use     = { name = 'gen_simple_tap', gain = 0.5, pitch = 1.0, fade = 0.0 },
+			punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.7, fade = 0.0 },
+		},
 		on_use = function(...)
 			return metatool:on_use(definition.itemname, unpack({...}))
 		end,
@@ -72,14 +78,14 @@ local function register_metatool_item(itemname, definition)
 		end
 	end
 
-	minetest.register_craft({
+	core.register_craft({
 		type = "shapeless",
 		output = string.format('%s %d', definition.itemname, 1),
 		recipe = { definition.itemname }
 	})
 
 	if definition.recipe then
-		minetest.register_craft({
+		core.register_craft({
 			output = string.format('%s %d', definition.itemname, craft_count),
 			recipe = definition.recipe
 		})
@@ -105,7 +111,7 @@ local function return_itemstack(player, itemstack, separated)
 		local meta1 = itemstack:get_meta()
 		local meta2 = separated:get_meta()
 		if meta1:equals(meta2) then
-			-- stacks can be recombinined, do it
+			-- stacks can be recombined, do it
 			itemstack:set_count(itemstack:get_count() + 1)
 		else
 			-- stacks cannot be recombined, give or drop new stack
@@ -115,7 +121,7 @@ local function return_itemstack(player, itemstack, separated)
 				inv:add_item("main", separated)
 			else
 				-- item will not fit to inventory
-				minetest.item_drop(separated, player, player:get_pos())
+				core.item_drop(separated, player, player:get_pos())
 			end
 		end
 	end
@@ -176,7 +182,7 @@ function metatool.on_tool_info(tool, player, pointed_thing, node, pos, nodedef, 
 		-- Only node definition had info method available, use it directly
 		return nodedef:info(node, pos, player, itemstack)
 	else
-		minetest.chat_send_player(player:get_player_name(), S('%s cannot inspect %s', tool.nice_name, node.name))
+		core.chat_send_player(player:get_player_name(), S('%s cannot inspect %s', tool.nice_name, node.name))
 	end
 end
 
@@ -189,25 +195,25 @@ function metatool.on_tool_read(tool, player, pointed_thing, node, pos, nodedef, 
 		-- Only node definition had copy method available, use it directly
 		data = nodedef:copy(node, pos, player)
 		group = nodedef.group
-		description = type(data) == 'table' and data.description or ('Data from ' .. minetest.pos_to_string(pos))
+		description = type(data) == 'table' and data.description or ('Data from ' .. core.pos_to_string(pos))
 		if type(data) == 'table' then
-			minetest.chat_send_player(player:get_player_name(),
+			core.chat_send_player(player:get_player_name(),
 				S('%s copied data for group %s', tool.nice_name, nodedef.group)
 			)
 		else
-			minetest.chat_send_player(player:get_player_name(),
+			core.chat_send_player(player:get_player_name(),
 				S('%s copying data for group %s failed', tool.nice_name, nodedef.group)
 			)
 		end
 	else
-		minetest.chat_send_player(player:get_player_name(), S('%s cannot read from %s', tool.nice_name, node.name))
+		core.chat_send_player(player:get_player_name(), S('%s cannot read from %s', tool.nice_name, node.name))
 	end
 	if type(data) == 'table' then
 		local separated
 		itemstack, separated = separate_stack(itemstack)
 		local result = metatool.write_data(separated or itemstack, {data=data,group=group}, description, tool)
 		if type(result) == 'string' then
-			minetest.chat_send_player(player:get_player_name(), result)
+			core.chat_send_player(player:get_player_name(), result)
 		end
 		-- if stack was separated give missing items to player
 		return_itemstack(player, itemstack, separated)
@@ -218,7 +224,7 @@ end
 function metatool.on_tool_write(tool, player, pointed_thing, node, pos, nodedef, itemstack)
 	local data = metatool.read_data(itemstack)
 	if not tool.allow_use_empty and (type(data) ~= 'table' or type(data.data) ~= 'table') then
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			'no data stored in this wand, sneak+use or special+use to record data.'
 		)
@@ -234,14 +240,14 @@ function metatool.on_tool_write(tool, player, pointed_thing, node, pos, nodedef,
 	if type(tool.on_write_node) == "function" then
 		return tool:on_write_node(tooldata, group, player, pointed_thing, node, pos, nodedef)
 	elseif nodedef.group ~= group then
-		minetest.chat_send_player(
+		core.chat_send_player(
 			player:get_player_name(),
 			S('metatool wand contains data for %s, cannot apply for %s', group, nodedef.group)
 		)
 	elseif nodedef and data and type(nodedef.paste) == "function" then
 		return nodedef:paste(node, pos, player, tooldata)
 	else
-		minetest.chat_send_player(player:get_player_name(), S('%s cannot write to %s', tool.nice_name, node.name))
+		core.chat_send_player(player:get_player_name(), S('%s cannot write to %s', tool.nice_name, node.name))
 	end
 end
 
@@ -261,7 +267,7 @@ function metatool:on_use(toolname, itemstack, player, pointed_thing)
 
 	if self.privileged_tools[toolname] then
 		if not metatool.check_privs(player, tool.privs) then
-			minetest.chat_send_player(player:get_player_name(), 'You are not allowed to use this tool.')
+			core.chat_send_player(player:get_player_name(), 'You are not allowed to use this tool.')
 			return remove_uncraftable_tool(player, tool)
 		end
 	end
@@ -273,6 +279,7 @@ function metatool:on_use(toolname, itemstack, player, pointed_thing)
 
 	local controls = player:get_player_control()
 
+	nodedef = nodedef or {}
 	if controls.aux1 or controls.sneak then
 		local use_info = controls.sneak and (tool.on_read_info or nodedef.info)
 		if use_info and nodedef:before_info(pos, player) then
@@ -371,8 +378,8 @@ function metatool:register_node(toolname, name, definition, override)
 			print(S('metatool:register_node invalid definition, must be table but was %s', type(definition)))
 		elseif not definition.group then
 			print('metatool:register_node invalid definition, group must be defined.')
-		elseif name ~= '*' and not minetest.registered_nodes[name] then
-			print(S('metatool:register_node node %s not registered for minetest, skipping registration.', name))
+		elseif name ~= '*' and not core.registered_nodes[name] then
+			print(S('metatool:register_node node %s not registered for core, skipping registration.', name))
 		elseif type(definition.copy) == 'function' or type(definition.paste) == 'function' then
 			if type(definition.before_info) ~= 'function' then
 				definition.before_info = metatool.before_info
@@ -405,14 +412,14 @@ function metatool.get_node(tool, player, pointed_thing)
 		return
 	end
 
-	local pos = minetest.get_pointed_thing_position(pointed_thing)
+	local pos = core.get_pointed_thing_position(pointed_thing)
 	if not pos then
 		-- could not get definite position
-		minetest.chat_send_player(name, S('%s could not get valid position', tool.nice_name))
+		core.chat_send_player(name, S('%s could not get valid position', tool.nice_name))
 		return
 	end
 
-	local node = minetest.get_node_or_nil(pos)
+	local node = core.get_node_or_nil(pos)
 	if not node then
 		-- could not get valid node
 		return
@@ -421,7 +428,7 @@ function metatool.get_node(tool, player, pointed_thing)
 	local definition = tool.nodes[node.name] or tool.nodes['*']
 	if not definition then
 		-- node is not registered for metatool
-		minetest.chat_send_player(name, S('%s cannot be used on %s', tool.nice_name, node.name))
+		core.chat_send_player(name, S('%s cannot be used on %s', tool.nice_name, node.name))
 		return
 	end
 

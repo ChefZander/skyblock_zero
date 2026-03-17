@@ -1,6 +1,6 @@
 local index_adjustment = 1
 
-minetest.register_craftitem('sbz_resources:matter_annihilator', {
+core.register_craftitem('sbz_resources:matter_annihilator', {
     description = 'Matter Annihilator',
     inventory_image = 'matter_annihilator.png',
                 
@@ -23,10 +23,10 @@ minetest.register_craftitem('sbz_resources:matter_annihilator', {
     },
 
     sound = {
-        punch_use = {
-            name = 'block_annihilated',
-            gain = 1,
-        },
+        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 1.5, fade = 0.0 },
     },
 })
 
@@ -45,7 +45,7 @@ do -- Matter Annihilator recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
+core.register_craftitem('sbz_resources:antimatter_annihilator', {
     description = 'Antimatter Annihilator',
     inventory_image = 'antimatter_annihilator.png',
 
@@ -68,10 +68,10 @@ minetest.register_craftitem('sbz_resources:antimatter_annihilator', {
     },
 
     sound = {
-        punch_use = {
-            name = 'block_annihilated',
-            gain = 1,
-        },
+        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.7, fade = 0.0 },
     },
 })
 
@@ -90,7 +90,7 @@ do -- Antimatter Annihilator recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_resources:robotic_arm', {
+core.register_craftitem('sbz_resources:robotic_arm', {
     description = 'Robotic Arm',
     inventory_image = 'robotic_arm.png',
     groups = { core_drop_multi = 2 },
@@ -112,10 +112,10 @@ minetest.register_craftitem('sbz_resources:robotic_arm', {
     },
 
     sound = {
-        punch_use = {
-            name = 'block_annihilated',
-            gain = 1,
-        },
+        -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.2, fade = 0.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.8, fade = 0.0 },
     },
 })
 
@@ -168,7 +168,7 @@ local tool_caps = {
     },
 }
 
-minetest.register_tool('sbz_resources:drill', {
+core.register_tool('sbz_resources:drill', {
     description = 'Electric Drill',
     inventory_image = 'drill.png',
     info_extra = {
@@ -198,7 +198,13 @@ minetest.register_tool('sbz_resources:drill', {
     wear_represents = 'power',
 
     wear_color = { color_stops = { [0] = 'lime' } },
-    sound = { punch_use = { name = 'drill_dig' } },
+
+    sound = {
+        -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use     = { name = 'foley_drill_bang_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        punch_use_air = { name = 'foley_drill_motor_burp', gain = 0.8, pitch = 1.0, fade = 0.0 },
+    },
 })
 
 do -- Drill recipe scope
