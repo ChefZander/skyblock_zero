@@ -9,6 +9,7 @@ local jetpack_boost = 3
 
 local jetpack_users = {}
 sbz_api.jetpack_users = jetpack_users
+local jetpack_sounds = {}
 local jetpack_charge_per_1_wear = (jetpack_full_charge / 65535)
 
 local function edit_stack_image(user, stack)
@@ -21,7 +22,14 @@ local function edit_stack_image(user, stack)
     end
 end
 
-minetest.register_tool('sbz_resources:jetpack', {
+local function stop_jetpack_sound(player)
+    if jetpack_sounds[player] then
+        core.sound_fade(jetpack_sounds[player], -3.0, 0)
+        jetpack_sounds[player] = nil
+    end
+end
+
+core.register_tool('sbz_resources:jetpack', {
     description = 'Jetpack',
     info_extra = 'Idea originated from techage',
     inventory_image = 'jetpack_off.png',
@@ -47,7 +55,7 @@ minetest.register_tool('sbz_resources:jetpack', {
                 jetpack_users[username] = user:get_wield_index()
             end
         else
-            minetest.chat_send_player(user:get_player_name(), 'Jetpack ran out of charge')
+            core.chat_send_player(user:get_player_name(), 'Jetpack ran out of charge')
         end
         edit_stack_image(username, itemstack)
         return itemstack
@@ -57,15 +65,30 @@ minetest.register_tool('sbz_resources:jetpack', {
     end),
 })
 
+core.register_on_leaveplayer(function(player)
+    local name = player:get_player_name()
+    if jetpack_sounds[name] then
+        core.sound_stop(jetpack_sounds[name])
+        jetpack_sounds[name] = nil
+    end
+    jetpack_users[name] = nil
+end)
+
 local speed = player_monoids.speed
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
     for player in pairs(jetpack_users) do
-        local real_player = minetest.get_player_by_name(player)
+        local real_player = core.get_player_by_name(player)
         if real_player and real_player:is_valid() then
             local slot = jetpack_users[player]
             local jetpack_item = real_player:get_inventory():get_stack('main', slot)
-            if jetpack_item:get_name() ~= 'sbz_resources:jetpack' then jetpack_users[player] = nil end
-            if jetpack_item:get_wear() >= 65535 then jetpack_users[player] = nil end
+            if jetpack_item:get_name() ~= 'sbz_resources:jetpack' then
+                jetpack_users[player] = nil
+                stop_jetpack_sound(player)
+            end
+            if jetpack_item:get_wear() >= 65535 then
+                jetpack_users[player] = nil
+                stop_jetpack_sound(player)
+            end
 
             local controls = real_player:get_player_control()
 
@@ -93,6 +116,24 @@ minetest.register_globalstep(function(dtime)
             else
                 speed:del_change(real_player, 'sbz_resources:jetpack_boost')
             end
+
+            local is_thrusting = controls.jump and jetpack_users[player]
+            if is_thrusting then
+                if not jetpack_sounds[player] then
+                    jetpack_sounds[player] = core.sound_play(
+                        { name = 'mix_jetpack_loop', gain = 1.0, pitch = 0.8 },
+                        {
+                            object = real_player,
+                            loop = true,
+                            fade = 3.0,
+                            max_hear_distance = 16,
+                        }
+                    )
+                end
+            else
+                stop_jetpack_sound(player)
+            end
+
             edit_stack_image(player, jetpack_item)
             real_player:get_inventory():set_stack('main', slot, jetpack_item)
             if num_particles ~= 0 then
@@ -100,7 +141,7 @@ minetest.register_globalstep(function(dtime)
                 local vel = real_player:get_velocity()
                 vel = vector.subtract(vector.zero(), vel)
 
-                minetest.add_particlespawner {
+                core.add_particlespawner {
                     amount = num_particles,
                     time = dtime,
                     texture = 'star.png',
@@ -118,10 +159,11 @@ minetest.register_globalstep(function(dtime)
                 }
             end
         else
+            stop_jetpack_sound(player)
             jetpack_users[player] = nil
         end
     end
-    for k, v in ipairs(minetest.get_connected_players()) do
+    for k, v in ipairs(core.get_connected_players()) do
         if not jetpack_users[v:get_player_name()] then speed:del_change(v, 'sbz_resources:jetpack_boost') end
     end
 end)
