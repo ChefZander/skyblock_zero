@@ -52,7 +52,7 @@ end
 
 function sbz_api.sounds.matter()
     local sounds = {
-        footstep = { name = 'foley_matter_hit_light', gain = 0.1, pitch = 1.0 },
+        footstep = { name = 'gen_matter_muffled_step', gain = 0.2, pitch = 0.8 },
         dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8 },
         dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0 },
         place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0 },
@@ -102,7 +102,7 @@ end
 
 function sbz_api.sounds.glass()
     local sounds = {
-        footstep = { name = 'foley_wump_step', gain = 0.5, pitch = 1.0 },
+        footstep = { name = 'foley_matter_hit_light', gain = 0.1, pitch = 1.1 },
         dig      = { name = 'gen_soft_glass_bump', gain = 0.8, pitch = 1.2 },
         dug      = { name = 'mix_ambiguous_hard_hit', gain = 1.0, pitch = 0.8 },
         place    = { name = 'mix_ambiguous_hard_hit', gain = 0.8, pitch = 1.2 },
