@@ -90,10 +90,10 @@ end
 
 function sbz_api.sounds.wood()
     local sounds = {
-        footstep = { name = 'gen_wump_wood', gain = 0.5, pitch = 0.8 },
-        dig      = { name = 'gen_simple_tap_low', gain = 0.6, pitch = 0.8 },
-        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0 },
-        place    = { name = 'tts_wood', gain = 0.5, pitch = 1.0 }
+        footstep = { name = 'gen_wump_wood', gain = 0.2, pitch = 0.9, fade = 4.0 },
+        dig      = { name = 'gen_simple_tap_low', gain = 0.4, pitch = 0.8 },
+        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 0.7 },
+        place    = { name = 'gen_simple_tap_low', gain = 0.2, pitch = 1.0, fade = 4.0 }
     }
     return sounds
 end
