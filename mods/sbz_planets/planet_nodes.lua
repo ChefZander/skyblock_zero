@@ -237,6 +237,9 @@ local water_color = '#576ee180'
 
 core.register_node('sbz_planets:water_source_nofall', {
     description = 'Not Water',
+    sounds = {
+        footstep = { name = 'mix_notwater_step' }
+    },
     drawtype = 'liquid',
     tiles = {
         { name = 'water.png', backface_culling = false },
