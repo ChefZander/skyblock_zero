@@ -116,60 +116,60 @@ core.register_node('pipeworks:automatic_filter_injector', {
         node = core.get_node(pos)
         local inv = meta:get_inventory()
         local owner = meta:get_string 'owner'
-        local fakeplayer = fakelib.create_player(owner)
+        local fake_player = fakelib.create_player(owner)
         local dir = pipeworks.facedir_to_right_dir(node.param2)
 
-        local frompos = vector.subtract(pos, dir)
-        local fromnode = sbz_api.get_or_load_node(frompos)
+        local from_pos = vector.subtract(pos, dir)
+        local from_node = sbz_api.get_or_load_node(from_pos)
 
-        if not fromnode then
+        if not from_node then
             meta:set_string('infotext', "Can't pull from that node, there is no node there???")
             return 1
         end
 
-        local fromdef = core.registered_nodes[fromnode.name]
-        if not fromdef or not fromdef.tube then
+        local from_def = core.registered_nodes[from_node.name]
+        if not from_def or not from_def.tube then
             meta:set_string('infotext', "Can't pull from that node :/ - No behavior for tube interaction defined.")
             return 1
         end
-        local fromtube = table.copy(fromdef.tube)
+        local from_tube = table.copy(from_def.tube)
 
-        local todir = pipeworks.facedir_to_right_dir(node.param2)
-        local topos = vector.add(pos, todir)
-        local tonode = sbz_api.get_or_load_node(topos)
+        local to_dir = pipeworks.facedir_to_right_dir(node.param2)
+        local topos = vector.add(pos, to_dir)
+        local to_node = sbz_api.get_or_load_node(topos)
 
-        if not tonode then
+        if not to_node then
             meta:set_string('infotext', "Can't push to that node - that node does not exist.")
             return 1
         end
-        local todef = core.registered_nodes[tonode.name]
+        local to_def = core.registered_nodes[to_node.name]
 
         if
-            not todef
+            not to_def
             or not (
-                core.get_item_group(tonode.name, 'tube') == 1
-                or core.get_item_group(tonode.name, 'tubedevice') == 1
-                or core.get_item_group(tonode.name, 'tubedevice_receiver') == 1
+                core.get_item_group(to_node.name, 'tube') == 1
+                or core.get_item_group(to_node.name, 'tubedevice') == 1
+                or core.get_item_group(to_node.name, 'tubedevice_receiver') == 1
             )
         then
             meta:set_string('infotext', "Can't push to that node")
             return 1
         end
 
-        if not fromtube.input_inventory then
+        if not from_tube.input_inventory then
             meta:set_string(
                 'infotext',
-                "Can't pull from that node :/ - No input inventory in definition. (" .. fromnode.name .. ')'
+                "Can't pull from that node :/ - No input inventory in definition. (" .. from_node.name .. ')'
             )
             return 1
         end
 
         local filters = {}
 
-        for _, filterstack in ipairs(inv:get_list 'main') do
-            local filtername = filterstack:get_name()
-            local filtercount = filterstack:get_count()
-            if filtername ~= '' then table.insert(filters, { name = filtername, count = filtercount }) end
+        for _, filter_stack in ipairs(inv:get_list 'main') do
+            local filter_name = filter_stack:get_name()
+            local filter_count = filter_stack:get_count()
+            if filter_name ~= '' then table.insert(filters, { name = filter_name, count = filter_count }) end
         end
 
         if #filters == 0 then table.insert(filters, '') end
@@ -177,10 +177,10 @@ core.register_node('pipeworks:automatic_filter_injector', {
         local slotseq_mode = meta:get_int 'slotseq_mode'
         local exmatch_mode = meta:get_int 'exmatch_mode'
 
-        local frominv
-        if fromtube.return_input_invref then
-            frominv = fromtube.return_input_invref(frompos, fromnode, dir, owner)
-            if not frominv then
+        local from_inv
+        if from_tube.return_input_invref then
+            from_inv = from_tube.return_input_invref(from_pos, from_node, dir, owner)
+            if not from_inv then
                 meta:set_string(
                     'infotext',
                     "Can't pull from that node yet. (May be dependant on direction or node state.)"
@@ -188,68 +188,68 @@ core.register_node('pipeworks:automatic_filter_injector', {
                 return 1
             end
         else
-            local frommeta = core.get_meta(frompos)
-            frominv = frommeta:get_inventory()
+            local from_meta = core.get_meta(from_pos)
+            from_inv = from_meta:get_inventory()
         end
-        if fromtube.before_filter then fromtube.before_filter(frompos) end
+        if from_tube.before_filter then from_tube.before_filter(from_pos) end
 
-        local function grabAndFire(frominvname, filterfor)
+        local function grabAndFire(from_inv_name, filter_for)
             local sposes = {}
-            if not frominvname or not frominv:get_list(frominvname) then return end
-            for spos, stack in ipairs(frominv:get_list(frominvname)) do
+            if not from_inv_name or not from_inv:get_list(from_inv_name) then return end
+            for spos, stack in ipairs(from_inv:get_list(from_inv_name)) do
                 local matches
-                if filterfor == '' then
+                if filter_for == '' then
                     matches = stack:get_name() ~= ''
                 else
-                    local fname = filterfor.name
-                    local fgroup = filterfor.group
-                    local fwear = filterfor.wear
-                    local fmetadata = filterfor.metadata
+                    local f_name = filter_for.name
+                    local f_group = filter_for.group
+                    local f_wear = filter_for.wear
+                    local f_metadata = filter_for.metadata
                     matches = (
-                        not fname -- If there's a name filter,
-                        or stack:get_name() == fname
+                        not f_name -- If there's a name filter,
+                        or stack:get_name() == f_name
                     ) --  it must match.
                         and (
-                            not fgroup -- If there's a group filter,
+                            not f_group -- If there's a group filter,
                             or (
-                                type(fgroup) == 'string' --  it must be a string
+                                type(f_group) == 'string' --  it must be a string
                                 and core.get_item_group( --  and it must match.
                                         stack:get_name(),
-                                        fgroup
+                                        f_group
                                     )
                                     ~= 0
                             )
                         )
                         and (
-                            not fwear -- If there's a wear filter:
+                            not f_wear -- If there's a wear filter:
                             or (
-                                type(fwear) == 'number' --  If it's a number,
-                                and stack:get_wear() == fwear
+                                type(f_wear) == 'number' --  If it's a number,
+                                and stack:get_wear() == f_wear
                             ) --   it must match.
                             or (
-                                type(fwear) == 'table' --  If it's a table:
+                                type(f_wear) == 'table' --  If it's a table:
                                 and (
-                                    not fwear[1] --   If there's a lower bound,
+                                    not f_wear[1] --   If there's a lower bound,
                                     or (
-                                        type(fwear[1]) == 'number' --    it must be a number
-                                        and fwear[1] <= stack:get_wear()
+                                        type(f_wear[1]) == 'number' --    it must be a number
+                                        and f_wear[1] <= stack:get_wear()
                                     )
                                 ) --    and it must be <= the actual wear.
                                 and (
-                                    not fwear[2] --   If there's an upper bound
+                                    not f_wear[2] --   If there's an upper bound
                                     or (
-                                        type(fwear[2]) == 'number' --    it must be a number
-                                        and stack:get_wear() < fwear[2]
+                                        type(f_wear[2]) == 'number' --    it must be a number
+                                        and stack:get_wear() < f_wear[2]
                                     )
                                 )
                             )
                         ) --    and it must be > the actual wear.
                         --  If the wear filter is of any other type, fail.
                         and (
-                            not fmetadata -- If there's a metadata filter,
+                            not f_metadata -- If there's a metadata filter,
                             or (
-                                type(fmetadata) == 'string' --  it must be a string
-                                and stack:get_metadata() == fmetadata
+                                type(f_metadata) == 'string' --  it must be a string
+                                and stack:get_metadata() == f_metadata
                             )
                         ) --  and it must match.
                 end
@@ -264,12 +264,12 @@ core.register_node('pipeworks:automatic_filter_injector', {
                     sposes[i] = t
                 end
             elseif slotseq_mode == 2 then
-                local headpos = meta:get_int 'slotseq_index'
+                local head_pos = meta:get_int 'slotseq_index'
 
                 local shifted = {}
 
                 for i = 1, #sposes do
-                    shifted[(i - headpos - 1) % #sposes + 1] = sposes[i]
+                    shifted[(i - head_pos - 1) % #sposes + 1] = sposes[i]
                 end
                 sposes = shifted
             end
@@ -277,21 +277,21 @@ core.register_node('pipeworks:automatic_filter_injector', {
             local taken = 0
 
             for _, spos in ipairs(sposes) do
-                local stack = frominv:get_stack(frominvname, spos)
+                local stack = from_inv:get_stack(from_inv_name, spos)
                 local doRemove = stack:get_count()
-                if fromtube.can_remove then
-                    doRemove = fromtube.can_remove(frompos, fromnode, stack, dir, frominvname, spos)
-                elseif fromdef.allow_metadata_inventory_take and not fromtube.ignore_metadata_inventory_take then
-                    doRemove = fromdef.allow_metadata_inventory_take(frompos, frominvname, spos, stack, fakeplayer)
+                if from_tube.can_remove then
+                    doRemove = from_tube.can_remove(from_pos, from_node, stack, dir, from_inv_name, spos)
+                elseif from_def.allow_metadata_inventory_take and not from_tube.ignore_metadata_inventory_take then
+                    doRemove = from_def.allow_metadata_inventory_take(from_pos, from_inv_name, spos, stack, fake_player)
                 end
                 -- stupid lack of continue statements grumble
                 if doRemove > 0 then
                     --[[                    if slotseq_mode == 2 then
-                        local nextpos = spos + 1
-                        if nextpos > invsize then
-                            nextpos = 1
+                        local next_pos = spos + 1
+                        if next_pos > inv_size then
+                            next_pos = 1
                         end
-                        meta:set_int("slotseq_index", nextpos)
+                        meta:set_int("slotseq_index", next_pos)
                     end
                     ]]
                     local count = math.min(stack:get_count(), doRemove)
@@ -302,29 +302,29 @@ core.register_node('pipeworks:automatic_filter_injector', {
             if slotseq_mode == 2 then meta:set_int('slotseq_index', meta:get_int 'slotseq_index' + 1) end
             local item
             if taken == 0 then return false end
-            if filterfor.count and (exmatch_mode == 2) then
-                if filterfor.count < taken then
-                    taken = taken - filterfor.count
+            if filter_for.count and (exmatch_mode == 2) then
+                if filter_for.count < taken then
+                    taken = taken - filter_for.count
                 else
                     return false
                 end
-            elseif filterfor.count and exmatch_mode == 1 then
-                if filterfor.count > taken then return false end
-                taken = math.min(taken, filterfor.count)
+            elseif filter_for.count and exmatch_mode == 1 then
+                if filter_for.count > taken then return false end
+                taken = math.min(taken, filter_for.count)
             end
 
-            local take_multiple = (filterfor.count ~= nil) and (exmatch_mode ~= 2)
+            local take_multiple = (filter_for.count ~= nil) and (exmatch_mode ~= 2)
             local real_taken = 0
-            if fromtube.remove_items then
+            if from_tube.remove_items then
                 for i, spos in ipairs(sposes) do
                     -- it could be the entire stack...
-                    item = fromtube.remove_items(
-                        frompos,
-                        fromnode,
-                        frominv:get_stack(frominvname, spos),
+                    item = from_tube.remove_items(
+                        from_pos,
+                        from_node,
+                        from_inv:get_stack(from_inv_name, spos),
                         dir,
                         taken,
-                        frominvname,
+                        from_inv_name,
                         spos,
                         inv
                     )
@@ -337,12 +337,12 @@ core.register_node('pipeworks:automatic_filter_injector', {
             else
                 for i, spos in ipairs(sposes) do
                     -- it could be the entire stack...
-                    local stack = frominv:get_stack(frominvname, spos)
+                    local stack = from_inv:get_stack(from_inv_name, spos)
                     local count = math.min(taken, stack:get_count())
                     item = stack:take_item(taken)
-                    frominv:set_stack(frominvname, spos, stack)
-                    if fromdef.on_metadata_inventory_take and not fromtube.ignore_metadata_inventory_take then
-                        fromdef.on_metadata_inventory_take(frompos, frominvname, spos, item, fakeplayer)
+                    from_inv:set_stack(from_inv_name, spos, stack)
+                    if from_def.on_metadata_inventory_take and not from_tube.ignore_metadata_inventory_take then
+                        from_def.on_metadata_inventory_take(from_pos, from_inv_name, spos, item, fake_player)
                     end
                     taken = taken - count
                     real_taken = real_taken + count
@@ -351,20 +351,20 @@ core.register_node('pipeworks:automatic_filter_injector', {
                 end
             end
 
-            local vel = vector.copy(todir)
+            local vel = vector.copy(to_dir)
             vel.speed = 1
-            if todef.tube and todef.tube.can_go then
-                if not todef.tube.can_go(topos, tonode, vel, item, {}) then return false end
+            if to_def.tube and to_def.tube.can_go then
+                if not to_def.tube.can_go(topos, to_node, vel, item, {}) then return false end
             end
 
             item:set_count(real_taken)
 
             if
-                core.get_item_group(tonode.name, 'tubedevice_receiver') == 1
-                and core.get_item_group(tonode.name, 'tubedevice_use_item_entities') == 0
+                core.get_item_group(to_node.name, 'tubedevice_receiver') == 1
+                and core.get_item_group(to_node.name, 'tubedevice_use_item_entities') == 0
             then
-                item = todef.tube.insert_object(topos, tonode, item, vel, owner)
-                frominv:add_item(frominvname, item)
+                item = to_def.tube.insert_object(topos, to_node, item, vel, owner)
+                from_inv:add_item(from_inv_name, item)
                 core.sound_play(
                     { name = 'mix_afi_transfer' },
                     { pos = pos, max_hear_distance = 8 }
@@ -372,29 +372,29 @@ core.register_node('pipeworks:automatic_filter_injector', {
                 return true
             end
 
-            local pos = vector.add(frompos, vector.multiply(dir, 1.4))
-            local start_pos = vector.add(frompos, dir)
+            local pos = vector.add(from_pos, vector.multiply(dir, 1.4))
+            local start_pos = vector.add(from_pos, dir)
 
-            pipeworks.tube_inject_direct(pos, start_pos, topos, dir, item, fakeplayer:get_player_name())
+            pipeworks.tube_inject_direct(pos, start_pos, topos, dir, item, fake_player:get_player_name())
 
             return true
         end
 
-        for _, frominvname in
+        for _, from_inv_name in
             ipairs(
-                type(fromtube.input_inventory) == 'table' and fromtube.input_inventory or { fromtube.input_inventory }
+                type(from_tube.input_inventory) == 'table' and from_tube.input_inventory or { from_tube.input_inventory }
             )
         do
             local done = false
-            for _, filterfor in ipairs(filters) do
-                if grabAndFire(frominvname, filterfor) then
+            for _, filter_for in ipairs(filters) do
+                if grabAndFire(from_inv_name, filter_for) then
                     done = true
                     break
                 end
             end
             if done then break end
         end
-        if fromtube.after_filter then fromtube.after_filter(frompos, frominv) end
+        if from_tube.after_filter then from_tube.after_filter(from_pos, from_inv) end
 
         return 1
     end,
