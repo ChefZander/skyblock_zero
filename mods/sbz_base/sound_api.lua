@@ -68,6 +68,16 @@ function sbz_api.sounds.matter()
     return sounds
 end
 
+function sbz_api.sounds.dirt()
+    local sounds = {
+        footstep = { name = 'foley_matter_hit_light', gain = 0.1, pitch = 1.0 },
+        dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8, },
+        dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0, },
+        place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0, },
+    }
+    return sounds
+end
+
 function sbz_api.sounds.antimatter()
     local sounds = {
         footstep = { name = 'foley_antimatter_hum', gain = 0.2, pitch = 0.8 },
@@ -131,9 +141,9 @@ end
 function sbz_api.sounds.sand()
     local sounds = {
         footstep = { name = 'gen_sand_generic', gain = 0.1, pitch = 0.8 },
-        dig      = { name = 'gen_sand_generic_hit', gain = 0.3, pitch = 0.6 },
-        dug      = { name = 'gen_sand_generic_hit', gain = 0.5, pitch = 0.8 },
-        place    = { name = 'gen_sand_generic_hit', gain = 0.3, pitch = 0.7 },
+        dig      = { name = 'gen_sand_generic_hit', gain = 0.2, pitch = 0.6 },
+        dug      = { name = 'gen_sand_smoothed', gain = 0.5, pitch = 0.8 },
+        place    = { name = 'gen_sand_generic_hit', gain = 0.2, pitch = 0.8 },
     }
     return sounds
 end
