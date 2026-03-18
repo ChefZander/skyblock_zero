@@ -303,10 +303,10 @@ function drawers.register_drawer(name, def)
     end
 
     local drawer_sounds = {
-        footstep = { name = 'gen_wump_wood',          gain = 0.5, pitch = 0.8, fade = 0.0 },
-        dig      = { name = 'gen_simple_tap_low',     gain = 0.6, pitch = 0.8, fade = 0.0 },
-        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        place    = { name = 'foley_rubber_thunk',     gain = 0.5, pitch = 1.0, fade = 0.0 }
+        footstep = { name = 'gen_wump_wood',           gain = 0.3, pitch = 0.5 },
+        dig      = { name = 'foley_wood_thud_shallow', gain = 0.6, pitch = 0.8 },
+        dug      = { name = 'mix_pack_it_in',          gain = 1.0, pitch = 1.0 },
+        place    = { name = 'foley_wood_thud_thick',   gain = 0.5, pitch = 1.0 }
     }
 
     if core.get_modpath 'pipeworks' and pipeworks then
