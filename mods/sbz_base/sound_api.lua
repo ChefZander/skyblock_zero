@@ -70,7 +70,7 @@ end
 
 function sbz_api.sounds.antimatter()
     local sounds = {
-        footstep = { name = 'foley_antimatter_step', gain = 0.2, pitch = 0.8 },
+        footstep = { name = 'foley_antimatter_hum', gain = 0.2, pitch = 0.8 },
         dig      = { name = 'foley_antimatter_hit', gain = 0.8, pitch = 1.0 },
         dug      = { name = 'foley_antimatter_dug', gain = 1.0, pitch = 1.0 },
         place    = { name = 'foley_antimatter_step', gain = 0.6, pitch = 1.0 },
