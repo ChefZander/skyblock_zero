@@ -1,4 +1,4 @@
-minetest.register_node("sbz_bio:moss", {
+core.register_node("sbz_bio:moss", {
     description = "Moss",
     sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 0.5 } },
     drawtype = "signlike",
@@ -16,16 +16,16 @@ minetest.register_node("sbz_bio:moss", {
         local nearest_water = is_node_within_radius(start_pos, "group:water", 1)
         if nearest_water then
             iterate_around_pos(nearest_water, function(pos)
-                local node = minetest.get_node(pos)
+                local node = core.get_node(pos)
                 local i = math.random(0, 5)
-                local dir = minetest.wallmounted_to_dir(i)
+                local dir = core.wallmounted_to_dir(i)
                 ---@type function
-                local allow_moss_growth = minetest.registered_nodes[node.name].allow_moss_growth
+                local allow_moss_growth = core.registered_nodes[node.name].allow_moss_growth
                 if allow_moss_growth and not allow_moss_growth(pos, node, -dir) then return end
                 if sbz_api.get_node_heat(pos - dir) > 7 then
-                    local defs = minetest.registered_nodes[minetest.get_node(pos - dir).name]
+                    local defs = core.registered_nodes[core.get_node(pos - dir).name]
                     if defs.liquidtype == "none" and defs.buildable_to then
-                        minetest.set_node(pos - dir, { name = "sbz_bio:moss", param2 = i })
+                        core.set_node(pos - dir, { name = "sbz_bio:moss", param2 = i })
                     end
                 end
             end)
@@ -35,7 +35,7 @@ minetest.register_node("sbz_bio:moss", {
     end
 })
 
-minetest.register_node("sbz_bio:algae", {
+core.register_node("sbz_bio:algae", {
     description = "Algae",
     sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 0.3 } },
     floodable = true,
@@ -56,46 +56,46 @@ minetest.register_node("sbz_bio:algae", {
         local spread = 0
         for k, v in pairs(water) do
             v.y = v.y + 1
-            local node = minetest.get_node(v)
-            local def = minetest.registered_nodes[node.name]
+            local node = core.get_node(v)
+            local def = core.registered_nodes[node.name]
             if def.buildable_to and node.name ~= "sbz_bio:algae" and sbz_api.get_node_heat(pos) > 7 then
                 spread = spread + 1
-                minetest.set_node(v, { name = "sbz_bio:algae", param2 = 1 })
+                core.set_node(v, { name = "sbz_bio:algae", param2 = 1 })
             end
             if spread >= 2 then break end
         end
     end
 })
 
-minetest.register_abm({
+core.register_abm({
     interval = 10,
     chance = 20,
     nodenames = { "group:moss_growable" },
     neighbors = { "group:water" },
     action = function(pos, node)
         local i = math.random(0, 5)
-        local dir = minetest.wallmounted_to_dir(i)
-        local allow_moss_growth = minetest.registered_nodes[node.name].allow_moss_growth
+        local dir = core.wallmounted_to_dir(i)
+        local allow_moss_growth = core.registered_nodes[node.name].allow_moss_growth
         if allow_moss_growth and not allow_moss_growth(pos, node, -dir) then return end
         if sbz_api.get_node_heat(pos - dir) > 7 then
-            local defs = minetest.registered_nodes[minetest.get_node(pos - dir).name]
+            local defs = core.registered_nodes[core.get_node(pos - dir).name]
             if defs.liquidtype == "none" and defs.buildable_to then
-                minetest.set_node(pos - dir, { name = "sbz_bio:moss", param2 = i })
+                core.set_node(pos - dir, { name = "sbz_bio:moss", param2 = i })
             end
         end
     end
 })
 
-minetest.register_abm({
+core.register_abm({
     interval = 10,
     chance = 20,
     nodenames = { "sbz_resources:water_source" },
     action = function(pos)
         pos.y = pos.y + 1
         if sbz_api.get_node_heat(pos) > 7 then
-            local defs = minetest.registered_nodes[minetest.get_node(pos).name]
+            local defs = core.registered_nodes[core.get_node(pos).name]
             if defs.liquidtype == "none" and defs.buildable_to and defs.drawtype == "airlike" then
-                minetest.set_node(pos, { name = "sbz_bio:algae", param2 = 1 })
+                core.set_node(pos, { name = "sbz_bio:algae", param2 = 1 })
             end
         end
     end

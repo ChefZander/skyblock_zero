@@ -130,7 +130,7 @@ local function make_schem(pos, meta, node)
     return schem
 end
 
-local default_inv = minetest.serialize {
+local default_inv = core.serialize {
     max_count_in_each_stack = 0,
     [1] = {
         name = 'any',
@@ -226,12 +226,12 @@ core.register_node(
         after_dig_node = sbz_api.multiblocks.after_dig_controller 'sbz_multiblocks:large_liquid_storage_controller',
         before_movenode = sbz_api.multiblocks.before_movenode,
         on_liquid_inv_update = function(pos, lqinv)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             if lqinv[1].name == 'any' then
                 meta:set_string('infotext', 'Waiting for a liquid...')
                 return
             end
-            local def = minetest.registered_nodes[lqinv[1].name]
+            local def = core.registered_nodes[lqinv[1].name]
             local desc = string.gsub(def.short_description or def.description or lqinv[1].name, ' Source', '')
             meta:set_string(
                 'infotext',

@@ -461,7 +461,7 @@ listring[]
         },
         allow_metadata_inventory_put = function(pos, listname, index, stack, player)
             if not pipeworks.may_configure(pos, player) then return 0 end
-            local inv = minetest.get_meta(pos):get_inventory()
+            local inv = core.get_meta(pos):get_inventory()
             local stack_copy = ItemStack(stack)
             stack_copy:set_count(1)
             inv:set_stack(listname, index, stack_copy)
@@ -469,13 +469,13 @@ listring[]
         end,
         allow_metadata_inventory_take = function(pos, listname, index, stack, player)
             if not pipeworks.may_configure(pos, player) then return 0 end
-            local inv = minetest.get_meta(pos):get_inventory()
+            local inv = core.get_meta(pos):get_inventory()
             inv:set_stack(listname, index, ItemStack '')
             return 0
         end,
         allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
             if not pipeworks.may_configure(pos, player) then return 0 end
-            local inv = minetest.get_meta(pos):get_inventory()
+            local inv = core.get_meta(pos):get_inventory()
             inv:set_stack(from_list, from_index, ItemStack '')
             return 0
         end,
@@ -658,7 +658,7 @@ core.register_node(
         use_texture_alpha = 'clip',
         -- how convenient, almost like i modified pipeworks for this or something
         on_construct = function(pos)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             meta:set_int('can_receive', 1) -- Enabled by default
             pipeworks.tptube.update_meta(meta)
         end,
@@ -680,7 +680,7 @@ core.register_node(
 )
 
 instatube.special_insert_logic['sbz_instatube:teleport_instant_tube'] = function(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local channel = meta:get_string 'channel'
     if channel == '' then return true end
     local receivers = pipeworks.tptube.get_receivers(pos, channel)
@@ -691,7 +691,7 @@ end
 mesecon.register_on_mvps_move(function(moved_nodes)
     for _, n in ipairs(moved_nodes) do
         if n.node.name == 'sbz_instatube:teleport_instant_tube' then
-            local meta = minetest.get_meta(n.pos)
+            local meta = core.get_meta(n.pos)
             pipeworks.tptube.remove_tube(n.oldpos)
             pipeworks.tptube.set_tube(n.pos, meta:get_string 'channel', meta:get_int 'can_receive')
         end

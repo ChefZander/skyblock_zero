@@ -40,7 +40,7 @@ local animation_def = {
     length = 1,
 }
 
-minetest.register_node('pipeworks:automatic_filter_injector', {
+core.register_node('pipeworks:automatic_filter_injector', {
     description = 'Automatic Filter-Injector',
     sounds = sbz_api.sounds.matter(),
     info_extra = 'Pushes items out of containers.',
@@ -55,7 +55,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
     paramtype2 = 'facedir',
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1, pipe_conducts = 1 },
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('main', 8 * 2)
         set_filter_formspec(meta)
@@ -76,13 +76,13 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
     on_rotate = pipeworks.on_rotate,
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         if not pipeworks.may_configure(pos, player) then return 0 end
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         inv:set_stack('main', index, stack)
         return 0
     end,
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         if not pipeworks.may_configure(pos, player) then return 0 end
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         local fake_stack = inv:get_stack('main', index)
         fake_stack:take_item(stack:get_count())
         inv:set_stack('main', index, fake_stack)
@@ -93,7 +93,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
         return count
     end,
     can_dig = function(pos, player)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         return inv:is_empty 'main'
     end,
@@ -101,7 +101,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
     on_receive_fields = function(pos, formname, fields, sender)
         if (fields.quit and not fields.key_enter_field) or not pipeworks.may_configure(pos, sender) then return end
         fs_helpers.on_receive_fields(pos, fields)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
 
         --meta:set_int("slotseq_index", 1)
         set_filter_formspec(meta)
@@ -113,7 +113,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
         end
         meta:set_string('infotext', 'Working')
 
-        node = minetest.get_node(pos)
+        node = core.get_node(pos)
         local inv = meta:get_inventory()
         local owner = meta:get_string 'owner'
         local fakeplayer = fakelib.create_player(owner)
@@ -127,7 +127,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
             return 1
         end
 
-        local fromdef = minetest.registered_nodes[fromnode.name]
+        local fromdef = core.registered_nodes[fromnode.name]
         if not fromdef or not fromdef.tube then
             meta:set_string('infotext', "Can't pull from that node :/ - No behavior for tube interaction defined.")
             return 1
@@ -142,14 +142,14 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
             meta:set_string('infotext', "Can't push to that node - that node does not exist.")
             return 1
         end
-        local todef = minetest.registered_nodes[tonode.name]
+        local todef = core.registered_nodes[tonode.name]
 
         if
             not todef
             or not (
-                minetest.get_item_group(tonode.name, 'tube') == 1
-                or minetest.get_item_group(tonode.name, 'tubedevice') == 1
-                or minetest.get_item_group(tonode.name, 'tubedevice_receiver') == 1
+                core.get_item_group(tonode.name, 'tube') == 1
+                or core.get_item_group(tonode.name, 'tubedevice') == 1
+                or core.get_item_group(tonode.name, 'tubedevice_receiver') == 1
             )
         then
             meta:set_string('infotext', "Can't push to that node")
@@ -188,7 +188,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
                 return 1
             end
         else
-            local frommeta = minetest.get_meta(frompos)
+            local frommeta = core.get_meta(frompos)
             frominv = frommeta:get_inventory()
         end
         if fromtube.before_filter then fromtube.before_filter(frompos) end
@@ -213,7 +213,7 @@ minetest.register_node('pipeworks:automatic_filter_injector', {
                             not fgroup -- If there's a group filter,
                             or (
                                 type(fgroup) == 'string' --  it must be a string
-                                and minetest.get_item_group( --  and it must match.
+                                and core.get_item_group( --  and it must match.
                                         stack:get_name(),
                                         fgroup
                                     )

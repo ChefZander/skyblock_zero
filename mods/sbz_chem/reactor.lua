@@ -83,7 +83,7 @@ sbz_api.register_stateful_generator("sbz_chem:nuclear_reactor", {
         inv:set_size("rods", 6)
         meta:set_int("rod_timer", 0)
         meta:set_int("rod_tier", 0)
-        meta:set_string("liquid_inv", minetest.serialize({
+        meta:set_string("liquid_inv", core.serialize({
             max_count_in_each_stack = 100,           -- 100 buckets
             [1] = {
                 name = "sbz_resources:water_source", -- forced to be water
@@ -100,11 +100,11 @@ listring[]
     ]])
     end,
     after_place_node = function(pos, placer, itemstack, pointed_thing)
-        minetest.get_meta(pos):set_string("owner", placer:get_player_name())
+        core.get_meta(pos):set_string("owner", placer:get_player_name())
         return pipeworks.after_place(pos)
     end,
     on_liquid_inv_update = function(pos, lqinv)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         meta:set_string("formspec", "formspec_version[7]size[10.2,10.8]" ..
             sbz_api.bar(lqinv[1].count, lqinv.max_count_in_each_stack, 0.2, 0.2, " Water Sources",
                 "Reactor Water Storage", "Don't let it get too low.") .. [[
@@ -165,15 +165,15 @@ listring[]
                 return 0
             end
             -- explode
-            local owner = minetest.get_meta(pos):get_string("owner")
-            minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
+            local owner = core.get_meta(pos):get_string("owner")
+            core.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
             local strength = 1
             if tier == 3 then strength = 2 end
             sbz_api.explode(pos, 20 * strength, 0.9 * strength, false, owner)
             core.remove_node(pos)
             explosion_particle_def.pos = pos
             explosion_particle_def.attract.origin = pos
-            minetest.add_particlespawner(explosion_particle_def)
+            core.add_particlespawner(explosion_particle_def)
             return 10000 -- yeah sure why not
         end
 
@@ -189,13 +189,13 @@ listring[]
             if (count + (pos.x + pos.y + pos.z)) % 15 == 0 then
                 if count_nodes_within_radius(pos, "sbz_resources:water_source", 5) < ((5 * 5 * 5) - 1) / 4 then
                     -- i know... duplicating explosion code... cringe bad yeah yeah
-                    local owner = minetest.get_meta(pos):get_string("owner")
-                    minetest.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
+                    local owner = core.get_meta(pos):get_string("owner")
+                    core.sound_play({ name = "distant-explosion-47562", gain = 0.4 }, { pos = pos }) -- we gotta get better sfx
                     sbz_api.explode(pos, 20 * 2, 0.9 * 2, false, owner)
                     core.remove_node(pos)
                     explosion_particle_def.pos = pos
                     explosion_particle_def.attract.origin = pos
-                    minetest.add_particlespawner(explosion_particle_def)
+                    core.add_particlespawner(explosion_particle_def)
                     return 10000
                 end
             end

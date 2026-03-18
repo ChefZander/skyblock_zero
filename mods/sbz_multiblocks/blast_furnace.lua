@@ -253,7 +253,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
         local chance
         -- determine recipe
         if mode == "Regular" then
-            out = minetest.get_craft_result({
+            out = core.get_craft_result({
                 method = "cooking",
                 width = 1,
                 items = { inventory:get_stack("src1", 1) },

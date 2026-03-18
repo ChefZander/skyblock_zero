@@ -25,7 +25,7 @@ function sbz_power.register_battery(name, def)
                 sbz_api.battery_fs(sbz_power.round_power(power), sbz_power.round_power(max_power)))
         end
     end
-    minetest.register_node(name, def)
+    core.register_node(name, def)
 end
 
 sbz_power.register_battery("sbz_power:battery", {
@@ -98,7 +98,7 @@ end
 local function set_tp_battery_formspec(pos)
     local meta = core.get_meta(pos)
     --local channel = meta:get_string("channel")
-    local help_text = minetest.formspec_escape(
+    local help_text = core.formspec_escape(
         "Channels are public by default" .. "\n" ..
         "Use <player>:<player>:<player>:<channel> \n To limit the channel to the set of players given"
     )

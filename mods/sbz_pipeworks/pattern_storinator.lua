@@ -34,10 +34,10 @@ core.register_node(
             matter = 1,
         },
         after_place_node = function(pos, placer)
-            minetest.get_meta(pos):set_string('owner', placer:get_player_name())
-            local node = minetest.get_node(pos)
+            core.get_meta(pos):set_string('owner', placer:get_player_name())
+            local node = core.get_node(pos)
             node.param2 = node.param2 + 1
-            minetest.swap_node(pos, node)
+            core.swap_node(pos, node)
             pipeworks.after_place(pos)
         end,
         after_dig_node = pipeworks.after_dig,
@@ -113,7 +113,7 @@ core.register_node(
                 return stack
             end,
             can_insert = function(pos, node, stack, direction)
-                local meta = minetest.get_meta(pos)
+                local meta = core.get_meta(pos)
                 local inv = meta:get_inventory()
 
                 local storage = inv:get_list 'storage'

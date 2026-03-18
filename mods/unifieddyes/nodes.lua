@@ -1,4 +1,4 @@
-minetest.register_craftitem('unifieddyes:colorium', {
+core.register_craftitem('unifieddyes:colorium', {
     description = 'Colorium',
     inventory_image = 'colorium.png',
 })
@@ -13,15 +13,16 @@ do -- Colorium recipe scope
     })
 end
 
-minetest.register_craftitem('unifieddyes:colorium_powder', {
+core.register_craftitem('unifieddyes:colorium_powder', {
     description = 'Colorium Powder',
     inventory_image = 'powder.png^[mask:colorium.png',
 })
 
-minetest.register_node(
+core.register_node(
     'unifieddyes:colorium_blob',
     unifieddyes.def {
         description = 'Colorium Blob',
+        sounds = sbz_api.sounds.matter(),
         tiles = {
             'blank.png^[invert:rgba',
         },
@@ -37,10 +38,11 @@ local full = 1 / 2
 
 local full_m_width = full - width
 local full_m_height = -full + height
-minetest.register_node(
+core.register_node(
     'unifieddyes:colorium_ground_line',
     unifieddyes.def {
         description = 'Colorium Ground Line',
+        sounds = sbz_api.sounds.matter(),
         tiles = {
             'blank.png^[invert:rgba',
         },
@@ -63,10 +65,11 @@ minetest.register_node(
     }
 )
 
-minetest.register_node(
+core.register_node(
     'unifieddyes:power_ground_line',
     unifieddyes.def {
         description = 'Power Ground Line',
+        sounds = sbz_api.sounds.matter(),
         tiles = {
             {
                 name = 'power_ground_line.png',
@@ -112,6 +115,7 @@ core.register_node(
     'unifieddyes:antiblock',
     unifieddyes.def {
         description = 'Antiblock',
+        sounds = sbz_api.sounds.matter(),
         tiles = {
             'blank.png',
         },

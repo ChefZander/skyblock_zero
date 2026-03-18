@@ -67,11 +67,11 @@ sbz_api.register_stateful_machine("sbz_chem:melter", {
 
     input_inv = "src",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("src", 1)
 
-        meta:set_string("liquid_inv", minetest.serialize({
+        meta:set_string("liquid_inv", core.serialize({
             max_count_in_each_stack = 10,
             [1] = {
                 name = "any",
@@ -167,11 +167,11 @@ sbz_api.register_stateful_machine("sbz_chem:cooler", {
 
     output_inv = "dst",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("dst", 1)
 
-        meta:set_string("liquid_inv", minetest.serialize({
+        meta:set_string("liquid_inv", core.serialize({
             max_count_in_each_stack = 10,
             [1] = {
                 name = "any",

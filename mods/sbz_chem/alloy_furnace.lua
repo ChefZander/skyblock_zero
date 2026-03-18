@@ -36,7 +36,7 @@ sbz_api.register_stateful_machine('sbz_chem:simple_alloy_furnace', {
     paramtype2 = 'facedir',
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('input', 2)
         inv:set_size('output', 1)
