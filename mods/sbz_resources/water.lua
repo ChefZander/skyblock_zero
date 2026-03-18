@@ -16,8 +16,12 @@ local source_animation = {
     length = 3.0,
 }
 
-minetest.register_node("sbz_resources:water_source", {
+core.register_node("sbz_resources:water_source", {
     description = "Water Source",
+    sounds = {
+        footstep = { name = 'gen_water_step', gain = 0.5, pitch = 0.8 },
+        place = { name = 'mix_water_place'}
+    },
     drawtype = "liquid",
     tiles = {
         {
@@ -59,7 +63,7 @@ local flowing_animation = {
     length = 0.5,
 }
 
-minetest.register_node("sbz_resources:water_flowing", {
+core.register_node("sbz_resources:water_flowing", {
     description = "Flowing Water",
     drawtype = "flowingliquid",
     tiles = { "water.png" },
