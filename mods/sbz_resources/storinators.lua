@@ -228,6 +228,7 @@ end
 
 register_storinator("", {
     description = "Storinator",
+    sounds = sbz_api.sounds.matter(),
     level = 0,
     overlay_color = "#696a6a",
     groups = { matter = 1 },
