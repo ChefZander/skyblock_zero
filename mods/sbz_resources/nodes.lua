@@ -82,7 +82,7 @@ core.register_node(
         groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767 },
         walkable = true,
         light_source = 3,
-        -- sounds = sbz_api.sounds.antimatter(),
+        sounds = sbz_api.sounds.antimatter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('invertedstep', { pos = pos, gain = 1.0 })
         end,
@@ -141,7 +141,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         walkable = true,
-        -- sounds = sbz_api.sounds.antimatter(),
+        sounds = sbz_api.sounds.antimatter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('invertedstep', { pos = pos, gain = 1.0 })
         end,

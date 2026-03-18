@@ -30,7 +30,7 @@ core.register_node('sbz_meteorites:meteoric_antimatter', {
         max_items = 9 * 4,
         items = antimatter_items,
     },
-    -- sounds = sbz_api.sounds.antimatter(),
+    sounds = sbz_api.sounds.antimatter(),
 })
 
 local emittrium_items = {}
@@ -90,7 +90,7 @@ core.register_node('sbz_meteorites:antineutronium', {
     paramtype = 'light',
     light_source = 8,
     groups = { antigravity = 300, antimatter = 1, charged = 1, attraction = -256 },
-    -- sounds = sbz_api.sounds.antimatter(),
+    sounds = sbz_api.sounds.antimatter(),
 })
 
 local core_blob = 'sbz_resources:compressed_core_dust'
