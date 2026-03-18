@@ -43,9 +43,9 @@ end
 function sbz_api.sounds.machine()
     local sounds = {
         footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5 },
-        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0 },
+        dig      = { name = 'mix_metal_cabinet_hit', gain = 0.8, pitch = 1.0 },
         dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8 },
-        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'mix_metal_cabinet_place', gain = 1.0, pitch = 1.0 },
     }
     return sounds
 end
