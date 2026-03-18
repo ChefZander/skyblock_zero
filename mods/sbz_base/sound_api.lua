@@ -100,10 +100,10 @@ end
 
 function sbz_api.sounds.snow()
     local sounds = {
-        footstep = { name = '', gain = 0.2, pitch = 1.0 },
-        dig      = { name = '', gain = 0.8, pitch = 1.0 },
-        dug      = { name = '', gain = 1.0, pitch = 1.0 },
-        place    = { name = '', gain = 0.8, pitch = 1.0 },
+        footstep = { name = 'gen_snow_crunch_abrupt', gain = 0.2, pitch = 1.0 },
+        dig      = { name = 'foley_snow_hit', gain = 0.5, pitch = 1.0 },
+        dug      = { name = 'mix_soft_harsh_explosion', gain = 1.0, pitch = 0.6 },
+        place    = { name = 'gen_snow_crunch_slow', gain = 0.8, pitch = 0.5 },
     }
     return sounds
 end

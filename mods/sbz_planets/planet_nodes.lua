@@ -151,7 +151,7 @@ core.register_node('sbz_planets:ice', {
 stairs.register 'sbz_planets:ice'
 
 core.register_node('sbz_planets:ice_core', {
-    description = 'Ice Core Piece - deprecatred',
+    description = 'Ice Core Piece - deprecated',
     tiles = { 'ice_core_piece.png' },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 10, level = 2 },
     -- sounds = sbz_api.sounds.ice(),
@@ -165,7 +165,7 @@ core.register_node('sbz_planets:snow', {
     drawtype = 'liquid',
     paramtype = 'light',
     groups = { oddly_breakable_by_hand = 1, matter = 3, water = 1, cold = 10, charged = 1, explody = 100 },
-    -- sounds = sbz_api.sounds.snow(),
+    sounds = sbz_api.sounds.snow(),
     walkable = false,
     climbable = true,
     move_resistance = 1,
@@ -179,7 +179,7 @@ core.register_node('sbz_planets:snow', {
 
 stairs.register 'sbz_planets:snow'
 
-local snowbox = {
+local snow_box = {
     type = 'fixed',
     fixed = {
         -0.5,
@@ -208,9 +208,9 @@ core.register_node('sbz_planets:snow_layer', {
         not_in_creative_inventory = 1,
         attached_node = 1,
     },
-    -- sounds = sbz_api.sounds.snow(),
-    node_box = snowbox,
-    collision_box = snowbox,
+    sounds = sbz_api.sounds.snow(),
+    node_box = snow_box,
+    collision_box = snow_box,
     walkable = false,
     climbable = false,
     post_effect_color = '#ffffff9f',
