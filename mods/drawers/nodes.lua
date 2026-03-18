@@ -45,7 +45,12 @@ drawers.register_drawer("drawers:drawer", {
     tiles2 = drawers.node_tiles_front_other("drawers_matter_front_2.png", "drawers_matter.png"),
     tiles4 = drawers.node_tiles_front_other("drawers_matter_front_4.png", "drawers_matter.png"),
     groups = { matter = 1, oddly_breakable_by_hand = 2 },
-    -- sounds = sbz_api.sounds.tree(),
+    sounds = {
+        footstep = { name = 'gen_wump_wood', gain = 0.3, pitch = 0.5 },
+        dig      = { name = 'foley_wood_thud_shallow', gain = 0.6, pitch = 0.8 },
+        dug      = { name = 'mix_pack_it_in', gain = 1.0, pitch = 0.75 },
+        place    = { name = 'foley_wood_thud_thick', gain = 0.5, pitch = 1.0 }
+    },
     drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
     material = "sbz_resources:reinforced_matter",
     info_extra = S("If you aren't seeing drawer visuals, try using /drawers_fix")
@@ -60,6 +65,12 @@ drawers.register_connector("drawers:drawer_connector", {
         matter = 1,
         oddly_breakable_by_hand = 2,
         drawer_connector = 1 -- Add this line
+    },
+    sounds = {
+        footstep = { name = 'gen_wump_wood', gain = 0.3, pitch = 0.8 },
+        dig      = { name = 'foley_wood_thud_shallow', gain = 0.6, pitch = 1.2 },
+        dug      = { name = 'mix_pack_it_in', gain = 0.3, pitch = 1.2 },
+        place    = { name = 'foley_wood_thud_thick', gain = 0.3, pitch = 1.2 }
     },
     material = "sbz_resources:reinforced_matter",
     info_extra = S("For use with the Drawer Controller; transfers items through it to adjacent drawers.")

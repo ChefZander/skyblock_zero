@@ -437,7 +437,6 @@ local function register_controller()
 
 	def.on_logic_send = controller_on_logic_receive
 
-	-- same as drawers for now
 	def.sounds = {
         footstep = { name = 'gen_wump_wood',          gain = 0.5, pitch = 0.8, fade = 0.0 },
         dig      = { name = 'gen_simple_tap_low',     gain = 0.6, pitch = 0.8, fade = 0.0 },
