@@ -242,6 +242,7 @@ core.register_node(
     'sbz_decor:ladder',
     unifieddyes.def {
         description = 'Matter Ladder',
+        sounds = sbz_api.sounds.matter(),
         drawtype = 'nodebox',
         node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
             type = 'fixed',
@@ -285,6 +286,7 @@ core.register_node(
     'sbz_decor:antimatter_ladder',
     unifieddyes.def {
         description = 'Antimatter Ladder',
+        sounds = sbz_api.sounds.antimatter(),
         drawtype = 'nodebox',
         node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
             type = 'fixed',

@@ -42,6 +42,7 @@ local animation_def = {
 
 minetest.register_node('pipeworks:automatic_filter_injector', {
     description = 'Automatic Filter-Injector',
+    sounds = sbz_api.sounds.matter(),
     info_extra = 'Pushes items out of containers.',
     tiles = {
         { name = 'filter_side.png^[transformFX', animation = animation_def },

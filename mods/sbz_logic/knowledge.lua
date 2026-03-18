@@ -95,6 +95,7 @@ end
 
 core.register_node("sbz_logic:knowledge_station", {
     description = "Knowledge Station",
+    sounds = sbz_api.sounds.matter(),
     info_extra = "Explains logic.",
     on_construct = function(pos)
         local meta = core.get_meta(pos)

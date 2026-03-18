@@ -60,7 +60,6 @@ core.register_node("sbz_resources:emitter", {
     groups = { gravity = 25, unbreakable = 1, transparent = 1, not_in_creative_inventory = 1 },
     sounds = {
         footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
         place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
     },
@@ -80,7 +79,6 @@ core.register_node("sbz_resources:movable_emitter", {
     groups = { transparent = 1, matter = 1, level = 2 },
     sounds = {
         footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
         place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
     },
@@ -186,6 +184,7 @@ end
 -- THE CORE!!!
 core.register_node("sbz_resources:the_core", {
     description = "The Core",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "the_core.png" },
     groups = { gravity = 25, unbreakable = 1, not_in_creative_inventory = 1 },
     drop = "",

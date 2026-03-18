@@ -23,6 +23,7 @@ core.register_node(
     'sbz_power:power_pipe',
     unifieddyes.def {
         description = 'Emittrium Power Cable',
+        sounds = sbz_api.sounds.matter(),
         connects_to = { 'group:pipe_connects' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
 

@@ -74,7 +74,7 @@ sbz_api.register_stateful_generator("sbz_chem:nuclear_reactor", {
         "reactor_side.png",
     },
     groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1, explody = 2 },
-
+    sounds = sbz_api.sounds.machine(),
     input_inv = "rods",
     output_inv = "rods",
     on_construct = function(pos)
@@ -247,6 +247,7 @@ sbz_api.register_stateful_machine("sbz_chem:xray", {
         "xray_side.png",
     },
     groups = { matter = 1, },
+    sounds = sbz_api.sounds.machine(),
     autostate = true,
     action = function(pos, _, meta, supply, demand)
         if supply < demand + xray_demand then

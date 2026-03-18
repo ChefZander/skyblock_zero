@@ -30,6 +30,7 @@ end
 
 sbz_power.register_battery("sbz_power:battery", {
     description = "Battery",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "battery.png" },
     groups = { matter = 1 },
     battery_max = 5000,
@@ -52,6 +53,7 @@ end
 
 sbz_power.register_battery("sbz_power:advanced_battery", {
     description = "Advanced Battery",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "advanced_battery.png" },
     groups = { matter = 1 },
     battery_max = 20000,
@@ -73,6 +75,7 @@ end
 
 sbz_power.register_battery("sbz_power:very_advanced_battery", {
     description = "Very Advanced Battery",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "very_advanced_battery.png" },
     groups = { matter = 1, level = 2 },
     battery_max = 200000,
@@ -112,6 +115,7 @@ end
 
 sbz_power.register_battery("sbz_power:teleport_battery", {
     description = "Teleport Battery",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "teleport_battery.png" },
     groups = { matter = 1, level = 2 },
     no_battery_formspec = true,
@@ -242,6 +246,7 @@ end
 
 core.register_node("sbz_power:creative_battery", {
     description = "Creative Power Generating Battery",
+    sounds = sbz_api.sounds.matter(),
     info_extra =
     "It never runs out of power... useful for when you need to not have noise in your \"Supply\" statistic in the switching station.",
     tiles = { { name = "creative_battery_power_gen.png", animation = { type = "vertical_frames", length = 0.5 }, } },
@@ -256,6 +261,7 @@ core.register_node("sbz_power:creative_battery", {
 
 core.register_node("sbz_power:real_creative_battery", {
     description = "Creative Battery",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "creative_battery.png" },
     groups = { creative = 1, sbz_battery = 1, sbz_machine = 1, pipe_conducts = 1, pipe_connects = 1, matter = 3 },
     battery_max = 10 ^ 9, -- G

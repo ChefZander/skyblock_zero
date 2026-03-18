@@ -119,7 +119,7 @@ core.register_node('sbz_meteorites:gravitational_attractor', {
     on_construct = function(pos)
         core.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
     end,
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_api.sounds.glass(),
 })
 
 do -- Gravitational Attractor recipe scope
@@ -149,7 +149,7 @@ core.register_node('sbz_meteorites:gravitational_repulsor', {
     on_construct = function(pos)
         core.add_entity(pos, 'sbz_meteorites:gravitational_attractor_entity')
     end,
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_api.sounds.glass(),
 })
 
 mesecon.register_on_mvps_move(function(moved)

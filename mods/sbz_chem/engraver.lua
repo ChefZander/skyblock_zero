@@ -29,6 +29,7 @@ sbz_api.register_stateful_machine("sbz_chem:engraver", {
         "engraver.png^[verticalframe:24:1",
     },
     groups = { matter = 1 },
+    sounds = sbz_api.sounds.machine(),
     paramtype2 = "4dir",
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,

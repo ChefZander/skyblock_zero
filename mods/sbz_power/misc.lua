@@ -1,5 +1,6 @@
 sbz_api.register_stateful_machine("sbz_power:phosphor", unifieddyes.def {
     description = "Phosphor",
+    sounds = sbz_api.sounds.glass(),
     paramtype = "light",
     sunlight_propagates = true,
     drawtype = "glasslike_framed",
@@ -81,6 +82,7 @@ local item_vaccum_power_demand = 20
 
 sbz_api.register_machine("sbz_power:item_vacuum", {
     description = "Item Vacuum",
+    sounds = sbz_api.sounds.machine(),
     tiles = { "item_vacuum.png" },
     groups = {
         sbz_machine = 1,

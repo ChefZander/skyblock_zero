@@ -143,6 +143,7 @@ core.register_node(
     'sbz_multiblocks:large_liquid_storage_controller',
     unifieddyes.def {
         description = 'Large Liquid Storage Controller',
+        sounds = sbz_api.sounds.machine(),
         groups = {
             matter = 1,
             multiblock_controller = 1,
@@ -245,6 +246,7 @@ core.register_node(
     'sbz_multiblocks:large_liquid_storage_casing',
     unifieddyes.def {
         description = 'Large Liquid Storage Casing',
+        sounds = sbz_api.sounds.machine(),
         groups = {
             matter = 1,
             wallsharing = 1,
@@ -269,7 +271,8 @@ core.register_node(
 core.register_node(
     'sbz_multiblocks:large_liquid_storage_casing_edge',
     unifieddyes.def {
-        description = 'Large Liquid Storage Edge Casing ',
+        description = 'Large Liquid Storage Edge Casing',
+        sounds = sbz_api.sounds.machine(),
         groups = {
             matter = 1,
             wallsharing = 1,

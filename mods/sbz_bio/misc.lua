@@ -93,9 +93,9 @@ do -- Airlock recipe scope
     })
 end
 
-
 sbz_api.register_stateful_machine("sbz_bio:neutron_emitter", {
     description = "Basic Neutron Emitter",
+    sounds = sbz_api.sounds.machine(),
     info_extra = "Emits radiation, forces plants mutate.",
     info_power_consume = 10,
     autostate = true,

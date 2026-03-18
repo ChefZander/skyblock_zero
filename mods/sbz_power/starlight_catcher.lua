@@ -22,6 +22,7 @@ end
 
 core.register_node("sbz_power:starlight_catcher", {
     description = "Starlight Catcher",
+    sounds = sbz_api.sounds.matter(),
     info_extra =
     "For those who insist on starlight collectors.\n Generates energy and is less laggy in large quantities.\n It generates energy that can be converted to 1Cj/s. ",
     tiles = {
@@ -96,6 +97,7 @@ end
 
 sbz_api.register_generator("sbz_power:photon_energy_converter", {
     description = "Photon-Energy Converter",
+    sounds = sbz_api.sounds.matter(),
     info_extra =
     "Converts energy provided by starlight catchers to cosmic joules.\nFor maximum possible lag-reduction during construction, place this component last. (So for about 10 000 starlight catchers, you should consider it.)",
     tiles = {

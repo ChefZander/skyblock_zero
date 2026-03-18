@@ -379,6 +379,7 @@ local list_cache = sbz_api.make_cache('list_cache', 0, true)
 
 core.register_node('pipeworks:autocrafter', {
     description = S 'Autocrafter',
+    sounds = sbz_api.sounds.matter(),
     drawtype = 'normal',
     tiles = { 'autocrafter.png' },
     groups = {
@@ -393,12 +394,6 @@ core.register_node('pipeworks:autocrafter', {
         pipe_connects = 1,
         pipe_conducts = 1,
         sbz_machine = 1,
-    },
-    sounds = {
-        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
-        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
-        place    = { name = 'foley_heavy_metal_ting', gain = 1.0, pitch = 0.8, fade = 0.0 },
     },
     is_ground_content = false,
     tube = {

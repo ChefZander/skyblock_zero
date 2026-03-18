@@ -2,6 +2,7 @@ local hash = minetest.hash_node_position
 
 minetest.register_node("sbz_power:connector_off", {
     description = "Connector",
+    sounds = sbz_api.sounds.matter(),
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "wallmounted",
@@ -47,6 +48,7 @@ minetest.register_node("sbz_power:connector_off", {
 
 minetest.register_node("sbz_power:connector_on", {
     description = "Connector",
+    sounds = sbz_api.sounds.matter(),
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "wallmounted",

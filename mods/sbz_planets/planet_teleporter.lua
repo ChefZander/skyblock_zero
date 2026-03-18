@@ -3,6 +3,7 @@ local mg_vector = vector.new(mg_limit, mg_limit, mg_limit)
 core.register_node("sbz_planets:planet_teleporter", {
     info_extra = "Teleports you to a planet. Insert a warp crystal to get teleported.",
     description = "Planet Teleporter",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "planet_teleporter.png" },
     groups = { matter = 1, level = 2 },
     on_rightclick = function(pos, node, clicker, stack, pointed)

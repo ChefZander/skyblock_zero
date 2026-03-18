@@ -161,6 +161,7 @@ end
 -- contains storage
 core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
     description = "Blast Furnace Controller",
+    sounds = sbz_api.sounds.machine(),
     groups = {
         matter = 1,
         multiblock_controller = 1,
@@ -372,6 +373,7 @@ core.register_node("sbz_multiblocks:blast_furnace_controller", ud {
 
 core.register_node("sbz_multiblocks:blast_furnace_casing", ud {
     description = "Blast Furnace Casing",
+    sounds = sbz_api.sounds.machine(),
     groups = {
         matter = 1,
         wallsharing = 1,
@@ -391,6 +393,7 @@ core.register_node("sbz_multiblocks:blast_furnace_casing", ud {
 
 core.register_node("sbz_multiblocks:blast_furnace_heater", ud {
     description = "Blast Furnace Heater",
+    sounds = sbz_api.sounds.machine(),
     heater_power_use = 5,
     info_power_needed = 5, -- they do not connect to cables directly
     groups = {
@@ -417,6 +420,7 @@ core.register_node("sbz_multiblocks:blast_furnace_heater", ud {
 
 sbz_api.register_machine("sbz_multiblocks:blast_furnace_power_port", ud {
     description = "Blast Furnace Power Port",
+    sounds = sbz_api.sounds.machine(),
     groups = {
         matter = 1,
         multiblock_power_port = 1,
@@ -470,6 +474,7 @@ sbz_api.register_machine("sbz_multiblocks:blast_furnace_power_port", ud {
 
 core.register_node("sbz_multiblocks:blast_furnace_item_input", ud {
     description = "Blast Furnace Item Input",
+    sounds = sbz_api.sounds.machine(),
     info_extra = "It will never clog the furnace just trust me, if it does somehow its a bug",
     groups = {
         matter = 1,
@@ -537,6 +542,7 @@ core.register_node("sbz_multiblocks:blast_furnace_item_input", ud {
 })
 core.register_node("sbz_multiblocks:blast_furnace_item_output", ud {
     description = "Blast Furnace Item Output",
+    sounds = sbz_api.sounds.machine(),
     groups = {
         matter = 1,
         tubedevice = 1,

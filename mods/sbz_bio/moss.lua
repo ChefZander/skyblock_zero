@@ -1,5 +1,6 @@
 minetest.register_node("sbz_bio:moss", {
     description = "Moss",
+    sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 0.5 } },
     drawtype = "signlike",
     tiles = { "moss.png" },
     inventory_image = "moss.png",
@@ -36,6 +37,7 @@ minetest.register_node("sbz_bio:moss", {
 
 minetest.register_node("sbz_bio:algae", {
     description = "Algae",
+    sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 0.3 } },
     floodable = true,
     drawtype = "signlike",
     tiles = { "algae.png" },

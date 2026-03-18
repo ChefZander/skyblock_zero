@@ -1,6 +1,7 @@
 local cost = 1
 sbz_api.register_stateful_machine("sbz_power:powered_lamp", {
     description = "Powered Lamp",
+    sounds = sbz_api.sounds.glass(),
     tiles = { "power_lamp_off.png^[colorize:black:50" },
     light_source = 0,
     info_extra = "Really cheap lamp.",
@@ -89,6 +90,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
     description = "Super Powered Lamp",
+    sounds = sbz_api.sounds.glass(),
     tiles = { "super_power_lamp_off.png^[colorize:black:50" },
     light_source = 0,
     info_extra = "Lights up a 13x13x13 square around itself!",

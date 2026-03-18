@@ -118,6 +118,7 @@ sbz_api.register_stateful_machine("sbz_bio:electric_soil", unifieddyes.def {
         soil = 0,
         pipe_connects = 1,
     },
+    sounds = sbz_api.sounds.machine(),
     autostate = true,
     info_power_consume = 40,
     info_extra = "When powered, it's 5 times more powerful than regular dirt.",

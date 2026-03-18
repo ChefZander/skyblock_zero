@@ -456,6 +456,7 @@ end
 
 minetest.register_node('sbz_power:switching_station', {
     description = 'Switching Station',
+    sounds = sbz_api.sounds.matter(),
     tiles = { 'switching_station.png' },
     groups = { matter = 1, cracky = 1, pipe_connects = 1, pipe_conducts = 1 },
     light_source = 3,
