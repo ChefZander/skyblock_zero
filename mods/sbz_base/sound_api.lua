@@ -37,31 +37,95 @@ end)
 
 sbz_api.sounds = sbz_api.sounds or {}
 
+-- Use as a template (include fade if needed on any)
+function sbz_api.sounds.blank()
+    local sounds = {
+        footstep = { name = '', gain = 0.2, pitch = 1.0 },
+        dig      = { name = '', gain = 0.8, pitch = 1.0 },
+        dug      = { name = '', gain = 1.0, pitch = 1.0 },
+        place    = { name = '', gain = 0.8, pitch = 1.0 },
+    }
+    return sounds
+end
+
 function sbz_api.sounds.machine()
     local sounds = {
-        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
-        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
-        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
-    } return sounds
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0 },
+    }
+    return sounds
 end
 
 function sbz_api.sounds.matter()
     local sounds = {
-        footstep = { name = 'foley_matter_hit_short', gain = 0.2, pitch = 1.0,},
+        footstep = { name = 'foley_matter_hit_short', gain = 0.5, pitch = 0.5, fade = 6.0 },
         dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8,},
         dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0,},
         place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0,},
-    } return sounds
+    }
+    return sounds
+end
+
+function sbz_api.sounds.wood()
+    local sounds = {
+        footstep = { name = 'gen_wump_wood', gain = 0.5, pitch = 0.8 },
+        dig      = { name = 'gen_simple_tap_low', gain = 0.6, pitch = 0.8 },
+        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'tts_wood', gain = 0.5, pitch = 1.0 }
+    }
+    return sounds
 end
 
 function sbz_api.sounds.leaves()
     local sounds = {
-        footstep = { name = 'foley_leaf_step', gain = 0.4, pitch = 1.0,},
-        dig      = { name = 'foley_leaf_step', gain = 0.6, pitch = 0.6,},
-        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0,},
-        place    = { name = 'foley_leaf_step', gain = 0.8, pitch = 0.8,},
-    } return sounds
+        footstep = { name = 'foley_leaf_step', gain = 0.4, pitch = 1.0 },
+        dig      = { name = 'foley_leaf_step', gain = 0.6, pitch = 0.6 },
+        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'foley_leaf_step', gain = 0.8, pitch = 0.8 },
+    }
+    return sounds
+end
+
+function sbz_api.sounds.glass()
+    local sounds = {
+        footstep = { name = '', gain = 0.2, pitch = 1.0 },
+        dig      = { name = '', gain = 0.8, pitch = 1.0 },
+        dug      = { name = '', gain = 1.0, pitch = 1.0 },
+        place    = { name = '', gain = 0.8, pitch = 1.0 },
+    }
+    return sounds
+end
+
+function sbz_api.sounds.snow()
+    local sounds = {
+        footstep = { name = '', gain = 0.2, pitch = 1.0 },
+        dig      = { name = '', gain = 0.8, pitch = 1.0 },
+        dug      = { name = '', gain = 1.0, pitch = 1.0 },
+        place    = { name = '', gain = 0.8, pitch = 1.0 },
+    }
+    return sounds
+end
+
+function sbz_api.sounds.ice()
+    local sounds = {
+        footstep = { name = '', gain = 0.2, pitch = 1.0 },
+        dig      = { name = '', gain = 0.8, pitch = 1.0 },
+        dug      = { name = '', gain = 1.0, pitch = 1.0 },
+        place    = { name = '', gain = 0.8, pitch = 1.0 },
+    }
+    return sounds
+end
+
+function sbz_api.sounds.sand()
+    local sounds = {
+        footstep = { name = '', gain = 0.2, pitch = 1.0 },
+        dig      = { name = '', gain = 0.8, pitch = 1.0 },
+        dug      = { name = '', gain = 1.0, pitch = 1.0 },
+        place    = { name = '', gain = 0.8, pitch = 1.0 },
+    }
+    return sounds
 end
 
 function sbz_api.play_sfx(spec, params, pitch_randomness)
