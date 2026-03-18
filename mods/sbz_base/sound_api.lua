@@ -1,11 +1,3 @@
---[[ 
-register_sound_function('machine', {
-    footstep = csound('step', 2),
-    place = g1 'machine_build',
-    rightclick = g1 'machine_open',
-})
- ]]
-
 sbz_api = sbz_api or {}
 
 -- allow for a rightclick parameter too, so that its less annoying
