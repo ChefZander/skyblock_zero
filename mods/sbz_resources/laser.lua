@@ -18,8 +18,8 @@ core.register_tool("sbz_resources:laser_weapon", {
             local endpos = vector.add(eyepos, vector.multiply(lookdir, laser_range))
             local ray = core.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
 
-            core.sound_play({ name = 'gen_laser_pew' }, { pos = eyepos })
-            core.sound_play({ name = 'gen_laser_pew' }, { pos = endpos })
+            core.sound_play({ name = 'gen_laser_pew', gain = 0.6 }, { pos = eyepos })
+            core.sound_play({ name = 'gen_laser_pew', gain = 0.6 }, { pos = endpos })
 
             repeat
                 local pointed = ray:next()
