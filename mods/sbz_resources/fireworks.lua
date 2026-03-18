@@ -152,7 +152,7 @@ core.register_craftitem("sbz_resources:firework", {
     description = "Firework",
     inventory_image = "firework.png",
     stack_max = 365, -- ha get it, because 365~ish days in a year
-    -- lets be real, this needs to be efficent cuz its going to get used probably 1000 times per second
+    -- lets be real, this needs to be efficient cuz its going to get used probably 1000 times per second
     on_use = function(stack, user, pointed)
         local pos = pointed.above
         if pos == nil then return end

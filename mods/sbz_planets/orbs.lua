@@ -7,7 +7,7 @@
 core.register_craftitem("sbz_planets:dwarf_orb", {
     description = "Dwarf Orb",
     inventory_image = "dwarf_orb.png",
-    info_extra = "Used as a crafing replacement for matter annihilators, found naturally in dwarf planets",
+    info_extra = "Used as a crafting replacement for matter annihilators, found naturally in dwarf planets",
 })
 
 do -- Dwarf Orb multiply recipe scope

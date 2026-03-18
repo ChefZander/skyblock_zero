@@ -161,7 +161,13 @@ do -- Antimatter Platform recipe scope
 end
 
 core.register_node('sbz_resources:emitter_imitator', {
-    description = 'Emitter Immitator',
+    description = 'Emitter Imitator',
+    sounds = {
+        footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig    = { name = 'mix_gassy_quack_hit', gain = 0.4, pitch = 0.8, fade = 0.0 },
+        dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
+        place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    },
     tiles = { 'emitter_imitator.png' },
     groups = { matter = 1, explody = 3 },
     paramtype = 'light',
@@ -270,7 +276,7 @@ core.register_node('sbz_resources:reinforced_antimatter', {
     groups = { antimatter = 1 },
     light_source = 5,
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_api.sounds.antimatter(),
 })
 
 do -- Reinforced Antimatter recipe scope
@@ -578,7 +584,7 @@ core.register_node('sbz_resources:clay', {
     tiles = { 'clay.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_api.sounds.matter(),
     light_source = 3,
 })
 
@@ -598,7 +604,7 @@ core.register_node(
             oddly_breakable_by_hand = 1,
         },
         walkable = true,
-        sounds = sbz_api.sounds.sand(),
+        sounds = sbz_api.sounds.matter(),
         light_source = 3,
     }
 )
