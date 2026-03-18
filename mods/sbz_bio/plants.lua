@@ -278,11 +278,7 @@ core.register_craftitem('sbz_bio:pyrograss', {
     description = 'Pyrograss',
     inventory_image = 'pyrograss_4.png',
     groups = { burn = 30, eat = 1 },
-    sound = {
-        eat = {
-            name = 'foley_crackle_chomp_simple', gain = 1, pitch = 1.0
-        }
-    },
+    sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 1.0 } },
     on_place = sbz_api.plant_plant('sbz_bio:pyrograss_1', { 'group:soil' }),
 })
 
@@ -342,11 +338,7 @@ core.register_craftitem('sbz_bio:razorgrass', {
     description = 'Razorgrass',
     inventory_image = 'razorgrass_4.png',
     groups = { burn = 2, eat = -8 },
-    sound = {
-        eat = {
-            name = 'foley_crackle_chomp_thin', gain = 1, pitch = 1.0
-        }
-    },
+    sound = { eat = { name = 'foley_crackle_chomp_thin', gain = 1, pitch = 1.0 } },
     eat_fx = { 'Poisoned', 'Slowed' },
     on_place = sbz_api.plant_plant('sbz_bio:razorgrass_1', { 'group:soil' }),
     on_use = function(stack, user, pointed)
@@ -388,11 +380,7 @@ core.register_craftitem('sbz_bio:cleargrass', {
     description = 'Cleargrass',
     inventory_image = 'cleargrass_4.png',
     groups = { burn = 0, eat = 0 },
-    sound = {
-        eat = {
-            name = 'foley_crackle_chomp_smooth', gain = 1, pitch = 1.0
-        }
-    },
+    sound = { eat = { name = 'foley_crackle_chomp_smooth', gain = 1, pitch = 1.0 } },
     eat_fx = { 'Cleared' },
     on_place = sbz_api.plant_plant('sbz_bio:cleargrass_1', { 'group:soil' }),
     on_use = function(stack, user, pointed)
@@ -420,6 +408,7 @@ core.register_craftitem('sbz_bio:stemfruit', {
     description = 'Stemfruit',
     inventory_image = 'stemfruit.png',
     groups = { burn = 12, eat = 5 },
+    sound = { eat = { name = 'mix_eat_fruit', gain = 1.0, pitch = 1.0 } },
     on_place = sbz_api.on_place_precedence(function(itemstack, user, pointed)
         local use_pointed = 'above'
         if pointed.switched then use_pointed = 'under' end
@@ -486,6 +475,7 @@ core.register_craftitem('sbz_bio:warpshroom', {
         return eat(itemstack, user, pointed)
     end,
     groups = { ui_bio = 1, eat = 6 },
+    sound = { eat = { name = 'mix_eat_mushroom', gain = 1.0, pitch = 1.0 } },
 })
 --[[
 core.register_craft({
@@ -551,6 +541,7 @@ core.register_craftitem('sbz_bio:shockshroom', {
     inventory_image = 'shockshroom_4.png',
     on_place = sbz_api.plant_plant('sbz_bio:shockshroom_1', { 'group:soil' }),
     groups = { ui_bio = 1, eat = -1 },
+    sound = { eat = { name = 'mix_eat_mushroom', gain = 1.0, pitch = 1.0 } },
     on_use = function(stack, user, pointed)
         if user.is_fake_player then return end
         playereffects.apply_effect_type('shocked', 180 / 0.5, user, 0.5)
