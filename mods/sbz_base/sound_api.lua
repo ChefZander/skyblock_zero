@@ -110,10 +110,10 @@ end
 
 function sbz_api.sounds.ice()
     local sounds = {
-        footstep = { name = '', gain = 0.2, pitch = 1.0 },
-        dig      = { name = '', gain = 0.8, pitch = 1.0 },
-        dug      = { name = '', gain = 1.0, pitch = 1.0 },
-        place    = { name = '', gain = 0.8, pitch = 1.0 },
+        footstep = { name = 'foley_solid_step_soft', gain = 0.2, pitch = 1.0 },
+        dig      = { name = 'gen_ice_chip', gain = 0.8, pitch = 1.0 },
+        dug      = { name = 'gen_ice_break', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'foley_ambiguous_solid_hit', gain = 0.7, pitch = 1.0 },
     }
     return sounds
 end

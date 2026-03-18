@@ -145,7 +145,7 @@ core.register_node('sbz_planets:ice', {
     description = 'Ice',
     tiles = { 'ice.png' },
     groups = { matter = 1, water = 1, cold = 20, charged = 1, slippery = 5, explody = 20 },
-    -- sounds = sbz_api.sounds.ice(),
+    sounds = sbz_api.sounds.ice(),
     light_source = 1,
 })
 stairs.register 'sbz_planets:ice'
@@ -154,7 +154,7 @@ core.register_node('sbz_planets:ice_core', {
     description = 'Ice Core Piece - deprecated',
     tiles = { 'ice_core_piece.png' },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 10, level = 2 },
-    -- sounds = sbz_api.sounds.ice(),
+    sounds = sbz_api.sounds.ice(),
     light_source = core.LIGHT_MAX,
     drop = 'sbz_resources:movable_emitter',
 })
