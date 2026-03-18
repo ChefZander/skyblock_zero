@@ -120,10 +120,10 @@ end
 
 function sbz_api.sounds.sand()
     local sounds = {
-        footstep = { name = '', gain = 0.2, pitch = 1.0 },
-        dig      = { name = '', gain = 0.8, pitch = 1.0 },
-        dug      = { name = '', gain = 1.0, pitch = 1.0 },
-        place    = { name = '', gain = 0.8, pitch = 1.0 },
+        footstep = { name = 'gen_sand_generic', gain = 0.1, pitch = 0.8 },
+        dig      = { name = 'gen_sand_generic_hit', gain = 0.3, pitch = 0.6 },
+        dug      = { name = 'gen_sand_generic_hit', gain = 0.5, pitch = 0.8 },
+        place    = { name = 'gen_sand_generic_hit', gain = 0.3, pitch = 0.7 },
     }
     return sounds
 end
