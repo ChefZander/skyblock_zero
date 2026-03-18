@@ -23,10 +23,9 @@ core.register_craftitem('sbz_resources:matter_annihilator', {
     },
 
     sound = {
-        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 1.5, fade = 0.0 },
+        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 0.4, pitch = 1.0, fade = 5.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.2, pitch = 1.5 },
     },
 })
 
@@ -68,10 +67,9 @@ core.register_craftitem('sbz_resources:antimatter_annihilator', {
     },
 
     sound = {
-        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.7, fade = 0.0 },
+        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 0.4, pitch = 1.0, fade = 5.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.2, pitch = 0.7 },
     },
 })
 
@@ -112,10 +110,9 @@ core.register_craftitem('sbz_resources:robotic_arm', {
     },
 
     sound = {
-        -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = 'mix_tool_hit_wump', gain = 1.0, pitch = 1.2, fade = 0.0 },
-        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.8, fade = 0.0 },
+        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0 },
+        punch_use     = { name = 'mix_tool_hit_wump', gain = 0.4, pitch = 1.0, fade = 5.0 },
+        punch_use_air = { name = 'mix_short_fwip', gain = 0.3, pitch = 0.8 },
     },
 })
 
@@ -200,10 +197,9 @@ core.register_tool('sbz_resources:drill', {
     wear_color = { color_stops = { [0] = 'lime' } },
 
     sound = {
-        -- breaks        = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        -- eat           = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use     = { name = 'foley_drill_bang_short', gain = 1.0, pitch = 1.0, fade = 0.0 },
-        punch_use_air = { name = 'foley_drill_motor_burp', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0 },
+        punch_use     = { name = 'foley_drill_bang_short', gain = 0.5, pitch = 1.0 },
+        punch_use_air = { name = 'foley_drill_motor_burp', gain = 0.4, pitch = 1.0 },
     },
 })
 
