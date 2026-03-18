@@ -90,10 +90,10 @@ end
 
 function sbz_api.sounds.leaves()
     local sounds = {
-        footstep = { name = 'foley_leaf_step', gain = 0.4, pitch = 1.0 },
-        dig      = { name = 'foley_leaf_step', gain = 0.6, pitch = 0.6 },
-        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0 },
-        place    = { name = 'foley_leaf_step', gain = 0.8, pitch = 0.8 },
+        footstep = { name = 'foley_leaf_step', gain = 0.1, pitch = 0.8 },
+        dig      = { name = 'foley_leaf_step', gain = 0.2, pitch = 0.5 },
+        dug      = { name = 'foley_leaf_step', gain = 0.3, pitch = 0.9 },
+        place    = { name = 'foley_leaf_step', gain = 0.4, pitch = 0.8 },
     }
     return sounds
 end
