@@ -48,23 +48,31 @@ core.register_node(
         end,
     }
 )
-core.register_craft {
-    output = 'sbz_resources:matter_platform 8',
-    recipe = {
-        { 'sbz_resources:matter_blob', 'sbz_resources:matter_blob' },
-    },
-}
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_resources:matter_blob',
-    recipe = {
-        'sbz_resources:matter_platform',
-        'sbz_resources:matter_platform',
-        'sbz_resources:matter_platform',
-        'sbz_resources:matter_platform',
-    },
-}
+do -- Matter Platform recipe scope
+    local Matter_Platform = 'sbz_resources:matter_platform'
+    local amount = 8
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft {
+        output = Matter_Platform .. ' ' .. tostring(amount),
+        recipe = {
+            { MB, MB },
+        }
+    }
+end
+
+
+do -- Matter Blob recipe scope
+    local Matter_Blob = 'sbz_resources:matter_blob'
+    local MP = 'sbz_resources:matter_platform'
+    core.register_craft {
+        type = 'shapeless',
+        output = Matter_Blob,
+        recipe = {
+            MP, MP, MP, MP
+        },
+    }
+end
 
 core.register_node(
     'sbz_resources:antimatter_blob',
@@ -80,14 +88,19 @@ core.register_node(
         end,
     }
 )
-core.register_craft {
-    output = 'sbz_resources:antimatter_blob',
-    recipe = {
-        { 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust' },
-        { 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust' },
-        { 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust', 'sbz_resources:antimatter_dust' },
-    },
-}
+
+do -- Antimatter Blob recipe scope
+    local Antimatter_Blob = 'sbz_resources:antimatter_blob'
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft {
+        output = Antimatter_Blob,
+        recipe = {
+            { AD, AD, AD },
+            { AD, AD, AD },
+            { AD, AD, AD },
+        }
+    }
+end
 
 sbz_api.recipe.register_craft {
     type = 'crushing',
@@ -97,16 +110,17 @@ sbz_api.recipe.register_craft {
     },
 }
 
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_resources:antimatter_blob',
-    recipe = {
-        'sbz_resources:antimatter_platform',
-        'sbz_resources:antimatter_platform',
-        'sbz_resources:antimatter_platform',
-        'sbz_resources:antimatter_platform',
-    },
-}
+do -- Antimatter Blob recipe scope
+    local Antimatter_Blob = 'sbz_resources:antimatter_blob'
+    local AP = 'sbz_resources:antimatter_platform'
+    core.register_craft {
+        type = 'shapeless',
+        output = Antimatter_Blob,
+        recipe = {
+            AP, AP, AP, AP
+        },
+    }
+end
 
 stairs.register 'sbz_resources:antimatter_blob'
 core.register_alias('sbz_resources:antimatter_stair', 'sbz_resources:antimatter_blob_stair')
@@ -134,12 +148,17 @@ core.register_node(
     }
 )
 
-core.register_craft {
-    output = 'sbz_resources:antimatter_platform 8',
-    recipe = {
-        { 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_blob' },
-    },
-}
+do -- Antimatter Platform recipe scope
+    local Antimatter_Platform = 'sbz_resources:antimatter_platform'
+    local amount = 8
+    local AB = 'sbz_resources:antimatter_blob'
+    core.register_craft {
+        output = Antimatter_Platform .. ' ' .. tostring(amount),
+        recipe = {
+            { AB, AB },
+        }
+    }
+end
 
 core.register_node('sbz_resources:emitter_imitator', {
     description = 'Emitter Immitator',
@@ -169,14 +188,20 @@ core.register_node('sbz_resources:emitter_imitator', {
         }
     end,
 })
-core.register_craft {
-    output = 'sbz_resources:emitter_imitator',
-    recipe = {
-        { '', 'sbz_resources:core_dust', '' },
-        { 'sbz_resources:core_dust', 'sbz_resources:antimatter_blob', 'sbz_resources:core_dust' },
-        { '', 'sbz_resources:core_dust', '' },
-    },
-}
+
+do -- Emitter Imitator recipe scope
+    local Emitter_Imitator = 'sbz_resources:emitter_imitator'
+    local CD = 'sbz_resources:core_dust'
+    local AB = 'sbz_resources:antimatter_blob'
+    core.register_craft {
+        output = Emitter_Imitator,
+        recipe = {
+            { '', CD, '' },
+            { CD, AB, CD },
+            { '', CD, '' },
+        }
+    }
+end
 
 core.register_node(
     'sbz_resources:stone',
@@ -191,19 +216,31 @@ core.register_node(
 
 stairs.register 'sbz_resources:stone'
 
-core.register_craft {
-    output = 'sbz_resources:stone',
-    recipe = {
-        { 'sbz_resources:pebble', 'sbz_resources:pebble', 'sbz_resources:pebble' },
-        { 'sbz_resources:pebble', 'sbz_resources:pebble', 'sbz_resources:pebble' },
-        { 'sbz_resources:pebble', 'sbz_resources:pebble', 'sbz_resources:pebble' },
-    },
-}
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_resources:pebble 9',
-    recipe = { 'sbz_resources:stone' },
-}
+do -- Stone recipe scope
+    local Stone = 'sbz_resources:stone'
+    local Pe = 'sbz_resources:pebble'
+    core.register_craft {
+        output = Stone,
+        recipe = {
+            { Pe, Pe, Pe },
+            { Pe, Pe, Pe },
+            { Pe, Pe, Pe },
+        }
+    }
+end
+
+do -- Pebble recipe scope
+    local Pebble = 'sbz_resources:pebble'
+    local amount = 9
+    local St = 'sbz_resources:stone'
+    core.register_craft {
+        type = 'shapeless',
+        output = Pebble .. ' ' .. tostring(amount),
+        recipe = {
+            St
+        },
+    }
+end
 
 core.register_node('sbz_resources:reinforced_matter', {
     description = 'Reinforced Matter',
@@ -212,14 +249,20 @@ core.register_node('sbz_resources:reinforced_matter', {
     walkable = true,
     sounds = sbz_api.sounds.matter(),
 })
-core.register_craft {
-    output = 'sbz_resources:reinforced_matter',
-    recipe = {
-        { '', 'sbz_resources:matter_plate', '' },
-        { 'sbz_resources:matter_plate', 'sbz_resources:matter_blob', 'sbz_resources:matter_plate' },
-        { '', 'sbz_resources:matter_plate', '' },
-    },
-}
+
+do -- Reinforced Matter recipe scope
+    local Reinforced_Matter = 'sbz_resources:reinforced_matter'
+    local MP = 'sbz_resources:matter_plate'
+    local MB = 'sbz_resources:matter_blob'
+    core.register_craft {
+        output = Reinforced_Matter,
+        recipe = {
+            { '', MP, '' },
+            { MP, MB, MP },
+            { '', MP, '' },
+        }
+    }
+end
 
 core.register_node('sbz_resources:reinforced_antimatter', {
     description = 'Reinforced Antimatter',
@@ -230,14 +273,20 @@ core.register_node('sbz_resources:reinforced_antimatter', {
     sounds = sbz_api.sounds.matter(),
 })
 
-core.register_craft {
-    output = 'sbz_resources:reinforced_antimatter',
-    recipe = {
-        { '', 'sbz_resources:antimatter_plate', '' },
-        { 'sbz_resources:antimatter_plate', 'sbz_resources:antimatter_blob', 'sbz_resources:antimatter_plate' },
-        { '', 'sbz_resources:antimatter_plate', '' },
-    },
-}
+do -- Reinforced Antimatter recipe scope
+    local Reinforced_Antimatter = 'sbz_resources:reinforced_antimatter'
+    local AP = 'sbz_resources:antimatter_plate'
+    local AB = 'sbz_resources:antimatter_blob'
+    core.register_craft {
+        output = Reinforced_Antimatter,
+        recipe = {
+            { '', AP, '' },
+            { AP, AB, AP },
+            { '', AP, '' },
+        }
+    }
+end
+
 if false then -- annoying as hell
     core.register_abm {
         label = 'Annihilate matter and antimatter',
@@ -303,17 +352,23 @@ core.register_node('sbz_resources:emittrium_glass', {
     paramtype = 'light',
     sunlight_propagates = true,
     groups = { matter = 1, transparent = 1, explody = 100 },
-    -- sounds = sbz_api.sounds.glass(),
+    sounds = sbz_api.sounds.glass(),
 })
 
-core.register_craft {
-    output = 'sbz_resources:emittrium_glass 16',
-    recipe = {
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:antimatter_dust', 'sbz_resources:raw_emittrium' },
-        { 'sbz_resources:antimatter_dust', '', 'sbz_resources:antimatter_dust' },
-        { 'sbz_resources:raw_emittrium', 'sbz_resources:antimatter_dust', 'sbz_resources:raw_emittrium' },
-    },
-}
+do -- Emittrium Glass recipe scope
+    local Emittrium_Glass = 'sbz_resources:emittrium_glass'
+    local amount = 16
+    local RE = 'sbz_resources:raw_emittrium'
+    local AD = 'sbz_resources:antimatter_dust'
+    core.register_craft {
+        output = Emittrium_Glass .. ' ' .. tostring(amount),
+        recipe = {
+            { RE, AD, RE },
+            { AD, '', AD },
+            { RE, AD, RE },
+        },
+    }
+end
 
 core.register_node(
     'sbz_resources:colorium_glass',
@@ -325,18 +380,24 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        -- sounds = sbz_api.sounds.glass(),
+        sounds = sbz_api.sounds.glass(),
     }
 )
 
-core.register_craft {
-    output = 'sbz_resources:colorium_glass 8',
-    recipe = {
-        { 'sbz_resources:emittrium_glass', 'sbz_resources:emittrium_glass', 'sbz_resources:emittrium_glass' },
-        { 'sbz_resources:emittrium_glass', 'unifieddyes:colorium', 'sbz_resources:emittrium_glass' },
-        { 'sbz_resources:emittrium_glass', 'sbz_resources:emittrium_glass', 'sbz_resources:emittrium_glass' },
-    },
-}
+do -- Colorium Glass recipe scope
+    local Colorium_Glass = 'sbz_resources:colorium_glass'
+    local amount = 8
+    local EG = 'sbz_resources:emittrium_glass'
+    local Co = 'unifieddyes:colorium'
+    core.register_craft {
+        output = Colorium_Glass .. ' ' .. tostring(amount),
+        recipe = {
+            { EG, EG, EG },
+            { EG, Co, EG },
+            { EG, EG, EG },
+        }
+    }
+end
 
 core.register_node(
     'sbz_resources:clear_colorium_glass',
@@ -348,22 +409,25 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        -- sounds = sbz_api.sounds.glass(),
+        sounds = sbz_api.sounds.glass(),
         info_extra = "Recipe requires cleargrass but it returns it back once you've crafted with it.",
     }
 )
 
-core.register_craft {
-    output = 'sbz_resources:clear_colorium_glass 8',
-    recipe = {
-        { 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass' },
-        { 'sbz_resources:colorium_glass', 'sbz_bio:cleargrass', 'sbz_resources:colorium_glass' },
-        { 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass' },
-    },
-    replacements = {
-        { 'sbz_bio:cleargrass', 'sbz_bio:cleargrass' },
-    },
-}
+do -- Clear Colorium Glass recipe scope
+    local Clear_Colorium_Glass = 'sbz_resources:clear_colorium_glass'
+    local amount = 8
+    local CG = 'sbz_resources:colorium_glass'
+    local Cl = 'sbz_bio:cleargrass'
+    core.register_craft {
+        output = Clear_Colorium_Glass .. ' ' .. tostring(amount),
+        recipe = {
+            { CG, CG, CG },
+            { CG, Cl, CG },
+            { CG, CG, CG },
+        }
+    }
+end
 
 core.register_node(
     'sbz_resources:stained_colorium_glass',
@@ -377,22 +441,25 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        -- sounds = sbz_api.sounds.glass(),
+        sounds = sbz_api.sounds.glass(),
         info_extra = { "Recipe requires razorgrass, but it returns it back once you've crafted with it." },
     }
 )
 
-core.register_craft {
-    output = 'sbz_resources:stained_colorium_glass 8',
-    recipe = {
-        { 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass' },
-        { 'sbz_resources:colorium_glass', 'sbz_bio:razorgrass', 'sbz_resources:colorium_glass' },
-        { 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass', 'sbz_resources:colorium_glass' },
-    },
-    replacements = {
-        { 'sbz_bio:razorgrass', 'sbz_bio:razorgrass' },
-    },
-}
+do -- Stained Colorium Glass recipe scope
+    local Stained_Colorium_Glass = 'sbz_resources:stained_colorium_glass'
+    local amount = 8
+    local CG = 'sbz_resources:colorium_glass'
+    local Ra = 'sbz_bio:razorgrass'
+    core.register_craft {
+        output = Stained_Colorium_Glass .. ' ' .. tostring(amount),
+        recipe = {
+            { CG, CG, CG },
+            { CG, Ra, CG },
+            { CG, CG, CG },
+        }
+    }
+end
 
 core.register_node('sbz_resources:compressed_core_dust', {
     description = 'Compressed Core Dust',
@@ -403,19 +470,31 @@ core.register_node('sbz_resources:compressed_core_dust', {
     sounds = sbz_api.sounds.matter(),
 })
 
-core.register_craft {
-    output = 'sbz_resources:compressed_core_dust',
-    recipe = {
-        { 'sbz_resources:core_dust', 'sbz_resources:core_dust', 'sbz_resources:core_dust' },
-        { 'sbz_resources:core_dust', 'sbz_resources:core_dust', 'sbz_resources:core_dust' },
-        { 'sbz_resources:core_dust', 'sbz_resources:core_dust', 'sbz_resources:core_dust' },
-    },
-}
-core.register_craft {
-    type = 'shapeless',
-    output = 'sbz_resources:core_dust 9',
-    recipe = { 'sbz_resources:compressed_core_dust' },
-}
+do -- Compressed Core Dust recipe scope
+    local Compressed_Core_Dust = 'sbz_resources:compressed_core_dust'
+    local CD = 'sbz_resources:core_dust'
+    core.register_craft {
+        output = Compressed_Core_Dust,
+        recipe = {
+            { CD, CD, CD },
+            { CD, CD, CD },
+            { CD, CD, CD },
+        }
+    }
+end
+
+do -- Core Dust recipe scope
+    local Core_Dust = 'sbz_resources:core_dust'
+    local amount = 9
+    local CC = 'sbz_resources:compressed_core_dust'
+    core.register_craft {
+        type = 'shapeless',
+        output = Core_Dust .. ' ' .. tostring(amount),
+        recipe = {
+            CC
+        },
+    }
+end
 
 -- sands
 core.register_node(
@@ -562,14 +641,19 @@ core.register_node('sbz_resources:white_sand', {
     light_source = 3,
 })
 
-core.register_craft {
-    output = 'sbz_resources:matter_blob',
-    recipe = {
-        { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
-        { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
-        { 'sbz_resources:matter_dust', 'sbz_resources:matter_dust', 'sbz_resources:matter_dust' },
-    },
-}
+do -- Matter Blob recipe scope
+    local Matter_Blob = 'sbz_resources:matter_blob'
+    local MD = 'sbz_resources:matter_dust'
+    core.register_craft {
+        output = Matter_Blob,
+        recipe = {
+            { MD, MD, MD },
+            { MD, MD, MD },
+            { MD, MD, MD },
+        }
+    }
+end
+
 sbz_api.recipe.register_craft {
     output = 'sbz_resources:matter_dust 9',
     type = 'crushing',

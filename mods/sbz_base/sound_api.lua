@@ -90,10 +90,10 @@ end
 
 function sbz_api.sounds.glass()
     local sounds = {
-        footstep = { name = '', gain = 0.2, pitch = 1.0 },
-        dig      = { name = '', gain = 0.8, pitch = 1.0 },
-        dug      = { name = '', gain = 1.0, pitch = 1.0 },
-        place    = { name = '', gain = 0.8, pitch = 1.0 },
+        footstep = { name = 'gen_soft_glass_bump', gain = 0.2, pitch = 1.2 },
+        dig      = { name = 'gen_soft_glass_bump', gain = 0.8, pitch = 1.0 },
+        dug      = { name = 'mix_ambiguous_hard_hit', gain = 1.0, pitch = 0.8 },
+        place    = { name = 'mix_ambiguous_hard_hit', gain = 0.8, pitch = 1.2 },
     }
     return sounds
 end
