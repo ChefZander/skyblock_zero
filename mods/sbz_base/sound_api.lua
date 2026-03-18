@@ -61,19 +61,19 @@ end
 function sbz_api.sounds.matter()
     local sounds = {
         footstep = { name = 'foley_matter_hit_light', gain = 0.1, pitch = 1.0 },
-        dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8,},
-        dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0,},
-        place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0,},
+        dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8 },
+        dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0 },
     }
     return sounds
 end
 
 function sbz_api.sounds.dirt()
     local sounds = {
-        footstep = { name = 'foley_matter_hit_light', gain = 0.1, pitch = 1.0 },
-        dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8, },
-        dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0, },
-        place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0, },
+        footstep = { name = 'mix_dirt_step', gain = 0.2, pitch = 0.8 },
+        dig      = { name = 'mix_dirt_dig', gain = 0.6, pitch = 1.1 },
+        dug      = { name = 'mix_dirt_dug', gain = 1.0, pitch = 0.9 },
+        place    = { name = 'mix_dirt_dig', gain = 0.6, pitch = 0.8 },
     }
     return sounds
 end
