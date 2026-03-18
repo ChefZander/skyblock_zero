@@ -259,7 +259,7 @@ core.register_node('sbz_planets:water_source_nofall', {
 })
 
 core.register_node('sbz_planets:colorium_mapgen_sapling', {
-    description = 'Mapgen Sapling (i guess you just got an insant sapling lol)',
+    description = 'Mapgen Sapling (I guess you just got an instant sapling. lol.)',
     -- drop = "",
     groups = { not_in_creative_inventory = 1 },
     drawtype = 'allfaces',
