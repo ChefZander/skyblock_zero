@@ -250,6 +250,7 @@ core.register_node(
             wallsharing = 1,
             ui_fluid = 1,
         },
+        sounds = sbz_api.sounds.glass(),
         info_extra = 'Or "Dark Stained Colorium Glass" If you are into decorating',
         drawtype = 'glasslike_framed',
         paramtype = 'light',

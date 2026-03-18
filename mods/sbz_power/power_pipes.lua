@@ -19,7 +19,7 @@ end
 
 local wire_size = 1 / 8
 
-minetest.register_node(
+core.register_node(
     'sbz_power:power_pipe',
     unifieddyes.def {
         description = 'Emittrium Power Cable',
@@ -50,7 +50,7 @@ minetest.register_node(
     }
 )
 
-minetest.register_alias('sbz_power:power_cable', 'sbz_power:power_pipe') -- old!
+core.register_alias('sbz_power:power_cable', 'sbz_power:power_pipe') -- old!
 
 do                                                                       -- Emittrium Power Cable recipe scope
     local Power_Cable = 'sbz_power:power_pipe'
@@ -63,13 +63,13 @@ do                                                                       -- Emit
     })
 end
 
-minetest.register_node('sbz_power:airtight_power_cable', {
+core.register_node('sbz_power:airtight_power_cable', {
     description = 'Airtight Emittrium Power Cable',
     connects_to = { 'group:pipe_connects' },
     connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
 
     tiles = { 'airtight_power_cable.png' },
-
+    sounds = sbz_api.sounds.glass(),
     drawtype = 'mesh',
     mesh = 'voxelmodel.obj',
     light_source = 3,
