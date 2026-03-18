@@ -5,7 +5,7 @@ core.register_node(
         tiles = { 'matter_blob.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('step', { pos = pos, gain = 1.0 })
         end,
@@ -39,7 +39,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('step', { pos = pos, gain = 1.0 })
         end,
@@ -185,7 +185,7 @@ core.register_node(
         tiles = { 'stone.png' },
         groups = { matter = 1, moss_growable = 1, charged = 1 },
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
     }
 )
 
@@ -210,7 +210,7 @@ core.register_node('sbz_resources:reinforced_matter', {
     tiles = { 'reinforced_matter.png' },
     groups = { matter = 1, moss_growable = 1 },
     walkable = true,
-    -- sounds = sbz_api.sounds.matter(),
+    sounds = sbz_api.sounds.matter(),
 })
 core.register_craft {
     output = 'sbz_resources:reinforced_matter',
@@ -227,7 +227,7 @@ core.register_node('sbz_resources:reinforced_antimatter', {
     groups = { antimatter = 1 },
     light_source = 5,
     walkable = true,
-    -- sounds = sbz_api.sounds.matter(),
+    sounds = sbz_api.sounds.matter(),
 })
 
 core.register_craft {
@@ -400,7 +400,7 @@ core.register_node('sbz_resources:compressed_core_dust', {
         'compressed_core_dust.png',
     },
     groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 10, charged = 1 },
-    -- sounds = sbz_api.sounds.matter(),
+    sounds = sbz_api.sounds.matter(),
 })
 
 core.register_craft {

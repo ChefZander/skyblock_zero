@@ -5,27 +5,64 @@ register_sound_function('machine', {
     rightclick = g1 'machine_open',
 })
  ]]
+
+sbz_api = sbz_api or {}
+
 -- allow for a rightclick parameter too, so that its less annoying
 core.register_on_mods_loaded(function()
     for k, v in pairs(core.registered_nodes) do
         -- If it has a sounds.rightclick specified...
         if v.sounds and v.sounds.rightclick then
-            -- Take what is specified and save it as old_rightclick
-            local old_rightclick = v.on_rightclick or function(pos, node, clicker, itemstack, pointed_thing) end
+            -- Save original handler (if any)
+            local old_rightclick = v.on_rightclick
+
             local function new_rightclick(pos, node, clicker, stack, pointed)
                 if core.get_meta(pos):get_string 'formspec' ~= '' then
                     core.sound_play(v.sounds.rightclick, {
                         pos = pos,
                     })
                 end
-                return old_rightclick(pos, node, clicker, stack, pointed)
+
+                if old_rightclick then
+                    return old_rightclick(pos, node, clicker, stack, pointed)
+                end
             end
+
             core.override_item(k, {
                 on_rightclick = new_rightclick,
             })
         end
     end
 end)
+
+sbz_api.sounds = sbz_api.sounds or {}
+
+function sbz_api.sounds.machine()
+    local sounds = {
+        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
+        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
+        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
+        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
+    } return sounds
+end
+
+function sbz_api.sounds.matter()
+    local sounds = {
+        footstep = { name = 'foley_matter_hit_short', gain = 0.2, pitch = 1.0,},
+        dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8,},
+        dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0,},
+        place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0,},
+    } return sounds
+end
+
+function sbz_api.sounds.leaves()
+    local sounds = {
+        footstep = { name = 'foley_leaf_step', gain = 0.4, pitch = 1.0,},
+        dig      = { name = 'foley_leaf_step', gain = 0.6, pitch = 0.6,},
+        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0,},
+        place    = { name = 'foley_leaf_step', gain = 0.8, pitch = 0.8,},
+    } return sounds
+end
 
 function sbz_api.play_sfx(spec, params, pitch_randomness)
     pitch_randomness = pitch_randomness or 0.035
@@ -35,8 +72,8 @@ function sbz_api.play_sfx(spec, params, pitch_randomness)
 end
 
 core.register_on_mods_loaded(function()
-    local fallback_place_failed = { name = 'gen_error_fart', gain = 0.7, pitch = 1.0, fade = 0.0 }
-    local fallback_fall         = { name = 'gen_pew_slow_fall', gain = 0.3, pitch = 1.1, fade = 0.0 }
+    local fallback_place_failed = { name = 'gen_error_fart', gain = 0.7, pitch = 1.0,}
+    local fallback_fall         = { name = 'gen_pew_slow_fall', gain = 0.3, pitch = 1.1,}
 
     for name, def in pairs(core.registered_nodes) do
         local s = def.sounds or {}

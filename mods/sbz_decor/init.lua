@@ -154,7 +154,7 @@ core.register_node(
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sunlight_propagates = true,
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
     }
 )
 stairs.register 'sbz_decor:factory_warning'
@@ -172,7 +172,7 @@ core.register_node('sbz_decor:mystery_terrarium', {
     groups = { matter = 1, cracky = 3, explody = 3 },
     sunlight_propagates = true,
     walkable = true,
-    -- sounds = sbz_api.sounds.matter(),
+    sounds = sbz_api.sounds.matter(),
 })
 core.register_craft {
     output = 'sbz_decor:mystery_terrarium',
@@ -197,7 +197,7 @@ core.register_node(
         groups = { matter = 1, cracky = 3, explody = 3 },
         light_source = 10,
         sunlight_propagates = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
     }
 )
 

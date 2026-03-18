@@ -286,7 +286,7 @@ sbz_api.register_leaves(
                 },
             },
         },
-        -- sounds = sbz_api.sounds.leaves(),
+        sounds = sbz_api.sounds.leaves(),
     }
 )
 
