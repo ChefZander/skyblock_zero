@@ -19,7 +19,7 @@ local source_animation = {
 core.register_node("sbz_resources:water_source", {
     description = "Water Source",
     sounds = {
-        footstep = { name = 'gen_water_step', gain = 0.5, pitch = 0.8 },
+        footstep = { name = 'gen_water_step', gain = 0.3, pitch = 0.8 },
         place = { name = 'mix_water_place'}
     },
     drawtype = "liquid",
