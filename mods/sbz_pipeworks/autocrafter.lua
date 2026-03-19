@@ -267,7 +267,7 @@ local function run_autocrafter(pos)
     local success = autocraft(inventory, craft)
     if not success then return false end
     core.sound_play(
-        { name = 'mix_machine_action_ambiguous', gain = 0.6, pitch = 1.0, fade = 10.0 },
+        { name = 'mix_ambiguous_machine_mild', gain = 1.0, pitch = 1.0, fade = 10.0 },
         { pos = pos, max_hear_distance = 8.0 }
     )
     return true
