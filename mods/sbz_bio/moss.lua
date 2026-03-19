@@ -1,6 +1,11 @@
 core.register_node("sbz_bio:moss", {
     description = "Moss",
-    sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 0.5 } },
+    sounds = {
+        footstep = { name = 'foley_leaf_step', gain = 0.1, pitch = 0.5 },
+        dig      = { name = 'foley_leaf_step', gain = 0.3, pitch = 0.4 },
+        dug      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.5 },
+        place    = { name = 'foley_leaf_step', gain = 0.2, pitch = 0.5 },
+    },
     drawtype = "signlike",
     tiles = { "moss.png" },
     inventory_image = "moss.png",
@@ -37,7 +42,12 @@ core.register_node("sbz_bio:moss", {
 
 core.register_node("sbz_bio:algae", {
     description = "Algae",
-    sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 0.3 } },
+    sounds = {
+        footstep = { name = 'foley_leaf_step', gain = 0.1, pitch = 0.5 },
+        dig      = { name = 'foley_leaf_step', gain = 0.3, pitch = 0.4 },
+        dug      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.5 },
+        place    = { name = 'foley_leaf_step', gain = 0.2, pitch = 0.5 },
+    },
     floodable = true,
     drawtype = "signlike",
     tiles = { "algae.png" },

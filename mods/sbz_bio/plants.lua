@@ -189,6 +189,7 @@ function sbz_api.register_plant(name, defs, modname)
         local height = defs.height_min * (1 - interpolant) + defs.height_max * interpolant
         core.register_node(modname .. name .. '_' .. i, {
             description = defs.description,
+            sounds = defs.sounds,
             drawtype = 'plantlike',
             tiles = { name .. '_' .. i .. '.png' },
             inventory_image = name .. '_' .. i .. '.png',
@@ -224,6 +225,7 @@ function sbz_api.register_plant(name, defs, modname)
     end
     core.register_node(modname .. name .. '_' .. defs.stages, {
         description = defs.description,
+        sounds = defs.sounds,
         drawtype = 'plantlike',
         tiles = { name .. '_' .. defs.stages .. '.png' },
         inventory_image = name .. '_' .. defs.stages .. '.png',
@@ -267,10 +269,10 @@ end
 sbz_api.register_plant('pyrograss', {
     description = 'Pyrograss Plant',
     sounds = {
-        footstep = { name = 'foley_crackle_chomp_simple', gain = 0.2, pitch = 1.0 },
-        dig      = { name = 'foley_crackle_chomp_simple', gain = 0.5, pitch = 0.8 },
-        dug      = { name = 'foley_crackle_chomp_simple', gain = 1.0, pitch = 1.0 },
-        place    = { name = 'foley_crackle_chomp_simple', gain = 0.4, pitch = 0.9 },
+        footstep = { name = 'foley_leaf_step', gain = 0.2, pitch = 1.0 },
+        dig      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.8 },
+        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'foley_leaf_step', gain = 0.4, pitch = 0.9 },
     },
     drop = 'sbz_bio:pyrograss 2',
     growth_rate = 4,
@@ -317,10 +319,10 @@ playereffects.register_effect_type(
 sbz_api.register_plant('razorgrass', {
     description = 'Razorgrass Plant',
     sounds = {
-        footstep = { name = 'foley_crackle_chomp_thin', gain = 0.2, pitch = 1.0 },
-        dig      = { name = 'foley_crackle_chomp_thin', gain = 0.5, pitch = 0.8 },
-        dug      = { name = 'foley_crackle_chomp_thin', gain = 1.0, pitch = 1.0 },
-        place    = { name = 'foley_crackle_chomp_thin', gain = 0.4, pitch = 0.9 },
+        footstep = { name = 'foley_leaf_step', gain = 0.2, pitch = 1.0 },
+        dig      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.8 },
+        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'foley_leaf_step', gain = 0.4, pitch = 0.9 },
     },
     drop = 'sbz_bio:razorgrass 2',
     growth_rate = 8,
@@ -375,10 +377,10 @@ end, function(fx, player) end, false, true, 0.1)
 sbz_api.register_plant('cleargrass', {
     description = 'Cleargrass Plant',
     sounds = {
-        footstep = { name = 'foley_crackle_chomp_smooth', gain = 0.2, pitch = 1.0 },
-        dig      = { name = 'foley_crackle_chomp_smooth', gain = 0.5, pitch = 0.8 },
-        dug      = { name = 'foley_crackle_chomp_smooth', gain = 1.0, pitch = 1.0 },
-        place    = { name = 'foley_crackle_chomp_smooth', gain = 0.4, pitch = 0.9 },
+        footstep = { name = 'foley_leaf_step', gain = 0.2, pitch = 1.0 },
+        dig      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.8 },
+        dug      = { name = 'foley_leaf_step', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'foley_leaf_step', gain = 0.4, pitch = 0.9 },
     },
     drop = 'sbz_bio:cleargrass 2',
     growth_rate = 4,
