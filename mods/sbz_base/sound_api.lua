@@ -80,12 +80,22 @@ function sbz_api.sounds.antimatter()
     return sounds
 end
 
-function sbz_api.sounds.wood()
+function sbz_api.sounds.wood_planks()
     local sounds = {
-        footstep = { name = 'gen_wump_wood', gain = 0.2, pitch = 0.9, fade = 4.0 },
-        dig      = { name = 'gen_simple_tap_low', gain = 0.4, pitch = 0.8 },
-        dug      = { name = 'gen_noise_woosh_slight', gain = 1.0, pitch = 0.7 },
-        place    = { name = 'gen_simple_tap_low', gain = 0.2, pitch = 1.0, fade = 4.0 }
+        footstep = { name = 'gen_wump_wood', gain = 0.3, pitch = 0.9 },
+        dig      = { name = 'foley_wood_thud_shallow', gain = 0.6, pitch = 0.8 },
+        dug      = { name = 'mix_wood_chop', gain = 1.0, pitch = 0.75 },
+        place    = { name = 'foley_wood_thud_thick', gain = 0.5, pitch = 1.0 }
+    }
+    return sounds
+end
+
+function sbz_api.sounds.wood_solid()
+    local sounds = {
+        footstep = { name = 'mix_choppy_rubber_step', gain = 0.2, pitch = 0.8 },
+        dig      = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.2 },
+        dug      = { name = 'mix_wood_chop', gain = 0.8, pitch = 0.9 },
+        place    = { name = 'foley_wood_thud_thick', gain = 1.0, pitch = 0.6 },
     }
     return sounds
 end
