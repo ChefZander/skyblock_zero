@@ -198,7 +198,7 @@ core.register_tool('sbz_resources:drill', {
 
     sound = {
         breaks        = { name = 'mix_small_poof', gain = 1.0, pitch = 1.0 },
-        punch_use     = { name = 'foley_drill_bang_short', gain = 0.5, pitch = 1.0 },
+        punch_use     = { name = 'foley_drill_bang_short', gain = 0.5, pitch = 1.0, fade = 8.0 },
         punch_use_air = { name = 'foley_drill_motor_burp', gain = 0.4, pitch = 1.0 },
     },
 })
