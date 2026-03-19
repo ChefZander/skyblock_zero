@@ -366,7 +366,7 @@ core.register_node('pipeworks:automatic_filter_injector', {
                 item = to_def.tube.insert_object(topos, to_node, item, vel, owner)
                 from_inv:add_item(from_inv_name, item)
                 core.sound_play(
-                    { name = 'mix_afi_transfer' },
+                    { name = 'mix_afi_transfer', gain = 0.5 },
                     { pos = pos, max_hear_distance = 8 }
                 )
                 return true
