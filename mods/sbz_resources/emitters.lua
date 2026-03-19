@@ -162,6 +162,10 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
     if not puncher then return end
     if not puncher:is_player() then return end
 
+    core.sound_play(
+        { name = 'mix_weird_hit', gain = 0.5, pitch = math.random(50, 100) / 100 },
+        { pos = pos, max_hear_distance = 16 }
+    )
     if multi and multi ~= 0 then n = multi end
     for _ = 1, n do
         local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
