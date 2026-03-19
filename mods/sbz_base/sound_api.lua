@@ -52,7 +52,7 @@ end
 
 function sbz_api.sounds.matter()
     local sounds = {
-        footstep = { name = 'gen_matter_muffled_step', gain = 0.2, pitch = 0.8 },
+        footstep = { name = 'mix_choppy_rubber_step', gain = 0.1, pitch = 0.5 },
         dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8 },
         dug      = { name = 'mix_matter_dug', gain = 1.0, pitch = 1.0 },
         place    = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.0 },
