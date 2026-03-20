@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
-    version = 42,
-    is_version_dev = true,
+    version = 43,
+    is_version_dev = false,
     gravity = 9.8 / 2,
     server_optimizations = (core.settings:get 'sbz_server_mode' or 'auto'),
     deg2rad = math.pi / 180,
