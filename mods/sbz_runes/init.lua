@@ -1,6 +1,6 @@
 minetest.register_craftitem("sbz_runes:meteoric_rune", {
     description = "¤ Meteoric Rune\nCosmetic: Surrounds you with meteorite particles.\n1/100k chance when breaking Meteoric Matter.",
-    inventory_image = "flame_rune.png",
+    inventory_image = "meteoric_rune.png",
     stack_max = 1,
 })
 
