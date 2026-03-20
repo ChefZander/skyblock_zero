@@ -22,10 +22,10 @@ core.register_node('sbz_meteorites:meteoric_matter', {
             if inv:room_for_item("main", drop) then
                 inv:add_item("main", drop)
             else
-                minetest.add_item(digger:get_pos(), drop)
+                core.add_item(digger:get_pos(), drop)
             end
 
-            minetest.chat_send_all("⌠ Crazy Rare Drop: " .. player_name .. " just dropped a Meteoric Rune! ⌡")
+            core.chat_send_all("⌠ Crazy Rare Drop: " .. player_name .. " just dropped a Meteoric Rune! ⌡")
         end
     end,
 })
