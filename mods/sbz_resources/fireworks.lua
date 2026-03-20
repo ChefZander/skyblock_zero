@@ -147,6 +147,32 @@ local function make_fx(pos)
     core.add_particlespawner(effect)
 end
 
+function sbz_api.fire_firework(pos)
+    if pos == nil then return end
+
+    local min = 1.10
+    local max = 2.00
+    local suspense = min + math.random() * (max - min)
+
+    local velocity = 11
+
+    core.sound_play("firework_launch", {
+        pos = pos,
+        gain = 0.5,
+    }, true)
+    core.add_particle {
+        pos = pos,
+        expirationtime = suspense,
+        size = 8,
+        texture = "firework.png",
+        vertical = true,
+        glow = 14,
+        velocity = { x = 0, y = velocity, z = 0 }
+    }
+    local t = suspense
+    core.after(t, make_fx, pos + vector.new(0, suspense * velocity, 0))
+end
+
 core.register_craftitem("sbz_resources:firework", {
     info_extra = { "You can activate it by \"trying to dig with it\" it, you can also try node breakers, or better yet, logic builders..." },
     description = "Firework",
@@ -157,28 +183,22 @@ core.register_craftitem("sbz_resources:firework", {
         local pos = pointed.above
         if pos == nil then return end
 
-        local min = 1.10
-        local max = 2.00
-        local suspense = min + math.random() * (max - min)
-
-        local velocity = 11
-
-        core.sound_play("firework_launch", {
-            pos = pos,
-            gain = 0.5,
-        }, true)
-        core.add_particle {
-            pos = pos,
-            expirationtime = suspense,
-            size = 8,
-            texture = "firework.png",
-            vertical = true,
-            glow = 14,
-            velocity = { x = 0, y = velocity, z = 0 }
-        }
-        local t = suspense
-        core.after(t, make_fx, pos + vector.new(0, suspense * velocity, 0))
+        sbz_api.fire_firework(pos)
         stack:take_item(1)
+
+        if math.random(1, 100000) == 1 then -- 1/100k
+            local player_name = user:get_player_name()
+            local inv = user:get_inventory()
+            local drop = ItemStack("sbz_runes:firework_rune")
+            
+            if inv:room_for_item("main", drop) then
+                inv:add_item("main", drop)
+            else
+                minetest.add_item(user:get_pos(), drop)
+            end
+            
+            minetest.chat_send_all("⌠ Crazy Rare Drop: " .. player_name .. " just dropped a Firework Rune! ⌡")
+        end
 
         return stack
     end

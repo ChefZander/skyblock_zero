@@ -13,6 +13,21 @@ core.register_node('sbz_meteorites:meteoric_matter', {
         items = matter_items,
     },
     -- sounds = sbz_api.sounds.matter(),
+    after_dig_node = function(pos, oldnode, oldmetadata, digger)
+        if math.random(1, 100000) == 1 then -- 1/100k
+            local player_name = digger:get_player_name()
+            local inv = digger:get_inventory()
+            local drop = ItemStack("sbz_runes:meteoric_rune")
+            
+            if inv:room_for_item("main", drop) then
+                inv:add_item("main", drop)
+            else
+                minetest.add_item(digger:get_pos(), drop)
+            end
+            
+            minetest.chat_send_all("⌠ Crazy Rare Drop: " .. player_name .. " just dropped a Meteoric Rune! ⌡")
+        end
+    end,
 })
 
 local antimatter_items = { max_items = 6 }
