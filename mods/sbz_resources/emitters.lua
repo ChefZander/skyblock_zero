@@ -180,6 +180,17 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
                 if not leftover:is_empty() then
                     core.add_item(pos, leftover)
                 end
+
+                if math.random(1, 1000000) == 1 then -- 1/1m
+                    local rune = ItemStack("sbz_runes:core_rune")
+                    local rune_leftover = inv:add_item("main", rune)
+                    
+                    if not rune_leftover:is_empty() then
+                        core.add_item(pos, rune_leftover)
+                    end
+
+                    core.chat_send_all("⌠ Crazy Rare Drop: " .. puncher:get_player_name() .. " just dropped a Core Rune! ⌡")
+                end
             end)
         end
     end
