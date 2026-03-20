@@ -105,7 +105,7 @@ minetest.register_globalstep(function(dtime)
         if inv:contains_item("main", "sbz_runes:firework_rune") then
             if math.random(1, 300) == 1 then
                 local pos = player:get_pos()
-                pos.y = pos.y + 1
+                pos.y = pos.y + 2
                 sbz_api.fire_firework(pos)
             end
         end
