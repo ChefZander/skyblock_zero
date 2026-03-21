@@ -112,6 +112,11 @@ do -- Angels Wing recipe scope
     })
 end
 
+core.register_craftitem("sbz_resources:phlogiston", {
+    description = "Phlogiston",
+    inventory_image = "phlogiston.png"
+})
+
 sbz_api.recipe.register_craft_type {
     type = 'phlogiston_fusing',
     description = 'Phlogiston Fusing',
