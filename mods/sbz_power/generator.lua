@@ -374,7 +374,7 @@ local function start_agen_active_sound(pos)
     end
 
     local handle = core.sound_play(
-        { name = 'mix_hum_click_loop', pitch = 2.0 },
+        { name = 'mix_hum_click_loop', pitch = 2.0, gain = 0.7 },
         {
             pos = pos,
             gain = 0.0, -- start silent to allow fade-in
