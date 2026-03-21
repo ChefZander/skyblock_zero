@@ -186,7 +186,7 @@ core.register_craftitem("sbz_resources:firework", {
         sbz_api.fire_firework(pos)
         stack:take_item(1)
 
-        if math.random(1, 100000) == 1 then -- 1/100k
+        if math.random(1, 1000000) == 1 then -- 1/1m
             local player_name = user:get_player_name()
             local inv = user:get_inventory()
             local drop = ItemStack("sbz_runes:firework_rune")

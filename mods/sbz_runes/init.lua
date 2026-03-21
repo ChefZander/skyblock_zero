@@ -11,7 +11,7 @@ minetest.register_craftitem("sbz_runes:core_rune", {
 })
 
 minetest.register_craftitem("sbz_runes:firework_rune", {
-    description = "¤ Firework Rune\nCosmetic: Occasionally fires off firework rockets on it's own.\n1/100k chance when firing off a firework rocket.",
+    description = "¤ Firework Rune\nCosmetic: Occasionally fires off firework rockets on it's own.\n1/1m chance when firing off a firework rocket.",
     inventory_image = "firework_rune.png",
     stack_max = 1,
 })
