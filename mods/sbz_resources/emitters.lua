@@ -181,7 +181,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
                     core.add_item(pos, leftover)
                 end
 
-                if math.random(1, 1000000) == 1 then -- 1/1m
+                if math.random(1, 10000000) == 1 then -- 1/10m
                     local rune = ItemStack("sbz_runes:core_rune")
                     local rune_leftover = inv:add_item("main", rune)
                     

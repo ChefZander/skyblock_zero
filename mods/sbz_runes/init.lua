@@ -5,7 +5,7 @@ minetest.register_craftitem("sbz_runes:meteoric_rune", {
 })
 
 minetest.register_craftitem("sbz_runes:core_rune", {
-    description = "¤ Core Rune\nCosmetic: Surrounds you with core particles like The Core.\n1/1m chance when punching The Core.",
+    description = "¤ Core Rune\nCosmetic: Surrounds you with core particles like The Core.\n1/10m chance when punching The Core.",
     inventory_image = "core_rune.png",
     stack_max = 1,
 })
