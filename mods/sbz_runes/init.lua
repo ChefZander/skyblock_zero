@@ -16,6 +16,12 @@ minetest.register_craftitem("sbz_runes:firework_rune", {
     stack_max = 1,
 })
 
+minetest.register_craftitem("sbz_runes:halo_rune", {
+    description = "¤ Halo Rune\nCosmetic: A divine ring of light floats above you.\n1/10m chance when punching a Colorium Emitter.",
+    inventory_image = "halo_rune.png",
+    stack_max = 1,
+})
+
 local timer = 0
 minetest.register_globalstep(function(dtime)
     timer = timer + dtime
@@ -107,6 +113,32 @@ minetest.register_globalstep(function(dtime)
                 local pos = player:get_pos()
                 pos.y = pos.y + 2
                 sbz_api.fire_firework(pos)
+            end
+        end
+
+        -- Halo RUne
+        if inv:contains_item("main", "sbz_runes:halo_rune") then
+            local pos = player:get_pos()
+            local radius = 0.2
+            local eight = 1.85
+            local points = 21 -- any less and it looks bad
+
+            for i = 1, points do
+                local angle = (i / points) * (math.pi * 2) + (timer / 4)
+                local dx = math.cos(angle) * radius
+                local dz = math.sin(angle) * radius
+
+                minetest.add_particle({
+                    pos = {x = pos.x + dx, y = pos.y + eight, z = pos.z + dz},
+                    velocity = {x = 0, y = 0, z = 0},
+                    acceleration = {x = 0, y = 0, z = 0},
+                    expirationtime = dtime + 0.01,
+                    size = 1.5,
+                    collisiondetection = false,
+                    vertical = false,
+                    glow = 14,
+                    texture = "halo_particle.png",
+                })
             end
         end
     end

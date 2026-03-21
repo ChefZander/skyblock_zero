@@ -23,6 +23,18 @@ local action = function(pos, _, puncher)
 
             unlock_achievement(puncher:get_player_name(), "Colorium Emitters")
         end
+
+        -- Halo Rune drop
+        if math.random(1, 10000000) == 1 then -- 1/10m
+            local rune = ItemStack("sbz_runes:halo_rune")
+            local rune_leftover = inv:add_item("main", rune)
+            
+            if not rune_leftover:is_empty() then
+                core.add_item(pos, rune_leftover)
+            end
+
+            core.chat_send_all("⌠ Crazy Rare Drop: " .. puncher:get_player_name() .. " just dropped a Halo Rune! ⌡")
+        end
     end
 end
 
