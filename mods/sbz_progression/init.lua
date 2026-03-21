@@ -198,6 +198,18 @@ core.register_globalstep(function(dtime)
             if sbz_api.activate_safetynet(player:get_player_name(), pos) then
                 sbz_api.displayDialogLine(player:get_player_name(), 'You fell off the platform.')
                 player:set_pos { x = 0, y = 1, z = 0 }
+
+                -- Singularity Rune drop
+                if math.random(1, 50000) == 1 then -- 1/50k
+                    local rune = ItemStack("sbz_runes:singularity_rune")
+                    local rune_leftover = inv:add_item("main", rune)
+                    
+                    if not rune_leftover:is_empty() then
+                        core.add_item(pos, rune_leftover)
+                    end
+
+                    core.chat_send_all("⌠ Crazy Rare Drop: " .. puncher:get_player_name() .. " just dropped a Singularity Rune! ⌡")
+                end
             end
         end
     end
