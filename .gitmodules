@@ -34,3 +34,6 @@
 [submodule "mods/extended_placement"]
 	path = mods/extended_placement
 	url = https://github.com/gamefreq0/extended_placement
+[submodule "mods/stubes"]
+	path = mods/stubes
+	url = https://codeberg.org/skyblock_zero/stubes
