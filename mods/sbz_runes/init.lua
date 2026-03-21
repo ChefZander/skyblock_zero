@@ -1,39 +1,49 @@
-minetest.register_craftitem("sbz_runes:meteoric_rune", {
-    description = "¤ Meteoric Rune\nCosmetic: Surrounds you with meteorite particles.\n1/100k chance when breaking Meteoric Matter.",
+core.register_craftitem("sbz_runes:meteoric_rune", {
+    description = "¤ Meteoric Rune\n" .. 
+        core.colorize("#00FFFF", "Cosmetic: Surrounds you with meteorite particles.") .. "\n" .. 
+        core.colorize("#BF00FF", "1/100k chance when breaking Meteoric Matter."),
     inventory_image = "meteoric_rune.png",
     stack_max = 1,
 })
 
-minetest.register_craftitem("sbz_runes:core_rune", {
-    description = "¤ Core Rune\nCosmetic: Surrounds you with core particles like The Core.\n1/10m chance when punching The Core.",
+core.register_craftitem("sbz_runes:core_rune", {
+    description = "¤ Core Rune\n" .. 
+        core.colorize("#00FFFF", "Cosmetic: Surrounds you with core particles like The Core.") .. "\n" .. 
+        core.colorize("#BF00FF", "1/10m chance when punching The Core."),
     inventory_image = "core_rune.png",
     stack_max = 1,
 })
 
-minetest.register_craftitem("sbz_runes:firework_rune", {
-    description = "¤ Firework Rune\nCosmetic: Occasionally fires off firework rockets on it's own.\n1/1m chance when firing off a firework rocket.",
+core.register_craftitem("sbz_runes:firework_rune", {
+    description = "¤ Firework Rune\n" .. 
+        core.colorize("#00FFFF", "Cosmetic: Occasionally fires off firework rockets on it's own.") .. "\n" .. 
+        core.colorize("#BF00FF", "1/1m chance when firing off a firework rocket."),
     inventory_image = "firework_rune.png",
     stack_max = 1,
 })
 
-minetest.register_craftitem("sbz_runes:halo_rune", {
-    description = "¤ Halo Rune\nCosmetic: A divine ring of light floats above you.\n1/10m chance when punching a Colorium Emitter.",
+core.register_craftitem("sbz_runes:halo_rune", {
+    description = "¤ Halo Rune\n" .. 
+        core.colorize("#00FFFF", "Cosmetic: A divine ring of light floats above you.") .. "\n" .. 
+        core.colorize("#BF00FF", "1/10m chance when punching a Colorium Emitter."),
     inventory_image = "halo_rune.png",
     stack_max = 1,
 })
 
-minetest.register_craftitem("sbz_runes:singularity_rune", {
-    description = "¤ Singularity Rune\nCosmetic: Reality bends around you.\n1/50k chance when falling into the Void.",
+core.register_craftitem("sbz_runes:singularity_rune", {
+    description = "¤ Singularity Rune\n" .. 
+        core.colorize("#00FFFF", "Cosmetic: Reality bends around you.") .. "\n" .. 
+        core.colorize("#BF00FF", "1/50k chance when falling into the Void."),
     inventory_image = "singularity_rune.png",
     stack_max = 1,
 })
 
 local timer = 0
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
     timer = timer + dtime
     if timer > 4 then timer = timer - 2 end
 
-    for _, player in ipairs(minetest.get_connected_players()) do
+    for _, player in ipairs(core.get_connected_players()) do
         local inv = player:get_inventory()
 
         -- Flame Rune
@@ -47,7 +57,7 @@ minetest.register_globalstep(function(dtime)
             local offset_x = math.cos(angle) * radius
             local offset_z = math.sin(angle) * radius
 
-            minetest.add_particle({
+            core.add_particle({
                 pos = {x = pos.x + offset_x, y = pos.y + 0.1, z = pos.z + offset_z},
                 velocity = {x = 0, y = 0.5, z = 0},
                 acceleration = {x = 0, y = 0.2, z = 0},
@@ -69,7 +79,7 @@ minetest.register_globalstep(function(dtime)
             local offset_x_2 = math.cos(angle_2) * radius
             local offset_z_2 = math.sin(angle_2) * radius
 
-            minetest.add_particle({
+            core.add_particle({
                 pos = {x = pos.x + offset_x_2, y = pos.y + 0.1, z = pos.z + offset_z_2},
                 velocity = {x = 0, y = 0.1, z = 0},
                 acceleration = {x = 0, y = 2, z = 0},
@@ -134,7 +144,7 @@ minetest.register_globalstep(function(dtime)
                 local dx = math.cos(angle) * radius
                 local dz = math.sin(angle) * radius
 
-                minetest.add_particle({
+                core.add_particle({
                     pos = {x = pos.x + dx, y = pos.y + eight, z = pos.z + dz},
                     velocity = {x = 0, y = 0, z = 0},
                     acceleration = {x = 0, y = 0, z = 0},
@@ -166,7 +176,7 @@ minetest.register_globalstep(function(dtime)
                 local dz = -math.cos(angle) * dist
                 local dy = (math.random() - 0.5) * 1.5
 
-                minetest.add_particle({
+                core.add_particle({
                     pos = {x = pos.x + dx, y = pos.y + dy, z = pos.z + dz},
                     velocity = {x = -dx * 1.5, y = -dy * 1.5, z = -dz * 1.5},
                     acceleration = {x = 0, y = 0, z = 0},
