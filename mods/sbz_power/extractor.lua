@@ -11,15 +11,16 @@ local formspec = [[
 
 sbz_api.register_machine('sbz_power:simple_matter_extractor', {
     description = 'Simple Matter Extractor',
+    sounds = sbz_api.sounds.matter(),
     tiles = { 'simple_matter_extractor.png' },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
-        minetest.get_meta(pos):set_string('formspec', formspec)
+        core.get_meta(pos):set_string('formspec', formspec)
     end,
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('main', 1)
         meta:set_string('formspec', formspec)
@@ -33,7 +34,7 @@ sbz_api.register_machine('sbz_power:simple_matter_extractor', {
         if inv:room_for_item('main', itemstack) then
             inv:add_item('main', itemstack)
 
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 10,
                 time = 1,
                 minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -84,15 +85,16 @@ local advanced_formspec = [[
 
 sbz_api.register_machine('sbz_power:advanced_matter_extractor', {
     description = 'Advanced Matter Extractor',
+    sounds = sbz_api.sounds.matter(),
     tiles = { 'advanced_matter_extractor.png' },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
     walkable = true,
     on_rightclick = function(pos, node, player, pointed_thing)
-        minetest.get_meta(pos):set_string('formspec', advanced_formspec)
+        core.get_meta(pos):set_string('formspec', advanced_formspec)
     end,
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('main', 3)
         meta:set_string('formspec', advanced_formspec)
@@ -114,7 +116,7 @@ sbz_api.register_machine('sbz_power:advanced_matter_extractor', {
         if inv:room_for_item('main', itemstack) then
             inv:add_item('main', itemstack)
 
-            minetest.add_particlespawner {
+            core.add_particlespawner {
                 amount = 10,
                 time = 1,
                 minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },

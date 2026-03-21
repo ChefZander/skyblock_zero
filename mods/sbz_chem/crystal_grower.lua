@@ -17,9 +17,57 @@ local function allow_metadata_inventory_move(pos, from_list, from_index, to_list
     return count
 end
 
+-- Proper handling needed for actual looping of a 2-second audio clip
+local active_sounds = {}
+local function pos_hash(pos)
+    return core.hash_node_position(pos)
+end
+
+local function start_active_sound(pos)
+    local key = pos_hash(pos)
+
+    -- If already playing
+    if active_sounds[key] then
+        return
+    end
+
+    local handle = core.sound_play(
+        { name = 'mix_active_hum_loop', gain = 0.1, pitch = 0.8 },
+        {
+            pos = pos,
+            gain = 0.0, -- start silent to allow fade-in
+            max_hear_distance = 8.0,
+            loop = true,
+        }
+    )
+
+    if handle then
+        active_sounds[key] = handle
+        core.sound_fade(handle, 0.5, 0.8)
+    end
+end
+
+local function stop_active_sound(pos)
+    local key = pos_hash(pos)
+    local handle = active_sounds[key]
+
+    if not handle then
+        return
+    end
+
+    core.sound_fade(handle, -1.2, 0)
+
+    -- Stop sound after fade finishes
+    core.after(1.0, function()
+        core.sound_stop(handle)
+    end)
+
+    active_sounds[key] = nil
+end
 
 sbz_api.register_stateful_machine("sbz_chem:crystal_grower", {
     description = "Crystal Grower",
+    sounds = sbz_api.sounds.machine(),
     info_power_consume = 120,
     tiles = {
         "crystal_grower_side.png",
@@ -63,6 +111,7 @@ listring[context;dst]
 
         if demand + power_needed > supply then
             meta:set_string("infotext", "Not enough power")
+            stop_active_sound(pos)
             return power_needed, false
         else
             meta:set_string("infotext", "Growing...")
@@ -72,18 +121,21 @@ listring[context;dst]
             local out, count, decremented, index = sbz_api.recipe.resolve_craft(src, "crystal_growing", true)
             if out == nil then
                 meta:set_string("infotext", "Invalid/no recipe")
+                stop_active_sound(pos)
                 return 0
             end
 
             if not inv:room_for_item("dst", out) then
                 meta:set_string("infotext", "Full")
+                stop_active_sound(pos)
                 return 0
             end
             local input = inv:get_stack("src", index)
             input:set_count(input:get_count() - decremented)
             inv:set_stack("src", index, input)
             inv:add_item("dst", out)
-            sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
+            start_active_sound(pos)
+            core.sound_play({ name = 'mix_crystallization_effect', pitch = 1.2 }, { pos = pos, max_hear_distance = 8 })
             return power_needed
         end
     end,

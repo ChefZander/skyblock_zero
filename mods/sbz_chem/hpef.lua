@@ -93,7 +93,7 @@ listring[context;dst]
 
             inv:set_stack('src', index, decremented_input.items[1])
             inv:add_item('dst', out.item)
-            core.sound_play({ name = 'mix_furnace_slight_crackle', gain = 0.8 }, { pos = pos })
+            core.sound_play({ name = 'mix_furnace_slight_crackle', gain = 0.6 }, { pos = pos, max_hear_distance = 8.0 })
             return power_needed
         end
     end,

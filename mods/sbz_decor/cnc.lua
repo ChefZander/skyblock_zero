@@ -38,7 +38,7 @@ local function make_formspec(meta)
     )
 end
 
-minetest.register_node(
+core.register_node(
     'sbz_decor:cnc',
     sbz_api.add_tube_support {
         _after_dig_drop = false, -- To prevent duping
@@ -46,33 +46,34 @@ minetest.register_node(
         info = 'Use it to cut stairs/slabs out of nodes.',
         tiles = { 'cnc_top.png', 'cnc_top.png', 'cnc_side.png' },
         groups = { matter = 1 },
+        sounds = sbz_api.sounds.machine(),
         input_inv = 'src',
         output_inv = 'choices',
         on_construct = function(pos)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             inv:set_size('src', 1)
             inv:set_size('choices', 4)
             make_formspec(meta)
         end,
         allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-            if listname == 'src' and minetest.get_item_group(stack:get_name(), 'cnc') == 1 then
+            if listname == 'src' and core.get_item_group(stack:get_name(), 'cnc') == 1 then
                 return stack:get_count()
             end
             return 0
         end,
         on_metadata_inventory_put = function(pos)
-            make_formspec(minetest.get_meta(pos))
+            make_formspec(core.get_meta(pos))
         end,
         on_metadata_inventory_move = function(pos)
-            make_formspec(minetest.get_meta(pos))
+            make_formspec(core.get_meta(pos))
         end,
         on_metadata_inventory_take = function(pos)
-            make_formspec(minetest.get_meta(pos))
+            make_formspec(core.get_meta(pos))
         end,
         allow_metadata_inventory_take = function(pos, listname, index, stack, player)
             if listname == 'choices' then
-                local inv = minetest.get_meta(pos):get_inventory()
+                local inv = core.get_meta(pos):get_inventory()
                 local srcstack = inv:get_stack('src', 1)
                 local sub = stack:get_count()
                 if index == 1 then sub = math.ceil(sub / 2) end -- slabs, if you pick out only one slab you loose out
@@ -85,7 +86,7 @@ minetest.register_node(
         end,
         tube = {
             insert_object = function(pos, _, stack, _)
-                local meta = minetest.get_meta(pos)
+                local meta = core.get_meta(pos)
                 local inv = meta:get_inventory()
                 local leftover = inv:add_item('src', stack)
 
@@ -93,7 +94,7 @@ minetest.register_node(
                 return leftover
             end,
             can_insert = function(pos, _, stack, _)
-                local meta = minetest.get_meta(pos)
+                local meta = core.get_meta(pos)
                 local inv = meta:get_inventory()
                 stack = stack:peek_item(1)
                 return inv:room_for_item('src', stack)

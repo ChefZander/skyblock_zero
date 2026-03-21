@@ -39,6 +39,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:item_sensor", unifieddyes.def {
     description = "Item Sensor",
+    sounds = sbz_api.sounds.matter(),
     info_extra = "Checks if a machine can be inserted to with an item.\nYou can use it to attempt to optimize your giant instatube set up i guess.",
     tiles = {
         sbz_api.make_sensor_tex_off("item_sensor"),
@@ -128,17 +129,17 @@ sbz_api.register_stateful_machine("sbz_power:item_sensor", unifieddyes.def {
     linking_range = sbz_api.logic_gate_linking_range,
     -- code for these allow_metadata_stuffs taken from item filter, which was taken from pipeworks, modified
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         inv:set_stack(listname, index, stack)
         return 0
     end,
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         inv:set_stack(listname, index, ItemStack(""))
         return 0
     end,
     -- allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-    -- local inv = minetest.get_meta(pos):get_inventory()
+    -- local inv = core.get_meta(pos):get_inventory()
     -- inv:set_stack(from_list, from_index, ItemStack(""))
     -- return 0
     -- end,

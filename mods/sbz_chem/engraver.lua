@@ -29,6 +29,7 @@ sbz_api.register_stateful_machine("sbz_chem:engraver", {
         "engraver.png^[verticalframe:24:1",
     },
     groups = { matter = 1 },
+    sounds = sbz_api.sounds.machine(),
     paramtype2 = "4dir",
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -36,7 +37,7 @@ sbz_api.register_stateful_machine("sbz_chem:engraver", {
     input_inv = "src",
     output_inv = "dst",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("src", 2)
         inv:set_size("dst", 1)

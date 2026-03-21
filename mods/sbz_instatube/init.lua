@@ -306,6 +306,7 @@ core.register_node(
     'sbz_instatube:instant_tube',
     unifieddyes.def {
         description = 'Instatube',
+        sounds = sbz_api.sounds.glass(),
         connects_to = { 'sbz_instatube:instant_tube', 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         info_extra = { 'Deliver items in record time! (Also less lag and less weird behavior!)' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -352,6 +353,7 @@ core.register_node(
     'sbz_instatube:one_way_instatube',
     unifieddyes.def {
         description = 'One Way Instatube',
+        sounds = sbz_api.sounds.glass(),
         tiles = {
             'one_way_instatube.png^[transformFX',
             'one_way_instatube.png^[transformFX',
@@ -459,7 +461,7 @@ listring[]
         },
         allow_metadata_inventory_put = function(pos, listname, index, stack, player)
             if not pipeworks.may_configure(pos, player) then return 0 end
-            local inv = minetest.get_meta(pos):get_inventory()
+            local inv = core.get_meta(pos):get_inventory()
             local stack_copy = ItemStack(stack)
             stack_copy:set_count(1)
             inv:set_stack(listname, index, stack_copy)
@@ -467,13 +469,13 @@ listring[]
         end,
         allow_metadata_inventory_take = function(pos, listname, index, stack, player)
             if not pipeworks.may_configure(pos, player) then return 0 end
-            local inv = minetest.get_meta(pos):get_inventory()
+            local inv = core.get_meta(pos):get_inventory()
             inv:set_stack(listname, index, ItemStack '')
             return 0
         end,
         allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
             if not pipeworks.may_configure(pos, player) then return 0 end
-            local inv = minetest.get_meta(pos):get_inventory()
+            local inv = core.get_meta(pos):get_inventory()
             inv:set_stack(from_list, from_index, ItemStack '')
             return 0
         end,
@@ -511,6 +513,7 @@ core.register_node(
     'sbz_instatube:high_priority_instant_tube',
     unifieddyes.def {
         description = 'High Priority Instatube',
+        sounds = sbz_api.sounds.glass(),
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
         paramtype2 = 'color',
@@ -556,6 +559,7 @@ core.register_node(
     'sbz_instatube:low_priority_instant_tube',
     unifieddyes.def {
         description = 'Low Priority Instatube',
+        sounds = sbz_api.sounds.glass(),
         info_extra = "Can't be used with normal tubes, but with instatubes it works fine.",
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -617,6 +621,7 @@ core.register_node(
     'sbz_instatube:teleport_instant_tube',
     unifieddyes.def {
         description = 'Teleport Instatube',
+        sounds = sbz_api.sounds.glass(),
         info_extra = { 'Links to all teleport tubes in a channel at once.' },
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -653,7 +658,7 @@ core.register_node(
         use_texture_alpha = 'clip',
         -- how convenient, almost like i modified pipeworks for this or something
         on_construct = function(pos)
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             meta:set_int('can_receive', 1) -- Enabled by default
             pipeworks.tptube.update_meta(meta)
         end,
@@ -675,7 +680,7 @@ core.register_node(
 )
 
 instatube.special_insert_logic['sbz_instatube:teleport_instant_tube'] = function(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local channel = meta:get_string 'channel'
     if channel == '' then return true end
     local receivers = pipeworks.tptube.get_receivers(pos, channel)
@@ -686,7 +691,7 @@ end
 mesecon.register_on_mvps_move(function(moved_nodes)
     for _, n in ipairs(moved_nodes) do
         if n.node.name == 'sbz_instatube:teleport_instant_tube' then
-            local meta = minetest.get_meta(n.pos)
+            local meta = core.get_meta(n.pos)
             pipeworks.tptube.remove_tube(n.oldpos)
             pipeworks.tptube.set_tube(n.pos, meta:get_string 'channel', meta:get_int 'can_receive')
         end
@@ -697,6 +702,7 @@ core.register_node(
     'sbz_instatube:randomized_input_instant_tube',
     unifieddyes.def {
         description = 'Randomized Input Instatube',
+        sounds = sbz_api.sounds.glass(),
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
         paramtype2 = 'color',
@@ -741,6 +747,7 @@ core.register_node(
     'sbz_instatube:cycling_input_instant_tube',
     unifieddyes.def {
         description = 'Cycling Input Instatube',
+        sounds = sbz_api.sounds.glass(),
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         info_extra = { '' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -903,6 +910,7 @@ end)
 
 core.register_craftitem('sbz_instatube:dbg_tool', {
     description = 'Instatube Debug Tool',
+    sounds = sbz_api.sounds.glass(),
     info_extra = 'Shows all machines connected to instatube',
     inventory_image = 'instatube_debug_tool.png',
     stack_max = 1,

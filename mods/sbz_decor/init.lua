@@ -154,7 +154,7 @@ core.register_node(
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sunlight_propagates = true,
         walkable = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
     }
 )
 stairs.register 'sbz_decor:factory_warning'
@@ -172,7 +172,7 @@ core.register_node('sbz_decor:mystery_terrarium', {
     groups = { matter = 1, cracky = 3, explody = 3 },
     sunlight_propagates = true,
     walkable = true,
-    -- sounds = sbz_api.sounds.matter(),
+    sounds = sbz_api.sounds.matter(),
 })
 core.register_craft {
     output = 'sbz_decor:mystery_terrarium',
@@ -197,7 +197,7 @@ core.register_node(
         groups = { matter = 1, cracky = 3, explody = 3 },
         light_source = 10,
         sunlight_propagates = true,
-        -- sounds = sbz_api.sounds.matter(),
+        sounds = sbz_api.sounds.matter(),
     }
 )
 
@@ -242,6 +242,7 @@ core.register_node(
     'sbz_decor:ladder',
     unifieddyes.def {
         description = 'Matter Ladder',
+        sounds = sbz_api.sounds.matter(),
         drawtype = 'nodebox',
         node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
             type = 'fixed',
@@ -285,6 +286,7 @@ core.register_node(
     'sbz_decor:antimatter_ladder',
     unifieddyes.def {
         description = 'Antimatter Ladder',
+        sounds = sbz_api.sounds.antimatter(),
         drawtype = 'nodebox',
         node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
             type = 'fixed',

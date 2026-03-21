@@ -8,7 +8,12 @@ core.register_node('sbz_resources:strange_blob', {
     info_extra = 'It sure is strange looking',
     tiles = { 'strange_blob.png' },
     groups = { matter = 1, antimatter = 1, strange = 1, explody = 100 },
-    -- sounds = sbz_api.sounds.strange(),
+    sounds = {
+        footstep = { name = 'foley_strange_step', gain = 0.2, pitch = 1.0 },
+        dig      = { name = 'foley_slime_bark', gain = 0.3, pitch = 0.7 },
+        dug      = { name = 'foley_slime_fart', gain = 1.0, pitch = 1.2 },
+        place    = { name = 'foley_slime_squish', gain = 0.8, pitch = 1.0 },
+    },
     light_source = 14,
 })
 

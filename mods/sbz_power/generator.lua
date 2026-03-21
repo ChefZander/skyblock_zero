@@ -4,6 +4,7 @@ local charged_particle_power = 36
 -- 36*10 => 360 power per charged particle
 sbz_api.register_stateful_generator('sbz_power:simple_charge_generator', {
     description = 'Simple Charge Generator',
+    sounds = sbz_api.sounds.machine(),
     tiles = { 'simple_charge_generator_off.png' },
 
     groups = { dig_immediate = 2, sbz_machine = 1, pipe_connects = 1 },
@@ -285,6 +286,7 @@ sbz_api.recipe.register_craft {
 -- Starlight Collector
 sbz_api.register_generator('sbz_power:starlight_collector', {
     description = 'Starlight Collector',
+    sounds = sbz_api.sounds.matter(),
     drawtype = 'nodebox',
     tiles = {
         'starlight_collector.png',
@@ -357,6 +359,54 @@ if not sbz_api.server_optimizations then
     }
 end
 
+-- Proper handling needed for actual looping
+local agen_active_sounds = {}
+local function pos_hash(pos)
+    return core.hash_node_position(pos)
+end
+
+local function start_agen_active_sound(pos)
+    local key = pos_hash(pos)
+
+    -- If already playing
+    if agen_active_sounds[key] then
+        return
+    end
+
+    local handle = core.sound_play(
+        { name = 'mix_hum_click_loop', pitch = 2.0, gain = 0.7 },
+        {
+            pos = pos,
+            gain = 0.0, -- start silent to allow fade-in
+            max_hear_distance = 8.0,
+            loop = true,
+        }
+    )
+
+    if handle then
+        agen_active_sounds[key] = handle
+        core.sound_fade(handle, 0.5, 0.8)
+    end
+end
+
+local function stop_agen_active_sound(pos)
+    local key = pos_hash(pos)
+    local handle = agen_active_sounds[key]
+
+    if not handle then
+        return
+    end
+
+    core.sound_fade(handle, -1.2, 0)
+
+    -- Stop sound after fade finishes
+    core.after(1.0, function()
+        core.sound_stop(handle)
+    end)
+
+    agen_active_sounds[key] = nil
+end
+
 sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
     description = 'Antimatter Generator',
     info_extra = {
@@ -369,12 +419,7 @@ sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
         'antimatter_gen_top.png',
         'antimatter_gen_side.png',
     },
-    sounds = {
-        footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.8, pitch = 1.0, fade = 0.0 },
-        dug      = { name = 'mix_machine_dug', gain = 1.0, pitch = 0.8, fade = 0.0 },
-        place    = { name = 'mix_metal_cabinet_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
-    },
+    sounds = sbz_api.sounds.machine(),
     input_inv = 'input',
     output_inv = 'input',
     on_construct = function(pos)
@@ -425,7 +470,7 @@ list[current_player;main;0.2,5;8,4;]
                 exptime = 3,
             }
 
-            core.sound_play({ name = 'mix_obnoxious_generator_on', pitch = 0.9 }, { pos = pos, max_hear_distance = 16 })
+            start_agen_active_sound(pos)
 
             def.texture = 'antimatter_dust.png'
             core.add_particlespawner(def)
@@ -436,6 +481,7 @@ list[current_player;main;0.2,5;8,4;]
         end
 
         meta:set_string('infotext', "Can't react")
+        stop_agen_active_sound(pos)
         return 0
     end,
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
@@ -562,6 +608,7 @@ end
 
 sbz_api.register_generator('sbz_power:creative_generator', {
     description = 'Creative Generator',
+    sounds = sbz_api.sounds.machine(),
     tiles = {
         {
             name = 'creative_battery_power_gen.png^[colorize:purple:100',

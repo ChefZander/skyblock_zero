@@ -60,7 +60,6 @@ core.register_node("sbz_resources:emitter", {
     groups = { gravity = 25, unbreakable = 1, transparent = 1, not_in_creative_inventory = 1 },
     sounds = {
         footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
         place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
     },
@@ -80,7 +79,6 @@ core.register_node("sbz_resources:movable_emitter", {
     groups = { transparent = 1, matter = 1, level = 2 },
     sounds = {
         footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
-        -- dig      = { name = '', gain = 1.0, pitch = 1.0, fade = 0.0 },
         dug      = { name = 'gen_fried_noise_explode', gain = 1.0, pitch = 1.0, fade = 0.0 },
         place    = { name = 'mix_gassy_quack_hit', gain = 1.0, pitch = 1.0, fade = 0.0 },
     },
@@ -164,6 +162,10 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
     if not puncher then return end
     if not puncher:is_player() then return end
 
+    core.sound_play(
+        { name = 'mix_weird_hit', gain = 0.5, pitch = math.random(50, 100) / 100 },
+        { pos = pos, max_hear_distance = 16 }
+    )
     if multi and multi ~= 0 then n = multi end
     for _ = 1, n do
         local items = { "sbz_resources:core_dust", "sbz_resources:matter_dust", "sbz_resources:charged_particle" }
@@ -197,6 +199,7 @@ end
 -- THE CORE!!!
 core.register_node("sbz_resources:the_core", {
     description = "The Core",
+    sounds = sbz_api.sounds.matter(),
     tiles = { "the_core.png" },
     groups = { gravity = 25, unbreakable = 1, not_in_creative_inventory = 1 },
     drop = "",

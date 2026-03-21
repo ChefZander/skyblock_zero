@@ -15,7 +15,7 @@ core.register_node("sbz_logic_devices:noteblock", {
     },
     paramtype2 = "4dir",
     groups = { matter = 1, ui_logic = 1 },
-    -- sounds = sbz_api.sounds.machine(),
+    sounds = sbz_api.sounds.machine(),
     on_logic_send = function(pos, msg, from_pos)
         if type(msg) == "string" then return core.sound_play(msg, { pos = pos }) end
         if type(msg) ~= "table" then return end

@@ -65,10 +65,11 @@ sbz_api.register_stateful_machine('sbz_chem:crusher', {
         'crusher_side.png',
     },
     groups = { matter = 1 },
+    sounds = sbz_api.sounds.machine(),
     paramtype2 = 'facedir',
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('input', 1)
         inv:set_size('output', 16)
@@ -115,7 +116,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
         --     if inv:room_for_item("output", "sbz_chem:empty_fluid_cell") then
         --         inv:add_item("output", "sbz_chem:empty_fluid_cell")
         --     else
-        --         minetest.add_item(pos, "sbz_chem:empty_fluid_cell")
+        --         core.add_item(pos, "sbz_chem:empty_fluid_cell")
         --     end
 
         --     return crusher_power_consume
@@ -136,7 +137,7 @@ listring[current_player;main]listring[context;input]listring[current_player;main
                 if inv:room_for_item('output', 'sbz_chem:water_fluid_cell') then
                     inv:add_item('output', 'sbz_chem:water_fluid_cell')
                 else
-                    minetest.add_item(pos, 'sbz_chem:water_fluid_cell')
+                    core.add_item(pos, 'sbz_chem:water_fluid_cell')
                 end
             end
         end

@@ -99,6 +99,7 @@ local power_needed = 30
 
 sbz_api.register_stateful_machine("sbz_power:ele_fab", {
     description = "Ele Fab",
+    sounds = sbz_api.sounds.matter(),
     info_extra = "Yeah the concept is from techage.",
     tiles = {
         "ele_fab_top.png",
@@ -106,7 +107,7 @@ sbz_api.register_stateful_machine("sbz_power:ele_fab", {
         "ele_fab.png^[verticalframe:8:1"
     },
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("input", 4)
         inv:set_size("output", 1)

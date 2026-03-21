@@ -13,14 +13,14 @@ local all_switching_stations = {} -- h(pos) = true|nil
 local touched_nodes = {}
 
 ---@type function
-local hash = minetest.hash_node_position
+local hash = core.hash_node_position
 local h = hash
 ---@type function
-local unhash = minetest.get_position_from_hash
+local unhash = core.get_position_from_hash
 ---@type table
-local node_defs = minetest.registered_nodes
+local node_defs = core.registered_nodes
 ---@type function
-local IG = minetest.get_item_group
+local IG = core.get_item_group
 
 sbz_api.pos2network = {}
 sbz_api.networks = {}
@@ -111,7 +111,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
 
     sbz_api.vm_begin()
 
-    -- inspired somewhat by https://github.com/minetest-mods/digilines/blob/7d4895d5d4a093041e3e6c8a8676f3b99bb477b7/internal.lua#L99
+    -- inspired somewhat by https://github.com/core-mods/digilines/blob/7d4895d5d4a093041e3e6c8a8676f3b99bb477b7/internal.lua#L99
 
     while not queue:is_empty() do
         local current_pos, dir = unpack(queue:dequeue())
@@ -143,7 +143,7 @@ function sbz_api.assemble_network(start_pos, seen, parent_net_id)
 
             if def.can_assemble(current_pos, node, dir, network, seen, parent_net_id) then
                 pos2network[h(current_pos)] = net_id
-                minetest.registered_nodes[nn].assemble(current_pos, node, dir, network, seen, net_id)
+                core.registered_nodes[nn].assemble(current_pos, node, dir, network, seen, net_id)
             else
                 seen[current_pos] = false
             end
@@ -184,12 +184,12 @@ end
 
 function sbz_api.switching_station_tick(start_pos)
     if touched_nodes[hash(start_pos)] and os.time() - touched_nodes[hash(start_pos)] < 1 then
-        minetest.get_meta(start_pos):set_string('infotext', 'Inactive (connected to another network)')
+        core.get_meta(start_pos):set_string('infotext', 'Inactive (connected to another network)')
         return
     end
     sbz_api.vm_begin()
 
-    local meta = minetest.get_meta(start_pos)
+    local meta = core.get_meta(start_pos)
     local network_before = get_network(start_pos)
 
     if network_before ~= nil then
@@ -203,7 +203,7 @@ function sbz_api.switching_station_tick(start_pos)
             local node = v[2]
             local dir = v[3]
             local max = v[4]
-            local meta = minetest.get_meta(position)
+            local meta = core.get_meta(position)
             local def = node_defs[node]
             local current = 0
             if def.get_power then
@@ -235,7 +235,7 @@ function sbz_api.switching_station_tick(start_pos)
             local position = v[1]
             local node = v[2]
             local dir = v[3]
-            node_defs[node].action(position, node, minetest.get_meta(position), supply, demand, dir)
+            node_defs[node].action(position, node, core.get_meta(position), supply, demand, dir)
         end
 
         local network_size = #network_before.generators + #network_before.machines + #network_before.batteries
@@ -283,7 +283,7 @@ function sbz_api.switching_station_tick(start_pos)
     if #switching_stations > 0 then
         local pos = vector.copy(start_pos)
         local range = vector.new(5, 5, 5)
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 500,
             time = 0.3,
             texture = 'error_particle.png',
@@ -295,7 +295,7 @@ function sbz_api.switching_station_tick(start_pos)
             drag = { x = 0.5, y = 0.5, z = 0.5 },
         }
         --        networks[net_id] = nil
-        minetest.remove_node(start_pos)
+        core.remove_node(start_pos)
         return false
     end
 
@@ -303,7 +303,7 @@ function sbz_api.switching_station_tick(start_pos)
     for k, v in ipairs(batteries) do
         local position = v[1]
         local node = v[2]
-        local meta = minetest.get_meta(position)
+        local meta = core.get_meta(position)
         local d = node_defs[node]
         local id_good = true
         if d.get_battery_id then
@@ -341,11 +341,11 @@ function sbz_api.switching_station_tick(start_pos)
     for k, v in ipairs(generators) do
         local position = v[1]
         local node = v[2]
-        if minetest.get_meta(v[1]):get_int 'force_off' ~= 1 then
+        if core.get_meta(v[1]):get_int 'force_off' ~= 1 then
             touched_nodes[hash(position)] = os.time()
 
             local profiler_t0 = sbz_api.clock_ms()
-            local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+            local action_result = node_defs[node].action(position, node, core.get_meta(position), supply, demand)
             assert(action_result, 'You need to return something in the action function... fauly node: ' .. node)
             supply = supply + action_result
 
@@ -360,12 +360,12 @@ function sbz_api.switching_station_tick(start_pos)
         local position = v[1]
         local node = v[2]
 
-        if minetest.get_meta(v[1]):get_int 'force_off' ~= 1 then
+        if core.get_meta(v[1]):get_int 'force_off' ~= 1 then
             touched_nodes[hash(position)] = os.time()
 
             local profiler_t0 = sbz_api.clock_ms()
 
-            local action_result = node_defs[node].action(position, node, minetest.get_meta(position), supply, demand)
+            local action_result = node_defs[node].action(position, node, core.get_meta(position), supply, demand)
             assert(action_result, 'You need to return something in the action function... fauly node: ' .. node)
             if action_result >= 0 then
                 demand = demand + action_result
@@ -413,7 +413,7 @@ function sbz_api.switching_station_sub_tick(start_pos)
         touched_nodes[hash(position)] = os.time()
         local profiler_t0 = sbz_api.clock_ms()
         local action_result =
-            node_defs[node].action_subtick(position, node, minetest.get_meta(position), supply, demand)
+            node_defs[node].action_subtick(position, node, core.get_meta(position), supply, demand)
         demand = demand + action_result
         profiler[node] = profiler[node] or {}
         profiler[node].generated = (profiler[node].generated or 0) + action_result
@@ -454,14 +454,15 @@ button_exit[0,10;12,1;exit;Exit]
     core.show_formspec(username, 'sbz_power:switching_station_profiler', fs)
 end
 
-minetest.register_node('sbz_power:switching_station', {
+core.register_node('sbz_power:switching_station', {
     description = 'Switching Station',
+    sounds = sbz_api.sounds.matter(),
     tiles = { 'switching_station.png' },
     groups = { matter = 1, cracky = 1, pipe_connects = 1, pipe_conducts = 1 },
     light_source = 3,
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         meta:set_string('infotext', 'Loading....')
     end,
     on_rightclick = function(pos, node, clicker, stack, pointed)
@@ -482,7 +483,7 @@ do -- Switching Station recipe scope
     })
 end
 
-minetest.register_abm {
+core.register_abm {
     label = 'Machine activation - switching stations',
     nodenames = { 'sbz_power:switching_station' },
     interval = 1,
@@ -496,7 +497,7 @@ minetest.register_abm {
 
 local timeout_limit = 3 -- seconds
 
-minetest.register_abm {
+core.register_abm {
     label = 'Machine timeout check',
     nodenames = { 'group:sbz_machine' },
     interval = timeout_limit,
@@ -507,7 +508,7 @@ minetest.register_abm {
             or (os.time() - touched_nodes[hash(pos)] >= timeout_limit)
                 and core.get_item_group(node.name, 'network_always_found') ~= 1
         then
-            minetest.get_meta(pos):set_string('infotext', 'No network found')
+            core.get_meta(pos):set_string('infotext', 'No network found')
             if node_defs[node.name].stateful then sbz_api.turn_off(pos) end
             if node_defs[node.name].on_timeout then node_defs[node.name].on_timeout(pos, node) end
         end
@@ -526,8 +527,8 @@ end
 
 sbz_api.switching_station_globalstep = function(dtime)
     if not sbz_api.enable_switching_station_globalstep then return end
-    local getnode = not unload_switching_stations and sbz_api.get_node_force or minetest.get_node
-    -- local getnode = minetest.get_node
+    local getnode = not unload_switching_stations and sbz_api.get_node_force or core.get_node
+    -- local getnode = core.get_node
     local swcount = 0
 
     for k, _ in pairs(all_switching_stations) do
@@ -556,7 +557,7 @@ sbz_api.switching_station_globalstep = function(dtime)
     if switching_station_count then switching_station_count.set(swcount) end
 end
 
-minetest.register_globalstep(sbz_api.switching_station_globalstep)
+core.register_globalstep(sbz_api.switching_station_globalstep)
 
 if has_monitoring then
     local switching_station_lag = monitoring.counter('sbz_switching_station_lag', 'Switching station lag')
@@ -580,7 +581,7 @@ mesecon.register_on_mvps_move(function(moved_nodes)
     end
 end)
 
-minetest.register_chatcommand('toggle_power', {
+core.register_chatcommand('toggle_power', {
     description = 'Toggles if switching stations are enabled or not',
     params = '<yes/no>',
 

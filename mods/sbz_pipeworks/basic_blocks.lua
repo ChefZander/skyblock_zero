@@ -1,12 +1,12 @@
 --[[ includes:
     Item Sorter - sorting tube code
-    Item Void - pipeworks traschan code
+    Item Void - pipeworks trashcan code
 --]]
 
 local fs_helpers = pipeworks.fs_helpers
 
 local function item_sorter_formspec(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local buttons_formspec = ""
     for i = 0, 5 do
         buttons_formspec = buttons_formspec .. fs_helpers.cycling_button(meta,
@@ -51,8 +51,9 @@ local function item_sorter_formspec(pos)
     )
 end
 
-minetest.register_node("pipeworks:item_sorter", {
+core.register_node("pipeworks:item_sorter", {
     description = "Item Sorter",
+    sounds = sbz_api.sounds.matter(),
     tiles = {
         { name = "itemsorter.png", color = "green" },
         { name = "itemsorter.png", color = "yellow" },
@@ -73,13 +74,13 @@ minetest.register_node("pipeworks:item_sorter", {
         can_go = function(pos, node, velocity, stack)
             local tbl, tbln = {}, 0
             local found, foundn = {}, 0
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             local inv = meta:get_inventory()
             local name = stack:get_name()
             for i, vect in ipairs(pipeworks.meseadjlist) do
                 local npos = vector.add(pos, vect)
-                local node = minetest.get_node(npos)
-                local reg_node = minetest.registered_nodes[node.name]
+                local node = core.get_node(npos)
+                local reg_node = core.registered_nodes[node.name]
                 if meta:get_int("l" .. i .. "s") == 1 and reg_node then
                     local tube_def = reg_node.tube
                     if not tube_def or not tube_def.can_insert or
@@ -108,7 +109,7 @@ minetest.register_node("pipeworks:item_sorter", {
         priority = 120
     },
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         for i = 1, 6 do
             meta:set_int("l" .. tostring(i) .. "s", 1)
@@ -119,7 +120,7 @@ minetest.register_node("pipeworks:item_sorter", {
     end,
     after_place_node = function(pos, placer, itemstack, pointed_thing)
         if placer and placer:is_player() and placer:get_player_control().aux1 then
-            local meta = minetest.get_meta(pos)
+            local meta = core.get_meta(pos)
             for i = 1, 6 do
                 meta:set_int("l" .. tostring(i) .. "s", 0)
             end
@@ -143,7 +144,7 @@ minetest.register_node("pipeworks:item_sorter", {
     allow_metadata_inventory_put = function(pos, listname, index, stack, player)
         if not pipeworks.may_configure(pos, player) then return 0 end
         item_sorter_formspec(pos) -- For old tubes
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         local stack_copy = ItemStack(stack)
         stack_copy:set_count(1)
         inv:set_stack(listname, index, stack_copy)
@@ -152,14 +153,14 @@ minetest.register_node("pipeworks:item_sorter", {
     allow_metadata_inventory_take = function(pos, listname, index, stack, player)
         if not pipeworks.may_configure(pos, player) then return 0 end
         item_sorter_formspec(pos) -- For old tubes
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
         inv:set_stack(listname, index, ItemStack(""))
         return 0
     end,
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
         if not pipeworks.may_configure(pos, player) then return 0 end
         item_sorter_formspec(pos) -- For old tubes
-        local inv = minetest.get_meta(pos):get_inventory()
+        local inv = core.get_meta(pos):get_inventory()
 
         if from_list:match("line%d") and to_list:match("line%d") then
             return count
@@ -188,8 +189,9 @@ do -- Item Sorter recipe scope
     })
 end
 
-minetest.register_node("pipeworks:item_void", {
+core.register_node("pipeworks:item_void", {
     description = "Item Void",
+    sounds = sbz_api.sounds.matter(),
     tiles = { { name = "trashcan.png" } },
     groups = { cracky = 3, matter = 3, tubedevice = 1, tubedevice_receiver = 1 },
     tube = {

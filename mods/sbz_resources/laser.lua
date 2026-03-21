@@ -13,13 +13,13 @@ core.register_tool("sbz_resources:laser_weapon", {
         if stack:get_wear() < (65535) then
             stack:set_wear(math.min(65535, stack:get_wear() + (65535 / max_wear)))
 
-            local eyepos = sbz_api.get_pos_with_eye_height(player)
-            local lookdir = player:get_look_dir()
-            local endpos = vector.add(eyepos, vector.multiply(lookdir, laser_range))
-            local ray = core.raycast(vector.add(eyepos, vector.multiply(lookdir, 2)), endpos, true, false)
+            local eye_pos = sbz_api.get_pos_with_eye_height(player)
+            local look_dir = player:get_look_dir()
+            local end_pos = vector.add(eye_pos, vector.multiply(look_dir, laser_range))
+            local ray = core.raycast(vector.add(eye_pos, vector.multiply(look_dir, 2)), end_pos, true, false)
 
-            core.sound_play({ name = 'gen_laser_pew' }, { pos = eyepos })
-            core.sound_play({ name = 'gen_laser_pew' }, { pos = endpos })
+            core.sound_play({ name = 'gen_laser_pew', gain = 0.6 }, { pos = eye_pos })
+            core.sound_play({ name = 'gen_laser_pew', gain = 0.6 }, { pos = end_pos })
 
             repeat
                 local pointed = ray:next()
@@ -40,7 +40,7 @@ core.register_tool("sbz_resources:laser_weapon", {
                                 sbz_api.punch(ref, player, 200, {
                                     full_punch_interval = 0,
                                     damage_groups = { light = damage },
-                                }, lookdir)
+                                }, look_dir)
                             end
                         end)
                     end
@@ -48,7 +48,7 @@ core.register_tool("sbz_resources:laser_weapon", {
             until not pointed
 
             core.add_particlespawner {
-                pos     = eyepos + lookdir * 2,
+                pos     = eye_pos + look_dir * 2,
                 texture = "star.png^[colorize:red",
                 time    = 0.8,
                 size    = 3,
@@ -56,7 +56,7 @@ core.register_tool("sbz_resources:laser_weapon", {
                 exptime = 10,
                 attract = {
                     kind = "point",
-                    origin = endpos,
+                    origin = end_pos,
                     strength = 0.8,
                     die_on_contact = true,
                 },
