@@ -1,4 +1,4 @@
-# Bespoke SFX (Public Domain Sound Assets)
+# SBZ Audio
 
 ## Usage
 
