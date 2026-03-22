@@ -18,7 +18,7 @@ of the above.  There's also now a folder for the older sound assets we were usin
 
 **sounds/mix** - Composite sound effects assembled by layering and mixing sources from the other folders (foley, sfxr, etc.). All source material is CC0, and so are the results. CC0 1.0 (Public Domain).
 
-**sounds/licensed** - The content that was in sbz_resources/sounds previously.  I've moved all that to this particular subfolder and updated both COPYRIGHT.md files to reflect the move.  Currently, this should be the only place we drop outside audio content, as we have to be _very_ clear and specific about the license.
+**sounds/licensed** - The audio content that was in sbz_resources and sbz_base mods previously.  I've moved all that to this particular subfolder and updated both COPYRIGHT.md files to reflect the move.  Currently, this should be the only place we drop outside audio content, as we have to be _very_ clear and specific about the license.
 
 ## License
 
