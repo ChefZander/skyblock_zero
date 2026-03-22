@@ -5,7 +5,7 @@ local power_per_1_use = 50
 
 core.register_tool("sbz_resources:laser_weapon", {
     description = "Laser",
-    info_extra = "Do you want to get all the meteorites you see, without bridging to them? This is the perfect weapon",
+    info_extra = core.colorize("#ffff00", "Ability: Fire (Right-Click)") .. " Fire a laserbeam which destroys meteorites and damages players.",
     inventory_image = "laser_pointer.png",
     groups = { disable_repair = 1, power_tool = 1 },
     wear_represents = "power",

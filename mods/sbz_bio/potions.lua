@@ -1,5 +1,5 @@
 core.register_craftitem('sbz_bio:screen_inverter_potion', {
-    description = 'Potion of Inverting',
+    description = "Potion of Inverting",
     sound = {
         eat = { name = 'gen_water_drink' }
     },
@@ -19,10 +19,7 @@ core.register_craftitem('sbz_bio:screen_inverter_potion', {
         return stack
     end,
     info_extra = {
-        "Doesn't actually invert your entire core, just changes saturation.",
-        'Drink twice to negate the effects. Effects reset after re-join.',
-        "Epilepsy Warning: Don't spam click, don't drink too often without rejoining.",
-        'You may need to have post processing enabled for this to work.',
+        core.colorize("#ffff00", "Ability: Drink (Right-Click)") .. " Inverts your screen colors.",
     },
     groups = { ui_bio = 1 },
     inventory_image = 'screen_inverter_potion.png',
