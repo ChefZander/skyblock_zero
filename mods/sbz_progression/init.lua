@@ -15,12 +15,6 @@ dofile(modpath .. '/annoy.lua')
 
 function sbz_api.displayDialogLine(player_name, text)
     core.chat_send_player(player_name, '⌠ ' .. text .. ' ⌡')
---[[ -- Different sound effects are going to be used from a callback in sound_api.lua
-    core.sound_play('dialogue', {
-        to_player = player_name,
-        gain = 1,
-    })
- ]]
 end
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
