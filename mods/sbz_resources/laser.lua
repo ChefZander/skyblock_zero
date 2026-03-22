@@ -15,11 +15,19 @@ core.register_tool("sbz_resources:laser_weapon", {
 
             local eye_pos = sbz_api.get_pos_with_eye_height(player)
             local look_dir = player:get_look_dir()
+            local sound_pos = vector.add(eye_pos, look_dir)
+            local sound_pitch = math.random(90, 110) / 100 -- range: 0.9 to 1.1
             local end_pos = vector.add(eye_pos, vector.multiply(look_dir, laser_range))
             local ray = core.raycast(vector.add(eye_pos, vector.multiply(look_dir, 2)), end_pos, true, false)
 
-            core.sound_play({ name = 'gen_laser_pew', gain = 0.6 }, { pos = eye_pos })
-            core.sound_play({ name = 'gen_laser_pew', gain = 0.6 }, { pos = end_pos })
+            core.sound_play(
+                { name = 'gen_laser_pew', gain = 0.5, pitch = sound_pitch, fade = 3.0 },
+                { pos = sound_pos, max_hear_distance = 8 }
+            )
+            core.sound_play(
+                { name = 'gen_laser_pew', gain = 0.5, pitch = sound_pitch, fade = 3.0 },
+                { pos = end_pos, max_hear_distance = 8 }
+            )
 
             repeat
                 local pointed = ray:next()
@@ -63,7 +71,7 @@ core.register_tool("sbz_resources:laser_weapon", {
                 glow    = 14,
             }
         end
-        core.sound_play({ name = 'foley_dud_click' }, { pos = player.pos })
+        core.sound_play({ name = 'foley_dud_click' }, { pos = player.pos, max_hear_distance = 8 })
 
         return stack
     end,
