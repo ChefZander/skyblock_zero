@@ -19,7 +19,7 @@ core.register_craftitem('sbz_bio:screen_inverter_potion', {
         return stack
     end,
     info_extra = {
-        core.colorize("#ffff00", "Ability: Drink (Right-Click)") .. " Inverts your screen colors.",
+        core.colorize("#ffff00", "Ability: Drink (Left-Click)") .. " Inverts your screen colors.",
     },
     groups = { ui_bio = 1 },
     inventory_image = 'screen_inverter_potion.png',
