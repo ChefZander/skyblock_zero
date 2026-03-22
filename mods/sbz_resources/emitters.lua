@@ -5,9 +5,9 @@ local action = function(pos, _, puncher)
     local tool_name = itemstack:get_name()
     local can_extract_from_emitter = core.get_item_group(tool_name, "core_drop_multi") > 0
     if can_extract_from_emitter then
-        core.sound_play({ name = 'mix_rubber_hit_noisy_gassy' }, { pos = pos })
+        core.sound_play({ name = 'mix_rubber_hit_noisy_gassy' }, { pos = pos, max_hear_distance = 4 })
     else
-        core.sound_play({ name = 'foley_annoying_honk', gain = 0.8, pitch = 0.9 }, { pos = pos })
+        core.sound_play({ name = 'foley_annoying_honk', gain = 0.8, pitch = 0.9 }, { pos = pos, max_hear_distance = 4 })
         if puncher.is_fake_player then return end
         sbz_api.displayDialogLine(puncher:get_player_name(), "Emitters can only be mined using tools or machines.")
     end
@@ -164,7 +164,7 @@ local function core_interact(pos, node, puncher, itemstack, pointed_thing)
 
     core.sound_play(
         { name = 'mix_weird_hit', gain = 0.5, pitch = math.random(50, 100) / 100 },
-        { pos = pos, max_hear_distance = 16 }
+        { pos = pos, max_hear_distance = 4 }
     )
     if multi and multi ~= 0 then n = multi end
     for _ = 1, n do

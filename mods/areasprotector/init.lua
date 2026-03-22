@@ -18,14 +18,6 @@ local max_protectors = 1000
 
 local core_no_protects_radius = 32
 
-local function remove_display(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.5)
-	for _, o in pairs(objs) do
-		o:remove()
-	end
-	core.sound_play({ name = 'dialogue', gain = 0.8, pitch = 0.5 })
-end
-
 areas:registerProtectionCondition(function(pos1, pos2, name)
 	local core_no_protects_pos1 = vector.add(pos2,
 		vector.new(core_no_protects_radius, core_no_protects_radius, core_no_protects_radius))
@@ -241,13 +233,13 @@ local function on_punch(pos, node, puncher, sizeword)
 		-- If area display entity is active: toggle display off
 		if (not o:is_player()) and o:get_luaentity().name == "areasprotector:display_" .. sizeword then
 			o:remove()
-			core.sound_play({ name = 'dialogue', gain = 0.3, pitch = 0.5 })
+			core.sound_play({ name = 'dialogue', gain = 0.3, pitch = 0.5 }, { to_player = puncher:get_player_name() })
 			return
 		end
 	end
 	-- Toggle display on
 	core.add_entity(pos, "areasprotector:display_" .. sizeword)
-	core.sound_play({ name = 'dialogue', gain = 0.5 })
+	core.sound_play({ name = 'dialogue', gain = 0.5 }, { to_player = puncher:get_player_name() })
 end
 
 local function on_step(self, dtime, sizeword)
@@ -281,8 +273,8 @@ end
 
 local area_protector_sounds = {
 	footstep = { name = 'gen_metallic_hit',            gain = 1.0, pitch = 1.0, fade = 0.0 },
-	dig      = { name = 'mix_thunk_slightly_metallic', gain = 1.0, pitch = 1.0, fade = 0.0 },
-	dug      = { name = 'mix_metal_cabinet_hit',       gain = 1.0, pitch = 1.0, fade = 0.0 },
+	dig      = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 1.0, fade = 0.0 },
+	dug      = { name = 'mix_metal_cabinet_hit',       gain = 0.7, pitch = 1.0, fade = 0.0 },
 	place    = { name = 'mix_hollow_metal_clunk',      gain = 1.0, pitch = 1.0, fade = 0.0 },
 }
 

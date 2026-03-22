@@ -256,7 +256,7 @@ pipeworks.register_wielder {
             local node_def = core.registered_nodes[node.name]
             if not node_def or not node_def.on_dig then return false end
 
-            if core.get_item_group(node.name, 'nb_nodig') > 0 then -- DO NOT USE THIS TO LIMIT WHAT CAVEMAN AUTOMATION CAN DO, ONLY USE IT TO STRENGHTEN IT (like making growing plants not breakable)
+            if core.get_item_group(node.name, 'nb_nodig') > 0 then -- DO NOT USE THIS TO LIMIT WHAT CAVEMAN AUTOMATION CAN DO, ONLY USE IT TO STRENGTHEN IT (like making growing plants not breakable)
                 return false
             end
             -- Check if the tool can dig the node
