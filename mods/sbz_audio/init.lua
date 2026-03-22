@@ -2,34 +2,7 @@ sbz_audio = sbz_audio or {}
 
 -- sbz_api.sounds is deprecated now.  Replace with sbz_audio wherever used.
 sbz_api = sbz_api or {}
-sbz_api.sounds = sbz_audio
-
--- allow for a rightclick parameter too, so that its less annoying
-core.register_on_mods_loaded(function()
-    for k, v in pairs(core.registered_nodes) do
-        -- If it has a sounds.rightclick specified...
-        if v.sounds and v.sounds.rightclick then
-            -- Save original handler (if any)
-            local old_rightclick = v.on_rightclick
-
-            local function new_rightclick(pos, node, clicker, stack, pointed)
-                if core.get_meta(pos):get_string 'formspec' ~= '' then
-                    core.sound_play(v.sounds.rightclick, {
-                        pos = pos,
-                    })
-                end
-
-                if old_rightclick then
-                    return old_rightclick(pos, node, clicker, stack, pointed)
-                end
-            end
-
-            core.override_item(k, {
-                on_rightclick = new_rightclick,
-            })
-        end
-    end
-end)
+sbz_api.sounds = sbz_audio -- old calls link to new namespace
 
 -- Use as a template (include fade if needed on any)
 function sbz_audio.blank()
@@ -152,19 +125,10 @@ function sbz_audio.sand()
     return sounds
 end
 
--- This function is entirely deprecated.
-function sbz_api.play_sfx(spec, params, pitch_randomness)
-    pitch_randomness = pitch_randomness or 0.035
-    local pitch = 1 + (math.random() * pitch_randomness * 2) - pitch_randomness
-    params.pitch = params.pitch or pitch
-    core.sound_play(spec, params, true)
-end
-
--- Globally set node sounds (because it doesn't make sense to have node-specific ones here)
+-- Global default node sounds
 core.register_on_mods_loaded(function()
     local fallback_place_failed = { name = 'gen_error_fart', gain = 0.7, pitch = 1.0,}
     local fallback_fall         = { name = 'gen_pew_slow_fall', gain = 0.3, pitch = 1.1,}
-
     for name, def in pairs(core.registered_nodes) do
         local s = def.sounds or {}
         if not s.place_failed or not s.fall then
