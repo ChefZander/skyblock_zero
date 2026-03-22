@@ -1,46 +1,111 @@
-local antimatter_generator_active_sounds = {}
+--
+-- Per-generator, per-player sound tracking.
+--
+-- active_generators: set of position hashes for generators currently running.
+-- sounds: map of (pos_key .. "_" .. player_name) -> sound handle.
+-- fading_out: map of (pos_key .. "_" .. player_name) -> sound handle currently
+--             fading out, pending cleanup on the next cycle.
+--
+local active_generators = {}
+local sounds = {}
+local fading_out = {}
 
-local function start_antimatter_generator_active_sound(pos)
+local HEAR_RADIUS = 16 -- nodes, true sphere
+local CYCLE = 1        -- seconds between per-player distance checks
+
+local function sound_key(pos_key, player_name)
+    return pos_key .. '_' .. player_name
+end
+
+local function set_generator_active(pos, is_active)
     local key = core.hash_node_position(pos)
-
-    -- If already playing
-    if antimatter_generator_active_sounds[key] then
-        return
-    end
-
-    local handle = core.sound_play(
-        { name = 'mix_hum_click_loop', pitch = 2.0, gain = 0.7 },
-        {
-            pos = pos,
-            gain = 0.0, -- start silent to allow fade-in
-            max_hear_distance = 8.0,
-            loop = true,
-        }
-    )
-
-    if handle then
-        antimatter_generator_active_sounds[key] = handle
-        core.sound_fade(handle, 0.5, 0.8)
+    if is_active then
+        active_generators[key] = pos
+    else
+        -- Fade out sound for all players currently hearing this generator.
+        for _, player in ipairs(core.get_connected_players()) do
+            local player_name = player:get_player_name()
+            local sk = sound_key(key, player_name)
+            if sounds[sk] then
+                core.sound_fade(sounds[sk], -1.2, 0.0)
+                fading_out[sk] = sounds[sk]
+                sounds[sk] = nil
+            end
+        end
+        active_generators[key] = nil
     end
 end
 
-local function stop_antimatter_generator_active_sound(pos)
-    local key = core.hash_node_position(pos)
-    local handle = antimatter_generator_active_sounds[key]
+-- Update sounds for a single player across all active generators.
+local function update_player_sound(player)
+    local player_name = player:get_player_name()
+    local ppos = player:get_pos()
 
-    if not handle then
+    for key, gpos in pairs(active_generators) do
+        local sk = sound_key(key, player_name)
+
+        -- Clean up any completed fade-out from the previous cycle.
+        if fading_out[sk] then
+            core.sound_stop(fading_out[sk])
+            fading_out[sk] = nil
+        end
+
+        local in_range = vector.distance(ppos, gpos) <= HEAR_RADIUS
+
+        if sounds[sk] then
+            -- Sound already playing: fade out if player has left range.
+            if not in_range then
+                core.sound_fade(sounds[sk], -1.2, 0.0)
+                fading_out[sk] = sounds[sk]
+                sounds[sk] = nil
+            end
+        elseif in_range then
+            -- Player has entered range: start sound with fade-in.
+            local handle = core.sound_play(
+                { name = 'mix_hum_click_loop', pitch = 2.0, gain = 0.8, fade = 0.5 },
+                {
+                    pos = gpos,
+                    to_player = player_name,
+                    max_hear_distance = HEAR_RADIUS,
+                    loop = true,
+                }
+            )
+            if handle then
+                sounds[sk] = handle
+            end
+        end
+    end
+end
+
+-- Globalstep cycle.
+local timer = 0
+core.register_globalstep(function(dtime)
+    timer = timer + dtime
+    if timer < CYCLE then
         return
     end
+    timer = 0
+    for _, player in ipairs(core.get_connected_players()) do
+        update_player_sound(player)
+    end
+end)
 
-    core.sound_fade(handle, -1.2, 0)
+-- Stop and clean up all sounds for a player when they leave.
+core.register_on_leaveplayer(function(player)
+    local player_name = player:get_player_name()
+    for key, _ in pairs(active_generators) do
+        local sk = sound_key(key, player_name)
+        if sounds[sk] then
+            core.sound_stop(sounds[sk])
+            sounds[sk] = nil
+        end
+        if fading_out[sk] then
+            core.sound_stop(fading_out[sk])
+            fading_out[sk] = nil
+        end
+    end
+end)
 
-    -- Stop sound after fade finishes
-    core.after(1.0, function()
-        core.sound_stop(handle)
-    end)
-
-    antimatter_generator_active_sounds[key] = nil
-end
 
 sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
     description = 'Antimatter Generator',
@@ -105,7 +170,7 @@ list[current_player;main;0.2,5;8,4;]
                 exptime = 3,
             }
 
-            start_antimatter_generator_active_sound(pos)
+            set_generator_active(pos, true)
 
             def.texture = 'antimatter_dust.png'
             core.add_particlespawner(def)
@@ -116,7 +181,7 @@ list[current_player;main;0.2,5;8,4;]
         end
 
         meta:set_string('infotext', "Can't react")
-        stop_antimatter_generator_active_sound(pos)
+        set_generator_active(pos, false)
         return 0
     end,
     allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
@@ -193,6 +258,9 @@ list[current_player;main;0.2,5;8,4;]
         },
     },
     light_source = 14,
+    on_destruct = function(pos)
+        set_generator_active(pos, false)
+    end,
 })
 
 core.register_lbm {
