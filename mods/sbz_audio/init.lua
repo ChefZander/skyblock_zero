@@ -145,6 +145,12 @@ end)
 -- Sounds triggered by chat
 core.register_on_chat_message(
     function(name, message)
+        -- Yo, you write a lot, cuz.
+        if #message >= 450 then -- 500 characters is the server-specified default maximum
+            core.sound_play("paperflip2", { gain = 1.0, to_player = name })
+            return
+        end
+
         if message:find("[!]+") then
             core.sound_play("gen_chat_exclamation", { gain = 0.7, to_player = name })
         elseif message:find("[?]+") then
