@@ -146,13 +146,13 @@ end)
 core.register_on_chat_message(
     function(name, message)
         if message:find("[!]+") then
-            sbz_api.play_sfx("gen_chat_exclamation", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_exclamation", { gain = 0.7, to_player = name })
         elseif message:find("[?]+") then
-            sbz_api.play_sfx("gen_chat_question", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_question", { gain = 0.7, to_player = name })
         elseif message:find("\\[PM\\]|@") then
-            sbz_api.play_sfx("gen_chat_pm_send", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_pm_send", { gain = 0.7, to_player = name })
         else
-            sbz_api.play_sfx("gen_chat_generic", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_generic", { gain = 0.7, to_player = name })
         end
     end
 )
