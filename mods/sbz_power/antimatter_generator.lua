@@ -1,10 +1,7 @@
 local antimatter_generator_active_sounds = {}
-local function pos_hash(pos)
-    return core.hash_node_position(pos)
-end
 
 local function start_antimatter_generator_active_sound(pos)
-    local key = pos_hash(pos)
+    local key = core.hash_node_position(pos)
 
     -- If already playing
     if antimatter_generator_active_sounds[key] then
@@ -28,7 +25,7 @@ local function start_antimatter_generator_active_sound(pos)
 end
 
 local function stop_antimatter_generator_active_sound(pos)
-    local key = pos_hash(pos)
+    local key = core.hash_node_position(pos)
     local handle = antimatter_generator_active_sounds[key]
 
     if not handle then
