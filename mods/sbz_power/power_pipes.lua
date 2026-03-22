@@ -23,7 +23,7 @@ core.register_node(
     'sbz_power:power_pipe',
     unifieddyes.def {
         description = 'Emittrium Power Cable',
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         connects_to = { 'group:pipe_connects' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
 
@@ -70,7 +70,7 @@ core.register_node('sbz_power:airtight_power_cable', {
     connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
 
     tiles = { 'airtight_power_cable.png' },
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     drawtype = 'mesh',
     mesh = 'voxelmodel.obj',
     light_source = 3,

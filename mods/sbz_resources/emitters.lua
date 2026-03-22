@@ -199,7 +199,7 @@ end
 -- THE CORE!!!
 core.register_node("sbz_resources:the_core", {
     description = "The Core",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = { "the_core.png" },
     groups = { gravity = 25, unbreakable = 1, not_in_creative_inventory = 1 },
     drop = "",

@@ -39,7 +39,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:item_sensor", unifieddyes.def {
     description = "Item Sensor",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = "Checks if a machine can be inserted to with an item.\nYou can use it to attempt to optimize your giant instatube set up i guess.",
     tiles = {
         sbz_api.make_sensor_tex_off("item_sensor"),

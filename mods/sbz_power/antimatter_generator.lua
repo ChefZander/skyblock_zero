@@ -119,7 +119,7 @@ sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
         'antimatter_gen_top.png',
         'antimatter_gen_side.png',
     },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     input_inv = 'input',
     output_inv = 'input',
     on_construct = function(pos)

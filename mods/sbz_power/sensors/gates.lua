@@ -42,7 +42,7 @@ local function make_tex_off(tex)
 end
 sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
     description = "NOT gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("not")
     },
@@ -61,7 +61,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_not", def {
 
 sbz_api.register_stateful_machine("sbz_power:lgate_buffer", def {
     description = "Buffer gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = "whats the use for this again...",
     tiles = {
         make_tex_off("buffer")
@@ -111,7 +111,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:lgate_or", def {
     description = "OR gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("or")
     },
@@ -130,7 +130,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_or", def {
 
 sbz_api.register_stateful_machine("sbz_power:lgate_nor", def {
     description = "NOR gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("nor")
     },
@@ -149,7 +149,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_nor", def {
 
 sbz_api.register_stateful_machine("sbz_power:lgate_and", def {
     description = "AND gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("and")
     },
@@ -168,7 +168,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_and", def {
 
 sbz_api.register_stateful_machine("sbz_power:lgate_nand", def {
     description = "NAND gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("nand")
     },
@@ -187,7 +187,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_nand", def {
 
 sbz_api.register_stateful_machine("sbz_power:lgate_xor", def {
     description = "XOR gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("xor")
     },
@@ -206,7 +206,7 @@ sbz_api.register_stateful_machine("sbz_power:lgate_xor", def {
 
 sbz_api.register_stateful_machine("sbz_power:lgate_xnor", def {
     description = "XNOR gate",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         make_tex_off("xnor")
     },
@@ -233,7 +233,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:machine_controller", unifieddyes.def {
     description = "Machine Controller",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     tiles = {
         sbz_api.make_sensor_tex_off("machine_controller")
     },

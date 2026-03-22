@@ -62,7 +62,7 @@ sbz_api.register_stateful_machine("sbz_chem:melter", {
         fluid_pipe_stores = 1,
         ui_fluid = 1
     },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = "4dir",
 
     input_inv = "src",
@@ -162,7 +162,7 @@ sbz_api.register_stateful_machine("sbz_chem:cooler", {
         fluid_pipe_stores = 1,
         ui_fluid = 1
     },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = "4dir",
 
     output_inv = "dst",

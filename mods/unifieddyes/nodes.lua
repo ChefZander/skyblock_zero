@@ -22,7 +22,7 @@ core.register_node(
     'unifieddyes:colorium_blob',
     unifieddyes.def {
         description = 'Colorium Blob',
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         tiles = {
             'blank.png^[invert:rgba',
         },
@@ -42,7 +42,7 @@ core.register_node(
     'unifieddyes:colorium_ground_line',
     unifieddyes.def {
         description = 'Colorium Ground Line',
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         tiles = {
             'blank.png^[invert:rgba',
         },
@@ -69,7 +69,7 @@ core.register_node(
     'unifieddyes:power_ground_line',
     unifieddyes.def {
         description = 'Power Ground Line',
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         tiles = {
             {
                 name = 'power_ground_line.png',
@@ -115,7 +115,7 @@ core.register_node(
     'unifieddyes:antiblock',
     unifieddyes.def {
         description = 'Antiblock',
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         tiles = {
             'blank.png',
         },

@@ -233,7 +233,7 @@ sbz_api.register_trunk(
             'colorium_tree_side.png',
         },
         leaves = 'sbz_bio:colorium_leaves',
-        sounds = sbz_api.sounds.wood_solid(),
+        sounds = sbz_audio.wood_solid(),
     }
 )
 
@@ -286,7 +286,7 @@ sbz_api.register_leaves(
                 },
             },
         },
-        sounds = sbz_api.sounds.leaves(),
+        sounds = sbz_audio.leaves(),
     }
 )
 
@@ -392,7 +392,7 @@ core.register_node(
         tiles = { 'colorium_planks.png' },
         paramtype2 = 'color',
         groups = { matter = 3, oddly_breakable_by_hand = 2, burn = 1, transparent = 1, explody = 10 },
-        sounds = sbz_api.sounds.wood_planks(),
+        sounds = sbz_audio.wood_planks(),
     }
 )
 
@@ -436,7 +436,7 @@ end
 core.register_node('sbz_bio:colorium_tree_core', {
     description = 'Colorium Tree Core',
     info_extra = "Contains the tree's dna.",
-    sounds = sbz_api.sounds.wood_solid(),
+    sounds = sbz_audio.wood_solid(),
     groups = {
         matter = 3,
         oddly_breakable_by_hand = 3,

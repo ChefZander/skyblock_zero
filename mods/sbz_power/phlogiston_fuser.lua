@@ -14,7 +14,7 @@ end
 local ticks = 60 * 3 -- 3 minutes... yeah
 sbz_api.register_stateful_machine("sbz_power:phlogiston_fuser", {
     description = "Phlogiston Fuser",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     tiles = {
         "phlogiston_fuser_side.png",
         "phlogiston_fuser_side.png",
