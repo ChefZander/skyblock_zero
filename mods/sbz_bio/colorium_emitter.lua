@@ -27,6 +27,7 @@ local action = function(pos, _, puncher)
         -- Halo Rune drop
         if math.random(1, 10000000) == 1 then -- 1/10m
             local rune = ItemStack("sbz_runes:halo_rune")
+            local inv = puncher:get_inventory()
             local rune_leftover = inv:add_item("main", rune)
             
             if not rune_leftover:is_empty() then

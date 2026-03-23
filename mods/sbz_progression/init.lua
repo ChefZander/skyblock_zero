@@ -202,6 +202,7 @@ core.register_globalstep(function(dtime)
                 -- Singularity Rune drop
                 if math.random(1, 50000) == 1 then -- 1/50k
                     local rune = ItemStack("sbz_runes:singularity_rune")
+                    local inv = player:get_inventory()
                     local rune_leftover = inv:add_item("main", rune)
                     
                     if not rune_leftover:is_empty() then
