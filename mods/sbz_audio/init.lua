@@ -141,24 +141,25 @@ core.register_on_mods_loaded(function()
         end
     end
 end)
-
+--[[ (not currently working as intended, so leaving it out for now)
 -- Sounds triggered by chat
 core.register_on_chat_message(
     function(name, message)
         -- Yo, you write a lot, cuz.
         if #message >= 450 then -- 500 characters is the server-specified default maximum
-            core.sound_play("paperflip2", { gain = 0.1, to_player = name })
+            core.sound_play("paperflip2", { gain = 0.7, to_player = name })
             return
         end
 
         if message:find("[!]+") then
-            core.sound_play("gen_chat_exclamation", { gain = 0.1, to_player = name })
+            core.sound_play("gen_chat_exclamation", { gain = 0.7, to_player = name })
         elseif message:find("[?]+") then
-            core.sound_play("gen_chat_question", { gain = 0.1, to_player = name })
-        elseif message:find("\\[PM\\]|@") then
-            core.sound_play("gen_chat_pm_send", { gain = 0.1, to_player = name })
+            core.sound_play("gen_chat_question", { gain = 0.7, to_player = name })
+        elseif message:find("DM from ") then
+            core.sound_play("gen_chat_pm_send", { gain = 0.7, to_player = name })
         else
-            core.sound_play("gen_chat_generic", { gain = 0.1, to_player = name })
+            core.sound_play("gen_chat_generic", { gain = 0.7, to_player = name })
         end
     end
 )
+ ]]
