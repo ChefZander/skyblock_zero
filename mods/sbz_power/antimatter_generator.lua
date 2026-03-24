@@ -1,5 +1,5 @@
 --
--- Per-generator, per-player sound tracking.
+-- Per-antimatter-generator, per-player sound tracking.
 --
 -- active_generators: set of position hashes for generators currently running.
 -- sounds: map of (pos_key .. "_" .. player_name) -> sound handle.
