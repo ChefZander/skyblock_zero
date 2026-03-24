@@ -1,8 +1,5 @@
+-- sbz_api.sounds is deprecated.  Replace with sbz_audio wherever used.
 sbz_audio = sbz_audio or {}
-
--- sbz_api.sounds is deprecated now.  Replace with sbz_audio wherever used.
-sbz_api = sbz_api or {}
-sbz_api.sounds = sbz_audio -- old calls link to new namespace
 
 -- Use as a template (include fade if needed on any)
 function sbz_audio.blank()
