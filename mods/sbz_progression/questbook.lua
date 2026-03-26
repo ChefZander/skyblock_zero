@@ -5,18 +5,17 @@ local function getquestbyname(questname)
 end
 
 local function combineWithAnd(list)
-    local listLength = #list
-
-    if listLength == 0 then
+    local n = #list
+    if n == 0 then
         return ''
-    elseif listLength == 1 then
+    elseif n == 1 then
         return list[1]
-    elseif listLength == 2 then
-        return list[1] .. ' and ' .. list[2]
+    elseif n == 2 then
+        return S('@1 and @2', list[1], list[2])
     else
-        local combinedString = table.concat(list, ', ', 1, listLength - 1)
-        combinedString = combinedString .. ', and ' .. list[listLength]
-        return combinedString
+        -- Produces "A, B, and C".
+        -- Translators can reorder as needed via @1 and @2.
+        return S('@1, and @2', table.concat(list, ', ', 1, n - 1), list[n])
     end
 end
 
