@@ -1,3 +1,5 @@
+local S = core.get_translator('sbz_base')
+
 ---@diagnostic disable-next-line: lowercase-global
 sbz_api = {
     version = 45,
@@ -46,8 +48,8 @@ Server Optimizations: %s
 ]]):format('\x1b', sbz_api.version, sbz_api.is_version_dev and 'true' or 'false', sbz_api.server_optimizations, '\x1b'))
 
 sbz_api.get_version_string = function()
-    local gamename = 'Skyblock: Zero '
-    local version_string = 'Release ' .. sbz_api.version
+    local gamename = S('Skyblock: Zero') .. ' '
+    local version_string = S('Release') .. ' ' .. sbz_api.version
     if sbz_api.is_version_dev then version_string = version_string .. '-dev' end
 
     if sbz_api.debug then version_string = version_string .. ' debug ' end
@@ -57,7 +59,7 @@ sbz_api.get_version_string = function()
 end
 
 sbz_api.get_simple_version_string = function()
-    return 'Skyblock: Zero (Release ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
+    return S('Skyblock: Zero (Release') .. ' ' .. sbz_api.version .. (sbz_api.is_version_dev and '-dev' or '') .. ')'
 end
 
 -- /community is added here, because it's what a fork is likely to change
@@ -163,12 +165,12 @@ core.register_on_newplayer(function(player)
     local name = player:get_player_name()
     if inv then
         if inv:contains_item('main', 'sbz_progression:questbook') then
-            sbz_api.displayDialogLine(name, 'You already had a questbook before joining.')
+            sbz_api.displayDialogLine(name, S('You already had a questbook before joining.'))
         else
             if inv:room_for_item('main', 'sbz_progression:questbook') then
                 inv:add_item('main', 'sbz_progression:questbook')
             else
-                sbz_api.displayDialogLine(name, "Your inventory is full. Can't give you a questbook. Use /qb")
+                sbz_api.displayDialogLine(name, S("Your inventory is full. Can't give you a questbook. Use /qb"))
             end
         end
     end
@@ -184,12 +186,11 @@ core.register_on_joinplayer(function(ref, last_login)
 end)
 
 core.register_chatcommand('core', {
-    description = 'Go back to the core.',
+    description = S('Go back to the core.'),
     privs = {},
     func = function(name, param)
         core.get_player_by_name(name):set_pos { x = 0, y = 1, z = 0 }
-        sbz_api.displayDialogLine(name, 'Sent you back to the Core.') -- i think me renaming "Beamed" to "Sent" is going to make zander mad but i geniuenly have no idea what "Beamed" means so i think most people have no idea too
-        -- me, frog, renaming it will also most likely make people investigate its meaning, so we will see :)
+        sbz_api.displayDialogLine(name, S("Sent you back to the Core.")) -- "Sent" used in place of "Beamed" because not enough people watch Star Trek
     end,
 })
 
@@ -245,12 +246,12 @@ end
 sbz_api.bgm_handles = handles
 
 core.register_chatcommand('bgm_volume', {
-    description = 'Adjusts volume of background music',
+    description = S("Adjusts volume of background music"),
     params = '[volume, 0 to 200%]',
     func = function(name, param)
         local volume = tonumber(param)
         if volume == nil or volume < 0 or volume > 200 then
-            return false, 'Needs to be a number between 0 and 200, 100 is the default volume.'
+            return false, S("Needs to be a number between 0 and 200, 100 is the default volume.")
         end
         local player = core.get_player_by_name(name or '')
         if not player then return end
@@ -259,7 +260,7 @@ core.register_chatcommand('bgm_volume', {
         meta:set_int('has_set_volume', 1)
         local handle = sbz_api.bgm_handles[player:get_player_name()]
         if handle then core.sound_fade(handle, 4, (volume / 100) + 0.001) end -- HACK: +0.001 so it doesn't delete the sound xDD
-        return true, 'Set the background volume to ' .. volume
+        return true, S('Set the background volume to @1.', volume)
     end,
 })
 
@@ -269,8 +270,8 @@ core.register_on_joinplayer(function(player)
 
     if sbz_api.welcome_messages then
         core.chat_send_player(player_name, sbz_api.get_simple_version_string())
-        core.chat_send_player(player_name, '‼ reminder: If you fall off, use /core to teleport back to the core.')
-        core.chat_send_player(player_name, '‼ reminder: If lose your Quest Book, use /qb to get it back.')
+        core.chat_send_player(player_name, S("‼ reminder: If you fall off, use /core to teleport back to the core."))
+        core.chat_send_player(player_name, S("‼ reminder: If lose your Quest Book, use /qb to get it back."))
         core.chat_send_player(
             player_name,
             '!! If you have any suggestions/bug reports to Skyblock Zero, see /community'
@@ -357,7 +358,7 @@ core.register_on_respawnplayer(function(ref)
 end)
 
 core.register_chatcommand('killme', {
-    description = 'Kills you.',
+    description = S("Kills you."),
     privs = { ['interact'] = true },
     func = function(name)
         local player = core.get_player_by_name(name)
@@ -370,7 +371,7 @@ core.register_chatcommand('killme', {
 core.register_on_chat_message(function(name, message)
     local players = core.get_connected_players()
     if #players == 1 then
-        sbz_api.displayDialogLine(name, 'You talk. But there is no one to listen.')
+        sbz_api.displayDialogLine(name, S("You talk. But there is no one to listen."))
         unlock_achievement(name, 'Desolate')
     end
     return false
@@ -777,4 +778,4 @@ core.error_handler = function(error, stack_level)
         .. ('\n==============\n%s\n=============='):format(sbz_api.get_version_string())
 end
 
-core.log('action', "Skyblock: Zero's Base Mod has finished loading.")
+core.log('action', S("Skyblock: Zero's Base Mod has finished loading."))
