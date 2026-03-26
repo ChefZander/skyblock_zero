@@ -44,7 +44,7 @@ core.register_entity("sbz_resources:bomb_stick_entity", {
 })
 
 core.register_craftitem("sbz_resources:bomb_stick", {
-    description = S("TNT Stick\n" .. core.colorize("#ffff00", "Ability: Throw (Left-Click)") .. " Throw the TNT Stick, which will explode when it lands."),
+    description = S("TNT Stick\n") .. core.colorize("#ffff00", S("Ability: Throw (Left-Click)")) .. S(" Throw the TNT Stick, which will explode when it lands."),
     wield_scale = { x = 1, y = 1, z = 2.5 },
     wield_image = "bomb_stick_wield.png",
     inventory_image = "bomb_stick_inv.png",

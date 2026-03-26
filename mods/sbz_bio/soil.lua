@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("sbz_bio:dirt", unifieddyes.def {
     description = S("Dirt"),
     tiles = { "dirt.png" },

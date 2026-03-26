@@ -1,4 +1,5 @@
-local S = core.get_translator(core.get_current_modname())
+local S, PS = core.get_translator(core.get_current_modname())
+PS = PS or {}
 
 local creative_mode = core.settings:get_bool("creative_mode")
 
@@ -100,23 +101,23 @@ local function on_receive_fields(pos, formname, fields, sender, horizontal_reach
 		local pos2 = vector.add(pos, vector.new(-horizontal_reach, -vertical_reach, -horizontal_reach))
 		local perm, err = areas:canPlayerAddArea(pos1, pos2, owner_name)
 		if not perm then
-			core.chat_send_player(owner_name, red("You are not allowed to protect that area: ") .. err)
+			core.chat_send_player(owner_name, red(S("You are not allowed to protect that area: ")) .. err)
 			return
 		end
 		if string.find(name, "[\\%[%];,$]", 1, false) then
 			core.chat_send_player(owner_name,
-				red("You are not allowed to protect that area: ") ..
-				"That name is obviously invalid.")
+				red(S("You are not allowed to protect that area: ")) ..
+				S("That name is obviously invalid."))
 			return
 		end
 		if name == "" then
 			core.chat_send_player(owner_name,
-				red("You are not allowed to protect that area: ") ..
-				"You need to fill out the field with a name")
+				red(S("You are not allowed to protect that area: ")) ..
+				S("You need to fill out the field with a name"))
 			return
 		end
 
-		owners_area_id[name] = areas:add(name, "Protector block sub-area", pos1, pos2, meta:get_int("area_id"))
+		owners_area_id[name] = areas:add(name, S("Protector block sub-area"), pos1, pos2, meta:get_int("area_id"))
 		areas:save()
 		owners[#owners + 1] = fields.add_more_owners
 	end
@@ -158,7 +159,7 @@ local function on_place(itemstack, player, pointed, horizontal_reach, vertical_r
 	local name = player:get_player_name()
 	local perm, err = areas:canPlayerAddArea(pos1, pos2, name)
 	if not perm then
-		core.chat_send_player(name, red("You are not allowed to protect that area: ") .. err)
+		core.chat_send_player(name, red(S("You are not allowed to protect that area: ")) .. err)
 		return itemstack
 	end
 	--[[
@@ -176,16 +177,20 @@ local function on_place(itemstack, player, pointed, horizontal_reach, vertical_r
 	]]
 	local userareas = 0
 	for k, v in pairs(areas.areas) do
-		if v.owner == name and string.sub(v.name, 1, 28) == "Protected by Protector Block" then
+		if v.owner == name and string.sub(v.name, 1, 28) == S("Protected by Protector Block") then
 			userareas = userareas + 1
 		end
 	end
 	if userareas >= max_protectors and not core.check_player_privs(name, "areas") then
 		core.chat_send_player(name,
-			red("You are using too many protector blocks:") ..
-			" this server allows you to use up to " ..
-			cyan(tostring(max_protectors)) .. " protector blocks, and you already have " ..
-			cyan(tostring(userareas)) .. ".")
+			PS(
+				"You are using too many protector blocks: this server allows you to use up to @1 protector block, and you already have @2.",
+				"You are using too many protector blocks: this server allows you to use up to @1 protector blocks, and you already have @2.",
+				max_protectors,
+				max_protectors,
+				userareas
+			)
+		)
 		if sizeword == "small" then
 			core.chat_send_player(name,
 				"If you need to protect more, please consider using the larger protector blocks, using the chat commands instead, or at the very least taking the time to rename some of your areas to something more descriptive first.")
