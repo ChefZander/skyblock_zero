@@ -197,10 +197,10 @@ core.register_craftitem("sbz_resources:firework", {
             if inv:room_for_item("main", drop) then
                 inv:add_item("main", drop)
             else
-                minetest.add_item(user:get_pos(), drop)
+                core.add_item(user:get_pos(), drop)
             end
             
-            minetest.chat_send_all("⌠ Crazy Rare Drop: " .. player_name .. " just dropped a Firework Rune! ⌡")
+            core.chat_send_all("⌠ Crazy Rare Drop: " .. player_name .. " just dropped a Firework Rune! ⌡")
         end
 
         return stack

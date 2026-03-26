@@ -1,6 +1,6 @@
 local S = core.get_translator(core.get_current_modname())
 
-minetest.register_craftitem('sbz_resources:simple_circuit', {
+core.register_craftitem('sbz_resources:simple_circuit', {
     description = S("Simple Circuit"),
     inventory_image = 'simple_circuit.png',
     stack_max = 256,
@@ -18,7 +18,7 @@ do -- Simple Circuit recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_resources:retaining_circuit', {
+core.register_craftitem('sbz_resources:retaining_circuit', {
     description = S("Retaining Circuit"),
     inventory_image = 'retaining_circuit.png',
     stack_max = 256,
@@ -36,7 +36,7 @@ do -- Retaining Circuit recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_resources:emittrium_circuit', {
+core.register_craftitem('sbz_resources:emittrium_circuit', {
     description = S("Emittrium Circuit"),
     inventory_image = 'emittrium_circuit.png',
     stack_max = 256,
@@ -100,7 +100,7 @@ do -- Prediction Circuit recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_resources:simple_logic_circuit', {
+core.register_craftitem('sbz_resources:simple_logic_circuit', {
     description = S("Simple Logic Circuit"),
     inventory_image = 'simple_logic_circuit.png',
     stack_max = 256,
@@ -123,7 +123,7 @@ do -- Simple Logic Circuit recipe scope
     })
 end
 
-minetest.register_craftitem('sbz_resources:simple_inverted_logic_circuit', {
+core.register_craftitem('sbz_resources:simple_inverted_logic_circuit', {
     description = S("Simple Inverted Logic Circuit"),
     inventory_image = 'simple_inverting_circuit.png',
     stack_max = 256,

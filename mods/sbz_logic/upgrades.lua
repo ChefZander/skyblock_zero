@@ -7,7 +7,7 @@ local logic = sbz_api.logic
     def.action_out = function(stack, logic_pos, logic_meta) -- undo that ^
 ]]
 
-minetest.register_craftitem("sbz_logic:upgrade_template", {
+core.register_craftitem("sbz_logic:upgrade_template", {
     description = S("Logic Upgrade Template"),
     inventory_image = "upgrade_template.png",
     groups = { ui_logic = 1 }
@@ -29,7 +29,7 @@ end
 
 logic.register_upgrade = function(name, def)
     def.groups = { sbz_logic_upgrade = 1, ui_logic = 1 }
-    minetest.register_craftitem(name, def)
+    core.register_craftitem(name, def)
 end
 
 logic.register_upgrade("sbz_logic:linking_upgrade", {

@@ -116,7 +116,7 @@ core.register_entity("sbz_meteorites:emerging_meteorite", {
     },
     on_activate = function(self, staticdata, dtime)
         self.object:set_rotation(vector.new(math.random() * 2, math.random(), math.random() * 2) * math.pi)
-        staticdata = minetest.deserialize(staticdata) -- why does the engine make me do this crap? xd
+        staticdata = core.deserialize(staticdata) -- why does the engine make me do this crap? xd
 
         self.type = staticdata.type
         self.origin = staticdata.origin
@@ -163,12 +163,12 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
     info_extra = "Makes meteorites",
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inventory = meta:get_inventory()
         inventory:set_size("main", 32)
         meta:set_string("type", "")
         meta:set_string("formspec", get_meteorite_maker_formspec(pos, meta))
-        meta:set_string("counts", minetest.serialize {})
+        meta:set_string("counts", core.serialize {})
     end,
     autostate = true,
     action = function(pos, node, meta, supply, demand, dir)
@@ -204,7 +204,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         }
 
         for k, v in ipairs(positions) do
-            local def = minetest.registered_nodes[minetest.get_node(vector.add(pos, v)).name]
+            local def = core.registered_nodes[core.get_node(vector.add(pos, v)).name]
             if not def or not def.buildable_to then
                 meta:set_string("infotext", "Can't summon/feed meteorite, it needs some space.")
                 return 0
@@ -220,7 +220,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
 
         local center_pos = vector.add(pos, vector.new(0, 4, 0))
 
-        local entities = minetest.get_objects_inside_radius(center_pos, 1)
+        local entities = core.get_objects_inside_radius(center_pos, 1)
         local our_meteorite = nil
 
         for k, v in pairs(entities) do
@@ -228,7 +228,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
             if luaentity and luaentity.name == "sbz_meteorites:emerging_meteorite" then
                 if
                     luaentity.origin and
-                    minetest.hash_node_position(luaentity.origin) == minetest.hash_node_position(pos)
+                    core.hash_node_position(luaentity.origin) == core.hash_node_position(pos)
                 then
                     our_meteorite = v
                     break
@@ -237,7 +237,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         end
 
         if our_meteorite == nil then
-            our_meteorite = minetest.add_entity(center_pos, "sbz_meteorites:emerging_meteorite", minetest.serialize {
+            our_meteorite = core.add_entity(center_pos, "sbz_meteorites:emerging_meteorite", core.serialize {
                 origin = pos,
                 type = meta:get_string("type"),
             })
@@ -247,7 +247,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
             end
         end
 
-        local counts = minetest.deserialize(meta:get_string("counts"))
+        local counts = core.deserialize(meta:get_string("counts"))
 
         local sum_max = 0
         local sum_current = 0
@@ -267,12 +267,12 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
 
         if size_to_apply == 2 then -- full
             our_meteorite:remove()
-            local m = minetest.add_entity(center_pos, "sbz_meteorites:meteorite", meta:get_string("type"))
+            local m = core.add_entity(center_pos, "sbz_meteorites:meteorite", meta:get_string("type"))
             for k, v in pairs(counts) do
                 v.current = 0
             end
 
-            meta:set_string("counts", minetest.serialize(counts))
+            meta:set_string("counts", core.serialize(counts))
             meta:set_string("infotext", "Spawned the meteorite")
             return power_consume
         end
@@ -293,11 +293,11 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
             end
         end
 
-        meta:set_string("counts", minetest.serialize(counts))
+        meta:set_string("counts", core.serialize(counts))
         meta:set_string("formspec", get_meteorite_maker_formspec(pos, meta, counts))
         meta:set_string("infotext", "Working")
 
-        minetest.add_particlespawner({
+        core.add_particlespawner({
             pos = pos,
             attract = {
                 kind = "point",
@@ -321,7 +321,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         return added_any_items and power_consume or power_consume_when_holding_meteorite
     end,
     on_receive_fields = function(pos, formname, fields, sender)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         local type = meta:get_string("type")
 
@@ -345,16 +345,16 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
                         max = stack:get_count(),
                     }
                 end
-                meta:set_string("counts", minetest.serialize(c))
+                meta:set_string("counts", core.serialize(c))
             end
         else
             if fields.discard then
                 local center_pos = vector.add(pos, vector.new(0, 4, 0))
-                local counts = minetest.deserialize(meta:get_string("counts"))
+                local counts = core.deserialize(meta:get_string("counts"))
                 for item, v in pairs(counts) do
                     local items = split_stack_to_correct_items(ItemStack(item .. " " .. v.current))
                     for k, v in pairs(items) do
-                        minetest.item_drop(v, fakelib.create_player({
+                        core.item_drop(v, fakelib.create_player({
                             name = "",
                             direction = {
                                 x = 0, y = 1, z = 0
@@ -363,12 +363,12 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
                     end
                 end
                 meta:set_string("type", "")
-                meta:set_string("counts", minetest.serialize {})
+                meta:set_string("counts", core.serialize {})
 
                 -- and remove the meteorite entity
 
 
-                local entities = minetest.get_objects_inside_radius(center_pos, 1)
+                local entities = core.get_objects_inside_radius(center_pos, 1)
                 local our_meteorite = nil
 
                 for k, v in pairs(entities) do
@@ -376,7 +376,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
                     if luaentity and luaentity.name == "sbz_meteorites:emerging_meteorite" then
                         if
                             luaentity.origin and
-                            minetest.hash_node_position(luaentity.origin) == minetest.hash_node_position(pos)
+                            core.hash_node_position(luaentity.origin) == core.hash_node_position(pos)
                         then
                             our_meteorite = v
                             break
@@ -388,7 +388,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
         end
 
         meta:set_string("formspec",
-            get_meteorite_maker_formspec(pos, meta, minetest.deserialize(meta:get_string("counts"))))
+            get_meteorite_maker_formspec(pos, meta, core.deserialize(meta:get_string("counts"))))
     end,
     output_inv = "main",
     input_inv = "main",

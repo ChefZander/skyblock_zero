@@ -15,7 +15,7 @@ sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
         if msg.type == nil or msg.type == "manual" then
             sbz_api.attract_meteorites(pos, 1, msg.attract)
         else
-            minetest.get_meta(pos):set_float("attract", msg.attract)
+            core.get_meta(pos):set_float("attract", msg.attract)
         end
     end,
     action_subtick = function(pos, node, meta, supply, demand)

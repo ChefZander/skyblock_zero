@@ -2,7 +2,7 @@ local S = core.get_translator(core.get_current_modname())
 
 local logic = sbz_api.logic
 
-minetest.register_craftitem("sbz_logic:data_disk", {
+core.register_craftitem("sbz_logic:data_disk", {
     description = S("Empty Data Disk"),
     info_extra = {
         S("Can hold 20 kilobytes."),
@@ -17,12 +17,12 @@ minetest.register_craftitem("sbz_logic:data_disk", {
             stack_meta:get_int("override_code") == 1, stack_meta:get_int("override_editor") == 1
 
         local target = pointed.under
-        if minetest.is_protected(target, user:get_player_name()) then
-            minetest.record_protection_violation(target, user:get_player_name())
+        if core.is_protected(target, user:get_player_name()) then
+            core.record_protection_violation(target, user:get_player_name())
             return
         end
-        local node = minetest.get_node(target)
-        if not minetest.get_item_group(node.name, "sbz_luacontroller") == 1 then return end
+        local node = core.get_node(target)
+        if not core.get_item_group(node.name, "sbz_luacontroller") == 1 then return end
 
         local deserialized = core.deserialize(stack_meta:get_string("data"))
         if type(deserialized) == "string" then
@@ -62,13 +62,13 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
         on_use = function(stack, user, pointed)
             if pointed.type ~= "node" then return end
             local target = pointed.under
-            if minetest.is_protected(target, user:get_player_name()) then
-                minetest.record_protection_violation(target, user:get_player_name())
+            if core.is_protected(target, user:get_player_name()) then
+                core.record_protection_violation(target, user:get_player_name())
                 return
             end
 
-            local node = minetest.get_node(target)
-            if minetest.get_item_group(node.name, "sbz_luacontroller") ~= 1 then return end
+            local node = core.get_node(target)
+            if core.get_item_group(node.name, "sbz_luacontroller") ~= 1 then return end
 
             if punch_editor then
                 logic.override_editor(target, source)
@@ -79,11 +79,11 @@ function logic.register_system_disk(name, desc, source, punch_editor, punch_code
         end,
         stack_max = 1
     }
-    minetest.register_craftitem(name, def)
-    minetest.register_craft(craft)
+    core.register_craftitem(name, def)
+    core.register_craft(craft)
 end
 
-local file = assert(io.open(minetest.get_modpath("sbz_logic") .. "/disks/default_editor.sandboxed.lua", "r"), "wtf??")
+local file = assert(io.open(core.get_modpath("sbz_logic") .. "/disks/default_editor.sandboxed.lua", "r"), "wtf??")
 local default_editor_code = file:read("*a")
 file:close()
 

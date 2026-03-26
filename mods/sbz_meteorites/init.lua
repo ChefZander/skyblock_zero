@@ -3,7 +3,7 @@ local S = core.get_translator(core.get_current_modname())
 local y_min = -300
 local function spawn_meteorite(pos)
     if not pos then
-        for _, ref in pairs(minetest.get_connected_players()) do
+        for _, ref in pairs(core.get_connected_players()) do
             local player_pos = ref:get_pos()
             local relative_pos
             local success = false
@@ -24,10 +24,10 @@ local function spawn_meteorite(pos)
         end
     end
 
-    if pos then return minetest.add_entity(pos, 'sbz_meteorites:meteorite') end
+    if pos then return core.add_entity(pos, 'sbz_meteorites:meteorite') end
 end
 
-minetest.register_chatcommand('spawn_meteorite', {
+core.register_chatcommand('spawn_meteorite', {
     params = '([<x> <y> <z>] | ["here"]) [number]',
     description = S("Attempts to spawn a meteorite somewhere."),
     privs = { give = true },
@@ -38,8 +38,8 @@ minetest.register_chatcommand('spawn_meteorite', {
         -- do not read below
         if type(tonumber(split[1])) == 'number' and type(tonumber(split[2])) ~= 'number' then
             num_of_meteorites = math.max(1, tonumber(split[1]))
-        elseif split[1] == 'here' and minetest.get_player_by_name(name) then
-            pos = minetest.get_player_by_name(name):get_pos()
+        elseif split[1] == 'here' and core.get_player_by_name(name) then
+            pos = core.get_player_by_name(name):get_pos()
             if tonumber(split[2]) ~= nil then num_of_meteorites = math.max(1, tonumber(split[2])) end
         else
             if tonumber(split[1]) ~= nil and tonumber(split[2]) ~= nil and tonumber(split[3]) ~= nil then
@@ -52,19 +52,19 @@ minetest.register_chatcommand('spawn_meteorite', {
             meteorite = spawn_meteorite(pos)
         end
         if not meteorite then
-            minetest.chat_send_player(name, 'Failed to spawn meteorite.')
+            core.chat_send_player(name, 'Failed to spawn meteorite.')
             return
         end
         local mpos = vector.round(meteorite:get_pos())
         if num_of_meteorites == 1 then
-            minetest.chat_send_player(name, 'Spawned meteorite at ' .. mpos.x .. ' ' .. mpos.y .. ' ' .. mpos.z .. '.')
+            core.chat_send_player(name, 'Spawned meteorite at ' .. mpos.x .. ' ' .. mpos.y .. ' ' .. mpos.z .. '.')
         else
-            minetest.chat_send_player(name, 'Spawned meteorites.')
+            core.chat_send_player(name, 'Spawned meteorites.')
         end
     end,
 })
 
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 local time_since = storage:get_float('time_since_last_spawn')
 
 local function meteorite_globalstep(dtime)
@@ -72,7 +72,7 @@ local function meteorite_globalstep(dtime)
     if time_since > 120 then
         time_since = 0
         if math.random() < 0.25 then spawn_meteorite() end
-        --        for _, obj in ipairs(minetest.object_refs) do
+        --        for _, obj in ipairs(core.object_refs) do
         --            if obj and obj:get_luaentity() and obj:get_luaentity().name == "sbz_meteorites:gravitational_attractor_entity" and math.random() < 0.2 then
         --                spawns = spawns + obj:get_luaentity().type
         --            end
@@ -82,9 +82,9 @@ local function meteorite_globalstep(dtime)
     storage:set_float('time_since_last_spawn', time_since)
 end
 
-minetest.register_globalstep(meteorite_globalstep)
+core.register_globalstep(meteorite_globalstep)
 
-local modpath = minetest.get_modpath('sbz_meteorites')
+local modpath = core.get_modpath('sbz_meteorites')
 
 dofile(modpath .. '/meteorite.lua')
 dofile(modpath .. '/nodes.lua')

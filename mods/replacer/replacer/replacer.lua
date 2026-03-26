@@ -9,18 +9,18 @@ local S = replacer.S
 local max_time_us = 1000000 * r.max_time
 -- math
 local max, min, floor = math.max, math.min, math.floor
-local core_check_player_privs = minetest.check_player_privs
-local core_get_node = minetest.get_node
-local core_get_node_or_nil = minetest.get_node_or_nil
-local core_get_item_group = minetest.get_item_group
-local core_registered_items = minetest.registered_items
-local core_registered_nodes = minetest.registered_nodes
-local core_swap_node = minetest.swap_node
-local deserialize = minetest.deserialize
-local get_craft_recipe = minetest.get_craft_recipe
+local core_check_player_privs = core.check_player_privs
+local core_get_node = core.get_node
+local core_get_node_or_nil = core.get_node_or_nil
+local core_get_item_group = core.get_item_group
+local core_registered_items = core.registered_items
+local core_registered_nodes = core.registered_nodes
+local core_swap_node = core.swap_node
+local deserialize = core.deserialize
+local get_craft_recipe = core.get_craft_recipe
 local has_creative = r.has_creative
-local serialize = minetest.serialize
-local us_time = minetest.get_us_time
+local serialize = core.serialize
+local us_time = core.get_us_time
 -- vector
 local vector_distance = vector.distance
 local vector_multiply = vector.multiply
@@ -243,7 +243,7 @@ function replacer.on_use(itemstack, player, pt, right_clicked)
 		return
 	end
 
-	local pos = minetest.get_pointed_thing_position(pt, right_clicked)
+	local pos = core.get_pointed_thing_position(pt, right_clicked)
 	local node_old = core_get_node_or_nil(pos)
 
 	if not node_old then
@@ -694,4 +694,4 @@ function replacer.tool_def_technic()
 	return def
 end
 
-minetest.register_tool(r.tool_name_technic, r.tool_def_technic())
+core.register_tool(r.tool_name_technic, r.tool_def_technic())

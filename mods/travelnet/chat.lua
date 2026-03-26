@@ -1,6 +1,6 @@
 local S = core.get_translator(core.get_current_modname())
 
-minetest.register_chatcommand("travelnet", {
+core.register_chatcommand("travelnet", {
     params = "[network?]",
     description = S("Shows the travelnet formspec for the network"),
     privs = {
@@ -23,7 +23,7 @@ minetest.register_chatcommand("travelnet", {
 
         local first_station = network[first_station_name]
         local pos = first_station.pos
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
 
         travelnet.show_current_formspec(pos, meta, playername)
     end

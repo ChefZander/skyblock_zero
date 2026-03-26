@@ -13,7 +13,7 @@ unified_inventory.register_craft_type("punching", {
 -- The Core
 -- The basis of all progression
 -- Core Drops
-minetest.register_craftitem("sbz_resources:core_dust", {
+core.register_craftitem("sbz_resources:core_dust", {
     description = S("Core Dust"),
     inventory_image = "core_dust.png",
     stack_max = 256,
@@ -35,7 +35,7 @@ unified_inventory.register_craft {
     }
 }
 
-minetest.register_craftitem("sbz_resources:matter_dust", {
+core.register_craftitem("sbz_resources:matter_dust", {
     description = S("Matter Dust"),
     inventory_image = "matter_dust.png",
     stack_max = 256,
@@ -55,7 +55,7 @@ unified_inventory.register_craft {
     }
 }
 
-minetest.register_craftitem("sbz_resources:charged_particle", {
+core.register_craftitem("sbz_resources:charged_particle", {
     description = S("Charged Particle"),
     inventory_image = "charged_particle.png",
     stack_max = 256,
@@ -77,7 +77,7 @@ unified_inventory.register_craft {
 }
 
 -- Other Items
-minetest.register_craftitem("sbz_resources:antimatter_dust", {
+core.register_craftitem("sbz_resources:antimatter_dust", {
     description = S("Antimatter Dust"),
     inventory_image = "antimatter_dust.png",
     stack_max = 256,

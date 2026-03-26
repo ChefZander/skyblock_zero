@@ -53,8 +53,8 @@ local fire_node = {
     },
     drop = "",
     on_timer = function(pos)
-        if not minetest.find_node_near(pos, 1, { "group:igniter" }) then
-            minetest.remove_node(pos)
+        if not core.find_node_near(pos, 1, { "group:igniter" }) then
+            core.remove_node(pos)
             return
         end
         -- Restart timer
@@ -63,7 +63,7 @@ local fire_node = {
 
     air = true,
     co2_action = function(start_pos)
-        local meta = minetest.get_meta(start_pos)
+        local meta = core.get_meta(start_pos)
         local co2 = meta:get_int("co2")
         if is_node_within_radius(start_pos, "group:water", 1) then
             core.remove_node(start_pos)
@@ -73,14 +73,14 @@ local fire_node = {
             local node = core.get_node(pos).name
             local co2_produced = core.get_item_group(node, "burn")
             ---@type function|nil
-            local on_burn = (minetest.registered_nodes[node] or {}).on_burn
+            local on_burn = (core.registered_nodes[node] or {}).on_burn
             if co2_produced > 0 then
                 if on_burn then
                     on_burn(pos)
                 else
                     core.set_node(pos, { name = "sbz_bio:fire" })
                     core.get_meta(pos):set_int("co2", co2_produced)
-                    minetest.get_node_timer(pos):start(math.random(30, 60))
+                    core.get_node_timer(pos):start(math.random(30, 60))
                 end
             end
         end)
@@ -99,26 +99,26 @@ core.register_tool("sbz_bio:igniter", {
     on_use = function(itemstack, user, pointed_thing)
         local player_name = user:get_player_name()
         if pointed_thing.type == "node" then
-            local node_under = minetest.get_node(pointed_thing.under).name
-            local nodedef = minetest.registered_nodes[node_under]
+            local node_under = core.get_node(pointed_thing.under).name
+            local nodedef = core.registered_nodes[node_under]
             if not nodedef then
                 return
             end
-            if minetest.is_protected(pointed_thing.under, player_name) then
-                minetest.record_protection_violation(pointed_thing.under, player_name)
+            if core.is_protected(pointed_thing.under, player_name) then
+                core.record_protection_violation(pointed_thing.under, player_name)
                 return
             end
 
             if nodedef.on_ignite then
                 nodedef.on_ignite(pointed_thing.under, user)
-            elseif minetest.get_item_group(node_under, "burn") >= 1
-                and minetest.get_node(pointed_thing.above).name == "air" then
-                if minetest.is_protected(pointed_thing.above, player_name) then
-                    minetest.record_protection_violation(pointed_thing.above, player_name)
+            elseif core.get_item_group(node_under, "burn") >= 1
+                and core.get_node(pointed_thing.above).name == "air" then
+                if core.is_protected(pointed_thing.above, player_name) then
+                    core.record_protection_violation(pointed_thing.above, player_name)
                     return
                 end
 
-                minetest.set_node(pointed_thing.above, { name = "sbz_bio:fire" })
+                core.set_node(pointed_thing.above, { name = "sbz_bio:fire" })
             end
         end
         -- Wear tool
@@ -142,12 +142,12 @@ do -- Igniter recipe scope
     })
 end
 
-minetest.register_abm({
+core.register_abm({
     label = "Remove fire",
     interval = 10,
     chance = 3,
     nodenames = { "sbz_bio:fire" },
     action = function(pos)
-        minetest.remove_node(pos)
+        core.remove_node(pos)
     end
 })

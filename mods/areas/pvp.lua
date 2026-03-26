@@ -29,7 +29,7 @@ also https://github.com/BlockySurvival/areas/commit/dacfe5fbad7ae3d2f32a897fde8e
 ]]
 local S = core.get_translator(core.get_current_modname())
 
-minetest.register_chatcommand("toggle_area_pvp", {
+core.register_chatcommand("toggle_area_pvp", {
     description = S("Toggle PvP in an area"),
     params = "<ID>",
     func = function(name, param)
@@ -69,12 +69,12 @@ local function punchplayer_func(player, hitter, time_from_last_punch, tool_capab
     end
     -- Otherwise, it doesn't do damage
     if no_dm ~= nil then
-        minetest.chat_send_player(hitter:get_player_name(), "PvP is not allowed in this area!")
+        core.chat_send_player(hitter:get_player_name(), "PvP is not allowed in this area!")
     end
     return true
 end
 
-minetest.register_on_punchplayer(punchplayer_func)
+core.register_on_punchplayer(punchplayer_func)
 
 -- i added
 local knockback = core.calculate_knockback

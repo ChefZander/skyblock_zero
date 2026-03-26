@@ -36,7 +36,7 @@ sbz_api.register_stateful_machine('sbz_chem:high_power_electric_furnace', {
     input_inv = 'src',
     output_inv = 'dst',
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('src', 4)
         inv:set_size('dst', 4)
@@ -72,7 +72,7 @@ listring[context;dst]
 
             local out, decremented_input, index
             for i = 1, 4 do
-                local out_inner, decremented_input_inner = minetest.get_craft_result {
+                local out_inner, decremented_input_inner = core.get_craft_result {
                     method = 'cooking',
                     width = 1,
                     items = { src[i] },

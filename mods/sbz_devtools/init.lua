@@ -2,7 +2,7 @@ local S = core.get_translator(core.get_current_modname())
 
 -- Don't touch this stuff
 
-minetest.register_chatcommand("dev_givequest", {
+core.register_chatcommand("dev_givequest", {
     description = S("Gives achievements - for debugging only"),
     params = '<name> | "all"',
 
@@ -12,15 +12,15 @@ minetest.register_chatcommand("dev_givequest", {
             for _, q in ipairs(quests) do
                 unlock_achievement(name, q.title)
             end
-            minetest.chat_send_player(name, "Gave you all achievements")
+            core.chat_send_player(name, "Gave you all achievements")
         else
             unlock_achievement(name, param)
-            minetest.chat_send_player(name, "Gave you the achievement with the name \"" .. param .. "\"")
+            core.chat_send_player(name, "Gave you the achievement with the name \"" .. param .. "\"")
         end
     end
 })
 
-minetest.register_chatcommand("dev_revokequest", {
+core.register_chatcommand("dev_revokequest", {
     description = S("Revoke an achievement - for debugging only"),
     params = '<name> | "all"',
 
@@ -30,15 +30,15 @@ minetest.register_chatcommand("dev_revokequest", {
             for _, q in ipairs(quests) do
                 revoke_achievement(name, q.title)
             end
-            minetest.chat_send_player(name, "Revoked all achievements")
+            core.chat_send_player(name, "Revoked all achievements")
         else
             revoke_achievement(name, param)
-            minetest.chat_send_player(name, "Revoked the achievement with the name \"" .. param .. "\"")
+            core.chat_send_player(name, "Revoked the achievement with the name \"" .. param .. "\"")
         end
     end
 })
 
-minetest.register_chatcommand("dev_hotbar", {
+core.register_chatcommand("dev_hotbar", {
     description = S("Set hotbar slot count - for debugging only"),
     params = '<count>',
     privs = { ["server"] = true },
@@ -46,7 +46,7 @@ minetest.register_chatcommand("dev_hotbar", {
     func = function(name, param)
         local count = tonumber(param) or 32
 
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if player then
             player:hud_set_hotbar_itemcount(count)
             return true, "Hotbar slot count set to " .. count
@@ -56,12 +56,12 @@ minetest.register_chatcommand("dev_hotbar", {
     end
 })
 
-minetest.register_chatcommand("dev_platform", {
+core.register_chatcommand("dev_platform", {
     description = S("Spawn a 10x10 platform below the player - for debugging only"),
     privs = { ["server"] = true },
 
     func = function(name, param)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if player then
             local pos = player:get_pos()
             local platform_start_pos = vector.subtract(pos, { x = 5, y = 1, z = 5 })
@@ -69,10 +69,10 @@ minetest.register_chatcommand("dev_platform", {
                 for z = 0, 9 do
                     if (x == 0 and z == 0) or (x == 0 and z == 9) or (x == 9 and z == 0) or (x == 9 and z == 9) then
                         local platform_pos = vector.add(platform_start_pos, { x = x, y = 0, z = z })
-                        minetest.set_node(platform_pos, { name = "sbz_decor:photonlamp" })
+                        core.set_node(platform_pos, { name = "sbz_decor:photonlamp" })
                     else
                         local platform_pos = vector.add(platform_start_pos, { x = x, y = 0, z = z })
-                        minetest.set_node(platform_pos, { name = "sbz_resources:matter_blob" })
+                        core.set_node(platform_pos, { name = "sbz_resources:matter_blob" })
                     end
                 end
             end
@@ -83,11 +83,11 @@ minetest.register_chatcommand("dev_platform", {
     end
 })
 
-minetest.register_chatcommand("dev_close", {
+core.register_chatcommand("dev_close", {
     description = S("Get the 8 closest unique nodes within a distance of 32 and receive them as items - for debugging only"),
     privs = { ["server"] = true },
     func = function(name)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if not player then
             return false, "Player not found!"
         end
@@ -114,7 +114,7 @@ minetest.register_chatcommand("dev_close", {
                         end
 
                         local node_pos = vector.add(pos, { x = x, y = y, z = z })
-                        local node = minetest.get_node(node_pos)
+                        local node = core.get_node(node_pos)
                         local node_name = node.name
 
                         if node_name ~= "air" and not unique_nodes[node_name] then
@@ -148,11 +148,11 @@ minetest.register_chatcommand("dev_close", {
 })
 
 -- this is such a zander thing to do lmfao
-minetest.register_chatcommand("dev_clear", {
+core.register_chatcommand("dev_clear", {
     description = S("Clears the player's inventory - for debugging only"),
     privs = { ["server"] = true },
     func = function(name)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if not player then
             return false, "Player not found!"
         end
@@ -165,7 +165,7 @@ minetest.register_chatcommand("dev_clear", {
     end
 })
 
-minetest.register_chatcommand("dev_toggle_libox", {
+core.register_chatcommand("dev_toggle_libox", {
     description = S("Enables/Disables all lua sandboxing"),
     privs = { ["server"] = true },
     func = function()
@@ -175,11 +175,11 @@ minetest.register_chatcommand("dev_toggle_libox", {
 })
 
 sbz_api.forced_light = {}
-minetest.register_chatcommand("dev_light", {
+core.register_chatcommand("dev_light", {
     description = S("Makes it day only for you"),
     privs = { ["server"] = true },
     func = function(name)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if not player then
             return false, "Player not found!"
         end
@@ -188,30 +188,30 @@ minetest.register_chatcommand("dev_light", {
     end
 })
 
-minetest.register_chatcommand("dev_craft", {
+core.register_chatcommand("dev_craft", {
     description =
     "Fake a craft, used for quest testing, param should be an item name or \"item\" to specify wielded item's name",
     privs = { ["server"] = true },
     func = function(name, param)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if not player then
             return false, "Player not found!"
         end
 
         if param == "item" or param == "" then param = player:get_wielded_item():get_name() end
 
-        for k, v in pairs(minetest.registered_on_crafts) do
+        for k, v in pairs(core.registered_on_crafts) do
             v(ItemStack(param), player)
         end
     end
 })
 
-minetest.register_chatcommand("dev_regen", {
+core.register_chatcommand("dev_regen", {
     description = S("Re-generate a mapblock (one that you are standing on)"),
     params = "[radius]",
     privs = { ["server"] = true },
     func = function(name, param)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if not player then
             return false, "Player not found!"
         end
@@ -224,13 +224,13 @@ minetest.register_chatcommand("dev_regen", {
     end
 })
 
-minetest.register_chatcommand("dev_mapblocks", {
+core.register_chatcommand("dev_mapblocks", {
     description =
     "Sends you all the mapblocks in the radius. RADIUS IS IN MAPBLOCKS!! may not work... in singleplayer at least",
     params = "[radius]",
     privs = { ["server"] = true },
     func = function(name, param)
-        local player = minetest.get_player_by_name(name)
+        local player = core.get_player_by_name(name)
         if not player then
             return false, "Player not found!"
         end

@@ -19,7 +19,7 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
     groups = { matter = 1 },
     power_needed = 40,
     on_construct = function(pos)
-        minetest.sound_play({ name = 'machine_build' }, { pos = pos })
+        core.sound_play({ name = 'machine_build' }, { pos = pos })
     end,
     action = function(radar_pos)
         local power_consume = 10
@@ -28,7 +28,7 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
         local meteorites = {}
         local attractors = {}
         local repulsors = {}
-        for _, obj in pairs(minetest.get_objects_inside_radius(radar_pos, 150)) do
+        for _, obj in pairs(core.get_objects_inside_radius(radar_pos, 150)) do
             if obj then
                 local entity = obj:get_luaentity()
                 if not entity then
@@ -43,7 +43,7 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
             end
         end
         if #meteorites > 0 then
-            minetest.add_particle {
+            core.add_particle {
                 pos = radar_pos + vector.new(0, 1.5, 0),
                 expiration_time = 1,
                 size = 10,
@@ -52,7 +52,7 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
                 glow = 14,
             }
 
-            minetest.sound_play({ name = 'alarm', gain = 0.7 }, { pos = radar_pos, max_hear_distance = 64 })
+            core.sound_play({ name = 'alarm', gain = 0.7 }, { pos = radar_pos, max_hear_distance = 64 })
             power_consume = 40
         end
 
@@ -70,9 +70,9 @@ sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
                 for _, repulsor in ipairs(repulsors) do
                     vel = vel - 51.2 * sbz_api.get_attraction(pos, repulsor)
                 end
-                local collides = minetest.registered_nodes[minetest.get_node(vector.round(pos)).name].walkable
+                local collides = core.registered_nodes[core.get_node(vector.round(pos)).name].walkable
                 for _, player in ipairs(players) do
-                    minetest.add_particle {
+                    core.add_particle {
                         pos = pos,
                         expiration_time = 1,
                         size = collides and 50 or 10,

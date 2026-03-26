@@ -1,5 +1,5 @@
-if not minetest.translate then
-	function minetest.translate(_, str, ...)
+if not core.translate then
+	function core.translate(_, str, ...)
 		local arg = { n = select('#', ...), ... }
 		return str:gsub('@(.)', function(matched)
 			local c = string.byte(matched)
@@ -11,11 +11,11 @@ if not minetest.translate then
 		end)
 	end
 
-	function minetest.get_translator(textdomain)
-		return function(str, ...) return minetest.translate(textdomain or '', str, ...) end
+	function core.get_translator(textdomain)
+		return function(str, ...) return core.translate(textdomain or '', str, ...) end
 	end
 end -- backward compatibility
-replacer.S = minetest.get_translator('replacer')
+replacer.S = core.get_translator('replacer')
 local S = replacer.S
 
 replacer.blabla = {}
