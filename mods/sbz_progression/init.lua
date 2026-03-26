@@ -1,5 +1,6 @@
 -- sbz_progression = {}
 
+local S = core.get_translator('sbz_progression')
 local modpath = core.get_modpath 'sbz_progression'
 
 dofile(modpath .. '/quest_parser.lua')
@@ -15,15 +16,12 @@ dofile(modpath .. '/annoy.lua')
 
 function sbz_api.displayDialogLine(player_name, text)
     core.chat_send_player(player_name, '⌠ ' .. text .. ' ⌡')
---[[ -- Different sound effects are going to be used from a callback in sound_api.lua
-    core.sound_play('dialogue', {
-        to_player = player_name,
-        gain = 1,
-    })
- ]]
 end
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
+
+-- Achievement table keys are used as metadata storage keys — do NOT translate them.
+-- Translation happens at the point of display in unlock_achievement below.
 local achievement_table = {
     ['sbz_resources:matter_blob'] = 'A bigger platform',
     ['sbz_resources:matter_stair'] = 'Matter Stairs',
@@ -179,8 +177,9 @@ local achievement_table = {
 }
 
 core.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-    if achievement_table[itemstack:get_name()] then
-        unlock_achievement(player:get_player_name(), achievement_table[itemstack:get_name()])
+    local achievement_name = achievement_table[itemstack:get_name()]
+    if achievement_name then
+        unlock_achievement(player:get_player_name(), achievement_name)
     end
 end)
 
@@ -189,6 +188,7 @@ end)
 function sbz_api.activate_safetynet(player_name, pos)
     return true
 end
+
 core.register_globalstep(function(dtime)
     for _, player in ipairs(core.get_connected_players()) do
         local pos = player:get_pos()
@@ -196,7 +196,7 @@ core.register_globalstep(function(dtime)
         if pos.y < safetynet_low - 100 then unlock_achievement(player:get_player_name(), 'Emptiness') end
         if pos.y < safetynet_low - 300 then
             if sbz_api.activate_safetynet(player:get_player_name(), pos) then
-                sbz_api.displayDialogLine(player:get_player_name(), 'You fell off the platform.')
+                sbz_api.displayDialogLine(player:get_player_name(), S('You fell off the platform.'))
                 player:set_pos { x = 0, y = 1, z = 0 }
 
                 -- Singularity Rune drop
@@ -204,12 +204,13 @@ core.register_globalstep(function(dtime)
                     local rune = ItemStack("sbz_runes:singularity_rune")
                     local inv = player:get_inventory()
                     local rune_leftover = inv:add_item("main", rune)
-                    
+
                     if not rune_leftover:is_empty() then
                         core.add_item(pos, rune_leftover)
                     end
 
-                    core.chat_send_all("⌠ Crazy Rare Drop: " .. puncher:get_player_name() .. " just dropped a Singularity Rune! ⌡")
+                    core.chat_send_all(S('⌠ Crazy Rare Drop: @1 just dropped a Singularity Rune! ⌡',
+                        player:get_player_name()))
                 end
             end
         end
@@ -284,8 +285,9 @@ core.register_on_player_inventory_action(function(player, action, inv, inv_info)
     end
     local player_name = player:get_player_name()
     local itemname = itemstack:get_name()
-    if achievement_in_inventory_table[itemname] then
-        unlock_achievement(player_name, achievement_in_inventory_table[itemname])
+    local achievement_name = achievement_in_inventory_table[itemname]
+    if achievement_name then
+        unlock_achievement(player_name, achievement_name)
     end
 end)
 
@@ -293,8 +295,9 @@ core.register_on_dignode(function(pos, oldnode, digger)
     if digger ~= nil and digger:is_valid() then
         local player_name = digger:get_player_name()
         local itemname = oldnode.name
-        if achievement_on_dig_table[itemname] then
-            unlock_achievement(player_name, achievement_on_dig_table[itemname])
+        local achievement_name = achievement_on_dig_table[itemname]
+        if achievement_name then
+            unlock_achievement(player_name, achievement_name)
         end
     end
 end)

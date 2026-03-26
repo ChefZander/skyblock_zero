@@ -23,6 +23,9 @@ Hello! Yes this is an info
 
 ]]
 
+--local S = core.get_translator('sbz_progression')
+-- This file processes internal data and contains no player-facing strings.
+
 local markdown_parser = {}
 
 local questline_fmt = '\n# %s\n'
@@ -35,7 +38,7 @@ local requires_fmt = 'Requires: %s'
 local requires_sep = ', '
 local requires_sep_trim = requires_sep:trim()
 
-local function ltrim(text) -- trim each line seperately
+local function ltrim(text) -- trim each line separately
     return table.concat(
         table.foreach(text:split('\n', true), function(v)
             return v:trim()
@@ -151,7 +154,7 @@ local function decode_text_and_meta(lines, line_index, quest)
                 got_text,
                 '[parser]: Quest: '
                     .. quest.title
-                    .. ": I know, i'm strict, but you need to have the ### Text AFTER the ### Meta"
+                    .. ": I know, I'm strict, but you need to have the ### Text AFTER the ### Meta"
             )
             while true do
                 line_index = line_index + 1

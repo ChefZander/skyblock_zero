@@ -1,6 +1,8 @@
-local function getquestbyname(questname)
+local S = core.get_translator('sbz_progression')
+
+local function get_quest_by_name(quest_name)
     for i, quest in ipairs(quests) do
-        if quest.title == questname then return quest end
+        if quest.title == quest_name then return quest end
     end
 end
 
@@ -20,16 +22,16 @@ local function combineWithAnd(list)
 end
 
 function unlock_achievement(player_name, achievement_id)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
     if not player then return end
 
     local meta = player:get_meta()
     if not is_achievement_unlocked(player_name, achievement_id) then
         meta:set_string(achievement_id, 'true')
-        minetest.chat_send_player(player_name, 'Quest Completed: ' .. achievement_id .. '!')
+        core.chat_send_player(player_name, S('Quest Completed: @1!', S(achievement_id)))
 
         local pos = player:get_pos()
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 50,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -51,18 +53,18 @@ function unlock_achievement(player_name, achievement_id)
 end
 
 function revoke_achievement(player_name, achievement_id)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
     if not player then return end
 
     local meta = player:get_meta()
     if is_achievement_unlocked(player_name, achievement_id) then
         meta:set_string(achievement_id, '')
-        minetest.chat_send_player(player_name, 'Quest revoked: ' .. achievement_id)
+        core.chat_send_player(player_name, S('Quest revoked: @1', achievement_id))
     end
 end
 
 function is_achievement_unlocked(player_name, achievement_id)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
     if not player then return false end
 
     local meta = player:get_meta()
@@ -74,11 +76,11 @@ function is_achievement_unlocked(player_name, achievement_id)
 end
 
 function is_quest_available(player_name, quest_id)
-    local quest = getquestbyname(quest_id)
+    local quest = get_quest_by_name(quest_id)
     if quest.requires == nil then return true end
 
-    for i, questname in ipairs(quest.requires) do
-        if is_achievement_unlocked(player_name, questname) == false then return false end
+    for i, quest_name in ipairs(quest.requires) do
+        if is_achievement_unlocked(player_name, quest_name) == false then return false end
     end
     return true
 end
@@ -188,8 +190,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 
 		button[5.25,0.35;0.3,0.3;font_add;+]
 		button[5.55,0.35;0.3,0.3;font_sub;-]
-		tooltip[font_add;Makes font larger]
-		tooltip[font_sub;Makes font smaller]
+		tooltip[font_add;%s]
+		tooltip[font_sub;%s]
 ]]):format(
         sbz_api.ui.hypertext(
             0.3,
@@ -197,19 +199,15 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             5.6,
             0.5,
             '',
-            'Quest List (✓ '
-                .. completed_count
-                .. ' / ► '
-                .. available_count
-                .. ' / ✕ '
-                .. (quest_count - completed_count)
-                .. ')'
+            S('Quest List (✓ @1 / ► @2 / ✕ @3)', completed_count, available_count, quest_count - completed_count)
         ),
         sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
         table_style,
         quest_list,
         selected_quest_index,
-        sbz_api.ui.field(0.2, 12, 5.25, 0.5, 'search', '', search_text)
+        sbz_api.ui.field(0.2, 12, 5.25, 0.5, 'search', '', search_text),
+        core.formspec_escape(S('Makes font larger')),
+        core.formspec_escape(S('Makes font smaller'))
     )
     formspec = formspec .. sbz_api.ui.box(5.85, 0.2, 11.2, 11.8)
 
@@ -243,16 +241,16 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         then
             formspec = formspec
                 .. hypertext:format(
-                    minetest.formspec_escape('<big>' .. selected_quest.title .. '</big>'),
+                    core.formspec_escape('<big>' .. selected_quest.title .. '</big>'),
                     (
                         is_quest_available(player_name, selected_quest.title)
-                            and minetest.formspec_escape(selected_quest.text)
-                        or 'Complete ' .. combineWithAnd(selected_quest.requires) .. ' to unlock.'
+                        and core.formspec_escape(selected_quest.text)
+                        or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     (
                         is_achievement_unlocked(player_name, selected_quest.title)
-                            and (selected_quest.type == 'secret' and "✔ Shhh... don't tell anyone :)" or '✔ You have completed this Quest.')
-                        or 'You have not completed this Quest.'
+                        and (selected_quest.type == 'secret' and core.formspec_escape(S("✔ Shhh... don't tell anyone :)")) or core.formspec_escape(S('✔ You have completed this Quest.')))
+                        or core.formspec_escape(S('You have not completed this Quest.'))
                     )
                 )
         elseif
@@ -264,8 +262,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                     '',
                     (
                         is_achievement_unlocked(player_name, selected_quest.title)
-                            and "✔ Shhh... don't tell anyone"
-                        or 'You have not completed this Quest.'
+                        and core.formspec_escape(S("✔ Shhh... don't tell anyone"))
+                        or core.formspec_escape(S('You have not completed this Quest.'))
                     )
                 )
         elseif selected_quest.type == 'text' then
@@ -274,8 +272,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                     ('<style color=%s>'):format(pal.bright_aqua or '#9ab7fc') .. selected_quest.title .. '</style>',
                     (
                         is_quest_available(player_name, selected_quest.title)
-                            and minetest.formspec_escape(selected_quest.text)
-                        or 'Complete ' .. combineWithAnd(selected_quest.requires) .. ' to unlock.'
+                        and core.formspec_escape(selected_quest.text)
+                        or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     ''
                 )
@@ -295,7 +293,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     end
 
     -- play page sound lol
-    minetest.sound_play('questbook', {
+    core.sound_play('questbook', {
         to_player = player_name,
         gain = 1,
     })
@@ -305,7 +303,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 end
 
 -- Handle form submissions
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
     if formname == 'questbook:main' then
         local name = player:get_player_name()
         local meta = player:get_meta()
@@ -329,7 +327,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         end
 
         if fields.quest_list or fields.search or force_query or (fields.font_add or fields.font_sub) then
-            local event = minetest.explode_table_event(fields.quest_list)
+            local event = core.explode_table_event(fields.quest_list)
 
             local selected_quest_index
             if event.row and event.row ~= 0 or (fields.search and fields.search ~= '') then
@@ -374,8 +372,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     end
 end)
 
-minetest.register_craftitem('sbz_progression:questbook', {
-    description = 'Quest Book',
+core.register_craftitem('sbz_progression:questbook', {
+    description = S('Quest Book'),
     inventory_image = 'questbook.png',
     stack_max = 1,
     on_use = function(itemstack, player, pointed_thing)
@@ -384,7 +382,7 @@ minetest.register_craftitem('sbz_progression:questbook', {
         if meta then selected_quest_index = meta:get_int 'selected_quest_index' end
         if selected_quest_index == 0 then selected_quest_index = 1 end
 
-        minetest.show_formspec(
+        core.show_formspec(
             player:get_player_name(),
             'questbook:main',
             get_questbook_formspec(selected_quest_index, player:get_player_name(), quests)
