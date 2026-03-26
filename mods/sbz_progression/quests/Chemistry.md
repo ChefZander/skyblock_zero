@@ -143,7 +143,7 @@ If you press/hold both jump and shift or aux1:
 The mode you are flying in can also be seen by how many particles are getting spawned.  
 The wear is setup such that it lasts you 3 minutes of constant flying  
   
-You can re-fuel your jetpack by right-clicking on a battery, full repair costs 1000 Cj  
+You can re-fuel your jetpack by right-clicking on a battery, full recharge costs 20 kCj.
   
 Jetpack gets de-activated when you move it in your inventory during flight, or when it runs out of charge.  
   
