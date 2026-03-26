@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.sources2fluid_cells = {}
 sbz_api.fluid_cells2sources = {}
 local empty_cell = "sbz_chem:empty_fluid_cell"
@@ -34,7 +36,7 @@ end
 
 -- Empty
 core.register_craftitem(empty_cell, {
-    description = "Empty Fluid Cell (Empty)",
+    description = S("Empty Fluid Cell (Empty)"),
     inventory_image = "fluid_cell.png",
     liquids_pointable = true,
     groups = { chem_element = 1 },
@@ -72,7 +74,7 @@ do -- Empty Fluid Cell recipe scope
 end
 
 sbz_api.register_fluid_cell("sbz_chem:water_fluid_cell", {
-    description = "Water Fluid Cell (H₂O)",
+    description = S("Water Fluid Cell (H₂O)"),
     sound = {
         footstep = { name = 'gen_water_step', gain = 0.5, pitch = 0.8 },
         place = { name = 'mix_water_place' }

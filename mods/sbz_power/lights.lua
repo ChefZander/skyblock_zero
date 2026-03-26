@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 local cost = 1
 sbz_api.register_stateful_machine("sbz_power:powered_lamp", {
-    description = "Powered Lamp",
+    description = S("Powered Lamp"),
     sounds = sbz_api.sounds.glass(),
     tiles = { "power_lamp_off.png^[colorize:black:50" },
     light_source = 0,
@@ -23,7 +25,7 @@ sbz_api.register_stateful_machine("sbz_power:powered_lamp", {
 -- https://github.com/mt-mods/technic/blob/32f1d5a9e76a17b075259b0824db29730c9beb06/technic/machines/LV/lamp.lua#L15
 -- i used that to help with the registration
 core.register_node("sbz_power:funny_air", {
-    description = "Funny air (YOU HACKER YOU!!!!)",
+    description = S("Funny air (YOU HACKER YOU!!!!)"),
     info_extra =
     "You weren't technically supposed to obtain this but you can, if you have added some mod soup on top of this.",
     drawtype = "airlike",
@@ -89,7 +91,7 @@ local function undo_illuminate(pos)
 end
 
 sbz_api.register_stateful_machine("sbz_power:super_powered_lamp", {
-    description = "Super Powered Lamp",
+    description = S("Super Powered Lamp"),
     sounds = sbz_api.sounds.glass(),
     tiles = { "super_power_lamp_off.png^[colorize:black:50" },
     light_source = 0,

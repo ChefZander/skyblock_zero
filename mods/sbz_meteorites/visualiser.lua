@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.register_machine('sbz_meteorites:meteorite_radar', {
     disallow_pipeworks = true,
-    description = 'Meteorite Radar',
+    description = S("Meteorite Radar"),
     info_extra = "Detects if meteorites are nearby. Uses 10Cj if there aren't, uses 40Cj if there are.",
     drawtype = 'mesh',
     paramtype = 'light',

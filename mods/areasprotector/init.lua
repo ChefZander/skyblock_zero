@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local creative_mode = core.settings:get_bool("creative_mode")
 
 local function cyan(str)
@@ -279,7 +281,7 @@ local area_protector_sounds = {
 }
 
 core.register_node("areasprotector:protector_large", {
-	description = "Large Protector Block",
+	description = S("Large Protector Block"),
 	on_receive_fields = function(pos, formname, fields, sender)
 		return on_receive_fields(pos, formname, fields, sender, horizontal_reach_large, vertical_reach_large)
 	end,
@@ -304,7 +306,7 @@ core.register_node("areasprotector:protector_large", {
 
 
 core.register_node("areasprotector:protector_small", {
-	description = "Small Protector Block",
+	description = S("Small Protector Block"),
 	on_receive_fields = function(pos, formname, fields, sender)
 		return on_receive_fields(pos, formname, fields, sender, horizontal_reach_small, vertical_reach_small)
 	end,

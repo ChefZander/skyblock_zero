@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 local hash = core.hash_node_position
 
 core.register_node("sbz_power:connector_off", {
-    description = "Connector",
+    description = S("Connector"),
     sounds = sbz_api.sounds.matter(),
     drawtype = "nodebox",
     paramtype = "light",
@@ -47,7 +49,7 @@ core.register_node("sbz_power:connector_off", {
 })
 
 core.register_node("sbz_power:connector_on", {
-    description = "Connector",
+    description = S("Connector"),
     sounds = sbz_api.sounds.matter(),
     drawtype = "nodebox",
     paramtype = "light",

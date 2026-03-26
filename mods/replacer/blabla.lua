@@ -56,11 +56,11 @@ rb.log_deny_list_insert = 'Added "%s" to deny list.'
 rb.timed_out = S('Time-limit reached.')
 rb.tool_short_description = '(%s %s%s) %s'
 rb.tool_long_description = '%s\n%s\n%s'
-rb.ccm_params = '(chat|audio) (0|1)'
+rb.ccm_params = S("(chat|audio) (0|1)")
 rb.ccm_description = S('Toggles verbosity.\nchat: When on, '
 	.. 'messages are posted to chat.\naudio: When off, replacer is silent.')
-rb.ccm_player_not_found = 'Player not found'
-rb.ccm_player_meta_error = 'Player meta not existant'
+rb.ccm_player_not_found = S("Player not found")
+rb.ccm_player_meta_error = S("Player meta not existent")
 rb.log_reg_exception_override = 'register_exception: '
 	.. 'exception for "%s" already exists.'
 rb.log_reg_exception = 'registered exception for "%s" to "%s"'
@@ -111,7 +111,7 @@ rbi.mobs_loyal = S('Is loyal to owner.')
 rbi.mobs_attacks = S('Likes to attack:')
 rbi.mobs_follows = S('Follows players holding:')
 rbi.mobs_drops = S('May drop:')
-rbi.mobs_shoots = S('Can shoot misiles.')
+rbi.mobs_shoots = S('Can shoot missiles.')
 rbi.mobs_breed = S('Can breed.')
 rbi.mobs_spawns_on = S('Spawns on:')
 rbi.mobs_spawns_neighbours = S('with neighours:')

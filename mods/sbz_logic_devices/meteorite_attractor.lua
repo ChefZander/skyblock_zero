@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 local max_attract = 10
 
 sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
-    description = "Luanium Meteorite Attractor",
+    description = S("Luanium Meteorite Attractor"),
     info_extra = "At this point it might as well be a black hole...",
     tiles = { "luanium_attractor.png" },
     groups = { ui_logic = 1, matter = 1, charged = 1, sbz_machine_subticking = 1 },

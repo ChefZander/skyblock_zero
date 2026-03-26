@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local storinator_upgrades = {}
 local function update_node_texture(pos)
     local meta = core.get_meta(pos)
@@ -182,7 +184,7 @@ listring[]
                 for kk, vv in ipairs(def_copy.tiles) do
                     def_copy.tiles[kk] = vv .. "^[colorize:cyan:40"
                 end
-                def_copy.description = "Public " .. def_copy.description
+                def_copy.description = S("Public ") .. def_copy.description
             end
             def_copy = unifieddyes.def(def_copy, false)
             core.register_node(name, def_copy)
@@ -227,7 +229,7 @@ end
 
 
 register_storinator("", {
-    description = "Storinator",
+    description = S("Storinator"),
     sounds = sbz_api.sounds.matter(),
     level = 0,
     overlay_color = "#696a6a",
@@ -238,7 +240,7 @@ register_storinator("", {
 local lvl0 = slots_lvl(0)
 
 register_storinator("bronze", {
-    description = "Bronze Storinator",
+    description = S("Bronze Storinator"),
     level = 1,
     overlay_color = "#df7126",
     spacing = 0.2 / (slots_lvl(1) / lvl0) * 1.25,
@@ -248,7 +250,7 @@ register_storinator("bronze", {
 })
 
 register_storinator("stemfruit", {
-    description = "Stemfruit Storinator",
+    description = S("Stemfruit Storinator"),
     level = 2,
     overlay_color = "#ac3232",
     spacing = 0.2 / (slots_lvl(2) / lvl0) * 1.5,
@@ -257,7 +259,7 @@ register_storinator("stemfruit", {
     material = "sbz_bio:stemfruit",
 })
 register_storinator("colorium", {
-    description = "Colorium Storinator",
+    description = S("Colorium Storinator"),
     level = 3,
     overlay_color = "white",
     spacing = 0.2 / (slots_lvl(3) / lvl0) * 1.7,
@@ -269,7 +271,7 @@ register_storinator("colorium", {
 })
 
 register_storinator("warpshroom", {
-    description = "Warpshroom Storinator",
+    description = S("Warpshroom Storinator"),
     level = 4,
     overlay_color = "#76428a",
     spacing = 0.2 / (slots_lvl(4) / lvl0) * 1.9,
@@ -281,7 +283,7 @@ register_storinator("warpshroom", {
 })
 
 register_storinator("neutronium", {
-    description = "Neutronium Storinator",
+    description = S("Neutronium Storinator"),
     level = 6,
     overlay_color = "#111111",
     brighten_base = true,

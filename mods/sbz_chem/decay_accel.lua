@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- Proper handling needed for actual looping of a 2-second audio clip
 local decay_sounds = {}
 local function pos_hash(pos)
@@ -47,7 +49,7 @@ local function stop_decay_sound(pos)
 end
 
 sbz_api.register_stateful_machine("sbz_chem:decay_accel", {
-    description = "Decay Accelerator",
+    description = S("Decay Accelerator"),
     tiles = {
         "decay_accel.png",
         "decay_accel.png",

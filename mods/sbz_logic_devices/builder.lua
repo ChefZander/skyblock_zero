@@ -1,11 +1,11 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- like the digibuilder... but better... yea!
 -- more overpowered!!
-
 
 local power_per_action = 40
 local queue_max = 50
 local range = 20
-
 
 
 local function get_index(inv, item)
@@ -152,10 +152,10 @@ end
 local builder_queues = {}
 
 sbz_api.register_machine("sbz_logic_devices:builder", {
-    description = "Lua Builder",
+    description = S("Lua Builder"),
     info_extra = {
-        "A way for lua controllers to interact with the world.",
-        "Can build/break/dig/punch/see 50 nodes every 0.25 seconds...",
+        S("A way for lua controllers to interact with the world."),
+        S("Can build/break/dig/punch/see 50 nodes every 0.25 seconds..."),
     },
     tiles = {
         "lua_builder.png"

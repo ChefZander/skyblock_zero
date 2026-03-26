@@ -1,4 +1,6 @@
-local book_item, book_written = ""
+local S = core.get_translator(core.get_current_modname())
+
+local book_item, book_written = "", ""
 
 if minetest.get_modpath("default") then
 	book_item = "default:book"
@@ -23,7 +25,7 @@ jumpdrive.write_to_book = function(pos, sender)
 
 		data.owner = sender:get_player_name()
 		data.title = "Jumpdrive coordinates"
-		data.description = "Jumpdrive coordinates"
+		data.description = S("Jumpdrive coordinates")
 		data.text = minetest.serialize(jumpdrive.get_meta_pos(pos))
 		data.page = 1
 		data.page_max = 1

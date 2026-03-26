@@ -1,9 +1,12 @@
 -- License: LGPLv3 or later
 -- from: https://github.com/mt-mods/digistuff/tree/master
+
+local S = core.get_translator(core.get_current_modname())
+
 local MAX_COMMANDS_AT_ONCE = 10
 local t = type
 core.register_node("sbz_logic_devices:noteblock", {
-    description = "Note Block",
+    description = S("Note Block"),
     info_extra = "Plays sounds, fully capable of blowing your ears off! :>",
     tiles = {
         "noteblock_top.png",

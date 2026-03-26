@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- memcontroller
 
 local function compress(data)
@@ -16,11 +18,11 @@ local default_index_state = {
 }
 
 core.register_node("sbz_logic_devices:memcontroller", {
-    description = "Memory Controller",
+    description = S("Memory Controller"),
     info_extra = {
-        "Holds " .. (size_limit / 1024 ^ 3) .. "mb",
-        "Capable of compressing data",
-        "Limited to " .. (lag_limit) .. "ms/s",
+        S("Holds @1 MB", size_limit / 1024 ^ 3),
+        S("Capable of compressing data"),
+        S("Limited to @1 ms of lag per second", lag_limit),
     },
     tiles = {
         "memcontroller_top.png",

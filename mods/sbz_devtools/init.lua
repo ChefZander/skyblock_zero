@@ -1,7 +1,9 @@
--- Dont touch this stuff
+local S = core.get_translator(core.get_current_modname())
+
+-- Don't touch this stuff
 
 minetest.register_chatcommand("dev_givequest", {
-    description = "Gives achievements - for debugging only",
+    description = S("Gives achievements - for debugging only"),
     params = '<name> | "all"',
 
     privs = { ["server"] = true },
@@ -19,7 +21,7 @@ minetest.register_chatcommand("dev_givequest", {
 })
 
 minetest.register_chatcommand("dev_revokequest", {
-    description = "Revoke an achievement - for debugging only",
+    description = S("Revoke an achievement - for debugging only"),
     params = '<name> | "all"',
 
     privs = { ["server"] = true },
@@ -37,7 +39,7 @@ minetest.register_chatcommand("dev_revokequest", {
 })
 
 minetest.register_chatcommand("dev_hotbar", {
-    description = "Set hotbar slot count - for debugging only",
+    description = S("Set hotbar slot count - for debugging only"),
     params = '<count>',
     privs = { ["server"] = true },
 
@@ -55,7 +57,7 @@ minetest.register_chatcommand("dev_hotbar", {
 })
 
 minetest.register_chatcommand("dev_platform", {
-    description = "Spawn a 10x10 platform below the player - for debugging only",
+    description = S("Spawn a 10x10 platform below the player - for debugging only"),
     privs = { ["server"] = true },
 
     func = function(name, param)
@@ -82,7 +84,7 @@ minetest.register_chatcommand("dev_platform", {
 })
 
 minetest.register_chatcommand("dev_close", {
-    description = "Get the 8 closest unique nodes within a distance of 32 and receive them as items - for debugging only",
+    description = S("Get the 8 closest unique nodes within a distance of 32 and receive them as items - for debugging only"),
     privs = { ["server"] = true },
     func = function(name)
         local player = minetest.get_player_by_name(name)
@@ -147,7 +149,7 @@ minetest.register_chatcommand("dev_close", {
 
 -- this is such a zander thing to do lmfao
 minetest.register_chatcommand("dev_clear", {
-    description = "Clears the player's inventory - for debugging only",
+    description = S("Clears the player's inventory - for debugging only"),
     privs = { ["server"] = true },
     func = function(name)
         local player = minetest.get_player_by_name(name)
@@ -164,7 +166,7 @@ minetest.register_chatcommand("dev_clear", {
 })
 
 minetest.register_chatcommand("dev_toggle_libox", {
-    description = "Enables/Disables all lua sandboxing",
+    description = S("Enables/Disables all lua sandboxing"),
     privs = { ["server"] = true },
     func = function()
         libox.disabled = not libox.disabled
@@ -174,7 +176,7 @@ minetest.register_chatcommand("dev_toggle_libox", {
 
 sbz_api.forced_light = {}
 minetest.register_chatcommand("dev_light", {
-    description = "Makes it day only for you",
+    description = S("Makes it day only for you"),
     privs = { ["server"] = true },
     func = function(name)
         local player = minetest.get_player_by_name(name)
@@ -205,7 +207,7 @@ minetest.register_chatcommand("dev_craft", {
 })
 
 minetest.register_chatcommand("dev_regen", {
-    description = "Re-generate a mapblock (one that you are standing on)",
+    description = S("Re-generate a mapblock (one that you are standing on)"),
     params = "[radius]",
     privs = { ["server"] = true },
     func = function(name, param)
@@ -247,7 +249,7 @@ minetest.register_chatcommand("dev_mapblocks", {
     end
 })
 core.register_chatcommand("dev_fast_habitats", {
-    description = "Toggles making habitats fast, don't use this in a server",
+    description = S("Toggles making habitats fast, don't use this in a server"),
     params = "",
     privs = { ["server"] = true },
     func = function(name, param)
@@ -256,7 +258,7 @@ core.register_chatcommand("dev_fast_habitats", {
 })
 
 core.register_chatcommand("dev_toggle_pvp", {
-    description = "Toggle pvp, NEEDS SERVER RESTART, bad idea to use if you aren't a dev",
+    description = S("Toggle pvp, NEEDS SERVER RESTART, bad idea to use if you aren't a dev"),
     params = "<enable>",
     privs = { ["server"] = true },
     func = function(name, param)
@@ -265,7 +267,7 @@ core.register_chatcommand("dev_toggle_pvp", {
 })
 
 core.register_chatcommand("dev_test_rain", {
-    description = "Test rain particles <remove later>",
+    description = S("Test rain particles <remove later>"),
     privs = { ["server"] = true },
     func = function(name, param)
 

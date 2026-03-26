@@ -1,5 +1,7 @@
 -- concept shamelessly borrowed from techage
 
+local S = core.get_translator(core.get_current_modname())
+
 local animation_def = {
     type = "vertical_frames",
     aspect_w = 16,
@@ -47,7 +49,7 @@ local function get_possible_recipe(list, rtype, inv)
 end
 
 unified_inventory.register_craft_type("ele_fab", {
-    description = "Ele Fab",
+    description = S("Ele Fab"),
     icon = "ele_fab.png^[verticalframe:8:1",
     width = 2,
     height = 2,
@@ -98,7 +100,7 @@ unified_inventory.register_craft {
 local power_needed = 30
 
 sbz_api.register_stateful_machine("sbz_power:ele_fab", {
-    description = "Ele Fab",
+    description = S("Ele Fab"),
     sounds = sbz_api.sounds.matter(),
     info_extra = "Yeah the concept is from techage.",
     tiles = {

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_entity("sbz_resources:warp_crystal_entity", {
     initial_properties = {
         visual = "sprite",
@@ -56,7 +58,7 @@ core.register_entity("sbz_resources:warp_crystal_entity", {
 })
 
 core.register_craftitem("sbz_resources:warp_crystal", {
-    description = "Warp Crystal",
+    description = S("Warp Crystal"),
     inventory_image = "warp_crystal.png",
     info_extra = "You can throw it. Also if you throw it at an entity/player you will swap places.",
     on_use = function(stack, placer, pointed)
@@ -84,17 +86,17 @@ sbz_api.recipe.register_craft {
 }
 
 core.register_craftitem(":sbz_chem:uranium_crystal", {
-    description = "Uranium Crystal",
+    description = S("Uranium Crystal"),
     inventory_image = "uranium_crystal.png",
 })
 
 core.register_craftitem(":sbz_chem:thorium_crystal", {
-    description = "Thorium Crystal",
+    description = S("Thorium Crystal"),
     inventory_image = "thorium_crystal.png",
 })
 
 core.register_craftitem(":sbz_chem:silicon_crystal", {
-    description = "Silicon Crystal",
+    description = S("Silicon Crystal"),
     inventory_image = "silicon_crystal.png",
 })
 
@@ -120,7 +122,7 @@ end
 
 -- TODO: make it actually shock,  by that i mean knock back you and give you shocked fx
 core.register_craftitem("sbz_resources:shock_crystal", {
-    description = "Shock Crystal",
+    description = S("Shock Crystal"),
     inventory_image = "shock_crystal.png",
 })
 

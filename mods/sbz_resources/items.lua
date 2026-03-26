@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_craftitem("sbz_resources:matter_plate", {
-    description = "Matter Plate",
+    description = S("Matter Plate"),
     inventory_image = "matter_plate.png",
     stack_max = 256,
 })
@@ -16,7 +18,7 @@ do -- Matter Plate recipe scope
 end
 
 core.register_craftitem("sbz_resources:antimatter_plate", {
-    description = "Antimatter Plate",
+    description = S("Antimatter Plate"),
     inventory_image = "antimatter_plate.png",
     stack_max = 256,
 })
@@ -33,14 +35,14 @@ do -- Antimatter Plate recipe scope
 end
 
 core.register_craftitem("sbz_resources:conversion_chamber", {
-    description = "Conversion chamber (!! DEPRECATED !! Throw it away!)",
+    description = S("Conversion chamber (!! DEPRECATED !! Throw it away!)"),
     inventory_image = "conversion_chamber.png",
     stack_max = 1,
     groups = { not_in_creative_inventory = 1, }
 })
 
 core.register_craftitem("sbz_resources:pebble", {
-    description = "Pebble",
+    description = S("Pebble"),
     inventory_image = "pebble.png",
     stack_max = 128,
 })
@@ -57,7 +59,7 @@ end
 
 -- Angel's Wing
 core.register_tool("sbz_resources:angels_wing", {
-    description = "Angel's Wing",
+    description = S("Angel's Wing"),
     inventory_image = "angels_wing.png",
     stack_max = 1,
     tool_capabilities = {}, -- No specific tool capabilities, as it's not meant for digging
@@ -113,12 +115,12 @@ do -- Angels Wing recipe scope
 end
 
 core.register_craftitem("sbz_resources:phlogiston", {
-    description = "Phlogiston",
+    description = S("Phlogiston"),
     inventory_image = "phlogiston.png"
 })
 
 core.register_node("sbz_resources:phlogiston_blob", {
-    description = "Phlogiston Blob",
+    description = S("Phlogiston Blob"),
     tiles = { "phlogiston_blob.png" },
     groups = { matter = 1, charged = 1 },
     light_source = 14
@@ -138,7 +140,7 @@ do -- Phlogiston Blob recipe scope
 end
 
 core.register_craftitem("sbz_resources:heating_element", {
-    description = "Heating Element",
+    description = S("Heating Element"),
     inventory_image = "heating_element.png",
 })
 
@@ -158,6 +160,6 @@ do -- Heating Element recipe scope
 end
 
 core.register_craftitem("sbz_resources:sensor_casing_plate", {
-    description = "Sensor Casing Plate",
+    description = S("Sensor Casing Plate"),
     inventory_image = "sensor_casing_plate.png"
 })

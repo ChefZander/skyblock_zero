@@ -3,6 +3,8 @@
 
 -- Patches: https://github.com/mt-mods/pipeworks/pull/154 by The4codeblocks (Heavily edited)
 
+local S = core.get_translator(core.get_current_modname())
+
 local fs_helpers = pipeworks.fs_helpers
 
 local function set_filter_formspec(meta)
@@ -41,7 +43,7 @@ local animation_def = {
 }
 
 core.register_node('pipeworks:automatic_filter_injector', {
-    description = 'Automatic Filter-Injector',
+    description = S("Automatic Filter-Injector"),
     sounds = sbz_api.sounds.matter(),
     info_extra = 'Pushes items out of containers.',
     tiles = {

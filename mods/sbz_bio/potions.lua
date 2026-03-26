@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_craftitem('sbz_bio:screen_inverter_potion', {
-    description = "Potion of Inverting",
+    description = S("Potion of Inverting"),
     sound = {
         eat = { name = 'gen_water_drink' }
     },

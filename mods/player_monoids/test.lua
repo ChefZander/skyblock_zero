@@ -1,8 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
 
 local speed = player_monoids.speed
 
 minetest.register_privilege("monoid_master", {
-	description = "Allows testing of player monoids.",
+	description = S("Allows testing of player monoids."),
 	give_to_singleplayer = false,
 	give_to_admin = true,
 })
@@ -22,7 +23,7 @@ local function test(player)
 end
 
 minetest.register_chatcommand("test_monoids", {
-	description = "Runs a test on monoids",
+	description = S("Runs a test on monoids"),
 	privs = { monoid_master = true },
 	func = function(p_name)
 		test(minetest.get_player_by_name(p_name))

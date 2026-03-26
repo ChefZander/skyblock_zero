@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_tool("sbz_resources:wormhole", {
-    description = "Wormhole",
+    description = S("Wormhole"),
     info_extra = "Left Click: Link, Right Click: Rightclick linked node",
     inventory_image = "wormhole.png",
     stack_max = 1,
@@ -57,7 +59,7 @@ core.register_tool("sbz_resources:wormhole", {
 
 -- onto the recipe
 minetest.register_craftitem("sbz_resources:unrefined_firmament", {
-    description = "Unrefined Firmament",
+    description = S("Unrefined Firmament"),
     inventory_image = "unrefined_firmament.png",
     stack_max = 256,
 })
@@ -72,7 +74,7 @@ sbz_api.recipe.register_craft {
 }
 
 minetest.register_craftitem("sbz_resources:gravitational_lens", {
-    description = "Gravitational Lens",
+    description = S("Gravitational Lens"),
     inventory_image = "gravitational_lens.png",
     stack_max = 1,
 })
@@ -93,7 +95,7 @@ do -- Gravitational Lens recipe scope
 end
 
 minetest.register_craftitem("sbz_resources:refined_firmament", {
-    description = "Refined Firmament",
+    description = S("Refined Firmament"),
     inventory_image = "refined_firmament.png",
     stack_max = 256,
 })

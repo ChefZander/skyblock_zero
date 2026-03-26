@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- these allow_metadata_* functions were taken from the mtg furnace
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
     if listname == 'dst' then return 0 end
@@ -10,7 +12,7 @@ local function allow_metadata_inventory_move(pos, from_list, from_index, to_list
 end
 
 sbz_api.register_stateful_machine('sbz_chem:high_power_electric_furnace', {
-    description = 'High Power Electric Furnace',
+    description = S("High Power Electric Furnace"),
     info_extra = 'Consumes 30 power.',
     tiles = {
         'hpef_top.png',

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local storage_per_node = 200 -- 5x5x5 25000 liquid sources
 -- That's a lot, and that's okay
 
@@ -142,7 +144,7 @@ local default_inv = core.serialize {
 core.register_node(
     'sbz_multiblocks:large_liquid_storage_controller',
     unifieddyes.def {
-        description = 'Large Liquid Storage Controller',
+        description = S("Large Liquid Storage Controller"),
         sounds = sbz_api.sounds.machine(),
         groups = {
             matter = 1,
@@ -245,7 +247,7 @@ core.register_node(
 core.register_node(
     'sbz_multiblocks:large_liquid_storage_casing',
     unifieddyes.def {
-        description = 'Large Liquid Storage Casing',
+        description = S("Large Liquid Storage Casing"),
         sounds = sbz_api.sounds.machine(),
         groups = {
             matter = 1,
@@ -271,7 +273,7 @@ core.register_node(
 core.register_node(
     'sbz_multiblocks:large_liquid_storage_casing_edge',
     unifieddyes.def {
-        description = 'Large Liquid Storage Edge Casing',
+        description = S("Large Liquid Storage Edge Casing"),
         sounds = sbz_api.sounds.machine(),
         groups = {
             matter = 1,

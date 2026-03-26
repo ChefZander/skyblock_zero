@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
     if listname == "dst" then
         return 0
@@ -13,7 +15,7 @@ end
 
 local ticks = 60 * 3 -- 3 minutes... yeah
 sbz_api.register_stateful_machine("sbz_power:phlogiston_fuser", {
-    description = "Phlogiston Fuser",
+    description = S("Phlogiston Fuser"),
     sounds = sbz_api.sounds.machine(),
     tiles = {
         "phlogiston_fuser_side.png",

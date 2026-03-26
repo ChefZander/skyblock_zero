@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.register_stateful_machine("sbz_power:phosphor", unifieddyes.def {
-    description = "Phosphor",
+    description = S("Phosphor"),
     sounds = sbz_api.sounds.glass(),
     paramtype = "light",
     sunlight_propagates = true,
@@ -59,7 +61,7 @@ local function vacuum(pos, radius, inv)
 end
 
 core.register_chatcommand("clearitems", {
-    description = "Like clearobjects but only for items, and only quick",
+    description = S("Like clearobjects but only for items, and only quick"),
     privs = { ["server"] = true },
     func = function(name, param)
         for k, obj in pairs(core.object_refs) do
@@ -81,7 +83,7 @@ local item_vaccum_power_demand = 20
 -- frog here: this mod depends on pipeworks to add pipeworks support...
 
 sbz_api.register_machine("sbz_power:item_vacuum", {
-    description = "Item Vacuum",
+    description = S("Item Vacuum"),
     sounds = sbz_api.sounds.machine(),
     tiles = { "item_vacuum.png" },
     groups = {

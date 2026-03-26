@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("sbz_logic_devices:button", {
-    description = "Logic Button",
+    description = S("Logic Button"),
     tiles = {
         "button_side.png",
         "button_side.png^[transformFY",
@@ -64,7 +66,7 @@ local function tobool(x)
 end
 
 sbz_api.register_stateful("sbz_logic_devices:toggle", {
-    description = "Logic Toggle",
+    description = S("Logic Toggle"),
     tiles = {
         "button_side.png",
         "button_side.png^[transformFY",

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local render_links_delay = 1
 local waypoint_ids = {}
 
@@ -182,12 +184,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_craftitem('sbz_power:sensor_linker', {
-    description = 'Sensor Linker',
+    description = S("Sensor Linker"),
     info_extra = {
-        'Right click: asks for a name, if a block is pointed to, links to the to the sensor.',
-        'Left click: uses the previous name from when you right clicked, links it to the sensor.',
-        'Aux1 + right click/left click: Links the tool to the sensor.',
-        "If you hold it, it should show all the links and the sensor's linking radius.",
+        S("Right click: asks for a name, if a block is pointed to, links to the to the sensor."),
+        S("Left click: uses the previous name from when you right clicked, links it to the sensor."),
+        S("Aux1 + right click/left click: Links the tool to the sensor."),
+        S("If you hold it, it should show all the links and the sensor's linking radius."),
     },
     inventory_image = 'sensor_linker.png',
     range = 10,

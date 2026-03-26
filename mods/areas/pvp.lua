@@ -27,8 +27,10 @@ License along with this software; if not, see <https://www.gnu.org/licenses/>.
 Hello, this was copied from https://github.com/BlockySurvival/areas/commit/085d10041da9e81d4c3fe309ccf7cdb05fa2b1f3
 also https://github.com/BlockySurvival/areas/commit/dacfe5fbad7ae3d2f32a897fde8e4107326c9f5c too
 ]]
+local S = core.get_translator(core.get_current_modname())
+
 minetest.register_chatcommand("toggle_area_pvp", {
-    description = "Toggle PvP in an area",
+    description = S("Toggle PvP in an area"),
     params = "<ID>",
     func = function(name, param)
         local id = tonumber(param)

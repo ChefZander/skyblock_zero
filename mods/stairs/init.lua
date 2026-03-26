@@ -30,9 +30,9 @@ License along with this software; if not, see <https://www.gnu.org/licenses/>.
 
 
 -- Global namespace for functions
-
 stairs = {}
 
+local S = core.get_translator(core.get_current_modname())
 
 local function rotate_and_place(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under

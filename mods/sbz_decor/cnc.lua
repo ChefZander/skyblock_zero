@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local options = {
     'slab',
     'stair',
@@ -42,7 +44,7 @@ core.register_node(
     'sbz_decor:cnc',
     sbz_api.add_tube_support {
         _after_dig_drop = false, -- To prevent duping
-        description = 'CNC Machine',
+        description = S("CNC Machine"),
         info = 'Use it to cut stairs/slabs out of nodes.',
         tiles = { 'cnc_top.png', 'cnc_top.png', 'cnc_side.png' },
         groups = { matter = 1 },

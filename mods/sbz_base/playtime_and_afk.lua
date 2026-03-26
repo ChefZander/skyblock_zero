@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local inaction_treshold = 5 * 60
 sbz_api.afk_players = setmetatable({}, {
     __index = function(t, k)
@@ -86,7 +88,7 @@ local function get_time(x)
 end
 
 core.register_chatcommand("playtime", {
-    description = "Shows your, or other player's playtime.",
+    description = S("Shows your, or other player's playtime."),
     params = "[player]",
     privs = {},
     func = function(name, param)
@@ -103,11 +105,11 @@ core.register_chatcommand("playtime", {
 })
 
 core.register_chatcommand("afk", {
-    description = "Become afk",
+    description = S("Notify others that you are afk status (away from keyboard)"),
     param = "",
     privs = {},
     func = function(name)
         afkp[name].action = 0
-        return true, "You became afk"
+        return true, S("You became afk")
     end
 })

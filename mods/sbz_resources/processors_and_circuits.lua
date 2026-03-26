@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 minetest.register_craftitem('sbz_resources:simple_circuit', {
-    description = 'Simple Circuit',
+    description = S("Simple Circuit"),
     inventory_image = 'simple_circuit.png',
     stack_max = 256,
 })
@@ -17,7 +19,7 @@ do -- Simple Circuit recipe scope
 end
 
 minetest.register_craftitem('sbz_resources:retaining_circuit', {
-    description = 'Retaining Circuit',
+    description = S("Retaining Circuit"),
     inventory_image = 'retaining_circuit.png',
     stack_max = 256,
 })
@@ -35,7 +37,7 @@ do -- Retaining Circuit recipe scope
 end
 
 minetest.register_craftitem('sbz_resources:emittrium_circuit', {
-    description = 'Emittrium Circuit',
+    description = S("Emittrium Circuit"),
     inventory_image = 'emittrium_circuit.png',
     stack_max = 256,
 })
@@ -54,7 +56,7 @@ do -- Emittrium Circuit recipe scope
 end
 
 core.register_craftitem('sbz_resources:phlogiston_circuit', {
-    description = 'Phlogiston Circuit',
+    description = S("Phlogiston Circuit"),
     inventory_image = 'phlogiston_circuit.png',
 })
 
@@ -79,7 +81,7 @@ end
 
 -- used in meteorite radars and weapons
 core.register_craftitem('sbz_resources:prediction_circuit', {
-    description = 'Prediction Circuit',
+    description = S("Prediction Circuit"),
     inventory_image = 'prediction_circuit.png',
 })
 
@@ -99,7 +101,7 @@ do -- Prediction Circuit recipe scope
 end
 
 minetest.register_craftitem('sbz_resources:simple_logic_circuit', {
-    description = 'Simple Logic Circuit',
+    description = S("Simple Logic Circuit"),
     inventory_image = 'simple_logic_circuit.png',
     stack_max = 256,
 })
@@ -122,7 +124,7 @@ do -- Simple Logic Circuit recipe scope
 end
 
 minetest.register_craftitem('sbz_resources:simple_inverted_logic_circuit', {
-    description = 'Simple Inverted Logic Circuit',
+    description = S("Simple Inverted Logic Circuit"),
     inventory_image = 'simple_inverting_circuit.png',
     stack_max = 256,
 })
@@ -160,7 +162,7 @@ end
 --- === PROCESSORS ===
 
 core.register_craftitem('sbz_resources:simple_processor', {
-    description = 'Simple Processor',
+    description = S("Simple Processor"),
     inventory_image = 'simple_procesor.png', -- someone correct the typo lmfao
 })
 
@@ -190,7 +192,7 @@ sbz_api.crafting_processor_stats = {
 }
 
 core.register_craftitem('sbz_resources:simple_crafting_processor', {
-    description = 'Simple Crafting Processor',
+    description = S("Simple Crafting Processor"),
     info_extra = 'Crafts 1 item/s for 5Cj',
     inventory_image = 'simple_crafting_processor.png',
 })
@@ -211,7 +213,7 @@ do -- Simple Crafting Processor recipe scope
 end
 
 core.register_craftitem('sbz_resources:fast_crafting_processor', {
-    description = 'Fast Crafting Processor',
+    description = S("Fast Crafting Processor"),
     info_extra = 'Crafts 8 items/s for 20Cj',
     inventory_image = 'quick_crafting_processor.png',
 })
@@ -235,7 +237,7 @@ end
 core.register_alias('sbz_resources:quick_crafting_processor', 'sbz_resources:fast_crafting_processor')
 
 core.register_craftitem('sbz_resources:very_fast_crafting_processor', {
-    description = 'Very Fast Crafting Processor',
+    description = S("Very Fast Crafting Processor"),
     inventory_image = 'accelerated_silicon_crafting_processor.png',
     info_extra = "Crafts 32 items per second for 140 power."
 })
@@ -256,7 +258,7 @@ do -- Very Fast Crafting Processor recipe scope
 end
 
 core.register_craftitem('sbz_resources:extremely_fast_crafting_processor', {
-    description = 'Extremely Fast Crafting Processor',
+    description = S("Extremely Fast Crafting Processor"),
     inventory_image = 'quantum_crafting_processor.png',
     info_extra = "Crafts 128 items/s and uses 640Cj. You shouldn't need this.",
 })
@@ -296,7 +298,7 @@ end
 -- stylua: ignore end
 
 core.register_craftitem('sbz_resources:instant_crafting_processor', {
-    description = 'Instant Crafting Processor',
+    description = S("Instant Crafting Processor"),
     inventory_image = 'creative_crafting_processor.png',
     info_extra = 'Crafts 100000 items/s, consumes 800Cj.\nThe crafting recipe is a joke. You should not try to get it... but if you want to',
 })
@@ -307,7 +309,7 @@ core.register_alias(
 
 -- deprecated stuff
 core.register_craftitem('sbz_resources:mosfet', {
-    description = 'Metal-Oxide-Semiconductor Field-Effect Transistor (MOSFET)',
+    description = S("Metal-Oxide-Semiconductor Field-Effect Transistor (MOSFET)"),
     info_extra = 'Deprecated. Throw it away.',
     inventory_image = 'mosfet.png',
     groups = { not_in_creative_inventory = 1 },

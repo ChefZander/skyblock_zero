@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 --[[
 dead planets:
     Crust:
@@ -45,7 +47,7 @@ make_nofall 'sbz_resources:white_sand'
 core.register_node(
     'sbz_planets:marble',
     unifieddyes.def {
-        description = 'Marble',
+        description = S("Marble"),
         tiles = { { name = 'marble.png', scale = 2, align_style = 'world' } },
         groups = { matter = 1, charged = 1, explody = 10 },
         sounds = sbz_api.sounds.matter(),
@@ -55,7 +57,7 @@ core.register_node(
 stairs.register 'sbz_planets:marble'
 
 core.register_node('sbz_planets:basalt', {
-    description = 'Basalt',
+    description = S("Basalt"),
     tiles = { { name = 'basalt.png' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
@@ -63,7 +65,7 @@ core.register_node('sbz_planets:basalt', {
 stairs.register 'sbz_planets:basalt'
 
 core.register_node('sbz_planets:red_stone', {
-    description = 'Red Stone',
+    description = S("Red Stone"),
     tiles = { { name = 'red_stone.png' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
@@ -71,14 +73,14 @@ core.register_node('sbz_planets:red_stone', {
 stairs.register 'sbz_planets:red_stone'
 
 core.register_node('sbz_planets:red_stone', {
-    description = 'Red Stone',
+    description = S("Red Stone"),
     tiles = { { name = 'red_stone.png' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
 
 core.register_node('sbz_planets:thorium_ore', {
-    description = 'Thorium Ore',
+    description = S("Thorium Ore"),
     tiles = { { name = 'thorium_ore.png' } },
     groups = { matter = 1, charged = 1, explody = 10, silktouch = 1, level = 2, ore = 1, radioactive = 1 },
     sounds = sbz_api.sounds.matter(),
@@ -94,14 +96,14 @@ core.register_ore {
     y_min = 2000,
 }
 core.register_node('sbz_planets:blue_stone', {
-    description = 'Blue Stone',
+    description = S("Blue Stone"),
     tiles = { { name = 'stone.png^[colorize:blue:128' } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
 })
 
 core.register_node('sbz_planets:uranium_ore', {
-    description = 'Uranium Ore',
+    description = S("Uranium Ore"),
     tiles = { { name = 'uranium_ore.png' } },
     groups = { matter = 1, charged = 1, explody = 10, silktouch = 1, level = 2, ore = 1, radioactive = 1 },
     sounds = sbz_api.sounds.matter(),
@@ -122,7 +124,7 @@ core.register_ore {
 stairs.register 'sbz_planets:blue_stone'
 
 core.register_node('sbz_planets:granite', {
-    description = 'Granite',
+    description = S("Granite"),
     tiles = { { name = 'granite.png', align_style = 'world', scale = 2 } },
     groups = { matter = 1, charged = 1, explody = 10 },
     sounds = sbz_api.sounds.matter(),
@@ -130,7 +132,7 @@ core.register_node('sbz_planets:granite', {
 stairs.register 'sbz_planets:granite'
 
 core.register_node('sbz_planets:dead_core', {
-    description = 'Dead Core Piece',
+    description = S("Dead Core Piece"),
     tiles = { 'dead_core_piece.png' },
     groups = { matter = 1, charged = 1, explody = 1, level = 2 },
     sounds = sbz_api.sounds.matter(),
@@ -142,7 +144,7 @@ core.register_node('sbz_planets:dead_core', {
 -- +gravel
 
 core.register_node('sbz_planets:ice', {
-    description = 'Ice',
+    description = S("Ice"),
     tiles = { 'ice.png' },
     groups = { matter = 1, water = 1, cold = 20, charged = 1, slippery = 5, explody = 20 },
     sounds = sbz_api.sounds.ice(),
@@ -151,7 +153,7 @@ core.register_node('sbz_planets:ice', {
 stairs.register 'sbz_planets:ice'
 
 core.register_node('sbz_planets:ice_core', {
-    description = 'Ice Core Piece - deprecated',
+    description = S("Ice Core Piece - deprecated"),
     tiles = { 'ice_core_piece.png' },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 10, level = 2 },
     sounds = sbz_api.sounds.ice(),
@@ -160,7 +162,7 @@ core.register_node('sbz_planets:ice_core', {
 })
 
 core.register_node('sbz_planets:snow', {
-    description = 'Snow',
+    description = S("Snow"),
     tiles = { 'snow.png' },
     drawtype = 'liquid',
     paramtype = 'light',
@@ -192,7 +194,7 @@ local snow_box = {
 }
 
 core.register_node('sbz_planets:snow_layer', {
-    description = 'Snow layer',
+    description = S("Snow layer"),
     tiles = { 'snow.png', 'blank.png', 'snow.png' },
     use_texture_alpha = 'clip',
     drawtype = 'nodebox',
@@ -220,12 +222,12 @@ core.register_node('sbz_planets:snow_layer', {
 })
 
 core.register_craftitem('sbz_planets:snowball', {
-    description = 'Snowball',
+    description = S("Snowball"),
     inventory_image = 'snowball.png',
 })
 
 core.register_node('sbz_planets:colorium_core', {
-    description = 'Colorium Core Piece - Deprecated',
+    description = S("Colorium Core Piece - Deprecated"),
     tiles = { 'blank.png^[invert:rgba' },
     groups = { matter = 1, charged = 1, slippery = (2 ^ 15) - 1, explody = 1, level = 2, not_in_creative_inventory = 1 },
     sounds = sbz_api.sounds.matter(),
@@ -236,7 +238,7 @@ core.register_node('sbz_planets:colorium_core', {
 local water_color = '#576ee180'
 
 core.register_node('sbz_planets:water_source_nofall', {
-    description = 'Not Water',
+    description = S("Not Water"),
     sounds = {
         footstep = { name = 'mix_notwater_step' }
     },
@@ -262,7 +264,7 @@ core.register_node('sbz_planets:water_source_nofall', {
 })
 
 core.register_node('sbz_planets:colorium_mapgen_sapling', {
-    description = 'Mapgen Sapling (I guess you just got an instant sapling. lol.)',
+    description = S("Mapgen Sapling (I guess you just got an instant sapling. lol.)"),
     -- drop = "",
     groups = { not_in_creative_inventory = 1 },
     drawtype = 'allfaces',

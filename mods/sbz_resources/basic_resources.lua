@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 unified_inventory.register_craft_type("punching", {
-    description = "Punching",
+    description = S("Punching"),
     icon = "robotic_arm.png^[transformR90",
     width = 1,
     height = 1,
@@ -12,7 +14,7 @@ unified_inventory.register_craft_type("punching", {
 -- The basis of all progression
 -- Core Drops
 minetest.register_craftitem("sbz_resources:core_dust", {
-    description = "Core Dust",
+    description = S("Core Dust"),
     inventory_image = "core_dust.png",
     stack_max = 256,
 })
@@ -34,7 +36,7 @@ unified_inventory.register_craft {
 }
 
 minetest.register_craftitem("sbz_resources:matter_dust", {
-    description = "Matter Dust",
+    description = S("Matter Dust"),
     inventory_image = "matter_dust.png",
     stack_max = 256,
 })
@@ -54,7 +56,7 @@ unified_inventory.register_craft {
 }
 
 minetest.register_craftitem("sbz_resources:charged_particle", {
-    description = "Charged Particle",
+    description = S("Charged Particle"),
     inventory_image = "charged_particle.png",
     stack_max = 256,
 })
@@ -76,7 +78,7 @@ unified_inventory.register_craft {
 
 -- Other Items
 minetest.register_craftitem("sbz_resources:antimatter_dust", {
-    description = "Antimatter Dust",
+    description = S("Antimatter Dust"),
     inventory_image = "antimatter_dust.png",
     stack_max = 256,
 })

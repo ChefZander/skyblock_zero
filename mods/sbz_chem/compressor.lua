@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type({
     type = "compressing",
-    description = "Compressing",
+    description = S("Compressing"),
     icon = "compressor.png^[verticalframe:11:1",
     single = true,
 })
@@ -19,7 +21,7 @@ end
 
 
 sbz_api.register_stateful_machine("sbz_chem:compressor", {
-    description = "Compressor",
+    description = S("Compressor"),
     tiles = {
         "compressor_side.png",
         "compressor_side.png",

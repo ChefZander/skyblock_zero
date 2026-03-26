@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local action = function(pos, _, puncher)
     local itemstack = puncher:get_wielded_item()
     local tool_name = itemstack:get_name()
@@ -40,7 +42,7 @@ local action = function(pos, _, puncher)
 end
 
 core.register_node("sbz_bio:colorium_emitter", unifieddyes.def {
-    description = "Colorium Emitter",
+    description = S("Colorium Emitter"),
     tiles = { "colorium_emitter.png" },
     groups = { unbreakable = 1, transparent = 1, matter = 1, level = 2 },
     sounds = {

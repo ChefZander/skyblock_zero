@@ -103,7 +103,7 @@ function definition:copy(node, pos, player)
 	local receive = meta:get_int("can_receive")
 	local description
 	if channel == "" then
-		description = "Teleport tube configuration cleaner"
+		description = S("Teleport tube configuration cleaner")
 	else
 		description = meta:get_string("infotext")
 	end

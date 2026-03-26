@@ -17,7 +17,7 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 See the GNU Lesser General Public License for more details:
 https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 ]]
-
+local S = core.get_translator(core.get_current_modname())
 function sbz_api.can_tree_grow(pos)
     local node_under = core.get_node_or_nil { x = pos.x, y = pos.y - 1, z = pos.z }
     if not node_under then return false end
@@ -215,7 +215,7 @@ end
 sbz_api.register_trunk(
     'sbz_bio:colorium_tree',
     unifieddyes.def {
-        description = 'Colorium Tree',
+        description = S("Colorium Tree"),
         groups = {
             matter = 3,
             oddly_breakable_by_hand = 3,
@@ -240,7 +240,7 @@ sbz_api.register_trunk(
 sbz_api.register_leaves(
     'sbz_bio:colorium_leaves',
     unifieddyes.def {
-        description = 'Colorium Leaves',
+        description = S("Colorium Leaves"),
         groups = {
             matter = 3,
             oddly_breakable_by_hand = 3,
@@ -305,7 +305,7 @@ do -- Colorium Sapling recipe scope
 end
 
 sbz_api.register_tree('sbz_bio:colorium_sapling', {
-    description = 'Colorium Sapling',
+    description = S("Colorium Sapling"),
     paramtype = 'light',
     drawtype = 'plantlike',
     tiles = {
@@ -337,7 +337,7 @@ sbz_api.register_tree('sbz_bio:colorium_sapling', {
     },
 })
 sbz_api.register_tree('sbz_bio:giant_colorium_sapling', {
-    description = 'Giant Colorium Sapling',
+    description = S("Giant Colorium Sapling"),
     paramtype = 'light',
     drawtype = 'plantlike',
     tiles = {
@@ -388,7 +388,7 @@ end
 core.register_node(
     'sbz_bio:colorium_planks',
     unifieddyes.def {
-        description = 'Colorium Planks',
+        description = S("Colorium Planks"),
         tiles = { 'colorium_planks.png' },
         paramtype2 = 'color',
         groups = { matter = 3, oddly_breakable_by_hand = 2, burn = 1, transparent = 1, explody = 10 },
@@ -434,7 +434,7 @@ local function get_hash_name(string)
 end
 
 core.register_node('sbz_bio:colorium_tree_core', {
-    description = 'Colorium Tree Core',
+    description = S("Colorium Tree Core"),
     info_extra = "Contains the tree's dna.",
     sounds = sbz_api.sounds.wood_solid(),
     groups = {
@@ -499,7 +499,7 @@ sbz_api.recipe.register_craft {
 
 local power_needed = 85
 sbz_api.register_stateful_machine('sbz_bio:dna_extractor', {
-    description = 'DNA Extractor',
+    description = S("DNA Extractor"),
     info_extra = 'Copies DNA from tree cores, puts it into saplings',
     paramtype2 = 'facedir',
     tiles = {

@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- instantinium
 core.register_craftitem("sbz_instatube:instantinium", {
-    description = "Instantinium",
+    description = S("Instantinium"),
     inventory_image = "instantinium.png",
     info_extra = "Takes a bit of time to cook up in the blast furnace",
 })

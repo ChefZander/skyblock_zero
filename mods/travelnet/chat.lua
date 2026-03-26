@@ -1,7 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
 
 minetest.register_chatcommand("travelnet", {
     params = "[network?]",
-    description = "Shows the travelnet formspec for the network",
+    description = S("Shows the travelnet formspec for the network"),
     privs = {
         teleport = true
     },

@@ -30,6 +30,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <http://unlicense.org/>
 ]]
 
+local S = core.get_translator(core.get_current_modname())
 
 local DISP_MAX_RESOLUTION = 32
 local function remove_entity(pos)
@@ -108,11 +109,11 @@ core.register_entity("sbz_logic_devices:matrix_screen_entity", {
 })
 
 core.register_node("sbz_logic_devices:matrix_screen", {
-    description = "Matrix Screen",
+    description = S("Matrix Screen"),
     info_extra = {
-        "Named that because it accepts a 2D matrix.",
-        "Ok i just realised that techage had the exact same name, for a very similar thing... lol,\n but yea, this was forked from digiscreen. (But made better :>)",
-        "You can put a backlight behind... to... yea... have the screen be brighter" },
+        S("Named that because it accepts a 2D matrix."),
+        S("Ok I just realised that techage had the exact same name, for a very similar thing... lol,\n but yeah, this was forked from digiscreen. (But made better :>)"),
+        S("You can put a backlight behind... to... yea... have the screen be brighter") },
     tiles = {
         "blank.png^[invert:rgba^[colorize:grey",
         "blank.png^[invert:rgba^[colorize:grey",

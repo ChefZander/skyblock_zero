@@ -56,7 +56,7 @@ non-zero radiation resistance; anything with non-uniform geometry
 or complex internal structure should show no radiation resistance.
 Fractional resistance values are permitted.
 --]]
-
+local S = core.get_translator(core.get_current_modname())
 local rad_resistance_node = {}
 local rad_resistance_group = {
     matter = 512,
@@ -219,7 +219,7 @@ end
 
 -- RADON!!!
 core.register_node('sbz_chem:radon', {
-    description = 'radon',
+    description = S("radon"),
     drawtype = 'glasslike',
     paramtype = 'light',
     drop = '',
@@ -319,7 +319,7 @@ core.register_abm({
 local water_color = '#6abe3032'
 
 core.register_node('sbz_chem:radioactive_water', {
-    description = 'bad water, unhealthy even',
+    description = S("bad water, unhealthy even"),
     drawtype = 'liquid',
     tiles = {
         { name = 'water.png^[multiply:' .. water_color .. '^[opacity:200', backface_culling = false },

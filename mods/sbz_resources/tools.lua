@@ -1,7 +1,9 @@
+local S, PS = core.get_translator(core.get_current_modname())
+
 local index_adjustment = 1
 
 core.register_craftitem('sbz_resources:matter_annihilator', {
-    description = 'Matter Annihilator',
+    description = S("Matter Annihilator"),
     inventory_image = 'matter_annihilator.png',
                 
     groups = { core_drop_multi = 1 },
@@ -45,7 +47,7 @@ do -- Matter Annihilator recipe scope
 end
 
 core.register_craftitem('sbz_resources:antimatter_annihilator', {
-    description = 'Antimatter Annihilator',
+    description = S("Antimatter Annihilator"),
     inventory_image = 'antimatter_annihilator.png',
 
     groups = { core_drop_multi = 1 },
@@ -89,7 +91,7 @@ do -- Antimatter Annihilator recipe scope
 end
 
 core.register_craftitem('sbz_resources:robotic_arm', {
-    description = 'Robotic Arm',
+    description = S("Robotic Arm"),
     inventory_image = 'robotic_arm.png',
     groups = { core_drop_multi = 2 },
     tool_capabilities = {
@@ -166,12 +168,12 @@ local tool_caps = {
 }
 
 core.register_tool('sbz_resources:drill', {
-    description = 'Electric Drill',
+    description = S("Electric Drill"),
     inventory_image = 'drill.png',
     info_extra = {
-        'Powered by electricity. Wear bar indicates the amount of charge left.',
-        ('%s uses'):format(drill_max_wear),
-        '"Place" it on a battery to re-charge it.',
+        S('Powered by electricity. Wear bar indicates the amount of charge left.'),
+        PS('@1 use', '@1 uses', drill_max_wear, tostring(drill_max_wear)),
+        S('"Place" it on a battery to re-charge it.'),
     },
     groups = { core_drop_multi = 4, disable_repair = 1, power_tool = 1 },
     tool_capabilities = tool_caps,

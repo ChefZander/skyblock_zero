@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("jumpdrive:fleet_controller", {
-	description = "Jumpdrive Fleet Controller",
+	description = S("Jumpdrive Fleet Controller"),
 
 	tiles = { "jumpdrive_fleet_controller.png" },
 	groups = { oddly_breakable_by_hand = 3, matter = 1 },

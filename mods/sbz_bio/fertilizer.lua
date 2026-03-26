@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local sprouts = {
     "sbz_bio:pyrograss_1",
     "sbz_bio:stemfruit_plant_1"
@@ -41,7 +43,7 @@ local fert_use = function(itemstack, user, pointed)
     return itemstack
 end
 core.register_craftitem("sbz_bio:fertilizer", {
-    description = "Fertilizer",
+    description = S("Fertilizer"),
     inventory_image = "fertilizer.png",
     on_place = sbz_api.on_place_precedence(fert_use),
     on_use = fert_use,

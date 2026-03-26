@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type {
     type = 'pebble_enhancing',
-    description = 'Enhancing',
+    description = S("Enhancing"),
     icon = 'pebble_enhancer_top.png',
     single = true,
 }
@@ -14,7 +16,7 @@ sbz_api.recipe.register_craft {
 }
 
 sbz_api.register_stateful_machine("sbz_chem:pebble_enhancer", {
-    description = "Pebble Enhancer",
+    description = S("Pebble Enhancer"),
     info_extra = "Makes shiny, potentially radioactive pebbles.",
     tiles = {
         "pebble_enhancer_top.png",

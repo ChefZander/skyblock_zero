@@ -22,8 +22,10 @@ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 -- Flood flame function
 
 -- Flame nodes
+local S = core.get_translator(core.get_current_modname())
+
 local fire_node = {
-    description = "Fire",
+    description = S("Fire"),
     drawtype = "firelike",
     tiles = { {
         name = "fire.png",
@@ -91,7 +93,7 @@ core.register_node("sbz_bio:fire", fire_node)
 
 -- Flint and Steel
 core.register_tool("sbz_bio:igniter", {
-    description = "Igniter",
+    description = S("Igniter"),
     inventory_image = "igniter.png",
 
     on_use = function(itemstack, user, pointed_thing)

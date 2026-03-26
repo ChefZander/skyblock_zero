@@ -1,6 +1,7 @@
 --
 -- tubetool:wand is in game tool that allows cloning pipeworks node data
 --
+local S = core.get_translator('copytool')
 
 local modpath = core.get_modpath('copytool')
 
@@ -10,7 +11,7 @@ local recipe = {
 }
 
 local tool = metatool:register_tool('copytool', {
-	description = 'Copy Tool',
+	description = S("Copy Tool"),
 	name = 'CopyTool',
 	texture = 'copytool_wand.png',
 	recipe = recipe,

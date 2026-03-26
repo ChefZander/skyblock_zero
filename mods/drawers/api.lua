@@ -539,7 +539,7 @@ function drawers.register_drawer_upgrade(name, def)
 end
 
 core.register_chatcommand("drawers_fix", {
-    description = "Refreshes nearby drawer contents' visual indicators.\n" ..
+    description = S("Refreshes nearby drawer contents' visual indicators.\n") ..
         "Should not be necessary except to update in bulk on an old save.\n" ..
         "Issues: github.com/ChefZander/skyblock_zero/issues\n" ..
         "Discussion: discord.gg/kHPbzrfcJ4",

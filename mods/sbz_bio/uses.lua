@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 minetest.register_node("sbz_bio:rope", {
-    description = "Rope",
+    description = S("Rope"),
     drawtype = "plantlike",
     tiles = { "rope.png" },
     selection_box = { type = "fixed", fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 } },

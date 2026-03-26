@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 local R = 10
 
 core.register_node("sbz_logic_devices:object_detector", {
-    description = "Object/Player Detector",
+    description = S("Object/Player Detector"),
     info_extra = ("Has a radius of %s"):format(R),
 
     tiles = {

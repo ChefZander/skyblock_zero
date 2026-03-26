@@ -1,5 +1,5 @@
 -- inspired by https://github.com/BuckarooBanzay/holoemitter/ though should be completely different in implementation (i havent looked at the code of holoemitter)
-
+local S = core.get_translator(core.get_current_modname())
 local function transform_texture_name(tex, is_incomplete)
     local addon = ""
     if is_incomplete then
@@ -540,7 +540,7 @@ mesecon.register_on_mvps_move(function(moved_nodes)
 end)
 
 core.register_node("sbz_logic_devices:hologram_projector", {
-    description = "Hologram Projector",
+    description = S("Hologram Projector"),
     info_extra = "Inspired by the holoemitter mod.",
     groups = { ui_logic = 1, matter = 1 },
     sounds = sbz_api.sounds.matter(),

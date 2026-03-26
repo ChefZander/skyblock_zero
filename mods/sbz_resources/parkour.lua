@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- Here should be anything related to parkour.
 -- Like, even ladders.
 -- But they are in sbz_decor,
@@ -9,7 +11,7 @@
 core.register_node(
     'sbz_resources:emittrium_block',
     unifieddyes.def {
-        description = 'Emittrium Block',
+        description = S("Emittrium Block"),
         sounds = sbz_api.sounds.matter(),
         info_extra = 'You should punch it, and place some close to each other.',
         paramtype2 = 'color',

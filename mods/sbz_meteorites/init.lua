@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local y_min = -300
 local function spawn_meteorite(pos)
     if not pos then
@@ -27,7 +29,7 @@ end
 
 minetest.register_chatcommand('spawn_meteorite', {
     params = '([<x> <y> <z>] | ["here"]) [number]',
-    description = 'Attempts to spawn a meteorite somewhere.',
+    description = S("Attempts to spawn a meteorite somewhere."),
     privs = { give = true },
     func = function(name, param)
         local split = string.split(param, ' ', false)

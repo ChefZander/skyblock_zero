@@ -1,12 +1,13 @@
+local S = core.get_translator(core.get_current_modname())
+
 local logic = sbz_api.logic
 
-
 minetest.register_craftitem("sbz_logic:data_disk", {
-    description = "Empty Data Disk",
+    description = S("Empty Data Disk"),
     info_extra = {
-        "Can hold 20 kilobytes.",
-        "Can be configured to override editor or normal code on use.",
-        "Insert into a luacontroller to configure",
+        S("Can hold 20 kilobytes."),
+        S("Can be configured to override editor or normal code on use."),
+        S("Insert into a luacontroller to configure"),
     },
     can_hold = 1024 * 20, -- 20 kilobytes
     on_use = function(stack, user, pointed)
@@ -49,7 +50,7 @@ unified_inventory.register_craft {
 
 function logic.register_system_disk(name, desc, source, punch_editor, punch_code, craft)
     local def = {
-        description = "System Code Disk - " .. desc,
+        description = S("System Code Disk - ") .. desc,
         inventory_image = "system_code_disk.png",
         info_extra = {
             "Immutable",

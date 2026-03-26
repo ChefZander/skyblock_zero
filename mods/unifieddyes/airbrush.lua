@@ -23,6 +23,8 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, see <https://www.gnu.org/licenses/>.
 ]=]
 
+local S = core.get_translator(core.get_current_modname())
+
 local function sheet(t, sx, sy, x, y)
 	sx = sx + 1
 	sy = sy + 1
@@ -163,7 +165,7 @@ local function color_block(stack, player, pointed)
 end
 
 minetest.register_tool("unifieddyes:coloring_tool", {
-	description = "Coloring Tool",
+	description = S("Coloring Tool"),
 	inventory_image = "color_tool.png",
 	liquids_pointable = false, -- colorable liquids probably wont exist but they would be funny
 	light_source = 14,

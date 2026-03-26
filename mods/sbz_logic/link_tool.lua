@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local render_links_delay = 1
 
 local waypoint_ids = {}
@@ -190,13 +192,13 @@ end)
 
 
 minetest.register_craftitem("sbz_logic:luacontroller_linker", {
-    description = "Luacontroller Linker",
-    short_description = "Luacontroller Linker",
+    description = S("Luacontroller Linker"),
+    short_description = S("Luacontroller Linker"),
     info_extra = {
-        "Right click: ask for a name, if a block is pointed to, link the block",
-        "Left click: use the previous name, and link the block",
-        "Aux1 + right click/left click: link to that luacontroller",
-        "If you hold it, it should show all the links and the luacontroller's radius"
+        S("Right click: ask for a name, if a block is pointed to, link the block"),
+        S("Left click: use the previous name, and link the block"),
+        S("Aux1 + right click/left click: link to that luacontroller"),
+        S("If you hold it, it should show all the links and the luacontroller's radius")
     },
     inventory_image = "luacontroller_linker.png",
     range = 10,

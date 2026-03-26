@@ -1,5 +1,5 @@
 core.register_node("sbz_bio:dirt", unifieddyes.def {
-    description = "Dirt",
+    description = S("Dirt"),
     tiles = { "dirt.png" },
     paramtype2 = "color",
     groups = {
@@ -48,7 +48,7 @@ sbz_api.recipe.register_craft {
 
 core.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
     paramtype2 = "color",
-    description = "Fertilized Dirt",
+    description = S("Fertilized Dirt"),
     tiles = { "fertilized_dirt.png" },
     groups = {
         explody = 100,
@@ -61,8 +61,8 @@ core.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
     paramtype = "light",
     sounds = sbz_api.sounds.dirt(),
     info_extra = {
-        "Plants grow 2x faster than on dirt, on this soil.",
-        "Fertilizer can't sprout plants on this soil."
+        S("Plants grow 2x faster than on dirt, on this soil."),
+        S("Fertilizer can't sprout plants on this soil.")
     }
 })
 
@@ -82,7 +82,7 @@ end
 
 core.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
     paramtype2 = "color",
-    description = "Dirt With Pyrograss",
+    description = S("Dirt With Pyrograss"),
     tiles = {
         "dirt_with_grass_y.png",
         "dirt.png",
@@ -112,7 +112,7 @@ core.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
 
 sbz_api.register_stateful_machine("sbz_bio:electric_soil", unifieddyes.def {
     paramtype2 = "colorwallmounted",
-    description = "Electric Soil",
+    description = S("Electric Soil"),
     groups = {
         matter = 1,
         soil = 0,

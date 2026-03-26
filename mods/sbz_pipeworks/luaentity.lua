@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local max_entity_id = 1000000000000 -- If you need more, there's a problem with your code
 
 local luaentity = {}
@@ -435,7 +437,7 @@ end)
 
 
 core.register_chatcommand("remove_tube_entities", {
-	description = "Removes all tube entities, use when it lags",
+	description = S("Removes all tube entities, use when it lags"),
 	privs = { ["server"] = true },
 	func = function(name, param)
 		for id, luaent in pairs(luaentity.entities) do

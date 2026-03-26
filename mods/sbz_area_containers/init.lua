@@ -18,6 +18,8 @@
 
 -- This entire mod is contained within a single file, with sections being separated by comments
 
+local S = core.get_translator(core.get_current_modname())
+
 ---======================----
 --- === CONFIGURATION === ---
 ---======================----
@@ -315,8 +317,8 @@ core.register_node(
 core.register_node(
     'sbz_area_containers:entry_point',
     unifieddyes.def {
-        description = 'Room Container Entry Point',
-        info_extra = 'This block decides where you spawn in a room.\nRight-click to exit a room.\nIf you have multiple of these in a room, one of them will be chosen.', -- block not node hehe, im a little rebel :3
+        description = S("Room Container Entry Point"),
+        info_extra = S("This block decides where you spawn in a room.\nRight-click to exit a room.\nIf you have multiple of these in a room, one of them will be chosen."), -- block not node hehe, im a little rebel :3
         paramtype = 'light',
         light_source = 14,
         groups = { matter = 1 },
@@ -335,7 +337,7 @@ core.register_node(
 )
 
 core.register_node('sbz_area_containers:room_container', {
-    description = 'Room Container',
+    description = S("Room Container"),
     tiles = { 'room_container.png' },
     paramtype = 'light',
     light_source = 14,

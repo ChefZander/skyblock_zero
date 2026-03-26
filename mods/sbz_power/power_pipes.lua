@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local function wire(len, stretch_to)
     local full = 0.5
     local base_box = { -len, -len, -len, len, len, len }
@@ -22,7 +24,7 @@ local wire_size = 1 / 8
 core.register_node(
     'sbz_power:power_pipe',
     unifieddyes.def {
-        description = 'Emittrium Power Cable',
+        description = S("Emittrium Power Cable"),
         sounds = sbz_api.sounds.matter(),
         connects_to = { 'group:pipe_connects' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -65,7 +67,7 @@ do                                                                       -- Emit
 end
 
 core.register_node('sbz_power:airtight_power_cable', {
-    description = 'Airtight Emittrium Power Cable',
+    description = S("Airtight Emittrium Power Cable"),
     connects_to = { 'group:pipe_connects' },
     connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
 

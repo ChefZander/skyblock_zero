@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
     if listname == "dst" then
         return 0
@@ -12,13 +14,13 @@ end
 
 sbz_api.recipe.register_craft_type({
     type = "engraver",
-    description = "Engraving",
+    description = S("Engraving"),
     icon = "engraver.png^[verticalframe:24:1",
     single = true,
 })
 
 sbz_api.register_stateful_machine("sbz_chem:engraver", {
-    description = "Engraver",
+    description = S("Engraver"),
     info_power_consume = 3400,
     tiles = {
         "engraver_side.png",

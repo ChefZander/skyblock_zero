@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type({
     type = "crystal_growing",
-    description = "Crystal Growing",
+    description = S("Crystal Growing"),
     icon = "crystal_grower.png^[verticalframe:17:1",
     single = true
 })
@@ -66,7 +68,7 @@ local function stop_active_sound(pos)
 end
 
 sbz_api.register_stateful_machine("sbz_chem:crystal_grower", {
-    description = "Crystal Grower",
+    description = S("Crystal Grower"),
     sounds = sbz_api.sounds.machine(),
     info_power_consume = 120,
     tiles = {

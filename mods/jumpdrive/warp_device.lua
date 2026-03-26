@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("jumpdrive:warp_device", {
-	description = "Warp Device",
+	description = S("Warp Device"),
 
 	tiles = { "jumpdrive_warpdevice.png" },
 	groups = { cracky = 5, oddly_breakable_by_hand = 1, handy = 1, pickaxey = 1 },

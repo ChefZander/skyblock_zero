@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_craftitem("sbz_runes:meteoric_rune", {
-    description = "¤ Meteoric Rune\n" .. 
+    description = S("¤ Meteoric Rune\n") .. 
         core.colorize("#00FFFF", "Cosmetic: Surrounds you with meteorite particles.") .. "\n" .. 
         core.colorize("#BF00FF", "1/100k chance when breaking Meteoric Matter."),
     inventory_image = "meteoric_rune.png",
@@ -7,7 +9,7 @@ core.register_craftitem("sbz_runes:meteoric_rune", {
 })
 
 core.register_craftitem("sbz_runes:core_rune", {
-    description = "¤ Core Rune\n" .. 
+    description = S("¤ Core Rune\n") .. 
         core.colorize("#00FFFF", "Cosmetic: Surrounds you with core particles like The Core.") .. "\n" .. 
         core.colorize("#BF00FF", "1/10m chance when punching The Core."),
     inventory_image = "core_rune.png",
@@ -15,7 +17,7 @@ core.register_craftitem("sbz_runes:core_rune", {
 })
 
 core.register_craftitem("sbz_runes:firework_rune", {
-    description = "¤ Firework Rune\n" .. 
+    description = S("¤ Firework Rune\n") .. 
         core.colorize("#00FFFF", "Cosmetic: Occasionally fires off firework rockets on it's own.") .. "\n" .. 
         core.colorize("#BF00FF", "1/1m chance when firing off a firework rocket."),
     inventory_image = "firework_rune.png",
@@ -23,7 +25,7 @@ core.register_craftitem("sbz_runes:firework_rune", {
 })
 
 core.register_craftitem("sbz_runes:halo_rune", {
-    description = "¤ Halo Rune\n" .. 
+    description = S("¤ Halo Rune\n") .. 
         core.colorize("#00FFFF", "Cosmetic: A divine ring of light floats above you.") .. "\n" .. 
         core.colorize("#BF00FF", "1/10m chance when punching a Colorium Emitter."),
     inventory_image = "halo_rune.png",
@@ -31,7 +33,7 @@ core.register_craftitem("sbz_runes:halo_rune", {
 })
 
 core.register_craftitem("sbz_runes:singularity_rune", {
-    description = "¤ Singularity Rune\n" .. 
+    description = S("¤ Singularity Rune\n") .. 
         core.colorize("#00FFFF", "Cosmetic: Reality bends around you.") .. "\n" .. 
         core.colorize("#BF00FF", "1/50k chance when falling into the Void."),
     inventory_image = "singularity_rune.png",

@@ -682,7 +682,7 @@ end
 
 function replacer.tool_def_technic()
 	local def = r.tool_def_basic()
-	def.description = "Bulk Placer Tool"
+	def.description = S("Bulk Placer Tool")
 	if r.has_technic_mod then
 		if technic.plus then
 			def.technic_max_charge = r.max_charge

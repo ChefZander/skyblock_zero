@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type {
     type = 'alloying',
-    description = 'Alloying',
+    description = S("Alloying"),
     icon = 'simple_alloy_furnace.png^[verticalframe:13:1',
     width = 2,
     height = 1,
@@ -27,7 +29,7 @@ sbz_api.recipe.register_craft {
 }
 
 sbz_api.register_stateful_machine('sbz_chem:simple_alloy_furnace', {
-    description = 'Simple Alloy Furnace',
+    description = S("Simple Alloy Furnace"),
     tiles = {
         'simple_alloy_furnace.png^[verticalframe:13:1',
     },

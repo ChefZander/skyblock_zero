@@ -1,9 +1,11 @@
+local S = core.get_translator(core.get_current_modname())
+
 local core_dust_power = 30
 local charged_particle_power = 36
 -- 30*10 => 300 power per core dust
 -- 36*10 => 360 power per charged particle
 sbz_api.register_stateful_generator('sbz_power:simple_charge_generator', {
-    description = 'Simple Charge Generator',
+    description = S("Simple Charge Generator"),
     sounds = sbz_api.sounds.machine(),
     tiles = { 'simple_charge_generator_off.png' },
 
@@ -118,7 +120,7 @@ do -- Simple Charge Generator recipe scope
 end
 
 sbz_api.register_generator('sbz_power:simple_charged_field', {
-    description = 'Simple Charged Field',
+    description = S("Simple Charged Field"),
     drawtype = 'glasslike',
     tiles = { 'simple_charged_field.png' },
     groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1, charged_field = 1 },
@@ -233,7 +235,7 @@ core.register_abm {
 }
 
 core.register_node('sbz_power:charged_field_residue', {
-    description = 'Charged Field Residue',
+    description = S("Charged Field Residue"),
     drawtype = 'glasslike',
     tiles = { 'charged_field_residue.png' },
     groups = { unbreakable = 1, charged_field = 1 },
@@ -262,7 +264,7 @@ core.register_abm {
 }
 
 core.register_node('sbz_power:solid_charged_field', {
-    description = 'Solid Charged Field',
+    description = S("Solid Charged Field"),
     info_extra = 'Used for protecting against radiation.',
     tiles = { 'solid_charged_field.png' },
     groups = { dig_immediate = 2, matter = 1, explody = 5, charged = 1, charged_field = 1 },
@@ -285,7 +287,7 @@ sbz_api.recipe.register_craft {
 
 -- Starlight Collector
 sbz_api.register_generator('sbz_power:starlight_collector', {
-    description = 'Starlight Collector',
+    description = S("Starlight Collector"),
     sounds = sbz_api.sounds.matter(),
     drawtype = 'nodebox',
     tiles = {
@@ -408,10 +410,10 @@ local function stop_agen_active_sound(pos)
 end
 
 sbz_api.register_stateful_generator('sbz_power:antimatter_generator', {
-    description = 'Antimatter Generator',
+    description = S("Antimatter Generator"),
     info_extra = {
-        'Generates 600 power',
-        'Needs 1 antimatter/s and 1 matter/s',
+        S("Generates 600 power"),
+        S("Needs 1 antimatter/s and 1 matter/s"),
     },
     groups = { matter = 1, pipe_connects = 1, disallow_pipeworks = 1, tubedevice = 1, tubedevice_receiver = 1 },
     tiles = {
@@ -607,7 +609,7 @@ do -- Antimatter Generator recipe scope
 end
 
 sbz_api.register_generator('sbz_power:creative_generator', {
-    description = 'Creative Generator',
+    description = S("Creative Generator"),
     sounds = sbz_api.sounds.machine(),
     tiles = {
         {

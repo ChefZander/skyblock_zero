@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- each meteorite should require something like 1 000 matter blobs
 
 local meteorite_recipes = {
@@ -156,7 +158,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
     },
     groups = { matter = 1 },
     light_source = 0,
-    description = "Meteorite Maker",
+    description = S("Meteorite Maker"),
     sounds = sbz_api.sounds.machine(),
     info_extra = "Makes meteorites",
 

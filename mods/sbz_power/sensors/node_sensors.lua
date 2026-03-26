@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- light, node type
 
 -- i hope its performant at least a little bit
@@ -45,7 +47,7 @@ button[4,1.5;1,0.5;save;Save]
 end
 
 sbz_api.register_stateful_machine("sbz_power:light_sensor", unifieddyes.def {
-    description = "Light Sensor",
+    description = S("Light Sensor"),
     sounds = sbz_api.sounds.matter(),
     info_extra = "Doesn't emit light when turned on",
     tiles = {
@@ -178,7 +180,7 @@ button[7,1.5;1,0.5;save;Save]
 end
 -- NODE SENSOR
 sbz_api.register_stateful_machine("sbz_power:node_sensor", unifieddyes.def {
-    description = "Node Sensor",
+    description = S("Node Sensor"),
     sounds = sbz_api.sounds.matter(),
     tiles = {
         sbz_api.make_sensor_tex_off("node_detector")

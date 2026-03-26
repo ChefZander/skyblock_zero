@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local fx = {
     {
         amount = 1000,
@@ -175,7 +177,7 @@ end
 
 core.register_craftitem("sbz_resources:firework", {
     info_extra = { "You can activate it by \"trying to dig with it\" it, you can also try node breakers, or better yet, logic builders..." },
-    description = "Firework",
+    description = S("Firework"),
     inventory_image = "firework.png",
     stack_max = 365, -- ha get it, because 365~ish days in a year
     -- lets be real, this needs to be efficient cuz its going to get used probably 1000 times per second

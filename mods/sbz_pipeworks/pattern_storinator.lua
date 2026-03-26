@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local function check_and_act_if_filled(pos, meta, storage_or_inv, pattern)
     local storage
     if type(storage_or_inv) == 'userdata' then
@@ -25,7 +27,7 @@ local h = core.hash_node_position
 core.register_node(
     'pipeworks:pattern_storinator',
     unifieddyes.def {
-        description = 'Pattern Storinator',
+        description = S("Pattern Storinator"),
         sounds = sbz_api.sounds.wood_planks(),
         info_extra = '16 slots',
         groups = {

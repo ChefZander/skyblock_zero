@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type {
     type = 'crushing',
-    description = 'Crushing',
+    description = S("Crushing"),
     icon = 'crusher_top.png^[verticalframe:4:1',
     single = true,
 }
@@ -16,7 +18,7 @@ for k, v in pairs(sbz_api.crusher_drops) do
 end
 
 core.register_craftitem('sbz_chem:enhanced_pebble', {
-    description = 'Enhanced Pebble',
+    description = S("Enhanced Pebble"),
     inventory_image = 'enhanced_pebble.png',
 })
 
@@ -59,7 +61,7 @@ sbz_api.recipe.register_craft {
 
 local crusher_power_consume = 5
 sbz_api.register_stateful_machine('sbz_chem:crusher', {
-    description = 'Crusher',
+    description = S("Crusher"),
     tiles = {
         'crusher_top.png^[verticalframe:4:1',
         'crusher_side.png',

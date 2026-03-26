@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 ---@type string|boolean|nil
 local unload_switching_stations = core.settings:get('sbz_switching_station_unload')
 if unload_switching_stations == nil or unload_switching_stations == 'default' then
@@ -455,7 +457,7 @@ button_exit[0,10;12,1;exit;Exit]
 end
 
 core.register_node('sbz_power:switching_station', {
-    description = 'Switching Station',
+    description = S("Switching Station"),
     sounds = sbz_api.sounds.matter(),
     tiles = { 'switching_station.png' },
     groups = { matter = 1, cracky = 1, pipe_connects = 1, pipe_conducts = 1 },
@@ -582,7 +584,7 @@ mesecon.register_on_mvps_move(function(moved_nodes)
 end)
 
 core.register_chatcommand('toggle_power', {
-    description = 'Toggles if switching stations are enabled or not',
+    description = S("Toggles if switching stations are enabled or not"),
     params = '<yes/no>',
 
     privs = { ['server'] = true },
@@ -707,7 +709,7 @@ sbz_api.make_network_visible = function(p1, p2, net)
 end
 
 core.register_chatcommand('teleport_to_laggiest_switching_station', {
-    description = 'Teleports to the laggiest switching station, useful to diagnose issues with skyblock zero on multiplayer.',
+    description = S("Teleports to the laggiest switching station, useful to diagnose issues with skyblock zero on multiplayer."),
     privs = { ['server'] = true },
     func = function(name, param)
         local pos = nil

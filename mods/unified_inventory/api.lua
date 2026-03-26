@@ -23,12 +23,13 @@ You should have received a copy of the GNU Library General Public
 License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]=]
 
-local S = minetest.get_translator("unified_inventory")
+local S = core.get_translator(core.get_current_modname())
+
 local F = minetest.formspec_escape
 local ui = unified_inventory
 
 local function is_recipe_craftable(recipe)
-	-- Ensure the ingedients exist
+	-- Ensure the ingredients exist
 	for _, itemname in pairs(recipe.items) do
 		local groups = string.find(itemname, "group:")
 		if groups then
@@ -101,7 +102,7 @@ minetest.after(0.01, function()
 			to register them later, in order to avoid duplicates. These tables counts
 			the total number of guaranteed drops and drops by chance (“maybes”) for each item.
 			For “maybes”, the final count is the theoretical maximum number of items, not
-			neccessarily the actual drop count. ]]
+			necessarily the actual drop count. ]]
 			local drop_guaranteed = {}
 			local drop_maybe = {}
 			-- This is for catching an obscure corner case: If the top items table has
@@ -380,7 +381,7 @@ ui.register_craft_type("digging", {
 })
 
 ui.register_craft_type("digging_chance", {
-	description = "Digging (by chance)",
+	description = S("Digging (by chance)"),
 	icon = "robotic_arm.png",
 	width = 1,
 	height = 1,
