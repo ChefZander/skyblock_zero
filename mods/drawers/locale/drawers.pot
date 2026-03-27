@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/drawers/api.lua:91 mods/drawers/visuals.lua:564
+msgid "Empty"
+msgstr ""
+
+#: mods/drawers/api.lua:542
+msgid "Refreshes nearby drawer contents' visual indicators.\n"
+msgstr ""
+
+#: mods/drawers/controller.lua:52 mods/drawers/controller.lua:387
+msgid "Drawer Controller"
+msgstr ""
+
+#: mods/drawers/helpers.lua:50
+msgid "@1 (@2% full)"
+msgstr ""
+
+#: mods/drawers/helpers.lua:52
+msgid "@1 @2 (@3% full)"
+msgstr ""
+
+#: mods/drawers/nodes.lua:35
+msgid "@1 Drawer Upgrade (@2x)"
+msgstr ""
+
+#: mods/drawers/nodes.lua:43
+msgid "Matter Drawer"
+msgstr ""
+
+#: mods/drawers/nodes.lua:56
+msgid "If you aren't seeing drawer visuals, try using /drawers_fix"
+msgstr ""
+
+#: mods/drawers/nodes.lua:62
+msgid "Drawer Connector"
+msgstr ""
+
+#: mods/drawers/nodes.lua:76
+msgid ""
+"For use with the Drawer Controller; transfers items through it to adjacent "
+"drawers."
+msgstr ""
+
+#: mods/drawers/nodes.lua:82
+msgid "Bronze"
+msgstr ""
+
+#: mods/drawers/nodes.lua:89
+msgid "Stemfruit"
+msgstr ""
+
+#: mods/drawers/nodes.lua:96
+msgid "Colorium"
+msgstr ""
+
+#: mods/drawers/nodes.lua:100
+msgid "Sorry, but it doesn't actually make the drawer color-able..."
+msgstr ""
+
+#: mods/drawers/nodes.lua:104
+msgid "Warpshroom"
+msgstr ""
+
+#: mods/drawers/nodes.lua:113
+msgid "Neutronium"
+msgstr ""
+
+#: mods/drawers/nodes.lua:120
+msgid "Creative"
+msgstr ""
+
+#: mods/drawers/nodes.lua:129
+msgid "Drawer Upgrade Template"
+msgstr ""

@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: mods/jumpdrive/backbone.lua:4
+msgid "Jumpdrive Backbone"
+msgstr ""
+
+#: mods/jumpdrive/bookmark.lua:27 mods/jumpdrive/bookmark.lua:28
+msgid "Jumpdrive coordinates"
+msgstr ""
+
+#: mods/jumpdrive/bookmark.lua:97
+msgid "Invalid coordinates"
+msgstr ""
+
+#: mods/jumpdrive/engine.lua:6
+msgid "Jumpdrive"
+msgstr ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:8
+msgid "Jumpdrive Fleet Controller"
+msgstr ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:136
+msgid "Found @1 jumpdrive"
+msgid_plural "Found @2 jumpdrives"
+msgstr[0] ""
+msgstr[1] ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:158
+msgid "Check passed for engine "
+msgstr ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:166
+msgid "Simulation successful"
+msgstr ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:203
+msgid "Jump executed in "
+msgstr ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:208
+msgid "Engine "
+msgstr ""
+
+#: mods/jumpdrive/fleet/fleet_controller.lua:208
+msgid " failed with: "
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:9
+msgid ""
+"Error: mapgen was active in this area, please try again later for your own "
+"safety!"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:15
+msgid "Error: simulation is still active! please wait before simulating again"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:41
+msgid "Error: jump into itself! extend your jump target"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:60
+msgid "Error: Can't jump node @ "
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:64
+msgid "Warning: Jump-target is in vacuum!"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:68
+msgid "Error: Jump-target is in uncharted area!"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:72
+msgid "Error: Jump-source is protected!"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:76
+msgid "Error: Jump-target is protected!"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:82
+msgid "Error: Jump-target is obstructed"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:91
+msgid "Error: Preflight check failed!"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:93
+msgid "Error: "
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:110
+msgid "Error: Not enough power: required:"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:111
+msgid "power storage:"
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:114
+msgid ""
+", power from batteries (25% efficiency, so actual power use is 4x of this): "
+msgstr ""
+
+#: mods/jumpdrive/jump.lua:119
+msgid "Info: Has to use @1 from your batteries. (25% efficiency)"
+msgstr ""
+
+#: mods/jumpdrive/station.lua:4
+msgid "Jumpdrive Station"
+msgstr ""
+
+#: mods/jumpdrive/warp_device.lua:4
+msgid "Warp Device"
+msgstr ""

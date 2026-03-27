@@ -1,0 +1,332 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: mods/sbz_power/batteries.lua:33
+msgid "Battery"
+msgstr ""
+
+#: mods/sbz_power/batteries.lua:56
+msgid "Advanced Battery"
+msgstr ""
+
+#: mods/sbz_power/batteries.lua:78
+msgid "Very Advanced Battery"
+msgstr ""
+
+#: mods/sbz_power/batteries.lua:118
+msgid "Teleport Battery"
+msgstr ""
+
+#: mods/sbz_power/batteries.lua:249
+msgid "Creative Power Generating Battery"
+msgstr ""
+
+#: mods/sbz_power/batteries.lua:264
+msgid "Creative Battery"
+msgstr ""
+
+#: mods/sbz_power/connectors.lua:6 mods/sbz_power/connectors.lua:52
+msgid "Connector"
+msgstr ""
+
+#: mods/sbz_power/ele_fab.lua:52 mods/sbz_power/ele_fab.lua:103
+msgid "Ele Fab"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:32
+msgid "Reactor Shell"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:59
+msgid "Reactor Glass"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:89
+msgid "Reactor Emittrium Input"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:140
+msgid "Reactor Core"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:218
+msgid "Reactor Infoscreen"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:324
+msgid "Reactor Power Port"
+msgstr ""
+
+#: mods/sbz_power/emittrium_reactor.lua:369
+msgid "Reactor Coolant Port"
+msgstr ""
+
+#: mods/sbz_power/extractor.lua:15
+msgid "Simple Matter Extractor"
+msgstr ""
+
+#: mods/sbz_power/extractor.lua:89
+msgid "Advanced Matter Extractor"
+msgstr ""
+
+#: mods/sbz_power/fluid_transport.lua:54
+msgid "Fluid Pipe"
+msgstr ""
+
+#: mods/sbz_power/fluid_transport.lua:205
+msgid "Fluid Pump"
+msgstr ""
+
+#: mods/sbz_power/fluid_transport.lua:345
+msgid "Creative Pump"
+msgstr ""
+
+#: mods/sbz_power/fluid_transport.lua:477
+msgid "Fluid Storage Tank"
+msgstr ""
+
+#: mods/sbz_power/fluid_transport.lua:530
+msgid "Fluid Capturer"
+msgstr ""
+
+#: mods/sbz_power/fluid_transport.lua:610
+msgid "Fluid Cell Filler"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:8
+msgid "Simple Charge Generator"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:123
+msgid "Simple Charged Field"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:238
+msgid "Charged Field Residue"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:267
+msgid "Solid Charged Field"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:290
+msgid "Starlight Collector"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:413
+msgid "Antimatter Generator"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:415
+msgid "Generates 600 power"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:416
+msgid "Needs 1 antimatter/s and 1 matter/s"
+msgstr ""
+
+#: mods/sbz_power/generator.lua:612
+msgid "Creative Generator"
+msgstr ""
+
+#: mods/sbz_power/infinite_storinator.lua:4
+msgid "Infinite Storinator (deprecated)"
+msgstr ""
+
+#: mods/sbz_power/lights.lua:5
+msgid "Powered Lamp"
+msgstr ""
+
+#: mods/sbz_power/lights.lua:28
+msgid "Funny air (YOU HACKER YOU!!!!)"
+msgstr ""
+
+#: mods/sbz_power/lights.lua:94
+msgid "Super Powered Lamp"
+msgstr ""
+
+#: mods/sbz_power/manual_crafter.lua:160
+msgid "Manual Crafter"
+msgstr ""
+
+#: mods/sbz_power/misc.lua:4
+msgid "Phosphor"
+msgstr ""
+
+#: mods/sbz_power/misc.lua:64
+msgid "Like clearobjects but only for items, and only quick"
+msgstr ""
+
+#: mods/sbz_power/misc.lua:86
+msgid "Item Vacuum"
+msgstr ""
+
+#: mods/sbz_power/phlogiston_fuser.lua:18
+msgid "Phlogiston Fuser"
+msgstr ""
+
+#: mods/sbz_power/power_pipes.lua:27
+msgid "Emittrium Power Cable"
+msgstr ""
+
+#: mods/sbz_power/power_pipes.lua:70
+msgid "Airtight Emittrium Power Cable"
+msgstr ""
+
+#: mods/sbz_power/sensors/delayer.lua:4
+msgid "Delayer"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:46
+msgid "NOT gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:65
+msgid "Buffer gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:115
+msgid "OR gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:134
+msgid "NOR gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:153
+msgid "AND gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:172
+msgid "NAND gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:191
+msgid "XOR gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:210
+msgid "XNOR gate"
+msgstr ""
+
+#: mods/sbz_power/sensors/gates.lua:237
+msgid "Machine Controller"
+msgstr ""
+
+#: mods/sbz_power/sensors/item_sensor.lua:43
+msgid "Item Sensor"
+msgstr ""
+
+#: mods/sbz_power/sensors/node_sensors.lua:50
+msgid "Light Sensor"
+msgstr ""
+
+#: mods/sbz_power/sensors/node_sensors.lua:183
+msgid "Node Sensor"
+msgstr ""
+
+#: mods/sbz_power/sensors/sensors_player_facing.lua:8
+msgid "Switch ("
+msgstr ""
+
+#: mods/sbz_power/sensors/sensor_linker.lua:187
+msgid "Sensor Linker"
+msgstr ""
+
+#: mods/sbz_power/sensors/sensor_linker.lua:189
+msgid ""
+"Right click: asks for a name, if a block is pointed to, links to the to the "
+"sensor."
+msgstr ""
+
+#: mods/sbz_power/sensors/sensor_linker.lua:190
+msgid ""
+"Left click: uses the previous name from when you right clicked, links it to "
+"the sensor."
+msgstr ""
+
+#: mods/sbz_power/sensors/sensor_linker.lua:191
+msgid "Aux1 + right click/left click: Links the tool to the sensor."
+msgstr ""
+
+#: mods/sbz_power/sensors/sensor_linker.lua:192
+msgid ""
+"If you hold it, it should show all the links and the sensor's linking radius."
+msgstr ""
+
+#: mods/sbz_power/starlight_catcher.lua:26
+msgid "Starlight Catcher"
+msgstr ""
+
+#: mods/sbz_power/starlight_catcher.lua:101
+msgid "Photon-Energy Converter"
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:439
+msgid "[Switching Station] Network ID: "
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:460
+msgid "Switching Station"
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:587
+msgid "Toggles if switching stations are enabled or not"
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:594
+msgid "Enabled switching stations"
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:597
+msgid "Temporarily disabled switching stations."
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:712
+msgid ""
+"Teleports to the laggiest switching station, useful to diagnose issues with "
+"skyblock zero on multiplayer."
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:724
+msgid "Could not find a switching station like that"
+msgstr ""
+
+#: mods/sbz_power/switching_station.lua:727
+msgid "Done"
+msgstr ""
+
+#: mods/sbz_power/testnodes.lua:6
+msgid "Test machine"
+msgstr ""
+
+#: mods/sbz_power/turret.lua:75
+msgid "Automatic Turret"
+msgstr ""
+
+#: mods/sbz_power/turret.lua:79
+msgid "Shoots things like lasers."
+msgstr ""
+
+#: mods/sbz_power/turret.lua:80
+msgid "Range: @1 node"
+msgid_plural "Range: @1 nodes"
+msgstr[0] ""
+msgstr[1] ""

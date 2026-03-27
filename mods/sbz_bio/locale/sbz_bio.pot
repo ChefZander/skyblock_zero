@@ -1,0 +1,196 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_bio/colorium_emitter.lua:45
+msgid "Colorium Emitter"
+msgstr ""
+
+#: mods/sbz_bio/fertilizer.lua:46
+msgid "Fertilizer"
+msgstr ""
+
+#: mods/sbz_bio/fire.lua:28
+msgid "Fire"
+msgstr ""
+
+#: mods/sbz_bio/fire.lua:96
+msgid "Igniter"
+msgstr ""
+
+#: mods/sbz_bio/habitat.lua:207
+msgid "Habitat Regulator"
+msgstr ""
+
+#: mods/sbz_bio/habitat.lua:233
+msgid "CO2 Compactor"
+msgstr ""
+
+#: mods/sbz_bio/habitat.lua:235
+msgid ""
+"Stores 30 CO₂. Habitat regulator doesn't consider it a wall, but it can be "
+"passed through"
+msgstr ""
+
+#: mods/sbz_bio/misc.lua:4
+msgid "Burner"
+msgstr ""
+
+#: mods/sbz_bio/misc.lua:72
+msgid "Airlock"
+msgstr ""
+
+#: mods/sbz_bio/misc.lua:99
+msgid "Basic Neutron Emitter"
+msgstr ""
+
+#: mods/sbz_bio/moss.lua:4
+msgid "Moss"
+msgstr ""
+
+#: mods/sbz_bio/moss.lua:46
+msgid "Algae"
+msgstr ""
+
+#: mods/sbz_bio/paper.lua:4
+msgid "Paper"
+msgstr ""
+
+#: mods/sbz_bio/paper.lua:60
+msgid "Book"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:272
+msgid "Pyrograss Plant"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:288
+msgid "Pyrograss"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:322
+msgid "Razorgrass Plant"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:354
+msgid "Razorgrass"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:380
+msgid "Cleargrass Plant"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:402
+msgid "Cleargrass"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:418
+msgid "Stemfruit Plant"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:430
+msgid "Stemfruit"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:458
+msgid "Warpshroom Plant"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:491
+msgid "Warpshroom"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:546
+msgid "Shockshroom Plant"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:562
+msgid "Shockshroom"
+msgstr ""
+
+#: mods/sbz_bio/plants.lua:588
+msgid "Fiberweed"
+msgstr ""
+
+#: mods/sbz_bio/potions.lua:4
+msgid "Potion of Inverting"
+msgstr ""
+
+#: mods/sbz_bio/potions.lua:24
+msgid "Ability: Drink (Left-Click)"
+msgstr ""
+
+#: mods/sbz_bio/potions.lua:24
+msgid " Inverts your screen colors."
+msgstr ""
+
+#: mods/sbz_bio/soil.lua:4
+msgid "Dirt"
+msgstr ""
+
+#: mods/sbz_bio/soil.lua:53
+msgid "Fertilized Dirt"
+msgstr ""
+
+#: mods/sbz_bio/soil.lua:66
+msgid "Plants grow 2x faster than on dirt, on this soil."
+msgstr ""
+
+#: mods/sbz_bio/soil.lua:67
+msgid "Fertilizer can't sprout plants on this soil."
+msgstr ""
+
+#: mods/sbz_bio/soil.lua:87
+msgid "Dirt With Pyrograss"
+msgstr ""
+
+#: mods/sbz_bio/soil.lua:117
+msgid "Electric Soil"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:218
+msgid "Colorium Tree"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:243
+msgid "Colorium Leaves"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:308
+msgid "Colorium Sapling"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:340
+msgid "Giant Colorium Sapling"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:391
+msgid "Colorium Planks"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:437
+msgid "Colorium Tree Core"
+msgstr ""
+
+#: mods/sbz_bio/trees.lua:502
+msgid "DNA Extractor"
+msgstr ""
+
+#: mods/sbz_bio/uses.lua:4
+msgid "Rope"
+msgstr ""

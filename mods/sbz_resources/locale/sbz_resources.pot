@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: mods/sbz_resources/basic_resources.lua:4
+msgid "Punching"
+msgstr ""
+
+#: mods/sbz_resources/basic_resources.lua:17
+msgid "Core Dust"
+msgstr ""
+
+#: mods/sbz_resources/basic_resources.lua:39
+msgid "Matter Dust"
+msgstr ""
+
+#: mods/sbz_resources/basic_resources.lua:59
+msgid "Charged Particle"
+msgstr ""
+
+#: mods/sbz_resources/basic_resources.lua:81
+msgid "Antimatter Dust"
+msgstr ""
+
+#: mods/sbz_resources/bomb.lua:47
+msgid "TNT Stick\n"
+msgstr ""
+
+#: mods/sbz_resources/bomb.lua:47
+msgid "Ability: Throw (Left-Click)"
+msgstr ""
+
+#: mods/sbz_resources/bomb.lua:47
+msgid " Throw the TNT Stick, which will explode when it lands."
+msgstr ""
+
+#: mods/sbz_resources/bomb.lua:122
+msgid "TNT"
+msgstr ""
+
+#: mods/sbz_resources/crystals.lua:61
+msgid "Warp Crystal"
+msgstr ""
+
+#: mods/sbz_resources/crystals.lua:89
+msgid "Uranium Crystal"
+msgstr ""
+
+#: mods/sbz_resources/crystals.lua:94
+msgid "Thorium Crystal"
+msgstr ""
+
+#: mods/sbz_resources/crystals.lua:99
+msgid "Silicon Crystal"
+msgstr ""
+
+#: mods/sbz_resources/crystals.lua:125
+msgid "Shock Crystal"
+msgstr ""
+
+#: mods/sbz_resources/emitters.lua:60
+msgid "Emitter"
+msgstr ""
+
+#: mods/sbz_resources/emitters.lua:79
+msgid "Movable Emitter"
+msgstr ""
+
+#: mods/sbz_resources/emitters.lua:138
+msgid "Raw Emittrium"
+msgstr ""
+
+#: mods/sbz_resources/emitters.lua:203
+msgid "The Core"
+msgstr ""
+
+#: mods/sbz_resources/fireworks.lua:180
+msgid "Firework"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:4
+msgid "Matter Plate"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:21
+msgid "Antimatter Plate"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:38
+msgid "Conversion chamber (!! DEPRECATED !! Throw it away!)"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:45
+msgid "Pebble"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:62
+msgid "Angel's Wing"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:118
+msgid "Phlogiston"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:123
+msgid "Phlogiston Blob"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:143
+msgid "Heating Element"
+msgstr ""
+
+#: mods/sbz_resources/items.lua:163
+msgid "Sensor Casing Plate"
+msgstr ""
+
+#: mods/sbz_resources/jetpack.lua:35
+msgid "Jetpack"
+msgstr ""
+
+#: mods/sbz_resources/laser.lua:9
+msgid "Laser"
+msgstr ""
+
+#: mods/sbz_resources/laser.lua:10
+msgid "Ability: Fire (Left-Click)"
+msgstr ""
+
+#: mods/sbz_resources/laser.lua:10
+msgid " Fire a laserbeam which destroys meteorites and damages players."
+msgstr ""
+
+#: mods/sbz_resources/logic_craftitems.lua:4
+msgid "Luanium"
+msgstr ""
+
+#: mods/sbz_resources/logic_craftitems.lua:10
+msgid "Lua Chip"
+msgstr ""
+
+#: mods/sbz_resources/logic_craftitems.lua:15
+msgid "Ram Stick"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:6
+msgid "Matter Blob"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:33
+msgid "Matter Platform"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:82
+msgid "Antimatter Blob"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:134
+msgid "Antimatter Platform"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:166
+msgid "Emitter Imitator"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:217
+msgid "Stone"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:254
+msgid "Reinforced Matter"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:276
+msgid "Reinforced Antimatter"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:356
+msgid "Emittrium Glass"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:384
+msgid "Colorium Glass"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:413
+msgid "Clear Colorium Glass"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:443
+msgid "Stained Colorium Glass"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:473
+msgid "Compressed Core Dust"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:511
+msgid "Sand"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:522
+msgid "Red Sand"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:531
+msgid "Gravel"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:540
+msgid "Dust"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:585
+msgid "Clay"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:596
+msgid "Bricks"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:623
+msgid "Dark Sand"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:633
+msgid "Black Sand"
+msgstr ""
+
+#: mods/sbz_resources/nodes.lua:643
+msgid "White Sand"
+msgstr ""
+
+#: mods/sbz_resources/parkour.lua:14
+msgid "Emittrium Block"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:4
+msgid "Simple Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:22
+msgid "Retaining Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:40
+msgid "Emittrium Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:59
+msgid "Phlogiston Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:84
+msgid "Prediction Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:104
+msgid "Simple Logic Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:127
+msgid "Simple Inverted Logic Circuit"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:165
+msgid "Simple Processor"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:195
+msgid "Simple Crafting Processor"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:216
+msgid "Fast Crafting Processor"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:240
+msgid "Very Fast Crafting Processor"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:261
+msgid "Extremely Fast Crafting Processor"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:301
+msgid "Instant Crafting Processor"
+msgstr ""
+
+#: mods/sbz_resources/processors_and_circuits.lua:312
+msgid "Metal-Oxide-Semiconductor Field-Effect Transistor (MOSFET)"
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:187
+msgid "Public "
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:232
+msgid "Storinator"
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:243
+msgid "Bronze Storinator"
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:253
+msgid "Stemfruit Storinator"
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:262
+msgid "Colorium Storinator"
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:274
+msgid "Warpshroom Storinator"
+msgstr ""
+
+#: mods/sbz_resources/storinators.lua:286
+msgid "Neutronium Storinator"
+msgstr ""
+
+#: mods/sbz_resources/strange_matter.lua:4
+msgid "Strange Dust"
+msgstr ""
+
+#: mods/sbz_resources/strange_matter.lua:9
+msgid "Strange Blob"
+msgstr ""
+
+#: mods/sbz_resources/strange_matter.lua:89
+msgid "Strange Blob Cleaner"
+msgstr ""
+
+#: mods/sbz_resources/strange_matter.lua:91
+msgid "Restores what was.... done.... by strange blobs."
+msgstr ""
+
+#: mods/sbz_resources/strange_matter.lua:92
+msgid "\"Place\" it into a battery to charge."
+msgstr ""
+
+#: mods/sbz_resources/strange_matter.lua:167
+msgid "Stabilized Strange Blob"
+msgstr ""
+
+#: mods/sbz_resources/tools.lua:6
+msgid "Matter Annihilator"
+msgstr ""
+
+#: mods/sbz_resources/tools.lua:50
+msgid "Antimatter Annihilator"
+msgstr ""
+
+#: mods/sbz_resources/tools.lua:94
+msgid "Robotic Arm"
+msgstr ""
+
+#: mods/sbz_resources/tools.lua:171
+msgid "Electric Drill"
+msgstr ""
+
+#: mods/sbz_resources/tools.lua:174
+msgid "Powered by electricity. Wear bar indicates the amount of charge left."
+msgstr ""
+
+#: mods/sbz_resources/tools.lua:175
+msgid "@1 use"
+msgid_plural "@1 uses"
+msgstr[0] ""
+msgstr[1] ""
+
+#: mods/sbz_resources/tools.lua:176
+msgid "\"Place\" it on a battery to re-charge it."
+msgstr ""
+
+#: mods/sbz_resources/water.lua:22
+msgid "Water Source"
+msgstr ""
+
+#: mods/sbz_resources/water.lua:69
+msgid "Flowing Water"
+msgstr ""
+
+#: mods/sbz_resources/wormhole.lua:4
+msgid "Wormhole"
+msgstr ""
+
+#: mods/sbz_resources/wormhole.lua:62
+msgid "Unrefined Firmament"
+msgstr ""
+
+#: mods/sbz_resources/wormhole.lua:77
+msgid "Gravitational Lens"
+msgstr ""
+
+#: mods/sbz_resources/wormhole.lua:98
+msgid "Refined Firmament"
+msgstr ""

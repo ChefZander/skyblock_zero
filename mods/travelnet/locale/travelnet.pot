@@ -1,0 +1,415 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/travelnet/actions/add_station.lua:8
+msgid "The give player is not a player"
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:12
+msgid "There is no player with interact privilege named '@1'. Aborting."
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:27
+#: mods/travelnet/actions/update_elevator.lua:23
+msgid "at @1 m"
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:32
+msgid "Please provide a name for this station."
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:36
+msgid ""
+"Please provide the name of the network this station ought to be connected to."
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:44
+msgid ""
+"You do not have the travelnet_attach priv which is required to attach your "
+"box to the network of someone else. Aborting."
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:59
+msgid ""
+"A station named '@1' already exists on this network. Please choose a "
+"different name!"
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:66
+msgid ""
+"Network '@1', already contains the maximum number (@2) of allowed stations "
+"per network. Please choose a different/new network name."
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:85
+msgid ""
+"Station '@1' has been added to the network '@2', which now consists of @3 "
+"station(s)."
+msgstr ""
+
+#: mods/travelnet/actions/add_station.lua:95
+#: mods/travelnet/actions/update_elevator.lua:76
+#: mods/travelnet/actions/update_travelnet.lua:233
+msgid "Station '@1' on network '@2' (owned by @3) ready for usage."
+msgstr ""
+
+#: mods/travelnet/actions/change_order.lua:20
+msgid "This station does not have a network."
+msgstr ""
+
+#: mods/travelnet/actions/change_order.lua:45
+msgid "This station is already the first one on the list."
+msgstr ""
+
+#: mods/travelnet/actions/change_order.lua:47
+msgid "This station is already the last one on the list."
+msgstr ""
+
+#: mods/travelnet/actions/change_order.lua:71
+#: mods/travelnet/actions/main.lua:72
+#: mods/travelnet/actions/update_elevator.lua:40
+#: mods/travelnet/actions/update_travelnet.lua:56
+msgid "This @1 belongs to @2. You can't edit it."
+msgstr ""
+
+#: mods/travelnet/actions/main.lua:46
+msgid "This @1 belongs to @2. You can't remove it."
+msgstr ""
+
+#: mods/travelnet/actions/main.lua:52
+msgid "You do not have enough room in your inventory."
+msgstr ""
+
+#: mods/travelnet/actions/main.lua:99
+msgid "Please click on the target you want to travel to."
+msgstr ""
+
+#: mods/travelnet/actions/repair_station.lua:15
+msgid "Update failed! Resetting this box on the travelnet."
+msgstr ""
+
+#: mods/travelnet/actions/repair_station.lua:39
+msgid "Station '@1' has been reattached to the network '@2'."
+msgstr ""
+
+#: mods/travelnet/actions/transport_player.lua:20
+msgid "Station '@1' does not exist (anymore?) on this network."
+msgstr ""
+
+#: mods/travelnet/actions/transport_player.lua:33
+msgid "You are not allowed to travel to this station."
+msgstr ""
+
+#: mods/travelnet/actions/update_elevator.lua:14
+#: mods/travelnet/actions/update_travelnet.lua:20
+#: mods/travelnet/on_receive_fields.lua:28
+msgid "Unknown node."
+msgstr ""
+
+#: mods/travelnet/actions/update_elevator.lua:18
+#: mods/travelnet/actions/update_travelnet.lua:9
+msgid "Invalid data or node."
+msgstr ""
+
+#: mods/travelnet/actions/update_elevator.lua:55
+#: mods/travelnet/actions/update_travelnet.lua:149
+#: mods/travelnet/actions/update_travelnet.lua:203
+msgid "Station \"@1\" already exists on network \"@2\"."
+msgstr ""
+
+#: mods/travelnet/actions/update_elevator.lua:62
+#: mods/travelnet/actions/update_travelnet.lua:210
+msgid "Station does exist."
+msgstr ""
+
+#: mods/travelnet/actions/update_elevator.lua:72
+#: mods/travelnet/actions/update_travelnet.lua:220
+msgid "Station \"@1\" has been renamed to \"@2\" on network \"@3\"."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:33
+msgid "Please provide a station name."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:37
+msgid "Please provide a network name."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:41
+msgid "Please provide an owner."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:67
+msgid "You don't have permission to change the owner of this travelnet"
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:85
+msgid "Station \"@1\" already exists on network \"@2\" of player \"@3\"."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:92
+#: mods/travelnet/actions/update_travelnet.lua:156
+msgid ""
+"Network \"@1\", already contains the maximum number (@2) of allowed stations "
+"per network. Please choose a different network name."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:103
+#: mods/travelnet/actions/update_travelnet.lua:166
+msgid "Station does not have network."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:118
+msgid ""
+"Station \"@1\" has been renamed to \"@2\", moved from network \"@3\" to "
+"network \"@4\" and from owner \"@5\" to owner \"@6\"."
+msgstr ""
+
+#: mods/travelnet/actions/update_travelnet.lua:178
+msgid ""
+"Station \"@1\" has been renamed to \"@2\" and moved from network \"@3\" to "
+"network \"@4\"."
+msgstr ""
+
+#: mods/travelnet/add_target.lua:19 mods/travelnet/formspecs.lua:33
+#: mods/travelnet/functions.lua:339 mods/travelnet/on_receive_fields.lua:18
+msgid "Error"
+msgstr ""
+
+#: mods/travelnet/chat.lua:5
+msgid "Shows the travelnet formspec for the network"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:14
+msgid ""
+"Congratulations! This is your first elevator. You can build an elevator "
+"network by placing further elevators somewhere above or below this one. Just "
+"make sure that the x and z coordinate are the same."
+msgstr ""
+
+#: mods/travelnet/elevator.lua:27
+msgid ""
+"This elevator will automatically connect to the other elevators you have "
+"placed at different heights. Just enter a station name and click on "
+"\"store\" to set it up. Or just punch it to set the height as station name."
+msgstr ""
+
+#: mods/travelnet/elevator.lua:38
+msgid ""
+"This is your first elevator. It differs from travelnet networks by only "
+"allowing movement in vertical direction (up or down). All further elevators "
+"which you will place at the same x,z coordinates at different heights will "
+"be able to connect to this elevator."
+msgstr ""
+
+#: mods/travelnet/elevator.lua:46
+msgid "m to the right"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:47
+msgid "m behind this elevator and"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:48
+msgid "m to the left"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:49
+msgid "m in front of this elevator and"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:56
+msgid "Your nearest elevator network is located"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:68
+msgid ", located at x"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:70
+msgid "This elevator here will start a new shaft/network."
+msgstr ""
+
+#: mods/travelnet/elevator.lua:85
+msgid "Elevator"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:108
+msgid "Elevator (unconfigured)"
+msgstr ""
+
+#: mods/travelnet/elevator.lua:140 mods/travelnet/register_travelnet.lua:84
+msgid "Not enough vertical space to place the travelnet box!"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:35
+msgid "Back"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:36 mods/travelnet/formspecs.lua:72
+#: mods/travelnet/formspecs.lua:91 mods/travelnet/formspecs.lua:119
+msgid "Exit"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:56
+msgid "Configure this travelnet station"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:57 mods/travelnet/formspecs.lua:87
+msgid "Remove station"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:58 mods/travelnet/formspecs.lua:88
+#: mods/travelnet/formspecs.lua:112
+msgid "Name of this station:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:60
+msgid ""
+"What do you call this place here? Example: \"my first house\", \"mine\", "
+"\"shop\"..."
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:61
+msgid "Assign to network:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:67
+msgid "You can have more than one network. If unsure, use \"@1\"."
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:68 mods/travelnet/formspecs.lua:116
+msgid "Owned by:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:70
+msgid "Unless you know what you are doing, leave this as is."
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:71 mods/travelnet/formspecs.lua:90
+msgid "Save"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:86
+msgid "Configure this elevator station"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:111
+msgid "Elevator:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:111
+msgid "Travelnet-Box:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:114
+msgid "Assigned to Network:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:118
+msgid "Click on target to travel there:"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:200
+msgid "move up"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:201
+msgid "move down"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:212
+msgid "Edit station"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:218
+msgid "<<"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:221
+msgid "<"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:224
+msgid "Page @1/@2"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:227
+msgid ">"
+msgstr ""
+
+#: mods/travelnet/formspecs.lua:230
+msgid ">>"
+msgstr ""
+
+#: mods/travelnet/functions.lua:30
+msgid "travelnet box"
+msgstr ""
+
+#: mods/travelnet/functions.lua:32
+msgid "elevator"
+msgstr ""
+
+#: mods/travelnet/functions.lua:34
+msgid "locked travelnet"
+msgstr ""
+
+#: mods/travelnet/functions.lua:36
+msgid "locked elevator"
+msgstr ""
+
+#: mods/travelnet/functions.lua:300
+msgid "Could not find information about the station that is to be removed."
+msgstr ""
+
+#: mods/travelnet/functions.lua:311
+msgid "Could not find the station that is to be removed."
+msgstr ""
+
+#: mods/travelnet/functions.lua:322
+msgid "Station '@1' has been REMOVED from the network '@2'."
+msgstr ""
+
+#: mods/travelnet/on_receive_fields.lua:19
+msgid "There is something wrong with the configuration of this station."
+msgstr ""
+
+#: mods/travelnet/persistence.lua:18
+msgid "[travelnet] migrating from json-file to mod-storage"
+msgstr ""
+
+#: mods/travelnet/persistence.lua:21
+msgid "[travelnet] migrating from serialize-file to mod-storage"
+msgstr ""
+
+#: mods/travelnet/privs.lua:6
+msgid "allows to attach travelnet boxes to travelnets of other players"
+msgstr ""
+
+#: mods/travelnet/privs.lua:15
+msgid "allows to dig travelnet boxes which belog to nets of other players"
+msgstr ""
+
+#: mods/travelnet/register_travelnet.lua:25
+msgid "Travelnet-Box"
+msgstr ""
+
+#: mods/travelnet/register_travelnet.lua:52
+msgid "Travelnet-Box (unconfigured)"
+msgstr ""

@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_base/init.lua:51
+msgid "Skyblock: Zero"
+msgstr ""
+
+#: mods/sbz_base/init.lua:52
+msgid "Release"
+msgstr ""
+
+#: mods/sbz_base/init.lua:62
+msgid "Skyblock: Zero (Release"
+msgstr ""
+
+#: mods/sbz_base/init.lua:168
+msgid "You already had a questbook before joining."
+msgstr ""
+
+#: mods/sbz_base/init.lua:173
+msgid "Your inventory is full. Can't give you a questbook. Use /qb"
+msgstr ""
+
+#: mods/sbz_base/init.lua:189
+msgid "Go back to the core."
+msgstr ""
+
+#: mods/sbz_base/init.lua:193
+msgid "Sent you back to the Core."
+msgstr ""
+
+#: mods/sbz_base/init.lua:249
+msgid "Adjusts volume of background music"
+msgstr ""
+
+#: mods/sbz_base/init.lua:254
+msgid "Needs to be a number between 0 and 200, 100 is the default volume."
+msgstr ""
+
+#: mods/sbz_base/init.lua:263
+msgid "Set the background volume to @1."
+msgstr ""
+
+#: mods/sbz_base/init.lua:273
+msgid "‼ reminder: If you fall off, use /core to teleport back to the core."
+msgstr ""
+
+#: mods/sbz_base/init.lua:274
+msgid "‼ reminder: If lose your Quest Book, use /qb to get it back."
+msgstr ""
+
+#: mods/sbz_base/init.lua:361
+msgid "Kills you."
+msgstr ""
+
+#: mods/sbz_base/init.lua:374
+msgid "You talk. But there is no one to listen."
+msgstr ""
+
+#: mods/sbz_base/init.lua:781
+msgid "Skyblock: Zero's Base Mod has finished loading."
+msgstr ""
+
+#: mods/sbz_base/legacy.lua:14
+msgid "Deprecated item, throw away"
+msgstr ""
+
+#: mods/sbz_base/playtime_and_afk.lua:91
+msgid "Shows your, or other player's playtime."
+msgstr ""
+
+#: mods/sbz_base/playtime_and_afk.lua:99
+#, lua-format
+msgid ""
+"%s's playtime: %s\n"
+"%s's afk time: %s\n"
+"%s's afk and playtime: %s"
+msgstr ""
+
+#: mods/sbz_base/playtime_and_afk.lua:108
+msgid "Set your status to afk (away from keyboard)"
+msgstr ""
+
+#: mods/sbz_base/playtime_and_afk.lua:113
+msgid "You became afk"
+msgstr ""
+
+#: mods/sbz_base/space_movement.lua:7
+msgid "Allows toggling space movement"
+msgstr ""
+
+#: mods/sbz_base/space_movement.lua:24
+msgid "Toggle space movement"
+msgstr ""

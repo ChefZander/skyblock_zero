@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/metatool/copytool/init.lua:14
+msgid "Copy Tool"
+msgstr ""
+
+#: mods/metatool/copytool/nodes/teleport_tube.lua:106
+msgid "Teleport tube configuration cleaner"
+msgstr ""
+
+#: mods/metatool/copytool/nodes/teleport_tube.lua:128
+msgid "Receive was disabled because you're not owner of private receiver."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:14
+#, lua-format
+msgid "Registering %s as privileged tool"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:34
+#, lua-format
+msgid "Privileged tools removed from inventory: %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:145
+#, lua-format
+msgid "Invalid or nonexistent namespace requested: %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:149
+#, lua-format
+msgid "Namespace created for: %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:185
+#, lua-format
+msgid "%s cannot inspect %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:201
+#, lua-format
+msgid "%s copied data for group %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:205
+#, lua-format
+msgid "%s copying data for group %s failed"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:209
+#, lua-format
+msgid "%s cannot read from %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:245
+#, lua-format
+msgid "metatool wand contains data for %s, cannot apply for %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:250
+#, lua-format
+msgid "%s cannot write to %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:340
+#, lua-format
+msgid "metatool:register_tool invalid definition, must be table but was %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:346
+#, lua-format
+msgid "metatool:register_tool tool registration failed for \"%s\"."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:367
+#, lua-format
+msgid "metatool:register_tool registered tool \"%s\"."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:370
+#, lua-format
+msgid ""
+"metatool:register_tool not registering tool %s because it is already "
+"registered."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:378
+#, lua-format
+msgid "metatool:register_node invalid definition, must be table but was %s"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:382
+#, lua-format
+msgid ""
+"metatool:register_node node %s not registered for core, skipping "
+"registration."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:394
+#, lua-format
+msgid "metatool:register_node registered %s for tool %s with group %s."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:396
+#, lua-format
+msgid ""
+"metatool:register_node invalid definition for %s: copy or paste function not "
+"defined."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:399
+#, lua-format
+msgid ""
+"metatool:register_node not registering node %s because it is already "
+"registered."
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:418
+#, lua-format
+msgid "%s could not get valid position"
+msgstr ""
+
+#: mods/metatool/metatool/api.lua:431
+#, lua-format
+msgid "%s cannot be used on %s"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:7
+#, lua-format
+msgid "Metatool registering chat command /%s"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:24
+#, lua-format
+msgid "Invalid command parameters: %s"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:36 mods/metatool/metatool/command.lua:48
+#, lua-format
+msgid "Tool not available: %s"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:42
+#, lua-format
+msgid "Tool count must be between %d and %d"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:55
+#, lua-format
+msgid "%d %s added to inventory"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:58
+#, lua-format
+msgid "Not enough inventory space for %s"
+msgstr ""
+
+#: mods/metatool/metatool/command.lua:71
+#, lua-format
+msgid "Available tools: %s"
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:213
+msgid "Bug: Form name mismatch: "
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:222
+msgid "Bug: Invalid security token for form "
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:253
+#, lua-format
+msgid "metatool.form.register_form Registration failed, invalid form_name: %s"
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:257
+#, lua-format
+msgid ""
+"metatool.form.register_form Registration failed, invalid form_def type: %s"
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:261
+#, lua-format
+msgid "metatool.form.register_form Registering form: %s"
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:278
+msgid "Bug: Attempt to open invalid form "
+msgstr ""
+
+#: mods/metatool/metatool/formspec.lua:292
+msgid "Bug: Metatool form does not exist "
+msgstr ""
+
+#: mods/metatool/metatool/settings.lua:131
+#, lua-format
+msgid "metatool.merge_node_settings merging settings for node %s"
+msgstr ""
+
+#: mods/metatool/metatool/settings.lua:161
+#, lua-format
+msgid "metatool.merge_tool_settings merging settings for tool %s"
+msgstr ""
+
+#: mods/metatool/metatool/util.lua:75
+#, lua-format
+msgid "Cannot store %d bytes, max storage for %s is %d bytes"
+msgstr ""

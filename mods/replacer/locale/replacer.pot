@@ -1,0 +1,396 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/replacer/blabla.lua:27
+msgid "History"
+msgstr ""
+
+#: mods/replacer/blabla.lua:28
+msgid "Choose mode"
+msgstr ""
+
+#: mods/replacer/blabla.lua:29
+msgid "Both"
+msgstr ""
+
+#: mods/replacer/blabla.lua:30
+msgid "Node"
+msgstr ""
+
+#: mods/replacer/blabla.lua:31
+msgid "Rotation"
+msgstr ""
+
+#: mods/replacer/blabla.lua:32
+msgid "Replace node and apply orientation."
+msgstr ""
+
+#: mods/replacer/blabla.lua:33
+msgid "Replace node without changing orientation."
+msgstr ""
+
+#: mods/replacer/blabla.lua:34
+msgid "Apply orientation without changing node type."
+msgstr ""
+
+#: mods/replacer/blabla.lua:35
+msgid "Single"
+msgstr ""
+
+#: mods/replacer/blabla.lua:36
+msgid "Field"
+msgstr ""
+
+#: mods/replacer/blabla.lua:37
+msgid "Crust"
+msgstr ""
+
+#: mods/replacer/blabla.lua:38
+msgid "Replace single node."
+msgstr ""
+
+#: mods/replacer/blabla.lua:39
+msgid ""
+"Left click: Replace field of nodes of a kind where a translucent node is in "
+"front of it.@nRight click: Replace field of air where no translucent node is "
+"behind the air."
+msgstr ""
+
+#: mods/replacer/blabla.lua:42
+msgid ""
+"Left click: Replace nodes which touch another one of its kind and a "
+"translucent node, e.g. air.@nRight click: Replace air nodes which touch the "
+"crust."
+msgstr ""
+
+#: mods/replacer/blabla.lua:45
+msgid ""
+"Target node not yet loaded. Please wait a moment for the server to catch up."
+msgstr ""
+
+#: mods/replacer/blabla.lua:47
+msgid "Nothing to replace."
+msgstr ""
+
+#: mods/replacer/blabla.lua:48
+msgid "Not enough charge to use this mode."
+msgstr ""
+
+#: mods/replacer/blabla.lua:49
+msgid "Aborted, too many nodes detected."
+msgstr ""
+
+#: mods/replacer/blabla.lua:50
+msgid "Error: No node selected."
+msgstr ""
+
+#: mods/replacer/blabla.lua:51
+msgid "Node replacement tool"
+msgstr ""
+
+#: mods/replacer/blabla.lua:52
+msgid "Node replacement tool (technic)"
+msgstr ""
+
+#: mods/replacer/blabla.lua:56
+msgid "Time-limit reached."
+msgstr ""
+
+#: mods/replacer/blabla.lua:59
+msgid "(chat|audio) (0|1)"
+msgstr ""
+
+#: mods/replacer/blabla.lua:60
+msgid ""
+"Toggles verbosity.\n"
+"chat: When on, messages are posted to chat.\n"
+"audio: When off, replacer is silent."
+msgstr ""
+
+#: mods/replacer/blabla.lua:62
+msgid "Player not found"
+msgstr ""
+
+#: mods/replacer/blabla.lua:63
+msgid "Player meta not existent"
+msgstr ""
+
+#: mods/replacer/blabla.lua:74
+msgid "Minor modes are disabled on this server."
+msgstr ""
+
+#: mods/replacer/blabla.lua:75
+msgid "<no positional information>"
+msgstr ""
+
+#: mods/replacer/blabla.lua:76
+msgid "days"
+msgstr ""
+
+#: mods/replacer/blabla.lua:79
+msgid ""
+"Inspection Tool\n"
+"Use to inspect target node or entity.\n"
+"Place to inspect the adjacent node."
+msgstr ""
+
+#: mods/replacer/blabla.lua:81
+msgid ""
+"This is a broken object. We have no further information about it. It is "
+"located"
+msgstr ""
+
+#: mods/replacer/blabla.lua:82
+msgid "owned, protected and locked"
+msgstr ""
+
+#: mods/replacer/blabla.lua:83
+msgid "owned and protected"
+msgstr ""
+
+#: mods/replacer/blabla.lua:84
+msgid "owned and locked"
+msgstr ""
+
+#: mods/replacer/blabla.lua:85
+msgid "This is an object"
+msgstr ""
+
+#: mods/replacer/blabla.lua:86
+msgid "WARNING: You can't dig this node. It is protected."
+msgstr ""
+
+#: mods/replacer/blabla.lua:87
+msgid "INFO: You can dig this node, others can't."
+msgstr ""
+
+#: mods/replacer/blabla.lua:88
+msgid "~ no description provided ~"
+msgstr ""
+
+#: mods/replacer/blabla.lua:89
+msgid "~ no node description provided ~"
+msgstr ""
+
+#: mods/replacer/blabla.lua:90
+msgid "~ no item description provided ~"
+msgstr ""
+
+#: mods/replacer/blabla.lua:91
+msgid "Name:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:92
+msgid "Exit"
+msgstr ""
+
+#: mods/replacer/blabla.lua:93
+msgid "This is:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:94
+msgid "previous recipe"
+msgstr ""
+
+#: mods/replacer/blabla.lua:95
+msgid "next recipe"
+msgstr ""
+
+#: mods/replacer/blabla.lua:96
+msgid "No recipes."
+msgstr ""
+
+#: mods/replacer/blabla.lua:97
+msgid "Drops on dig:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:98
+msgid "nothing."
+msgstr ""
+
+#: mods/replacer/blabla.lua:99
+msgid "May drop on dig:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:100
+msgid "This can be used as a fuel."
+msgstr ""
+
+#: mods/replacer/blabla.lua:101
+msgid "Error: Unknown recipe."
+msgstr ""
+
+#: mods/replacer/blabla.lua:105
+msgid "scoop up"
+msgstr ""
+
+#: mods/replacer/blabla.lua:106
+msgid "pour out"
+msgstr ""
+
+#: mods/replacer/blabla.lua:107
+msgid "filling"
+msgstr ""
+
+#: mods/replacer/blabla.lua:108
+msgid "(Functions may exist that change attributes and conditions of mobs)"
+msgstr ""
+
+#: mods/replacer/blabla.lua:109
+msgid "Is of type"
+msgstr ""
+
+#: mods/replacer/blabla.lua:110
+msgid "Is loyal to owner."
+msgstr ""
+
+#: mods/replacer/blabla.lua:111
+msgid "Likes to attack:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:112
+msgid "Follows players holding:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:113
+msgid "May drop:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:114
+msgid "Can shoot missiles."
+msgstr ""
+
+#: mods/replacer/blabla.lua:115
+msgid "Can breed."
+msgstr ""
+
+#: mods/replacer/blabla.lua:116
+msgid "Spawns on:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:117
+msgid "with neighours:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:118
+msgid "Placed:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:119
+msgid "Digs:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:120
+msgid "Inflicted:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:121
+msgid "Punched:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:122
+msgid "XP:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:123
+msgid "Deaths:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:124
+msgid "Played:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:125
+msgid "Is currently on a mission."
+msgstr ""
+
+#: mods/replacer/blabla.lua:126
+msgid "You don't have any common channels."
+msgstr ""
+
+#: mods/replacer/blabla.lua:127
+msgid "You are both on these channels:"
+msgstr ""
+
+#: mods/replacer/blabla.lua:128
+msgid "Is wearing:"
+msgstr ""
+
+#: mods/replacer/replacer/constrain.lua:59
+msgid ""
+"Replacing nodes of type \"@1\" is not allowed on this server. Replacement "
+"failed."
+msgstr ""
+
+#: mods/replacer/replacer/constrain.lua:63
+msgid "Protected at @1"
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:140
+msgid "You have no further \"@1\". Replacement failed."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:146
+msgid "Unknown node: \"@1\""
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:150
+msgid "Unknown node to place: \"@1\""
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:161
+msgid "Could not dig \"@1\" properly."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:175
+msgid "Could not place \"@1\"."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:242
+msgid "Error: \"@1\" is not a node."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:468
+msgid "@1 nodes replaced."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:507
+#: mods/replacer/replacer/replacer.lua:513
+msgid "Mode changed to @1: @2"
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:552
+msgid "Placing nodes of type \"@1\" is not allowed on this server."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:652
+msgid ""
+"Failed to set replacer to \"@1\". If there was one in your inventory, then "
+"maybe."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:663
+msgid ""
+"Node replacement tool set to:\n"
+"@1."
+msgstr ""
+
+#: mods/replacer/replacer/replacer.lua:685
+msgid "Bulk Placer Tool"
+msgstr ""

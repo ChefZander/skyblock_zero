@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_planets/orbs.lua:10
+msgid "Dwarf Orb"
+msgstr ""
+
+#: mods/sbz_planets/orbs.lua:12
+msgid ""
+"Used as a crafting replacement for matter annihilators, found naturally in "
+"dwarf planets"
+msgstr ""
+
+#: mods/sbz_planets/orbs.lua:29
+msgid "Dwarf Orb Ore"
+msgstr ""
+
+#: mods/sbz_planets/orbs.lua:39
+msgid "Stone"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:50
+msgid "Marble"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:60
+msgid "Basalt"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:68 mods/sbz_planets/planet_nodes.lua:76
+msgid "Red Stone"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:83
+msgid "Thorium Ore"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:99
+msgid "Blue Stone"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:106
+msgid "Uranium Ore"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:127
+msgid "Granite"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:135
+msgid "Dead Core Piece"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:147
+msgid "Ice"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:156
+msgid "Ice Core Piece - deprecated"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:165
+msgid "Snow"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:197
+msgid "Snow layer"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:225
+msgid "Snowball"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:230
+msgid "Colorium Core Piece - Deprecated"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:241
+msgid "Not Water"
+msgstr ""
+
+#: mods/sbz_planets/planet_nodes.lua:267
+msgid "Mapgen Sapling (I guess you just got an instant sapling. lol.)"
+msgstr ""
+
+#: mods/sbz_planets/planet_teleporter.lua:6
+msgid "Teleports you to a planet. Insert a warp crystal to get teleported."
+msgstr ""
+
+#: mods/sbz_planets/planet_teleporter.lua:7
+msgid "Planet Teleporter"
+msgstr ""
+
+#: mods/sbz_planets/planet_teleporter.lua:15
+msgid "You must be holding a warp crystal for this to work."
+msgstr ""
+
+#: mods/sbz_planets/planet_teleporter.lua:26
+msgid ""
+"Oops, the crystal broke, please insert another one. [What actually happened "
+"was that the planet teleporter tried to teleport you out of this world. "
+"Hello if you are seeing this - you must be very lucky.]"
+msgstr ""
+
+#: mods/sbz_planets/planet_teleporter.lua:34
+msgid "You have been teleported to the planet. Please wait and fall a bit."
+msgstr ""

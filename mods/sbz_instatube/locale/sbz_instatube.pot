@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_instatube/init.lua:310
+msgid "Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:357
+msgid "One Way Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:413
+msgid "Instatube Item Filter"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:517
+msgid "High Priority Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:563
+msgid "Low Priority Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:625
+msgid "Teleport Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:706
+msgid "Randomized Input Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:751
+msgid "Cycling Input Instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:856
+msgid "Something went wrong."
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:861
+msgid "That network no longer exists"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:886
+msgid "The network you were looking at no longer exists"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:914
+msgid "Instatube Debug Tool"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:916
+msgid "Shows all machines connected to instatube"
+msgstr ""
+
+#: mods/sbz_instatube/init.lua:926
+msgid "No instatube networks found."
+msgstr ""
+
+#: mods/sbz_instatube/recipes.lua:5
+msgid "Instantinium"
+msgstr ""

@@ -1,0 +1,67 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_wrench/functions.lua:11
+msgid "Cannot pickup node. Owned by @1."
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:12
+msgid "Cannot pickup node containing @1."
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:13
+msgid "Not enough room in inventory to pickup node."
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:14
+msgid "Cannot pickup node. Nesting inventories is not allowed."
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:15
+msgid ""
+"Cannot pickup node. Node contains too much metadata. (Too much information)"
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:16
+msgid "Cannot pickup node. Node is missing inventory."
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:17
+msgid "Cannot pickup node. Node doesn't contain metadata?"
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:18
+msgid "A robotic arm cannot dig that node."
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:28
+msgid "@1 with items"
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:37
+msgid "@1 with text \"@2\""
+msgstr ""
+
+#: mods/sbz_wrench/functions.lua:42
+msgid "@1 with configuration"
+msgstr ""
+
+#: mods/sbz_wrench/tool.lua:6
+msgid "Node Preserver"
+msgstr ""

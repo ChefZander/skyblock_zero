@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: mods/sbz_devtools/init.lua:6
+msgid "Gives achievements - for debugging only"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:15
+msgid "Gave you all achievements"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:18
+msgid "Gave you the achievement with the name "
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:24
+msgid "Revoke an achievement - for debugging only"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:33
+msgid "Revoked all achievements"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:36
+msgid "Revoked the achievement with the name "
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:42
+msgid "Set hotbar slot count - for debugging only"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:52
+msgid "Hotbar slot count set to "
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:54 mods/sbz_devtools/init.lua:81
+msgid "Player not found."
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:60
+msgid "Spawn a 10x10 platform below the player - for debugging only"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:79
+msgid "Platform spawned."
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:87
+msgid ""
+"Get the 8 closest unique nodes within a distance of 32 and receive them as "
+"items - for debugging only"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:92 mods/sbz_devtools/init.lua:157
+#: mods/sbz_devtools/init.lua:184 mods/sbz_devtools/init.lua:198
+#: mods/sbz_devtools/init.lua:216 mods/sbz_devtools/init.lua:235
+msgid "Player not found!"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:143
+msgid "No unique nodes found within 32 blocks."
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:146
+msgid "Given @1 unique node."
+msgid_plural "Given @2 unique nodes."
+msgstr[0] ""
+msgstr[1] ""
+
+#: mods/sbz_devtools/init.lua:152
+msgid "Clears the player's inventory - for debugging only"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:164
+msgid "Inventory cleared."
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:169
+msgid "Enables/Disables all lua sandboxing"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:179
+msgid "Makes it day only for you"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:193
+msgid ""
+"Fake a craft, used for quest testing, param should be an item name or "
+"\"item\" to specify wielded item's name"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:210
+msgid "Re-generate a mapblock (one that you are standing on)"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:223
+msgid "Area re-generated!"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:229
+msgid ""
+"Sends you all the mapblocks in the radius. RADIUS IS IN MAPBLOCKS!! may not "
+"work... in singleplayer at least"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:248
+msgid "Area sent!"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:252
+msgid "Toggles making habitats fast, don't use this in a server"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:261
+msgid "Toggle pvp, NEEDS SERVER RESTART, bad idea to use if you aren't a dev"
+msgstr ""
+
+#: mods/sbz_devtools/init.lua:270
+msgid "Test rain particles <remove later>"
+msgstr ""

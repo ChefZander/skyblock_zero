@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/areas/chatcommands.lua:33 mods/areas/chatcommands.lua:64
+#: mods/areas/chatcommands.lua:102
+msgid "<AreaName>"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:34
+msgid "Protect your own area"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:38 mods/areas/chatcommands.lua:73
+#: mods/areas/chatcommands.lua:110 mods/areas/chatcommands.lua:152
+#: mods/areas/chatcommands.lua:262 mods/areas/chatcommands.lua:284
+#: mods/areas/chatcommands.lua:305 mods/areas/chatcommands.lua:334
+#: mods/areas/chatcommands.lua:361 mods/areas/chatcommands.lua:400
+#: mods/areas/pos.lua:70
+msgid "Invalid usage, see /help @1."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:42 mods/areas/chatcommands.lua:78
+#: mods/areas/chatcommands.lua:116 mods/areas/chatcommands.lua:410
+msgid "You need to select an area first."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:52
+msgid "You can't protect that area: @1"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:58 mods/areas/chatcommands.lua:96
+#: mods/areas/chatcommands.lua:141
+msgid "Area protected. ID: @1"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:64 mods/areas/chatcommands.lua:102
+msgid "<PlayerName>"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:65
+msgid ""
+"Protect an area between two positions and give a player access to it without "
+"setting the parent of the area to any existing area"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:82 mods/areas/chatcommands.lua:120
+#: mods/areas/chatcommands.lua:310
+msgid "The player \"@1\" does not exist."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:94 mods/areas/chatcommands.lua:139
+msgid ""
+"You have been granted control over area #@1. Type /list_areas to show your "
+"areas."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:102
+msgid "<ParentID>"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:103
+msgid ""
+"Give a player access to a sub-area between two positions that have already "
+"been protected, Use set_owner if you don't want the parent to be set."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:132
+msgid "You can't protect that area."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:147 mods/areas/chatcommands.lua:257
+#: mods/areas/chatcommands.lua:279 mods/areas/chatcommands.lua:300
+#: mods/areas/chatcommands.lua:329 mods/areas/chatcommands.lua:394
+msgid "<ID>"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:147
+msgid "<newName>"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:148
+msgid "Rename an area that you own"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:157
+msgid "That area doesn't exist."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:161
+msgid "You don't own that area."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:166
+msgid "Area renamed."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:173
+msgid "Find areas using a Lua regular expression"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:177
+msgid "A regular expression is required."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:186
+msgid "Invalid regular expression."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:199
+msgid "No matches found."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:206
+msgid "[<name>]"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:207
+msgid ""
+"List your areas. Admins can list all areas or those of a specific player."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:238
+msgid "@1 : @2 area(s)"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:249
+msgid "No visible areas."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:258
+msgid "Recursively remove areas using an ID"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:267 mods/areas/chatcommands.lua:288
+#: mods/areas/chatcommands.lua:315 mods/areas/chatcommands.lua:338
+#: mods/areas/chatcommands.lua:365
+msgid "Area @1 does not exist or is not owned by you."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:273
+msgid "Removed area @1 and its sub areas."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:280
+msgid "Remove an area using an ID"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:294
+msgid "Removed area @1"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:300
+msgid "<NewOwner>"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:301
+msgid "Change the owner of an area using its ID"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:321
+msgid "@1 has given you control over the area \"@2\" (ID @3)."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:323
+msgid "Owner changed."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:330
+msgid "Toggle an area open (anyone can interact) or closed"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:345
+msgid "Area opened."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:345
+msgid "Area closed."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:352
+msgid "<ID> [faction_name]"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:353
+msgid "Toggle an area open/closed for members in your faction."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:370
+msgid "Faction doesn't exists"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:386
+msgid "Area is open for members of: @1"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:387
+msgid "Area closed for faction members."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:395
+msgid "Move (or resize) an area to the current positions."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:405
+msgid "Area does not exist."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:416
+msgid "Area successfully moved."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:422
+msgid "Get information about area configuration and usage."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:445
+msgid "Self protection is enabled."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:446
+msgid "Self protection is disabled."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:450
+msgid "You have the necessary privilege (\"@1\")."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:451
+msgid "You don't have the necessary privilege (\"@1\")."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:454
+msgid "You are an area administrator (\"areas\" privilege)."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:458
+msgid ""
+"You have extended area protection limits (\"areas_high_limit\" privilege)."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:469
+msgid "You have @1 areas."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:473
+msgid "Limit: no area count limit"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:474
+msgid "Limit: @1 areas"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:479
+msgid "@1 spanning up to @2x@3x@4."
+msgstr ""
+
+#: mods/areas/chatcommands.lua:483
+msgid "Players with the \"@1\" privilege can protect up to @2 areas"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:494
+msgid "You can protect areas"
+msgstr ""
+
+#: mods/areas/chatcommands.lua:504
+msgid "Removes all ownerless areas"
+msgstr ""
+
+#: mods/areas/hud.lua:72
+msgid ":open"
+msgstr ""
+
+#: mods/areas/hud.lua:84
+msgid "Areas:"
+msgstr ""
+
+#: mods/areas/init.lua:31
+msgid "Can administer areas."
+msgstr ""
+
+#: mods/areas/init.lua:35
+msgid "Can protect more, bigger areas."
+msgstr ""
+
+#: mods/areas/init.lua:41
+msgid "Can protect areas."
+msgstr ""
+
+#: mods/areas/interact.lua:15
+msgid "@1 is protected by @2."
+msgstr ""
+
+#: mods/areas/internal.lua:261
+msgid "Self protection is disabled or you do not have the necessary privilege."
+msgstr ""
+
+#: mods/areas/internal.lua:276
+msgid "Area is too big."
+msgstr ""
+
+#: mods/areas/internal.lua:293
+msgid ""
+"You have reached the maximum amount of areas that you are allowed to protect."
+msgstr ""
+
+#: mods/areas/internal.lua:303
+msgid "The area intersects with @1 [@2] (@3)."
+msgstr ""
+
+#: mods/areas/legacy.lua:6
+msgid "<version>"
+msgstr ""
+
+#: mods/areas/legacy.lua:7
+msgid "Loads, converts, and saves the areas from a legacy save file."
+msgstr ""
+
+#: mods/areas/legacy.lua:11
+msgid "Converting areas…"
+msgstr ""
+
+#: mods/areas/legacy.lua:16
+msgid "Error loading legacy file: @1"
+msgstr ""
+
+#: mods/areas/legacy.lua:20
+msgid "Invalid version number. (0 allowed)"
+msgstr ""
+
+#: mods/areas/legacy.lua:23
+msgid "Legacy file loaded."
+msgstr ""
+
+#: mods/areas/legacy.lua:38
+msgid "unnamed"
+msgstr ""
+
+#: mods/areas/legacy.lua:43
+msgid "Table format updated."
+msgstr ""
+
+#: mods/areas/legacy.lua:46
+msgid "Converted areas saved. Done."
+msgstr ""
+
+#: mods/areas/pos.lua:50
+msgid ""
+"Relative coordinates is not supported on this server. Please upgrade "
+"Minetest to 5.7.0 or newer versions."
+msgstr ""
+
+#: mods/areas/pos.lua:73
+msgid "Unable to get position."
+msgstr ""
+
+#: mods/areas/pos.lua:83
+msgid "Area position @1 set to @2"
+msgstr ""
+
+#: mods/areas/pos.lua:89 mods/areas/pos.lua:99
+msgid ""
+"Set area protection region position @1 to your location or the one specified"
+msgstr ""
+
+#: mods/areas/pos.lua:108
+msgid ""
+"Set area protection region, position 1, or position 2 by punching nodes, or "
+"display the region"
+msgstr ""
+
+#: mods/areas/pos.lua:113
+msgid "Select positions by punching two nodes."
+msgstr ""
+
+#: mods/areas/pos.lua:116 mods/areas/pos.lua:119
+msgid "Select position @1 by punching a node."
+msgstr ""
+
+#: mods/areas/pos.lua:121
+msgid "Position @1:"
+msgstr ""
+
+#: mods/areas/pos.lua:125 mods/areas/pos.lua:130
+msgid "<not set>"
+msgstr ""
+
+#: mods/areas/pos.lua:134
+msgid "Unknown subcommand: @1"
+msgstr ""
+
+#: mods/areas/pos.lua:206 mods/areas/pos.lua:212
+msgid "Position @1 set to @2"
+msgstr ""
+
+#: mods/areas/pvp.lua:33
+msgid "Toggle PvP in an area"
+msgstr ""
