@@ -55,7 +55,7 @@ end
 
 core.register_node("pipeworks:item_sorter", {
     description = S("Item Sorter"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         { name = "itemsorter.png", color = "green" },
         { name = "itemsorter.png", color = "yellow" },
@@ -193,7 +193,7 @@ end
 
 core.register_node("pipeworks:item_void", {
     description = S("Item Void"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = { { name = "trashcan.png" } },
     groups = { cracky = 3, matter = 3, tubedevice = 1, tubedevice_receiver = 1 },
     tube = {

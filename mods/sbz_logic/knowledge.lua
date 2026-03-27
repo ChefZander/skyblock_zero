@@ -97,7 +97,7 @@ end
 
 core.register_node("sbz_logic:knowledge_station", {
     description = S("Knowledge Station"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = "Explains logic.",
     on_construct = function(pos)
         local meta = core.get_meta(pos)
@@ -106,7 +106,7 @@ core.register_node("sbz_logic:knowledge_station", {
     on_receive_fields = on_receive_fields,
     groups = { matter = 1, ui_logic = 1 },
     tiles = { "knowledge_station.png" },
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
         local player_name = clicker:get_player_name()
         core.sound_play("questbook", {

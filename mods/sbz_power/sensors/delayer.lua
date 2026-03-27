@@ -2,7 +2,7 @@ local S = core.get_translator(core.get_current_modname())
 
 sbz_api.register_stateful("sbz_power:delayer", unifieddyes.def {
     description = S("Delayer"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = "It is not a machine, but conducts power, it is ran on node timers.\nIt may stop when you are not near it, if it isn't forceloaded. You can alternatively use buffer gates connected in a slow way.",
     tiles = {
         sbz_api.make_sensor_tex_off("delayer")

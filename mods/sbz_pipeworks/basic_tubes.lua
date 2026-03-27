@@ -2,7 +2,7 @@ local S = core.get_translator(core.get_current_modname())
 
 pipeworks.register_tube('pipeworks:tube', {
     description = S("Basic Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = { { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling } },
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling } },
 })
@@ -23,7 +23,7 @@ end
 
 pipeworks.register_tube('pipeworks:accelerator_tube', {
     description = S("Accelerating Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = {
         { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'springgreen' },
     },
@@ -58,7 +58,7 @@ end
 
 pipeworks.register_tube('pipeworks:one_direction_tube', {
     description = S("One Direction Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = { { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = '#45283c' } },
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling, color = '#45283c' } },
     node_def = {
@@ -135,7 +135,7 @@ end
 
 pipeworks.register_tube('pipeworks:high_priority_tube', {
     description = S("High Priority Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = { { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'tomato' } },
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling, color = 'tomato' } },
     node_def = {
@@ -159,7 +159,7 @@ end
 
 pipeworks.register_tube('pipeworks:low_priority_tube', {
     description = S("Low Priority Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = {
         { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'lightgreen' },
     },
@@ -187,7 +187,7 @@ end
 
 core.register_node('pipeworks:one_way_tube', {
     description = S("One-Way Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     tiles = {
         { name = 'one_way_tube_top.png', backface_culling = pipeworks.tube_backface_culling },
         { name = 'one_way_tube_top.png', backface_culling = pipeworks.tube_backface_culling },
@@ -248,7 +248,7 @@ end
 
 pipeworks.register_tube('pipeworks:crossing_tube', {
     description = S("Crossing Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = { 'crossing_tube_plain.png' },
     noctr = { 'crossing_tube_noctr.png' },
     node_def = {
@@ -276,7 +276,7 @@ end
 
 pipeworks.register_tube('pipeworks:broken_tube', {
     description = S("Broken Tube"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     plain = {
         { name = 'pipeworks_broken_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'red' },
     },

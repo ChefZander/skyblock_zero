@@ -34,7 +34,7 @@ sbz_api.register_stateful_machine('sbz_chem:simple_alloy_furnace', {
         'simple_alloy_furnace.png^[verticalframe:13:1',
     },
     groups = { matter = 1 },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = 'facedir',
 
     on_construct = function(pos)

@@ -73,7 +73,7 @@ local range = 120
 local power_use = 30
 sbz_api.register_machine("sbz_power:turret", {
     description = S("Automatic Turret"),
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     drawtype = "glasslike",
     info_extra = {
         S("Shoots things like lasers."),

@@ -14,7 +14,7 @@ core.register_node("sbz_bio:dirt", unifieddyes.def {
         charged = 1,
     },
     paramtype = "light", -- if you leave this out, fertilizer wont work
-    sounds = sbz_api.sounds.dirt(),
+    sounds = sbz_audio.dirt(),
 })
 
 do -- Dirt recipe scope
@@ -61,7 +61,7 @@ core.register_node("sbz_bio:fertilized_dirt", unifieddyes.def {
         fertilizer_no_sprout = 1,
     },
     paramtype = "light",
-    sounds = sbz_api.sounds.dirt(),
+    sounds = sbz_audio.dirt(),
     info_extra = {
         S("Plants grow 2x faster than on dirt, on this soil."),
         S("Fertilizer can't sprout plants on this soil.")
@@ -100,7 +100,7 @@ core.register_node("sbz_bio:dirt_with_grass", unifieddyes.def {
         charged = 1
     },
     paramtype = "light",
-    sounds = sbz_api.sounds.dirt(),
+    sounds = sbz_audio.dirt(),
     info_extra = "Spreads, same growth speed as dirt.",
     on_burn = function(pos)
         if is_air(vector.add(pos, vector.new(0, 1, 0))) then
@@ -120,7 +120,7 @@ sbz_api.register_stateful_machine("sbz_bio:electric_soil", unifieddyes.def {
         soil = 0,
         pipe_connects = 1,
     },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     autostate = true,
     info_power_consume = 40,
     info_extra = "When powered, it's 5 times more powerful than regular dirt.",

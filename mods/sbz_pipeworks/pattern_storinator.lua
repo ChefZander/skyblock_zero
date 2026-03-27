@@ -28,7 +28,7 @@ core.register_node(
     'pipeworks:pattern_storinator',
     unifieddyes.def {
         description = S("Pattern Storinator"),
-        sounds = sbz_api.sounds.wood_planks(),
+        sounds = sbz_audio.wood_planks(),
         info_extra = '16 slots',
         groups = {
             tubedevice = 1,

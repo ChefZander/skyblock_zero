@@ -12,7 +12,7 @@ core.register_node(
     'sbz_resources:emittrium_block',
     unifieddyes.def {
         description = S("Emittrium Block"),
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         info_extra = 'You should punch it, and place some close to each other.',
         paramtype2 = 'color',
         groups = { matter = 1 },

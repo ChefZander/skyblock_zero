@@ -48,7 +48,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:light_sensor", unifieddyes.def {
     description = S("Light Sensor"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = "Doesn't emit light when turned on",
     tiles = {
         sbz_api.make_sensor_tex_off("light_sensor")
@@ -181,7 +181,7 @@ end
 -- NODE SENSOR
 sbz_api.register_stateful_machine("sbz_power:node_sensor", unifieddyes.def {
     description = S("Node Sensor"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = {
         sbz_api.make_sensor_tex_off("node_detector")
     },

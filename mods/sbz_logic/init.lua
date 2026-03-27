@@ -27,7 +27,7 @@ dofile(MP .. "/code_disks.lua")
 sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     tiles = { "luacontroller_top.png", "luacontroller_top.png", "luacontroller.png" },
     description = S("Lua Controller"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = {
         S("The most complex block in this game."),
         S("No like actually... it might be"),

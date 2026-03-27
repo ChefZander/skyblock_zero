@@ -67,7 +67,7 @@ sbz_api.register_stateful_machine('sbz_chem:crusher', {
         'crusher_side.png',
     },
     groups = { matter = 1 },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = 'facedir',
 
     on_construct = function(pos)

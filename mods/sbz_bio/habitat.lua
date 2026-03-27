@@ -205,7 +205,7 @@ end
 
 sbz_api.register_machine('sbz_bio:habitat_regulator', {
     description = S("Habitat Regulator"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     tiles = { 'habitat_regulator.png' },
     groups = { matter = 1, ui_bio = 1 },
     control_action_raw = true,
@@ -231,7 +231,7 @@ sbz_api.register_machine('sbz_bio:habitat_regulator', {
 
 core.register_node('sbz_bio:co2_compactor', {
     description = S("CO2 Compactor"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = S("Stores 30 CO₂. Habitat regulator doesn't consider it a wall, but it can be passed through"),
     groups = { matter = 2, explody = 8 },
     walkable = false,

@@ -30,7 +30,7 @@ end)
 sbz_api.sounds = sbz_api.sounds or {}
 
 -- Use as a template (include fade if needed on any)
-function sbz_api.sounds.blank()
+function sbz_audio.blank()
     local sounds = {
         footstep = { name = '', gain = 0.2, pitch = 1.0 },
         dig      = { name = '', gain = 0.8, pitch = 1.0 },
@@ -40,7 +40,7 @@ function sbz_api.sounds.blank()
     return sounds
 end
 
-function sbz_api.sounds.machine()
+function sbz_audio.machine()
     local sounds = {
         footstep = { name = 'mix_thunk_slightly_metallic', gain = 0.2, pitch = 0.5 },
         dig      = { name = 'mix_metal_cabinet_hit', gain = 0.8, pitch = 1.0 },
@@ -50,7 +50,7 @@ function sbz_api.sounds.machine()
     return sounds
 end
 
-function sbz_api.sounds.matter()
+function sbz_audio.matter()
     local sounds = {
         footstep = { name = 'mix_choppy_rubber_step', gain = 0.1, pitch = 0.5 },
         dig      = { name = 'foley_matter_hit_thunky', gain = 0.8, pitch = 0.8 },
@@ -60,7 +60,7 @@ function sbz_api.sounds.matter()
     return sounds
 end
 
-function sbz_api.sounds.dirt()
+function sbz_audio.dirt()
     local sounds = {
         footstep = { name = 'mix_dirt_step', gain = 0.2, pitch = 0.8 },
         dig      = { name = 'mix_dirt_dig', gain = 0.6, pitch = 1.1 },
@@ -70,7 +70,7 @@ function sbz_api.sounds.dirt()
     return sounds
 end
 
-function sbz_api.sounds.antimatter()
+function sbz_audio.antimatter()
     local sounds = {
         footstep = { name = 'foley_antimatter_hum', gain = 0.2, pitch = 0.8 },
         dig      = { name = 'foley_antimatter_hit', gain = 0.8, pitch = 1.0 },
@@ -80,7 +80,7 @@ function sbz_api.sounds.antimatter()
     return sounds
 end
 
-function sbz_api.sounds.wood_planks()
+function sbz_audio.wood_planks()
     local sounds = {
         footstep = { name = 'gen_wump_wood', gain = 0.3, pitch = 0.9 },
         dig      = { name = 'foley_wood_thud_shallow', gain = 0.6, pitch = 0.8 },
@@ -90,7 +90,7 @@ function sbz_api.sounds.wood_planks()
     return sounds
 end
 
-function sbz_api.sounds.wood_solid()
+function sbz_audio.wood_solid()
     local sounds = {
         footstep = { name = 'mix_choppy_rubber_step', gain = 0.2, pitch = 0.8 },
         dig      = { name = 'mix_matter_hit_weird', gain = 0.8, pitch = 1.2 },
@@ -100,7 +100,7 @@ function sbz_api.sounds.wood_solid()
     return sounds
 end
 
-function sbz_api.sounds.leaves()
+function sbz_audio.leaves()
     local sounds = {
         footstep = { name = 'foley_leaf_step', gain = 0.1, pitch = 0.8 },
         dig      = { name = 'foley_leaf_step', gain = 0.2, pitch = 0.5 },
@@ -110,7 +110,7 @@ function sbz_api.sounds.leaves()
     return sounds
 end
 
-function sbz_api.sounds.glass()
+function sbz_audio.glass()
     local sounds = {
         footstep = { name = 'foley_matter_hit_light', gain = 0.1, pitch = 1.1 },
         dig      = { name = 'gen_soft_glass_bump', gain = 0.8, pitch = 1.2 },
@@ -120,7 +120,7 @@ function sbz_api.sounds.glass()
     return sounds
 end
 
-function sbz_api.sounds.snow()
+function sbz_audio.snow()
     local sounds = {
         footstep = { name = 'gen_snow_crunch_abrupt', gain = 0.2, pitch = 1.0 },
         dig      = { name = 'foley_snow_hit', gain = 0.5, pitch = 1.0 },
@@ -130,7 +130,7 @@ function sbz_api.sounds.snow()
     return sounds
 end
 
-function sbz_api.sounds.ice()
+function sbz_audio.ice()
     local sounds = {
         footstep = { name = 'foley_solid_step_soft', gain = 0.2, pitch = 1.0 },
         dig      = { name = 'gen_ice_chip', gain = 0.8, pitch = 1.0 },
@@ -140,7 +140,7 @@ function sbz_api.sounds.ice()
     return sounds
 end
 
-function sbz_api.sounds.sand()
+function sbz_audio.sand()
     local sounds = {
         footstep = { name = 'gen_sand_generic', gain = 0.1, pitch = 0.8 },
         dig      = { name = 'gen_sand_generic_hit', gain = 0.2, pitch = 0.6 },

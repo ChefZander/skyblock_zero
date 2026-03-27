@@ -7,7 +7,7 @@ core.register_node(
         tiles = { 'matter_blob.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('step', { pos = pos, gain = 1.0 })
         end,
@@ -41,7 +41,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('step', { pos = pos, gain = 1.0 })
         end,
@@ -84,7 +84,7 @@ core.register_node(
         groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767 },
         walkable = true,
         light_source = 3,
-        sounds = sbz_api.sounds.antimatter(),
+        sounds = sbz_audio.antimatter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('invertedstep', { pos = pos, gain = 1.0 })
         end,
@@ -143,7 +143,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         walkable = true,
-        sounds = sbz_api.sounds.antimatter(),
+        sounds = sbz_audio.antimatter(),
         on_punch = function(pos, node, puncher)
             core.sound_play('invertedstep', { pos = pos, gain = 1.0 })
         end,
@@ -218,7 +218,7 @@ core.register_node(
         tiles = { 'stone.png' },
         groups = { matter = 1, moss_growable = 1, charged = 1 },
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
     }
 )
 
@@ -255,7 +255,7 @@ core.register_node('sbz_resources:reinforced_matter', {
     tiles = { 'reinforced_matter.png' },
     groups = { matter = 1, moss_growable = 1 },
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
 })
 
 do -- Reinforced Matter recipe scope
@@ -278,7 +278,7 @@ core.register_node('sbz_resources:reinforced_antimatter', {
     groups = { antimatter = 1 },
     light_source = 5,
     walkable = true,
-    sounds = sbz_api.sounds.antimatter(),
+    sounds = sbz_audio.antimatter(),
 })
 
 do -- Reinforced Antimatter recipe scope
@@ -360,7 +360,7 @@ core.register_node('sbz_resources:emittrium_glass', {
     paramtype = 'light',
     sunlight_propagates = true,
     groups = { matter = 1, transparent = 1, explody = 100 },
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
 })
 
 do -- Emittrium Glass recipe scope
@@ -388,7 +388,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
     }
 )
 
@@ -417,7 +417,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         info_extra = "Recipe requires cleargrass but it returns it back once you've crafted with it.",
     }
 )
@@ -449,7 +449,7 @@ core.register_node(
         paramtype = 'light',
         sunlight_propagates = true,
         groups = { matter = 1, transparent = 1, explody = 100, charged = 1 },
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         info_extra = { "Recipe requires razorgrass, but it returns it back once you've crafted with it." },
     }
 )
@@ -475,7 +475,7 @@ core.register_node('sbz_resources:compressed_core_dust', {
         'compressed_core_dust.png',
     },
     groups = { matter = 2, oddly_breakable_by_hand = 1, explody = 10, charged = 1 },
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
 })
 
 do -- Compressed Core Dust recipe scope
@@ -513,7 +513,7 @@ core.register_node(
         groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 80 },
 
         walkable = true,
-        sounds = sbz_api.sounds.sand(),
+        sounds = sbz_audio.sand(),
         light_source = 3,
     }
 )
@@ -523,7 +523,7 @@ core.register_node('sbz_resources:red_sand', {
     tiles = { 'sand.png^[colorize:red:128' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_audio.sand(),
     light_source = 3,
 })
 
@@ -532,7 +532,7 @@ core.register_node('sbz_resources:gravel', {
     tiles = { 'gravel.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_audio.sand(),
     light_source = 3,
 })
 
@@ -543,7 +543,7 @@ core.register_node('sbz_resources:dust', {
     groups = { matter = 1, charged = 1, sand = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1 },
     walkable = false,
     climbable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_audio.sand(),
     light_source = 3,
 })
 
@@ -586,7 +586,7 @@ core.register_node('sbz_resources:clay', {
     tiles = { 'clay.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     light_source = 3,
 })
 
@@ -606,7 +606,7 @@ core.register_node(
             oddly_breakable_by_hand = 1,
         },
         walkable = true,
-        sounds = sbz_api.sounds.matter(),
+        sounds = sbz_audio.matter(),
         light_source = 3,
     }
 )
@@ -625,7 +625,7 @@ core.register_node('sbz_resources:dark_sand', {
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_audio.sand(),
     light_source = 3,
 })
 
@@ -635,7 +635,7 @@ core.register_node('sbz_resources:black_sand', {
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
 
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_audio.sand(),
     light_source = 3,
 })
 
@@ -645,7 +645,7 @@ core.register_node('sbz_resources:white_sand', {
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
     walkable = true,
-    sounds = sbz_api.sounds.sand(),
+    sounds = sbz_audio.sand(),
     light_source = 3,
 })
 

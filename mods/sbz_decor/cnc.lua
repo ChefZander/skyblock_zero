@@ -48,7 +48,7 @@ core.register_node(
         info = 'Use it to cut stairs/slabs out of nodes.',
         tiles = { 'cnc_top.png', 'cnc_top.png', 'cnc_side.png' },
         groups = { matter = 1 },
-        sounds = sbz_api.sounds.machine(),
+        sounds = sbz_audio.machine(),
         input_inv = 'src',
         output_inv = 'choices',
         on_construct = function(pos)

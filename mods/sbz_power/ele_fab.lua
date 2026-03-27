@@ -101,7 +101,7 @@ local power_needed = 30
 
 sbz_api.register_stateful_machine("sbz_power:ele_fab", {
     description = S("Ele Fab"),
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     info_extra = "Yeah the concept is from techage.",
     tiles = {
         "ele_fab_top.png",

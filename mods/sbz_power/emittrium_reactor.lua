@@ -30,7 +30,7 @@ end
 
 core.register_node('sbz_power:reactor_shell', {
     description = S("Reactor Shell"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     info_extra = 'Used for the emittrium reactor',
     tiles = {
         'reactor_shell.png',
@@ -62,7 +62,7 @@ core.register_node('sbz_power:reactor_glass', {
         'reactor_shell.png',
         'blank.png',
     },
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     drawtype = 'glasslike_framed',
     paramtype = 'light',
     groups = { matter = 1, reactor_shell = 1, explody = 1, charged = 1 },
@@ -87,7 +87,7 @@ local reactor_shell = 'blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.pn
 
 core.register_node('sbz_power:reactor_item_input', {
     description = S("Reactor Emittrium Input"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     info_extra = 'ONLY ONE can be used in an emittrium reactor, supplies emittrium to the reactor core',
     groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1, explody = 1, charged = 1 },
 
@@ -138,7 +138,7 @@ end
 
 sbz_api.register_stateful('sbz_power:reactor_core', {
     description = S("Reactor Core"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     info_extra = "Don't let it explode!",
     tiles = {
         'reactor_core.png',
@@ -216,7 +216,7 @@ end
 
 core.register_node('sbz_power:reactor_infoscreen', {
     description = S("Reactor Infoscreen"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = '4dir',
     tiles = {
         reactor_shell,
@@ -322,7 +322,7 @@ end
 
 sbz_api.register_generator('sbz_power:reactor_power_port', {
     description = S("Reactor Power Port"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = '4dir',
     tiles = {
         reactor_shell,
@@ -367,7 +367,7 @@ end
 
 core.register_node('sbz_power:reactor_coolant_port', {
     description = S("Reactor Coolant Port"),
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     info_extra = 'Provide it water',
     paramtype2 = '4dir',
     tiles = {
