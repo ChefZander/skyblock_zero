@@ -2,7 +2,7 @@ local hash = core.hash_node_position
 
 core.register_node("sbz_power:connector_off", {
     description = "Connector",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "wallmounted",
@@ -48,7 +48,7 @@ core.register_node("sbz_power:connector_off", {
 
 core.register_node("sbz_power:connector_on", {
     description = "Connector",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     drawtype = "nodebox",
     paramtype = "light",
     paramtype2 = "wallmounted",

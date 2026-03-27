@@ -379,7 +379,7 @@ local list_cache = sbz_api.make_cache('list_cache', 0, true)
 
 core.register_node('pipeworks:autocrafter', {
     description = S 'Autocrafter',
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     drawtype = 'normal',
     tiles = { 'autocrafter.png' },
     groups = {

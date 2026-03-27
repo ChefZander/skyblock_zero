@@ -306,7 +306,7 @@ core.register_node(
     'sbz_instatube:instant_tube',
     unifieddyes.def {
         description = 'Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         connects_to = { 'sbz_instatube:instant_tube', 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         info_extra = { 'Deliver items in record time! (Also less lag and less weird behavior!)' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -353,7 +353,7 @@ core.register_node(
     'sbz_instatube:one_way_instatube',
     unifieddyes.def {
         description = 'One Way Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         tiles = {
             'one_way_instatube.png^[transformFX',
             'one_way_instatube.png^[transformFX',
@@ -513,7 +513,7 @@ core.register_node(
     'sbz_instatube:high_priority_instant_tube',
     unifieddyes.def {
         description = 'High Priority Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
         paramtype2 = 'color',
@@ -559,7 +559,7 @@ core.register_node(
     'sbz_instatube:low_priority_instant_tube',
     unifieddyes.def {
         description = 'Low Priority Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         info_extra = "Can't be used with normal tubes, but with instatubes it works fine.",
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -621,7 +621,7 @@ core.register_node(
     'sbz_instatube:teleport_instant_tube',
     unifieddyes.def {
         description = 'Teleport Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         info_extra = { 'Links to all teleport tubes in a channel at once.' },
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -702,7 +702,7 @@ core.register_node(
     'sbz_instatube:randomized_input_instant_tube',
     unifieddyes.def {
         description = 'Randomized Input Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
         paramtype2 = 'color',
@@ -747,7 +747,7 @@ core.register_node(
     'sbz_instatube:cycling_input_instant_tube',
     unifieddyes.def {
         description = 'Cycling Input Instatube',
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         connects_to = { 'group:tubedevice', 'pipeworks:automatic_filter_injector' },
         info_extra = { '' },
         connect_sides = { 'top', 'bottom', 'front', 'left', 'back', 'right' },
@@ -910,7 +910,7 @@ end)
 
 core.register_craftitem('sbz_instatube:dbg_tool', {
     description = 'Instatube Debug Tool',
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     info_extra = 'Shows all machines connected to instatube',
     inventory_image = 'instatube_debug_tool.png',
     stack_max = 1,

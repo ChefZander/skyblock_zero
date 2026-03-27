@@ -143,7 +143,7 @@ core.register_node(
     'sbz_multiblocks:large_liquid_storage_controller',
     unifieddyes.def {
         description = 'Large Liquid Storage Controller',
-        sounds = sbz_api.sounds.machine(),
+        sounds = sbz_audio.machine(),
         groups = {
             matter = 1,
             multiblock_controller = 1,
@@ -246,13 +246,13 @@ core.register_node(
     'sbz_multiblocks:large_liquid_storage_casing',
     unifieddyes.def {
         description = 'Large Liquid Storage Casing',
-        sounds = sbz_api.sounds.machine(),
+        sounds = sbz_audio.machine(),
         groups = {
             matter = 1,
             wallsharing = 1,
             ui_fluid = 1,
         },
-        sounds = sbz_api.sounds.glass(),
+        sounds = sbz_audio.glass(),
         info_extra = 'Or "Dark Stained Colorium Glass" If you are into decorating',
         drawtype = 'glasslike_framed',
         paramtype = 'light',
@@ -272,7 +272,7 @@ core.register_node(
     'sbz_multiblocks:large_liquid_storage_casing_edge',
     unifieddyes.def {
         description = 'Large Liquid Storage Edge Casing',
-        sounds = sbz_api.sounds.machine(),
+        sounds = sbz_audio.machine(),
         groups = {
             matter = 1,
             wallsharing = 1,

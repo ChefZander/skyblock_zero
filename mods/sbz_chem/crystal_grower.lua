@@ -67,7 +67,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_chem:crystal_grower", {
     description = "Crystal Grower",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     info_power_consume = 120,
     tiles = {
         "crystal_grower_side.png",

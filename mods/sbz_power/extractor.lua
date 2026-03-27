@@ -11,7 +11,7 @@ local formspec = [[
 
 sbz_api.register_machine('sbz_power:simple_matter_extractor', {
     description = 'Simple Matter Extractor',
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = { 'simple_matter_extractor.png' },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,
@@ -85,7 +85,7 @@ local advanced_formspec = [[
 
 sbz_api.register_machine('sbz_power:advanced_matter_extractor', {
     description = 'Advanced Matter Extractor',
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     tiles = { 'advanced_matter_extractor.png' },
     groups = { matter = 1, sbz_machine = 1, pipe_connects = 1 },
     sunlight_propagates = true,

@@ -12,7 +12,7 @@ core.register_node('sbz_meteorites:meteoric_matter', {
         max_items = 9 * 4,
         items = matter_items,
     },
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     after_dig_node = function(pos, oldnode, oldmetadata, digger)
         if math.random(1, 100000) == 1 then -- 1/100k
             local player_name = digger:get_player_name()
@@ -45,7 +45,7 @@ core.register_node('sbz_meteorites:meteoric_antimatter', {
         max_items = 9 * 4,
         items = antimatter_items,
     },
-    sounds = sbz_api.sounds.antimatter(),
+    sounds = sbz_audio.antimatter(),
 })
 
 local emittrium_items = {}
@@ -63,7 +63,7 @@ core.register_node('sbz_meteorites:meteoric_emittrium', {
         max_items = 9 * 4,
         items = emittrium_items,
     },
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
 })
 
 local drops = sbz_api.crusher_drops
@@ -88,7 +88,7 @@ core.register_node('sbz_meteorites:meteoric_metal', {
         max_items = 8 * 4,
         items = processed_drops,
     },
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
 })
 
 core.register_node('sbz_meteorites:neutronium', {
@@ -97,7 +97,7 @@ core.register_node('sbz_meteorites:neutronium', {
     paramtype = 'light',
     light_source = 4,
     groups = { gravity = 300, matter = 1, charged = 1, attraction = 256 },
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
 })
 core.register_node('sbz_meteorites:antineutronium', {
     description = 'Antineutronium',
@@ -105,7 +105,7 @@ core.register_node('sbz_meteorites:antineutronium', {
     paramtype = 'light',
     light_source = 8,
     groups = { antigravity = 300, antimatter = 1, charged = 1, attraction = -256 },
-    sounds = sbz_api.sounds.antimatter(),
+    sounds = sbz_audio.antimatter(),
 })
 
 local core_blob = 'sbz_resources:compressed_core_dust'

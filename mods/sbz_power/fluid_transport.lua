@@ -50,7 +50,7 @@ local wire_size = 3 / 16
 
 core.register_node("sbz_power:fluid_pipe", {
     description = "Fluid Pipe",
-    sounds = sbz_api.sounds.glass(),
+    sounds = sbz_audio.glass(),
     info_extra = "Transports liquid",
 
     connects_to = { "group:fluid_pipe_connects" },
@@ -201,7 +201,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:pump", {
     description = "Fluid Pump",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     autostate = true,
     paramtype2 = "facedir",
     after_place_node = function(pos)
@@ -341,7 +341,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:creative_pump", {
     description = "Creative Pump",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     autostate = true,
     paramtype2 = "facedir",
     disallow_pipeworks = true,
@@ -473,7 +473,7 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
 
 core.register_node("sbz_power:fluid_tank", {
     description = "Fluid Storage Tank",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1 },
     tiles = {
         "fluid_tank_top.png",
@@ -526,7 +526,7 @@ end
 
 sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
     description = "Fluid Capturer",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     autostate = true,
     tiles = {
         "fluid_capturer_top.png^[verticalframe:7:7",
@@ -606,7 +606,7 @@ end
 
 sbz_api.register_machine("sbz_power:fluid_cell_filler", {
     description = "Fluid Cell Filler",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     tiles = {
         "fluid_tank_top.png",
         "fluid_tank_top.png",

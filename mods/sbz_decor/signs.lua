@@ -1,6 +1,6 @@
 signs_lib.register_sign("sbz_decor:antimatter_sign", {
     description = "Antimatter Sign",
-    sounds = sbz_api.sounds.antimatter(),
+    sounds = sbz_audio.antimatter(),
     inventory_image = "[combine:32x32:0,0=antimatter_sign.png^[makealpha:0,0,0",
     tiles = {
         "antimatter_sign.png",
@@ -22,7 +22,7 @@ signs_lib.register_sign("sbz_decor:antimatter_sign", {
 
 signs_lib.register_sign("sbz_decor:matter_sign", {
     description = "Matter Sign",
-    sounds = sbz_api.sounds.matter(),
+    sounds = sbz_audio.matter(),
     inventory_image = "[combine:32x32:0,0=antimatter_sign.png^[makealpha:0,0,0^[invert:rgb",
     tiles = {
         "antimatter_sign.png^[invert:rgb",

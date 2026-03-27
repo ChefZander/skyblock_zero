@@ -43,17 +43,3 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 `textures/theme_tilde_*.png` simple boxy UI theme textures by TheEt1234.
 
 `textures/wieldhand.png` fully transparent texture by ChefZander.
-
-## Music
-
-`sounds/bgm1.ogg` is "Cave Theme" by Brandon Morris. CC0. <https://opengameart.org/content/cave-theme>
-
-`sounds/bgm2.ogg` is "Background space track" by yd. CC0. <https://opengameart.org/content/background-space-track>
-
-`sounds/bgm3.ogg` is "Bleeding Out" by Brandon Morris. CC0. <https://opengameart.org/content/bleeding-out>
-
-`sounds/bgm4.ogg` is "Factory Ambiance" by yd. CC0. <https://opengameart.org/content/factory-ambiance>
-
-`sounds/bgm5.ogg` is "Galactic Temple" by yd. CC0. <https://opengameart.org/content/galactic-temple>
-
-`sounds/bgm6.ogg` is "A Choice With Many Regrets" Copyright (C) 2025 Tsorthan Grove. CC BY 4.0. <https://opengameart.org/content/a-choice-with-many-regrets>

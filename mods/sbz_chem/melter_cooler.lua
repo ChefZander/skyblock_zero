@@ -62,7 +62,7 @@ sbz_api.register_stateful_machine("sbz_chem:melter", {
         fluid_pipe_stores = 1,
         ui_fluid = 1
     },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = "4dir",
 
     input_inv = "src",
@@ -129,7 +129,7 @@ listring[]
             meta:set_string("liquid_inv", core.serialize(lqinv)) -- EWWW: TODO: re-work the entire liquid inventory system to not use this stupid serialize crap
             meta:set_string("infotext", "Melting - Inside: " .. slot.count .. " " .. slot.name)
 
-            sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
+            core.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed
         end
     end,
@@ -162,7 +162,7 @@ sbz_api.register_stateful_machine("sbz_chem:cooler", {
         fluid_pipe_stores = 1,
         ui_fluid = 1
     },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = "4dir",
 
     output_inv = "dst",
@@ -227,7 +227,7 @@ listring[]
             meta:set_string("liquid_inv", core.serialize(lqinv)) -- EWWW: TODO: re-work the entire liquid inventory system to not use this stupid serialize crap
             meta:set_string("infotext", "Cooling - Inside: " .. slot.count .. " " .. slot.name)
 
-            sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
+            core.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed
         end
     end,

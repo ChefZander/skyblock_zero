@@ -157,7 +157,7 @@ sbz_api.register_stateful_machine("sbz_meteorites:meteorite_maker", {
     groups = { matter = 1 },
     light_source = 0,
     description = "Meteorite Maker",
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     info_extra = "Makes meteorites",
 
     on_construct = function(pos)

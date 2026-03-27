@@ -78,8 +78,16 @@ local function receive_fields_searchbox(player, formname, fields)
 		if ui.current_searchbox[player_name] ~= ui.activefilter[player_name] then
 			ui.apply_filter(player, ui.current_searchbox[player_name], "nochange")
 			ui.set_inventory_formspec(player, ui.current_page[player_name])
-			minetest.sound_play("paperflip2",
-					{to_player=player_name, gain = 1.0})
+			local paging_sound = "paperflip2"
+			local paging_pitch = 1.0
+			local paging_gain = 1.0
+			if core.get_modpath("sbz_audio") then
+				paging_sound = "foley_page_turn"
+				paging_pitch = 0.8
+				paging_gain = 0.7
+			end
+			core.sound_play({ name = paging_sound, gain = paging_gain, pitch = paging_pitch },
+					{ to_player=player_name })
 		end
 	elseif fields.searchresetbutton then
 		if ui.activefilter[player_name] ~= "" then
@@ -170,8 +178,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		start_i = pagemax
 	end
 	if start_i ~= start then
-		minetest.sound_play("paperflip1",
-				{to_player=player_name, gain = 1.0})
+		local paging_sound = "paperflip1"
+		local paging_pitch = 1.0
+		local paging_gain = 1.0
+		if core.get_modpath("sbz_audio") then
+			paging_sound = "foley_page_turn"
+			paging_gain = 0.6
+		end
+		core.sound_play({ name = paging_sound, gain = paging_gain, pitch = paging_pitch },
+			{ to_player = player_name })
 		unified_inventory.current_index[player_name] = (start_i - 1) * ui_peruser.items_per_page + 1
 		unified_inventory.set_inventory_formspec(player,
 				unified_inventory.current_page[player_name])

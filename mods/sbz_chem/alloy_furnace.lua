@@ -32,7 +32,7 @@ sbz_api.register_stateful_machine('sbz_chem:simple_alloy_furnace', {
         'simple_alloy_furnace.png^[verticalframe:13:1',
     },
     groups = { matter = 1 },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = 'facedir',
 
     on_construct = function(pos)
@@ -77,7 +77,7 @@ listring[current_player;main]
         else
             if inv:room_for_item('output', out) then
                 meta:set_string('infotext', 'Alloying')
-                sbz_api.play_sfx('mix_alloy_furnace_soft', { pos = pos, max_hear_distance = 6.0 })
+                core.sound_play('mix_alloy_furnace_soft', { pos = pos, max_hear_distance = 6.0 })
 
                 inv:add_item('output', out)
                 for _, item in pairs(decremented) do

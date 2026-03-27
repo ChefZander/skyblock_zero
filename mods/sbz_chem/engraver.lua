@@ -29,7 +29,7 @@ sbz_api.register_stateful_machine("sbz_chem:engraver", {
         "engraver.png^[verticalframe:24:1",
     },
     groups = { matter = 1 },
-    sounds = sbz_api.sounds.machine(),
+    sounds = sbz_audio.machine(),
     paramtype2 = "4dir",
     allow_metadata_inventory_move = allow_metadata_inventory_move,
     allow_metadata_inventory_put = allow_metadata_inventory_put,
@@ -84,7 +84,7 @@ listring[context;dst]
             new_src:set_count(new_src:get_count() - decremented)
             inv:set_stack("src", index, new_src)
             inv:add_item("dst", out)
-            sbz_api.play_sfx({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
+            core.sound_play({ name = "simple_alloy_furnace_running", gain = 0.6 }, { pos = pos })
             return power_needed
         end
     end,
