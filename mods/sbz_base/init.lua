@@ -506,8 +506,6 @@ function table.override(x, y)
     return x
 end
 
-dofile(MP .. '/sound_api.lua')
-
 sbz_api.filter_node_neighbors = function(start_pos, radius, filtering_function, break_after_one_result)
     local returning = {}
     local pos = vector.new()

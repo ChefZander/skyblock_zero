@@ -21,7 +21,7 @@ local meteorite_recipes = {
             -- now... my reasoning
             -- i decided that emittrium should be a lot denser than matter blobs
             -- so like, 1 emittrium = 3 matter blobs
-            -- emitter meteorites are by far THE FASTEST to manifacture
+            -- emitter meteorites are by far THE FASTEST to manufacture
             "sbz_resources:raw_emittrium 200",
             "sbz_resources:matter_blob 200",
         }

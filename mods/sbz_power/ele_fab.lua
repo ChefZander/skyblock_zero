@@ -12,7 +12,7 @@ local animation_def = {
 local function get_possible_recipe(list, rtype, inv)
     -- this is not the ideal way to do it
     -- lets just say that LMAO
-    -- this is O(spagetti)
+    -- this is O(spaghetti)
 
     -- if you need to copy this function
     -- consider making an api for this, and making it like... more efficent

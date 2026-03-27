@@ -40,7 +40,11 @@ dropdown[3.4,1.6;3,1;direction;Up,Down,North,South,West,East;%s;true]
 end
 
 sbz_api.register_stateful_machine("sbz_power:item_sensor", unifieddyes.def {
+<<<<<<< HEAD
     description = S("Item Sensor"),
+=======
+    description = "Item Sensor",
+>>>>>>> upstream/master
     sounds = sbz_audio.matter(),
     info_extra = "Checks if a machine can be inserted to with an item.\nYou can use it to attempt to optimize your giant instatube set up i guess.",
     tiles = {

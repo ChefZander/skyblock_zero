@@ -94,11 +94,6 @@ core.register_node('pipeworks:automatic_filter_injector', {
         if not pipeworks.may_configure(pos, player) then return 0 end
         return count
     end,
-    can_dig = function(pos, player)
-        local meta = core.get_meta(pos)
-        local inv = meta:get_inventory()
-        return inv:is_empty 'main'
-    end,
     tube = { connect_sides = { right = 1 } },
     on_receive_fields = function(pos, formname, fields, sender)
         if (fields.quit and not fields.key_enter_field) or not pipeworks.may_configure(pos, sender) then return end

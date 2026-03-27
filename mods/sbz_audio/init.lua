@@ -1,33 +1,5 @@
-sbz_api = sbz_api or {}
-
--- allow for a rightclick parameter too, so that its less annoying
-core.register_on_mods_loaded(function()
-    for k, v in pairs(core.registered_nodes) do
-        -- If it has a sounds.rightclick specified...
-        if v.sounds and v.sounds.rightclick then
-            -- Save original handler (if any)
-            local old_rightclick = v.on_rightclick
-
-            local function new_rightclick(pos, node, clicker, stack, pointed)
-                if core.get_meta(pos):get_string 'formspec' ~= '' then
-                    core.sound_play(v.sounds.rightclick, {
-                        pos = pos,
-                    })
-                end
-
-                if old_rightclick then
-                    return old_rightclick(pos, node, clicker, stack, pointed)
-                end
-            end
-
-            core.override_item(k, {
-                on_rightclick = new_rightclick,
-            })
-        end
-    end
-end)
-
-sbz_api.sounds = sbz_api.sounds or {}
+-- sbz_api.sounds is gone.  Replace with sbz_audio wherever used.
+sbz_audio = sbz_audio or {}
 
 -- Use as a template (include fade if needed on any)
 function sbz_audio.blank()
@@ -150,17 +122,10 @@ function sbz_audio.sand()
     return sounds
 end
 
-function sbz_api.play_sfx(spec, params, pitch_randomness)
-    pitch_randomness = pitch_randomness or 0.035
-    local pitch = 1 + (math.random() * pitch_randomness * 2) - pitch_randomness
-    params.pitch = params.pitch or pitch
-    core.sound_play(spec, params, true)
-end
-
+-- Global default node sounds
 core.register_on_mods_loaded(function()
     local fallback_place_failed = { name = 'gen_error_fart', gain = 0.7, pitch = 1.0,}
     local fallback_fall         = { name = 'gen_pew_slow_fall', gain = 0.3, pitch = 1.1,}
-
     for name, def in pairs(core.registered_nodes) do
         local s = def.sounds or {}
         if not s.place_failed or not s.fall then
@@ -173,17 +138,25 @@ core.register_on_mods_loaded(function()
         end
     end
 end)
-
+--[[ (not currently working as intended, so leaving it out for now)
+-- Sounds triggered by chat
 core.register_on_chat_message(
     function(name, message)
+        -- Yo, you write a lot, cuz.
+        if #message >= 450 then -- 500 characters is the server-specified default maximum
+            core.sound_play("paperflip2", { gain = 0.7, to_player = name })
+            return
+        end
+
         if message:find("[!]+") then
-            sbz_api.play_sfx("gen_chat_exclamation", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_exclamation", { gain = 0.7, to_player = name })
         elseif message:find("[?]+") then
-            sbz_api.play_sfx("gen_chat_question", { gain = 0.7, to_player = name })
-        elseif message:find("\\[PM\\]|@") then
-            sbz_api.play_sfx("gen_chat_pm_send", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_question", { gain = 0.7, to_player = name })
+        elseif message:find("DM from ") then
+            core.sound_play("gen_chat_pm_send", { gain = 0.7, to_player = name })
         else
-            sbz_api.play_sfx("gen_chat_generic", { gain = 0.7, to_player = name })
+            core.sound_play("gen_chat_generic", { gain = 0.7, to_player = name })
         end
     end
 )
+ ]]

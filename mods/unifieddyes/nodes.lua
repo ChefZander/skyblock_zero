@@ -23,7 +23,11 @@ core.register_craftitem('unifieddyes:colorium_powder', {
 core.register_node(
     'unifieddyes:colorium_blob',
     unifieddyes.def {
+<<<<<<< HEAD
         description = S("Colorium Blob"),
+=======
+        description = 'Colorium Blob',
+>>>>>>> upstream/master
         sounds = sbz_audio.matter(),
         tiles = {
             'blank.png^[invert:rgba',
@@ -43,7 +47,11 @@ local full_m_height = -full + height
 core.register_node(
     'unifieddyes:colorium_ground_line',
     unifieddyes.def {
+<<<<<<< HEAD
         description = S("Colorium Ground Line"),
+=======
+        description = 'Colorium Ground Line',
+>>>>>>> upstream/master
         sounds = sbz_audio.matter(),
         tiles = {
             'blank.png^[invert:rgba',
@@ -70,7 +78,11 @@ core.register_node(
 core.register_node(
     'unifieddyes:power_ground_line',
     unifieddyes.def {
+<<<<<<< HEAD
         description = S("Power Ground Line"),
+=======
+        description = 'Power Ground Line',
+>>>>>>> upstream/master
         sounds = sbz_audio.matter(),
         tiles = {
             {
@@ -116,7 +128,11 @@ end
 core.register_node(
     'unifieddyes:antiblock',
     unifieddyes.def {
+<<<<<<< HEAD
         description = S("Antiblock"),
+=======
+        description = 'Antiblock',
+>>>>>>> upstream/master
         sounds = sbz_audio.matter(),
         tiles = {
             'blank.png',

@@ -1,1 +1,0 @@
--- Empty stub file just so that it registers this "mod" as a resource location.

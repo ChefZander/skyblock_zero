@@ -483,14 +483,40 @@ core.register_node('pipeworks:autocrafter', {
     on_rightclick = function(pos)
         update_meta(pos, core.get_meta(pos))
     end,
-    can_dig = function(pos, player)
-        local meta = core.get_meta(pos)
-        local inv = meta:get_inventory()
-        return (inv:is_empty 'src' and inv:is_empty 'dst' and inv:is_empty 'processor')
-    end,
     after_place_node = pipeworks.scan_for_tube_objects,
     after_dig_node = function(pos)
         pipeworks.scan_for_tube_objects(pos)
+    end,
+    on_dig = function(pos, node, digger)
+        local meta = core.get_meta(pos)
+        local contents = meta:get_inventory()
+
+        local function give_or_drop(listname, index)
+            local stack = contents:get_stack(listname, index)
+            if stack:is_empty() then return end
+
+            -- Try to give to player
+            if digger then
+                stack = digger:get_inventory():add_item('main', stack)
+                -- returns empty stack if successful
+            end
+
+            -- Drop any leftovers on the ground
+            if not stack:is_empty() then
+                core.add_item(pos, stack)
+            end
+        end
+
+        -- Transfer all actual items to player or drop
+        --  (prioritizing what's likely more important)
+        for _, listname in ipairs({ 'processor', 'dst', 'src' }) do
+            for i = 1, contents:get_size(listname) do
+                give_or_drop(listname, i)
+            end
+        end
+
+        -- Execute default behavior for the remainder of this function
+        core.node_dig(pos, node, digger)
     end,
     on_destruct = function(pos)
         autocrafterCache[core.hash_node_position(pos)] = nil
