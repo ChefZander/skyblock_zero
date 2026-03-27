@@ -312,7 +312,7 @@ pipeworks.register_tube('pipeworks:broken_tube', {
                 if wieldname == '' then
                     core.chat_send_player(
                         playername,
-                        'Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?'
+                        S("Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?")
                     )
                     if core.settings:get_bool 'enable_damage' then puncher:set_hp(puncher:get_hp() - 1) end
                 end
@@ -332,7 +332,7 @@ pipeworks.register_tube('pipeworks:broken_tube', {
                 meta:set_string('the_tube_was', '')
             else
                 pipeworks.logger(log_msg .. ' but original node ' .. was_node.name .. ' is not registered anymore.')
-                core.chat_send_player(playername, 'This tube cannot be repaired.')
+                core.chat_send_player(playername, S("This tube cannot be repaired."))
             end
         end,
         allow_metadata_inventory_put = function()

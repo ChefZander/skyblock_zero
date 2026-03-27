@@ -1,4 +1,4 @@
-local get_us_time = minetest.get_us_time
+local get_us_time = core.get_us_time
 
 local api = smartshop.api
 
@@ -15,14 +15,14 @@ local function expire(player_name, id, shop, storage_type)
 	-- make sure we're expiring the correct request
 	if data and data.id == id and data.shop == shop and data.storage_type == storage_type then
 		data_by_player_name[player_name] = nil
-		smartshop.chat_send_player(player_name, "Storage link attempt timed out, please try again.")
+		core.chat_send_player(player_name, S("Storage link attempt timed out, please try again."))
 	end
 end
 
 function api.start_storage_linking(player, shop, storage_type)
 	local player_name = player:get_player_name()
 
-	smartshop.chat_send_player(player_name, "Punch a smartshop storage node to link @1 storage", S(storage_type))
+	core.chat_send_player(player_name, S("Punch a smartshop storage node to link @1 storage", storage_type))
 
 	local id = get_us_time()
 	data_by_player_name[player_name] = {
@@ -31,7 +31,7 @@ function api.start_storage_linking(player, shop, storage_type)
 		storage_type = storage_type,
 	}
 
-	minetest.after(storage_link_time, expire, player_name, id, shop, storage_type)
+	core.after(storage_link_time, expire, player_name, id, shop, storage_type)
 end
 
 function api.try_link_storage(storage, player)
@@ -45,13 +45,13 @@ function api.try_link_storage(storage, player)
 	local storage_type = data.storage_type
 
 	if not storage:is_owner(shop:get_owner()) then
-		smartshop.chat_send_player(player_name, "You do not own this storage!")
+		core.chat_send_player(player_name, S("You do not own this storage!"))
 	elseif storage_max_distance > 0 and vector.distance(data.shop.pos, storage.pos) > storage_max_distance then
-		smartshop.chat_send_player(player_name, "Storage is too far from shop to link!")
+		core.chat_send_player(player_name, S("Storage is too far from shop to link!"))
 	else
 		shop:link_storage(storage, storage_type)
 
-		smartshop.chat_send_player(player_name, "@1 storage linked!", storage_type)
+		core.chat_send_player(player_name, S("@1 storage linked!", storage_type))
 	end
 
 	data_by_player_name[player_name] = nil

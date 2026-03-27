@@ -1,4 +1,4 @@
-local S = core.get_translator(core.get_current_modname())
+local S, PS = core.get_translator(core.get_current_modname())
 
 -- Don't touch this stuff
 
@@ -12,10 +12,10 @@ core.register_chatcommand("dev_givequest", {
             for _, q in ipairs(quests) do
                 unlock_achievement(name, q.title)
             end
-            core.chat_send_player(name, "Gave you all achievements")
+            core.chat_send_player(name, S("Gave you all achievements"))
         else
             unlock_achievement(name, param)
-            core.chat_send_player(name, "Gave you the achievement with the name \"" .. param .. "\"")
+            core.chat_send_player(name, S("Gave you the achievement with the name ") .. '"' .. param .. '".')
         end
     end
 })
@@ -30,10 +30,10 @@ core.register_chatcommand("dev_revokequest", {
             for _, q in ipairs(quests) do
                 revoke_achievement(name, q.title)
             end
-            core.chat_send_player(name, "Revoked all achievements")
+            core.chat_send_player(name, S("Revoked all achievements"))
         else
             revoke_achievement(name, param)
-            core.chat_send_player(name, "Revoked the achievement with the name \"" .. param .. "\"")
+            core.chat_send_player(name, S("Revoked the achievement with the name ") .. '"' .. param .. '".')
         end
     end
 })
@@ -49,9 +49,9 @@ core.register_chatcommand("dev_hotbar", {
         local player = core.get_player_by_name(name)
         if player then
             player:hud_set_hotbar_itemcount(count)
-            return true, "Hotbar slot count set to " .. count
+            return true, S("Hotbar slot count set to ") .. count
         else
-            return false, "Player not found."
+            return false, S("Player not found.")
         end
     end
 })
@@ -76,9 +76,9 @@ core.register_chatcommand("dev_platform", {
                     end
                 end
             end
-            return true, "Platform spawned."
+            return true, S("Platform spawned.")
         else
-            return false, "Player not found."
+            return false, S("Player not found.")
         end
     end
 })
@@ -89,7 +89,7 @@ core.register_chatcommand("dev_close", {
     func = function(name)
         local player = core.get_player_by_name(name)
         if not player then
-            return false, "Player not found!"
+            return false, S("Player not found!")
         end
 
         local pos = vector.round(player:get_pos())
@@ -140,10 +140,10 @@ core.register_chatcommand("dev_close", {
         end
 
         if found_nodes == 0 then
-            return false, "No unique nodes found within 32 blocks."
+            return false, S("No unique nodes found within 32 blocks.")
         end
 
-        return true, "Given " .. found_nodes .. " unique nodes."
+        return true, PS("Given @1 unique node.", "Given @2 unique nodes.", found_nodes, tostring(found_nodes))
     end
 })
 
@@ -154,14 +154,14 @@ core.register_chatcommand("dev_clear", {
     func = function(name)
         local player = core.get_player_by_name(name)
         if not player then
-            return false, "Player not found!"
+            return false, S("Player not found!")
         end
 
         local inventory = player:get_inventory()
         inventory:set_list("main", {})
         inventory:set_list("craft", {})
 
-        return true, "Inventory cleared."
+        return true, S("Inventory cleared.")
     end
 })
 
@@ -181,7 +181,7 @@ core.register_chatcommand("dev_light", {
     func = function(name)
         local player = core.get_player_by_name(name)
         if not player then
-            return false, "Player not found!"
+            return false, S("Player not found!")
         end
         sbz_api.forced_light[name] = true
         player:override_day_night_ratio(1)
@@ -190,12 +190,12 @@ core.register_chatcommand("dev_light", {
 
 core.register_chatcommand("dev_craft", {
     description =
-    "Fake a craft, used for quest testing, param should be an item name or \"item\" to specify wielded item's name",
+    S("Fake a craft, used for quest testing, param should be an item name or \"item\" to specify wielded item's name"),
     privs = { ["server"] = true },
     func = function(name, param)
         local player = core.get_player_by_name(name)
         if not player then
-            return false, "Player not found!"
+            return false, S("Player not found!")
         end
 
         if param == "item" or param == "" then param = player:get_wielded_item():get_name() end
@@ -213,26 +213,26 @@ core.register_chatcommand("dev_regen", {
     func = function(name, param)
         local player = core.get_player_by_name(name)
         if not player then
-            return false, "Player not found!"
+            return false, S("Player not found!")
         end
 
         local radius = tonumber(param) or 1
 
         core.delete_area(vector.subtract(player:get_pos(), vector.new(radius, radius, radius)),
             vector.add(player:get_pos(), vector.new(radius, radius, radius)))
-        return true, "Area re-generated!"
+        return true, S("Area re-generated!")
     end
 })
 
 core.register_chatcommand("dev_mapblocks", {
     description =
-    "Sends you all the mapblocks in the radius. RADIUS IS IN MAPBLOCKS!! may not work... in singleplayer at least",
+    S("Sends you all the mapblocks in the radius. RADIUS IS IN MAPBLOCKS!! may not work... in singleplayer at least"),
     params = "[radius]",
     privs = { ["server"] = true },
     func = function(name, param)
         local player = core.get_player_by_name(name)
         if not player then
-            return false, "Player not found!"
+            return false, S("Player not found!")
         end
 
         local radius = tonumber(param) or 1
@@ -245,7 +245,7 @@ core.register_chatcommand("dev_mapblocks", {
             end
         end
 
-        return true, "Area sent!"
+        return true, S("Area sent!")
     end
 })
 core.register_chatcommand("dev_fast_habitats", {

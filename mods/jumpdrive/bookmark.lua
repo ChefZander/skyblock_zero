@@ -24,7 +24,7 @@ jumpdrive.write_to_book = function(pos, sender)
 		local data = {}
 
 		data.owner = sender:get_player_name()
-		data.title = "Jumpdrive coordinates"
+		data.title = S("Jumpdrive coordinates")
 		data.description = S("Jumpdrive coordinates")
 		data.text = core.serialize(jumpdrive.get_meta_pos(pos))
 		data.page = 1
@@ -94,7 +94,7 @@ jumpdrive.read_from_book = function(pos)
 					inv:set_stack("main", i, stack)
 					-- alert player
 					if nil ~= player_name then
-						core.chat_send_player(player_name, "Invalid coordinates")
+						core.chat_send_player(player_name, S("Invalid coordinates"))
 					end
 					return
 				end
@@ -123,7 +123,7 @@ jumpdrive.read_from_book = function(pos)
 				inv:add_item("main", stack)
 				return
 			end
-		elseif "ccompass:" == stack_name:sub(1, 9)
+		elseif "compass:" == stack_name:sub(1, 9)
 			or "compass:" == stack_name:sub(1, 8) then
 			-- remove item from inventory
 			inv:set_stack("main", i, ItemStack())
@@ -148,7 +148,7 @@ jumpdrive.read_from_book = function(pos)
 	-- should we or should we not message user?
 	--[[
 	if nil ~= player_name then
-		core.chat_send_player(player_name, "No valid bookmark item found.")
+		core.chat_send_player(player_name, S("No valid bookmark item found."))
 	end
 	--]]
 end

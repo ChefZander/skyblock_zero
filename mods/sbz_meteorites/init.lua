@@ -52,14 +52,14 @@ core.register_chatcommand('spawn_meteorite', {
             meteorite = spawn_meteorite(pos)
         end
         if not meteorite then
-            core.chat_send_player(name, 'Failed to spawn meteorite.')
+            core.chat_send_player(name, S("Failed to spawn meteorite."))
             return
         end
         local mpos = vector.round(meteorite:get_pos())
         if num_of_meteorites == 1 then
-            core.chat_send_player(name, 'Spawned meteorite at ' .. mpos.x .. ' ' .. mpos.y .. ' ' .. mpos.z .. '.')
+            core.chat_send_player(name, S("Spawned meteorite at ") .. mpos.x .. ' ' .. mpos.y .. ' ' .. mpos.z .. '.')
         else
-            core.chat_send_player(name, 'Spawned meteorites.')
+            core.chat_send_player(name, S("Spawned meteorites."))
         end
     end,
 })

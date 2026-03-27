@@ -853,12 +853,12 @@ local fsdata = {}
 local function display_formspec(username)
     local chosen_net_id = fsdata[username].chosen_net
     if not chosen_net_id then
-        core.chat_send_player(username, 'Something went wrong.')
+        core.chat_send_player(username, S("Something went wrong."))
         return
     end
     local chosen_net = instatube.networks[chosen_net_id]
     if not chosen_net then
-        core.chat_send_player(username, 'That network no longer exists')
+        core.chat_send_player(username, S("That network no longer exists"))
         return
     end
     local fs = [[
@@ -883,7 +883,7 @@ button_exit[0,10;10,1;exit;Exit]
         end
     end
     if not dropdown_id then
-        core.chat_send_player(username, 'The network you were looking at no longer exists')
+        core.chat_send_player(username, S("The network you were looking at no longer exists"))
         return
     end
 
@@ -913,7 +913,7 @@ end)
 core.register_craftitem('sbz_instatube:dbg_tool', {
     description = S("Instatube Debug Tool"),
     sounds = sbz_api.sounds.glass(),
-    info_extra = 'Shows all machines connected to instatube',
+    info_extra = S("Shows all machines connected to instatube"),
     inventory_image = 'instatube_debug_tool.png',
     stack_max = 1,
 
@@ -923,7 +923,7 @@ core.register_craftitem('sbz_instatube:dbg_tool', {
         local username = user:get_player_name()
         local nets = pos2network[hash(target)]
         if not nets then
-            core.chat_send_player(username, 'No instatube networks found.')
+            core.chat_send_player(username, S("No instatube networks found."))
             return
         end
         local chosen_net = instatubes_net_id[hash(target)]

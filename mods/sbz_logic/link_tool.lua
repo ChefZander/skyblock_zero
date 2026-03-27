@@ -87,16 +87,16 @@ local function try_to_link_to_luac(stack, pos, placer)
     node = node.name
     local ndef = core.registered_nodes[node]
     if not ndef then return end
-    if not ndef.can_link then return core.chat_send_player(name, "Can't link") end
+    if not ndef.can_link then return core.chat_send_player(name, S("Can't link")) end
     -- ok yeah it can link
     meta:set_string("linked", vector.to_string(pos))
-    core.chat_send_player(name, "Luacontroller succesfully linked to the luacontroller linking tool!")
+    core.chat_send_player(name, S("Luacontroller successfully linked to the luacontroller linking tool!"))
     logic.happy_particles(pos)
 end
 
 local function err_link_invalid(placer)
     core.chat_send_player(placer:get_player_name(),
-        "Link is invalid, please link the luacontroller linker to a luacontroller again.")
+        S("Link is invalid, please link the luacontroller linker to a luacontroller again."))
 end
 
 local function make_link(meta, pos, placer)
@@ -119,18 +119,18 @@ local function make_link(meta, pos, placer)
     local linked_range = linked_meta:get_int("linking_range")
 
     if linked_range == 0 then
-        core.chat_send_player(placer:get_player_name(), "The luacontroller doesn't have a linking upgrade.")
+        core.chat_send_player(placer:get_player_name(), S("The luacontroller doesn't have a linking upgrade."))
         return
     end
 
     if not logic.in_square_radius(linked_pos, pos, linked_range) then
-        core.chat_send_player(placer:get_player_name(), "Outside of the radius")
+        core.chat_send_player(placer:get_player_name(), S("Outside of the radius"))
         return
     end
 
     local name = meta:get_string "name"
     if name == "" then
-        core.chat_send_player(placer:get_player_name(), "You need to set a name first (Left click)")
+        core.chat_send_player(placer:get_player_name(), S("You need to set a name first (Left click)"))
         return
     end
     -- ok HOPEFULLY thats enough checks holy crap

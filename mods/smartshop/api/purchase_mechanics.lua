@@ -73,11 +73,11 @@ function api.try_purchase(player, shop, i)
 	end
 
 	local reason = api.get_purchase_fail_reason(player, shop, i)
-	smartshop.chat_send_player(player, ("Cannot exchange: %s"):format(reason))
+	core.chat_send_player(player, (S("Cannot exchange: %s")):format(reason))
 
-	if reason == "Shop is sold out" then
+	if reason == S("Shop is sold out") then
 		api.on_shop_empty(player, shop, i)
-	elseif reason == "Shop is full" then
+	elseif reason == S("Shop is full") then
 		api.on_shop_full(player, shop, i)
 	end
 
@@ -91,16 +91,16 @@ function api.get_purchase_fail_reason(player, shop, i)
 	local strict_meta = shop:is_strict_meta()
 
 	if not player_inv:contains_item(pay_stack, strict_meta) then
-		return "You lack appropriate payment"
+		return S("You lack appropriate payment")
 	elseif not shop:contains_item(give_stack, "give") then
-		return "Shop is sold out"
+		return S("Shop is sold out")
 	elseif not player_inv:room_for_item(give_stack) then
-		return "No room in your inventory"
+		return S("No room in your inventory")
 	elseif not shop:room_for_item(pay_stack, "pay") then
-		return "Shop is full"
+		return S("Shop is full")
 	end
 
-	return "Failed for unknown reason"
+	return S("Failed for unknown reason")
 end
 
 api.register_purchase_mechanic({

@@ -12,13 +12,13 @@ local function test(player)
 	local ch_id = speed:add_change(player, 10)
 	local p_name = player:get_player_name()
 
-	core.chat_send_player(p_name, "Your speed is: " .. speed:value(player))
+	core.chat_send_player(p_name, S("Your speed is: ") .. speed:value(player))
 
 	core.after(3, function()
 		local player = core.get_player_by_name(p_name)
 		if not player then return end
 		speed:del_change(player, ch_id)
-		core.chat_send_player(p_name, "Your speed is: " .. speed:value(player))
+		core.chat_send_player(p_name, S("Your speed is: ") .. speed:value(player))
 	end)
 end
 

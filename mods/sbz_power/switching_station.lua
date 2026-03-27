@@ -436,7 +436,7 @@ local function profiler_formspec(pos, username)
     if not net then return end
     if net.dirty then return end
     if not net.profiler then return end
-    core.chat_send_player(username, '[Switching Station] Network ID: ' .. dump(sbz_api.pos2network[h(pos)])) -- use: detect if the network has changed
+    core.chat_send_player(username, S("[Switching Station] Network ID: ") .. dump(sbz_api.pos2network[h(pos)])) -- use: detect if the network has changed
     local fs = [[
 formspec_version[7]
 size[12,11]
@@ -591,10 +591,10 @@ core.register_chatcommand('toggle_power', {
     func = function(name, param)
         if core.is_yes(param) then
             sbz_api.enable_switching_station_globalstep = true
-            core.chat_send_player(name, 'Enabled switching stations')
+            core.chat_send_player(name, S("Enabled switching stations"))
         else
             sbz_api.enable_switching_station_globalstep = false
-            core.chat_send_player(name, 'Temporarily disabled switching stations.')
+            core.chat_send_player(name, S("Temporarily disabled switching stations."))
         end
     end,
 })
@@ -721,9 +721,9 @@ core.register_chatcommand('teleport_to_laggiest_switching_station', {
                 pos = v.switching_station_pos
             end
         end
-        if pos == nil then return false, 'Could not find a switching station like that' end
+        if pos == nil then return false, S("Could not find a switching station like that") end
         local player = core.get_player_by_name(name)
         player:set_pos(pos)
-        return true, 'Done'
+        return true, S("Done")
     end,
 })

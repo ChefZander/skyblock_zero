@@ -165,7 +165,7 @@ end
 function sbz_area_containers.new_room(player_name)
     local container_ids = player_container_ids[player_name] or {}
     if #container_ids >= max_areas_per_player then
-        core.chat_send_player(player_name, ('You may only have %s areas'):format(max_areas_per_player))
+        core.chat_send_player(player_name, (S('You may only have %s areas')):format(max_areas_per_player))
         return false
     end
 
