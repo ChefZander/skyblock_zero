@@ -229,11 +229,7 @@ end
 
 
 register_storinator("", {
-<<<<<<< HEAD
     description = S("Storinator"),
-=======
-    description = "Storinator",
->>>>>>> upstream/master
     sounds = sbz_audio.matter(),
     level = 0,
     overlay_color = "#696a6a",

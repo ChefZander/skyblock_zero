@@ -23,11 +23,7 @@ core.register_craftitem('unifieddyes:colorium_powder', {
 core.register_node(
     'unifieddyes:colorium_blob',
     unifieddyes.def {
-<<<<<<< HEAD
         description = S("Colorium Blob"),
-=======
-        description = 'Colorium Blob',
->>>>>>> upstream/master
         sounds = sbz_audio.matter(),
         tiles = {
             'blank.png^[invert:rgba',
