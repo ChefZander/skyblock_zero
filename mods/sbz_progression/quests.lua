@@ -36,9 +36,10 @@ local function parse_md_file(path)
     return qdata
 end
 
+local modpath = core.get_modpath('sbz_progression')
 local t0 = core.get_us_time()
 table.foreach(quest_files, function(name)
-    local path = core.get_modpath 'sbz_progression' .. '/quests/' .. name .. '.md'
+    local path = modpath .. '/quests/' .. name .. '.md'
     local qdata = parse_md_file(path)
     if qdata then
         table.foreach(qdata, sbz_api.register_quest, true)
