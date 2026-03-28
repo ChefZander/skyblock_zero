@@ -36,7 +36,7 @@ with this program; if not, see <https://www.gnu.org/licenses/>.
 
 unifieddyes = {}
 
-local modpath = minetest.get_modpath(minetest.get_current_modname())
+local modpath = core.get_modpath(core.get_current_modname())
 
 dofile(modpath .. "/color-tables.lua")
 dofile(modpath .. "/api.lua")

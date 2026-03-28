@@ -35,8 +35,8 @@ unifieddyes.player_showall = {}
 -- but the itemstack used to place it has no palette_index (color byte),
 -- create something appropriate to make it officially white.
 
-minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-    local def = minetest.registered_items[newnode.name]
+core.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+    local def = core.registered_items[newnode.name]
 
     if not def or not def.palette or def.after_place_node or not placer then return false end
 
@@ -54,8 +54,8 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
         end
 
         if param2 and not (core.get_item_group(newnode.name, 'falling_node') == 1) then
-            minetest.swap_node(pos, { name = newnode.name, param2 = param2 })
-            minetest.get_meta(pos):set_int('palette_index', color)
+            core.swap_node(pos, { name = newnode.name, param2 = param2 })
+            core.get_meta(pos):set_int('palette_index', color)
         end
     end
 end)
@@ -70,23 +70,23 @@ local function node_dig_without_color(pos, node, digger)
     local def = ItemStack(node.name):get_definition()
     -- Copy pos because the callback could modify it
     if not def.diggable or (def.can_dig and not def.can_dig(vector.copy(pos), digger)) then
-        minetest.log(
+        core.log(
             'info',
-            diggername .. ' tried to dig ' .. node.name .. ' which is not diggable ' .. minetest.pos_to_string(pos)
+            diggername .. ' tried to dig ' .. node.name .. ' which is not diggable ' .. core.pos_to_string(pos)
         )
         return false
     end
 
-    if minetest.is_protected(pos, diggername) then
-        minetest.log(
+    if core.is_protected(pos, diggername) then
+        core.log(
             'action',
-            diggername .. ' tried to dig ' .. node.name .. ' at protected position ' .. minetest.pos_to_string(pos)
+            diggername .. ' tried to dig ' .. node.name .. ' at protected position ' .. core.pos_to_string(pos)
         )
-        minetest.record_protection_violation(pos, diggername)
+        core.record_protection_violation(pos, diggername)
         return false
     end
 
-    minetest.log('action', diggername .. ' digs ' .. node.name .. ' at ' .. minetest.pos_to_string(pos))
+    core.log('action', diggername .. ' digs ' .. node.name .. ' at ' .. core.pos_to_string(pos))
 
     local wielded = digger and digger:get_wielded_item()
     local drops = { node.name } -- this is instead of asking minetest to generate the node drops
@@ -94,15 +94,15 @@ local function node_dig_without_color(pos, node, digger)
     if wielded then
         local wdef = wielded:get_definition()
         local tp = wielded:get_tool_capabilities()
-        local dp = minetest.get_dig_params(def and def.groups, tp, wielded:get_wear())
+        local dp = core.get_dig_params(def and def.groups, tp, wielded:get_wear())
         if wdef and wdef.after_use then
             wielded = wdef.after_use(wielded, digger, node, dp) or wielded
         else
             -- Wear out tool
-            if not minetest.is_creative_enabled(diggername) then
+            if not core.is_creative_enabled(diggername) then
                 wielded:add_wear(dp.wear)
                 if wielded:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-                    minetest.sound_play(wdef.sound.breaks, {
+                    core.sound_play(wdef.sound.breaks, {
                         pos = pos,
                         gain = 0.5,
                     }, true)
@@ -114,7 +114,7 @@ local function node_dig_without_color(pos, node, digger)
 
     -- Check to see if metadata should be preserved.
     if def and def.preserve_metadata then
-        local oldmeta = minetest.get_meta(pos):to_table().fields
+        local oldmeta = core.get_meta(pos):to_table().fields
         -- Copy pos and node because the callback can modify them.
         local pos_copy = vector.copy(pos)
         local node_copy = { name = node.name, param1 = node.param1, param2 = node.param2 }
@@ -127,17 +127,17 @@ local function node_dig_without_color(pos, node, digger)
     end
 
     -- Handle drops
-    minetest.handle_node_drops(pos, drops, digger)
+    core.handle_node_drops(pos, drops, digger)
 
     local oldmetadata
-    if def and def.after_dig_node then oldmetadata = minetest.get_meta(pos):to_table() end
+    if def and def.after_dig_node then oldmetadata = core.get_meta(pos):to_table() end
 
     -- Remove node and update
-    minetest.remove_node(pos)
+    core.remove_node(pos)
 
     -- Play sound if it was done by a player
     if diggername ~= '' and def and def.sounds and def.sounds.dug then
-        minetest.sound_play(def.sounds.dug, {
+        core.sound_play(def.sounds.dug, {
             pos = pos,
             exclude_player = diggername,
         }, true)
@@ -152,9 +152,9 @@ local function node_dig_without_color(pos, node, digger)
     end
 
     -- Run script hook
-    for _, callback in ipairs(minetest.registered_on_dignodes) do
-        local origin = minetest.callback_origins[callback]
-        minetest.set_last_run_mod(origin.mod)
+    for _, callback in ipairs(core.registered_on_dignodes) do
+        local origin = core.callback_origins[callback]
+        core.set_last_run_mod(origin.mod)
 
         -- Copy pos and node because callback can modify them
         local pos_copy = vector.copy(pos)
@@ -166,15 +166,15 @@ local function node_dig_without_color(pos, node, digger)
 end
 
 function unifieddyes.on_dig(pos, node, digger)
-    local param2 = minetest.get_node(pos).param2
-    local def = minetest.registered_items[node.name]
+    local param2 = core.get_node(pos).param2
+    local def = core.registered_items[node.name]
     local del_color
 
     if def.paramtype2 == 'color' and param2 == 240 and def.palette == 'unifieddyes_palette_extended.png' then
         del_color = true
     elseif
         (def.paramtype2 == 'colorwallmounted' or def.paramtype2 == 'colorfacedir')
-        and minetest.strip_param2_color(param2, def.paramtype2) == 0
+        and core.strip_param2_color(param2, def.paramtype2) == 0
         and string.find(def.palette, 'unifieddyes_palette_')
     then
         del_color = true
@@ -183,7 +183,7 @@ function unifieddyes.on_dig(pos, node, digger)
     if del_color then
         return node_dig_without_color(pos, node, digger)
     else
-        return minetest.node_dig(pos, node, digger)
+        return core.node_dig(pos, node, digger)
     end
 end
 
@@ -220,7 +220,7 @@ function unifieddyes.generate_split_palette_nodes(name, def, drop)
             }
         end
 
-        minetest.register_node(':' .. name .. '_' .. color, def2)
+        core.register_node(':' .. name .. '_' .. color, def2)
     end
 end
 
@@ -250,10 +250,10 @@ local function register_c(craft, h, sat, val)
     end
 
     local dye = 'dye:' .. color
-    local recipe = minetest.serialize(craft.recipe)
+    local recipe = core.serialize(craft.recipe)
     recipe = string.gsub(recipe, 'MAIN_DYE', dye)
     recipe = string.gsub(recipe, 'NEUTRAL_NODE', craft.neutral_node)
-    local newrecipe = minetest.deserialize(recipe)
+    local newrecipe = core.deserialize(recipe)
 
     local coutput = craft.output or ''
     local output = coutput
@@ -274,7 +274,7 @@ local function register_c(craft, h, sat, val)
 
     local colored_itemstack = unifieddyes.make_colored_itemstack(output, craft.palette, dye)
 
-    minetest.register_craft {
+    core.register_craft {
         output = colored_itemstack,
         type = craft.type,
         recipe = newrecipe,
@@ -318,34 +318,34 @@ end
 -- call this function to reset the rotation of a "wallmounted" object on place
 
 function unifieddyes.fix_rotation(pos, placer, itemstack, pointed_thing)
-    local node = minetest.get_node(pos)
+    local node = core.get_node(pos)
     local colorbits = node.param2 - (node.param2 % 8)
 
     local yaw = placer:get_look_horizontal()
-    local dir = minetest.yaw_to_dir(yaw) -- -1.5)
+    local dir = core.yaw_to_dir(yaw) -- -1.5)
     local pitch = placer:get_look_vertical()
 
-    local fdir = minetest.dir_to_wallmounted(dir)
+    local fdir = core.dir_to_wallmounted(dir)
 
     if pitch < -(math.pi / 8) then
         fdir = 0
     elseif pitch > math.pi / 8 then
         fdir = 1
     end
-    minetest.swap_node(pos, { name = node.name, param2 = fdir + colorbits })
+    core.swap_node(pos, { name = node.name, param2 = fdir + colorbits })
 end
 
 -- use this when you have a "wallmounted" node that should never be oriented
 -- to floor or ceiling...
 
 function unifieddyes.fix_rotation_nsew(pos, placer, itemstack, pointed_thing)
-    local node = minetest.get_node(pos)
+    local node = core.get_node(pos)
     local colorbits = node.param2 - (node.param2 % 8)
     local yaw = placer:get_look_horizontal()
-    local dir = minetest.yaw_to_dir(yaw + 1.5)
-    local fdir = minetest.dir_to_wallmounted(dir)
+    local dir = core.yaw_to_dir(yaw + 1.5)
+    local fdir = core.dir_to_wallmounted(dir)
 
-    minetest.swap_node(pos, { name = node.name, param2 = fdir + colorbits })
+    core.swap_node(pos, { name = node.name, param2 = fdir + colorbits })
 end
 
 -- ... and use this one to force that kind of node off of floor/ceiling
@@ -356,16 +356,16 @@ function unifieddyes.fix_after_screwdriver_nsew(pos, node, user, mode, new_param
     local color = new_param2 - new_fdir
     if new_fdir < 2 then
         new_fdir = 2
-        minetest.swap_node(pos, { name = node.name, param2 = new_fdir + color })
+        core.swap_node(pos, { name = node.name, param2 = new_fdir + color })
         return true
     end
 end
 
 function unifieddyes.is_buildable_to(placer_name, ...)
     for _, pos in ipairs { ... } do
-        local node = minetest.get_node_or_nil(pos)
-        local def = node and minetest.registered_nodes[node.name]
-        if not (def and def.buildable_to) or minetest.is_protected(pos, placer_name) then return false end
+        local node = core.get_node_or_nil(pos)
+        local def = node and core.registered_nodes[node.name]
+        if not (def and def.buildable_to) or core.is_protected(pos, placer_name) then return false end
     end
     return true
 end
@@ -503,7 +503,7 @@ function unifieddyes.get_color_from_dye_name(name)
     elseif name == 'dye:white' then
         return 'ffffff'
     end
-    local item = minetest.registered_items[name]
+    local item = core.registered_items[name]
     if not item then return end
     local inv_image = item.inventory_image
     if not inv_image then return end
