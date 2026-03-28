@@ -105,13 +105,13 @@ Normal matter isn't sturdy enough? Try this.
 
 Requires: A bigger platform, Matter Plates
 
-## Emitter Immitators
+## Emitter Imitators
 
 ### Text
 
-Emitter Immitators are decorational nodes providing light.  
+Emitter Imitators are decorational nodes providing light.  
   
-TIP: Emitter Immitators spawn a lot of particles when punched, try it!
+TIP: Emitter Imitators spawn a lot of particles when punched, try it!
 
 ### Meta
 
@@ -121,16 +121,16 @@ Requires: A bigger platform, More Antimatter
 
 ### Text
 
-Are Emitter Immitators too dim for you? Introducing: Photon Lamps!  
+Are Emitter Imitators too dim for you? Introducing: Photon Lamps!  
   
-With this revolutionary technology you can light up your world the same way as with Emitter Immitators just brighter!  
+With this revolutionary technology you can light up your world the same way as with Emitter Imitators just brighter!  
   
-To craft: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Immitators.  
+To craft: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Imitators.  
 Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in darkness! Yay!
 
 ### Meta
 
-Requires: Emitter Immitators, Matter Plates
+Requires: Emitter Imitators, Matter Plates
 
 ## Phosphor
 
@@ -140,7 +140,7 @@ On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator t
 
 ### Meta
 
-Requires: Emitter Immitators, Emittrium Circuits
+Requires: Emitter Imitators, Emittrium Circuits
 
 ## Signs
 
