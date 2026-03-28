@@ -24,60 +24,78 @@ with this program; if not, see <https://www.gnu.org/licenses/>.
 ]=]
 
 local function sheet(t, sx, sy, x, y)
-	sx = sx + 1
-	sy = sy + 1
 	return ("%s^[sheet:%sx%s:%s,%s"):format(t, sx, sy, x, y)
 end
 
+-- cols/rows: tile counts in the source image
+-- leftover:  missing tiles from the last row
 local palette_sizes = {
-	["unifieddyes_palette_colorfacedir.png"] = vector.new(8, 1, 0), -- im using vectors cuz z will be "how much is left off the last row" if that makes sense
-	["unifieddyes_palette_extended.png"] = vector.new(24, 11, 8),
-	["unifieddyes_palette_colorwallmounted.png"] = vector.new(8, 4, 0),
+	["unifieddyes_palette_colorfacedir.png"]     = { cols = 8, rows = 1, leftover = 0 },
+	["unifieddyes_palette_extended.png"]         = { cols = 256, rows = 1, leftover = 0 },
+	["unifieddyes_palette_colorwallmounted.png"] = { cols = 8, rows = 4, leftover = 0 },
 }
-
-for k, v in pairs(palette_sizes) do
-	palette_sizes[k] = vector.subtract(v, vector.new(1, 1, 1))
-end
 
 local function show_fs(user, palette)
 	local size = palette_sizes[palette]
 	if size == nil then
-		minetest.chat_send_player(user:get_player_name(), "Node not supported!")
+		core.chat_send_player(user:get_player_name(), "Node not supported!")
 		return
 	end
 
-	local button_size = 0.8
+	local button_size    = 0.8
 	local button_spacing = 0.9
+	local wrap           = 24 -- columns to wrap 1D palettes into
+	local is_strip       = (size.rows == 1)
+	local total          = size.cols * size.rows - size.leftover
+
+	local display_cols, display_rows
+	if is_strip then
+		display_cols = math.min(total, wrap)
+		display_rows = math.ceil(total / wrap)
+	else
+		display_cols = size.cols
+		display_rows = size.rows
+	end
 
 	local fs = {
 		([[
 formspec_version[7]
 size[%s,%s]
-	]]):format((size.x * button_spacing) + 1.2, 1.2 + (size.y * button_spacing)), -- 1.5 spacing for the rest
+		]]):format(
+			((display_cols - 1) * button_spacing) + 1.2,
+			((display_rows - 1) * button_spacing) + 1.2
+		),
 	}
 
 	local head = #fs + 1
 
-	local idx = 0
-
-	for y = 0, size.y do
-		for x = 0, size.x do
-			idx = idx + 1
-			if y == size.y and x >= (size.x - size.z) then
-				break
-			end
-			fs[head] = string.format("image_button[%s,%s;%s,%s;%s;%s;]",
-				(x * button_spacing) + 0.2, (y * button_spacing) + 0.2,
-				button_size, button_size,
-				minetest.formspec_escape(sheet(palette, size.x, size.y, x, y)), idx)
-			head = head + 1
+	for idx = 0, total - 1 do
+		local src_x, src_y, screen_x, screen_y
+		if is_strip then
+			src_x, src_y = idx, 0
+			screen_x = idx % wrap
+			screen_y = math.floor(idx / wrap)
+		else
+			src_x = idx % size.cols
+			src_y = math.floor(idx / size.cols)
+			screen_x, screen_y = src_x, src_y
 		end
+
+		fs[head] = string.format(
+			"image_button[%s,%s;%s,%s;%s;%s;]",
+			(screen_x * button_spacing) + 0.2,
+			(screen_y * button_spacing) + 0.2,
+			button_size, button_size,
+			core.formspec_escape(sheet(palette, size.cols, size.rows, src_x, src_y)),
+			idx + 1
+		)
+		head = head + 1
 	end
 
-	minetest.show_formspec(user:get_player_name(), "color_dialog",
-		table.concat(fs))
+	core.show_formspec(user:get_player_name(), "color_dialog", table.concat(fs))
 end
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "color_dialog" then return end
 
 	local wield_item = player:get_wielded_item()
@@ -91,8 +109,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	wield_item:get_meta():set_int("selected_index", idx)
 	player:set_wielded_item(wield_item)
-	minetest.chat_send_player(player:get_player_name(), "Updated the tool succesfully")
-	minetest.show_formspec(player:get_player_name(), "color_dialog", "")
+	core.chat_send_player(player:get_player_name(), "Updated the tool succesfully")
+	core.show_formspec(player:get_player_name(), "color_dialog", "")
 end)
 
 _G.show_fs = show_fs
@@ -102,10 +120,10 @@ _G.show_fs = show_fs
 local function load_into(stack, player, pointed)
 	if pointed.type ~= "node" then return end
 	local pos = pointed.under
-	local n = minetest.get_node(pos)
-	local def = minetest.registered_nodes[n.name] or {}
+	local n = core.get_node(pos)
+	local def = core.registered_nodes[n.name] or {}
 	if not palette_sizes[def.palette or "no"] then
-		minetest.chat_send_player(player:get_player_name(), "Node not supported!")
+		core.chat_send_player(player:get_player_name(), "Node not supported!")
 		return
 	end
 	show_fs(player, def.palette)
@@ -116,8 +134,8 @@ end
 local function color_block(stack, player, pointed)
 	if pointed.type ~= "node" then return end
 	local pos = pointed.under
-	if minetest.is_protected(pos, player:get_player_name()) then
-		minetest.chat_send_player(player:get_player_name(),
+	if core.is_protected(pos, player:get_player_name()) then
+		core.chat_send_player(player:get_player_name(),
 			"PROTECTED!!!!!")
 		return
 	end
@@ -127,24 +145,24 @@ local function color_block(stack, player, pointed)
 	local pinv = player:get_inventory()
 
 	if not pinv:contains_item("main", "unifieddyes:colorium 1") then
-		minetest.chat_send_player(player:get_player_name(), "You don't have the required colorium")
+		core.chat_send_player(player:get_player_name(), "You don't have the required colorium")
 		return
 	end
 
-	local n = minetest.get_node(pos)
-	local def = minetest.registered_nodes[n.name] or {}
+	local n = core.get_node(pos)
+	local def = core.registered_nodes[n.name] or {}
 	local pal = def.palette
 	local meta = stack:get_meta()
 	local stack_pal = meta:get_string("palette")
 	if pal ~= stack_pal then
-		minetest.chat_send_player(player:get_player_name(), "Palette mismatch, need to re-configure again")
+		core.chat_send_player(player:get_player_name(), "Palette mismatch, need to re-configure again")
 		return load_into(stack, player, pointed)
 	end
 	local indx = meta:get_int("selected_index")
 
 	local paramtype = def.paramtype2
 	local rotation = 0
-	rotation = n.param2 - minetest.strip_param2_color(n.param2, paramtype)
+	rotation = n.param2 - core.strip_param2_color(n.param2, paramtype)
 
 	local mul = 1
 	if paramtype == "colorfacedir" then
@@ -157,12 +175,12 @@ local function color_block(stack, player, pointed)
 		mul = 32
 	end
 	indx = indx - 1
-	minetest.swap_node(pos, { name = n.name, param2 = rotation + (math.floor(indx * mul)) })
+	core.swap_node(pos, { name = n.name, param2 = rotation + (math.floor(indx * mul)) })
 
 	pinv:remove_item("main", "unifieddyes:colorium 1")
 end
 
-minetest.register_tool("unifieddyes:coloring_tool", {
+core.register_tool("unifieddyes:coloring_tool", {
 	description = "Coloring Tool",
 	inventory_image = "color_tool.png",
 	liquids_pointable = false, -- colorable liquids probably wont exist but they would be funny

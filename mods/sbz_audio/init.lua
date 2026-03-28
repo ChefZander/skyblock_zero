@@ -1,5 +1,6 @@
 -- sbz_api.sounds is gone.  Replace with sbz_audio wherever used.
-sbz_audio = sbz_audio or {}
+-- Ensure global exists without triggering undeclared-global warning
+sbz_audio = rawget(_G, "sbz_audio") or {}
 
 -- Use as a template (include fade if needed on any)
 function sbz_audio.blank()
