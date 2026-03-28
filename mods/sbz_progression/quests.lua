@@ -1,5 +1,5 @@
 quests = {}
-
+local S = core.get_translator('sbz_progression')
 -- Index for faster lookups when patching-in the translations
 local quest_id_index = {}
 
@@ -51,22 +51,28 @@ table.foreach(quest_files, function(name)
     assert(qdata, '[sbz_progression] Missing required English quest file: ' .. path)
     table.foreach(qdata, sbz_api.register_quest, true)
 end, true)
+
+-- The Credits quest is hardcoded so that developer names and quotes can be
+-- handled carefully. Only the surrounding prose is wrapped in S().
 sbz_api.register_quest({
+    id         = 'Credits',
     type       = 'secret',
     istoplevel = true,
     title      = 'Credits',
     text       =
-        "Thank you for playing Skyblock: Zero. "
-        .. "You demonstrated extreme logical thinking skills, planning skills, and invested probably at least a couple of hours into our game. "
-        .. "We hope you enjoyed this current version, because there will be more coming. "
-        .. "- Zander\n"
-        .. "\n"
-
-        .. "Below is a list of all the people who helped work on the game, optionally, along with a quote by the respective developer.\n"
+        S('Thank you for playing Skyblock: Zero. '
+            ..
+            'You demonstrated extreme logical thinking skills, planning skills, and invested probably at least a couple of hours into our game. '
+            .. 'We hope you enjoyed this current version, because there will be more coming.')
+        .. '\n- Zander\n'
+        .. '\n'
+        ..
+        S(
+            'Below is a list of all the people who helped work on the game, optionally, along with a quote by the respective developer.')
+        .. '\n\n'
         -- Note to developers: Feel free to add yourself to the list if you're new, along with a quote.
         -- If you're already on the list, feel free to edit your quote as well. (But not other people's)
-
-        .. "Developers & Contributors\n"
+        .. S("Developers & Contributors") .. "\n"
         .. "- Zander \"Removing Global Power is the worst thing to have happened to Skyblock: Zero\"\n"
         .. "- frogTheSecond\n"
         .. "- theidealist\n"
@@ -84,32 +90,28 @@ sbz_api.register_quest({
         .. "- jack-obrien\n"
         .. "- gamefreq0\n"
         .. "\n"
-
-        .. "Submodule Contributors\n"
+        .. S("Submodule Contributors") .. "\n"
         .. "- SmallJoker\n"
         .. "- SwissalpS\n"
         .. "- lumberjackgames\n"
         .. "- Emojigit\n"
         .. "\n"
-
-        .. "Translators\n"
-        .. "There's not been any work to translate the game outside of English. Maybe your name will one day show up here?\n"
-        .. "\n"
-
-        .. "Menu & In-Game Music\n"
+        .. S("Translators") .. "\n"
+        .. S(
+            "There's not been any work to translate the game outside of English. Maybe your name will one day show up here?")
+        .. '\n\n'
+        .. S("Menu & In-Game Music") .. "\n"
         .. "- 'Tragic ambient main menu' by Brandon Morris (Menu Music)\n"
         .. "- 'Cave Theme' by Brandon Morris\n"
         .. "- 'Background space track' by yd\n"
         .. "- 'Bleeding Out' by Brandon Morris\n"
         .. "- 'Factory Ambiance' by yd\n"
         .. "- 'Galactic Temple' by yd\n"
-        .. "- 'A Choice With Many Regrets' by Tsorthan Grove"
+        .. "- 'A Choice With Many Regrets' by Tsorthan Grove\n"
         .. "\n"
-
-        .. "Skybox was made by StumpyStrust.\n"
+        .. S("Skybox was made by StumpyStrust.") .. "\n"
         .. "\n"
-
-        .. "You've finished the Questbook, but the game has only just begun.\n"
-        .. "",
+        .. S("You've finished the Questbook, but the game has only just begun.")
+        .. "\n",
 })
 core.log('action', 'Loading quests from markdown took: ' .. ((core.get_us_time() - t0) / 1000) .. 'ms')
