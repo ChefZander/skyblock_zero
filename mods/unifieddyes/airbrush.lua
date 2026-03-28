@@ -24,20 +24,16 @@ with this program; if not, see <https://www.gnu.org/licenses/>.
 ]=]
 
 local function sheet(t, sx, sy, x, y)
-	sx = sx + 1
-	sy = sy + 1
 	return ("%s^[sheet:%sx%s:%s,%s"):format(t, sx, sy, x, y)
 end
 
+-- cols/rows: tile counts in the source image
+-- leftover:  missing tiles from the last row
 local palette_sizes = {
-	["unifieddyes_palette_colorfacedir.png"] = vector.new(8, 1, 0), -- im using vectors cuz z will be "how much is left off the last row" if that makes sense
-	["unifieddyes_palette_extended.png"] = vector.new(24, 11, 8),
-	["unifieddyes_palette_colorwallmounted.png"] = vector.new(8, 4, 0),
+	["unifieddyes_palette_colorfacedir.png"]     = { cols = 8, rows = 1, leftover = 0 },
+	["unifieddyes_palette_extended.png"]         = { cols = 256, rows = 1, leftover = 0 },
+	["unifieddyes_palette_colorwallmounted.png"] = { cols = 8, rows = 4, leftover = 0 },
 }
-
-for k, v in pairs(palette_sizes) do
-	palette_sizes[k] = vector.subtract(v, vector.new(1, 1, 1))
-end
 
 local function show_fs(user, palette)
 	local size = palette_sizes[palette]
@@ -46,37 +42,59 @@ local function show_fs(user, palette)
 		return
 	end
 
-	local button_size = 0.8
+	local button_size    = 0.8
 	local button_spacing = 0.9
+	local wrap           = 24 -- columns to wrap 1D palettes into
+	local is_strip       = (size.rows == 1)
+	local total          = size.cols * size.rows - size.leftover
+
+	local display_cols, display_rows
+	if is_strip then
+		display_cols = math.min(total, wrap)
+		display_rows = math.ceil(total / wrap)
+	else
+		display_cols = size.cols
+		display_rows = size.rows
+	end
 
 	local fs = {
 		([[
 formspec_version[7]
 size[%s,%s]
-	]]):format((size.x * button_spacing) + 1.2, 1.2 + (size.y * button_spacing)), -- 1.5 spacing for the rest
+		]]):format(
+			((display_cols - 1) * button_spacing) + 1.2,
+			((display_rows - 1) * button_spacing) + 1.2
+		),
 	}
 
 	local head = #fs + 1
 
-	local idx = 0
-
-	for y = 0, size.y do
-		for x = 0, size.x do
-			idx = idx + 1
-			if y == size.y and x >= (size.x - size.z) then
-				break
-			end
-			fs[head] = string.format("image_button[%s,%s;%s,%s;%s;%s;]",
-				(x * button_spacing) + 0.2, (y * button_spacing) + 0.2,
-				button_size, button_size,
-				minetest.formspec_escape(sheet(palette, size.x, size.y, x, y)), idx)
-			head = head + 1
+	for idx = 0, total - 1 do
+		local src_x, src_y, screen_x, screen_y
+		if is_strip then
+			src_x, src_y = idx, 0
+			screen_x = idx % wrap
+			screen_y = math.floor(idx / wrap)
+		else
+			src_x = idx % size.cols
+			src_y = math.floor(idx / size.cols)
+			screen_x, screen_y = src_x, src_y
 		end
+
+		fs[head] = string.format(
+			"image_button[%s,%s;%s,%s;%s;%s;]",
+			(screen_x * button_spacing) + 0.2,
+			(screen_y * button_spacing) + 0.2,
+			button_size, button_size,
+			minetest.formspec_escape(sheet(palette, size.cols, size.rows, src_x, src_y)),
+			idx + 1
+		)
+		head = head + 1
 	end
 
-	minetest.show_formspec(user:get_player_name(), "color_dialog",
-		table.concat(fs))
+	minetest.show_formspec(user:get_player_name(), "color_dialog", table.concat(fs))
 end
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "color_dialog" then return end
 
