@@ -1,5 +1,21 @@
 local S = core.get_translator('sbz_progression')
 
+-- Returns the display title or text for a quest in the player's language,
+-- falling back to the English default if no translation exists.
+local function localized(quest, field, lang)
+    local localized_field = field .. '_localized'
+    if lang and quest[localized_field] and quest[localized_field][lang] then
+        return quest[localized_field][lang]
+    end
+    return quest[field] -- English default
+end
+
+-- Gets the lang code for a player, defaulting to "en".
+local function player_lang(player_name)
+    local info = core.get_player_information(player_name)
+    return (info and info.lang_code and info.lang_code ~= '') and info.lang_code or 'en'
+end
+
 local function get_quest_by_id(quest_id)
     for _, quest in ipairs(quests) do
         if quest.id == quest_id then return quest end
@@ -91,6 +107,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     if not player_ref then return '' end
     sbz_api.ui.set_player(player_ref)
 
+    local lang = player_lang(player_name)
+
     local selected_quest = quests_to_show[selected_quest_index]
     local quest_count = #quests -- we subtract uncompletable quests from this later, like infotexts
     local completed_count = 0
@@ -114,31 +132,31 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                 ins(pal.bright_green)
                 ins(default_indent)
                 ins '✓'
-                ins(quest.title)
-                completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
+                ins(localized(quest, 'title', lang))
+                completed_count = completed_count + 1
             elseif is_quest_available(player_name, quest.id) then
                 ins(pal.light1)
                 ins(default_indent)
                 ins '►'
-                ins(quest.title)
+                ins(localized(quest, 'title', lang))
                 available_count = available_count + 1
             else
                 ins(pal.light4)
                 ins(default_indent)
                 ins '✕'
-                ins(quest.title)
+                ins(localized(quest, 'title', lang))
             end
         elseif quest.info == true then -- info text
             ins(pal.bright_blue)
             ins(default_indent)
             ins '!'
-            ins(quest.title)
+            ins(localized(quest, 'title', lang))
             quest_count = quest_count - 1
         elseif quest.type == 'text' then
             ins(pal.bright_aqua)
             ins '0'
             ins '≡'
-            ins(quest.title)
+            ins(localized(quest, 'title', lang))
             quest_count = quest_count - 1
         elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.id) then
             ins(pal.bright_purple)
@@ -241,10 +259,10 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         then
             formspec = formspec
                 .. hypertext:format(
-                    core.formspec_escape('<big>' .. selected_quest.title .. '</big>'),
+                    core.formspec_escape('<big>' .. localized(selected_quest, 'title', lang) .. '</big>'),
                     (
                         is_quest_available(player_name, selected_quest.id)
-                        and core.formspec_escape(selected_quest.text)
+                        and core.formspec_escape(localized(selected_quest, 'text', lang))
                         or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     (
@@ -269,10 +287,11 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
         elseif selected_quest.type == 'text' then
             formspec = formspec
                 .. hypertext:format(
-                    ('<style color=%s>'):format(pal.bright_aqua or '#9ab7fc') .. selected_quest.title .. '</style>',
+                    ('<style color=%s>'):format(pal.bright_aqua or '#9ab7fc') ..
+                    localized(selected_quest, 'title', lang) .. '</style>',
                     (
                         is_quest_available(player_name, selected_quest.id)
-                        and core.formspec_escape(selected_quest.text)
+                        and core.formspec_escape(localized(selected_quest, 'text', lang))
                         or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     ''
@@ -306,6 +325,7 @@ end
 core.register_on_player_receive_fields(function(player, formname, fields)
     if formname == 'questbook:main' then
         local name = player:get_player_name()
+        local lang = player_lang(name)
         local meta = player:get_meta()
         local force_query = false
         if fields.search_reset then
@@ -353,7 +373,8 @@ core.register_on_player_receive_fields(function(player, formname, fields)
                     local real_search = fields.search:lower()
                     local quests_with_holes = table.copy(quests)
                     for k, v in pairs(quests_with_holes) do
-                        local title = v.title:lower()
+                        -- Search against the player's localized title so they can search in their own language
+                        local title = localized(v, 'title', lang):lower()
                         if not title:find(real_search, 1, true) then quests_with_holes[k] = nil end
                     end
                     for i = 1, #quests do
