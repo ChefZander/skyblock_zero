@@ -202,9 +202,10 @@ function markdown_parser.decode(text)
         local quest = {}
         local write_to_quests = false
         if starts_with(line, '## Info: ') then
+            quest.id    = string.sub(line, #'## Info: ' + 1):trim()
+            quest.title = quest.id
             quest.type = 'text'
             quest.info = true
-            quest.title = string.sub(line, #'## Info: ' + 1):trim()
             line_index = decode_text_and_meta(lines, line_index, quest)
             write_to_quests = true
         elseif starts_with(line, '## ') then
@@ -214,14 +215,15 @@ function markdown_parser.decode(text)
                 name = string.sub(line, #'## Secret: ' + 1)
                 secret = true
             end
+            quest.id    = name:trim() -- stable internal key, never overwritten by translations
+            quest.title = name:trim() -- display text, patched per-language in quests.lua
             quest.type = secret and 'secret' or 'quest'
-            quest.title = name:trim()
             line_index = decode_text_and_meta(lines, line_index, quest)
-
             write_to_quests = true
         elseif starts_with(line, '# ') then
             local name = line
-            quest.title = string.sub(name, #'# ' + 1)
+            quest.id = string.sub(name, #'# ' + 1)
+            quest.title = quest.id
             quest.type = 'text'
             local desc = {}
 
