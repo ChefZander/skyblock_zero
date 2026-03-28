@@ -38,12 +38,14 @@ end
 
 local modpath = core.get_modpath('sbz_progression')
 local t0 = core.get_us_time()
+
+-- Load the canonical English files first.
+-- These establish all quest IDs — every other language patches on top of this.
 table.foreach(quest_files, function(name)
-    local path = modpath .. '/quests/' .. name .. '.md'
+    local path = modpath .. '/quests/en/' .. name .. '.md'
     local qdata = parse_md_file(path)
-    if qdata then
-        table.foreach(qdata, sbz_api.register_quest, true)
-    end
+    assert(qdata, '[sbz_progression] Missing required English quest file: ' .. path)
+    table.foreach(qdata, sbz_api.register_quest, true)
 end, true)
 sbz_api.register_quest({
     ["type"] = "secret",
