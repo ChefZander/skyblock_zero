@@ -2,19 +2,17 @@ local http = ...
 -- License: LGPLv3 or later
 -- from: https://github.com/mt-mods/digistuff/blob/master/nic.lua
 
-local S = core.get_translator(core.get_current_modname())
-
 local settings = core.settings
 local is_priv_locked = settings:get_bool("sbz_nic_priv_locked", true)
 
 core.register_privilege("nic_user", {
-    description = S("If the server has priv locked the NIC, this priv makes you able to place the thing."),
+    description = "If the server has priv locked the NIC, this priv makes you able to place the thing.",
     give_to_admin = true,
     give_to_singleplayer = true,
 })
 
 core.register_node("sbz_logic_devices:nic", {
-    description = S("Logic NIC"),
+    description = "Logic NIC",
     info_extra = "<Server setting> Priv Locked: " .. (is_priv_locked and "yes" or "no"),
 
     groups = { cracky = 3, matter = 1, ui_logic = 1 },

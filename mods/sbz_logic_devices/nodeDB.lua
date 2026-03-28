@@ -2,12 +2,10 @@
 -- https://github.com/dennisjenkins75/digiline_craftdb/
 -- months later to clarify: No code from it was actually used here
 
-local S = core.get_translator(core.get_current_modname())
-
 local MAX_RESULTS = 200
 
 core.register_node("sbz_logic_devices:node_db", {
-    description = S("Node DB"),
+    description = "Node DB",
     info_extra = { "Similar to the craftDB, use it to lookup node definitions and recipes" },
     groups = { matter = 1, ui_logic = 1 },
     sounds = sbz_audio.machine(),

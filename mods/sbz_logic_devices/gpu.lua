@@ -2,7 +2,7 @@
 -- Focus: be fast, at least faster than what digistuff does :>
 -- https://github.com/mt-mods/digistuff/blob/reworkGPU/gpu.lua
 -- License: LGPLv3 or later
-local S = core.get_translator("sbz_logic_devices")
+
 local MP = core.get_modpath("sbz_logic_devices")
 
 ---@type function
@@ -778,7 +778,7 @@ local function exec_command(buffers, command, pos, from_pos)
 end
 
 core.register_node("sbz_logic_devices:gpu", {
-    description = S("GPU"),
+    description = "GPU",
 
     groups = { matter = 1, ui_logic = 1 },
     is_ground_content = false,

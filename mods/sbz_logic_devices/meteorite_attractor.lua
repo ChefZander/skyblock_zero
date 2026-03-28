@@ -1,9 +1,7 @@
-local S = core.get_translator(core.get_current_modname())
-
 local max_attract = 10
 
 sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
-    description = S("Luanium Meteorite Attractor"),
+    description = "Luanium Meteorite Attractor",
     info_extra = "At this point it might as well be a black hole...",
     tiles = { "luanium_attractor.png" },
     groups = { ui_logic = 1, matter = 1, charged = 1, sbz_machine_subticking = 1 },
@@ -15,7 +13,7 @@ sbz_api.register_machine("sbz_logic_devices:luanium_attractor", {
         if msg.type == nil or msg.type == "manual" then
             sbz_api.attract_meteorites(pos, 1, msg.attract)
         else
-            core.get_meta(pos):set_float("attract", msg.attract)
+            minetest.get_meta(pos):set_float("attract", msg.attract)
         end
     end,
     action_subtick = function(pos, node, meta, supply, demand)

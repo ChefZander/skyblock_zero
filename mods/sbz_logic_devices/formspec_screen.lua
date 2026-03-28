@@ -1,8 +1,6 @@
-local S = core.get_translator(core.get_current_modname())
-
 local max = 100 * 1024
 core.register_node("sbz_logic_devices:formspec_screen", {
-    description = S("Formspec Screen"),
+    description = "Formspec Screen",
     info_extra = "Max formspec size: 100kb",
     tiles = {
         "formspec_screen.png",
