@@ -282,14 +282,14 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     end
 
     if available_count == 1 and (quest_count - completed_count) == 1 then
-        unlock_achievement(player_name, 'Credits')
+        unlock_achievement(player_name, 'Credits') -- 'Credits' is the stable ID, not a display title
 
-        -- okay let me explain
-        -- this will be called only once
-        -- to refresh the questbook
-        -- if i dont do this, the quest will be granted but show up as not complete in the book
-        -- so by refreshing it once here, itll show up correct
-        -- it looks so ugly though...
+        -- Okay, let me explain.
+        -- This will be called only once to refresh the questbook.
+        -- If I don't do this, the quest will be granted
+        --  but show up as not complete in the book.
+        -- So, by refreshing it once here, it'll show up correctly.
+        -- It looks so ugly though...
         return get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
     end
 
@@ -346,7 +346,7 @@ core.register_on_player_receive_fields(function(player, formname, fields)
                         if
                             is_quest_available(name, v.id)
                             and v.type == 'quest'
-                            and is_achievement_unlocked(name, v.id) == false
+                            and not is_achievement_unlocked(name, v.id)
                         then
                             filtered_quests[#filtered_quests + 1] = v
                         end
