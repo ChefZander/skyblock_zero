@@ -114,4 +114,44 @@ sbz_api.register_quest({
         .. S("You've finished the Questbook, but the game has only just begun.")
         .. "\n",
 })
+
+-- Load translations for all supported languages.
+-- Translated title and text are stored in .title_localized[lang] and .text_localized[lang],
+--  so all languages coexist on the quest object; the display code picks the right one at runtime.
+-- Logic fields (.id, .requires, .type) are never touched.
+-- Add new language codes here as translators contribute files.
+-- `x-` prefix marks a private use language code (must be specified in minetest.conf, e.g.: language = x-pirate)
+local supported_languages = { 'x-pirate', 'x-pig-latin' }
+
+for _, lang in ipairs(supported_languages) do
+    for _, name in ipairs(quest_files) do
+        local path = modpath .. '/quests/' .. lang .. '/' .. name .. '.md'
+        local qdata = parse_md_file(path)
+
+        if qdata == nil then
+            core.log('warning',
+                ('[sbz_progression] No %s translation found for %s.md — falling back to English'):format(lang, name)
+            )
+        else
+            for _, translated_quest in ipairs(qdata) do
+                local idx = quest_id_index[translated_quest.id]
+                if idx then
+                    -- Patch display fields only. Logic fields (.id, .requires, .type) are untouched.
+                    quests[idx].title_localized = quests[idx].title_localized or {}
+                    quests[idx].title_localized[lang] = translated_quest.title
+
+                    quests[idx].text_localized = quests[idx].text_localized or {}
+                    quests[idx].text_localized[lang] = translated_quest.text
+                else
+                    core.log('warning',
+                        ('[sbz_progression] Translation references unknown quest ID "%s" in %s/%s.md — skipped'):format(
+                            translated_quest.id, lang, name
+                        )
+                    )
+                end
+            end
+        end
+    end
+end
+
 core.log('action', 'Loading quests from markdown took: ' .. ((core.get_us_time() - t0) / 1000) .. 'ms')
