@@ -234,7 +234,7 @@
 
 # Release 9
 - New questline "Decorator"
-- Moved "Emitter Immitators" to the Decorator questline
+- Moved "Emitter Imitators" to the Decorator questline
 - New quest: "Photon Lamps" in Decorator Questline
 - Added Photon Lamps
 - Fixed a bug reported by @theidealist (ty)
