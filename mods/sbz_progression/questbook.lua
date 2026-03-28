@@ -158,34 +158,20 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins '≡'
             ins(localized(quest, 'title', lang))
             quest_count = quest_count - 1
-        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.id) then
+        elseif quest.type == 'secret' then
             ins(pal.bright_purple)
-
-            -- just for the credits quest
-            if quest.istoplevel then
-                ins '0'
-            else
-                ins(default_indent)
-            end
-
+            ins(quest.istoplevel and '0' or default_indent)
             ins '✪'
-            ins(quest.title)
-            completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
-        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.id) == false then
-            ins(pal.bright_purple)
-
-            -- just for the credits quest
-            if quest.istoplevel then
-                ins '0'
+            if is_achievement_unlocked(player_name, quest.id) then
+                ins(localized(quest, 'title', lang))
+                completed_count = completed_count + 1
             else
-                ins(default_indent)
+                ins '???'
+                available_count = available_count + 1
             end
-
-            ins '✪'
-            ins '???'
-            available_count = available_count + 1
         end
     end
+
     ---@diagnostic disable-next-line: cast-local-type
     quest_list = table.concat(quest_list, ',')
 
@@ -272,17 +258,13 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                     )
                 )
         elseif
-            selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.id) == false
+            selected_quest.type == 'secret' and not is_achievement_unlocked(player_name, selected_quest.id)
         then
             formspec = formspec
                 .. hypertext:format(
                     '???',
                     '',
-                    (
-                        is_achievement_unlocked(player_name, selected_quest.id)
-                        and core.formspec_escape(S("✔ Shhh... don't tell anyone"))
-                        or core.formspec_escape(S('You have not completed this Quest.'))
-                    )
+                    core.formspec_escape(S('You have not completed this Quest.'))
                 )
         elseif selected_quest.type == 'text' then
             formspec = formspec
