@@ -3,7 +3,7 @@ local NS = function(s)
     return s
 end
 
--- Boilerplate for compatibiliity with pre-5.9.0
+-- Boilerplate for compatibility with pre-5.9.0
 -- versions of minetest
 local hud_def_type_field
 if minetest.features.hud_def_type_field then
@@ -237,13 +237,7 @@ function hb.register_hudbar(
         local bar_image, bgicon, bar_size
         if hb.settings.bar_type == 'progress_bar' then
             bar_image = textures.bar
-            -- NOTE: Intentionally set to nil. For some reason, on some systems,
-            -- the progress bar is displaced when the bar_size is set explicitly here.
-            -- On the other hand, setting this to nil is deprecated in MT 5.0.0 due to
-            -- a debug log warning, but nothing is explained in lua_api.txt.
-            -- This section is a potential bug magnet, please watch with care!
-            -- The size of the bar image is expected to be exactly 2×16 pixels.
-            bar_size = nil
+            bar_size = { x = 2, y = 16 }
         elseif hb.settings.bar_type == 'statbar_classic' or hb.settings.bar_type == 'statbar_modern' then
             bar_image = textures.icon
             bgicon = textures.bgicon
