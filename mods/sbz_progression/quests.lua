@@ -52,10 +52,10 @@ table.foreach(quest_files, function(name)
     table.foreach(qdata, sbz_api.register_quest, true)
 end, true)
 sbz_api.register_quest({
-    ["type"] = "secret",
-    ["istoplevel"] = true,
-    ["title"] = "Credits",
-    ["text"] =
+    type       = 'secret',
+    istoplevel = true,
+    title      = 'Credits',
+    text       =
         "Thank you for playing Skyblock: Zero. "
         .. "You demonstrated extreme logical thinking skills, planning skills, and invested probably at least a couple of hours into our game. "
         .. "We hope you enjoyed this current version, because there will be more coming. "
