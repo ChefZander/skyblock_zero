@@ -1,5 +1,3 @@
-local S = core.get_translator(core.get_current_modname())
-
 local render_links_delay = 1
 
 local waypoint_ids = {}
@@ -8,7 +6,7 @@ local logic = sbz_api.logic
 
 function logic.happy_particles(pos)
     local vel = vector.new(-3, -3, -3)
-    core.add_particlespawner({
+    minetest.add_particlespawner({
         amount = 1000,
         time = 0.1,
         exptime = 3,
@@ -48,13 +46,13 @@ local function render_links(dtime)
         sbz_api.remove_waypoint(v)
     end
     waypoint_ids = {}
-    for k, v in pairs(core.get_connected_players()) do
+    for k, v in pairs(minetest.get_connected_players()) do
         local wielded_item = v:get_wielded_item()
         if wielded_item:get_name() == "sbz_logic:luacontroller_linker" then
             local itemmeta = wielded_item:get_meta()
             local linked_pos = vector.from_string(itemmeta:get_string("linked"))
             if linked_pos ~= nil then -- ahh ok lua kinda needs a continue statement :/
-                local linked_meta = core.get_meta(linked_pos)
+                local linked_meta = minetest.get_meta(linked_pos)
                 local radius = linked_meta:get_int("linking_range")
                 if radius ~= 0 then
                     vizlib.draw_cube(linked_pos, radius + 0.5, {
@@ -64,7 +62,7 @@ local function render_links(dtime)
                         time = render_links_delay + 0.1
                     })
                 end
-                local links = core.deserialize(linked_meta:get_string("links"))
+                local links = minetest.deserialize(linked_meta:get_string("links"))
                 if type(links) == "table" then
                     for k, link in pairs(links) do
                         for _, position in pairs(link) do
@@ -85,18 +83,18 @@ local function try_to_link_to_luac(stack, pos, placer)
     local node = sbz_api.get_or_load_node(pos)
     if not node then return end
     node = node.name
-    local ndef = core.registered_nodes[node]
+    local ndef = minetest.registered_nodes[node]
     if not ndef then return end
-    if not ndef.can_link then return core.chat_send_player(name, S("Can't link")) end
+    if not ndef.can_link then return minetest.chat_send_player(name, "Can't link") end
     -- ok yeah it can link
     meta:set_string("linked", vector.to_string(pos))
-    core.chat_send_player(name, S("Luacontroller successfully linked to the luacontroller linking tool!"))
+    minetest.chat_send_player(name, "Luacontroller succesfully linked to the luacontroller linking tool!")
     logic.happy_particles(pos)
 end
 
 local function err_link_invalid(placer)
-    core.chat_send_player(placer:get_player_name(),
-        S("Link is invalid, please link the luacontroller linker to a luacontroller again."))
+    minetest.chat_send_player(placer:get_player_name(),
+        "Link is invalid, please link the luacontroller linker to a luacontroller again.")
 end
 
 local function make_link(meta, pos, placer)
@@ -111,31 +109,31 @@ local function make_link(meta, pos, placer)
     end
     linked_node = linked_node.name
 
-    local ndef = core.registered_nodes[linked_node]
+    local ndef = minetest.registered_nodes[linked_node]
     if ndef == nil then return err_link_invalid(placer) end
     if not ndef.can_link then return err_link_invalid(placer) end
 
-    local linked_meta = core.get_meta(linked_pos)
+    local linked_meta = minetest.get_meta(linked_pos)
     local linked_range = linked_meta:get_int("linking_range")
 
     if linked_range == 0 then
-        core.chat_send_player(placer:get_player_name(), S("The luacontroller doesn't have a linking upgrade."))
+        minetest.chat_send_player(placer:get_player_name(), "The luacontroller doesn't have a linking upgrade.")
         return
     end
 
     if not logic.in_square_radius(linked_pos, pos, linked_range) then
-        core.chat_send_player(placer:get_player_name(), S("Outside of the radius"))
+        minetest.chat_send_player(placer:get_player_name(), "Outside of the radius")
         return
     end
 
     local name = meta:get_string "name"
     if name == "" then
-        core.chat_send_player(placer:get_player_name(), S("You need to set a name first (Left click)"))
+        minetest.chat_send_player(placer:get_player_name(), "You need to set a name first (Left click)")
         return
     end
     -- ok HOPEFULLY thats enough checks holy crap
 
-    local links = core.deserialize(linked_meta:get_string("links")) or {}
+    local links = minetest.deserialize(linked_meta:get_string("links")) or {}
 
     links[name] = links[name] or {}
     links[name][#links[name] + 1] = pos
@@ -166,10 +164,10 @@ local function make_link(meta, pos, placer)
     for k, v in pairs(links) do
         if #v == 0 then links[k] = nil end
     end
-    linked_meta:set_string("links", core.serialize(links))
+    linked_meta:set_string("links", minetest.serialize(links))
 end
 
-core.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player, formname, fields)
     if formname ~= "sbz_logic:luacontroller_linker_form" then
         return
     end
@@ -191,14 +189,14 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 
-core.register_craftitem("sbz_logic:luacontroller_linker", {
-    description = S("Luacontroller Linker"),
-    short_description = S("Luacontroller Linker"),
+minetest.register_craftitem("sbz_logic:luacontroller_linker", {
+    description = "Luacontroller Linker",
+    short_description = "Luacontroller Linker",
     info_extra = {
-        S("Right click: ask for a name, if a block is pointed to, link the block"),
-        S("Left click: use the previous name, and link the block"),
-        S("Aux1 + right click/left click: link to that luacontroller"),
-        S("If you hold it, it should show all the links and the luacontroller's radius")
+        "Right click: ask for a name, if a block is pointed to, link the block",
+        "Left click: use the previous name, and link the block",
+        "Aux1 + right click/left click: link to that luacontroller",
+        "If you hold it, it should show all the links and the luacontroller's radius"
     },
     inventory_image = "luacontroller_linker.png",
     range = 10,
@@ -211,7 +209,7 @@ core.register_craftitem("sbz_logic:luacontroller_linker", {
         end
         if placer:get_player_control().aux1 == false then
             local target = pointed.under
-            core.show_formspec(placer:get_player_name(), "sbz_logic:luacontroller_linker_form",
+            minetest.show_formspec(placer:get_player_name(), "sbz_logic:luacontroller_linker_form",
                 "field[set_name;The name of the link;]")
             if pointed.type ~= "node" then
                 placer:get_meta():set_string("target", "")

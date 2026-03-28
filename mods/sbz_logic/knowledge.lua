@@ -1,5 +1,3 @@
-local S = core.get_translator(core.get_current_modname())
-
 logic = sbz_api.logic
 local P = core.get_modpath("sbz_logic") .. "/help_pages/"
 
@@ -96,7 +94,7 @@ local function on_receive_fields(pos, formname, fields, sender)
 end
 
 core.register_node("sbz_logic:knowledge_station", {
-    description = S("Knowledge Station"),
+    description = "Knowledge Station",
     sounds = sbz_audio.matter(),
     info_extra = "Explains logic.",
     on_construct = function(pos)

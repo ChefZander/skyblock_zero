@@ -1,5 +1,3 @@
-local S = core.get_translator(core.get_current_modname())
-
 local logic = sbz_api.logic
 
 --[[
@@ -7,8 +5,8 @@ local logic = sbz_api.logic
     def.action_out = function(stack, logic_pos, logic_meta) -- undo that ^
 ]]
 
-core.register_craftitem("sbz_logic:upgrade_template", {
-    description = S("Logic Upgrade Template"),
+minetest.register_craftitem("sbz_logic:upgrade_template", {
+    description = "Logic Upgrade Template",
     inventory_image = "upgrade_template.png",
     groups = { ui_logic = 1 }
 })
@@ -29,14 +27,14 @@ end
 
 logic.register_upgrade = function(name, def)
     def.groups = { sbz_logic_upgrade = 1, ui_logic = 1 }
-    core.register_craftitem(name, def)
+    minetest.register_craftitem(name, def)
 end
 
 logic.register_upgrade("sbz_logic:linking_upgrade", {
     info_extra = { "Upgrades linking radius by 8, you can have 3 of these", "Also it is needed for *any* sort of communication, or getting information about the world." },
     stack_max = 1,
     same_upgrade_max = 3,
-    description = S("Linking Upgrade"),
+    description = "Linking Upgrade",
     action_in = function(stack, logic_pos, logic_meta)
         logic_meta:set_int("linking_range", logic_meta:get_int "linking_range" + 8)
     end,

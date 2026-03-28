@@ -1,5 +1,3 @@
-local S = core.get_translator(core.get_current_modname())
-
 sbz_api.logic = {
     log = function(msg)
         if sbz_api.debug then
@@ -26,12 +24,12 @@ dofile(MP .. "/code_disks.lua")
 
 sbz_api.register_stateful_machine("sbz_logic:lua_controller", {
     tiles = { "luacontroller_top.png", "luacontroller_top.png", "luacontroller.png" },
-    description = S("Lua Controller"),
+    description = "Lua Controller",
     sounds = sbz_audio.matter(),
     info_extra = {
-        S("The most complex block in this game."),
-        S("No like actually... it might be"),
-        S("Punch with the basic editor disk to get started."),
+        "The most complex block in this game.",
+        "No like actually... it might be",
+        "Punch with the basic editor disk to get started.",
     },
     disallow_pipeworks = true,
     autostate = false,
