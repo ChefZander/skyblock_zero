@@ -1,8 +1,8 @@
 local S = core.get_translator('sbz_progression')
 
-local function get_quest_by_name(quest_name)
-    for i, quest in ipairs(quests) do
-        if quest.title == quest_name then return quest end
+local function get_quest_by_id(quest_id)
+    for _, quest in ipairs(quests) do
+        if quest.id == quest_id then return quest end
     end
 end
 
@@ -76,11 +76,11 @@ function is_achievement_unlocked(player_name, achievement_id)
 end
 
 function is_quest_available(player_name, quest_id)
-    local quest = get_quest_by_name(quest_id)
-    if quest.requires == nil then return true end
+    local quest = get_quest_by_id(quest_id)
+    if quest == nil or quest.requires == nil then return true end
 
-    for i, quest_name in ipairs(quest.requires) do
-        if is_achievement_unlocked(player_name, quest_name) == false then return false end
+    for _, req_id in ipairs(quest.requires) do
+        if not is_achievement_unlocked(player_name, req_id) then return false end
     end
     return true
 end
@@ -110,13 +110,13 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 
     for _, quest in ipairs(quests_to_show) do
         if quest.type == 'quest' then
-            if is_achievement_unlocked(player_name, quest.title) then
+            if is_achievement_unlocked(player_name, quest.id) then
                 ins(pal.bright_green)
                 ins(default_indent)
                 ins '✓'
                 ins(quest.title)
                 completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
-            elseif is_quest_available(player_name, quest.title) then
+            elseif is_quest_available(player_name, quest.id) then
                 ins(pal.light1)
                 ins(default_indent)
                 ins '►'
@@ -140,7 +140,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins '≡'
             ins(quest.title)
             quest_count = quest_count - 1
-        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) then
+        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.id) then
             ins(pal.bright_purple)
 
             -- just for the credits quest
@@ -153,7 +153,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             ins '✪'
             ins(quest.title)
             completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
-        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) == false then
+        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.id) == false then
             ins(pal.bright_purple)
 
             -- just for the credits quest
@@ -237,31 +237,31 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     if selected_quest then
         if
             selected_quest.type == 'quest'
-            or (selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.title))
+            or (selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.id))
         then
             formspec = formspec
                 .. hypertext:format(
                     core.formspec_escape('<big>' .. selected_quest.title .. '</big>'),
                     (
-                        is_quest_available(player_name, selected_quest.title)
+                        is_quest_available(player_name, selected_quest.id)
                         and core.formspec_escape(selected_quest.text)
                         or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     (
-                        is_achievement_unlocked(player_name, selected_quest.title)
+                        is_achievement_unlocked(player_name, selected_quest.id)
                         and (selected_quest.type == 'secret' and core.formspec_escape(S("✔ Shhh... don't tell anyone :)")) or core.formspec_escape(S('✔ You have completed this Quest.')))
                         or core.formspec_escape(S('You have not completed this Quest.'))
                     )
                 )
         elseif
-            selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.title) == false
+            selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.id) == false
         then
             formspec = formspec
                 .. hypertext:format(
                     '???',
                     '',
                     (
-                        is_achievement_unlocked(player_name, selected_quest.title)
+                        is_achievement_unlocked(player_name, selected_quest.id)
                         and core.formspec_escape(S("✔ Shhh... don't tell anyone"))
                         or core.formspec_escape(S('You have not completed this Quest.'))
                     )
@@ -271,7 +271,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
                 .. hypertext:format(
                     ('<style color=%s>'):format(pal.bright_aqua or '#9ab7fc') .. selected_quest.title .. '</style>',
                     (
-                        is_quest_available(player_name, selected_quest.title)
+                        is_quest_available(player_name, selected_quest.id)
                         and core.formspec_escape(selected_quest.text)
                         or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
@@ -342,9 +342,9 @@ core.register_on_player_receive_fields(function(player, formname, fields)
                 if fields.search == 'reachable' then -- When re-working this, don't forget to update the questbook, it's in the introduction questline, last infopage
                     for k, v in pairs(quests) do
                         if
-                            is_quest_available(name, v.title)
+                            is_quest_available(name, v.id)
                             and v.type == 'quest'
-                            and is_achievement_unlocked(name, v.title) == false
+                            and is_achievement_unlocked(name, v.id) == false
                         then
                             filtered_quests[#filtered_quests + 1] = v
                         end
