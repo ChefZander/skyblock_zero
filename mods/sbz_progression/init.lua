@@ -278,6 +278,12 @@ local achievement_on_dig_table = {
     ['sbz_bio:shockshroom_4'] = 'qid_shockshrooms',
 }
 
+-- TODO: Make quest entry for 'Clay' (ID: qid_clay)  ...but only if that's an intended quest at some point.
+
+-- TODO: Remove requirement of Clay (ID: qid_clay) from Bricks (ID: qid_bricks) if Clay won't be a quest.
+
+-- TODO: Make a condition to trigger the Obtain Emittrium (ID: qid_obtain_emittrium) quest
+
 core.register_on_player_inventory_action(function(player, action, inv, inv_info)
     local itemstack
     if action == 'move' then
