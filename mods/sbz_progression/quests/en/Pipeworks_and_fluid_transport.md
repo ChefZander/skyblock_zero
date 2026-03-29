@@ -224,19 +224,19 @@ It completely ignores the priority of receivers and instead cycles between them.
 \<big\>Randomized Input Instatube\</big\>  
 Like the cycling input instatube, but it gives the item to a random receiver.
   
-\<big>Instatube Item Filter\</big\>  
+\<big\>Instatube Item Filter\</big\>  
 Similar to the item sorter, but it only governs what can pass through that tube. (The advantage of using it over item sorters is that it will respect priority, and no short-lived entities will be created.)  
   
 \<big\>One-Way Instatubes\</big\>  
 Instatubes that only allow items to flow in one direction, useful when having multiple filter injectors.
 
 \<bigger\>Performance\</bigger\>
-With big speed comes big responsiblity.
+With big speed comes big responsibility.
 
 The lag from instatubes may show up in your switching station as lag from the thing that is inserting to them. (For example Automatic Filter-Injectors or punchers). The lag from pipeworks tubes does not show up in there.
 
 1st tip: Don't make all of your base a single large instatube network. (unless you know what you are doing, and know the flaws of instatubes)  
-2nd tip: Don't transport MANY small item stacks in a large instatube network, <b>have one or the other</b>. Always prefer larger item stacks. (Instead of sending 100 matter blobs in seperate stacks to a large network, just send one stack of matter blobs)
+2nd tip: Don't transport MANY small item stacks in a large instatube network, <b>have one or the other</b>. Always prefer larger item stacks. (Instead of sending 100 matter blobs in separate stacks to a large network, just send one stack of matter blobs)
 3rd tip: Only debug performance when it matters. (for example: you notice unusually high lag from filter injectors, or from your 500 puncher setup)
 
 Practical example: Say you want to wire up 50 punchers to your base for processing, how should you go about doing this?  

@@ -20,7 +20,7 @@ Requires: A bigger platform
 ### Text
 
 You can also craft Antimatter Blobs. They give off extremely faint light and unlock some lighting nodes to light up your island.  
-You can also make antimatter versions of some decorational blocks!  
+You can also make antimatter versions of some decorative blocks!  
   
 Previously, they used to explode when next to regular matter, but with new updates they no longer do.  
 
@@ -109,9 +109,9 @@ Requires: A bigger platform, Matter Plates
 
 ### Text
 
-Emitter Immitators are decorational nodes providing light.  
+Emitter Imitators are decorative nodes providing light.  
   
-TIP: Emitter Immitators spawn a lot of particles when punched, try it!
+TIP: Emitter Imitators spawn a lot of particles when punched, try it!
 
 ### Meta
 
@@ -121,11 +121,11 @@ Requires: A bigger platform, More Antimatter
 
 ### Text
 
-Are Emitter Immitators too dim for you? Introducing: Photon Lamps!  
+Are Emitter Imitators too dim for you? Introducing: Photon Lamps!  
   
-With this revolutionary technology you can light up your world the same way as with Emitter Immitators just brighter!  
+With this revolutionary technology you can light up your world the same way as with Emitter Imitators just brighter!  
   
-To craft: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Immitators.  
+To craft: A matter blob in the center, four matter plates in the corners and then just fill the rest of the spaces with regular Emitter Imitators.  
 Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in darkness! Yay!
 
 ### Meta

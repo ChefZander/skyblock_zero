@@ -110,9 +110,6 @@ Server owners should ideally have backups.
 
 Warning: The power input functionality may not work correctly on servers (by default), or on Skyblock Zero configurations that have the "sbz_switching_station_unload" setting active, it may be unusable, sorry.
 
-
-
-
 ### Meta
 
 Requires: Warpshrooms

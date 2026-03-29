@@ -28,7 +28,7 @@ Some commands useful for survival:
 
 **Hotbar switching** You can switch your hotbar row to another one by pressing `sneak` + `aux1` (usually `e`) + `left mouse button`, to cycle your hotbar in the opposite direction use `sneak` + `aux1` + `right mouse button`.
 
-**Recomended for small screens**  
+**Recommended for small screens**  
 In theme settings, you can disable "Force mono font", this will make the font less good but it will make it smaller.  
 
 **Player settings**
@@ -271,7 +271,7 @@ Requires: Antimatter, Circuitry
 We're making the jump from generic matter to stone now! Here is where building a space station gets fun!  
   
 First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring **three matter blobs**, so **having at least 4 advanced matter extractors is recommended**, as you will need a lot of pebbles.  
-Pebbles will unlock a lot of decorational nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!
+Pebbles will unlock a lot of decorative nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!
 
 ### Meta
 

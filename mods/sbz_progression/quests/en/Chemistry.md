@@ -127,7 +127,7 @@ Have you wished to fly? Do I have the tool for you...
   
 The controls:  
   
-Left clicking while holding an un-activated jetpack (you can see with the red lighgt on the texture) will activate it.  
+Left clicking while holding an un-activated jetpack (you can see with the red light on the texture) will activate it.  
 Left clicking while holding an activated jetpack (the light becomes green) will de-activate it  
   
 When a jetpack is activated:  
@@ -167,7 +167,7 @@ Requires: Furnace
 
 ### Text
 
-The elecric drill has 500 uses and is powered by electricity.  
+The electric drill has 500 uses and is powered by electricity.  
   
 If you right click on a battery with the electric drill in your hand, it will take power from the battery and charge the drill! (Just like the jetpack)  
 It needs 1 power per 1 use.  
@@ -184,7 +184,7 @@ Requires: Bear Arms
 
 Craft the antimatter generator, it is best used with automation or a large array of batteries.  
 It needs 1 matter and 1 antimatter per second.  
-It's super resource hungy but gives you more power.  
+It's super resource hungry but gives you more power.  
 
 ### Meta
 
@@ -269,7 +269,7 @@ Requires: Neutronium, Phlogiston Fuser
 In the center of a planet, there is a core, around it is some molten metal.  
   
 Molten metal reacts with cold nodes (like water and ice), very slowly, to:  
-- if flowing molten metal collides with water, it gets tured into stone  
+- if flowing molten metal collides with water, it gets turned into stone  
 - if a flowing metal source collides with water, it gets turned into the node that the flowing metal was. For example molten silicon =\> silicon block  
   
 There is currently no way to make molten metal.  
@@ -332,7 +332,7 @@ If you need even more power, you might want to consider nuclear reactors.
 Types of fuel rods:  
 - thorium: doesn't explode, 800 power  
 - uranium: explodes if not given cooling, 2200 power  
-- plutonium: must have a sufficent amount **non-radioactive** water sources (not flowing water) near the reactor, it explodes, generates 4800 power  
+- plutonium: must have a sufficient amount **non-radioactive** water sources (not flowing water) near the reactor, it explodes, generates 4800 power  
   
 You need at least 6 fuel rods for the reactor to power on.  
 
@@ -424,7 +424,7 @@ Requires: Tubes, Phlogiston Fuser
 
 ### Text
 
-The tool is from the "replacer" mod (specifically, SwissalpS's fork), originally called "Node replacement tool (technic)", but the name was changed in skyblock zero as that was a bit innacurate (there is no technic here, and it can place nodes too).  
+The tool is from the "replacer" mod (specifically, SwissalpS's fork), originally called "Node replacement tool (technic)", but the name was changed in skyblock zero as that was a bit inaccurate (there is no technic here, and it can place nodes too).  
   
 Sneak+right click =\> "Select" the node (this will be used later to decide what node to (re)place with)  
 Aux1+left click =\> Brings up a form where you can chose how the bulk placer tool will behave. Nodes that aren't rendered as a square, or are like/rendered like glass are treated as air.  

@@ -69,7 +69,7 @@ Requires: Switching Station, Emittrium Glass, Dirt, Sprouting Plants
 
 I'm guessing you want to grow plants faster now, don't worry, this is one of the solutions!  
   
-The growth of plants above it will be 2x faster, but so will the CO₂ consumbtion, and you can't fertilize the dirt, you will have to manually place your plant.  
+The growth of plants above it will be 2x faster, but so will the CO₂ consumption, and you can't fertilize the dirt, you will have to manually place your plant.  
 
 ### Meta
 
@@ -108,7 +108,7 @@ Requires: Carbon Dioxide
 There is not enough radiation in the air for plants to mutate on their own, so basic neutron emitter helps them to mutate.  
 Fully grown plants don't mutate.  
   
-The radiation comming off of the Basic Neutron Emitter is mostly harmless to players, but if there are multiple Neutron Emitters, that might become a concern, place this node near plants.  
+The radiation coming off of the Basic Neutron Emitter is mostly harmless to players, but if there are multiple Neutron Emitters, that might become a concern, place this node near plants.  
 
 ### Meta
 
@@ -219,7 +219,7 @@ Requires:
 
 There are TNT sticks, they are made by compressing 9 Pyrograss. These TNT sticks can be thrown and they can be used in combat.  
   
-Normal TNT (compressed 9 tnt sticks, 81 Pyrograss) can be lit by right clicking it. TNT knocks back entites (regardless of if there is line of sight) and damages entities only if there is line of sight.  
+Normal TNT (compressed 9 tnt sticks, 81 Pyrograss) can be lit by right clicking it. TNT knocks back entities (regardless of if there is line of sight) and damages entities only if there is line of sight.  
   
 To complete this quest, craft a full TNT block.  
   
@@ -254,7 +254,7 @@ So, how do you grow them:
 3) Wait or use Fertilizer on it  
   
 Unlike plants, it does not need to be inside a Habitat Regulator.  
-Achievment will unlock when your tree grows.  
+Achievement will unlock when your tree grows.  
 And also, Colorium Trunks can be used in the burner.  
   
 Also, you may see there is a tree core where the sapling used to be, that tree core contains the tree's DNA.  

@@ -27,7 +27,7 @@ You have to use the sensor linker with logic gates:
 - You have to make an "A" link as the 1st input  
 - Most of the time you have to make a "B" link as your 2nd input  
   
-All logic gates run once every 0.25 seconds, this may be refered to as a "switching station subtick".  
+All logic gates run once every 0.25 seconds, this may be referred to as a "switching station subtick".  
   
 When you have multiple logic gates in a chain, there are 2 categories of connections you can make:  
 - "slow" connections - Where each logic gate has to wait 0.25s to execute  
@@ -35,9 +35,9 @@ When you have multiple logic gates in a chain, there are 2 categories of connect
   
 They are dependant on the order that the switching station executes the logic gates.
 
-Switching from a fast connection to a slow one or the other way around may involve switching the direction the power source or switching the way that the logic gates are connected to eachother.  
+Switching from a fast connection to a slow one or the other way around may involve switching the direction the power source or switching the way that the logic gates are connected to each other.  
   
-You can make a computer with these. I would strongly recomend not doing that. If you want to do that, submit your code optimizations to skyblock zero logic gates with a pull request.  
+You can make a computer with these. I would strongly recommend not doing that. If you want to do that, submit your code optimizations to skyblock zero logic gates with a pull request.  
   
 Descriptions of each logic gate if you are unfamiliar with them:  
 Buffer gate - It will copy the state of the machine linked in "A", so if it is on, it will be on, if it is off, it will be off  

@@ -25,7 +25,7 @@ Requires: Annihilator
 To transfer power from generators to machines, you'll need Power Cables. You can get a power cable with a shapeless craft using one Raw Emittrium and one Matter Plate.  
 The cables will connect up and supply your machines with power, looking at your machine will show 'Running' if the machine is running.  
 Also, if you put a machine next to another machine, it will conduct power to that machine, so you only need power cables in some cases.  
-For example, if you have one area for plants, one area for manifacturing, cables are the nicest option to bridge the areas.
+For example, if you have one area for plants, one area for manufacturing, cables are the nicest option to bridge the areas.
 
 ### Meta
 
@@ -100,7 +100,7 @@ Requires: Emittrium Circuits, Concrete Plan
 
 ### Text
 
-Used to manifacture various logic components.
+Used to manufacture various logic components.
 
 ### Meta
 
