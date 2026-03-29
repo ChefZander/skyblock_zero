@@ -615,7 +615,7 @@ sbz_api._start_explosion = function(ctx)
         if sbz_api.can_move_object(obj:get_armor_groups()) then
             obj:add_velocity(vector.normalize(dir) * (ctx.r - len) * ctx.knockback_strength)
         end
-
+        -- this is intentional. HP is only removed when there is line of sight, but velocity is added anyway
         if sbz_api.line_of_sight(ctx.pos, obj:get_pos()) then
             local dmg = math.abs((ctx.r - len) * ctx.extra_damage)
             local groups = obj:get_armor_groups()
@@ -623,7 +623,7 @@ sbz_api._start_explosion = function(ctx)
                 full_punch_interval = 0,
                 damage_groups = {},
             }
-
+            -- pick whichever damage group is more protected
             if (groups.matter or 0) <= (groups.antimatter or 0) then
                 tool_caps.damage_groups.matter = dmg
             else
@@ -665,7 +665,8 @@ local function process_explosion_batch(ctx)
                 if not ndef then break end
 
                 wear = wear + (1 / core.get_item_group(nodename, 'explody'))
-
+                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
+                --although this is very random
                 if wear > ctx.power or core.is_protected(target_pos, ctx.owner) then
                     break
                 end
