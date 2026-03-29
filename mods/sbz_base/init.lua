@@ -689,6 +689,11 @@ local function process_explosion_batch(ctx)
     end
 end
 
+--- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
+---@param pos vector
+---@param power number
+---@param r number
+---@param async boolean
 sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_strength, sound)
     local total_rays = math.min(math.pi * r * r, 3000)
 
