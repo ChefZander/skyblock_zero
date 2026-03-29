@@ -4,6 +4,7 @@
 Emittrium is a very important material when working with Cosmic Joules. This questline will teach you all about it.
 
 ## Obtain Emittrium
+### ID: qid_obtain_emittrium
 
 ### Text
 
@@ -16,9 +17,10 @@ Emitters have a 1/10 chance of producing Raw Emittrium, and a 9/10 chance of pro
 
 ### Meta
 
-Requires: Annihilator
+Requires: qid_annihilator
 
 ## Power Cables
+### ID: qid_power_cables
 
 ### Text
 
@@ -29,9 +31,10 @@ For example, if you have one area for plants, one area for manufacturing, cables
 
 ### Meta
 
-Requires: Matter Plates, Obtain Emittrium
+Requires: qid_matter_plates, Obtain Emittrium
 
 ## Starlight Collectors
+### ID: qid_starlight_collectors
 
 ### Text
 
@@ -42,6 +45,7 @@ Starlight Collectors turn the light of stars into power for you to use. But the 
 Requires: Obtain Emittrium
 
 ## Starlight Catchers
+### ID: qid_starlight_catchers
 
 ### Text
 
@@ -51,9 +55,10 @@ They won't do anything if you connect them directly to a Switching Station, as t
 
 ### Meta
 
-Requires: Starlight Collectors
+Requires: qid_starlight_collectors
 
 ## Emittrium Circuits
+### ID: qid_emittrium_circuits
 
 ### Text
 
@@ -61,9 +66,10 @@ For some recipes related to storing or transferring power, you'll need Emittrium
 
 ### Meta
 
-Requires: Matter Plates, Obtain Emittrium, Retaining Circuits
+Requires: qid_matter_plates, Obtain Emittrium, qid_retaining_circuits
 
 ## Batteries
+### ID: qid_batteries
 
 ### Text
 
@@ -73,9 +79,10 @@ TIP: Without batteries, all power that isn't being used for machines is wasted, 
 
 ### Meta
 
-Requires: Emittrium Circuits
+Requires: qid_emittrium_circuits
 
 ## Connectors
+### ID: qid_connectors
 
 ### Text
 
@@ -84,9 +91,10 @@ IMPORTANT: Make sure that only one of the two or more joined networks has a Swit
 
 ### Meta
 
-Requires: Emittrium Circuits, Reinforced Matter
+Requires: qid_emittrium_circuits, qid_reinforced_matter
 
 ## Angel's Wing
+### ID: qid_angels_wing
 
 ### Text
 
@@ -94,9 +102,10 @@ The Angel's Wing can make you fly. Right-Click to use, it has 100 uses. To craft
 
 ### Meta
 
-Requires: Emittrium Circuits, Concrete Plan
+Requires: qid_emittrium_circuits, qid_concrete_plan
 
 ## Ele Fabs
+### ID: qid_ele_fabs
 
 ### Text
 
@@ -104,9 +113,10 @@ Used to manufacture various logic components.
 
 ### Meta
 
-Requires: Antimatter, Emittrium Circuits
+Requires: qid_antimatter, qid_emittrium_circuits
 
 ## Knowledge Stations
+### ID: qid_knowledge_stations
 
 ### Text
 
@@ -114,9 +124,10 @@ Teaches you about logic, which is not documented in this questbook but instead i
 
 ### Meta
 
-Requires: Concrete Plan, Ele Fabs
+Requires: qid_concrete_plan, qid_ele_fabs
 
 ## Movable Emitters
+### ID: qid_movable_emitters
 
 ### Text
 
@@ -127,4 +138,4 @@ Movable emitters can be duplicated with 8 phlogiston.
 
 ### Meta
 
-Requires: Planet Teleporter
+Requires: qid_planet_teleporter

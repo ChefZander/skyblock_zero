@@ -5,6 +5,7 @@ A modified version of the mt-mods/jumpdrive mod, lets you teleport yourself, and
     
 
 ## Jumpdrive Backbone
+### ID: qid_jumpdrive_backbone
 
 ### Text
 
@@ -13,9 +14,10 @@ Also used in connecting jumpdrives to a fleet controller.
 
 ### Meta
 
-Requires: Compressor, Reactor Shells
+Requires: qid_compressor, qid_reactor_shells
 
 ## Warp Device
+### ID: qid_warp_device
 
 ### Text
 
@@ -23,9 +25,10 @@ An ingredient in making the jumpdrive engine. May be required for other things i
 
 ### Meta
 
-Requires: Crystal Grower, Antimatter Generators
+Requires: qid_crystal_grower, qid_antimatter_generators
 
 ## The Jumpdrive (engine)
+### ID: qid_the_jumpdrive_engine
 
 ### Text
 
@@ -48,9 +51,10 @@ With protections: Jumpdrive leaves protections behind if it collides with anothe
 
 ### Meta
 
-Requires: Jumpdrive Backbone, Warp Device, Very Advanced Batteries
+Requires: qid_jumpdrive_backbone, qid_warp_device, qid_very_advanced_batteries
 
 ## Jumpdrive Stations
+### ID: qid_jumpdrive_stations
 
 ### Text
 
@@ -60,9 +64,10 @@ Simply place one down in your target destination. Now you can teleport near it w
 
 ### Meta
 
-Requires: The Jumpdrive (engine)
+Requires: qid_the_jumpdrive_engine
 
 ## Jumpdrive Fleet Controller
+### ID: qid_jumpdrive_fleet_controller
 
 ### Text
 
@@ -73,4 +78,4 @@ Warning: Make sure to ALWAYS press "show" before jump... you don't want one of y
 
 ### Meta
 
-Requires: Jumpdrive Backbone
+Requires: qid_jumpdrive_backbone

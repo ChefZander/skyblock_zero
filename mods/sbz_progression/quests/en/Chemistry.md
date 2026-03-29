@@ -3,6 +3,7 @@
 
 
 ## Crusher
+### ID: qid_crusher
 
 ### Text
 
@@ -10,9 +11,10 @@ You can put in pebbles to get metals, it will also crush stones into 2 gravel ea
 
 ### Meta
 
-Requires: Concrete Plan, Antimatter, Charged Field
+Requires: qid_concrete_plan, qid_antimatter, qid_charged_field
 
 ## Secret: It's fake
+### ID: qid_its_fake
 
 ### Text
 
@@ -23,6 +25,7 @@ Digital gold? Where have I heard that before...
 Requires: 
 
 ## Furnace
+### ID: qid_furnace
 
 ### Text
 
@@ -30,9 +33,10 @@ The High Power Electric Furnace (H.P.E.F for short), allows you to smelt any pow
 
 ### Meta
 
-Requires: Crusher
+Requires: qid_crusher
 
 ## Simple Alloy Furnace
+### ID: qid_simple_alloy_furnace
 
 ### Text
 
@@ -41,9 +45,10 @@ Try out some combinations of metals to see which ones create alloys. Consumes 10
 
 ### Meta
 
-Requires: Crusher, Emittrium Circuits, Antimatter, Charged Field
+Requires: qid_crusher, qid_emittrium_circuits, qid_antimatter, qid_charged_field
 
 ## Bronze Age
+### ID: qid_bronze_age
 
 ### Text
 
@@ -51,9 +56,10 @@ Congratulations, Commander! You've just unlocked the Bronze Age, because nothing
 
 ### Meta
 
-Requires: Simple Alloy Furnace, Crusher
+Requires: qid_simple_alloy_furnace, qid_crusher
 
 ## Centrifuge
+### ID: qid_centrifuge
 
 ### Text
 
@@ -64,9 +70,10 @@ In the centrifuge you can get:
 
 ### Meta
 
-Requires: Crusher, Simple Alloy Furnace
+Requires: qid_crusher, qid_simple_alloy_furnace
 
 ## Compressor
+### ID: qid_compressor
 
 ### Text
 
@@ -76,10 +83,11 @@ Craft this wonderful compressor, insert 9 powder, or 9 ingots, and watch as it m
 Blocks made from metals cannot be dug with Matter Annihilators, you must use the robotic arm or the drill instead.  
 ### Meta
 
-Requires: Crusher, Simple Alloy Furnace 
+Requires: qid_crusher, qid_simple_alloy_furnace
 
 
 ## Advanced Batteries
+### ID: qid_advanced_batteries
 
 ### Text
 
@@ -87,9 +95,10 @@ A battery made with metals. Significantly better than the basic battery.
 
 ### Meta
 
-Requires: Batteries, Furnace, Centrifuge
+Requires: qid_batteries, qid_furnace, qid_centrifuge
 
 ## Very Advanced Batteries
+### ID: qid_very_advanced_batteries
 
 ### Text
 
@@ -97,9 +106,10 @@ If you have **lots of metals** this is the battery for you! If you don't, then t
 
 ### Meta
 
-Requires: Batteries, Furnace, Advanced Batteries
+Requires: qid_batteries, qid_furnace, qid_advanced_batteries
 
 ## Crystal Grower
+### ID: qid_crystal_grower
 
 ### Text
 
@@ -107,19 +117,21 @@ Grows crystals out of stuff.
 
 ### Meta
 
-Requires: Compressor, Neutronium
+Requires: qid_compressor, qid_neutronium
 
 ## Teleport Battery
+### ID: qid_teleport_battery
 
 ### Text
 
-Teleport Battery teleports power accross networks. Can be useful when trying to share power with other people.  
+Teleport Battery teleports power across networks. Can be useful when trying to share power with other people.  
 
 ### Meta
 
-Requires: Crystal Grower
+Requires: qid_crystal_grower
 
 ## Jetpack
+### ID: qid_jetpack
 
 ### Text
 
@@ -151,9 +163,10 @@ The Jetpack originally used to get automatically de-activated when you stop havi
 
 ### Meta
 
-Requires: Neutronium
+Requires: qid_neutronium
 
 ## Bear Arms
+### ID: qid_bear_arms
 
 ### Text
 
@@ -161,9 +174,10 @@ Notice the small little pun there? .. it's obvious that it tells you to craft a 
 
 ### Meta
 
-Requires: Furnace
+Requires: qid_furnace
 
 ## Electric Drill
+### ID: qid_electric_drill
 
 ### Text
 
@@ -176,9 +190,10 @@ It also digs 2x faster than the robotic arm.
 
 ### Meta
 
-Requires: Bear Arms
+Requires: qid_bear_arms
 
 ## Antimatter Generators
+### ID: qid_antimatter_generators
 
 ### Text
 
@@ -188,9 +203,10 @@ It's super resource hungry but gives you more power.
 
 ### Meta
 
-Requires: Furnace
+Requires: qid_furnace
 
 ## Engraver
+### ID: qid_engraver
 
 ### Text
 
@@ -198,7 +214,7 @@ Creates processors from silicon crystals.
 
 ### Meta
 
-Requires: Laser, Crystal Grower
+Requires: qid_laser, qid_crystal_grower
 
 ## Info: Multiblock Terminology
 
@@ -217,6 +233,7 @@ The emittrium reactor was made before multiblocks got standardised, so some of t
 Requires: 
 
 ## Blast Furnace
+### ID: qid_blast_furnace
 
 ### Text
 
@@ -238,9 +255,10 @@ To complete this quest, craft a blast furnace controller, but be aware that it d
 
 ### Meta
 
-Requires: Compressor, Engraver
+Requires: qid_compressor, qid_engraver
 
 ## Phlogiston Fuser
+### ID: qid_phlogiston_fuser
 
 ### Text
 
@@ -250,9 +268,10 @@ You can also make some armor from phlogiston, once it is low on durability, you 
 
 ### Meta
 
-Requires: Crystal Grower, Very Advanced Batteries
+Requires: qid_crystal_grower, qid_very_advanced_batteries
 
 ## Planet Teleporter
+### ID: qid_planet_teleporter
 
 ### Text
 
@@ -260,7 +279,7 @@ Requires: Crystal Grower, Very Advanced Batteries
 
 ### Meta
 
-Requires: Neutronium, Phlogiston Fuser
+Requires: qid_neutronium, qid_phlogiston_fuser
 
 ## Info: Inside of planets
 
@@ -276,9 +295,10 @@ There is currently no way to make molten metal.
 
 ### Meta
 
-Requires: Planet Teleporter
+Requires: qid_planet_teleporter
 
 ## Planet Ores
+### ID: qid_planet_ores
 
 ### Text
 
@@ -289,9 +309,10 @@ To get this achievement, you will need to put uranium or thorium powder in your 
 
 ### Meta
 
-Requires: Planet Teleporter
+Requires: qid_planet_teleporter
 
 ## Pebble Enhancer
+### ID: qid_pebble_enhancer
 
 ### Text
 
@@ -301,9 +322,10 @@ Simply put a pebble into the pebble enhancer, it will become enhanced.
 
 ### Meta
 
-Requires: Planet Ores
+Requires: qid_planet_ores
 
 ## Decay Accelerator
+### ID: qid_decay_accelerator
 
 ### Text
 
@@ -311,9 +333,10 @@ It is used to obtain plutonium or lead from radioactive materials (Uranium, thor
 
 ### Meta
 
-Requires: Planet Ores
+Requires: qid_planet_ores
 
 ## Radiation Shielding
+### ID: qid_radiation_shielding
 
 ### Text
 
@@ -321,9 +344,10 @@ Solid charged field or lead blocks shield against radiation. Craft some shieldin
 
 ### Meta
 
-Requires: Planet Ores
+Requires: qid_planet_ores
 
 ## Nuclear Reactor
+### ID: qid_nuclear_reactor
 
 ### Text
 
@@ -338,9 +362,10 @@ You need at least 6 fuel rods for the reactor to power on.
 
 ### Meta
 
-Requires: Planet Ores, Radiation Shielding
+Requires: qid_planet_ores, qid_radiation_shielding
 
 ## Dust
+### ID: qid_dust
 
 ### Text
 
@@ -349,9 +374,10 @@ You can also climb it, and it is great for scaffolding.
 
 ### Meta
 
-Requires: Crusher
+Requires: qid_crusher
 
 ## Small Protectors
+### ID: qid_small_protectors
 
 ### Text
 
@@ -365,9 +391,10 @@ Special names ("owners") that you can add to protectors (no player can name them
 
 ### Meta
 
-Requires: Concrete Plan, Furnace
+Requires: qid_concrete_plan, qid_furnace
 
 ## Big Protectors
+### ID: qid_big_protectors
 
 ### Text
 
@@ -375,9 +402,10 @@ Large protectors are like the small protectors but bigger.
 
 ### Meta
 
-Requires: Small Protectors
+Requires: qid_small_protectors
 
 ## Node Preserver
+### ID: qid_node_preserver
 
 ### Text
 
@@ -391,9 +419,10 @@ They can only dig nodes that the robotic arm can.
 
 ### Meta
 
-Requires: Phlogiston Fuser
+Requires: qid_phlogiston_fuser
 
 ## Copy Tool
+### ID: qid_copy_tool
 
 ### Text
 
@@ -418,9 +447,10 @@ P.S. if you find anything that you'd like to be compatible with the copytool, do
 
 ### Meta
 
-Requires: Tubes, Phlogiston Fuser
+Requires: qid_tubes, qid_phlogiston_fuser
 
 ## Bulk Placer Tool
+### ID: qid_bulk_placer_tool
 
 ### Text
 
@@ -437,7 +467,7 @@ It might behave weirdly with super powered lamps, be aware of that.
 
 ### Meta
 
-Requires: Phlogiston Fuser
+Requires: qid_phlogiston_fuser
 <!-- ## Clay
 
 ### Text
@@ -446,8 +476,9 @@ Clay is a precursor. It has no particular use.
 
 ### Meta
 
-Requires: Crusher, Liquid Water -->
+Requires: qid_crusher, qid_liquid_water -->
 ## Firmament
+### ID: qid_firmament
 
 ### Text
 
@@ -455,9 +486,10 @@ Firmament is a very rare drop from centrifuging dust.
 
 ### Meta
 
-Requires: Centrifuge, Dust
+Requires: qid_centrifuge, qid_dust
 
 ## Gravitational Lens
+### ID: qid_gravitational_lens
 
 ### Text
 
@@ -465,9 +497,10 @@ Gain insight into matter by gravitational lensing.
 
 ### Meta
 
-Requires: Neutronium
+Requires: qid_neutronium
 
 ## Refined Firmament
+### ID: qid_refined_firmament
 
 ### Text
 
@@ -475,9 +508,10 @@ You can refine Unrefined Firmament by looking at it through a Gravitational Lens
 
 ### Meta
 
-Requires: Firmament, Blast Furnace
+Requires: qid_firmament, qid_blast_furnace
 
 ## Wormhole
+### ID: qid_wormhole
 
 ### Text
 
@@ -485,4 +519,4 @@ Open far-away inventories by linking them to the Wormhole.
 
 ### Meta
 
-Requires: Refined Firmament, Blast Furnace, Phlogiston Fuser
+Requires: qid_refined_firmament, qid_blast_furnace, qid_phlogiston_fuser

@@ -4,6 +4,7 @@
 An island with just machines will look very boring! Use the knowledge from the Decorator Questline to spice up your island! These quests are not required for progression, but playing can get boring on an empty, barren, dark island. So don't just ignore this questline, okay? :P
 
 ## Compressed Core Dust
+### ID: qid_compressed_core_dust
 
 ### Text
 
@@ -13,9 +14,10 @@ Compress it! Compressed Core Dust can be used as a building material.
 
 ### Meta
 
-Requires: A bigger platform
+Requires: qid_a_bigger_platform
 
 ## More Antimatter
+### ID: qid_more_antimatter
 
 ### Text
 
@@ -26,9 +28,10 @@ Previously, they used to explode when next to regular matter, but with new updat
 
 ### Meta
 
-Requires: Antimatter
+Requires: qid_antimatter
 
 ## Anti-Annihilator
+### ID: qid_anti_annihilator
 
 ### Text
 
@@ -36,9 +39,10 @@ Unfortunately, you again don't seem to be strong enough to destroy that node [an
 
 ### Meta
 
-Requires: More Antimatter
+Requires: qid_more_antimatter
 
 ## Screwdriver
+### ID: qid_screwdriver
 
 ### Text
 
@@ -47,9 +51,10 @@ TIP: This acts similarly to the Minetest Game screwdriver.
 
 ### Meta
 
-Requires: Antimatter, Introduction
+Requires: qid_antimatter, qid_introduction
 
 ## CNC Machines
+### ID: qid_cnc_machines
 
 ### Text
 
@@ -63,9 +68,10 @@ Craft one, put in the block of your choosing*, and boom!
 
 ### Meta
 
-Requires: Emittrium Circuits
+Requires: qid_emittrium_circuits
 
 ## Factory Flooring
+### ID: qid_factory_flooring
 
 ### Text
 
@@ -73,9 +79,10 @@ This is a node to use as floor for your factory, to give it those classic vibes.
 
 ### Meta
 
-Requires: A bigger platform
+Requires: qid_a_bigger_platform
 
 ## Tiled Factory Flooring
+### ID: qid_tiled_factory_flooring
 
 ### Text
 
@@ -83,9 +90,10 @@ A variation of Factory Flooring which adds even more tiling!
 
 ### Meta
 
-Requires: A bigger platform, Factory Flooring
+Requires: qid_a_bigger_platform, qid_factory_flooring
 
 ## Factory Ventilator
+### ID: qid_factory_ventilator
 
 ### Text
 
@@ -93,9 +101,10 @@ You might want a Ventilation system inside a factory, just saying.
 
 ### Meta
 
-Requires: Factory Flooring, Crusher
+Requires: qid_factory_flooring, qid_crusher
 
 ## Reinforced Matter
+### ID: qid_reinforced_matter
 
 ### Text
 
@@ -103,10 +112,10 @@ Normal matter isn't sturdy enough? Try this.
 
 ### Meta
 
-Requires: A bigger platform, Matter Plates
+Requires: qid_a_bigger_platform, qid_matter_plates
 
-## Emitter Immitators
-
+## Emitter Imitators
+### ID: qid_emitter_imitators
 ### Text
 
 Emitter Imitators are decorative nodes providing light.  
@@ -115,9 +124,10 @@ TIP: Emitter Imitators spawn a lot of particles when punched, try it!
 
 ### Meta
 
-Requires: A bigger platform, More Antimatter
+Requires: qid_a_bigger_platform, qid_more_antimatter
 
 ## Photon Lamps
+### ID: qid_photon_lamps
 
 ### Text
 
@@ -130,9 +140,10 @@ Boom! You're done! Now you've got yourself a Photon Lamp! No more sitting in dar
 
 ### Meta
 
-Requires: Emitter Immitators, Matter Plates
+Requires: qid_emitter_imitators, qid_matter_plates
 
 ## Phosphor
+### ID: qid_phosphor
 
 ### Text
 
@@ -140,9 +151,10 @@ On the other hand, you can craft an Emittrium Circuit with an Emitter Imitator t
 
 ### Meta
 
-Requires: Emitter Immitators, Emittrium Circuits
+Requires: qid_emitter_imitators, qid_emittrium_circuits
 
 ## Signs
+### ID: qid_signs
 
 ### Text
 
@@ -150,9 +162,10 @@ Do you want to write something that's visible in the world? You should consider 
 
 ### Meta
 
-Requires: Antimatter
+Requires: qid_antimatter
 
 ## Powered Lights
+### ID: qid_powered_lights
 
 ### Text
 
@@ -161,9 +174,10 @@ Or do you want to light up a huge area, the Super Powered Lamp is for you, it fi
 
 ### Meta
 
-Requires: Switching Station, More Antimatter, Emittrium Glass
+Requires: qid_switching_station, qid_more_antimatter, qid_emittrium_glass
 
 ## Coloring Tool
+### ID: qid_coloring_tool
 
 ### Text
 
@@ -175,9 +189,10 @@ With that colorium, you make your tool.
 
 ### Meta
 
-Requires: Colorium Trees
+Requires: qid_colorium_trees
 
 ## Bricks
+### ID: qid_bricks
 
 ### Text
 
@@ -185,9 +200,10 @@ More fancy traditional bricks to build with.
 
 ### Meta
 
-Requires: Clay
+Requires: qid_clay
 
 ## Mystery Terrarium
+### ID: qid_mystery_terrarium
 
 ### Text
 
@@ -195,9 +211,10 @@ I wonder what's in there...
 
 ### Meta
 
-Requires: Growing Plants, Planet Ores
+Requires: qid_growing_plants, qid_planet_ores
 
 ## Large Server Rack
+### ID: qid_large_server_rack
 
 ### Text
 
@@ -205,9 +222,10 @@ A decor node that looks like a server rack, with rainbow LEDs.
 
 ### Meta
 
-Requires: Engraver, Knowledge Stations, Ele Fabs
+Requires: qid_engraver, qid_knowledge_stations, qid_ele_fabs
 
 ## Ground Line
+### ID: qid_ground_line
 
 ### Text
 
@@ -215,9 +233,10 @@ A line on the ground. Not fully 2D. Can be colored.
 
 ### Meta
 
-Requires: Colorium Trees
+Requires: qid_colorium_trees
 
 ## Power Ground Line
+### ID: qid_power_ground_line
 
 ### Text
 
@@ -225,9 +244,10 @@ Line on the ground, just like Ground Line. Animated, conducts power like a cable
 
 ### Meta
 
-Requires: Colorium Trees, Power Cables
+Requires: qid_colorium_trees, qid_power_cables
 
 ## Antiblocks
+### ID: qid_antiblocks
 
 ### Text
 
@@ -236,4 +256,4 @@ Airlike Antiblock: The same properties as the regular Antiblock, but you can wal
 
 ### Meta
 
-Requires: Colorium Trees, Antimatter
+Requires: qid_colorium_trees, qid_antimatter

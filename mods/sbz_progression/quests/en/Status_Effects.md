@@ -5,6 +5,7 @@ This questline tells you all about status effects, **after** you get them :>
         
 
 ## Secret: Attracted
+### ID: qid_secret_attracted
 
 ### Text
 
@@ -19,6 +20,7 @@ And yes, you can go into orbit around the meteorite attractor; it just takes som
 Requires: 
 
 ## Secret: Wet
+### ID: qid_secret_wet
 
 ### Text
 
@@ -32,6 +34,7 @@ This effect, combined with certain other effects, may produce a very dangerous c
 Requires: 
 
 ## Secret: Shocked
+### ID: qid_secret_shocked
 
 ### Text
 
@@ -45,6 +48,7 @@ This effect, combined with Wet, damages you by 8 hp, and the shocked effect will
 Requires: 
 
 ## Secret: Poisoned
+### ID: qid_secret_poisoned
 
 ### Text
 
@@ -55,6 +59,7 @@ During this effect, you will be 0.5x as fast as you were before. You will also r
 Requires: 
 
 ## Secret: Immune
+### ID: qid_secret_immune
 
 ### Text
 

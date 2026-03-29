@@ -1,6 +1,7 @@
 # Questline: Secrets
 
 ## Secret: Emptiness
+### ID: qid_emptiness
 
 ### Text
 
@@ -11,6 +12,7 @@ Damn. You fell off.
 Requires: 
 
 ## Secret: Desolate
+### ID: qid_secret_desolate
 
 ### Text
 
@@ -21,6 +23,7 @@ You talked to yourself.
 Requires: 
 
 ## Secret: Fragile
+### ID: qid_secret_fragile
 
 ### Text
 
@@ -31,6 +34,7 @@ You broke an Angel's Wing.
 Requires: 
 
 ## Secret: AntiColorium Planets
+### ID: qid_secret_anticolorium_planets
 
 ### Text
 
@@ -45,6 +49,7 @@ Hint 2: Use a screen inverter potion to reverse the effect, at the cost of a mil
 Requires: 
 
 ## Secret: Craftageddon
+### ID: qid_craftageddon
 
 ### Text
 
@@ -55,6 +60,7 @@ What would ever justify this investment??
 Requires: 
 
 ## Secret: Alive Poets Society
+### ID: qid_secret_alive_poets_society
 
 ### Text
 

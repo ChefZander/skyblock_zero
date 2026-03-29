@@ -3,6 +3,7 @@
 Mainly about drawers and Storinators.
 
 ## Storinators
+### ID: qid_storinators
 
 ### Text
 
@@ -11,9 +12,10 @@ The more red/green dots the front of a Storinator displays, the more full/empty 
 
 ### Meta
 
-Requires: Matter Plates, Charged Field, Retaining Circuits
+Requires: qid_matter_plates, qid_charged_field, qid_retaining_circuits
 
 ## Better Storinators
+### ID: qid_better_storinators
 
 ### Text
 
@@ -25,9 +27,10 @@ To complete this quest, you need to craft the bronze Storinator.
 
 ### Meta
 
-Requires: Storinators, Bronze Age
+Requires: qid_storinators, qid_bronze_age
 
 ## Public Storinators
+### ID: qid_public_storinators
 
 ### Text
 
@@ -35,9 +38,10 @@ Public Storinators are like regular Storinators but are accessible to **anyone**
 
 ### Meta
 
-Requires: Storinators
+Requires: qid_storinators
 
 ## Best Storinators
+### ID: qid_best_storinators
 
 ### Text
 
@@ -46,9 +50,10 @@ You can use Neutronium Storinators. They are a little expensive, requiring 4 Neu
 
 ### Meta
 
-Requires: Better Storinators, Neutronium
+Requires: qid_better_storinators, qid_neutronium
 
 ## Drawers
+### ID: qid_drawers
 
 ### Text
 
@@ -62,9 +67,10 @@ Drawers also come with 1x2 and 4x4 variants.
 
 ### Meta
 
-Requires: Storinators
+Requires: qid_storinators
 
 ## Drawer Upgrades
+### ID: qid_drawer_upgrades
 
 ### Text
 
@@ -75,9 +81,10 @@ TIP: To insert an upgrade into a drawer, you need to right-click the edge of it 
 
 ### Meta
 
-Requires: Drawers, Bronze Age
+Requires: qid_drawers, qid_bronze_age
 
 ## Drawer Controller
+### ID: qid_drawer_controller
 
 ### Text
 
@@ -88,9 +95,10 @@ For taking out items, you can use a Luacontroller, sending an itemstack (a strin
 
 ### Meta
 
-Requires: Drawers
+Requires: qid_drawers
 
 ## Room Containers
+### ID: qid_room_containers
 ### Text
 
 Do you want to just put things in a room? This node was made for that.
@@ -112,4 +120,4 @@ Warning: The power input functionality may not work correctly on servers (by def
 
 ### Meta
 
-Requires: Warpshrooms
+Requires: qid_warpshrooms
