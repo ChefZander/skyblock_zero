@@ -44,7 +44,14 @@ function unlock_achievement(player_name, achievement_id)
     local meta = player:get_meta()
     if not is_achievement_unlocked(player_name, achievement_id) then
         meta:set_string(achievement_id, 'true')
-        core.chat_send_player(player_name, S('Quest Completed: @1!', S(achievement_id)))
+
+        -- Look up the human-readable title for the completion message.
+        -- It resolves via quest ID so this is always in sync with the quest definition,
+        -- and uses localized() so the player sees their own language if a translation exists.
+        local lang = player_lang(player_name)
+        local quest = get_quest_by_id(achievement_id)
+        local display_title = quest and localized(quest, 'title', lang) or achievement_id
+        core.chat_send_player(player_name, S('Quest Completed: @1!', display_title))
 
         local pos = player:get_pos()
         core.add_particlespawner {
@@ -282,7 +289,7 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     end
 
     if available_count == 1 and (quest_count - completed_count) == 1 then
-        unlock_achievement(player_name, 'Credits') -- 'Credits' is the stable ID, not a display title
+        unlock_achievement(player_name, 'qid_credits')
 
         -- Okay, let me explain.
         -- This will be called only once to refresh the questbook.
