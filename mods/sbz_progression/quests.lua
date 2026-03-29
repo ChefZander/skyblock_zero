@@ -166,6 +166,7 @@ core.log('action', 'Loading quests from markdown took: ' .. ((core.get_us_time()
 -- removed once all live players have been migrated.
 -- ============================================================
 local legacy_key_map = {
+    ['Introduction']               = 'qid_introduction',
     ['A bigger platform']          = 'qid_a_bigger_platform',
     ['Matter Stairs']              = 'qid_matter_stairs',
     ['Antimatter']                 = 'qid_antimatter',
@@ -223,6 +224,7 @@ local legacy_key_map = {
     ['Emittrium Glass']            = 'qid_emittrium_glass',
     ['Dirt']                       = 'qid_dirt',
     ['Sprouting Plants']           = 'qid_sprouting_plants',
+    ['Growing Plants']             = 'qid_growing_plants',
     ['Carbon Dioxide']             = 'qid_carbon_dioxide',
     ['Airlocks']                   = 'qid_airlocks',
     ['Fluid Pipes']                = 'qid_fluid_pipes',
@@ -281,6 +283,7 @@ local legacy_key_map = {
     ['Bulk Placer Tool']           = 'qid_bulk_placer_tool',
     ['Copy Tool']                  = 'qid_copy_tool',
     ['Basic Neutron Emitter']      = 'qid_basic_neutron_emitter',
+    ['Fiberweed']                  = 'qid_fiberweed',
     ['Electric Soil']              = 'qid_electric_soil',
     ['Engraver']                   = 'qid_engraver',
     ['Blast Furnace']              = 'qid_blast_furnace',
@@ -310,6 +313,7 @@ local legacy_key_map = {
     ['Colorium Emitters']          = 'qid_colorium_emitters',
     ['Radiation Shielding']        = 'qid_radiation_shielding',
     ['TNT']                        = 'qid_tnt',
+    ['Colorium Trees']             = 'qid_colorium_trees',
     ["It's strange..."]            = 'qid_its_strange',
     ['Cleargrass']                 = 'qid_cleargrass',
     ['Razorgrass']                 = 'qid_razorgrass',
@@ -321,6 +325,17 @@ local legacy_key_map = {
     ['Wormhole']                   = 'qid_wormhole',
     -- achievement_on_dig_table
     ['Antineutronium']             = 'qid_antineutronium',
+    -- secret
+    ['Secret: Not Chorus Fruit']     = 'qid_secret_not_chorus_fruit',
+    ['Secret: Desolate']             = 'qid_secret_desolate',
+    ['Secret: Fragile']              = 'qid_secret_fragile',
+    ['Secret: AntiColorium Planets'] = 'qid_secret_anticolorium_planets',
+    ['Secret: Alive Poets Society']  = 'qid_secret_alive_poets_society',
+    ['Secret: Attracted']            = 'qid_secret_attracted',
+    ['Secret: Wet']                  = 'qid_secret_wet',
+    ['Secret: Shocked']              = 'qid_secret_shocked',
+    ['Secret: Poisoned']             = 'qid_secret_poisoned',
+    ['Secret: Immune']               = 'qid_secret_immune',
     -- special
     ['Emptiness']                  = 'qid_emptiness',
     ['Credits']                    = 'qid_credits',
