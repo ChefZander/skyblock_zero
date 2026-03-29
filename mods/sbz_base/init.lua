@@ -573,60 +573,56 @@ function sbz_api.punch(target, hitter, time_from_last_punch, tool_caps, dir)
     end
 end
 
---- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
----@param pos vector
----@param power number
----@param r number
----@param async boolean
-sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_strength, sound)
-    if async then
-        sbz_api.delay_if_laggy(function()
-            sbz_api.explode(pos, r, power, false, owner, extra_damage, knockback_strength, sound)
-        end)
-        return
+local fib_cache = {}
+-- refer to: https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
+local function fibonacci_sphere_points(samples)
+    if fib_cache[samples] then
+        return fib_cache[samples]
     end
-    extra_damage = extra_damage or power
-    knockback_strength = knockback_strength or 2.5
-    owner = owner or ''
 
-    for _ = 1, 500 do
-        local raycast = core.raycast(pos, pos + vector.random_direction() * r, false, true)
-        local wear = 0
-        for pointed in raycast do
-            if pointed.type == 'node' then
-                local target_pos = pointed.under
-                local nodename = core.get_node(target_pos).name
-                local ndef = core.registered_nodes[nodename]
-                if not ndef then break end
-                wear = wear + (1 / core.get_item_group(nodename, 'explody'))
-                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
-                --although this is very random
-                if wear > power or core.is_protected(target_pos, owner) then break end
-                if ndef.on_blast then
-                    ndef.on_blast(target_pos, power, pos, owner, r)
-                else
-                    core.set_node(target_pos, { name = ndef._exploded or 'air' })
-                end
-            end
-        end
+    local points = {}
+    local phi = math.pi * (3 - math.sqrt(5))
+
+    for i = 0, samples - 1 do
+        local y = 1 - (i / (samples - 1)) * 2
+        local radius = math.sqrt(math.max(0, 1 - y * y))
+        local theta = phi * i
+        local x = math.cos(theta) * radius
+        local z = math.sin(theta) * radius
+        points[i + 1] = vector.new(x, y, z)
     end
-    for _, obj in ipairs(core.get_objects_inside_radius(pos, r)) do
-        -- this is all messed up
-        -- TODO: improve
-        local dir = obj:get_pos() - pos
+
+    fib_cache[samples] = points
+    return points
+end
+
+sbz_api._start_explosion = function(ctx)
+    local MAX_ENTITIES = 9 -- finely tuned by means of divine revelation
+    local entity_count = 0
+
+    -- Damage & knockback to objects
+    for _, obj in ipairs(core.get_objects_inside_radius(ctx.pos, math.sqrt(ctx.r))) do
+        if entity_count >= MAX_ENTITIES then
+            break
+        end
+        entity_count = entity_count + 1
+
+        local dir = obj:get_pos() - ctx.pos
         local len = vector.length(dir)
+
+        if len == 0 then dir = vector.new(0, 1, 0) len = 0.01 end
+
         if sbz_api.can_move_object(obj:get_armor_groups()) then
-            obj:add_velocity(vector.normalize(dir) * (r - vector.length(dir)) * knockback_strength)
+            obj:add_velocity(vector.normalize(dir) * (ctx.r - len) * ctx.knockback_strength)
         end
         -- this is intentional. HP is only removed when there is line of sight, but velocity is added anyway
-        if sbz_api.line_of_sight(pos, obj:get_pos()) == true then
-            local dmg = math.abs(vector.length(vector.normalize(dir) * (r - vector.length(dir))) * extra_damage)
+        if sbz_api.line_of_sight(ctx.pos, obj:get_pos()) then
+            local dmg = math.abs((ctx.r - len) * ctx.extra_damage)
             local groups = obj:get_armor_groups()
             local tool_caps = {
                 full_punch_interval = 0,
                 damage_groups = {},
             }
-
             -- pick whichever damage group is more protected
             if (groups.matter or 0) <= (groups.antimatter or 0) then
                 tool_caps.damage_groups.matter = dmg
@@ -637,12 +633,93 @@ sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_
             sbz_api.punch(obj, nil, 100, tool_caps, dir)
         end
     end
-    if sound then
+
+    if ctx.sound then
         core.sound_play('gen_explosion_with_reverb', {
             gain = 2.5,
-            max_hear_distance = 128,
-            pos = pos,
+            max_hear_distance = ctx.r * ctx.r,
+            pos = ctx.pos,
         }, true)
+    end
+end
+
+local function process_explosion_batch(ctx)
+    local batch_size = 50
+    local processed = 0
+
+    while ctx.i <= ctx.total and processed < batch_size do
+        local dir = ctx.ray_dirs[ctx.i]
+        local raycast = core.raycast(
+            ctx.pos,
+            ctx.pos + dir * ctx.r,
+            false,
+            true
+        )
+
+        local wear = 0
+        for pointed in raycast do
+            if pointed.type == 'node' then
+                local target_pos = pointed.under
+                local nodename = core.get_node(target_pos).name
+                local ndef = core.registered_nodes[nodename]
+                if not ndef then break end
+
+                wear = wear + (1 / core.get_item_group(nodename, 'explody'))
+                --the explody group hence signifies roughly how many such nodes in a straight line it can break before stopping
+                --although this is very random
+                if wear > ctx.power or core.is_protected(target_pos, ctx.owner) then
+                    break
+                end
+
+                if ndef.on_blast then
+                    ndef.on_blast(target_pos, ctx.power, ctx.pos, ctx.owner, ctx.r)
+                else
+                    core.set_node(target_pos, { name = ndef._exploded or 'air' })
+                end
+            end
+        end
+
+        ctx.i = ctx.i + 1
+        processed = processed + 1
+    end
+
+    if ctx.i <= ctx.total then
+        sbz_api.delay_if_laggy(function()
+            process_explosion_batch(ctx)
+        end)
+    end
+end
+
+--- Async is todo, and it wont be true async, just the function would be delayed, useful for something like a detonator
+---@param pos vector
+---@param power number
+---@param r number
+---@param async boolean
+sbz_api.explode = function(pos, r, power, async, owner, extra_damage, knockback_strength, sound)
+    local total_rays = math.min(math.pi * r * r, 3000)
+
+    local ctx = {
+        pos = pos,
+        r = r,
+        power = power,
+        owner = owner or '',
+        extra_damage = extra_damage or power,
+        knockback_strength = knockback_strength or 2.5,
+        sound = sound,
+        i = 1,
+        total = total_rays,
+        ray_dirs = fibonacci_sphere_points(total_rays),
+    }
+
+    if async then
+        sbz_api.delay_if_laggy(function()
+            sbz_api.explode(pos, r, power, false, owner, extra_damage, knockback_strength, sound)
+        end)
+    else
+        -- 1. Trigger the start effects (Damage, Sound, Knockback)
+        sbz_api._start_explosion(ctx)
+        -- 2. Batched raycasting for nodes
+        process_explosion_batch(ctx)
     end
 end
 
