@@ -185,7 +185,7 @@ More fancy traditional bricks to build with.
 
 ### Meta
 
-Requires: Clay
+Requires: Dirt
 
 ## Mystery Terrarium
 
