@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/smartshop/api/purchase_mechanics.lua:76
+#, lua-format
+msgid "Cannot exchange: %s"
+msgstr ""
+
+#: mods/smartshop/api/purchase_mechanics.lua:78
+#: mods/smartshop/api/purchase_mechanics.lua:96
+msgid "Shop is sold out"
+msgstr ""
+
+#: mods/smartshop/api/purchase_mechanics.lua:80
+#: mods/smartshop/api/purchase_mechanics.lua:100
+msgid "Shop is full"
+msgstr ""
+
+#: mods/smartshop/api/purchase_mechanics.lua:94
+msgid "You lack appropriate payment"
+msgstr ""
+
+#: mods/smartshop/api/purchase_mechanics.lua:98
+msgid "No room in your inventory"
+msgstr ""
+
+#: mods/smartshop/api/purchase_mechanics.lua:103
+msgid "Failed for unknown reason"
+msgstr ""
+
+#: mods/smartshop/api/purchase_mechanics.lua:108
+msgid "normal exchange"
+msgstr ""
+
+#: mods/smartshop/api/shop_class.lua:43
+msgid "Shop by: @1"
+msgstr ""
+
+#: mods/smartshop/api/shop_class.lua:567
+msgid "(Smartshop by @1)"
+msgstr ""
+
+#: mods/smartshop/api/shop_class.lua:578
+msgid "This shop is over-full."
+msgstr ""
+
+#: mods/smartshop/api/shop_class.lua:580
+msgid "This shop is sold out."
+msgstr ""
+
+#: mods/smartshop/api/shop_class.lua:582
+msgid "This shop is not configured."
+msgstr ""
+
+#: mods/smartshop/api/storage_class.lua:40
+msgid "External storage by: @1"
+msgstr ""
+
+#: mods/smartshop/api/storage_linking.lua:18
+msgid "Storage link attempt timed out, please try again."
+msgstr ""
+
+#: mods/smartshop/api/storage_linking.lua:25
+msgid "Punch a smartshop storage node to link @1 storage"
+msgstr ""
+
+#: mods/smartshop/api/storage_linking.lua:48
+msgid "You do not own this storage!"
+msgstr ""
+
+#: mods/smartshop/api/storage_linking.lua:50
+msgid "Storage is too far from shop to link!"
+msgstr ""
+
+#: mods/smartshop/api/storage_linking.lua:54
+msgid "@1 storage linked!"
+msgstr ""
+
+#: mods/smartshop/compat/currency.lua:191
+msgid "currency exchange"
+msgstr ""
+
+#: mods/smartshop/compat/mesecons.lua:53
+msgid "Don't send"
+msgstr ""
+
+#: mods/smartshop/compat/mesecons.lua:54
+msgid "Incoming"
+msgstr ""
+
+#: mods/smartshop/compat/mesecons.lua:55
+msgid "Outgoing"
+msgstr ""
+
+#: mods/smartshop/compat/mesecons.lua:56
+msgid "Both"
+msgstr ""
+
+#: mods/smartshop/compat/mesecons.lua:67
+msgid "When to send a mesecons signal"
+msgstr ""
+
+#: mods/smartshop/nodes/shop.lua:8
+msgid "Smartshop"
+msgstr ""
+
+#: mods/smartshop/nodes/storage.lua:9
+msgid "Smartshop external storage"
+msgstr ""
+
+#: mods/smartshop/privs.lua:5
+msgid "Smartshop admin"
+msgstr ""

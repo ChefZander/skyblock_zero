@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/unifieddyes/airbrush.lua:168
+msgid "Coloring Tool"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:4
+msgid "Colorium"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:19
+msgid "Colorium Powder"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:26
+msgid "Colorium Blob"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:46
+msgid "Colorium Ground Line"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:73
+msgid "Power Ground Line"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:119
+msgid "Antiblock"
+msgstr ""
+
+#: mods/unifieddyes/nodes.lua:136
+msgid "Airlike Antiblock"
+msgstr ""

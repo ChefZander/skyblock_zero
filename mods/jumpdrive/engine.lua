@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 local has_vizlib = core.get_modpath("vizlib")
 
 core.register_node("jumpdrive:engine", {
-	description = "Jumpdrive",
+	description = S("Jumpdrive"),
 
 	tiles = { "jumpdrive.png" },
 

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 ---@type string|boolean|nil
 local unload_switching_stations = core.settings:get('sbz_switching_station_unload')
 if unload_switching_stations == nil or unload_switching_stations == 'default' then
@@ -434,7 +436,7 @@ local function profiler_formspec(pos, username)
     if not net then return end
     if net.dirty then return end
     if not net.profiler then return end
-    core.chat_send_player(username, '[Switching Station] Network ID: ' .. dump(sbz_api.pos2network[h(pos)])) -- use: detect if the network has changed
+    core.chat_send_player(username, S("[Switching Station] Network ID: ") .. dump(sbz_api.pos2network[h(pos)])) -- use: detect if the network has changed
     local fs = [[
 formspec_version[7]
 size[12,11]
@@ -455,7 +457,7 @@ button_exit[0,10;12,1;exit;Exit]
 end
 
 core.register_node('sbz_power:switching_station', {
-    description = 'Switching Station',
+    description = S("Switching Station"),
     sounds = sbz_audio.matter(),
     tiles = { 'switching_station.png' },
     groups = { matter = 1, cracky = 1, pipe_connects = 1, pipe_conducts = 1 },
@@ -582,17 +584,17 @@ mesecon.register_on_mvps_move(function(moved_nodes)
 end)
 
 core.register_chatcommand('toggle_power', {
-    description = 'Toggles if switching stations are enabled or not',
+    description = S("Toggles if switching stations are enabled or not"),
     params = '<yes/no>',
 
     privs = { ['server'] = true },
     func = function(name, param)
         if core.is_yes(param) then
             sbz_api.enable_switching_station_globalstep = true
-            core.chat_send_player(name, 'Enabled switching stations')
+            core.chat_send_player(name, S("Enabled switching stations"))
         else
             sbz_api.enable_switching_station_globalstep = false
-            core.chat_send_player(name, 'Temporarily disabled switching stations.')
+            core.chat_send_player(name, S("Temporarily disabled switching stations."))
         end
     end,
 })
@@ -707,7 +709,7 @@ sbz_api.make_network_visible = function(p1, p2, net)
 end
 
 core.register_chatcommand('teleport_to_laggiest_switching_station', {
-    description = 'Teleports to the laggiest switching station, useful to diagnose issues with skyblock zero on multiplayer.',
+    description = S("Teleports to the laggiest switching station, useful to diagnose issues with skyblock zero on multiplayer."),
     privs = { ['server'] = true },
     func = function(name, param)
         local pos = nil
@@ -719,9 +721,9 @@ core.register_chatcommand('teleport_to_laggiest_switching_station', {
                 pos = v.switching_station_pos
             end
         end
-        if pos == nil then return false, 'Could not find a switching station like that' end
+        if pos == nil then return false, S("Could not find a switching station like that") end
         local player = core.get_player_by_name(name)
         player:set_pos(pos)
-        return true, 'Done'
+        return true, S("Done")
     end,
 })

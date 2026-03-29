@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 --- The manual crafter doesn't support replacing stacks in recipes
 
 local notify = core.chat_send_player
@@ -155,7 +157,7 @@ local function craft(user, meta)
 end
 
 core.register_node('sbz_power:manual_crafter', {
-    description = 'Manual Crafter',
+    description = S("Manual Crafter"),
     info_extra = 'May be faster than navigating the inventory. See questbook for controls.',
     tiles = { 'manual_crafter.png' },
     on_construct = function(pos)

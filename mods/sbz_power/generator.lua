@@ -1,10 +1,12 @@
+local S = core.get_translator(core.get_current_modname())
+
 local core_dust_power = 30
 local charged_particle_power = 36
 -- 30*10 => 300 power per core dust
 -- 36*10 => 360 power per charged particle
 sbz_api.register_stateful_generator('sbz_power:simple_charge_generator', {
     description = 'Simple Charge Generator',
-    sounds = sbz_audio.machine(),
+    sounds = sbz_api.sounds.machine(),
     tiles = { 'simple_charge_generator_off.png' },
 
     groups = { dig_immediate = 2, sbz_machine = 1, pipe_connects = 1 },
@@ -118,7 +120,7 @@ do -- Simple Charge Generator recipe scope
 end
 
 sbz_api.register_generator('sbz_power:simple_charged_field', {
-    description = 'Simple Charged Field',
+    description = S("Simple Charged Field"),
     drawtype = 'glasslike',
     tiles = { 'simple_charged_field.png' },
     groups = { dig_immediate = 2, cracky = 3, sbz_machine = 1, explody = 5, charged = 1, charged_field = 1 },
@@ -233,7 +235,7 @@ core.register_abm {
 }
 
 core.register_node('sbz_power:charged_field_residue', {
-    description = 'Charged Field Residue',
+    description = S("Charged Field Residue"),
     drawtype = 'glasslike',
     tiles = { 'charged_field_residue.png' },
     groups = { unbreakable = 1, charged_field = 1 },
@@ -262,7 +264,7 @@ core.register_abm {
 }
 
 core.register_node('sbz_power:solid_charged_field', {
-    description = 'Solid Charged Field',
+    description = S("Solid Charged Field"),
     info_extra = 'Used for protecting against radiation.',
     tiles = { 'solid_charged_field.png' },
     groups = { dig_immediate = 2, matter = 1, explody = 5, charged = 1, charged_field = 1 },
@@ -286,7 +288,7 @@ sbz_api.recipe.register_craft {
 -- Starlight Collector
 sbz_api.register_generator('sbz_power:starlight_collector', {
     description = 'Starlight Collector',
-    sounds = sbz_audio.matter(),
+    sounds = sbz_api.sounds.matter(),
     drawtype = 'nodebox',
     tiles = {
         'starlight_collector.png',

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local elapsed = 0
 
 playereffects.register_effect_type('attracted', 'Attracted', 'fx_attracted.png', {
@@ -107,7 +109,7 @@ core.register_entity('sbz_meteorites:gravitational_attractor_entity', {
 })
 
 core.register_node('sbz_meteorites:gravitational_attractor', {
-    description = 'Gravitational Attractor',
+    description = S("Gravitational Attractor"),
     drawtype = 'glasslike',
     tiles = { 'gravitational_attractor.png' },
     inventory_image = 'gravitational_attractor.png^(([combine:32x32:8,8=neutronium.png)^[resize:16x16)',
@@ -137,7 +139,7 @@ do -- Gravitational Attractor recipe scope
 end
 
 core.register_node('sbz_meteorites:gravitational_repulsor', {
-    description = 'Gravitational Repulsor',
+    description = S("Gravitational Repulsor"),
     drawtype = 'glasslike',
     tiles = { 'gravitational_repulsor.png' },
     inventory_image = 'gravitational_repulsor.png^(([combine:32x32:8,8=neutronium.png)^[invert:rgb^[resize:16x16)',

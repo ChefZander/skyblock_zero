@@ -14,28 +14,38 @@ Stuff above gets ignored, could be like a disclaimer that this contains spoilers
 # Some Questline name
 Some questline description
 ## Some quest name
+### ID: qid_some_quest_name
 ### Text
 Some quest text
 ### Meta
-Requires: Something
+Requires: qid_something
 ## Info: Some info name
+### ID: qid_some_info_name
 Hello! Yes this is an info
 
+The ### ID: line must appear immediately after every ## header.
+It is the stable, permanent key for the quest and must never be changed after release.
+The ## title above it is the human-readable display name and may be translated freely.
+
 ]]
+
+--local S = core.get_translator('sbz_progression')
+-- This file processes internal data and contains no player-facing strings.
 
 local markdown_parser = {}
 
 local questline_fmt = '\n# %s\n'
 local quest_fmt = '\n## %s\n'
-local info_fmt = quest_fmt:format 'Info: %s'
-local secret_fmt = quest_fmt:format 'Secret: %s'
+local id_fmt = '### ID: %s\n'
+local info_fmt = '## Info: %s\n'
+local secret_fmt = '## Secret: %s\n'
 
 local meta_fmt = '\n### %s\n'
 local requires_fmt = 'Requires: %s'
 local requires_sep = ', '
 local requires_sep_trim = requires_sep:trim()
 
-local function ltrim(text) -- trim each line seperately
+local function ltrim(text) -- trim each line separately
     return table.concat(
         table.foreach(text:split('\n', true), function(v)
             return v:trim()
@@ -60,8 +70,9 @@ function markdown_parser.encode(quests)
     local result = {}
     for k, v in ipairs(quests) do
         if v.type == 'text' then
-            if v.info then -- Case: Infopage (more similar to a quest)
+            if v.info then -- Case: Infopage
                 result[#result + 1] = info_fmt:format(v.title)
+                result[#result + 1] = id_fmt:format(v.id)
                 result[#result + 1] = meta_fmt:format 'Text'
                 result[#result + 1] = encode_text(v.text)
                 result[#result + 1] = meta_fmt:format 'Meta'
@@ -70,12 +81,13 @@ function markdown_parser.encode(quests)
                 else
                     result[#result + 1] = 'Requires: '
                 end
-            else -- Case: Questline
+            else -- Case: Questline banner
                 result[#result + 1] = questline_fmt:format(v.title)
                 result[#result + 1] = v.text
             end
         elseif v.type == 'quest' then
             result[#result + 1] = quest_fmt:format(v.title)
+            result[#result + 1] = id_fmt:format(v.id)
             result[#result + 1] = meta_fmt:format 'Text'
             result[#result + 1] = encode_text(v.text)
             result[#result + 1] = meta_fmt:format 'Meta'
@@ -86,6 +98,7 @@ function markdown_parser.encode(quests)
             end
         elseif v.type == 'secret' then
             result[#result + 1] = secret_fmt:format(v.title)
+            result[#result + 1] = id_fmt:format(v.id)
             result[#result + 1] = meta_fmt:format 'Text'
             result[#result + 1] = encode_text(v.text)
             result[#result + 1] = meta_fmt:format 'Meta'
@@ -138,7 +151,10 @@ function markdown_parser.decode_text(text)
     return text
 end
 
+-- Reads the ### ID:, ### Text, and ### Meta blocks for a quest.
+-- The ### ID: line must be the first ### encountered after a ## header.
 local function decode_text_and_meta(lines, line_index, quest)
+    local got_id
     local got_text
     local line
     local break_out_of_main_loop = false
@@ -146,12 +162,23 @@ local function decode_text_and_meta(lines, line_index, quest)
         line_index = line_index + 1
         line = lines[line_index]
         if line == nil then break end
-        if starts_with(line, '### Meta') then
+        if starts_with(line, '### ID:') then
+            quest.id = string.sub(line, #'### ID:' + 1):trim()
+            assert(
+                starts_with(quest.id, 'qid_'),
+                '[parser]: Quest "' .. quest.title .. '" has an ### ID: that does not start with qid_: ' .. quest.id
+            )
+            got_id = true
+        elseif starts_with(line, '### Meta') then
+            assert(
+                got_id,
+                '[parser]: Quest "' .. quest.title .. '" is missing ### ID: before ### Meta'
+            )
             assert(
                 got_text,
                 '[parser]: Quest: '
-                    .. quest.title
-                    .. ": I know, i'm strict, but you need to have the ### Text AFTER the ### Meta"
+                .. quest.title
+                .. ": I know, I'm strict, but you need to have the ### Text BEFORE the ### Meta"
             )
             while true do
                 line_index = line_index + 1
@@ -199,28 +226,33 @@ function markdown_parser.decode(text)
         local quest = {}
         local write_to_quests = false
         if starts_with(line, '## Info: ') then
-            quest.type = 'text'
-            quest.info = true
             quest.title = string.sub(line, #'## Info: ' + 1):trim()
-            line_index = decode_text_and_meta(lines, line_index, quest)
+            quest.type  = 'text'
+            quest.info  = true
+            line_index  = decode_text_and_meta(lines, line_index, quest)
             write_to_quests = true
         elseif starts_with(line, '## ') then
             local name = string.sub(line, #'## ' + 1)
             local secret = false
             if starts_with(line, '## Secret: ') then
-                name = string.sub(line, #'## Secret: ' + 1)
+                name   = string.sub(line, #'## Secret: ' + 1)
                 secret = true
             end
-            quest.type = secret and 'secret' or 'quest'
-            quest.title = name:trim()
-            line_index = decode_text_and_meta(lines, line_index, quest)
-
+            quest.title = name:trim() -- display text; may be translated freely
+            quest.type  = secret and 'secret' or 'quest'
+            -- quest.id is read from ### ID: inside decode_text_and_meta
+            line_index  = decode_text_and_meta(lines, line_index, quest)
+            assert(
+                quest.id,
+                '[parser]: Quest "' .. quest.title .. '" is missing a ### ID: line'
+            )
             write_to_quests = true
         elseif starts_with(line, '# ') then
-            local name = line
-            quest.title = string.sub(name, #'# ' + 1)
-            quest.type = 'text'
-            local desc = {}
+            -- Questline banner: no ID required, not part of the progression graph
+            quest.title = string.sub(line, #'# ' + 1):trim()
+            quest.id    = quest.title -- banners use title as id; they are never referenced by Requires:
+            quest.type  = 'text'
+            local desc  = {}
 
             while true do
                 line_index = line_index + 1

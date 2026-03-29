@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node(
     'sbz_resources:matter_blob',
     unifieddyes.def {
-        description = 'Matter Blob',
+        description = S("Matter Blob"),
         tiles = { 'matter_blob.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         walkable = true,
@@ -28,7 +30,7 @@ local platform_selbox = {
 core.register_node(
     'sbz_resources:matter_platform',
     unifieddyes.def {
-        description = 'Matter Platform',
+        description = S("Matter Platform"),
         tiles = { 'matter_blob.png^platform_overlay.png^[makealpha:255,0,0' },
         use_texture_alpha = 'clip',
         drawtype = 'nodebox',
@@ -77,7 +79,7 @@ end
 core.register_node(
     'sbz_resources:antimatter_blob',
     unifieddyes.def {
-        description = 'Antimatter Blob',
+        description = S("Antimatter Blob"),
         tiles = { 'antimatter_blob.png' },
         groups = { antimatter = 1, cracky = 3, explody = 3, slippery = 32767 },
         walkable = true,
@@ -129,7 +131,7 @@ core.register_alias('sbz_resources:antimatter_slab', 'sbz_resources:antimatter_b
 core.register_node(
     'sbz_resources:antimatter_platform',
     unifieddyes.def {
-        description = 'Antimatter Platform',
+        description = S("Antimatter Platform"),
         tiles = { 'antimatter_blob.png^platform_overlay.png^[makealpha:255,0,0' },
         use_texture_alpha = 'clip',
         paramtype2 = 'color',
@@ -161,7 +163,7 @@ do -- Antimatter Platform recipe scope
 end
 
 core.register_node('sbz_resources:emitter_imitator', {
-    description = 'Emitter Imitator',
+    description = S("Emitter Imitator"),
     sounds = {
         footstep = { name = 'mix_gassy_quack_hit', gain = 0.2, pitch = 0.5, fade = 0.0 },
         dig    = { name = 'mix_gassy_quack_hit', gain = 0.4, pitch = 0.8, fade = 0.0 },
@@ -212,7 +214,7 @@ end
 core.register_node(
     'sbz_resources:stone',
     unifieddyes.def {
-        description = 'Stone',
+        description = S("Stone"),
         tiles = { 'stone.png' },
         groups = { matter = 1, moss_growable = 1, charged = 1 },
         walkable = true,
@@ -249,7 +251,7 @@ do -- Pebble recipe scope
 end
 
 core.register_node('sbz_resources:reinforced_matter', {
-    description = 'Reinforced Matter',
+    description = S("Reinforced Matter"),
     tiles = { 'reinforced_matter.png' },
     groups = { matter = 1, moss_growable = 1 },
     walkable = true,
@@ -271,7 +273,7 @@ do -- Reinforced Matter recipe scope
 end
 
 core.register_node('sbz_resources:reinforced_antimatter', {
-    description = 'Reinforced Antimatter',
+    description = S("Reinforced Antimatter"),
     tiles = { 'reinforced_antimatter.png' },
     groups = { antimatter = 1 },
     light_source = 5,
@@ -351,7 +353,7 @@ if false then -- annoying as hell
 end
 
 core.register_node('sbz_resources:emittrium_glass', {
-    description = 'Emittrium Glass',
+    description = S("Emittrium Glass"),
     drawtype = 'glasslike_framed_optional',
     tiles = { 'emittrium_glass.png', 'emittrium_glass_shine.png' },
     use_texture_alpha = 'clip',
@@ -379,7 +381,7 @@ end
 core.register_node(
     'sbz_resources:colorium_glass',
     unifieddyes.def {
-        description = 'Colorium Glass',
+        description = S("Colorium Glass"),
         drawtype = 'glasslike_framed_optional',
         tiles = { 'emittrium_glass.png^[colorize:#ffffff:255', 'emittrium_glass_shine.png^[colorize:#ffffff:255' },
         use_texture_alpha = 'clip',
@@ -408,7 +410,7 @@ end
 core.register_node(
     'sbz_resources:clear_colorium_glass',
     unifieddyes.def {
-        description = 'Clear Colorium Glass',
+        description = S("Clear Colorium Glass"),
         drawtype = 'glasslike_framed_optional',
         tiles = { 'emittrium_glass_border.png^[colorize:#ffffff:255', 'blank.png' },
         use_texture_alpha = 'clip',
@@ -438,7 +440,7 @@ end
 core.register_node(
     'sbz_resources:stained_colorium_glass',
     unifieddyes.def {
-        description = 'Stained Colorium Glass',
+        description = S("Stained Colorium Glass"),
         drawtype = 'glasslike_framed',
         tiles = { 'emittrium_glass_border.png^[colorize:#ffffff:255', '(blank.png^[invert:rgba^[opacity:150)' },
         inventory_image = core.inventorycube 'stained_glass_inv.png',
@@ -468,7 +470,7 @@ do -- Stained Colorium Glass recipe scope
 end
 
 core.register_node('sbz_resources:compressed_core_dust', {
-    description = 'Compressed Core Dust',
+    description = S("Compressed Core Dust"),
     tiles = {
         'compressed_core_dust.png',
     },
@@ -506,7 +508,7 @@ end
 core.register_node(
     'sbz_resources:sand',
     unifieddyes.def {
-        description = 'Sand',
+        description = S("Sand"),
         tiles = { 'sand.png' },
         groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 80 },
 
@@ -517,7 +519,7 @@ core.register_node(
 )
 
 core.register_node('sbz_resources:red_sand', {
-    description = 'Red Sand',
+    description = S("Red Sand"),
     tiles = { 'sand.png^[colorize:red:128' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
     walkable = true,
@@ -526,7 +528,7 @@ core.register_node('sbz_resources:red_sand', {
 })
 
 core.register_node('sbz_resources:gravel', {
-    description = 'Gravel',
+    description = S("Gravel"),
     tiles = { 'gravel.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
@@ -535,7 +537,7 @@ core.register_node('sbz_resources:gravel', {
 })
 
 core.register_node('sbz_resources:dust', {
-    description = 'Dust',
+    description = S("Dust"),
     info_extra = 'Great for scaffolding (no seriously, you can climb it).\nIt is temporary, it will go away after some time.',
     tiles = { 'dust.png' },
     groups = { matter = 1, charged = 1, sand = 1, explody = 40, soil = 2, oddly_breakable_by_hand = 1 },
@@ -580,7 +582,7 @@ core.register_abm {
 }
 
 core.register_node('sbz_resources:clay', {
-    description = 'Clay',
+    description = S("Clay"),
     tiles = { 'clay.png' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, explody = 40 },
     walkable = true,
@@ -591,7 +593,7 @@ core.register_node('sbz_resources:clay', {
 core.register_node(
     'sbz_resources:bricks',
     unifieddyes.def {
-        description = 'Bricks',
+        description = S("Bricks"),
         tiles = { 'bricks.png' },
         paramtype2 = 'color',
         groups = {
@@ -618,7 +620,7 @@ core.register_craft {
 stairs.register 'sbz_resources:bricks'
 
 core.register_node('sbz_resources:dark_sand', {
-    description = 'Dark Sand',
+    description = S("Dark Sand"),
     tiles = { 'sand.png^[colorizehsl:0:0:-50' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 
@@ -628,7 +630,7 @@ core.register_node('sbz_resources:dark_sand', {
 })
 
 core.register_node('sbz_resources:black_sand', {
-    description = 'Black Sand',
+    description = S("Black Sand"),
     tiles = { 'sand.png^[colorizehsl:0:0:-80' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 1, explody = 80 },
 
@@ -638,7 +640,7 @@ core.register_node('sbz_resources:black_sand', {
 })
 
 core.register_node('sbz_resources:white_sand', {
-    description = 'White Sand',
+    description = S("White Sand"),
     tiles = { 'sand.png^[colorizehsl:0:0' },
     groups = { matter = 1, charged = 1, sand = 1, falling_node = 1, float = 0, explody = 80 },
 

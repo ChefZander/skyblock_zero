@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 local modpath = core.get_modpath 'sbz_decor'
 
 core.register_node('sbz_decor:photonlamp', {
-    description = 'Photon Lamp',
+    description = S("Photon Lamp"),
     drawtype = 'mesh',
     mesh = 'photonlamp.obj',
     tiles = { 'photonlamp.png' },
@@ -38,7 +40,7 @@ end
 core.register_node(
     'sbz_decor:factory_floor',
     unifieddyes.def {
-        description = 'Factory Floor',
+        description = S("Factory Floor"),
         tiles = { 'factory_floor.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sounds = {
@@ -71,7 +73,7 @@ stairs.register('sbz_decor:factory_floor', {
 core.register_node(
     'sbz_decor:factory_floor_tiling',
     unifieddyes.def {
-        description = 'Factory Floor (Tiled)',
+        description = S("Factory Floor (Tiled)"),
         tiles = { 'factory_floor_tiling.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1, ud_param2_colorable = 1 },
         sounds = {
@@ -99,7 +101,7 @@ core.register_craft {
 }
 
 core.register_node('sbz_decor:factory_ventilator', {
-    description = 'Factory Ventilator',
+    description = S("Factory Ventilator"),
     tiles = {
         { name = 'factory_ventilator.png', animation = { type = 'vertical_frames', length = 1 } },
     },
@@ -149,7 +151,7 @@ core.register_craft {
 core.register_node(
     'sbz_decor:factory_warning',
     unifieddyes.def {
-        description = 'Factory Warning',
+        description = S("Factory Warning"),
         tiles = { 'factory_warning.png' },
         groups = { matter = 1, cracky = 3, explody = 3, moss_growable = 1 },
         sunlight_propagates = true,
@@ -165,7 +167,7 @@ core.register_craft {
 }
 
 core.register_node('sbz_decor:mystery_terrarium', {
-    description = 'Mystery Terrarium',
+    description = S("Mystery Terrarium"),
     tiles = {
         { name = 'mystery_terrarium.png', animation = { type = 'vertical_frames', length = 1 } },
     },
@@ -183,7 +185,7 @@ core.register_craft {
 core.register_node(
     'sbz_decor:large_server_rack',
     unifieddyes.def {
-        description = 'Large Server Rack',
+        description = S("Large Server Rack"),
         info_extra = 'Just decoration.',
         tiles = {
             { name = 'large_server_rack_back.png' },
@@ -241,7 +243,7 @@ end
 core.register_node(
     'sbz_decor:ladder',
     unifieddyes.def {
-        description = 'Matter Ladder',
+        description = S("Matter Ladder"),
         sounds = sbz_audio.matter(),
         drawtype = 'nodebox',
         node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor
@@ -285,7 +287,7 @@ core.register_node(
 core.register_node(
     'sbz_decor:antimatter_ladder',
     unifieddyes.def {
-        description = 'Antimatter Ladder',
+        description = S("Antimatter Ladder"),
         sounds = sbz_audio.antimatter(),
         drawtype = 'nodebox',
         node_box = { -- nodebox inspired by that one 3d ladders mod, but i made this myself with nodebox editor

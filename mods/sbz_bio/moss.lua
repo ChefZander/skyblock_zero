@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("sbz_bio:moss", {
-    description = "Moss",
+    description = S("Moss"),
     sounds = {
         footstep = { name = 'foley_leaf_step', gain = 0.1, pitch = 0.5 },
         dig      = { name = 'foley_leaf_step', gain = 0.3, pitch = 0.4 },
@@ -41,7 +43,7 @@ core.register_node("sbz_bio:moss", {
 })
 
 core.register_node("sbz_bio:algae", {
-    description = "Algae",
+    description = S("Algae"),
     sounds = {
         footstep = { name = 'foley_leaf_step', gain = 0.1, pitch = 0.5 },
         dig      = { name = 'foley_leaf_step', gain = 0.3, pitch = 0.4 },

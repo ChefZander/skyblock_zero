@@ -44,7 +44,7 @@ metatool.form.register_form('copytool:teleport_tube_list', {
 			if tube and tube.pos and data.channel then
 				local id = player:hud_add({
 					hud_elem_type = "waypoint",
-					name = S("%s\n\nReceive: %s", data.channel, tube.can_receive and "yes" or "no"),
+					name = "%s\n\nReceive: %s", data.channel, tube.can_receive and "yes" or "no",
 					text = "m",
 					number = 0xE0B020,
 					world_pos = tube.pos
@@ -103,7 +103,7 @@ function definition:copy(node, pos, player)
 	local receive = meta:get_int("can_receive")
 	local description
 	if channel == "" then
-		description = "Teleport tube configuration cleaner"
+		description = S("Teleport tube configuration cleaner")
 	else
 		description = meta:get_string("infotext")
 	end
@@ -125,7 +125,7 @@ function definition:paste(node, pos, player, data)
 		if owner ~= name and mode == ";" then
 			receive = 0
 			if type(player) == "userdata" then
-				core.chat_send_player(name, "Receive was disabled because you're not owner of private receiver.")
+				core.chat_send_player(name, S("Receive was disabled because you're not owner of private receiver."))
 			end
 		end
 	end

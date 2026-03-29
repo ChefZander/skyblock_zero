@@ -1,17 +1,19 @@
-local book_item, book_written = ""
+local S = core.get_translator(core.get_current_modname())
 
-if minetest.get_modpath("default") then
+local book_item, book_written = "", ""
+
+if core.get_modpath("default") then
 	book_item = "default:book"
 	book_written = "default:book_written"
 end
 
-if minetest.get_modpath("mcl_books") then
+if core.get_modpath("mcl_books") then
 	book_item = "mcl_books:book"
 	book_written = "mcl_books:written_book"
 end
 
 jumpdrive.write_to_book = function(pos, sender)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	if inv:contains_item("main", { name = book_item, count = 1 }) then
@@ -22,9 +24,9 @@ jumpdrive.write_to_book = function(pos, sender)
 		local data = {}
 
 		data.owner = sender:get_player_name()
-		data.title = "Jumpdrive coordinates"
-		data.description = "Jumpdrive coordinates"
-		data.text = minetest.serialize(jumpdrive.get_meta_pos(pos))
+		data.title = S("Jumpdrive coordinates")
+		data.description = S("Jumpdrive coordinates")
+		data.text = core.serialize(jumpdrive.get_meta_pos(pos))
 		data.page = 1
 		data.page_max = 1
 
@@ -58,7 +60,7 @@ local function sanitize_and_set_coordinates(meta, pos)
 end
 
 jumpdrive.read_from_book = function(pos)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	local player_name = meta:get_string("owner")
 
@@ -76,7 +78,7 @@ jumpdrive.read_from_book = function(pos)
 			inv:set_stack("main", i, ItemStack())
 			stack_meta = stack:get_meta()
 			text = stack_meta:get_string("text")
-			local data = minetest.deserialize(text)
+			local data = core.deserialize(text)
 			if has_nil(data) then
 				-- put book back where it was, it may contain other information
 				inv:set_stack("main", i, stack)
@@ -92,7 +94,7 @@ jumpdrive.read_from_book = function(pos)
 					inv:set_stack("main", i, stack)
 					-- alert player
 					if nil ~= player_name then
-						minetest.chat_send_player(player_name, "Invalid coordinates")
+						core.chat_send_player(player_name, S("Invalid coordinates"))
 					end
 					return
 				end
@@ -107,7 +109,7 @@ jumpdrive.read_from_book = function(pos)
 			stack_meta = stack:get_meta()
 
 			text = stack_meta:get_string("pos")
-			target_pos = minetest.string_to_pos(text)
+			target_pos = core.string_to_pos(text)
 
 			if has_nil(target_pos) then
 				-- put wand back where it was.
@@ -121,14 +123,14 @@ jumpdrive.read_from_book = function(pos)
 				inv:add_item("main", stack)
 				return
 			end
-		elseif "ccompass:" == stack_name:sub(1, 9)
+		elseif "compass:" == stack_name:sub(1, 9)
 			or "compass:" == stack_name:sub(1, 8) then
 			-- remove item from inventory
 			inv:set_stack("main", i, ItemStack())
 			stack_meta = stack:get_meta()
 
 			text = stack_meta:get_string("target_pos")
-			target_pos = minetest.string_to_pos(text)
+			target_pos = core.string_to_pos(text)
 
 			if has_nil(target_pos) then
 				-- put compass back, it is probably not calibrated
@@ -146,7 +148,7 @@ jumpdrive.read_from_book = function(pos)
 	-- should we or should we not message user?
 	--[[
 	if nil ~= player_name then
-		minetest.chat_send_player(player_name, "No valid bookmark item found.")
+		core.chat_send_player(player_name, S("No valid bookmark item found."))
 	end
 	--]]
 end

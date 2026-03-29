@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: mods/areasprotector/init.lua:104 mods/areasprotector/init.lua:109
+#: mods/areasprotector/init.lua:115 mods/areasprotector/init.lua:162
+msgid "You are not allowed to protect that area: "
+msgstr ""
+
+#: mods/areasprotector/init.lua:110
+msgid "That name is obviously invalid."
+msgstr ""
+
+#: mods/areasprotector/init.lua:116
+msgid "You need to fill out the field with a name"
+msgstr ""
+
+#: mods/areasprotector/init.lua:120
+msgid "Protector block sub-area"
+msgstr ""
+
+#: mods/areasprotector/init.lua:180
+msgid "Protected by Protector Block"
+msgstr ""
+
+#: mods/areasprotector/init.lua:187
+msgid ""
+"You are using too many protector blocks: this server allows you to use up to "
+"@1 protector block, and you already have @2."
+msgid_plural ""
+"You are using too many protector blocks: this server allows you to use up to "
+"@1 protector blocks, and you already have @2."
+msgstr[0] ""
+msgstr[1] ""
+
+#: mods/areasprotector/init.lua:289
+msgid "Large Protector Block"
+msgstr ""
+
+#: mods/areasprotector/init.lua:314
+msgid "Small Protector Block"
+msgstr ""

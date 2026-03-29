@@ -1,5 +1,6 @@
 -- sbz_progression = {}
 
+local S = core.get_translator('sbz_progression')
 local modpath = core.get_modpath 'sbz_progression'
 
 dofile(modpath .. '/quest_parser.lua')
@@ -18,163 +19,168 @@ function sbz_api.displayDialogLine(player_name, text)
 end
 
 -- it will be funny if we all added quest items in the order of recency, not where they are placed on the questbook
+
+-- Maps craftable item IDs to their quest IDs.
+-- The qids are found on the `### ID:` line in the corresponding markdown quest.
+-- No titles as values; qid slugs are the permanent, not-to-be-localized keys, present as identifiers.
 local achievement_table = {
-    ['sbz_resources:matter_blob'] = 'A bigger platform',
-    ['sbz_resources:matter_stair'] = 'Matter Stairs',
-    ['sbz_resources:antimatter_dust'] = 'Antimatter',
-    ['sbz_resources:matter_annihilator'] = 'Annihilator',
-    ['sbz_power:simple_charged_field'] = 'Charged Field',
-    ['sbz_power:simple_matter_extractor'] = 'Automation',
-    ['sbz_power:advanced_matter_extractor'] = 'Advanced Extractors',
-    ['sbz_resources:simple_circuit'] = 'Circuitry',
-    ['sbz_power:simple_charge_generator_off'] = 'Generators',
-    ['sbz_resources:matter_plate'] = 'Matter Plates',
-    ['sbz_resources:retaining_circuit'] = 'Retaining Circuits',
-    ['sbz_resources:storinator'] = 'Storinators',
-    ['sbz_resources:pebble'] = 'Pretty Pebbles',
-    ['sbz_resources:stone'] = 'Concrete Plan',
+    ['sbz_resources:matter_blob'] = 'qid_a_bigger_platform',
+    ['sbz_resources:matter_stair'] = 'qid_matter_stairs',
+    ['sbz_resources:antimatter_dust'] = 'qid_antimatter',
+    ['sbz_resources:matter_annihilator'] = 'qid_annihilator',
+    ['sbz_power:simple_charged_field'] = 'qid_charged_field',
+    ['sbz_power:simple_matter_extractor'] = 'qid_automation',
+    ['sbz_power:advanced_matter_extractor'] = 'qid_advanced_extractors',
+    ['sbz_resources:simple_circuit'] = 'qid_circuitry',
+    ['sbz_power:simple_charge_generator_off'] = 'qid_generators',
+    ['sbz_resources:matter_plate'] = 'qid_matter_plates',
+    ['sbz_resources:retaining_circuit'] = 'qid_retaining_circuits',
+    ['sbz_resources:storinator'] = 'qid_storinators',
+    ['sbz_resources:pebble'] = 'qid_pretty_pebbles',
+    ['sbz_resources:stone'] = 'qid_concrete_plan',
 
-    ['sbz_resources:compressed_core_dust'] = 'Compressed Core Dust',
-    ['sbz_decor:photonlamp'] = 'Photon Lamps',
-    ['sbz_resources:antimatter_blob'] = 'More Antimatter',
-    ['sbz_resources:antimatter_annihilator'] = 'Anti-Annihilator',
-    ['sbz_resources:emitter_imitator'] = 'Emitter Imitators',
+    ['sbz_resources:compressed_core_dust'] = 'qid_compressed_core_dust',
+    ['sbz_decor:photonlamp'] = 'qid_photon_lamps',
+    ['sbz_resources:antimatter_blob'] = 'qid_more_antimatter',
+    ['sbz_resources:antimatter_annihilator'] = 'qid_anti_annihilator',
+    ['sbz_resources:emitter_imitator'] = 'qid_emitter_imitators',
 
-    ['sbz_decor:factory_floor'] = 'Factory Flooring',
-    ['sbz_decor:factory_floor_tiling'] = 'Tiled Factory Flooring',
-    ['sbz_decor:factory_ventilator'] = 'Factory Ventilator',
+    ['sbz_decor:factory_floor'] = 'qid_factory_flooring',
+    ['sbz_decor:factory_floor_tiling'] = 'qid_tiled_factory_flooring',
+    ['sbz_decor:factory_ventilator'] = 'qid_factory_ventilator',
 
-    ['sbz_resources:emittrium_circuit'] = 'Emittrium Circuits',
-    ['sbz_resources:angels_wing'] = "Angel's Wing",
-    ['sbz_power:battery'] = 'Batteries',
-    ['sbz_power:advanced_battery'] = 'Advanced Batteries',
-    ['sbz_power:connector_off'] = 'Connectors',
-    ['sbz_power:phosphor_off'] = 'Phosphor',
-    ['sbz_power:power_pipe'] = 'Power Cables',
-    ['sbz_power:starlight_collector'] = 'Starlight Collectors',
-    ['sbz_resources:reinforced_matter'] = 'Reinforced Matter',
-    ['sbz_power:switching_station'] = 'Switching Station',
-    ['sbz_power:infinite_storinator'] = 'Infinite Storinators',
-    ['sbz_chem:crusher_off'] = 'Crusher',
-    ['sbz_chem:simple_alloy_furnace_off'] = 'Simple Alloy Furnace',
-    ['sbz_meteorites:meteorite_radar'] = 'Meteorites',
-    ['sbz_meteorites:gravitational_attractor'] = 'Neutronium',
-    ['sbz_meteorites:gravitational_repulsor'] = 'Neutronium',
-    ['sbz_resources:robotic_arm'] = 'Bear Arms',
-    ['pipeworks:automatic_filter_injector'] = 'Automatic Filter-Injectors',
-    ['pipeworks:tube_1'] = 'Tubes',
-    ['pipeworks:one_direction_tube_1'] = 'One Direction Tubes',
-    ['pipeworks:nodebreaker'] = 'Node Breakers',
-    ['pipeworks:deployer'] = 'Deployers',
-    ['pipeworks:puncher'] = 'Punchers',
-    ['pipeworks:autocrafter'] = 'Autocrafters',
-    ['sbz_resources:simple_crafting_processor'] = 'Simple Crafting Processors',
-    ['pipeworks:item_void'] = 'Item Voids',
-    ['sbz_power:item_vacuum'] = 'Item Vacuums',
-    ['screwdriver:screwdriver'] = 'Screwdriver',
-    ['sbz_chem:high_power_electric_furnace_off'] = 'Furnace',
-    ['areasprotector:protector_small'] = 'Small Protectors',
-    ['areasprotector:protector_large'] = 'Big Protectors',
-    ['sbz_power:antimatter_generator_off'] = 'Antimatter Generators',
-    ['sbz_resources:storinator_public'] = 'Public Storinators',
+    ['sbz_resources:emittrium_circuit'] = 'qid_emittrium_circuits',
+    ['sbz_resources:angels_wing'] = 'qid_angels_wing',
+    ['sbz_power:battery'] = 'qid_batteries',
+    ['sbz_power:advanced_battery'] = 'qid_advanced_batteries',
+    ['sbz_power:connector_off'] = 'qid_connectors',
+    ['sbz_power:phosphor_off'] = 'qid_phosphor',
+    ['sbz_power:power_pipe'] = 'qid_power_cables',
+    ['sbz_power:starlight_collector'] = 'qid_starlight_collectors',
+    ['sbz_resources:reinforced_matter'] = 'qid_reinforced_matter',
+    ['sbz_power:switching_station'] = 'qid_switching_station',
+    ['sbz_power:infinite_storinator'] = 'qid_infinite_storinators',
+    ['sbz_chem:crusher_off'] = 'qid_crusher',
+    ['sbz_chem:simple_alloy_furnace_off'] = 'qid_simple_alloy_furnace',
+    ['sbz_meteorites:meteorite_radar'] = 'qid_meteorites',
+    ['sbz_meteorites:gravitational_attractor'] = 'qid_neutronium',
+    ['sbz_meteorites:gravitational_repulsor'] = 'qid_neutronium',
+    ['sbz_resources:robotic_arm'] = 'qid_bear_arms',
+    ['pipeworks:automatic_filter_injector'] = 'qid_automatic_filter_injectors',
+    ['pipeworks:tube_1'] = 'qid_tubes',
+    ['pipeworks:one_direction_tube_1'] = 'qid_one_direction_tubes',
+    ['pipeworks:nodebreaker'] = 'qid_node_breakers',
+    ['pipeworks:deployer'] = 'qid_deployers',
+    ['pipeworks:puncher'] = 'qid_punchers',
+    ['pipeworks:autocrafter'] = 'qid_autocrafters',
+    ['sbz_resources:simple_crafting_processor'] = 'qid_simple_crafting_processors',
+    ['pipeworks:item_void'] = 'qid_item_voids',
+    ['sbz_power:item_vacuum'] = 'qid_item_vacuums',
+    ['screwdriver:screwdriver'] = 'qid_screwdriver',
+    ['sbz_chem:high_power_electric_furnace_off'] = 'qid_furnace',
+    ['areasprotector:protector_small'] = 'qid_small_protectors',
+    ['areasprotector:protector_large'] = 'qid_big_protectors',
+    ['sbz_power:antimatter_generator_off'] = 'qid_antimatter_generators',
+    ['sbz_resources:storinator_public'] = 'qid_public_storinators',
 
-    ['sbz_resources:emittrium_glass'] = 'Emittrium Glass',
-    ['sbz_bio:dirt'] = 'Dirt',
-    ['sbz_bio:fertilizer'] = 'Sprouting Plants',
-    ['sbz_bio:burner'] = 'Carbon Dioxide',
-    ['sbz_bio:airlock'] = 'Airlocks',
-    ['sbz_power:fluid_pipe'] = 'Fluid Pipes',
-    ['sbz_power:pump_off'] = 'Fluid Pumps',
-    ['sbz_power:fluid_capturer_off'] = 'Fluid Capturers',
-    ['sbz_power:fluid_tank'] = 'Fluid Storage Tanks',
-    ['sbz_power:fluid_cell_filler'] = 'Fluid Cell Fillers',
+    ['sbz_resources:emittrium_glass'] = 'qid_emittrium_glass',
+    ['sbz_bio:dirt'] = 'qid_dirt',
+    ['sbz_bio:fertilizer'] = 'qid_sprouting_plants',
+    ['sbz_bio:burner'] = 'qid_carbon_dioxide',
+    ['sbz_bio:airlock'] = 'qid_airlocks',
+    ['sbz_power:fluid_pipe'] = 'qid_fluid_pipes',
+    ['sbz_power:pump_off'] = 'qid_fluid_pumps',
+    ['sbz_power:fluid_capturer_off'] = 'qid_fluid_capturers',
+    ['sbz_power:fluid_tank'] = 'qid_fluid_storage_tanks',
+    ['sbz_power:fluid_cell_filler'] = 'qid_fluid_cell_fillers',
 
-    ['sbz_power:reactor_shell'] = 'Reactor Shells',
-    ['sbz_power:reactor_glass'] = 'Reactor Glass',
-    ['sbz_power:reactor_infoscreen'] = 'Reactor Infoscreens',
-    ['sbz_power:reactor_power_port'] = 'Reactor Power Ports',
-    ['sbz_power:reactor_coolant_port'] = 'Reactor Coolant Ports',
-    ['sbz_power:reactor_item_input'] = 'Reactor Emittrium Input',
-    ['sbz_power:reactor_core_off'] = 'Reactor Core',
+    ['sbz_power:reactor_shell'] = 'qid_reactor_shells',
+    ['sbz_power:reactor_glass'] = 'qid_reactor_glass',
+    ['sbz_power:reactor_infoscreen'] = 'qid_reactor_infoscreens',
+    ['sbz_power:reactor_power_port'] = 'qid_reactor_power_ports',
+    ['sbz_power:reactor_coolant_port'] = 'qid_reactor_coolant_ports',
+    ['sbz_power:reactor_item_input'] = 'qid_reactor_emittrium_input',
+    ['sbz_power:reactor_core_off'] = 'qid_reactor_core',
 
-    ['sbz_power:ele_fab_off'] = 'Ele Fabs',
-    ['sbz_logic:knowledge_station'] = 'Knowledge Stations',
+    ['sbz_power:ele_fab_off'] = 'qid_ele_fabs',
+    ['sbz_logic:knowledge_station'] = 'qid_knowledge_stations',
 
-    ['sbz_decor:matter_sign'] = 'Signs',
-    ['sbz_decor:antimatter_sign'] = 'Signs',
-    ['sbz_decor:cnc'] = 'CNC Machines',
-    ['sbz_power:powered_lamp_off'] = 'Powered Lights',
-    ['sbz_power:super_powered_lamp_off'] = 'Powered Lights',
-    ['unifieddyes:coloring_tool'] = 'Coloring Tool',
-    ['sbz_decor:mystery_terrarium'] = 'Mystery Terrarium',
-    ['sbz_decor:large_server_rack'] = 'Large Server Rack',
-    ['unifieddyes:colorium_ground_line'] = 'Ground Line',
-    ['unifieddyes:power_ground_line'] = 'Power Ground Line',
-    ['unifieddyes:antiblock'] = 'Antiblocks',
-    ['sbz_resources:jetpack'] = 'Jetpack',
-    ['sbz_resources:drill'] = 'Electric Drill',
-    ['sbz_meteorites:meteorite_maker_off'] = 'Meteorite Maker',
-    ['sbz_resources:strange_cleaner'] = 'Strange Blob Cleaner',
-    ['sbz_bio:fertilized_dirt'] = 'Fertilized Dirt',
-    ['sbz_resources:laser_weapon'] = 'Laser',
+    ['sbz_decor:matter_sign'] = 'qid_signs',
+    ['sbz_decor:antimatter_sign'] = 'qid_signs',
+    ['sbz_decor:cnc'] = 'qid_cnc_machines',
+    ['sbz_power:powered_lamp_off'] = 'qid_powered_lights',
+    ['sbz_power:super_powered_lamp_off'] = 'qid_powered_lights',
+    ['unifieddyes:coloring_tool'] = 'qid_coloring_tool',
+    ['sbz_decor:mystery_terrarium'] = 'qid_mystery_terrarium',
+    ['sbz_decor:large_server_rack'] = 'qid_large_server_rack',
+    ['unifieddyes:colorium_ground_line'] = 'qid_ground_line',
+    ['unifieddyes:power_ground_line'] = 'qid_power_ground_line',
+    ['unifieddyes:antiblock'] = 'qid_antiblocks',
+    ['sbz_resources:jetpack'] = 'qid_jetpack',
+    ['sbz_resources:drill'] = 'qid_electric_drill',
+    ['sbz_meteorites:meteorite_maker_off'] = 'qid_meteorite_maker',
+    ['sbz_resources:strange_cleaner'] = 'qid_strange_blob_cleaner',
+    ['sbz_bio:fertilized_dirt'] = 'qid_fertilized_dirt',
+    ['sbz_resources:laser_weapon'] = 'qid_laser',
 
-    ['sbz_resources:storinator_bronze'] = 'Better Storinators',
-    ['sbz_resources:storinator_neutronium'] = 'Best Storinators',
-    ['drawers:drawer1'] = 'Drawers',
-    ['drawers:drawer2'] = 'Drawers',
-    ['drawers:drawer4'] = 'Drawers',
-    ['drawers:upgrade_template'] = 'Drawer Upgrades',
-    ['drawers:controller'] = 'Drawer Controller',
-    ['sbz_chem:compressor_off'] = 'Compressor',
-    ['sbz_chem:crystal_grower_off'] = 'Crystal Grower',
-    ['sbz_power:very_advanced_battery'] = 'Very Advanced Batteries',
+    ['sbz_resources:storinator_bronze'] = 'qid_better_storinators',
+    ['sbz_resources:storinator_neutronium'] = 'qid_best_storinators',
+    ['drawers:drawer1'] = 'qid_drawers',
+    ['drawers:drawer2'] = 'qid_drawers',
+    ['drawers:drawer4'] = 'qid_drawers',
+    ['drawers:upgrade_template'] = 'qid_drawer_upgrades',
+    ['drawers:controller'] = 'qid_drawer_controller',
+    ['sbz_chem:compressor_off'] = 'qid_compressor',
+    ['sbz_chem:crystal_grower_off'] = 'qid_crystal_grower',
+    ['sbz_power:very_advanced_battery'] = 'qid_very_advanced_batteries',
 
-    ['jumpdrive:backbone'] = 'Jumpdrive Backbone',
-    ['jumpdrive:fleet_controller'] = 'Jumpdrive Fleet Controller',
-    ['jumpdrive:engine'] = 'The Jumpdrive (engine)',
-    ['jumpdrive:warp_device'] = 'Warp Device',
-    ['jumpdrive:station'] = 'Jumpdrive Stations',
+    ['jumpdrive:backbone'] = 'qid_jumpdrive_backbone',
+    ['jumpdrive:fleet_controller'] = 'qid_jumpdrive_fleet_controller',
+    ['jumpdrive:engine'] = 'qid_the_jumpdrive_engine',
+    ['jumpdrive:warp_device'] = 'qid_warp_device',
+    ['jumpdrive:station'] = 'qid_jumpdrive_stations',
 
-    ['sbz_bio:dna_extractor_off'] = 'Dna Extractor',
-    ['sbz_chem:centrifuge_off'] = 'Centrifuge',
-    ['sbz_power:phlogiston_fuser_off'] = 'Phlogiston Fuser',
-    ['sbz_planets:planet_teleporter'] = 'Planet Teleporter',
-    ['sbz_chem:pebble_enhancer_off'] = 'Pebble Enhancer',
-    ['sbz_chem:nuclear_reactor_off'] = 'Nuclear Reactor',
-    ['pipeworks:teleport_tube_1'] = 'Teleport Tubes',
-    ['sbz_chem:decay_accel_off'] = 'Decay Accelerator',
-    ['sbz_power:turret'] = 'Automatic Turrets',
-    ['sbz_bio:co2_compactor'] = 'CO2 Compactors',
-    ['sbz_wrench:wrench'] = 'Node Preserver',
-    ['replacer:replacer'] = 'Bulk Placer Tool',
-    ['metatool:copytool'] = 'Copy Tool',
-    ['sbz_bio:neutron_emitter_off'] = 'Basic Neutron Emitter',
-    ['sbz_bio:electric_soil_off'] = 'Electric Soil',
-    ['sbz_chem:engraver_off'] = 'Engraver',
-    ['sbz_multiblocks:blast_furnace_controller'] = 'Blast Furnace',
-    ['sbz_instatube:instant_tube'] = 'Instatubes',
-    ['sbz_power:teleport_battery'] = 'Teleport Battery',
-    ['pipeworks:pattern_storinator'] = 'Pattern Storinator',
-    ['sbz_power:starlight_catcher'] = 'Starlight Catchers',
+    ['sbz_bio:dna_extractor_off'] = 'qid_dna_extractor',
+    ['sbz_chem:centrifuge_off'] = 'qid_centrifuge',
+    ['sbz_power:phlogiston_fuser_off'] = 'qid_phlogiston_fuser',
+    ['sbz_planets:planet_teleporter'] = 'qid_planet_teleporter',
+    ['sbz_chem:pebble_enhancer_off'] = 'qid_pebble_enhancer',
+    ['sbz_chem:nuclear_reactor_off'] = 'qid_nuclear_reactor',
+    ['pipeworks:teleport_tube_1'] = 'qid_teleport_tubes',
+    ['sbz_chem:decay_accel_off'] = 'qid_decay_accelerator',
+    ['sbz_power:turret'] = 'qid_automatic_turrets',
+    ['sbz_bio:co2_compactor'] = 'qid_co2_compactors',
+    ['sbz_wrench:wrench'] = 'qid_node_preserver',
+    ['replacer:replacer'] = 'qid_bulk_placer_tool',
+    ['metatool:copytool'] = 'qid_copy_tool',
+    ['sbz_bio:neutron_emitter_off'] = 'qid_basic_neutron_emitter',
+    ['sbz_bio:electric_soil_off'] = 'qid_electric_soil',
+    ['sbz_chem:engraver_off'] = 'qid_engraver',
+    ['sbz_multiblocks:blast_furnace_controller'] = 'qid_blast_furnace',
+    ['sbz_instatube:instant_tube'] = 'qid_instatubes',
+    ['sbz_power:teleport_battery'] = 'qid_teleport_battery',
+    ['pipeworks:pattern_storinator'] = 'qid_pattern_storinator',
+    ['sbz_power:starlight_catcher'] = 'qid_starlight_catchers',
 
-    ['sbz_resources:gravitational_lens'] = "Gravitational Lens",
+    ['sbz_resources:gravitational_lens'] = 'qid_gravitational_lens',
 
-    ['sbz_power:sensor_linker'] = 'Sensor Linker',
-    ['sbz_power:lgate_buffer_off'] = 'Logic Gates',
-    ['sbz_power:delayer_off'] = 'Delayer',
-    ['sbz_power:light_sensor_off'] = 'Light Sensor',
-    ['sbz_power:node_sensor_off'] = 'Node Sensor',
-    ['sbz_power:item_sensor_off'] = 'Item Sensor',
-    ['sbz_power:switch_private_off'] = 'Switches',
+    ['sbz_power:sensor_linker'] = 'qid_sensor_linker',
+    ['sbz_power:lgate_buffer_off'] = 'qid_logic_gates',
+    ['sbz_power:delayer_off'] = 'qid_delayer',
+    ['sbz_power:light_sensor_off'] = 'qid_light_sensor',
+    ['sbz_power:node_sensor_off'] = 'qid_node_sensor',
+    ['sbz_power:item_sensor_off'] = 'qid_item_sensor',
+    ['sbz_power:switch_private_off'] = 'qid_switches',
 
-    ['sbz_power:manual_crafter'] = 'Manual Crafters',
-    ['sbz_resources:nuclear_crafting_processor'] = 'Craftageddon',
-    ['sbz_area_containers:room_container'] = 'Room Containers',
+    ['sbz_power:manual_crafter'] = 'qid_manual_crafters',
+    ['sbz_resources:nuclear_crafting_processor'] = 'qid_craftageddon',
+    ['sbz_area_containers:room_container'] = 'qid_room_containers',
 }
 
 core.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-    if achievement_table[itemstack:get_name()] then
-        unlock_achievement(player:get_player_name(), achievement_table[itemstack:get_name()])
+    local achievement_name = achievement_table[itemstack:get_name()]
+    if achievement_name then
+        unlock_achievement(player:get_player_name(), achievement_name)
     end
 end)
 
@@ -183,14 +189,15 @@ end)
 function sbz_api.activate_safetynet(player_name, pos)
     return true
 end
+
 core.register_globalstep(function(dtime)
     for _, player in ipairs(core.get_connected_players()) do
         local pos = player:get_pos()
         local safetynet_low = 0
-        if pos.y < safetynet_low - 100 then unlock_achievement(player:get_player_name(), 'Emptiness') end
+        if pos.y < safetynet_low - 100 then unlock_achievement(player:get_player_name(), 'qid_emptiness') end
         if pos.y < safetynet_low - 300 then
             if sbz_api.activate_safetynet(player:get_player_name(), pos) then
-                sbz_api.displayDialogLine(player:get_player_name(), 'You fell off the platform.')
+                sbz_api.displayDialogLine(player:get_player_name(), S('You fell off the platform.'))
                 player:set_pos { x = 0, y = 1, z = 0 }
 
                 -- Singularity Rune drop
@@ -198,12 +205,13 @@ core.register_globalstep(function(dtime)
                     local rune = ItemStack("sbz_runes:singularity_rune")
                     local inv = player:get_inventory()
                     local rune_leftover = inv:add_item("main", rune)
-                    
+
                     if not rune_leftover:is_empty() then
                         core.add_item(pos, rune_leftover)
                     end
 
-                    core.chat_send_all("⌠ Crazy Rare Drop: " .. puncher:get_player_name() .. " just dropped a Singularity Rune! ⌡")
+                    core.chat_send_all(S('⌠ Crazy Rare Drop: @1 just dropped a Singularity Rune! ⌡',
+                        player:get_player_name()))
                 end
             end
         end
@@ -232,42 +240,49 @@ core.register_chatcommand("dynamic_safetynet", {
 })--]]
 
 local achievement_in_inventory_table = {
-    ['sbz_chem:gold_powder'] = "It's fake",
-    ['sbz_chem:bronze_powder'] = 'Bronze Age',
-    ['sbz_chem:water_fluid_cell'] = 'Liquid Water',
-    ['sbz_bio:stemfruit'] = 'Stemfruit',
-    ['sbz_bio:warpshroom'] = 'Warpshrooms',
-    ['sbz_chem:uranium_powder'] = 'Planet Ores',
-    ['sbz_chem:thorium_powder'] = 'Planet Ores',
-    ['sbz_resources:movable_emitter'] = 'Movable Emitters',
-    ['sbz_bio:colorium_emitter'] = 'Colorium Emitters',
-    ['sbz_power:solid_charged_field'] = 'Radiation Shielding',
-    ['sbz_resources:bomb'] = 'TNT',
-    ['sbz_chem:lead_block'] = 'Radiation Shielding',
-    ['sbz_resources:strange_blob'] = "It's strange...",
-    ['sbz_bio:cleargrass'] = 'Cleargrass',
-    ['sbz_bio:razorgrass'] = 'Razorgrass',
-    ['sbz_bio:shockshroom'] = 'Shockshrooms',
+    ['sbz_chem:gold_powder'] = 'qid_its_fake',
+    ['sbz_chem:bronze_powder'] = 'qid_bronze_age',
+    ['sbz_chem:water_fluid_cell'] = 'qid_liquid_water',
+    ['sbz_bio:stemfruit'] = 'qid_stemfruit',
+    ['sbz_bio:warpshroom'] = 'qid_warpshrooms',
+    ['sbz_chem:uranium_powder'] = 'qid_planet_ores',
+    ['sbz_chem:thorium_powder'] = 'qid_planet_ores',
+    ['sbz_resources:movable_emitter'] = 'qid_movable_emitters',
+    ['sbz_bio:colorium_emitter'] = 'qid_colorium_emitters',
+    ['sbz_power:solid_charged_field'] = 'qid_radiation_shielding',
+    ['sbz_resources:bomb'] = 'qid_tnt',
+    ['sbz_chem:lead_block'] = 'qid_radiation_shielding',
+    ['sbz_resources:strange_blob'] = 'qid_its_strange',
+    ['sbz_bio:cleargrass'] = 'qid_cleargrass',
+    ['sbz_bio:razorgrass'] = 'qid_razorgrass',
+    ['sbz_bio:shockshroom'] = 'qid_shockshrooms',
 
-    ['sbz_resources:dust'] = 'Dust',
-    -- ['sbz_resources:clay'] = 'Clay', This was removed from the QB
-    ['sbz_resources:bricks'] = 'Bricks',
+    ['sbz_resources:dust'] = 'qid_dust',
+    -- ['sbz_resources:clay'] = 'qid_clay', This was removed from the QB
+    ['sbz_resources:bricks'] = 'qid_bricks',
 
-    ['sbz_resources:unrefined_firmament'] = "Firmament",
-    ['sbz_resources:refined_firmament'] = "Refined Firmament",
-    ['sbz_resources:wormhole'] = "Wormhole",
+    ['sbz_resources:unrefined_firmament'] = 'qid_firmament',
+    ['sbz_resources:refined_firmament'] = 'qid_refined_firmament',
+    ['sbz_resources:wormhole'] = 'qid_wormhole',
 }
+
 local achievement_on_dig_table = {
-    ['sbz_meteorites:antineutronium'] = 'Antineutronium',
-    ['sbz_resources:strange_blob'] = "It's strange...",
-    ['sbz_resources:movable_emitter'] = 'Movable Emitters',
-    ['sbz_bio:colorium_emitter'] = 'Colorium Emitters',
-    ['sbz_power:solid_charged_field'] = 'Radiation Shielding',
-    ['sbz_resources:bomb'] = 'TNT',
-    ['sbz_bio:cleargrass_4'] = 'Cleargrass',
-    ['sbz_bio:razorgrass_4'] = 'Razorgrass',
-    ['sbz_bio:shockshroom_4'] = 'Shockshrooms',
+    ['sbz_meteorites:antineutronium'] = 'qid_antineutronium',
+    ['sbz_resources:strange_blob'] = 'qid_its_strange',
+    ['sbz_resources:movable_emitter'] = 'qid_movable_emitters',
+    ['sbz_bio:colorium_emitter'] = 'qid_colorium_emitters',
+    ['sbz_power:solid_charged_field'] = 'qid_radiation_shielding',
+    ['sbz_resources:bomb'] = 'qid_tnt',
+    ['sbz_bio:cleargrass_4'] = 'qid_cleargrass',
+    ['sbz_bio:razorgrass_4'] = 'qid_razorgrass',
+    ['sbz_bio:shockshroom_4'] = 'qid_shockshrooms',
 }
+
+-- TODO: Make quest entry for 'Clay' (ID: qid_clay)  ...but only if that's an intended quest at some point.
+
+-- TODO: Remove requirement of Clay (ID: qid_clay) from Bricks (ID: qid_bricks) if Clay won't be a quest.
+
+-- TODO: Make a condition to trigger the Obtain Emittrium (ID: qid_obtain_emittrium) quest
 
 core.register_on_player_inventory_action(function(player, action, inv, inv_info)
     local itemstack
@@ -278,8 +293,9 @@ core.register_on_player_inventory_action(function(player, action, inv, inv_info)
     end
     local player_name = player:get_player_name()
     local itemname = itemstack:get_name()
-    if achievement_in_inventory_table[itemname] then
-        unlock_achievement(player_name, achievement_in_inventory_table[itemname])
+    local achievement_name = achievement_in_inventory_table[itemname]
+    if achievement_name then
+        unlock_achievement(player_name, achievement_name)
     end
 end)
 
@@ -287,8 +303,9 @@ core.register_on_dignode(function(pos, oldnode, digger)
     if digger ~= nil and digger:is_valid() then
         local player_name = digger:get_player_name()
         local itemname = oldnode.name
-        if achievement_on_dig_table[itemname] then
-            unlock_achievement(player_name, achievement_on_dig_table[itemname])
+        local achievement_name = achievement_on_dig_table[itemname]
+        if achievement_name then
+            unlock_achievement(player_name, achievement_name)
         end
     end
 end)

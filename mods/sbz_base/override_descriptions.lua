@@ -87,7 +87,9 @@ core.register_on_mods_loaded(function()
 
         if #new_desc > 1 then
             for i = 2, #new_desc do
-                new_desc[i] = core.colorize("#777", new_desc[i])
+                if not new_desc[i]:find('\027') then
+                    new_desc[i] = core.colorize("#777", new_desc[i])
+                end
             end
             core.override_item(k, {
                 description = table.concat(new_desc, "\n"),

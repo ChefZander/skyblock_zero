@@ -1,36 +1,60 @@
-local function getquestbyname(questname)
-    for i, quest in ipairs(quests) do
-        if quest.title == questname then return quest end
+local S = core.get_translator('sbz_progression')
+
+-- Returns the display title or text for a quest in the player's language,
+-- falling back to the English default if no translation exists.
+local function localized(quest, field, lang)
+    local localized_field = field .. '_localized'
+    if lang and quest[localized_field] and quest[localized_field][lang] then
+        return quest[localized_field][lang]
+    end
+    return quest[field] -- English default
+end
+
+-- Gets the lang code for a player, defaulting to "en".
+local function player_lang(player_name)
+    local info = core.get_player_information(player_name)
+    return (info and info.lang_code and info.lang_code ~= '') and info.lang_code or 'en'
+end
+
+local function get_quest_by_id(quest_id)
+    for _, quest in ipairs(quests) do
+        if quest.id == quest_id then return quest end
     end
 end
 
 local function combineWithAnd(list)
-    local listLength = #list
-
-    if listLength == 0 then
+    local n = #list
+    if n == 0 then
         return ''
-    elseif listLength == 1 then
+    elseif n == 1 then
         return list[1]
-    elseif listLength == 2 then
-        return list[1] .. ' and ' .. list[2]
+    elseif n == 2 then
+        return S('@1 and @2', list[1], list[2])
     else
-        local combinedString = table.concat(list, ', ', 1, listLength - 1)
-        combinedString = combinedString .. ', and ' .. list[listLength]
-        return combinedString
+        -- Produces "A, B, and C".
+        -- Translators can reorder as needed via @1 and @2.
+        return S('@1, and @2', table.concat(list, ', ', 1, n - 1), list[n])
     end
 end
 
 function unlock_achievement(player_name, achievement_id)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
     if not player then return end
 
     local meta = player:get_meta()
     if not is_achievement_unlocked(player_name, achievement_id) then
         meta:set_string(achievement_id, 'true')
-        minetest.chat_send_player(player_name, 'Quest Completed: ' .. achievement_id .. '!')
+
+        -- Look up the human-readable title for the completion message.
+        -- It resolves via quest ID so this is always in sync with the quest definition,
+        -- and uses localized() so the player sees their own language if a translation exists.
+        local lang = player_lang(player_name)
+        local quest = get_quest_by_id(achievement_id)
+        local display_title = quest and localized(quest, 'title', lang) or achievement_id
+        core.chat_send_player(player_name, S('Quest Completed: @1!', display_title))
 
         local pos = player:get_pos()
-        minetest.add_particlespawner {
+        core.add_particlespawner {
             amount = 50,
             time = 1,
             minpos = { x = pos.x - 0.5, y = pos.y - 0.5, z = pos.z - 0.5 },
@@ -52,18 +76,18 @@ function unlock_achievement(player_name, achievement_id)
 end
 
 function revoke_achievement(player_name, achievement_id)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
     if not player then return end
 
     local meta = player:get_meta()
     if is_achievement_unlocked(player_name, achievement_id) then
         meta:set_string(achievement_id, '')
-        minetest.chat_send_player(player_name, 'Quest revoked: ' .. achievement_id)
+        core.chat_send_player(player_name, S('Quest revoked: @1', achievement_id))
     end
 end
 
 function is_achievement_unlocked(player_name, achievement_id)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
     if not player then return false end
 
     local meta = player:get_meta()
@@ -75,11 +99,11 @@ function is_achievement_unlocked(player_name, achievement_id)
 end
 
 function is_quest_available(player_name, quest_id)
-    local quest = getquestbyname(quest_id)
-    if quest.requires == nil then return true end
+    local quest = get_quest_by_id(quest_id)
+    if quest == nil or quest.requires == nil then return true end
 
-    for i, questname in ipairs(quest.requires) do
-        if is_achievement_unlocked(player_name, questname) == false then return false end
+    for _, req_id in ipairs(quest.requires) do
+        if not is_achievement_unlocked(player_name, req_id) then return false end
     end
     return true
 end
@@ -89,6 +113,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     local player_ref = core.get_player_by_name(player_name)
     if not player_ref then return '' end
     sbz_api.ui.set_player(player_ref)
+
+    local lang = player_lang(player_name)
 
     local selected_quest = quests_to_show[selected_quest_index]
     local quest_count = #quests -- we subtract uncompletable quests from this later, like infotexts
@@ -109,64 +135,50 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 
     for _, quest in ipairs(quests_to_show) do
         if quest.type == 'quest' then
-            if is_achievement_unlocked(player_name, quest.title) then
+            if is_achievement_unlocked(player_name, quest.id) then
                 ins(pal.bright_green)
                 ins(default_indent)
                 ins '✓'
-                ins(quest.title)
-                completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
-            elseif is_quest_available(player_name, quest.title) then
+                ins(localized(quest, 'title', lang))
+                completed_count = completed_count + 1
+            elseif is_quest_available(player_name, quest.id) then
                 ins(pal.light1)
                 ins(default_indent)
                 ins '►'
-                ins(quest.title)
+                ins(localized(quest, 'title', lang))
                 available_count = available_count + 1
             else
                 ins(pal.light4)
                 ins(default_indent)
                 ins '✕'
-                ins(quest.title)
+                ins(localized(quest, 'title', lang))
             end
         elseif quest.info == true then -- info text
             ins(pal.bright_blue)
             ins(default_indent)
             ins '!'
-            ins(quest.title)
+            ins(localized(quest, 'title', lang))
             quest_count = quest_count - 1
         elseif quest.type == 'text' then
             ins(pal.bright_aqua)
             ins '0'
             ins '≡'
-            ins(quest.title)
+            ins(localized(quest, 'title', lang))
             quest_count = quest_count - 1
-        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) then
+        elseif quest.type == 'secret' then
             ins(pal.bright_purple)
-
-            -- just for the credits quest
-            if quest.istoplevel then
-                ins '0'
-            else
-                ins(default_indent)
-            end
-
+            ins(quest.istoplevel and '0' or default_indent)
             ins '✪'
-            ins(quest.title)
-            completed_count = completed_count + 1 -- WHY LUA WHY?!?!?!?
-        elseif quest.type == 'secret' and is_achievement_unlocked(player_name, quest.title) == false then
-            ins(pal.bright_purple)
-
-            -- just for the credits quest
-            if quest.istoplevel then
-                ins '0'
+            if is_achievement_unlocked(player_name, quest.id) then
+                ins(localized(quest, 'title', lang))
+                completed_count = completed_count + 1
             else
-                ins(default_indent)
+                ins '???'
+                available_count = available_count + 1
             end
-
-            ins '✪'
-            ins '???'
-            available_count = available_count + 1
         end
     end
+
     ---@diagnostic disable-next-line: cast-local-type
     quest_list = table.concat(quest_list, ',')
 
@@ -189,8 +201,8 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 
 		button[5.25,0.35;0.3,0.3;font_add;+]
 		button[5.55,0.35;0.3,0.3;font_sub;-]
-		tooltip[font_add;Makes font larger]
-		tooltip[font_sub;Makes font smaller]
+		tooltip[font_add;%s]
+		tooltip[font_sub;%s]
 ]]):format(
         sbz_api.ui.hypertext(
             0.3,
@@ -198,19 +210,15 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
             5.6,
             0.5,
             '',
-            'Quest List (✓ '
-                .. completed_count
-                .. ' / ► '
-                .. available_count
-                .. ' / ✕ '
-                .. (quest_count - completed_count)
-                .. ')'
+            S('Quest List (✓ @1 / ► @2 / ✕ @3)', completed_count, available_count, quest_count - completed_count)
         ),
         sbz_api.ui.box_shadow(0.2, 0.7, 5.6, 11.3, 2),
         table_style,
         quest_list,
         selected_quest_index,
-        sbz_api.ui.field(0.2, 12, 5.25, 0.5, 'search', '', search_text)
+        sbz_api.ui.field(0.2, 12, 5.25, 0.5, 'search', '', search_text),
+        core.formspec_escape(S('Makes font larger')),
+        core.formspec_escape(S('Makes font smaller'))
     )
     formspec = formspec .. sbz_api.ui.box(5.85, 0.2, 11.2, 11.8)
 
@@ -240,43 +248,40 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     if selected_quest then
         if
             selected_quest.type == 'quest'
-            or (selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.title))
+            or (selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.id))
         then
             formspec = formspec
                 .. hypertext:format(
-                    minetest.formspec_escape('<big>' .. selected_quest.title .. '</big>'),
+                    core.formspec_escape('<big>' .. localized(selected_quest, 'title', lang) .. '</big>'),
                     (
-                        is_quest_available(player_name, selected_quest.title)
-                            and minetest.formspec_escape(selected_quest.text)
-                        or 'Complete ' .. combineWithAnd(selected_quest.requires) .. ' to unlock.'
+                        is_quest_available(player_name, selected_quest.id)
+                        and core.formspec_escape(localized(selected_quest, 'text', lang))
+                        or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     (
-                        is_achievement_unlocked(player_name, selected_quest.title)
-                            and (selected_quest.type == 'secret' and "✔ Shhh... don't tell anyone :)" or '✔ You have completed this Quest.')
-                        or 'You have not completed this Quest.'
+                        is_achievement_unlocked(player_name, selected_quest.id)
+                        and (selected_quest.type == 'secret' and core.formspec_escape(S("✔ Shhh... don't tell anyone :)")) or core.formspec_escape(S('✔ You have completed this Quest.')))
+                        or core.formspec_escape(S('You have not completed this Quest.'))
                     )
                 )
         elseif
-            selected_quest.type == 'secret' and is_achievement_unlocked(player_name, selected_quest.title) == false
+            selected_quest.type == 'secret' and not is_achievement_unlocked(player_name, selected_quest.id)
         then
             formspec = formspec
                 .. hypertext:format(
                     '???',
                     '',
-                    (
-                        is_achievement_unlocked(player_name, selected_quest.title)
-                            and "✔ Shhh... don't tell anyone"
-                        or 'You have not completed this Quest.'
-                    )
+                    core.formspec_escape(S('You have not completed this Quest.'))
                 )
         elseif selected_quest.type == 'text' then
             formspec = formspec
                 .. hypertext:format(
-                    ('<style color=%s>'):format(pal.bright_aqua or '#9ab7fc') .. selected_quest.title .. '</style>',
+                    ('<style color=%s>'):format(pal.bright_aqua or '#9ab7fc') ..
+                    localized(selected_quest, 'title', lang) .. '</style>',
                     (
-                        is_quest_available(player_name, selected_quest.title)
-                            and minetest.formspec_escape(selected_quest.text)
-                        or 'Complete ' .. combineWithAnd(selected_quest.requires) .. ' to unlock.'
+                        is_quest_available(player_name, selected_quest.id)
+                        and core.formspec_escape(localized(selected_quest, 'text', lang))
+                        or core.formspec_escape(S('Complete @1 to unlock.', combineWithAnd(selected_quest.requires)))
                     ),
                     ''
                 )
@@ -284,19 +289,19 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
     end
 
     if available_count == 1 and (quest_count - completed_count) == 1 then
-        unlock_achievement(player_name, 'Credits')
+        unlock_achievement(player_name, 'qid_credits')
 
-        -- okay let me explain
-        -- this will be called only once
-        -- to refresh the questbook
-        -- if i dont do this, the quest will be granted but show up as not complete in the book
-        -- so by refreshing it once here, itll show up correct
-        -- it looks so ugly though...
+        -- Okay, let me explain.
+        -- This will be called only once to refresh the questbook.
+        -- If I don't do this, the quest will be granted
+        --  but show up as not complete in the book.
+        -- So, by refreshing it once here, it'll show up correctly.
+        -- It looks so ugly though...
         return get_questbook_formspec(selected_quest_index, player_name, quests_to_show, search_text)
     end
 
     -- play page sound lol
-    minetest.sound_play('questbook', {
+    core.sound_play('questbook', {
         to_player = player_name,
         gain = 1,
     })
@@ -306,9 +311,10 @@ local function get_questbook_formspec(selected_quest_index, player_name, quests_
 end
 
 -- Handle form submissions
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
     if formname == 'questbook:main' then
         local name = player:get_player_name()
+        local lang = player_lang(name)
         local meta = player:get_meta()
         local force_query = false
         if fields.search_reset then
@@ -330,7 +336,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         end
 
         if fields.quest_list or fields.search or force_query or (fields.font_add or fields.font_sub) then
-            local event = minetest.explode_table_event(fields.quest_list)
+            local event = core.explode_table_event(fields.quest_list)
 
             local selected_quest_index
             if event.row and event.row ~= 0 or (fields.search and fields.search ~= '') then
@@ -345,9 +351,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 if fields.search == 'reachable' then -- When re-working this, don't forget to update the questbook, it's in the introduction questline, last infopage
                     for k, v in pairs(quests) do
                         if
-                            is_quest_available(name, v.title)
+                            is_quest_available(name, v.id)
                             and v.type == 'quest'
-                            and is_achievement_unlocked(name, v.title) == false
+                            and not is_achievement_unlocked(name, v.id)
                         then
                             filtered_quests[#filtered_quests + 1] = v
                         end
@@ -356,7 +362,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                     local real_search = fields.search:lower()
                     local quests_with_holes = table.copy(quests)
                     for k, v in pairs(quests_with_holes) do
-                        local title = v.title:lower()
+                        -- Search against the player's localized title so they can search in their own language
+                        local title = localized(v, 'title', lang):lower()
                         if not title:find(real_search, 1, true) then quests_with_holes[k] = nil end
                     end
                     for i = 1, #quests do
@@ -375,8 +382,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     end
 end)
 
-minetest.register_craftitem('sbz_progression:questbook', {
-    description = 'Quest Book',
+core.register_craftitem('sbz_progression:questbook', {
+    description = S('Quest Book'),
     inventory_image = 'questbook.png',
     stack_max = 1,
     on_use = function(itemstack, player, pointed_thing)
@@ -385,7 +392,7 @@ minetest.register_craftitem('sbz_progression:questbook', {
         if meta then selected_quest_index = meta:get_int 'selected_quest_index' end
         if selected_quest_index == 0 then selected_quest_index = 1 end
 
-        minetest.show_formspec(
+        core.show_formspec(
             player:get_player_name(),
             'questbook:main',
             get_questbook_formspec(selected_quest_index, player:get_player_name(), quests)

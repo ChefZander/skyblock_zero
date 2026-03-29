@@ -1,9 +1,11 @@
+local S = core.get_translator(core.get_current_modname())
+
 local render_links_delay = 1
 local waypoint_ids = {}
 
 local function happy_particles(pos)
     local vel = vector.new(-3, -3, -3)
-    minetest.add_particlespawner {
+    core.add_particlespawner {
         amount = 1000,
         time = 0.1,
         exptime = 3,
@@ -37,7 +39,7 @@ local function render_links(dtime)
     end
     waypoint_ids = {}
 
-    for k, v in pairs(minetest.get_connected_players()) do
+    for k, v in pairs(core.get_connected_players()) do
         local wielded_item = v:get_wielded_item()
         if wielded_item:get_name() == 'sbz_power:sensor_linker' then
             local itemmeta = wielded_item:get_meta()
@@ -45,7 +47,7 @@ local function render_links(dtime)
             if linked_pos_data ~= '' then
                 local linked_pos = core.deserialize(linked_pos_data)
                 local linked_node = sbz_api.get_or_load_node(linked_pos)
-                local linked_meta = minetest.get_meta(linked_pos)
+                local linked_meta = core.get_meta(linked_pos)
                 local radius = core.registered_nodes[linked_node.name].linking_range
                     or linked_meta:get_int 'linking_range'
 
@@ -76,17 +78,17 @@ local function try_to_link_to_tool(stack, pos, placer)
     local node = sbz_api.get_or_load_node(pos)
     if not node then return end
     node = node.name
-    local ndef = minetest.registered_nodes[node]
+    local ndef = core.registered_nodes[node]
     if not ndef then return end
     if not ndef.can_sensor_link then return sbz_api.displayDialogLine(name, "Can't link with that.") end
     -- ok yeah it can link
     meta:set_string('linked', core.serialize(pos))
-    minetest.chat_send_player(name, 'Succesfully linked to the sensor.')
+    core.chat_send_player(name, 'Succesfully linked to the sensor.')
     happy_particles(pos)
 end
 
 local function err_link_invalid(placer)
-    minetest.chat_send_player(placer:get_player_name(), 'Link is invalid, please link the tool to your sensor again.')
+    core.chat_send_player(placer:get_player_name(), 'Link is invalid, please link the tool to your sensor again.')
 end
 
 local function make_link(meta, pos, placer)
@@ -98,7 +100,7 @@ local function make_link(meta, pos, placer)
     local linked_node = sbz_api.get_or_load_node(linked_pos)
     linked_node = linked_node.name
 
-    local ndef = minetest.registered_nodes[linked_node]
+    local ndef = core.registered_nodes[linked_node]
     if ndef == nil then return err_link_invalid(placer) end
     if not ndef.can_sensor_link then
         return core.chat_send_player(
@@ -107,29 +109,29 @@ local function make_link(meta, pos, placer)
         )
     end
 
-    local linked_meta = minetest.get_meta(linked_pos)
+    local linked_meta = core.get_meta(linked_pos)
     local linked_range = ndef.linking_range or linked_meta:get_int 'linking_range'
 
     if linked_range == 0 then
-        minetest.chat_send_player(placer:get_player_name(), "Can't link anything in that sensor, linked range is 0.")
+        core.chat_send_player(placer:get_player_name(), "Can't link anything in that sensor, linked range is 0.")
         return
     end
 
     if not logic.in_square_radius(linked_pos, pos, linked_range) then
-        minetest.chat_send_player(placer:get_player_name(), 'Outside of the radius')
+        core.chat_send_player(placer:get_player_name(), 'Outside of the radius')
         return
     end
 
     local name = meta:get_string 'name'
     if name == '' then
-        minetest.chat_send_player(placer:get_player_name(), 'You need to set a name first (Left click)')
+        core.chat_send_player(placer:get_player_name(), 'You need to set a name first (Left click)')
         return
     end
 
     if ndef.add_link then
         ndef.add_link(meta, pos, placer)
     else
-        local links = minetest.deserialize(linked_meta:get_string 'links') or {}
+        local links = core.deserialize(linked_meta:get_string 'links') or {}
         links[name] = links[name] or {}
         links[name][#links[name] + 1] = pos
 
@@ -160,11 +162,11 @@ local function make_link(meta, pos, placer)
         for k, v in pairs(links) do
             if #v == 0 then links[k] = nil end
         end
-        linked_meta:set_string('links', minetest.serialize(links))
+        linked_meta:set_string('links', core.serialize(links))
     end
 end
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
     if formname ~= 'sbz_power:sensor_linker_form' then return end
     local name = fields.set_name
     local wield_item = player:get_wielded_item()
@@ -181,13 +183,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     return true
 end)
 
-minetest.register_craftitem('sbz_power:sensor_linker', {
-    description = 'Sensor Linker',
+core.register_craftitem('sbz_power:sensor_linker', {
+    description = S("Sensor Linker"),
     info_extra = {
-        'Right click: asks for a name, if a block is pointed to, links to the to the sensor.',
-        'Left click: uses the previous name from when you right clicked, links it to the sensor.',
-        'Aux1 + right click/left click: Links the tool to the sensor.',
-        "If you hold it, it should show all the links and the sensor's linking radius.",
+        S("Right click: asks for a name, if a block is pointed to, links to the to the sensor."),
+        S("Left click: uses the previous name from when you right clicked, links it to the sensor."),
+        S("Aux1 + right click/left click: Links the tool to the sensor."),
+        S("If you hold it, it should show all the links and the sensor's linking radius."),
     },
     inventory_image = 'sensor_linker.png',
     range = 10,
@@ -201,7 +203,7 @@ minetest.register_craftitem('sbz_power:sensor_linker', {
 
         if placer:get_player_control().aux1 == false then
             local target = pointed.under
-            minetest.show_formspec(
+            core.show_formspec(
                 placer:get_player_name(),
                 'sbz_power:sensor_linker_form',
                 'field[set_name;The name of the link;]'

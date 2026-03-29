@@ -210,7 +210,7 @@ function metatool.form.on_receive(player, form_name, fields)
 		local data = form_data[playername]
 		local name = data and data.name
 		if name ~= form_name then
-			core.chat_send_player(playername, "Bug: Form name mismatch: " .. form_name)
+			core.chat_send_player(playername, S("Bug: Form name mismatch: ") .. form_name)
 			return true
 		end
 		local secure = data and data.nonce == matcher()
@@ -219,7 +219,7 @@ function metatool.form.on_receive(player, form_name, fields)
 		if secure then
 			result = metatool.form.handlers[form_name].on_receive(player, fields, data.data, secure)
 		elseif not fields.quit then
-			core.chat_send_player(playername, "Bug: Invalid security token for form " .. form_name)
+			core.chat_send_player(playername, S("Bug: Invalid security token for form ") .. form_name)
 		end
 		if result and not fields.quit then
 			core.close_formspec(playername, form_name)
@@ -275,7 +275,7 @@ function metatool.form.show(player, form_name, data)
 		local form = metatool.form.on_create(player, name, data)
 		local playername = player:get_player_name()
 		if type(form) ~= "table" then
-			core.chat_send_player(playername, "Bug: Attempt to open invalid form " .. form_name)
+			core.chat_send_player(playername, S("Bug: Attempt to open invalid form ") .. form_name)
 			return
 		end
 		if metatool.form.handlers[name].on_receive then
@@ -289,6 +289,6 @@ function metatool.form.show(player, form_name, data)
 		-- Show form to player
 		core.show_formspec(playername, name .. "~" .. nonce, form:render())
 	else
-		core.chat_send_player(player:get_player_name(), "Bug: Metatool form does not exist " .. form_name)
+		core.chat_send_player(player:get_player_name(), S("Bug: Metatool form does not exist ") .. form_name)
 	end
 end

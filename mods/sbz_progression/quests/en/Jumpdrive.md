@@ -5,6 +5,7 @@ A modified version of the mt-mods/jumpdrive mod, lets you teleport yourself, and
     
 
 ## Jumpdrive Backbone
+### ID: qid_jumpdrive_backbone
 
 ### Text
 
@@ -13,9 +14,10 @@ Also used in connecting jumpdrives to a fleet controller.
 
 ### Meta
 
-Requires: Compressor, Reactor Shells
+Requires: qid_compressor, qid_reactor_shells
 
 ## Warp Device
+### ID: qid_warp_device
 
 ### Text
 
@@ -23,9 +25,10 @@ An ingredient in making the jumpdrive engine. May be required for other things i
 
 ### Meta
 
-Requires: Crystal Grower, Antimatter Generators
+Requires: qid_crystal_grower, qid_antimatter_generators
 
 ## The Jumpdrive (engine)
+### ID: qid_the_jumpdrive_engine
 
 ### Text
 
@@ -38,7 +41,7 @@ The jumpdrive also acts as a battery, storing 200 kCj, this also means it can be
 If you punch the jumpdrive with an empty hand, you will see an outline of what nodes it will teleport.  
   
 You can transport emitters with the jumpdrive.  
-Also, emitters stop spawning after y=1000, so you can transport stuff more easily there, since no emitters will intefere with you.  
+Also, emitters stop spawning after y=1000, so you can transport stuff more easily there, since no emitters will interfere with you.  
   
 If your jumpdrive flight takes too much energy, the jumpdrive can also take away power from other batteries, it will do this automatically, but its 4 times less efficient compared to using regular jumpdrive's power.  
 It is good practice to use the "show" button before using the "jump" button, to see how much power your flight will consume,  
@@ -48,9 +51,10 @@ With protections: Jumpdrive leaves protections behind if it collides with anothe
 
 ### Meta
 
-Requires: Jumpdrive Backbone, Warp Device, Very Advanced Batteries
+Requires: qid_jumpdrive_backbone, qid_warp_device, qid_very_advanced_batteries
 
 ## Jumpdrive Stations
+### ID: qid_jumpdrive_stations
 
 ### Text
 
@@ -60,9 +64,10 @@ Simply place one down in your target destination. Now you can teleport near it w
 
 ### Meta
 
-Requires: The Jumpdrive (engine)
+Requires: qid_the_jumpdrive_engine
 
 ## Jumpdrive Fleet Controller
+### ID: qid_jumpdrive_fleet_controller
 
 ### Text
 
@@ -73,4 +78,4 @@ Warning: Make sure to ALWAYS press "show" before jump... you don't want one of y
 
 ### Meta
 
-Requires: Jumpdrive Backbone
+Requires: qid_jumpdrive_backbone

@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_chem/alloy_furnace.lua:5
+msgid "Alloying"
+msgstr ""
+
+#: mods/sbz_chem/alloy_furnace.lua:32
+msgid "Simple Alloy Furnace"
+msgstr ""
+
+#: mods/sbz_chem/centrifuge.lua:5
+msgid "Separating"
+msgstr ""
+
+#: mods/sbz_chem/centrifuge.lua:128
+msgid "Centrifuge"
+msgstr ""
+
+#: mods/sbz_chem/compressor.lua:5
+msgid "Compressing"
+msgstr ""
+
+#: mods/sbz_chem/compressor.lua:24
+msgid "Compressor"
+msgstr ""
+
+#: mods/sbz_chem/crusher.lua:5
+msgid "Crushing"
+msgstr ""
+
+#: mods/sbz_chem/crusher.lua:21
+msgid "Enhanced Pebble"
+msgstr ""
+
+#: mods/sbz_chem/crusher.lua:64
+msgid "Crusher"
+msgstr ""
+
+#: mods/sbz_chem/crystal_grower.lua:5
+msgid "Crystal Growing"
+msgstr ""
+
+#: mods/sbz_chem/crystal_grower.lua:71
+msgid "Crystal Grower"
+msgstr ""
+
+#: mods/sbz_chem/decay_accel.lua:52
+msgid "Decay Accelerator"
+msgstr ""
+
+#: mods/sbz_chem/decay_chains.lua:12
+msgid "Decay Accelerating"
+msgstr ""
+
+#: mods/sbz_chem/engraver.lua:17
+msgid "Engraving"
+msgstr ""
+
+#: mods/sbz_chem/engraver.lua:23
+msgid "Engraver"
+msgstr ""
+
+#: mods/sbz_chem/fluids.lua:39
+msgid "Empty Fluid Cell (Empty)"
+msgstr ""
+
+#: mods/sbz_chem/fluids.lua:77
+msgid "Water Fluid Cell (H₂O)"
+msgstr ""
+
+#: mods/sbz_chem/hpef.lua:15
+msgid "High Power Electric Furnace"
+msgstr ""
+
+#: mods/sbz_chem/melter_cooler.lua:14
+msgid "Melting"
+msgstr ""
+
+#: mods/sbz_chem/melter_cooler.lua:22
+msgid "Cooling"
+msgstr ""
+
+#: mods/sbz_chem/melter_cooler.lua:51
+msgid "Melter"
+msgstr ""
+
+#: mods/sbz_chem/melter_cooler.lua:151
+msgid "Cooler"
+msgstr ""
+
+#: mods/sbz_chem/pebble_enhancer.lua:5
+msgid "Enhancing"
+msgstr ""
+
+#: mods/sbz_chem/pebble_enhancer.lua:19
+msgid "Pebble Enhancer"
+msgstr ""
+
+#: mods/sbz_chem/radiation.lua:222
+msgid "radon"
+msgstr ""
+
+#: mods/sbz_chem/radiation.lua:322
+msgid "bad water, unhealthy even"
+msgstr ""
+
+#: mods/sbz_chem/reactor.lua:7
+msgid "Thorium Fuel Rod"
+msgstr ""
+
+#: mods/sbz_chem/reactor.lua:19
+msgid "Uranium Fuel Rod"
+msgstr ""
+
+#: mods/sbz_chem/reactor.lua:31
+msgid "Plutonium Fuel Rod"
+msgstr ""
+
+#: mods/sbz_chem/reactor.lua:69
+msgid "Nuclear Reactor"
+msgstr ""
+
+#: mods/sbz_chem/reactor.lua:245
+msgid "X-ray Emitter"
+msgstr ""

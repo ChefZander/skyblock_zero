@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- would slow you 0.8x
 playereffects.register_effect_type("wet", "Wet", "fx_wet.png", { "speed" }, function(player)
         unlock_achievement(player:get_player_name(), "Wet")
@@ -17,7 +19,7 @@ local source_animation = {
 }
 
 core.register_node("sbz_resources:water_source", {
-    description = "Water Source",
+    description = S("Water Source"),
     sounds = {
         footstep = { name = 'gen_water_step', gain = 0.3, pitch = 0.8 },
         place = { name = 'mix_water_place'}
@@ -64,7 +66,7 @@ local flowing_animation = {
 }
 
 core.register_node("sbz_resources:water_flowing", {
-    description = "Flowing Water",
+    description = S("Flowing Water"),
     drawtype = "flowingliquid",
     tiles = { "water.png" },
     special_tiles = {

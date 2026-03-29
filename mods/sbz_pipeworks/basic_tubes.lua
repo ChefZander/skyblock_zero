@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 pipeworks.register_tube('pipeworks:tube', {
-    description = 'Basic Tube',
+    description = S("Basic Tube"),
     sounds = sbz_audio.glass(),
     plain = { { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling } },
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling } },
@@ -20,7 +22,7 @@ do -- Basic Tube recipe scope
 end
 
 pipeworks.register_tube('pipeworks:accelerator_tube', {
-    description = 'Accelerating Tube',
+    description = S("Accelerating Tube"),
     sounds = sbz_audio.glass(),
     plain = {
         { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'springgreen' },
@@ -55,7 +57,7 @@ do -- Accelerator Tube recipe scope
 end
 
 pipeworks.register_tube('pipeworks:one_direction_tube', {
-    description = 'One Direction Tube',
+    description = S("One Direction Tube"),
     sounds = sbz_audio.glass(),
     plain = { { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = '#45283c' } },
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling, color = '#45283c' } },
@@ -132,7 +134,7 @@ do -- One Direction Tube recipe scope
 end
 
 pipeworks.register_tube('pipeworks:high_priority_tube', {
-    description = 'High Priority Tube',
+    description = S("High Priority Tube"),
     sounds = sbz_audio.glass(),
     plain = { { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'tomato' } },
     noctr = { { name = 'basic_tube_noctr.png', backface_culling = pipeworks.tube_backface_culling, color = 'tomato' } },
@@ -156,7 +158,7 @@ do -- High Priority Tube recipe scope
 end
 
 pipeworks.register_tube('pipeworks:low_priority_tube', {
-    description = 'Low Priority Tube',
+    description = S("Low Priority Tube"),
     sounds = sbz_audio.glass(),
     plain = {
         { name = 'basic_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'lightgreen' },
@@ -184,7 +186,7 @@ do -- Low Priority Tube recipe scope
 end
 
 core.register_node('pipeworks:one_way_tube', {
-    description = 'One-Way Tube',
+    description = S("One-Way Tube"),
     sounds = sbz_audio.glass(),
     tiles = {
         { name = 'one_way_tube_top.png', backface_culling = pipeworks.tube_backface_culling },
@@ -245,7 +247,7 @@ do -- One Way Tube recipe scope
 end
 
 pipeworks.register_tube('pipeworks:crossing_tube', {
-    description = 'Crossing Tube',
+    description = S("Crossing Tube"),
     sounds = sbz_audio.glass(),
     plain = { 'crossing_tube_plain.png' },
     noctr = { 'crossing_tube_noctr.png' },
@@ -273,7 +275,7 @@ do -- Crossing Tube recipe scope
 end
 
 pipeworks.register_tube('pipeworks:broken_tube', {
-    description = 'Broken Tube',
+    description = S("Broken Tube"),
     sounds = sbz_audio.glass(),
     plain = {
         { name = 'pipeworks_broken_tube_plain.png', backface_culling = pipeworks.tube_backface_culling, color = 'red' },
@@ -310,7 +312,7 @@ pipeworks.register_tube('pipeworks:broken_tube', {
                 if wieldname == '' then
                     core.chat_send_player(
                         playername,
-                        'Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?'
+                        S("Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?")
                     )
                     if core.settings:get_bool 'enable_damage' then puncher:set_hp(puncher:get_hp() - 1) end
                 end
@@ -330,7 +332,7 @@ pipeworks.register_tube('pipeworks:broken_tube', {
                 meta:set_string('the_tube_was', '')
             else
                 pipeworks.logger(log_msg .. ' but original node ' .. was_node.name .. ' is not registered anymore.')
-                core.chat_send_player(playername, 'This tube cannot be repaired.')
+                core.chat_send_player(playername, S("This tube cannot be repaired."))
             end
         end,
         allow_metadata_inventory_put = function()

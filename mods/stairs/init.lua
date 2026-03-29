@@ -30,9 +30,9 @@ License along with this software; if not, see <https://www.gnu.org/licenses/>.
 
 
 -- Global namespace for functions
-
 stairs = {}
 
+local S = core.get_translator(core.get_current_modname())
 
 local function rotate_and_place(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
@@ -43,7 +43,7 @@ local function rotate_and_place(itemstack, placer, pointed_thing)
 		local placer_pos = placer:get_pos()
 		if placer_pos then
 			local diff = vector.subtract(p1, placer_pos)
-			param2 = minetest.dir_to_facedir(diff)
+			param2 = core.dir_to_facedir(diff)
 			-- The player places a node on the side face of the node he is standing on
 			if p0.y == p1.y and math.abs(diff.x) <= 0.5 and math.abs(diff.z) <= 0.5 and diff.y < 0 then
 				-- reverse node direction
@@ -51,7 +51,7 @@ local function rotate_and_place(itemstack, placer, pointed_thing)
 			end
 		end
 
-		local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
+		local finepos = core.pointed_thing_to_face_pos(placer, pointed_thing)
 		local fpos = finepos.y % 1
 
 		if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
@@ -64,7 +64,7 @@ local function rotate_and_place(itemstack, placer, pointed_thing)
 			end
 		end
 	end
-	return minetest.item_place(itemstack, placer, pointed_thing, param2)
+	return core.item_place(itemstack, placer, pointed_thing, param2)
 end
 
 -- Set backface culling and world-aligned textures
@@ -92,7 +92,7 @@ end
 
 
 function stairs.register(name, reg_def)
-	local def = assert(minetest.registered_nodes[name])
+	local def = assert(core.registered_nodes[name])
 	reg_def = reg_def or {}
 	if reg_def == "leveled" then reg_def = { leveled = true } end
 	local tex = reg_def.tex
@@ -184,7 +184,7 @@ function stairs.register(name, reg_def)
 			end
 			def_copy.tiles = set_textures(def_copy.tiles, reg_def.align)
 		end
-		minetest.register_node(name .. "_" .. v, def_copy)
+		core.register_node(name .. "_" .. v, def_copy)
 	end
 
 	if reg_def.leveled == true then
@@ -205,7 +205,7 @@ function stairs.register(name, reg_def)
 		} do
 			c[k] = v
 		end
-		minetest.register_node(def.name .. "_leveled", c)
+		core.register_node(def.name .. "_leveled", c)
 	end
 
 	local to_override_info_extra = def.info_extra
@@ -220,7 +220,7 @@ function stairs.register(name, reg_def)
 
 	local g = def.groups
 	for k, v in pairs { cnc = 1, cnc_leveled = reg_def.leveled and 1 or 0 } do g[k] = v end
-	minetest.override_item(name, {
+	core.override_item(name, {
 		info_extra = to_override_info_extra,
 		groups = g
 	})
@@ -245,18 +245,18 @@ local action = function(action)
 		local bpos = pointed.under
 
 		local function doit(pos, a)
-			local n = minetest.get_node(pos)
+			local n = core.get_node(pos)
 			if n == nil then return end
-			local ndef = minetest.registered_nodes[n.name]
+			local ndef = core.registered_nodes[n.name]
 			if ndef == nil then return end
 			if ndef.paramtype2 ~= "leveled" then return end
-			local level = minetest.get_node_level(pos)
-			local max = minetest.get_node_max_level(pos)
+			local level = core.get_node_level(pos)
+			local max = core.get_node_max_level(pos)
 			level = math.round(level + a)
 			if level <= 0 then level = 0 end
 			if level >= max then level = max end
 			if control.zoom then level = 0 end
-			minetest.set_node_level(pos, level)
+			core.set_node_level(pos, level)
 		end
 
 		if r == 1 then
@@ -278,7 +278,7 @@ local action = function(action)
 		return stack
 	end
 end
-minetest.register_craftitem("stairs:leveled_tool", {
+core.register_craftitem("stairs:leveled_tool", {
 	description = "Leveled node tool",
 	info_extra = {
 		"Placing: Increase level by 1",

@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_multiblocks/blast_furnace.lua:8
+msgid "Blast Furnace"
+msgstr ""
+
+#: mods/sbz_multiblocks/blast_furnace.lua:165
+msgid "Blast Furnace Controller"
+msgstr ""
+
+#: mods/sbz_multiblocks/blast_furnace.lua:377
+msgid "Blast Furnace Casing"
+msgstr ""
+
+#: mods/sbz_multiblocks/blast_furnace.lua:397
+msgid "Blast Furnace Heater"
+msgstr ""
+
+#: mods/sbz_multiblocks/blast_furnace.lua:424
+msgid "Blast Furnace Power Port"
+msgstr ""
+
+#: mods/sbz_multiblocks/blast_furnace.lua:478
+msgid "Blast Furnace Item Input"
+msgstr ""
+
+#: mods/sbz_multiblocks/blast_furnace.lua:546
+msgid "Blast Furnace Item Output"
+msgstr ""
+
+#: mods/sbz_multiblocks/init.lua:245
+msgid "Build out a multiblock controller's build plan"
+msgstr ""
+
+#: mods/sbz_multiblocks/large_liquid_storage.lua:147
+msgid "Large Liquid Storage Controller"
+msgstr ""
+
+#: mods/sbz_multiblocks/large_liquid_storage.lua:250
+msgid "Large Liquid Storage Casing"
+msgstr ""
+
+#: mods/sbz_multiblocks/large_liquid_storage.lua:276
+msgid "Large Liquid Storage Edge Casing"
+msgstr ""

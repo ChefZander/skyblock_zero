@@ -1,10 +1,12 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_craftitem('sbz_resources:strange_dust', {
-    description = 'Strange Dust',
+    description = S("Strange Dust"),
     inventory_image = 'strange_dust.png',
 })
 
 core.register_node('sbz_resources:strange_blob', {
-    description = 'Strange Blob',
+    description = S("Strange Blob"),
     info_extra = 'It sure is strange looking',
     tiles = { 'strange_blob.png' },
     groups = { matter = 1, antimatter = 1, strange = 1, explody = 100 },
@@ -84,10 +86,10 @@ local power_per_1_use = 10
 local max_wear = power_per_1_use * 200
 
 core.register_tool('sbz_resources:strange_cleaner', {
-    description = 'Strange Blob Cleaner',
+    description = S("Strange Blob Cleaner"),
     info_extra = {
-        'Restores what was.... done.... by strange blobs.',
-        '"Place" it into a battery to charge.',
+        S("Restores what was.... done.... by strange blobs."),
+        S('"Place" it into a battery to charge.'),
     },
     inventory_image = 'strange_cleaner.png',
     groups = { disable_repair = 1, power_tool = 1 },
@@ -162,7 +164,7 @@ end
 core.register_node(
     'sbz_resources:stable_strange_blob',
     unifieddyes.def {
-        description = 'Stabilized Strange Blob',
+        description = S("Stabilized Strange Blob"),
         tiles = { 'stable_strange_blob.png' },
         paramtype2 = 'color',
         paramtype = 'light',

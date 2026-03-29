@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_progression/annoy.lua:15
+msgid "Lost your questbook? Use /qb to get it back."
+msgstr ""
+
+#: mods/sbz_progression/annoy.lua:26
+msgid "Gives you a questbook if you don't have one."
+msgstr ""
+
+#: mods/sbz_progression/annoy.lua:33
+msgid "You already have a Quest Book."
+msgstr ""
+
+#: mods/sbz_progression/annoy.lua:37
+msgid "You have been given a Quest Book."
+msgstr ""
+
+#: mods/sbz_progression/annoy.lua:39
+msgid "Your inventory is full."
+msgstr ""
+
+#: mods/sbz_progression/init.lua:199
+msgid "You fell off the platform."
+msgstr ""
+
+#: mods/sbz_progression/init.lua:212
+msgid "⌠ Crazy Rare Drop: @1 just dropped a Singularity Rune! ⌡"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:16
+msgid "@1 and @2"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:20
+msgid "@1, and @2"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:31
+msgid "Quest Completed: @1!"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:62
+msgid "Quest revoked: @1"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:202
+msgid "Quest List (✓ @1 / ► @2 / ✕ @3)"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:209
+msgid "Makes font larger"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:210
+msgid "Makes font smaller"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:248
+#: mods/sbz_progression/questbook.lua:276
+msgid "Complete @1 to unlock."
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:252
+msgid "✔ Shhh... don't tell anyone :)"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:252
+msgid "✔ You have completed this Quest."
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:253
+#: mods/sbz_progression/questbook.lua:266
+msgid "You have not completed this Quest."
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:265
+msgid "✔ Shhh... don't tell anyone"
+msgstr ""
+
+#: mods/sbz_progression/questbook.lua:376
+msgid "Quest Book"
+msgstr ""

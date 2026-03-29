@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local armor = sbz_api.armor
 local recipes = armor.recipes
 
@@ -20,7 +22,7 @@ local armor_types_to_names = {
 
 for armor_type, armor_name in pairs(armor_types_to_names) do
     armor.register("sbz_armor:admin_" .. armor_name:lower(), {
-        description = "Creative " .. armor_name,
+        description = S("Creative ") .. armor_name,
         armor_type = armor_type,
         inventory_image = ("(armor_%s_inv.png^[multiply:grey)"):format(armor_name:lower()),
         armor_texture = ("(armor_%s_body.png^[multiply:grey)"):format(armor_name:lower()),
@@ -93,7 +95,7 @@ for armor_type, armor_name in pairs(armor_types_to_names) do
     -- phlogiston armor
 
     armor.register("sbz_armor:phlogiston_" .. armor_name:lower(), {
-        description = "Phlogiston " .. armor_name,
+        description = S("Phlogiston ") .. armor_name,
         armor_type = armor_type,
         inventory_image = ("(armor_%s_inv.png^[multiply:%s)"):format(armor_name:lower(), "#fe620b"),
         armor_texture = ("(armor_%s_body.png^[multiply:%s)"):format(armor_name:lower(), "#fe620b"),

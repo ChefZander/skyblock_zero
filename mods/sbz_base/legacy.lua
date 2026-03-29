@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- local at_every_load = false -- for lbms if ever needed
 local function deprecate_entity(name)
     core.register_entity(':' .. name, {
@@ -9,7 +11,7 @@ end
 
 local function deprecate_item(name)
     core.register_craftitem(':' .. name, {
-        description = 'Deprecated item, throw away',
+        description = S("Deprecated item, throw away"),
         inventory_image = 'blank.png',
         stack_max = 1,
         groups = { not_in_creative_inventory = 1 },

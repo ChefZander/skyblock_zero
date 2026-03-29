@@ -1,11 +1,13 @@
+local S = core.get_translator(core.get_current_modname())
+
 local laser_range = 300
 
 local max_wear = 50
 local power_per_1_use = 50
 
 core.register_tool("sbz_resources:laser_weapon", {
-    description = "Laser",
-    info_extra = core.colorize("#ffff00", "Ability: Fire (Left-Click)") .. " Fire a laserbeam which destroys meteorites and damages players.",
+    description = S("Laser"),
+    info_extra = core.colorize("#ffff00", S("Ability: Fire (Left-Click)")) .. S(" Fire a laserbeam which destroys meteorites and damages players."),
     inventory_image = "laser_pointer.png",
     groups = { disable_repair = 1, power_tool = 1 },
     wear_represents = "power",

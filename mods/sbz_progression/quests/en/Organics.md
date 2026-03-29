@@ -4,6 +4,7 @@
 Grow plants and fungi to craft more things and also make your base look really cool.
 
 ## Liquid Water
+### ID: qid_liquid_water
 
 ### Text
 
@@ -11,9 +12,10 @@ Crushing pebbles squeezes out a bit of water. You can take advantage of this by 
 
 ### Meta
 
-Requires: Crusher
+Requires: qid_crusher
 
 ## Emittrium Glass
+### ID: qid_emittrium_glass
 
 ### Text
 
@@ -21,9 +23,10 @@ The other preliminary we need before we can start growing plants is Glass. Thank
 
 ### Meta
 
-Requires: Antimatter, Obtain Emittrium
+Requires: qid_antimatter, Obtain Emittrium
 
 ## Dirt
+### ID: qid_dirt
 
 ### Text
 
@@ -31,9 +34,10 @@ If you've followed my instructions and built a pool, you should notice Moss begi
 
 ### Meta
 
-Requires: Liquid Water
+Requires: qid_liquid_water
 
 ## Sprouting Plants
+### ID: qid_sprouting_plants
 
 ### Text
 
@@ -41,9 +45,10 @@ You'll also need to craft the Algae on your pool into Fertilizer. This is useful
 
 ### Meta
 
-Requires: Liquid Water
+Requires: qid_liquid_water
 
 ## Growing Plants
+### ID: qid_growing_plants
 
 ### Text
 
@@ -61,21 +66,23 @@ To complete this quest, place a Habitat Regulator inside your habitat.
 
 ### Meta
 
-Requires: Switching Station, Emittrium Glass, Dirt, Sprouting Plants
+Requires: qid_switching_station, qid_emittrium_glass, qid_dirt, qid_sprouting_plants
 
 ## Fertilized Dirt
+### ID: qid_fertilized_dirt
 
 ### Text
 
 I'm guessing you want to grow plants faster now, don't worry, this is one of the solutions!  
   
-The growth of plants above it will be 2x faster, but so will the CO₂ consumbtion, and you can't fertilize the dirt, you will have to manually place your plant.  
+The growth of plants above it will be 2x faster, but so will the CO₂ consumption, and you can't fertilize the dirt, you will have to manually place your plant.  
 
 ### Meta
 
-Requires: Growing Plants
+Requires: qid_growing_plants
 
 ## Carbon Dioxide
+### ID: qid_carbon_dioxide
 
 ### Text
 
@@ -89,9 +96,10 @@ The size of the habitat determines how much CO₂ it can hold.
 
 ### Meta
 
-Requires: Growing Plants, Annihilator
+Requires: qid_growing_plants, qid_annihilator
 
 ## Stemfruit
+### ID: qid_stemfruit
 
 ### Text
 
@@ -99,22 +107,24 @@ The only other plant you can get from fertilizing dirt is Stemfruit; you won't n
 
 ### Meta
 
-Requires: Carbon Dioxide
+Requires: qid_carbon_dioxide
 
 ## Basic Neutron Emitter
+### ID: qid_basic_neutron_emitter
 
 ### Text
 
 There is not enough radiation in the air for plants to mutate on their own, so basic neutron emitter helps them to mutate.  
 Fully grown plants don't mutate.  
   
-The radiation comming off of the Basic Neutron Emitter is mostly harmless to players, but if there are multiple Neutron Emitters, that might become a concern, place this node near plants.  
+The radiation coming off of the Basic Neutron Emitter is mostly harmless to players, but if there are multiple Neutron Emitters, that might become a concern, place this node near plants.  
 
 ### Meta
 
-Requires: Growing Plants, Neutronium
+Requires: qid_growing_plants, qid_neutronium
 
 ## Fiberweed
+### ID: qid_fiberweed
 
 ### Text
 
@@ -126,9 +136,10 @@ It must also be regular Dirt, Electric Soil or Fertilized Dirt won't be able to 
 
 ### Meta
 
-Requires: Stemfruit, Basic Neutron Emitter
+Requires: qid_stemfruit, qid_basic_neutron_emitter
 
 ## Warpshrooms
+### ID: qid_warpshrooms
 
 ### Text
 
@@ -136,9 +147,10 @@ Warpshrooms are used for teleport technology, they grow slightly slower than oth
 
 ### Meta
 
-Requires: Stemfruit, Basic Neutron Emitter
+Requires: qid_stemfruit, qid_basic_neutron_emitter
 
 ## Shockshrooms
+### ID: qid_shockshrooms
 
 ### Text
 
@@ -147,9 +159,10 @@ Unlike other plants, they will continue consuming CO₂ even after they have com
 
 ### Meta
 
-Requires: Stemfruit, Basic Neutron Emitter
+Requires: qid_stemfruit, qid_basic_neutron_emitter
 
 ## Cleargrass
+### ID: qid_cleargrass
 
 ### Text
 
@@ -159,9 +172,10 @@ Unlike other plants, they will continue consuming CO₂ even after they have com
 
 ### Meta
 
-Requires: Stemfruit, Basic Neutron Emitter
+Requires: qid_stemfruit, qid_basic_neutron_emitter
 
 ## Razorgrass
+### ID: qid_razorgrass
 
 ### Text
 
@@ -170,9 +184,10 @@ It is used for some crafting recipes and fertilizer.
 
 ### Meta
 
-Requires: Stemfruit, Basic Neutron Emitter
+Requires: qid_stemfruit, qid_basic_neutron_emitter
 
 ## Electric Soil
+### ID: qid_electric_soil
 
 ### Text
 
@@ -181,9 +196,10 @@ Electric soil will make plants grow a LOT faster, and consume a LOT more CO₂, 
 
 ### Meta
 
-Requires: Shockshrooms
+Requires: qid_shockshrooms
 
 ## Airlocks
+### ID: qid_airlocks
 
 ### Text
 
@@ -191,9 +207,10 @@ Tired of breaking a hole in the wall whenever you want to enter a habitat? Intro
 
 ### Meta
 
-Requires: Growing Plants, Emittrium Glass
+Requires: qid_growing_plants, qid_emittrium_glass
 
 ## CO2 Compactors
+### ID: qid_co2_compactors
 
 ### Text
 
@@ -201,9 +218,10 @@ I'll assume you want to store a little more carbon dioxide in your habitat, if s
 
 ### Meta
 
-Requires: Stemfruit, Airlocks
+Requires: qid_stemfruit, qid_airlocks
 
 ## Secret: Not Chorus Fruit
+### ID: qid_secret_not_chorus_fruit
 
 ### Text
 
@@ -214,12 +232,13 @@ So apparently Warpshrooms make you teleport randomly when you eat them. Dunno if
 Requires: 
 
 ## TNT
+### ID: qid_tnt
 
 ### Text
 
 There are TNT sticks, they are made by compressing 9 Pyrograss. These TNT sticks can be thrown and they can be used in combat.  
   
-Normal TNT (compressed 9 tnt sticks, 81 Pyrograss) can be lit by right clicking it. TNT knocks back entites (regardless of if there is line of sight) and damages entities only if there is line of sight.  
+Normal TNT (compressed 9 tnt sticks, 81 Pyrograss) can be lit by right clicking it. TNT knocks back entities (regardless of if there is line of sight) and damages entities only if there is line of sight.  
   
 To complete this quest, craft a full TNT block.  
   
@@ -227,9 +246,10 @@ Also, TNT explosions are delayed if the server is laggy, meaning you can set up 
 
 ### Meta
 
-Requires: Growing Plants
+Requires: qid_growing_plants
 
 ## Info: Organics Automation
+### ID: qid_info_organics_automation
 
 ### Text
 
@@ -241,9 +261,10 @@ Side note: deployers can place 2 nodes ahead, that's a "feature" not a bug.
 
 ### Meta
 
-Requires: Liquid Water
+Requires: qid_liquid_water
 
 ## Colorium Trees
+### ID: qid_colorium_trees
 
 ### Text
 
@@ -254,16 +275,17 @@ So, how do you grow them:
 3) Wait or use Fertilizer on it  
   
 Unlike plants, it does not need to be inside a Habitat Regulator.  
-Achievment will unlock when your tree grows.  
+Achievement will unlock when your tree grows.  
 And also, Colorium Trunks can be used in the burner.  
   
 Also, you may see there is a tree core where the sapling used to be, that tree core contains the tree's DNA.  
 
 ### Meta
 
-Requires: Neutronium
+Requires: qid_neutronium
 
 ## Dna Extractor
+### ID: qid_dna_extractor
 
 ### Text
 
@@ -277,9 +299,10 @@ You can put that new mutated tree core into the DNA Extractor, and repeat. After
 
 ### Meta
 
-Requires: Colorium Trees
+Requires: qid_colorium_trees
 
 ## Colorium Emitters
+### ID: qid_colorium_emitters
 
 ### Text
 
@@ -297,4 +320,4 @@ You can duplicate Colorium Emitters with 8 Phlogiston.
 
 ### Meta
 
-Requires: Colorium Trees, Phlogiston Fuser
+Requires: qid_colorium_trees, qid_phlogiston_fuser

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- This code is responsible for the player's formspec prepend
 -- And also for theming you know
 -- And also some helpers that the ui library can use
@@ -5,7 +7,7 @@
 sbz_api.themes = {
     ['builtin'] = { -- the very minimal theme
         name = 'builtin',
-        description = 'Very minimal for sure... not recomended to use',
+        description = S("Very minimal for sure... not recommended to use"),
     },
 }
 

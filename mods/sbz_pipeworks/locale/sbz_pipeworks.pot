@@ -1,0 +1,167 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_pipeworks/autocrafter.lua:23
+msgid "Unknown item"
+msgstr ""
+
+#: mods/sbz_pipeworks/autocrafter.lua:264
+msgid "unconfigured Autocrafter: unknown recipe"
+msgstr ""
+
+#: mods/sbz_pipeworks/autocrafter.lua:359
+msgid "unconfigured Autocrafter"
+msgstr ""
+
+#: mods/sbz_pipeworks/autocrafter.lua:362
+msgid "No crafting processor."
+msgstr ""
+
+#: mods/sbz_pipeworks/autocrafter.lua:367
+msgid "'@1' Autocrafter (@2)"
+msgstr ""
+
+#: mods/sbz_pipeworks/autocrafter.lua:381
+msgid "Autocrafter"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_blocks.lua:57
+msgid "Item Sorter"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_blocks.lua:195
+msgid "Item Void"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:4
+msgid "Basic Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:25
+msgid "Accelerating Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:60
+msgid "One Direction Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:137
+msgid "High Priority Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:161
+msgid "Low Priority Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:189
+msgid "One-Way Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:250
+msgid "Crossing Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:278
+msgid "Broken Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:315
+msgid ""
+"Broken tubes may be a bit sharp. Maybe try hitting it with a robotic arm?"
+msgstr ""
+
+#: mods/sbz_pipeworks/basic_tubes.lua:335
+msgid "This tube cannot be repaired."
+msgstr ""
+
+#: mods/sbz_pipeworks/common.lua:31
+msgid "Allow splitting incoming stacks from tubes"
+msgstr ""
+
+#: mods/sbz_pipeworks/filter_injector.lua:46
+msgid "Automatic Filter-Injector"
+msgstr ""
+
+#: mods/sbz_pipeworks/luaentity.lua:440
+msgid "Removes all tube entities, use when it lags"
+msgstr ""
+
+#: mods/sbz_pipeworks/pattern_storinator.lua:30
+msgid "Pattern Storinator"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:129
+msgid "Channels are public by default"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:130
+msgid "Use <player>:<channel> for fully private channels"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:131
+msgid "Use <player>;<channel> for private receivers"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:136
+msgid "Teleporting Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:137
+msgid "Channel"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:138
+msgid "Save"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:139
+msgid "Receive"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:147
+msgid "Unconfigured Teleport Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:150
+msgid "Teleport Tube @1 on '@2'"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:173
+msgid "Sorry, channel '@1' is reserved for exclusive use by @2"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:177
+msgid "Sorry, receiving from channel '@1' is reserved for @2"
+msgstr ""
+
+#: mods/sbz_pipeworks/teleport_tube.lua:288
+msgid "Teleport Tube"
+msgstr ""
+
+#: mods/sbz_pipeworks/wielder.lua:234
+msgid "Node Breaker"
+msgstr ""
+
+#: mods/sbz_pipeworks/wielder.lua:296
+msgid "Deployer"
+msgstr ""
+
+#: mods/sbz_pipeworks/wielder.lua:326
+msgid "Puncher"
+msgstr ""

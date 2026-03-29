@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type {
     type = 'pebble_enhancing',
-    description = 'Enhancing',
+    description = S("Enhancing"),
     icon = 'pebble_enhancer_top.png',
     single = true,
 }
@@ -14,7 +16,7 @@ sbz_api.recipe.register_craft {
 }
 
 sbz_api.register_stateful_machine("sbz_chem:pebble_enhancer", {
-    description = "Pebble Enhancer",
+    description = S("Pebble Enhancer"),
     info_extra = "Makes shiny, potentially radioactive pebbles.",
     tiles = {
         "pebble_enhancer_top.png",
@@ -29,7 +31,7 @@ sbz_api.register_stateful_machine("sbz_chem:pebble_enhancer", {
     },
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("input", 1)
         inv:set_size("output", 16)

@@ -1,5 +1,11 @@
+local S, PS = core.get_translator("jumpdrive")
+
+-- Satisfy linter concerning PS
+---@cast S fun(string, ...): string
+---@cast PS fun(string, string, number, ...): string
+
 core.register_node("jumpdrive:fleet_controller", {
-	description = "Jumpdrive Fleet Controller",
+	description = S("Jumpdrive Fleet Controller"),
 
 	tiles = { "jumpdrive_fleet_controller.png" },
 	groups = { oddly_breakable_by_hand = 3, matter = 1 },
@@ -126,7 +132,11 @@ core.register_node("jumpdrive:fleet_controller", {
 
 		if fields.show then
 			local playername = sender:get_player_name()
-			core.chat_send_player(playername, "Found " .. #engines_pos_list .. " jumpdrives")
+			core.chat_send_player(playername,
+				PS("Found @1 jumpdrive", "Found @2 jumpdrives",
+					#engines_pos_list, tostring(#engines_pos_list)
+				)
+			)
 
 			if #engines_pos_list == 0 then
 				return
@@ -138,12 +148,14 @@ core.register_node("jumpdrive:fleet_controller", {
 				local engine_pos = engines_pos_list[index]
 				local success, msg = jumpdrive.simulate_jump(engine_pos, sender, true)
 				if not success then
-					core.chat_send_player(playername, msg .. " @ " .. core.pos_to_string(engine_pos))
+					core.chat_send_player(playername,
+						msg .. " @ " .. core.pos_to_string(engine_pos)
+					)
 					return
 				end
 
 				core.chat_send_player(sender:get_player_name(),
-					"Check passed for engine " .. index .. "/" .. #engines_pos_list)
+					S("Check passed for engine ") .. index .. "/" .. #engines_pos_list)
 
 				if index < #engines_pos_list then
 					-- more drives to check
@@ -151,7 +163,7 @@ core.register_node("jumpdrive:fleet_controller", {
 					core.after(1, async_check)
 				elseif index >= #engines_pos_list then
 					-- done
-					core.chat_send_player(sender:get_player_name(), "Simulation successful")
+					core.chat_send_player(sender:get_player_name(), S("Simulation successful"))
 				end
 			end
 
@@ -188,12 +200,12 @@ core.register_node("jumpdrive:fleet_controller", {
 				end
 				if playername then
 					local time_millis = math.floor(msg / 1000)
-					core.chat_send_player(playername, "Jump executed in " .. time_millis .. " ms")
+					core.chat_send_player(playername, S("Jump executed in ") .. time_millis .. " ms")
 				end
 			else
 				meta:set_int("active", 0)
 				jumpdrive.fleet.update_formspec(meta, pos)
-				meta:set_string("infotext", "Engine " .. core.pos_to_string(node_pos) .. " failed with: " .. msg)
+				meta:set_string("infotext", S("Engine ") .. core.pos_to_string(node_pos) .. S(" failed with: ") .. msg)
 				if playername then
 					core.chat_send_player(playername, msg)
 				end

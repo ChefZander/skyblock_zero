@@ -1,8 +1,10 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- Fuel rods
 
 core.register_craftitem("sbz_chem:thorium_fuel_rod", {
     groups = { chem_element = 1, fuel_rod = 1, radioactive = 1 },
-    description = "Thorium Fuel Rod",
+    description = S("Thorium Fuel Rod"),
     inventory_image = "fuel_rod.png^[multiply:#d633af"
 })
 
@@ -14,7 +16,7 @@ sbz_api.recipe.register_craft {
 
 core.register_craftitem("sbz_chem:uranium_fuel_rod", {
     groups = { chem_element = 1, fuel_rod = 2, radioactive = 3 },
-    description = "Uranium Fuel Rod",
+    description = S("Uranium Fuel Rod"),
     inventory_image = "fuel_rod.png^[multiply:#47681e"
 })
 
@@ -26,7 +28,7 @@ sbz_api.recipe.register_craft {
 
 core.register_craftitem("sbz_chem:plutonium_fuel_rod", {
     groups = { chem_element = 1, fuel_rod = 3, radioactive = 5 },
-    description = "Plutonium Fuel Rod",
+    description = S("Plutonium Fuel Rod"),
     info_extra = "Not for noobs...",
     inventory_image = "fuel_rod.png^[multiply:#1d2aba"
 })
@@ -64,7 +66,7 @@ local rod_duration = 3 * 60 * 60
 local random = PcgRandom(0)
 
 sbz_api.register_stateful_generator("sbz_chem:nuclear_reactor", {
-    description = "Nuclear Reactor",
+    description = S("Nuclear Reactor"),
     tiles = {
         "reactor_top_off.png",
         "reactor_bottom.png",
@@ -240,7 +242,7 @@ listring[]
 -- the scary
 local xray_demand = 1800
 sbz_api.register_stateful_machine("sbz_chem:xray", {
-    description = "X-ray Emitter",
+    description = S("X-ray Emitter"),
     tiles = {
         "xray_top.png",
         "xray_top.png",

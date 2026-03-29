@@ -18,6 +18,8 @@
 
 -- This entire mod is contained within a single file, with sections being separated by comments
 
+local S = core.get_translator(core.get_current_modname())
+
 ---======================----
 --- === CONFIGURATION === ---
 ---======================----
@@ -163,7 +165,7 @@ end
 function sbz_area_containers.new_room(player_name)
     local container_ids = player_container_ids[player_name] or {}
     if #container_ids >= max_areas_per_player then
-        core.chat_send_player(player_name, ('You may only have %s areas'):format(max_areas_per_player))
+        core.chat_send_player(player_name, (S('You may only have %s areas')):format(max_areas_per_player))
         return false
     end
 
@@ -315,8 +317,8 @@ core.register_node(
 core.register_node(
     'sbz_area_containers:entry_point',
     unifieddyes.def {
-        description = 'Room Container Entry Point',
-        info_extra = 'This block decides where you spawn in a room.\nRight-click to exit a room.\nIf you have multiple of these in a room, one of them will be chosen.', -- block not node hehe, im a little rebel :3
+        description = S("Room Container Entry Point"),
+        info_extra = S("This block decides where you spawn in a room.\nRight-click to exit a room.\nIf you have multiple of these in a room, one of them will be chosen."), -- block not node hehe, im a little rebel :3
         paramtype = 'light',
         light_source = 14,
         groups = { matter = 1 },
@@ -335,7 +337,7 @@ core.register_node(
 )
 
 core.register_node('sbz_area_containers:room_container', {
-    description = 'Room Container',
+    description = S("Room Container"),
     tiles = { 'room_container.png' },
     paramtype = 'light',
     light_source = 14,

@@ -1,5 +1,6 @@
-local storage = core.get_mod_storage()
+local S = core.get_translator(core.get_current_modname())
 
+local storage = core.get_mod_storage()
 
 function sbz_power.register_battery(name, def)
     for k, v in pairs { sbz_battery = 1, sbz_machine = 1, pipe_connects = 1, pipe_conducts = 1 } do
@@ -29,7 +30,7 @@ function sbz_power.register_battery(name, def)
 end
 
 sbz_power.register_battery("sbz_power:battery", {
-    description = "Battery",
+    description = S("Battery"),
     sounds = sbz_audio.matter(),
     tiles = { "battery.png" },
     groups = { matter = 1 },
@@ -52,7 +53,7 @@ do -- Battery recipe scope
 end
 
 sbz_power.register_battery("sbz_power:advanced_battery", {
-    description = "Advanced Battery",
+    description = S("Advanced Battery"),
     sounds = sbz_audio.matter(),
     tiles = { "advanced_battery.png" },
     groups = { matter = 1 },
@@ -74,7 +75,7 @@ do -- Advanced Battery recipe scope
 end
 
 sbz_power.register_battery("sbz_power:very_advanced_battery", {
-    description = "Very Advanced Battery",
+    description = S("Very Advanced Battery"),
     sounds = sbz_audio.matter(),
     tiles = { "very_advanced_battery.png" },
     groups = { matter = 1, level = 2 },
@@ -114,7 +115,7 @@ local function set_tp_battery_formspec(pos)
 end
 
 sbz_power.register_battery("sbz_power:teleport_battery", {
-    description = "Teleport Battery",
+    description = S("Teleport Battery"),
     sounds = sbz_audio.matter(),
     tiles = { "teleport_battery.png" },
     groups = { matter = 1, level = 2 },
@@ -245,7 +246,7 @@ do -- Teleport Battery recipe scope
 end
 
 core.register_node("sbz_power:creative_battery", {
-    description = "Creative Power Generating Battery",
+    description = S("Creative Power Generating Battery"),
     sounds = sbz_audio.matter(),
     info_extra =
     "It never runs out of power... useful for when you need to not have noise in your \"Supply\" statistic in the switching station.",
@@ -260,7 +261,7 @@ core.register_node("sbz_power:creative_battery", {
 })
 
 core.register_node("sbz_power:real_creative_battery", {
-    description = "Creative Battery",
+    description = S("Creative Battery"),
     sounds = sbz_audio.matter(),
     tiles = { "creative_battery.png" },
     groups = { creative = 1, sbz_battery = 1, sbz_machine = 1, pipe_conducts = 1, pipe_connects = 1, matter = 3 },

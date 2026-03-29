@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type({
     type = "compressing",
-    description = "Compressing",
+    description = S("Compressing"),
     icon = "compressor.png^[verticalframe:11:1",
     single = true,
 })
@@ -19,7 +21,7 @@ end
 
 
 sbz_api.register_stateful_machine("sbz_chem:compressor", {
-    description = "Compressor",
+    description = S("Compressor"),
     tiles = {
         "compressor_side.png",
         "compressor_side.png",
@@ -42,7 +44,7 @@ sbz_api.register_stateful_machine("sbz_chem:compressor", {
     input_inv = "src",
     output_inv = "dst",
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("src", 4)
         inv:set_size("dst", 4)

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- This code is garbage, avoid it if you can
 -- Rewrite if you must
 
@@ -27,7 +29,7 @@ local function try_linking(pos, meta)
 end
 
 core.register_node('sbz_power:reactor_shell', {
-    description = 'Reactor Shell',
+    description = S("Reactor Shell"),
     sounds = sbz_audio.machine(),
     info_extra = 'Used for the emittrium reactor',
     tiles = {
@@ -54,7 +56,7 @@ do -- Reactor Shell recipe scope
 end
 
 core.register_node('sbz_power:reactor_glass', {
-    description = 'Reactor Glass',
+    description = S("Reactor Glass"),
     info_extra = 'Decorative; acts like a shell',
     tiles = {
         'reactor_shell.png',
@@ -84,7 +86,7 @@ end
 local reactor_shell = 'blank.png^[invert:rgba^[multiply:#639bFF^reactor_shell.png'
 
 core.register_node('sbz_power:reactor_item_input', {
-    description = 'Reactor Emittrium Input',
+    description = S("Reactor Emittrium Input"),
     sounds = sbz_audio.machine(),
     info_extra = 'ONLY ONE can be used in an emittrium reactor, supplies emittrium to the reactor core',
     groups = { matter = 1, reactor_shell = 1, tubedevice = 1, tubedevice_receiver = 1, explody = 1, charged = 1 },
@@ -135,7 +137,7 @@ do -- Reactor Emittrium Input recipe scope
 end
 
 sbz_api.register_stateful('sbz_power:reactor_core', {
-    description = 'Reactor Core',
+    description = S("Reactor Core"),
     sounds = sbz_audio.machine(),
     info_extra = "Don't let it explode!",
     tiles = {
@@ -213,7 +215,7 @@ local function make_infoscreen_off_formspec(meta)
 end
 
 core.register_node('sbz_power:reactor_infoscreen', {
-    description = 'Reactor Infoscreen',
+    description = S("Reactor Infoscreen"),
     sounds = sbz_audio.machine(),
     paramtype2 = '4dir',
     tiles = {
@@ -319,7 +321,7 @@ do -- Reactor Infoscreen recipe scope
 end
 
 sbz_api.register_generator('sbz_power:reactor_power_port', {
-    description = 'Reactor Power Port',
+    description = S("Reactor Power Port"),
     sounds = sbz_audio.machine(),
     paramtype2 = '4dir',
     tiles = {
@@ -364,7 +366,7 @@ do -- Reactor Power Port recipe scope
 end
 
 core.register_node('sbz_power:reactor_coolant_port', {
-    description = 'Reactor Coolant Port',
+    description = S("Reactor Coolant Port"),
     sounds = sbz_audio.machine(),
     info_extra = 'Provide it water',
     paramtype2 = '4dir',

@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local hash = core.hash_node_position
 local touched_nodes = {}
 
@@ -202,7 +204,7 @@ Make sure the habitat is fully sealed. And make sure things like slabs or non-ai
 end
 
 sbz_api.register_machine('sbz_bio:habitat_regulator', {
-    description = 'Habitat Regulator',
+    description = S("Habitat Regulator"),
     sounds = sbz_audio.machine(),
     tiles = { 'habitat_regulator.png' },
     groups = { matter = 1, ui_bio = 1 },
@@ -228,9 +230,9 @@ sbz_api.register_machine('sbz_bio:habitat_regulator', {
 })
 
 core.register_node('sbz_bio:co2_compactor', {
-    description = 'CO2 Compactor',
+    description = S("CO2 Compactor"),
     sounds = sbz_audio.matter(),
-    info_extra = "Stores 30 CO₂. Habitat regulator doesn't consider it a wall, but it can be passed through",
+    info_extra = S("Stores 30 CO₂. Habitat regulator doesn't consider it a wall, but it can be passed through"),
     groups = { matter = 2, explody = 8 },
     walkable = false,
     drawtype = 'glasslike', -- this is so that when you are inside the node, it looks OK

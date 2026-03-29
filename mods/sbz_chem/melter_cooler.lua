@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- Melter and cooler
 -- Melter: [Block] -> [Block's liquid form]
 -- cooler: [Liquid] -> [Block]
@@ -9,7 +11,7 @@
 
 sbz_api.recipe.register_craft_type({
     type = "melting",
-    description = "Melting",
+    description = S("Melting"),
     icon = "melter_front_off.png",
     single = true
 })
@@ -17,7 +19,7 @@ sbz_api.recipe.register_craft_type({
 
 sbz_api.recipe.register_craft_type({
     type = "cooling",
-    description = "Cooling",
+    description = S("Cooling"),
     icon = "cooler_front_off.png",
     single = true
 })
@@ -46,7 +48,7 @@ end
 
 
 sbz_api.register_stateful_machine("sbz_chem:melter", {
-    description = "Melter",
+    description = S("Melter"),
     info_extra = "Melts blocks into liquids",
     tiles = {
         "melter_top.png",
@@ -146,7 +148,7 @@ listring[]
 })
 
 sbz_api.register_stateful_machine("sbz_chem:cooler", {
-    description = "Cooler",
+    description = S("Cooler"),
     info_extra = "Cools down liquids into blocks",
     tiles = {
         "cooler_top.png",

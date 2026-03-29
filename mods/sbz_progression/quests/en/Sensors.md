@@ -4,6 +4,7 @@
 Multi-step processes just to craft some logic gates? Yes please!
 
 ## Sensor Linker
+### ID: qid_sensor_linker
 
 ### Text
 
@@ -16,9 +17,10 @@ When you **left-click** a node that is already linked, it will unlink it.
 
 ### Meta
 
-Requires: Blast Furnace
+Requires: qid_blast_furnace
 
 ## Logic Gates
+### ID: qid_logic_gates
 
 ### Text
 
@@ -27,7 +29,7 @@ You have to use the sensor linker with logic gates:
 - You have to make an "A" link as the 1st input  
 - Most of the time you have to make a "B" link as your 2nd input  
   
-All logic gates run once every 0.25 seconds, this may be refered to as a "switching station subtick".  
+All logic gates run once every 0.25 seconds, this may be referred to as a "switching station subtick".  
   
 When you have multiple logic gates in a chain, there are 2 categories of connections you can make:  
 - "slow" connections - Where each logic gate has to wait 0.25s to execute  
@@ -35,9 +37,9 @@ When you have multiple logic gates in a chain, there are 2 categories of connect
   
 They are dependant on the order that the switching station executes the logic gates.
 
-Switching from a fast connection to a slow one or the other way around may involve switching the direction the power source or switching the way that the logic gates are connected to eachother.  
+Switching from a fast connection to a slow one or the other way around may involve switching the direction the power source or switching the way that the logic gates are connected to each other.  
   
-You can make a computer with these. I would strongly recomend not doing that. If you want to do that, submit your code optimizations to skyblock zero logic gates with a pull request.  
+You can make a computer with these. I would strongly recommend not doing that. If you want to do that, submit your code optimizations to skyblock zero logic gates with a pull request.  
   
 Descriptions of each logic gate if you are unfamiliar with them:  
 Buffer gate - It will copy the state of the machine linked in "A", so if it is on, it will be on, if it is off, it will be off  
@@ -53,9 +55,10 @@ You can complete this quest by crafting the buffer gate.
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker
 
 ## Machine Controller
+### ID: qid_machine_controller
 
 ### Text
 
@@ -70,9 +73,10 @@ The machine at link "A" is off, so all the machines in link "B" are turned off
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker
 
 ## Delayer
+### ID: qid_delayer
 
 ### Text
 
@@ -81,9 +85,10 @@ It uses node timers, so it may not work when you aren't near it (somewhere aroun
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker
 
 ## Light Sensor
+### ID: qid_light_sensor
 
 ### Text
 
@@ -95,9 +100,10 @@ Link "A" determines which position to test.
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker
 
 ## Node Sensor
+### ID: qid_node_sensor
 
 ### Text
 
@@ -107,9 +113,10 @@ It will turn on if the node at link "A" matches what is shown in the UI.
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker
 
 ## Item Sensor
+### ID: qid_item_sensor
 
 ### Text
 
@@ -122,9 +129,10 @@ In most machines, the item count that you put into this sensor won't matter.
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker
 
 ## Switches
+### ID: qid_switches
 
 ### Text
 
@@ -133,4 +141,4 @@ You can turn them on or off.
 
 ### Meta
 
-Requires: Sensor Linker
+Requires: qid_sensor_linker

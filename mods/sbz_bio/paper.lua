@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_craftitem("sbz_bio:paper", {
-    description = "Paper",
+    description = S("Paper"),
     inventory_image = "paper.png"
 })
 
@@ -55,7 +57,7 @@ core.register_on_player_receive_fields(function(user, formname, fields)
 end)
 
 core.register_craftitem("sbz_bio:book", {
-    description = "Book",
+    description = S("Book"),
     inventory_image = "book.png",
     info_extra = "You can write stuff in this!",
     on_use = function(stack, user, pointed)

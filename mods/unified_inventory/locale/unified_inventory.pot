@@ -1,0 +1,250 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/unified_inventory/api.lua:338 mods/unified_inventory/register.lua:118
+msgid "Crafting"
+msgstr ""
+
+#: mods/unified_inventory/api.lua:354
+msgid "Mixing"
+msgstr ""
+
+#: mods/unified_inventory/api.lua:369
+msgid "Cooking"
+msgstr ""
+
+#: mods/unified_inventory/api.lua:377
+msgid "Digging"
+msgstr ""
+
+#: mods/unified_inventory/api.lua:384
+msgid "Digging (by chance)"
+msgstr ""
+
+#: mods/unified_inventory/category.lua:70
+msgid "All Items"
+msgstr ""
+
+#: mods/unified_inventory/category.lua:77
+msgid "Miscellaneous"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:31
+msgid "Organics"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:36
+msgid "Tools"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:40
+msgid "Chemistry"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:45
+msgid "Fluids"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:50
+msgid "Decorations"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:55
+msgid "Machines"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:60
+msgid "Item or Fluid Transportation"
+msgstr ""
+
+#: mods/unified_inventory/default-categories.lua:64
+msgid "Luacontrollers"
+msgstr ""
+
+#: mods/unified_inventory/group.lua:37
+msgid " and "
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:178
+msgid "Scroll categories left"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:184
+msgid "Scroll categories right"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:204
+msgid "Search"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:209
+msgid "Reset search and display everything"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:214
+msgid "Filter"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:225
+msgid "First page"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:226
+msgid "Back three pages"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:227
+msgid "Back one page"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:228
+msgid "Forward one page"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:229
+msgid "Forward three pages"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:230
+msgid "Last page"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:252
+msgid "No matching items"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:254
+msgid "No matches."
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:313
+msgid "Page"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:313
+msgid "@1 of @2"
+msgstr ""
+
+#: mods/unified_inventory/internal.lua:477
+msgid ""
+"Unified Inventory: Your game version is too old and does not support the GUI "
+"requirements. You might experience visual issues."
+msgstr ""
+
+#: mods/unified_inventory/register.lua:34
+msgid "Can use the creative inventory"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:39
+msgid ""
+"Forces Unified Inventory to be displayed in Full mode if Lite mode is "
+"configured globally"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:62
+msgid "Crafting Grid"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:68
+#: mods/unified_inventory/register.lua:230
+msgid "Crafting Guide"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:74
+msgid "Clear inventory"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:81
+msgid ""
+"This button has been disabled outside of creative mode to prevent accidental "
+"inventory trashing.\n"
+"Use the trash slot instead."
+msgstr ""
+
+#: mods/unified_inventory/register.lua:91
+msgid "Inventory cleared!"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:126
+msgid "Trash:"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:133
+msgid "Refill:"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:175
+msgid "Any item belonging to the @1 group"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:177
+msgid "Any item belonging to the groups @1"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:195
+msgid "No recipes"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:196
+msgid "No usages"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:199
+msgid "Result"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:200
+msgid "Ingredient"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:203
+msgid "Show next recipe"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:204
+msgid "Show next usage"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:207
+msgid "Show previous recipe"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:208
+msgid "Show previous usage"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:244
+msgid "@1 (@2)"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:283
+msgid "Give me:"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:403
+msgid "This recipe is too@nlarge to be displayed."
+msgstr ""
+
+#: mods/unified_inventory/register.lua:413
+msgid "To craft grid:"
+msgstr ""
+
+#: mods/unified_inventory/register.lua:426
+msgid "All"
+msgstr ""

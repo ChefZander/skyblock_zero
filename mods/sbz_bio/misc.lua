@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("sbz_bio:burner", sbz_api.add_tube_support({
-    description = "Burner",
+    description = S("Burner"),
     tiles = { "burner.png" },
     groups = { matter = 1, co2_source = 1 },
     paramtype = "light",
@@ -67,7 +69,7 @@ end
 
 
 core.register_node("sbz_bio:airlock", {
-    description = "Airlock",
+    description = S("Airlock"),
     drawtype = "glasslike",
     tiles = { { name = "airlock.png^[opacity:192", animation = { type = "vertical_frames", length = 0.25 } } },
     use_texture_alpha = "blend",
@@ -94,7 +96,7 @@ do -- Airlock recipe scope
 end
 
 sbz_api.register_stateful_machine("sbz_bio:neutron_emitter", {
-    description = "Basic Neutron Emitter",
+    description = S("Basic Neutron Emitter"),
     sounds = sbz_audio.machine(),
     info_extra = "Emits radiation, forces plants mutate.",
     info_power_consume = 10,

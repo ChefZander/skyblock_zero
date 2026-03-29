@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 --- default palette
 sbz_api.default_palette = {
     dark0 = '#1d1d1d',
@@ -62,19 +64,19 @@ local space_colors = {
 sbz_api.register_theme('space', {
     default = true,
     name = 'Space',
-    description = '[Default Theme] The default sbz experience',
+    description = S("[Default Theme] The default sbz experience"),
     config = {
         ['HUE'] = {
             default = '0',
             type = { 'int', -180, 180 },
-            description = 'Theme Hue (a number from -180 to 180)',
+            description = S("Theme Hue (a number from -180 to 180)"),
         },
         ['FONT'] = { -- becomes @@FONT
             default = true,
             value_true = ';font=mono',
             value_false = '',
             type = { 'bool' },
-            description = 'Force mono font',
+            description = S("Force mono font"),
         },
     },
     button_theme = {
@@ -142,7 +144,7 @@ sbz_api.register_theme('tilde', {
     default = false,
     unordered = false,
     name = 'Tilde',
-    description = 'Theme inspired by https://tilde.team, This theme will most likely change a lot in the future. Some things may look ugly.',
+    description = S("Theme inspired by https://tilde.team, This theme will most likely change a lot in the future. Some things may look ugly."),
     --    force_font = ";font=mono", -- => @@FONT
     config = {
         ['FONT'] = { -- becomes @@FONT
@@ -150,7 +152,7 @@ sbz_api.register_theme('tilde', {
             value_true = ';font=mono',
             value_false = '',
             type = { 'bool' },
-            description = 'Force mono font',
+            description = S("Force mono font"),
         },
     },
     button_theme = {
@@ -240,14 +242,14 @@ local gruvbox_colors = {
 sbz_api.register_theme('gruvbox', {
     default = false,
     name = 'Gruvbox',
-    description = 'Gruvbox colorscheme ported to sbz.',
+    description = S("Gruvbox colorscheme ported to sbz."),
     config = {
         ['FONT'] = { -- becomes @@FONT
             default = true,
             value_true = ';font=mono',
             value_false = '',
             type = { 'bool' },
-            description = 'Force mono font',
+            description = S("Force mono font"),
         },
     },
     button_theme = {

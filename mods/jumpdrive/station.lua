@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_node("jumpdrive:station", {
-    description = "Jumpdrive Station",
+    description = S("Jumpdrive Station"),
     tiles = {
         "jumpdrive_station.png",
     },

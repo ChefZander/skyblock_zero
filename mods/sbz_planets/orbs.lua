@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 --[[
     Orb maker: needs all orbs to be crafted, makes orbs
 
@@ -5,9 +7,9 @@
 ]]
 
 core.register_craftitem("sbz_planets:dwarf_orb", {
-    description = "Dwarf Orb",
+    description = S("Dwarf Orb"),
     inventory_image = "dwarf_orb.png",
-    info_extra = "Used as a crafting replacement for matter annihilators, found naturally in dwarf planets",
+    info_extra = S("Used as a crafting replacement for matter annihilators, found naturally in dwarf planets"),
 })
 
 do -- Dwarf Orb multiply recipe scope
@@ -24,7 +26,7 @@ do -- Dwarf Orb multiply recipe scope
 end
 
 core.register_node("sbz_planets:dwarf_orb_ore", {
-    description = "Dwarf Orb Ore",
+    description = S("Dwarf Orb Ore"),
     sounds = sbz_audio.matter(),
     groups = {
         matter = 1, antimatter = 1, ore = 1, level = 2,
@@ -34,7 +36,7 @@ core.register_node("sbz_planets:dwarf_orb_ore", {
 })
 
 core.register_node("sbz_planets:dwarf_stone", {
-    description = "Stone",
+    description = S("Stone"),
     sounds = sbz_audio.matter(),
     tiles = { "stone.png" },
     groups = { matter = 1, charged = 1, moss_growable = 1, not_in_creative_inventory = 1, explody = 10 },

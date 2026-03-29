@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local up = vector.new(0, 1, 0)
 function sbz_api.plant_grow(next_stage)
     return function(pos, node)
@@ -267,7 +269,7 @@ end
 --Pyrograss, hardy and quick to grow, highly flammable due to its carbon content
 --To be used in rockets and explosives and stuff
 sbz_api.register_plant('pyrograss', {
-    description = 'Pyrograss Plant',
+    description = S("Pyrograss Plant"),
     sounds = {
         footstep = { name = 'foley_leaf_step', gain = 0.2, pitch = 1.0 },
         dig      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.8 },
@@ -283,7 +285,7 @@ sbz_api.register_plant('pyrograss', {
     no_wilt = true,
 })
 core.register_craftitem('sbz_bio:pyrograss', {
-    description = 'Pyrograss',
+    description = S("Pyrograss"),
     inventory_image = 'pyrograss_4.png',
     groups = { burn = 30, eat = 1 },
     sound = { eat = { name = 'foley_crackle_chomp_simple', gain = 1, pitch = 1.0 } },
@@ -317,7 +319,7 @@ playereffects.register_effect_type(
 )
 
 sbz_api.register_plant('razorgrass', {
-    description = 'Razorgrass Plant',
+    description = S("Razorgrass Plant"),
     sounds = {
         footstep = { name = 'foley_leaf_step', gain = 0.2, pitch = 1.0 },
         dig      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.8 },
@@ -349,7 +351,7 @@ do -- Fertilizer bulk recipe scope
 end
 
 core.register_craftitem('sbz_bio:razorgrass', {
-    description = 'Razorgrass',
+    description = S("Razorgrass"),
     inventory_image = 'razorgrass_4.png',
     groups = { burn = 2, eat = -8 },
     sound = { eat = { name = 'foley_crackle_chomp_thin', gain = 1, pitch = 1.0 } },
@@ -375,7 +377,7 @@ playereffects.register_effect_type('immune', 'Immune', 'fx_immunity.png', { 'imm
 end, function(fx, player) end, false, true, 0.1)
 
 sbz_api.register_plant('cleargrass', {
-    description = 'Cleargrass Plant',
+    description = S("Cleargrass Plant"),
     sounds = {
         footstep = { name = 'foley_leaf_step', gain = 0.2, pitch = 1.0 },
         dig      = { name = 'foley_leaf_step', gain = 0.5, pitch = 0.8 },
@@ -397,7 +399,7 @@ sbz_api.register_plant('cleargrass', {
 })
 
 core.register_craftitem('sbz_bio:cleargrass', {
-    description = 'Cleargrass',
+    description = S("Cleargrass"),
     inventory_image = 'cleargrass_4.png',
     groups = { burn = 0, eat = 0 },
     sound = { eat = { name = 'foley_crackle_chomp_smooth', gain = 1, pitch = 1.0 } },
@@ -413,7 +415,7 @@ core.register_craftitem('sbz_bio:cleargrass', {
 --Stemfruit, generic plant, quite versatile
 --To be used to craft other plants
 sbz_api.register_plant('stemfruit_plant', {
-    description = 'Stemfruit Plant',
+    description = S("Stemfruit Plant"),
     drop = 'sbz_bio:stemfruit 3',
     family = 'stemfruit',
     growth_rate = 8,
@@ -425,7 +427,7 @@ sbz_api.register_plant('stemfruit_plant', {
 })
 
 core.register_craftitem('sbz_bio:stemfruit', {
-    description = 'Stemfruit',
+    description = S("Stemfruit"),
     inventory_image = 'stemfruit.png',
     groups = { burn = 12, eat = 5 },
     sound = { eat = { name = 'mix_eat_fruit', gain = 1.0, pitch = 1.0 } },
@@ -453,7 +455,7 @@ core.register_craftitem('sbz_bio:stemfruit', {
 --Warpshroom, grows slowly, has teleportation powers
 --To be used later in teleporters
 sbz_api.register_plant('warpshroom', {
-    description = 'Warpshroom Plant',
+    description = S("Warpshroom Plant"),
     drop = 'sbz_bio:warpshroom 2',
     family = 'warpshroom',
     growth_rate = 16,
@@ -486,7 +488,7 @@ end
 local eat = core.item_eat(6)
 
 core.register_craftitem('sbz_bio:warpshroom', {
-    description = 'Warpshroom',
+    description = S("Warpshroom"),
     inventory_image = 'warpshroom_4.png',
     on_place = sbz_api.plant_plant('sbz_bio:warpshroom_1', { 'group:matter' }),
     on_use = function(itemstack, user, pointed)
@@ -541,7 +543,7 @@ end, function(fx, player)
 end, false, true, 0.5)
 
 sbz_api.register_plant('shockshroom', {
-    description = 'Shockshroom Plant',
+    description = S("Shockshroom Plant"),
     drop = 'sbz_bio:shockshroom 2',
     family = 'warpshroom',
     growth_rate = 6,
@@ -557,7 +559,7 @@ sbz_api.register_plant('shockshroom', {
 })
 
 core.register_craftitem('sbz_bio:shockshroom', {
-    description = 'Shockshroom',
+    description = S("Shockshroom"),
     inventory_image = 'shockshroom_4.png',
     on_place = sbz_api.plant_plant('sbz_bio:shockshroom_1', { 'group:soil' }),
     groups = { ui_bio = 1, eat = -1 },
@@ -583,7 +585,7 @@ local function is_all_water(pos, leveled)
 end
 
 core.register_node('sbz_bio:fiberweed', {
-    description = 'Fiberweed',
+    description = S("Fiberweed"),
     drawtype = 'plantlike_rooted',
     tiles = { 'dirt.png^fiberweed_overlay.png', 'dirt.png' },
     special_tiles = { { name = 'fiberweed_plant.png', tileable_vertical = true } },

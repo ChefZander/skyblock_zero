@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 --[[
 Recipes for the decay accelerator
 Currently, just used to make plutonium
@@ -7,7 +9,7 @@ If you want to add more, feel free to do so :D
 
 sbz_api.recipe.register_craft_type({
     type = "decay_accelerating",
-    description = "Decay Accelerating",
+    description = S("Decay Accelerating"),
     icon = "decay_accel_front.png",
     single = true
 })

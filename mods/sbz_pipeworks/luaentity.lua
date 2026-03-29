@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 local max_entity_id = 1000000000000 -- If you need more, there's a problem with your code
 
 local luaentity = {}
@@ -5,19 +7,19 @@ pipeworks.luaentity = luaentity
 
 luaentity.registered_entities = {}
 
-local filename = minetest.get_worldpath() .. "/luaentities"
+local filename = core.get_worldpath() .. "/luaentities"
 local function read_file()
 	local f = io.open(filename, "r")
 	if f == nil then return {} end
 	local t = f:read("*all")
 	f:close()
 	if t == "" or t == nil then return {} end
-	return minetest.deserialize(t) or {}
+	return core.deserialize(t) or {}
 end
 
 local function write_file(tbl)
 	local f = io.open(filename, "w")
-	f:write(minetest.serialize(tbl))
+	f:write(core.serialize(tbl))
 	f:close()
 end
 
@@ -65,7 +67,7 @@ local function write_entities()
 	write_file(luaentity.entities)
 end
 
-minetest.register_on_shutdown(write_entities)
+core.register_on_shutdown(write_entities)
 luaentity.entities_index = 0
 
 local move_entities_globalstep_part1
@@ -83,11 +85,11 @@ if pipeworks.use_real_entities then
 	end
 
 	move_entities_globalstep_part1 = function(dtime)
-		local active_block_range = tonumber(minetest.settings:get("active_block_range")) or 2
+		local active_block_range = tonumber(core.settings:get("active_block_range")) or 2
 		for key in pairs(active_blocks) do
 			active_blocks[key] = nil
 		end
-		for _, player in ipairs(minetest.get_connected_players()) do
+		for _, player in ipairs(core.get_connected_players()) do
 			local blockpos = get_blockpos(player:get_pos())
 			local minpx = blockpos.x - active_block_range
 			local minpy = blockpos.y - active_block_range
@@ -100,7 +102,7 @@ if pipeworks.use_real_entities then
 				for y = minpy, maxpy do
 					for z = minpz, maxpz do
 						local pos = { x = x, y = y, z = z }
-						active_blocks[minetest.hash_node_position(pos)] = true
+						active_blocks[core.hash_node_position(pos)] = true
 					end
 				end
 			end
@@ -109,7 +111,7 @@ if pipeworks.use_real_entities then
 	end
 
 	is_active = function(pos)
-		return active_blocks[minetest.hash_node_position(get_blockpos(pos))] ~= nil
+		return active_blocks[core.hash_node_position(get_blockpos(pos))] ~= nil
 	end
 else
 	move_entities_globalstep_part1 = function()
@@ -171,7 +173,7 @@ local entitydef_default = {
 		if not is_active(entity_pos) then
 			return
 		end
-		local object = minetest.add_entity(entity_pos, entity.name)
+		local object = core.add_entity(entity_pos, entity.name)
 		if not object then
 			return
 		end
@@ -293,7 +295,7 @@ end
 
 function luaentity.add_entity(pos, name)
 	if not luaentity.entities then
-		minetest.after(0, luaentity.add_entity, vector.new(pos), name)
+		core.after(0, luaentity.add_entity, vector.new(pos), name)
 		return
 	end
 	local index = luaentity.entities_index
@@ -407,7 +409,7 @@ local dtime_accum = 0
 local dtime_delayed = 0
 local skip_update = false
 
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	if dtime >= 0.2 and dtime_delayed < 1 then
 		-- Reduce activity when the server is lagging.
 		skip_update = true
@@ -435,7 +437,7 @@ end)
 
 
 core.register_chatcommand("remove_tube_entities", {
-	description = "Removes all tube entities, use when it lags",
+	description = S("Removes all tube entities, use when it lags"),
 	privs = { ["server"] = true },
 	func = function(name, param)
 		for id, luaent in pairs(luaentity.entities) do

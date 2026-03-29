@@ -23,12 +23,13 @@ You should have received a copy of the GNU Library General Public
 License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]=]
 
-local S = minetest.get_translator("unified_inventory")
-local F = minetest.formspec_escape
+local S = core.get_translator(core.get_current_modname())
+
+local F = core.formspec_escape
 local ui = unified_inventory
 
 local function is_recipe_craftable(recipe)
-	-- Ensure the ingedients exist
+	-- Ensure the ingredients exist
 	for _, itemname in pairs(recipe.items) do
 		local groups = string.find(itemname, "group:")
 		if groups then
@@ -38,8 +39,8 @@ local function is_recipe_craftable(recipe)
 		else
 			-- Possibly an item
 			local itemname_cleaned = ItemStack(itemname):get_name()
-			if not minetest.registered_items[itemname_cleaned]
-				or minetest.get_item_group(itemname_cleaned, "not_in_craft_guide") ~= 0 then
+			if not core.registered_items[itemname_cleaned]
+				or core.get_item_group(itemname_cleaned, "not_in_craft_guide") ~= 0 then
 				return false
 			end
 		end
@@ -48,9 +49,9 @@ local function is_recipe_craftable(recipe)
 end
 
 -- Create detached creative inventory after loading all mods
-minetest.after(0.01, function()
+core.after(0.01, function()
 	local rev_aliases = {}
-	for original, newname in pairs(minetest.registered_aliases) do
+	for original, newname in pairs(core.registered_aliases) do
 		if not rev_aliases[newname] then
 			rev_aliases[newname] = {}
 		end
@@ -59,7 +60,7 @@ minetest.after(0.01, function()
 
 	-- Filtered item list
 	ui.items_list = {}
-	for name, def in pairs(minetest.registered_items) do
+	for name, def in pairs(core.registered_items) do
 		if ui.is_itemdef_listable(def) then
 			table.insert(ui.items_list, name)
 
@@ -67,7 +68,7 @@ minetest.after(0.01, function()
 			local all_names = rev_aliases[name] or {}
 			table.insert(all_names, name)
 			for _, itemname in ipairs(all_names) do
-				local recipes = minetest.get_all_craft_recipes(itemname)
+				local recipes = core.get_all_craft_recipes(itemname)
 				for _, recipe in ipairs(recipes or {}) do
 					if is_recipe_craftable(recipe) then
 						ui.register_craft(recipe)
@@ -83,7 +84,7 @@ minetest.after(0.01, function()
 
 	-- Analyse dropped items -> custom "digging" recipes
 	for _, name in ipairs(ui.items_list) do
-		local def = minetest.registered_items[name]
+		local def = core.registered_items[name]
 		-- Simple drops
 		if type(def.drop) == "string" then
 			local dstack = ItemStack(def.drop)
@@ -101,7 +102,7 @@ minetest.after(0.01, function()
 			to register them later, in order to avoid duplicates. These tables counts
 			the total number of guaranteed drops and drops by chance (“maybes”) for each item.
 			For “maybes”, the final count is the theoretical maximum number of items, not
-			neccessarily the actual drop count. ]]
+			necessarily the actual drop count. ]]
 			local drop_guaranteed = {}
 			local drop_maybe = {}
 			-- This is for catching an obscure corner case: If the top items table has
@@ -212,12 +213,12 @@ minetest.after(0.01, function()
 	local total_removed = 0
 	for cat_name, cat_def in pairs(ui.registered_category_items) do
 		for itemname, _ in pairs(cat_def) do
-			local idef = minetest.registered_items[itemname]
+			local idef = core.registered_items[itemname]
 			if not idef then
 				total_removed = total_removed + 1
 				--[[
 				-- For analysis
-				minetest.log("warning", "[unified_inventory] Removed item '"
+				core.log("warning", "[unified_inventory] Removed item '"
 					.. itemname .. "' from category '" .. cat_name
 					.. "'. Reason: item not registered")
 				]]
@@ -226,7 +227,7 @@ minetest.after(0.01, function()
 				total_removed = total_removed + 1
 				--[[
 				-- For analysis
-				minetest.log("warning", "[unified_inventory] Removed item '"
+				core.log("warning", "[unified_inventory] Removed item '"
 					.. itemname .. "' from category '" .. cat_name
 					.. "'. Reason: item is in 'not_in_creative_inventory' group")
 				]]
@@ -235,7 +236,7 @@ minetest.after(0.01, function()
 		end
 	end
 	if total_removed > 0 then
-		minetest.log("info", "[unified_inventory] Removed " .. total_removed ..
+		core.log("info", "[unified_inventory] Removed " .. total_removed ..
 			" items from the categories.")
 	end
 
@@ -272,7 +273,7 @@ function ui.set_home(player, pos)
 	-- save the home data from the table to the file
 	local output = io.open(ui.home_filename, "w")
 	if not output then
-		minetest.log("warning", "[unified_inventory] Failed to save file: "
+		core.log("warning", "[unified_inventory] Failed to save file: "
 			.. ui.home_filename)
 		return
 	end
@@ -380,7 +381,7 @@ ui.register_craft_type("digging", {
 })
 
 ui.register_craft_type("digging_chance", {
-	description = "Digging (by chance)",
+	description = S("Digging (by chance)"),
 	icon = "robotic_arm.png",
 	width = 1,
 	height = 1,
@@ -439,8 +440,8 @@ end
 ---------------- Player utilities ----------------
 
 function ui.is_creative(playername)
-	return minetest.check_player_privs(playername, { creative = true })
-		or minetest.settings:get_bool("creative_mode")
+	return core.check_player_privs(playername, { creative = true })
+		or core.settings:get_bool("creative_mode")
 end
 
 ---------------- Formspec helpers ----------------

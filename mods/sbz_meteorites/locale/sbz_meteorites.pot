@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/sbz_meteorites/attractor.lua:112
+msgid "Gravitational Attractor"
+msgstr ""
+
+#: mods/sbz_meteorites/attractor.lua:142
+msgid "Gravitational Repulsor"
+msgstr ""
+
+#: mods/sbz_meteorites/init.lua:32
+msgid "Attempts to spawn a meteorite somewhere."
+msgstr ""
+
+#: mods/sbz_meteorites/init.lua:55
+msgid "Failed to spawn meteorite."
+msgstr ""
+
+#: mods/sbz_meteorites/init.lua:60
+msgid "Spawned meteorite at "
+msgstr ""
+
+#: mods/sbz_meteorites/init.lua:62
+msgid "Spawned meteorites."
+msgstr ""
+
+#: mods/sbz_meteorites/meteorite_maker.lua:161
+msgid "Meteorite Maker"
+msgstr ""
+
+#: mods/sbz_meteorites/nodes.lua:8
+msgid "Meteoric Matter"
+msgstr ""
+
+#: mods/sbz_meteorites/nodes.lua:41
+msgid "Meteoric Antimatter"
+msgstr ""
+
+#: mods/sbz_meteorites/nodes.lua:59
+msgid "Meteoric Emittrium"
+msgstr ""
+
+#: mods/sbz_meteorites/nodes.lua:84
+msgid "Meteoric Metal"
+msgstr ""
+
+#: mods/sbz_meteorites/nodes.lua:97
+msgid "Neutronium"
+msgstr ""
+
+#: mods/sbz_meteorites/nodes.lua:105
+msgid "Antineutronium"
+msgstr ""
+
+#: mods/sbz_meteorites/visualiser.lua:5
+msgid "Meteorite Radar"
+msgstr ""

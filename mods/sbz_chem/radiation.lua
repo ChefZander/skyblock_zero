@@ -56,7 +56,7 @@ non-zero radiation resistance; anything with non-uniform geometry
 or complex internal structure should show no radiation resistance.
 Fractional resistance values are permitted.
 --]]
-
+local S = core.get_translator(core.get_current_modname())
 local rad_resistance_node = {}
 local rad_resistance_group = {
     matter = 512,
@@ -69,7 +69,7 @@ local cache_radiation_resistance = {}
 local function node_radiation_resistance(node_name)
     local resistance = cache_radiation_resistance[node_name]
     if resistance then return resistance end
-    local def = minetest.registered_nodes[node_name]
+    local def = core.registered_nodes[node_name]
     if not def then
         cache_radiation_resistance[node_name] = 0
         return 0
@@ -154,7 +154,7 @@ local function calculate_base_damage(node_pos, object_pos, strength)
 
     for ray_pos in Raycast(node_pos, vector.multiply(vector.direction(node_pos, object_pos), dist), false, false) do
         ray_pos = ray_pos.under
-        local shield_name = minetest.get_node(ray_pos).name
+        local shield_name = core.get_node(ray_pos).name
         shielding = shielding + node_radiation_resistance(shield_name) * 0.025
     end
 
@@ -192,23 +192,23 @@ end
 
 local rad_dmg_mult_sqrt = math.sqrt(1 / rad_dmg_cutoff)
 local function dmg_abm(pos, node)
-    local strength = minetest.get_item_group(node.name, 'radioactive')
-        + (minetest.get_item_group(node.name, 'weak_radioactive') / 100)
+    local strength = core.get_item_group(node.name, 'radioactive')
+        + (core.get_item_group(node.name, 'weak_radioactive') / 100)
     local max_dist = math.min(strength * rad_dmg_mult_sqrt, 10)
-    for _, o in pairs(minetest.get_objects_inside_radius(pos, max_dist + abdomen_offset)) do
+    for _, o in pairs(core.get_objects_inside_radius(pos, max_dist + abdomen_offset)) do
         if (o:is_player()) and o:get_hp() > 0 then dmg_object(pos, o, strength) end
     end
 end
 
-if minetest.settings:get_bool('enable_damage') then
-    minetest.register_abm({
+if core.settings:get_bool('enable_damage') then
+    core.register_abm({
         label = 'Radiation damage',
         nodenames = { 'group:radioactive' },
         interval = 1,
         chance = 1,
         action = dmg_abm,
     })
-    minetest.register_abm({
+    core.register_abm({
         label = 'Radiation damage (Weak, mostly radon)',
         nodenames = { 'group:weak_radioactive' },
         interval = 1,
@@ -219,7 +219,7 @@ end
 
 -- RADON!!!
 core.register_node('sbz_chem:radon', {
-    description = 'radon',
+    description = S("radon"),
     drawtype = 'glasslike',
     paramtype = 'light',
     drop = '',
@@ -319,7 +319,7 @@ core.register_abm({
 local water_color = '#6abe3032'
 
 core.register_node('sbz_chem:radioactive_water', {
-    description = 'bad water, unhealthy even',
+    description = S("bad water, unhealthy even"),
     drawtype = 'liquid',
     tiles = {
         { name = 'water.png^[multiply:' .. water_color .. '^[opacity:200', backface_culling = false },

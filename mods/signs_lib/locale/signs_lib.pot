@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 17:40-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mods/signs_lib/api.lua:824 mods/signs_lib/api.lua:994
+msgid "Locked sign, owned by @1\n"
+msgstr ""
+
+#: mods/signs_lib/api.lua:1301
+msgid ""
+"Skims through all currently-loaded sign-bearing mapblocks, clears away any "
+"entities within each sign's node space, and regenerates their text entities, "
+"if any."
+msgstr ""
+
+#: mods/signs_lib/api.lua:1320
+msgid "There are no signs in the currently-loaded terrain."
+msgstr ""
+
+#: mods/signs_lib/api.lua:1326
+msgid "Found a total of @1 sign nodes across @2 blocks."
+msgstr ""
+
+#: mods/signs_lib/api.lua:1327
+msgid "Regenerating sign entities ..."
+msgstr ""
+
+#: mods/signs_lib/api.lua:1339
+msgid "Finished."
+msgstr ""
+
+#: mods/signs_lib/api.lua:1365
+msgid "Write"
+msgstr ""
+
+#: mods/signs_lib/standard_signs.lua:7
+msgid "Wooden Wall Sign"
+msgstr ""
+
+#: mods/signs_lib/standard_signs.lua:25
+msgid "Steel Wall Sign"
+msgstr ""

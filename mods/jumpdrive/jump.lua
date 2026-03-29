@@ -1,16 +1,18 @@
-local has_vizlib = minetest.get_modpath("vizlib")
+local S = core.get_translator(core.get_current_modname())
+
+local has_vizlib = core.get_modpath("vizlib")
 
 jumpdrive.simulate_jump = function(pos, player, show_marker)
 	local targetPos = jumpdrive.get_meta_pos(pos)
 
 	if jumpdrive.check_mapgen(pos) then
-		return false, "Error: mapgen was active in this area, please try again later for your own safety!"
+		return false, S("Error: mapgen was active in this area, please try again later for your own safety!")
 	end
 
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	if show_marker and has_vizlib and os.time() < meta:get_int("simulation_expiry") then
-		return false, "Error: simulation is still active! please wait before simulating again"
+		return false, S("Error: simulation is still active! please wait before simulating again")
 	end
 
 	local radius = jumpdrive.get_radius(pos)
@@ -36,11 +38,11 @@ jumpdrive.simulate_jump = function(pos, player, show_marker)
 		(target_pos2.z <= source_pos2.z and target_pos2.z >= source_pos1.z)
 
 	if x_overlap and y_overlap and z_overlap then
-		return false, "Error: jump into itself! extend your jump target"
+		return false, S("Error: jump into itself! extend your jump target")
 	end
 
 	-- load chunk
-	minetest.get_voxel_manip():read_from_map(target_pos1, target_pos2)
+	core.get_voxel_manip():read_from_map(target_pos1, target_pos2)
 
 	if show_marker and has_vizlib then
 		vizlib.draw_cube(targetPos, radius + 0.5, { color = "#ff0000" })
@@ -52,32 +54,32 @@ jumpdrive.simulate_jump = function(pos, player, show_marker)
 	local msg = nil
 	local success = true
 
-	local blacklisted_pos_list = minetest.find_nodes_in_area(source_pos1, source_pos2, jumpdrive.blacklist)
+	local blacklisted_pos_list = core.find_nodes_in_area(source_pos1, source_pos2, jumpdrive.blacklist)
 	local _, nodepos = next(blacklisted_pos_list)
 	if nodepos then
-		return false, "Error: Can't jump node @ " .. minetest.pos_to_string(nodepos)
+		return false, S("Error: Can't jump node @ ") .. core.pos_to_string(nodepos)
 	end
 
-	if minetest.find_node_near(targetPos, radius, "vacuum:vacuum", true) then
-		msg = "Warning: Jump-target is in vacuum!"
+	if core.find_node_near(targetPos, radius, "vacuum:vacuum", true) then
+		msg = S("Warning: Jump-target is in vacuum!")
 	end
 
-	if minetest.find_node_near(targetPos, radius, "ignore", true) then
-		return false, "Error: Jump-target is in uncharted area!"
+	if core.find_node_near(targetPos, radius, "ignore", true) then
+		return false, S("Error: Jump-target is in uncharted area!")
 	end
 
 	if jumpdrive.is_area_protected(source_pos1, source_pos2, playername) then
-		return false, "Error: Jump-source is protected!"
+		return false, S("Error: Jump-source is protected!")
 	end
 
 	if jumpdrive.is_area_protected(target_pos1, target_pos2, playername) then
-		return false, "Error: Jump-target is protected!"
+		return false, S("Error: Jump-target is protected!")
 	end
 
 	local is_empty, empty_msg = jumpdrive.is_area_empty(target_pos1, target_pos2)
 
 	if not is_empty then
-		msg = "Error: Jump-target is obstructed (" .. empty_msg .. ")"
+		msg = S("Error: Jump-target is obstructed") .. " (" .. empty_msg .. ")"
 		success = false
 	end
 
@@ -86,9 +88,9 @@ jumpdrive.simulate_jump = function(pos, player, show_marker)
 
 	if not preflight_result.success then
 		-- check failed in customization
-		msg = "Error: Preflight check failed!"
+		msg = S("Error: Preflight check failed!")
 		if preflight_result.message then
-			msg = "Error: " .. preflight_result.message
+			msg = S("Error: ") .. preflight_result.message
 		end
 		success = false
 	end
@@ -105,17 +107,17 @@ jumpdrive.simulate_jump = function(pos, player, show_marker)
 
 	if usable_power < power_req then
 		-- not enough power
-		msg = "Error: Not enough power: required:" ..
-			sbz_api.format_power(power_req) .. ", power storage: " .. sbz_api.format_power(powerstorage)
+		msg = S("Error: Not enough power: required:") ..
+			sbz_api.format_power(power_req) .. ", " .. S("power storage:") .. " " .. sbz_api.format_power(powerstorage)
 		if used_network then
 			msg = msg ..
-				", power from batteries (25% efficency, so actual power use is 4x of this):" ..
+				S(", power from batteries (25% efficiency, so actual power use is 4x of this): ") ..
 				sbz_api.format_power((usable_power - powerstorage))
 		end
 		success = false
 	elseif used_network and msg == nil then
-		msg = "Info: Has to use " ..
-			sbz_api.format_power((usable_power - powerstorage) * 4) .. " from your batteries. (25% efficency)"
+		msg = S("Info: Has to use @1 from your batteries. (25% efficiency)",
+			sbz_api.format_power((usable_power - powerstorage) * 4))
 		--sbz_api.drain_power_from_batteries(pos, (usable_power - powerstorage) * 4)
 	end
 
@@ -126,7 +128,7 @@ end
 
 -- execute jump
 jumpdrive.execute_jump = function(pos, player)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	local radius = jumpdrive.get_radius(pos)
 	local targetPos = jumpdrive.get_meta_pos(pos)
@@ -153,9 +155,9 @@ jumpdrive.execute_jump = function(pos, player)
 		meta:set_int("power", math.max(0, powerstorage - power_req))
 	end
 
-	local t0 = minetest.get_us_time()
+	local t0 = core.get_us_time()
 
-	minetest.sound_play("jumpdrive_engine", {
+	core.sound_play("jumpdrive_engine", {
 		pos = pos,
 		max_hear_distance = 50,
 		gain = 0.7,
@@ -164,13 +166,13 @@ jumpdrive.execute_jump = function(pos, player)
 	-- actual move
 	jumpdrive.move(source_pos1, source_pos2, target_pos1, target_pos2)
 
-	local t1 = minetest.get_us_time()
+	local t1 = core.get_us_time()
 	local time_micros = t1 - t0
 
-	minetest.log("action", "[jumpdrive] jump took " .. time_micros .. " us")
+	core.log("action", "[jumpdrive] jump took " .. time_micros .. " us")
 
 	-- show animation in source
-	minetest.add_particlespawner({
+	core.add_particlespawner({
 		amount = 200,
 		time = 2,
 		minpos = source_pos1,
@@ -189,7 +191,7 @@ jumpdrive.execute_jump = function(pos, player)
 
 
 	-- show animation in target
-	minetest.add_particlespawner({
+	core.add_particlespawner({
 		amount = 200,
 		time = 2,
 		minpos = target_pos1,

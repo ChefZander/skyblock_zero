@@ -23,24 +23,24 @@ You should have received a copy of the GNU Library General Public
 License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ]=]
 
-local S = minetest.get_translator 'unified_inventory'
+local S = core.get_translator 'unified_inventory'
 local NS = function(s)
     return s
 end
-local F = minetest.formspec_escape
+local F = core.formspec_escape
 local ui = unified_inventory
 
-minetest.register_privilege('creative', {
+core.register_privilege('creative', {
     description = S 'Can use the creative inventory',
     give_to_singleplayer = false,
 })
 
-minetest.register_privilege('ui_full', {
+core.register_privilege('ui_full', {
     description = S 'Forces Unified Inventory to be displayed in Full mode if Lite mode is configured globally',
     give_to_singleplayer = false,
 })
 
-local trash = minetest.create_detached_inventory('trash', {
+local trash = core.create_detached_inventory('trash', {
     --allow_put = function(inv, listname, index, stack, player)
     --	if ui.is_creative(player:get_player_name()) then
     --		return stack:get_count()
@@ -51,7 +51,7 @@ local trash = minetest.create_detached_inventory('trash', {
     on_put = function(inv, listname, index, stack, player)
         inv:set_stack(listname, index, nil)
         local player_name = player:get_player_name()
-        minetest.sound_play('trash', { to_player = player_name, gain = 1.0 })
+        core.sound_play('trash', { to_player = player_name, gain = 1.0 })
     end,
 })
 trash:set_size('main', 1)
@@ -75,7 +75,7 @@ ui.register_button('clear_inv', {
     action = function(player)
         local player_name = player:get_player_name()
         if not ui.is_creative(player_name) then
-            minetest.chat_send_player(
+            core.chat_send_player(
                 player_name,
                 S(
                     'This button has been disabled outside'
@@ -88,8 +88,8 @@ ui.register_button('clear_inv', {
             return
         end
         player:get_inventory():set_list('main', {})
-        minetest.chat_send_player(player_name, S 'Inventory cleared!')
-        minetest.sound_play('trash_all', { to_player = player_name, gain = 1.0 })
+        core.chat_send_player(player_name, S('Inventory cleared!'))
+        core.sound_play('trash_all', { to_player = player_name, gain = 1.0 })
     end,
     condition = function(player)
         return ui.is_creative(player:get_player_name())
@@ -122,7 +122,7 @@ ui.register_page('craft', {
         }
         local n = #formspec + 1
 
-        if ui.trash_enabled or ui.is_creative(player_name) or minetest.get_player_privs(player_name).give then
+        if ui.trash_enabled or ui.is_creative(player_name) or core.get_player_privs(player_name).give then
             formspec[n] = string.format('label[%f,%f;%s]', craftx + 6.35, crafty + 2.3, F(S 'Trash:'))
             formspec[n + 1] = ui.make_trash_slot(craftx + 6.25, crafty + 2.5)
             n = n + 2
@@ -223,7 +223,7 @@ ui.register_page('craftguide', {
         local give_x = perplayer_formspec.give_btn_x
 
         local player_name = player:get_player_name()
-        local player_privs = minetest.get_player_privs(player_name)
+        local player_privs = core.get_player_privs(player_name)
 
         local formspec = {
             perplayer_formspec.standard_inv_bg,
@@ -236,7 +236,7 @@ ui.register_page('craftguide', {
 
         local n = #formspec + 1
 
-        local item_def = minetest.registered_items[item_name]
+        local item_def = core.registered_items[item_name]
         local item_name_shown
 
         local desc = item_def.short_description or item_def.description
@@ -460,9 +460,9 @@ ui.register_page('craftguide', {
 
 local function craftguide_giveme(player, formname, fields)
     local player_name = player:get_player_name()
-    local player_privs = minetest.get_player_privs(player_name)
+    local player_privs = core.get_player_privs(player_name)
     if not player_privs.give and not ui.is_creative(player_name) then
-        minetest.log('action', '[unified_inventory] Denied give action to player ' .. player_name)
+        core.log('action', '[unified_inventory] Denied give action to player ' .. player_name)
         return
     end
 
@@ -507,9 +507,9 @@ local function craftguide_craft(player, formname, fields)
     local craft = crafts[alternate]
     if not craft.width then
         if not craft.output then
-            minetest.log('warning', '[unified_inventory] Craft has no output.')
+            core.log('warning', '[unified_inventory] Craft has no output.')
         else
-            minetest.log('warning', ("[unified_inventory] Craft for '%s' has no width."):format(craft.output))
+            core.log('warning', ("[unified_inventory] Craft for '%s' has no width."):format(craft.output))
         end
         return
     end
@@ -520,7 +520,7 @@ local function craftguide_craft(player, formname, fields)
     ui.set_inventory_formspec(player, 'craft')
 end
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
     if formname ~= '' then return end
 
     for k, v in pairs(fields) do

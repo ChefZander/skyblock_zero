@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- "entirety of fluid transport in 1 file, seriously?... even in the sbz_power mod... like bro"
 -- - frog, writing to past self
 
@@ -49,7 +51,7 @@ end
 local wire_size = 3 / 16
 
 core.register_node("sbz_power:fluid_pipe", {
-    description = "Fluid Pipe",
+    description = S("Fluid Pipe"),
     sounds = sbz_audio.glass(),
     info_extra = "Transports liquid",
 
@@ -200,7 +202,7 @@ function fluid_transport.pump(start_pos, liquid_stack, frompos)
 end
 
 sbz_api.register_stateful_machine("sbz_power:pump", {
-    description = "Fluid Pump",
+    description = S("Fluid Pump"),
     sounds = sbz_audio.machine(),
     autostate = true,
     paramtype2 = "facedir",
@@ -340,7 +342,7 @@ do
 end
 
 sbz_api.register_stateful_machine("sbz_power:creative_pump", {
-    description = "Creative Pump",
+    description = S("Creative Pump"),
     sounds = sbz_audio.machine(),
     autostate = true,
     paramtype2 = "facedir",
@@ -472,7 +474,7 @@ sbz_api.register_stateful_machine("sbz_power:creative_pump", {
 })
 
 core.register_node("sbz_power:fluid_tank", {
-    description = "Fluid Storage Tank",
+    description = S("Fluid Storage Tank"),
     sounds = sbz_audio.machine(),
     groups = { matter = 1, fluid_pipe_connects = 1, fluid_pipe_stores = 1, ui_fluid = 1 },
     tiles = {
@@ -525,7 +527,7 @@ do -- Fluid Tank recipe scope
 end
 
 sbz_api.register_stateful_machine("sbz_power:fluid_capturer", {
-    description = "Fluid Capturer",
+    description = S("Fluid Capturer"),
     sounds = sbz_audio.machine(),
     autostate = true,
     tiles = {
@@ -605,7 +607,7 @@ do -- Fluid Capturer recipe scope
 end
 
 sbz_api.register_machine("sbz_power:fluid_cell_filler", {
-    description = "Fluid Cell Filler",
+    description = S("Fluid Cell Filler"),
     sounds = sbz_audio.machine(),
     tiles = {
         "fluid_tank_top.png",

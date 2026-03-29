@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- this doesn't use any code from techage
 
 local jetpack_durability_s = 60 * 5 -- jetpack durability, in seconds
@@ -30,7 +32,7 @@ local function stop_jetpack_sound(player)
 end
 
 core.register_tool('sbz_resources:jetpack', {
-    description = 'Jetpack',
+    description = S("Jetpack"),
     info_extra = 'Idea originated from techage',
     inventory_image = 'jetpack_off.png',
     stack_max = 1,

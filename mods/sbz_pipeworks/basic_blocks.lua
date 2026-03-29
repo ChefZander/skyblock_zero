@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 --[[ includes:
     Item Sorter - sorting tube code
     Item Void - pipeworks trashcan code
@@ -52,7 +54,7 @@ local function item_sorter_formspec(pos)
 end
 
 core.register_node("pipeworks:item_sorter", {
-    description = "Item Sorter",
+    description = S("Item Sorter"),
     sounds = sbz_audio.matter(),
     tiles = {
         { name = "itemsorter.png", color = "green" },
@@ -190,7 +192,7 @@ do -- Item Sorter recipe scope
 end
 
 core.register_node("pipeworks:item_void", {
-    description = "Item Void",
+    description = S("Item Void"),
     sounds = sbz_audio.matter(),
     tiles = { { name = "trashcan.png" } },
     groups = { cracky = 3, matter = 3, tubedevice = 1, tubedevice_receiver = 1 },

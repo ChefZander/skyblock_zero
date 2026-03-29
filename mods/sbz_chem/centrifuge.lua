@@ -1,6 +1,8 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.recipe.register_craft_type {
     type = 'centrifuging',
-    description = 'Separating',
+    description = S("Separating"),
     icon = 'centrifuge.png^[verticalframe:12:1',
     single = true,
 }
@@ -123,7 +125,7 @@ for k, v in ipairs {
 end
 
 sbz_api.register_stateful_machine('sbz_chem:centrifuge', {
-    description = 'Centrifuge',
+    description = S("Centrifuge"),
     tiles = {
         'centrifuge.png^[verticalframe:12:1',
         'centrifuge_side.png',
@@ -146,7 +148,7 @@ sbz_api.register_stateful_machine('sbz_chem:centrifuge', {
     input_inv = 'src',
     output_inv = 'dst',
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size('src', 1)
         inv:set_size('dst', 16)

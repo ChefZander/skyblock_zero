@@ -1,9 +1,11 @@
+local S = core.get_translator(core.get_current_modname())
+
 local matter_items = {}
 for _ = 1, 8 do
     matter_items[#matter_items + 1] = { rarity = 2, items = { 'sbz_resources:matter_dust 8' } }
 end
 core.register_node('sbz_meteorites:meteoric_matter', {
-    description = 'Meteoric Matter',
+    description = S("Meteoric Matter"),
     tiles = { 'matter_blob.png^meteoric_overlay.png' },
     paramtype = 'light',
     light_source = 10,
@@ -36,7 +38,7 @@ for _ = 1, 8 do
 end
 
 core.register_node('sbz_meteorites:meteoric_antimatter', {
-    description = 'Meteoric Antimatter',
+    description = S("Meteoric Antimatter"),
     tiles = { 'antimatter_blob.png^(meteoric_overlay.png^[invert:rgb)' },
     paramtype = 'light',
     light_source = 12,
@@ -54,7 +56,7 @@ for _ = 1, 8 do
 end
 
 core.register_node('sbz_meteorites:meteoric_emittrium', {
-    description = 'Meteoric Emittrium',
+    description = S("Meteoric Emittrium"),
     tiles = { 'emitter.png^meteoric_overlay.png' },
     paramtype = 'light',
     light_source = 10,
@@ -79,7 +81,7 @@ for k, v in ipairs(drops) do
 end
 
 core.register_node('sbz_meteorites:meteoric_metal', {
-    description = 'Meteoric Metal',
+    description = S("Meteoric Metal"),
     tiles = { 'metal.png^meteoric_overlay.png' },
     paramtype = 'light',
     light_source = 10,
@@ -92,7 +94,7 @@ core.register_node('sbz_meteorites:meteoric_metal', {
 })
 
 core.register_node('sbz_meteorites:neutronium', {
-    description = 'Neutronium',
+    description = S("Neutronium"),
     tiles = { 'neutronium.png' },
     paramtype = 'light',
     light_source = 4,
@@ -100,7 +102,7 @@ core.register_node('sbz_meteorites:neutronium', {
     sounds = sbz_audio.matter(),
 })
 core.register_node('sbz_meteorites:antineutronium', {
-    description = 'Antineutronium',
+    description = S("Antineutronium"),
     tiles = { 'neutronium.png^[invert:rgb' },
     paramtype = 'light',
     light_source = 8,

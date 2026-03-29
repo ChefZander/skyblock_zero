@@ -1,5 +1,7 @@
+local S = core.get_translator(core.get_current_modname())
+
 core.register_craftitem('sbz_bio:screen_inverter_potion', {
-    description = "Potion of Inverting",
+    description = S("Potion of Inverting"),
     sound = {
         eat = { name = 'gen_water_drink' }
     },
@@ -19,7 +21,7 @@ core.register_craftitem('sbz_bio:screen_inverter_potion', {
         return stack
     end,
     info_extra = {
-        core.colorize("#ffff00", "Ability: Drink (Left-Click)") .. " Inverts your screen colors.",
+        core.colorize("#ffff00", S("Ability: Drink (Left-Click)")) .. S(" Inverts your screen colors."),
     },
     groups = { ui_bio = 1 },
     inventory_image = 'screen_inverter_potion.png',

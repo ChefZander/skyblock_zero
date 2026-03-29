@@ -1,3 +1,5 @@
+local S, PS = core.get_translator(core.get_current_modname())
+
 core.register_entity("sbz_power:turret_entity", {
     initial_properties = {
         visual = "mesh",
@@ -70,12 +72,12 @@ end
 local range = 120
 local power_use = 30
 sbz_api.register_machine("sbz_power:turret", {
-    description = "Automatic Turret",
+    description = S("Automatic Turret"),
     sounds = sbz_audio.glass(),
     drawtype = "glasslike",
     info_extra = {
-        "Shoots things like lasers.",
-        "Range: " .. range .. " nodes",
+        S("Shoots things like lasers."),
+        PS("Range: @1 node", "Range: @1 nodes", range, tostring(range)),
     },
     power_needed = 50,
     tiles = { "gravitational_repulsor.png" },

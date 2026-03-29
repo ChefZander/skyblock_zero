@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 sbz_api.multiblocks = {}
 local multiblocks = sbz_api.multiblocks
 
@@ -240,7 +242,7 @@ dofile(mp .. "/blast_furnace_recipes.lua")
 dofile(mp .. "/large_liquid_storage.lua")
 
 core.register_chatcommand("build_multiblock", {
-    description = "Build out a multiblock controller's build plan",
+    description = S("Build out a multiblock controller's build plan"),
     privs = {
         ["server"] = true,
     },

@@ -1,9 +1,11 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- "placer facing" = things like buttons
--- should have 2 nodes: a private variant, and a public variant
--- usually not machines, afterall they don't need to be
+-- Should have 2 nodes: a private variant, and a public variant.
+-- Usually not machines.  After all, they don't need to be.
 for _, variant in pairs { "public", "private" } do
     sbz_api.register_stateful("sbz_power:switch_" .. variant, unifieddyes.def {
-        description = "Switch " .. "(" .. variant .. ")",
+        description = S("Switch " .. "(" .. variant .. ")"),
         tiles = {
             "lgate_base.png",
             "lgate_base.png",

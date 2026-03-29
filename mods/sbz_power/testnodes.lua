@@ -1,7 +1,9 @@
+local S = core.get_translator(core.get_current_modname())
+
 local times = {}
 local h = core.hash_node_position
 sbz_api.register_machine("sbz_power:testmach", {
-    description = "Test machine",
+    description = S("Test machine"),
     sounds = sbz_audio.machine(),
     action = function(pos, node, meta, supply, demand)
         local t = times[core.hash_node_position(pos)] or 0

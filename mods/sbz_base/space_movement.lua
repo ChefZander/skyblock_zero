@@ -1,8 +1,10 @@
+local S = core.get_translator(core.get_current_modname())
+
 local timer_max = 0
 local timer = 0
 
 core.register_privilege("space", {
-    description = "Allows toggling space movement",
+    description = S("Allows toggling space movement"),
     give_to_singleplayer = false,
 })
 
@@ -19,7 +21,7 @@ local function set_space_enabled(player, enabled)
 end
 
 core.register_chatcommand("space", {
-    description = "Toggle space movement",
+    description = S("Toggle space movement"),
     privs = { space = true }, -- must have "space" priv
     func = function(name)
         local player = core.get_player_by_name(name)

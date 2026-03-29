@@ -1,5 +1,7 @@
-minetest.register_node("sbz_bio:rope", {
-    description = "Rope",
+local S = core.get_translator(core.get_current_modname())
+
+core.register_node("sbz_bio:rope", {
+    description = S("Rope"),
     drawtype = "plantlike",
     tiles = { "rope.png" },
     selection_box = { type = "fixed", fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 } },
@@ -14,16 +16,16 @@ minetest.register_node("sbz_bio:rope", {
     on_place = sbz_api.on_place_precedence(function(itemstack, user, pointed)
         if pointed.type ~= "node" then return end
         if pointed.above.y < pointed.under.y then
-            minetest.set_node(pointed.above, { name = "sbz_bio:rope" })
-        elseif minetest.get_node(pointed.under).name == "sbz_bio:rope" then
+            core.set_node(pointed.above, { name = "sbz_bio:rope" })
+        elseif core.get_node(pointed.under).name == "sbz_bio:rope" then
             local pos = pointed.under
             local nodename
             repeat
                 pos.y = pos.y - 1
-                nodename = minetest.get_node(pos).name
+                nodename = core.get_node(pos).name
             until nodename ~= "sbz_bio:rope"
-            if minetest.registered_nodes[nodename].buildable_to then
-                minetest.set_node(pos, { name = "sbz_bio:rope" })
+            if core.registered_nodes[nodename].buildable_to then
+                core.set_node(pos, { name = "sbz_bio:rope" })
             else
                 return
             end
@@ -36,9 +38,9 @@ minetest.register_node("sbz_bio:rope", {
     after_dig_node = function(pos, node, meta, user)
         while true do
             pos.y = pos.y - 1
-            node = minetest.get_node(pos)
+            node = core.get_node(pos)
             if node.name == "sbz_bio:rope" then
-                minetest.node_dig(pos, node, user)
+                core.node_dig(pos, node, user)
             else
                 return
             end

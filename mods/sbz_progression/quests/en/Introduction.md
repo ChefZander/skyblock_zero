@@ -8,6 +8,7 @@ The first questline, to introduce you to the game. Your adventure will start her
 To expand one of those questlines, click the plus next to the name, use the arrow keys or double click on the questline.
 
 ## Info: General Info
+### ID: qid_general_info
 
 ### Text
 
@@ -28,7 +29,7 @@ Some commands useful for survival:
 
 **Hotbar switching** You can switch your hotbar row to another one by pressing `sneak` + `aux1` (usually `e`) + `left mouse button`, to cycle your hotbar in the opposite direction use `sneak` + `aux1` + `right mouse button`.
 
-**Recomended for small screens**  
+**Recommended for small screens**  
 In theme settings, you can disable "Force mono font", this will make the font less good but it will make it smaller.  
 
 **Player settings**
@@ -39,6 +40,7 @@ In your inventory, you can see a settings icon at the bottom. Clicking that take
 Requires: 
 
 ## Info: Navigating the inventory
+### ID: qid_navigating_the_inventory
 
 ### Text
 
@@ -57,6 +59,7 @@ If you aren't familiar with it, here are some things to know:
 Requires:
 
 ## Introduction
+### ID: qid_introduction
 
 ### Text
 
@@ -79,6 +82,7 @@ TIP: If you lose your Quest Book, you can use /qb to get it back.
 Requires: 
 
 ## A bigger platform
+### ID: qid_a_bigger_platform
 
 ### Text
 
@@ -92,6 +96,7 @@ If you are unable to place a matter blob next to the core, try sneaking while pl
 Requires: Introduction
 
 ## Antimatter
+### ID: qid_antimatter
 
 ### Text
 
@@ -103,6 +108,7 @@ Don't know how to craft it? The search bar in your inventory will help.
 Requires: Introduction
 
 ## Annihilator
+### ID: qid_annihilator
 
 ### Text
 
@@ -112,9 +118,10 @@ Also, make sure you are crafting the **Matter** annihilator, not the **Anti**mat
 
 ### Meta
 
-Requires: A bigger platform, Antimatter
+Requires: qid_a_bigger_platform, qid_antimatter
 
 ## Info: Bridging out
+### ID: qid_info_bridging_out
 
 ### Text
 
@@ -124,9 +131,10 @@ TIP: You can craft **Matter Platforms** to have a cheaper way of bridging out.
 
 ### Meta
 
-Requires: Annihilator
+Requires: qid_annihilator
 
 ## Charged Field
+### ID: qid_charged_field
 
 ### Text
 
@@ -142,6 +150,7 @@ Generators use energy even when there's nothing connected to them. Since resourc
 Requires: Introduction
 
 ## Matter Plates
+### ID: qid_matter_plates
 
 ### Text
 
@@ -151,9 +160,10 @@ You can get four Matter Plates by placing one matter blob into the crafting grid
 
 ### Meta
 
-Requires: A bigger platform
+Requires: qid_a_bigger_platform
 
 ## Switching Station
+### ID: qid_switching_station
 
 ### Text
 
@@ -166,9 +176,10 @@ When you right-click a Switching Station, you will see a summary of all the mach
 
 ### Meta
 
-Requires: Matter Plates
+Requires: qid_matter_plates
 
 ## Info: What conducts power?
+### ID: qid_info_what_conducts_power
 
 ### Text
 
@@ -178,9 +189,10 @@ The power unit is Cosmic Joules, and is abbreviated to Cj in most interfaces.
 
 ### Meta
 
-Requires: Switching Station
+Requires: qid_switching_station
 
 ## Automation
+### ID: qid_automation
 
 ### Text
 
@@ -189,9 +201,10 @@ TIP: Some early game machines without power emit red particles.
 
 ### Meta
 
-Requires: Annihilator, Charged Field
+Requires: qid_annihilator, qid_charged_field
 
 ## Advanced Extractors
+### ID: qid_advanced_extractors
 
 ### Text
 
@@ -203,9 +216,10 @@ For the curious, an Advanced Extractor has a 4% chance of extracting core dust. 
 
 ### Meta
 
-Requires: Automation
+Requires: qid_automation
 
 ## Circuitry
+### ID: qid_circuitry
 
 ### Text
 
@@ -217,9 +231,10 @@ To craft a Simple Circuit, you'll need one core dust and one matter blob. You'll
 
 ### Meta
 
-Requires: A bigger platform
+Requires: qid_a_bigger_platform
 
 ## Manual Crafters
+### ID: qid_manual_crafters
 
 ### Text
 
@@ -234,9 +249,10 @@ They also won't work with crafting recipes that have "replacements", it will ins
 
 ### Meta
 
-Requires: Circuitry
+Requires: qid_circuitry
 
 ## Generators
+### ID: qid_generators
 
 ### Text
 
@@ -248,9 +264,10 @@ It generates `36 Cj` with charged particles, `30 Cj` with core dust.
 
 ### Meta
 
-Requires: Charged Field, Antimatter
+Requires: qid_charged_field, qid_antimatter
 
 ## Retaining Circuits
+### ID: qid_retaining_circuits
 
 ### Text
 
@@ -262,22 +279,24 @@ TIP: With retaining circuits, you can craft **Storinators** to permanently store
 
 ### Meta
 
-Requires: Antimatter, Circuitry
+Requires: qid_antimatter, qid_circuitry
 
 ## Pretty Pebbles
+### ID: qid_pretty_pebbles
 
 ### Text
 
 We're making the jump from generic matter to stone now! Here is where building a space station gets fun!  
   
 First, before we can make Stone nodes we will need Pebbles. They are quite difficult to make, requiring **three matter blobs**, so **having at least 4 advanced matter extractors is recommended**, as you will need a lot of pebbles.  
-Pebbles will unlock a lot of decorational nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!
+Pebbles will unlock a lot of decorative nodes to spice up your island, as well as plenty of tech, and if you want you can even start building your own planet. It's all up to your imagination!
 
 ### Meta
 
-Requires: A bigger platform
+Requires: qid_a_bigger_platform
 
 ## Concrete Plan
+### ID: qid_concrete_plan
 
 ### Text
 
@@ -287,9 +306,10 @@ That said, it's made using 9 pebbles.
 
 ### Meta
 
-Requires: Pretty Pebbles
+Requires: qid_pretty_pebbles
 
 ## Info: What to do next?
+### ID: qid_info_what_to_do_next
 
 ### Text
 
@@ -307,4 +327,4 @@ Example: Getting the Very Advanced Battery would be greatly helped by the pipewo
 
 ### Meta
 
-Requires: Concrete Plan
+Requires: qid_concrete_plan

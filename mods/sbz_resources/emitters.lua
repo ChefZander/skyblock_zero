@@ -1,3 +1,5 @@
+local S = core.get_translator(core.get_current_modname())
+
 -- Emitter Node
 
 local action = function(pos, _, puncher)
@@ -55,7 +57,7 @@ local action = function(pos, _, puncher)
 end
 
 core.register_node("sbz_resources:emitter", {
-    description = "Emitter",
+    description = S("Emitter"),
     tiles = { "emitter.png" },
     groups = { gravity = 25, unbreakable = 1, transparent = 1, not_in_creative_inventory = 1 },
     sounds = {
@@ -74,7 +76,7 @@ core.register_node("sbz_resources:emitter", {
 })
 
 core.register_node("sbz_resources:movable_emitter", {
-    description = "Movable Emitter",
+    description = S("Movable Emitter"),
     tiles = { "movable_emitter.png" },
     groups = { transparent = 1, matter = 1, level = 2 },
     sounds = {
@@ -133,7 +135,7 @@ core.register_abm({
 
 -- Emitter Resources
 core.register_craftitem("sbz_resources:raw_emittrium", {
-    description = "Raw Emittrium",
+    description = S("Raw Emittrium"),
     inventory_image = "raw_emittrium.png",
     stack_max = 256,
 })
@@ -198,7 +200,7 @@ end
 
 -- THE CORE!!!
 core.register_node("sbz_resources:the_core", {
-    description = "The Core",
+    description = S("The Core"),
     sounds = sbz_audio.matter(),
     tiles = { "the_core.png" },
     groups = { gravity = 25, unbreakable = 1, not_in_creative_inventory = 1 },

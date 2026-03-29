@@ -3,6 +3,7 @@
 
 
 ## Meteorites
+### ID: qid_meteorites
 
 ### Text
 
@@ -14,9 +15,10 @@ TIP: The Meteorite Radar consumes **40 Cj** when a meteorite is nearby, but it w
 
 ### Meta
 
-Requires: Simple Alloy Furnace, Emittrium Circuits
+Requires: qid_simple_alloy_furnace, qid_emittrium_circuits
 
 ## Laser
+### ID: qid_laser
 
 ### Text
 
@@ -27,9 +29,10 @@ It also does some damage to other players if PVP is enabled.
 
 ### Meta
 
-Requires: Simple Alloy Furnace, Emittrium Circuits
+Requires: qid_simple_alloy_furnace, qid_emittrium_circuits
 
 ## Neutronium
+### ID: qid_neutronium
 
 ### Text
 
@@ -38,9 +41,10 @@ To complete this quest, make a Gravitational attractor.
 
 ### Meta
 
-Requires: Meteorites
+Requires: qid_meteorites
 
 ## Antineutronium
+### ID: qid_antineutronium
 
 ### Text
 
@@ -53,9 +57,10 @@ TIP: Build a shield out of compressed core dust to protect against Antimatter me
 
 ### Meta
 
-Requires: Meteorites
+Requires: qid_meteorites
 
 ## Meteorite Maker
+### ID: qid_meteorite_maker
 
 ### Text
 
@@ -67,9 +72,10 @@ Tip: Meteorites don't really explode in protected areas, you'll have to lure it 
 
 ### Meta
 
-Requires: Autocrafters, Neutronium
+Requires: qid_autocrafters, qid_neutronium
 
 ## It's strange...
+### ID: qid_its_strange
 
 ### Text
 
@@ -82,9 +88,10 @@ Strange Matter meteorites spawn if you are 100 nodes away from the core.
 
 ### Meta
 
-Requires: Neutronium
+Requires: qid_neutronium
 
 ## Strange Blob Cleaner
+### ID: qid_strange_blob_cleaner
 
 ### Text
 
@@ -92,4 +99,4 @@ Restores what was destroyed by Strange Blobs.
 
 ### Meta
 
-Requires: It's strange...
+Requires: qid_its_strange
