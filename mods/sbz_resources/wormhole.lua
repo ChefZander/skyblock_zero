@@ -104,6 +104,7 @@ sbz_api.recipe.register_craft {
     items = {
         "sbz_resources:unrefined_firmament",
         "sbz_resources:gravitational_lens",
+        "",
     },
 }
 

@@ -153,3 +153,99 @@ core.register_node("sbz_resources:bomb", {
         core.add_entity(pos, "sbz_resources:bomb_entity", owner)
     end
 })
+
+local function fission_bomb_detonate(obj, owner)
+    sbz_api.explode(obj:get_pos(), 256, 0.9, true, owner or "", 2.5, nil, true)
+    obj:remove()
+end
+
+local fission_time = 5
+
+core.register_entity("sbz_resources:fission_bomb_entity", {
+    initial_properties = {
+        physical = true,
+        collide_with_objects = false,
+        visual = "cube",
+        textures = {
+            "fission_bomb_top.png^[brighten",
+            "fission_bomb_top.png^[brighten",
+            "fission_bomb.png^[brighten",
+            "fission_bomb.png^[brighten",
+            "fission_bomb.png^[brighten",
+            "fission_bomb.png^[brighten",
+        },
+        static_save = false,
+        pointable = true
+    },
+
+    on_activate = function(self, staticdata)
+        self.object:set_armor_groups({ immortal = 1, can_move = 1 })
+        self.time = fission_time
+        self.owner = staticdata
+        self.object:add_velocity(vector.new(0, 1, 0))
+        self.object:set_acceleration(vector.new(0, -sbz_api.gravity, 0))
+    end,
+
+    on_step = function(self, dtime, moveresult)
+        self.time = self.time - dtime
+        self.object:set_acceleration(vector.new(0, -sbz_api.gravity, 0))
+
+        if moveresult.touching_ground or moveresult.standing_on_object then
+            self.object:set_velocity(self.object:get_velocity() * 0.9)
+        end
+
+        if self.time <= 0 then
+            fission_bomb_detonate(self.object, self.owner)
+        end
+    end,
+})
+
+core.register_node("sbz_resources:fission_bomb", {
+    description = "Fission Bomb",
+    tiles = {
+        "fission_bomb_top.png",
+        "fission_bomb_top.png",
+        "fission_bomb.png"
+    },
+    groups = { matter = 1, explody = 100 },
+    sounds = {
+        footstep = { name = 'gen_full_container_thunk', gain = 0.2, pitch = 0.5 },
+        dig      = { name = 'gen_pew_waveform', gain = 0.2, pitch = 0.1 },
+        dug      = { name = 'gen_pew_flange', gain = 1.0, pitch = 1.0 },
+        place    = { name = 'gen_full_container_thunk', gain = 0.7, pitch = 1.0 },
+    },
+
+    on_rightclick = function(pos, node, player)
+        local name = player:get_player_name()
+
+        if core.is_protected(pos, name) then
+            return core.record_protection_violation(pos, name)
+        end
+
+        core.remove_node(pos)
+        core.add_entity(pos, "sbz_resources:fission_bomb_entity", name)
+
+        core.sound_play("gen_noise_fuse", {
+            pos = pos,
+            gain = 1.2,
+            fade = 10.0,
+            pitch = 0.8, -- deeper sound?
+        })
+    end,
+
+    on_blast = function(pos, power, original_pos, owner)
+        if core.is_protected(pos, owner) then return end
+
+        core.remove_node(pos)
+        core.add_entity(pos, "sbz_resources:fission_bomb_entity", owner)
+    end
+})
+
+core.register_craft({
+    output = "sbz_resources:fission_bomb",
+    recipe = {
+        { "sbz_resources:bomb", "sbz_chem:lead_block", "sbz_resources:bomb" },
+        { "sbz_resources:heating_element", "sbz_chem:plutonium_fuel_rod", "sbz_resources:heating_element" },
+        { "sbz_resources:bomb", "sbz_chem:lead_block", "sbz_resources:bomb" }
+    }
+})
