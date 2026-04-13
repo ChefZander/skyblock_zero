@@ -3,6 +3,9 @@ Start from absolutely nothing in a skyblock world. Time is your resource. Get lo
 
 For ContentDB users: This package includes this exact information in its `README.md` file. So you can read it locally at your own leisure.
 
+> [!IMPORTANT]
+> Official Development has moved to Codeberg: [skyblock_zero/skyblock_zero](https://codeberg.org/skyblock_zero/skyblock_zero)
+
 ## Playing
 There is an in-game Quest Book to get you started. Have fun!<br>
 - **Please report bugs in the package threads or github issues, i will fix them ASAP.**
